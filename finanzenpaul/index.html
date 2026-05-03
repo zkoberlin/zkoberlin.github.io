@@ -28,12 +28,12 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;font-size:15px;}
- 
+
 /* ── LAYOUT SWITCH ── */
 .d-layout{display:none;} .m-layout{display:none;}
 @media(min-width:768px){.d-layout{display:grid;} .m-layout{display:none!important;}}
 @media(max-width:767px){.m-layout{display:flex;} .d-layout{display:none!important;}}
- 
+
 /* ══════════════════════════════════
    DESKTOP
 ══════════════════════════════════ */
@@ -133,10 +133,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-s
 .wfbw{flex:1;height:16px;background:var(--sep2);border-radius:4px;overflow:hidden;}
 .wfb{height:100%;border-radius:4px;transition:width 0.3s;}
 .wfv{font-size:11px;font-weight:600;min-width:72px;text-align:right;color:var(--t1);white-space:nowrap;}
+.wfpct{font-size:10px;color:var(--t3);min-width:34px;text-align:right;white-space:nowrap;}
 .pleg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .pli{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--t2);}
 .pld{width:8px;height:8px;border-radius:2px;}
- 
+
 /* TOGGLE shared */
 .dtog,.mtog{border-radius:99px;background:var(--sep);border:none;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;}
 .dtog{width:28px;height:17px;} .mtog{width:36px;height:22px;}
@@ -144,17 +145,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-s
 .dtog::after{width:13px;height:13px;} .mtog::after{width:16px;height:16px;}
 .dtog.on{background:var(--tog);} .mtog.on{background:var(--tog);}
 .dtog.on::after{transform:translateX(11px);} .mtog.on::after{transform:translateX(14px);}
- 
+
 /* SLIDER shared */
 input[type=range]{-webkit-appearance:none;width:100%;height:3px;border-radius:2px;background:var(--sep);outline:none;cursor:pointer;}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--card);border:2px solid var(--acc);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
 input[type=range]:disabled{opacity:0.2;pointer-events:none;}
- 
+
 /* DEL btn */
 .ddel{width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,59,48,0.1);color:var(--red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity 0.15s;padding:0;}
 .dr:hover .ddel{opacity:1;}
 .mdel{width:24px;height:24px;border-radius:50%;border:none;background:rgba(255,59,48,0.1);color:var(--red);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;}
- 
+
 /* ══════════════════════════════════
    MOBILE
 ══════════════════════════════════ */
@@ -231,6 +232,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 .m-wfbw{flex:1;height:18px;background:var(--sep2);border-radius:5px;overflow:hidden;}
 .m-wfb{height:100%;border-radius:5px;transition:width 0.3s;}
 .m-wfv{font-size:11px;font-weight:600;min-width:72px;text-align:right;color:var(--t1);white-space:nowrap;}
+.m-wfpct{font-size:10px;color:var(--t3);min-width:34px;text-align:right;white-space:nowrap;}
 .m-pleg{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .m-pli{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--t2);}
 .m-pld{width:8px;height:8px;border-radius:2px;}
@@ -248,7 +250,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 .m-tabitem.on{color:var(--acc);}
 .m-tabico{font-size:22px;}
 .m-tablbl{font-size:10px;font-weight:500;}
- 
+
 /* ══════════════════════════════════
    MODAL — pure inline, shared
 ══════════════════════════════════ */
@@ -312,7 +314,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 </style>
 </head>
 <body>
- 
+
 <!-- ══ MODAL ══ -->
 <div id="modal" onclick="if(event.target===this)CM()">
 <div id="modal-sheet">
@@ -357,7 +359,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
   </div>
 </div>
 </div>
- 
+
 <!-- ══ DESKTOP ══ -->
 <div class="d-layout">
   <div class="d-topbar">
@@ -377,7 +379,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <button type="button" class="d-btn imp" onclick="document.getElementById('fi').click()">↑ Import</button>
     <input type="file" id="fi" accept=".json" style="display:none" onchange="IM(event)">
   </div>
- 
+
   <div class="d-sidebar">
     <div class="d-navlbl">Kategorien</div>
     <div class="d-nav on" onclick="NC(this,'dsec-wohnen')"><div class="d-nav-l">🏠 Wohnen</div><span class="d-nav-t" id="dnav-wohnen">–</span></div>
@@ -393,7 +395,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="d-sb-row"><span class="d-sb-l">Rest</span><span class="d-sb-v" id="dsb-rest" style="color:var(--grn)">–</span></div>
     </div>
   </div>
- 
+
   <div class="d-main" id="d-main">
     <div class="d-metrics">
       <div class="d-metric"><div class="d-ml">Einnahmen</div><div class="d-mv b" id="dm-ein">–</div></div>
@@ -401,7 +403,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="d-metric"><div class="d-ml">Rest</div><div class="d-mv" id="dm-rest">–</div></div>
       <div class="d-metric"><div class="d-ml">Freier Puffer</div><div class="d-mv" id="dm-puf">–</div></div>
     </div>
- 
+
     <div class="dsec" id="dsec-wohnen">
       <div class="dsec-hdr">
         <span class="dsec-title">🏠 Wohnen</span>
@@ -660,7 +662,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       </div>
     </div>
   </div>
- 
+
   <div class="d-right">
     <div class="d-ps">
       <div class="d-pcard">
@@ -706,7 +708,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     </div>
   </div>
 </div>
- 
+
 <!-- ══ MOBILE ══ -->
 <div class="m-layout">
   <div class="m-topbar">
@@ -719,7 +721,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       </div>
     </div>
   </div>
- 
+
   <div class="m-pages">
     <!-- HOME PAGE -->
     <div class="m-page on" id="mp-home">
@@ -734,7 +736,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         </div>
       </div>
       <div class="m-alert" id="m-alert"><span class="m-alert-dot"></span><span id="m-alert-txt">–</span></div>
- 
+
       <div class="m-card" style="margin-bottom:10px;">
         <div class="m-ctabs">
           <button type="button" class="m-ctab on" onclick="MC(this,'m-cp-wf')">Mittelfluss</button>
@@ -748,7 +750,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
           </div>
         </div>
       </div>
- 
+
       <div class="m-slbl" style="padding-top:6px;">Einnahmen</div>
       <div class="m-gheroe">
         <div class="m-ghlbl">Gehalt netto</div>
@@ -762,7 +764,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
           <span class="m-zval" id="m-zusatz-val">0 €</span>
         </div>
       </div>
- 
+
       <div class="m-slbl">Rest-Verteilung <span class="m-slbl-tot" id="m-restlbl">–</span></div>
       <div class="m-rcard">
         <div class="m-rrow"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m')"><span class="m-rval" id="m-invest-val">0 €</span></div>
@@ -771,10 +773,10 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         <div class="m-rrow"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput="RI('sonder',this.value,'m')"><span class="m-rval" id="m-sonder-val">0 €</span></div>
       </div>
     </div>
- 
+
     <!-- AUSGABEN PAGE -->
     <div class="m-page" id="mp-ausgaben">
- 
+
     <div class="mseclbl">
       🏠 Wohnen
       <span class="msectot" id="mtot-wohnen">–</span>
@@ -1086,22 +1088,22 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     </div>
     </div>
   </div>
- 
+
   <div class="m-tabbar">
     <button type="button" class="m-tabitem on" onclick="MP(this,'mp-home')"><span class="m-tabico">📊</span><span class="m-tablbl">Übersicht</span></button>
     <button type="button" class="m-tabitem" onclick="MP(this,'mp-ausgaben')"><span class="m-tabico">💸</span><span class="m-tablbl">Ausgaben</span></button>
   </div>
 </div>
- 
+
 <script>
 const F=v=>(Math.round(v*100)/100).toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
 const FI=v=>Math.round(v).toLocaleString('de-DE')+' €';
 const R2=v=>Math.round(v*100)/100;
- 
+
 const ITEMS=[{k:"miete",cat:"Wohnen",def:1808},{k:"strom",cat:"Wohnen",def:43},{k:"internet",cat:"Wohnen",def:45},{k:"lebensmittel",cat:"Wohnen",def:450},{k:"schufa",cat:"Wohnen",def:4.95},{k:"ing",cat:"Wohnen",def:1.49},{k:"haftpflicht",cat:"Versicherungen",def:9.08},{k:"rechtsschutz",cat:"Versicherungen",def:31.42},{k:"kredit",cat:"Versicherungen",def:320},{k:"gez",cat:"Versicherungen",def:18.33},{k:"unterhalt",cat:"Familie",def:360},{k:"kids",cat:"Familie",def:150},{k:"handyemil",cat:"Familie",def:7.99},{k:"handyrosa",cat:"Familie",def:7.99},{k:"ukv",cat:"Familie",def:9.89},{k:"sparta",cat:"Familie",def:15},{k:"bling",cat:"Familie",def:2.67},{k:"unionemil",cat:"Familie",def:3.5},{k:"handypaul",cat:"Abos",def:11},{k:"icloud",cat:"Abos",def:9.99},{k:"spotify",cat:"Abos",def:21.99},{k:"finanzguru",cat:"Abos",def:2.99},{k:"claude",cat:"Abos",def:22},{k:"unionmitgl",cat:"Abos",def:10},{k:"amazon",cat:"Abos",def:7.42},{k:"parqet",cat:"Abos",def:4.5},{k:"futbology",cat:"Abos",def:0.83},{k:"fotmob",cat:"Abos",def:0.71},{k:"bvg",cat:"Freizeit",def:63},{k:"dauerkarte",cat:"Freizeit",def:21.67},{k:"garmin",cat:"Freizeit",def:7.42}];
- 
+
 const CC={'Wohnen':'#2563EB','Versicherungen':'#D97706','Familie':'#DB2777','Abos':'#7C3AED','Freizeit':'#059669'};
- 
+
 // STATE
 const S={};
 ITEMS.forEach(x=>{S[x.k]={v:x.def,on:true,cat:x.cat};});
@@ -1110,7 +1112,7 @@ S.invest={v:0}; S.notgr={v:100}; S.urlaub={v:100}; S.sonder={v:0};
 let CI=[]; // custom items
 let PC=null,MC_=null; // pie charts
 let mFreq='monthly',mCat=null;
- 
+
 // LOAD
 function LOAD(){
   try{
@@ -1169,21 +1171,15 @@ function LOAD(){
   document.getElementById('dsl-gehalt').value=S.gehalt.v;
   document.getElementById('msl-gehalt').value=S.gehalt.v;
 }
- 
+
 // ══ JSONBIN SYNC ══
 const JB_KEY_STORE = 'fp3_jb_key';
 const JB_BIN_STORE = 'fp3_jb_bin';
-// Hardcoded credentials — repo is private
-const HARDCODED_KEY = '$2a$10$.HHrp2KhADE3FK.3ptIJeueIpdAZRjVHNkZyub/EDmUkGaEhyk0hG';
-const HARDCODED_BIN = '69f77bcc36566621a81e5ae3';
-let jbKey = HARDCODED_KEY;
-let jbBin = HARDCODED_BIN;
-// Also persist to localStorage as fallback
-localStorage.setItem(JB_KEY_STORE, jbKey);
-localStorage.setItem(JB_BIN_STORE, jbBin);
+let jbKey = localStorage.getItem(JB_KEY_STORE) || '';
+let jbBin = localStorage.getItem(JB_BIN_STORE) || '';
 let syncTimer = null;
 let syncStatus = 'idle'; // idle | saving | saved | error | offline
- 
+
 function setSync(status, msg) {
   syncStatus = status;
   const icons = {idle:'☁️', saving:'⏳', saved:'✅', error:'❌', offline:'📴', nokey:'⚙️'};
@@ -1191,7 +1187,7 @@ function setSync(status, msg) {
   ['d-sync-ico','m-sync-ico'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=icons[status]||'☁️';});
   ['d-sync-lbl','m-sync-lbl'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=msg||msgs[status]||'';});
 }
- 
+
 async function jbSave(data) {
   if(!jbKey) { setSync('nokey','API-Key fehlt'); return; }
   setSync('saving');
@@ -1222,7 +1218,7 @@ async function jbSave(data) {
     setSync(navigator.onLine?'error':'offline');
   }
 }
- 
+
 async function jbLoad() {
   if(!jbKey || !jbBin) return null;
   try {
@@ -1234,7 +1230,7 @@ async function jbLoad() {
     return j.record;
   } catch(e) { return null; }
 }
- 
+
 function scheduleSave() {
   clearTimeout(syncTimer);
   syncTimer = setTimeout(()=>{
@@ -1247,14 +1243,14 @@ function scheduleSave() {
     jbSave(payload);
   }, 1500); // debounce 1.5s
 }
- 
+
 function SAVE(){
   const sv={};
   Object.keys(S).forEach(k=>{sv[k]={v:S[k].v,on:S[k].on};});
   try{localStorage.setItem('fp3',JSON.stringify(sv));localStorage.setItem('fp3c',JSON.stringify(CI));}catch(e){}
   scheduleSave();
 }
- 
+
 function setSlider(k,v,on){
   ['dsl-','msl-'].forEach(p=>{const e=document.getElementById(p+k);if(e){e.value=v;e.disabled=!on;}});
 }
@@ -1268,7 +1264,7 @@ function setTog(k,on){
 function updateDistVal(k,v){
   ['d-'+k+'-val','m-'+k+'-val'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=FI(v);});
 }
- 
+
 // TOGGLE
 function DT(el,k){
   el.classList.toggle('on');
@@ -1285,11 +1281,11 @@ function DT(el,k){
   }
   SAVE();RC();
 }
- 
+
 // ITEM SLIDER
 function DI(k,v){S[k].v=R2(parseFloat(v));setVal(k,S[k].v);SAVE();RC();}
 function MI(k,v){S[k].v=R2(parseFloat(v));setVal(k,S[k].v);const dsl=document.getElementById('dsl-'+k);if(dsl)dsl.value=S[k].v;SAVE();RC();}
- 
+
 // GEHALT
 function GI(v){
   S.gehalt.v=parseInt(v);
@@ -1299,7 +1295,7 @@ function GI(v){
   ['dsl-gehalt','msl-gehalt'].forEach(id=>{const e=document.getElementById(id);if(e&&e.value!=v)e.value=v;});
   SAVE();RC();
 }
- 
+
 // ZUSATZ
 function ZI(v,side){
   S.zusatz.v=parseInt(v);
@@ -1309,7 +1305,7 @@ function ZI(v,side){
   const oe=document.getElementById(other);if(oe)oe.value=v;
   SAVE();RC();
 }
- 
+
 // REST SLIDERS
 function RI(k,v,side){
   S[k].v=parseInt(v);
@@ -1318,7 +1314,7 @@ function RI(k,v,side){
   const oe=document.getElementById(other);if(oe)oe.value=v;
   SAVE();RC();
 }
- 
+
 // RECALC
 function RC(){
   const g=S.gehalt.v, z=S.zusatz.on?S.zusatz.v:0, ein=g+z;
@@ -1330,7 +1326,7 @@ function RC(){
   const inv=S.invest.v,notg=S.notgr.v,url=S.urlaub.v,sond=S.sonder.v;
   const puf=R2(rest-inv-notg-url-sond);
   const quote=ein>0?Math.round((inv+notg+url)/ein*100):0;
- 
+
   // fmt helpers
   const fp=R2(Math.max(0,puf));
   set('dm-ein',FI(ein)); set('dm-aus',F(total));
@@ -1341,17 +1337,17 @@ function RC(){
   set('mh-puf',F(fp)); set('mh-ein',FI(ein)); set('mh-aus',F(total));
   set('mh-rest',F(rest)); set('mh-quote',quote+'%');
   set('m-restlbl','von '+F(rest));
- 
+
   cls('dm-rest',rest>=0?'d-mv g':'d-mv r');
   cls('dm-puf',puf>=0?'d-mv g':'d-mv r');
- 
+
   // alert
   let ac='ok',at=F(fp)+' Puffer — im Plan';
   if(rest<0){ac='danger';at='Ausgaben übersteigen Einnahmen um '+F(Math.abs(rest));}
   else if(puf<0){ac='warn';at='Zuteilung übersteigt Rest um '+F(Math.abs(puf));}
   setAlert('d-alert','d-alert-txt',ac,at);
   setAlert('m-alert','m-alert-txt',ac,at);
- 
+
   // section totals
   const SECS={wohnen:['miete','strom','internet','lebensmittel','schufa','ing'],
     versicherungen:['haftpflicht','rechtsschutz','kredit','gez'],
@@ -1364,11 +1360,11 @@ function RC(){
     sum=R2(sum);
     set('dtot-'+sec,F(sum)); set('dnav-'+sec,F(sum)); set('mtot-'+sec,F(sum));
   });
- 
+
   RWF(ein,total,rest,inv,notg,url,sond,puf);
   RPIE(ct);
 }
- 
+
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function cls(id,c){const e=document.getElementById(id);if(e)e.className=c;}
 function setAlert(aid,tid,type,txt){
@@ -1381,7 +1377,7 @@ function setAlert(aid,tid,type,txt){
   te.textContent=txt;
   const dot=ae.querySelector('.d-alert-dot,.m-alert-dot'); if(dot)dot.style.background=cols[type];
 }
- 
+
 function RWF(ein,total,rest,inv,notg,url,sond,puf){
   const rows=[
     {l:'Einnahmen',v:ein,c:'#34C759'},{l:'Ausgaben',v:-total,c:'#FF3B30'},
@@ -1395,31 +1391,36 @@ function RWF(ein,total,rest,inv,notg,url,sond,puf){
     el.innerHTML=rows.map(r=>{
       const pct=Math.min(100,Math.abs(r.v)/ein*100).toFixed(1);
       const sign=r.v>=0?'+ ':'− ';
-      return `<div class="${pfx}r"><span class="${pfx}l">${r.l}</span><div class="${pfx}bw"><div class="${pfx}b" style="width:${pct}%;background:${r.c};"></div></div><span class="${pfx}v">${sign}${F(Math.abs(r.v))}</span></div>`;
+      return `<div class="${pfx}r"><span class="${pfx}l">${r.l}</span><div class="${pfx}bw"><div class="${pfx}b" style="width:${pct}%;background:${r.c};"></div></div><span class="${pfx}v">${sign}${F(Math.abs(r.v))}</span><span class="${pfx}pct">${pct}%</span></div>`;
     }).join('');
   });
 }
- 
+
 function RPIE(ct){
   const labels=Object.keys(ct).filter(k=>ct[k]>0);
   const data=labels.map(l=>R2(ct[l]));
   const colors=labels.map(l=>CC[l]||'#888');
+  const tot=data.reduce((a,b)=>a+b,0);
+  const pcts=data.map(v=>tot>0?Math.round(v/tot*100):0);
   ['d-pie','m-pie'].forEach((id,i)=>{
     const canvas=document.getElementById(id); if(!canvas)return;
     const ref=i===0?PC:MC_;
+    const opts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{
+      label:ctx=>{const p=tot>0?Math.round(ctx.parsed/tot*100):0;return ' '+F(ctx.parsed)+' ('+p+'%)';}
+    }}}};
     if(ref){ref.data.labels=labels;ref.data.datasets[0].data=data;ref.data.datasets[0].backgroundColor=colors;ref.update();}
     else{
-      const ch=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'transparent'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+F(ctx.parsed)}}} }});
+      const ch=new Chart(canvas,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'transparent'}]},options:opts});
       if(i===0)PC=ch; else MC_=ch;
     }
   });
   ['d-pleg','m-pleg'].forEach(id=>{
     const el=document.getElementById(id); if(!el)return;
-    el.innerHTML=labels.map((l,i)=>`<span class="${id.startsWith('d')?'pli':'m-pli'}"><span class="${id.startsWith('d')?'pld':'m-pld'}" style="background:${colors[i]}"></span>${l}: ${FI(data[i])}</span>`).join('');
+    const pfx=id.startsWith('d')?'':'m-';
+    el.innerHTML=labels.map((l,i)=>`<span class="${pfx}pli"><span class="${pfx}pld" style="background:${colors[i]}"></span><span>${l}</span>&nbsp;<span style="font-weight:600;color:var(--t1);">${FI(data[i])}</span>&nbsp;<span style="color:var(--t3);font-size:10px;">${pcts[i]}%</span></span>`).join('');
   });
 }
- 
-// NAV
+
 function NC(el,id){
   document.querySelectorAll('.d-nav').forEach(n=>n.classList.remove('on'));
   el.classList.add('on');
@@ -1442,7 +1443,7 @@ function DC(el,id){
   el.classList.add('on'); document.getElementById(id).classList.add('on');
   if(id==='d-cp-pie'&&PC)PC.resize();
 }
- 
+
 // MODAL
 function OM(){
   document.getElementById('inp-name').value='';
@@ -1457,7 +1458,7 @@ function OM(){
 function CM(){document.getElementById('modal').classList.remove('on');}
 function SF(btn){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');mFreq=btn.dataset.freq;UP();}
 function SC(btn){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');mCat=btn.dataset.cat;UP();}
- 
+
 function UP(){
   const name=document.getElementById('inp-name').value.trim();
   const raw=document.getElementById('inp-amt').value.trim().replace(',','.');
@@ -1487,11 +1488,11 @@ function UP(){
   if(scol)prev.appendChild(mk(' *',true,scol));
   prev.appendChild(mk(' · '+mCat,false,dim));
 }
- 
+
 // Listen for inputs WITHOUT oninput on the elements (to avoid iOS issues)
 document.getElementById('inp-name').addEventListener('input',UP);
 document.getElementById('inp-amt').addEventListener('input',UP);
- 
+
 function AP(){
   const name=document.getElementById('inp-name').value.trim();
   const amt=parseFloat(document.getElementById('inp-amt').value.trim().replace(',','.'));
@@ -1503,13 +1504,13 @@ function AP(){
   CI.push(it); S[k]={v:monthly,on:true,cat:mCat};
   SAVE(); renderCR(it); CM(); RC();
 }
- 
+
 const BODY_MAP={Wohnen:'wohnen',Versicherungen:'versicherungen',Familie:'familie',Abos:'abos',Freizeit:'freizeit'};
 function renderCR(it){
   const cat=BODY_MAP[it.cat]||'abos';
   const star=it.freq==='yearly'?' <span style="color:#FF3B30;font-size:10px;font-weight:700;">*</span>':it.freq==='quarterly'?' <span style="color:#FF9500;font-size:10px;font-weight:700;">*</span>':'';
   const max=Math.max(it.monthly*5,50);
- 
+
   // Desktop row
   const db=document.getElementById('dbody-'+cat);
   if(db){
@@ -1530,10 +1531,10 @@ function DC2(k){
   ['dr-','mr-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.remove();});
   SAVE();RC();
 }
- 
+
 // ESC
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){CM();closeSM();}});
- 
+
 // SETTINGS
 function openSM() {
   document.getElementById('jb-key-input').value = jbKey;
@@ -1542,13 +1543,13 @@ function openSM() {
   document.getElementById('settings-modal').style.display='flex';
 }
 function closeSM() { document.getElementById('settings-modal').style.display='none'; }
- 
+
 function updateSMDisplay() {
   document.getElementById('sm-key-display').textContent = jbKey ? jbKey.slice(0,10)+'…' : '–';
   document.getElementById('sm-bin-display').textContent = jbBin ? jbBin : 'noch keine';
   document.getElementById('jb-bin-input').value = jbBin;
 }
- 
+
 function copyBinId() {
   if(!jbBin) { document.getElementById('jb-status').textContent='⚠️ Noch keine Bin-ID vorhanden — zuerst etwas speichern.'; return; }
   navigator.clipboard.writeText(jbBin).then(()=>{
@@ -1562,7 +1563,7 @@ function copyBinId() {
     setTimeout(()=>document.getElementById('btn-copy-bin').textContent='📋 Kopieren', 2000);
   });
 }
- 
+
 function saveBinId() {
   const binVal = document.getElementById('jb-bin-input').value.trim();
   if(!binVal) { document.getElementById('jb-status').textContent='⚠️ Bitte Bin-ID eingeben.'; return; }
@@ -1586,7 +1587,7 @@ function saveBinId() {
     document.getElementById('jb-status').textContent='✅ Erfolgreich geladen — Geräte sind jetzt synchron!';
   });
 }
- 
+
 function resetBin() {
   if(!confirm('Neue Bin anlegen? Der alte Stand geht verloren.')) return;
   jbBin = '';
@@ -1596,7 +1597,7 @@ function resetBin() {
   document.getElementById('jb-status').textContent='Neue Bin wird beim nächsten Speichern angelegt.';
   SAVE();
 }
- 
+
 async function saveJBKey() {
   const key = document.getElementById('jb-key-input').value.trim();
   if(!key) { document.getElementById('jb-status').textContent='⚠️ Bitte Key eingeben.'; return; }
@@ -1620,7 +1621,7 @@ async function saveJBKey() {
     document.getElementById('jb-status').textContent='❌ Fehler: '+e.message;
   }
 }
- 
+
 function clearJBKey() {
   if(!confirm('Wirklich alles zurücksetzen?')) return;
   jbKey=''; jbBin='';
@@ -1629,7 +1630,7 @@ function clearJBKey() {
   setSync('nokey','API-Key einrichten');
   document.getElementById('jb-status').textContent='Getrennt.';
 }
- 
+
 // EXPORT/IMPORT
 function EX(){
   const p={v:3,ts:new Date().toISOString(),s:JSON.parse(localStorage.getItem('fp3')||'{}'),c:JSON.parse(localStorage.getItem('fp3c')||'[]')};
@@ -1649,22 +1650,22 @@ function IM(e){
   };
   r.readAsText(f);e.target.value='';
 }
- 
+
 LOAD();RC();
 </script>
- 
+
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">
   <div style="background:var(--card);border-radius:20px;padding:28px;width:420px;max-width:94vw;border:0.5px solid var(--sep);box-shadow:0 24px 60px rgba(0,0,0,0.3);">
     <div style="font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px;">☁️ Cloud-Sync</div>
     <div style="font-size:13px;color:var(--t3);margin-bottom:20px;line-height:1.5;">Beide Geräte müssen denselben API-Key <strong>und</strong> dieselbe Bin-ID haben.</div>
- 
+
     <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:8px;">JSONBin Master Key</div>
     <div style="display:flex;gap:8px;margin-bottom:14px;">
       <input type="password" id="jb-key-input" placeholder="$2b$10$..." style="flex:1;padding:11px 13px;font-size:14px;font-family:inherit;background:var(--card2);color:var(--t1);border:0.5px solid var(--sep);border-radius:12px;outline:none;-webkit-appearance:none;">
       <button type="button" onclick="saveJBKey()" style="padding:11px 16px;border-radius:12px;border:none;background:var(--acc);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Verbinden</button>
     </div>
- 
+
     <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:8px;">Bin-ID <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">(muss auf beiden Geräten identisch sein)</span></div>
     <div style="display:flex;gap:8px;margin-bottom:6px;">
       <input type="text" id="jb-bin-input" placeholder="Noch keine Bin-ID — wird beim ersten Speichern angelegt" style="flex:1;padding:11px 13px;font-size:13px;font-family:monospace;background:var(--card2);color:var(--t1);border:0.5px solid var(--sep);border-radius:12px;outline:none;-webkit-appearance:none;">
@@ -1677,9 +1678,9 @@ LOAD();RC();
       <button type="button" onclick="saveBinId()" style="flex:1;padding:11px;border-radius:12px;border:none;background:var(--grn);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">✓ Bin-ID speichern</button>
       <button type="button" onclick="resetBin()" style="padding:11px 14px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--red);font-size:13px;cursor:pointer;font-family:inherit;">Neue Bin</button>
     </div>
- 
+
     <div id="jb-status" style="font-size:13px;color:var(--t3);text-align:center;min-height:18px;margin-bottom:14px;"></div>
- 
+
     <div style="background:var(--card2);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--t3);line-height:1.7;">
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
         <span>API-Key:</span>
@@ -1690,13 +1691,13 @@ LOAD();RC();
         <span style="color:var(--t1);font-family:monospace;font-size:11px;" id="sm-bin-display">–</span>
       </div>
     </div>
- 
+
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
       <button type="button" onclick="clearJBKey()" style="font-size:12px;color:var(--red);background:none;border:none;cursor:pointer;font-family:inherit;">Alles trennen & zurücksetzen</button>
       <button type="button" onclick="closeSM()" style="padding:9px 20px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--t2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Schließen</button>
     </div>
   </div>
 </div>
- 
+
 </body>
 </html>
