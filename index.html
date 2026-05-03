@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paul · Apps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #f2f2f7;
+  --surface:   #ffffff;
+  --surface2:  #f2f2f7;
+  --surface3:  #e5e5ea;
+  --border:    rgba(0,0,0,0.08);
+  --text:      #1c1c1e;
+  --text2:     #6e6e73;
+  --text3:     #aeaeb2;
+  --blue:      #0071e3;
+  --blue-l:    #e8f1fb;
+  --green:     #34c759;
+  --green-l:   rgba(52,199,89,0.12);
+  --orange:    #ff9500;
+  --orange-l:  rgba(255,149,0,0.12);
+  --purple:    #af52de;
+  --purple-l:  rgba(175,82,222,0.12);
+  --red:       #ff3b30;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.09);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+[data-theme="dark"] {
+  --bg:        #0e0e10;
+  --surface:   #1c1c1e;
+  --surface2:  #2c2c2e;
+  --surface3:  #3a3a3c;
+  --border:    rgba(255,255,255,0.08);
+  --text:      #f5f5f7;
+  --text2:     #98989d;
+  --text3:     #636366;
+  --blue:      #409cff;
+  --blue-l:    rgba(64,156,255,0.12);
+  --green:     #30d158;
+  --green-l:   rgba(48,209,88,0.12);
+  --orange:    #ff9f0a;
+  --orange-l:  rgba(255,159,10,0.12);
+  --purple:    #bf5af2;
+  --purple-l:  rgba(191,90,242,0.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.2);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.4);
+}
+
+/* ── BASE ── */
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── HEADER ── */
+header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background var(--transition);
+}
+
+[data-theme="dark"] header {
+  background: rgba(14,14,16,0.88);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--text);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.logo-text  { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
+.logo-sub   { font-size: 11px; color: var(--text2); margin-top: 1px; }
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
+
+.icon-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.icon-btn:hover { transform: scale(1.08); background: var(--surface3); }
+
+/* ── MAIN ── */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px 24px 100px;
+}
+
+/* ── GREETING ── */
+.greeting {
+  margin-bottom: 36px;
+  animation: fadeUp .5s ease both;
+}
+.greeting-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--text3); margin-bottom: 4px;
+}
+.greeting-text {
+  font-size: 28px; font-weight: 300;
+  letter-spacing: -.8px; line-height: 1.15;
+}
+.greeting-text strong { font-weight: 700; }
+
+/* ── SECTION ── */
+.section-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .8px;
+  color: var(--text3); margin-bottom: 12px; margin-left: 2px;
+}
+
+/* ── APP GRID ── */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+@media (max-width: 580px) { .app-grid { grid-template-columns: 1fr; } }
+
+.app-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  animation: fadeUp .5s ease both;
+}
+.app-card:nth-child(1) { animation-delay: .05s; }
+.app-card:nth-child(2) { animation-delay: .10s; }
+.app-card:nth-child(3) { animation-delay: .15s; }
+
+.app-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.app-card:active { transform: scale(.98); }
+
+/* Accent strip */
+.app-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.app-card:hover::before { opacity: 1; }
+.app-card.c-green::before  { background: var(--green); }
+.app-card.c-blue::before   { background: var(--blue); }
+.app-card.c-orange::before { background: var(--orange); }
+
+/* Icon */
+.card-icon {
+  width: 50px; height: 50px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+  transition: background var(--transition);
+}
+.card-icon.green  { background: var(--green-l); }
+.card-icon.blue   { background: var(--blue-l); }
+.card-icon.orange { background: var(--orange-l); }
+.card-icon.purple { background: var(--purple-l); }
+
+/* Text */
+.card-title { font-size: 16px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 4px; }
+.card-desc  { font-size: 12.5px; color: var(--text2); line-height: 1.45; margin-bottom: 16px; flex: 1; }
+
+/* Stats row inside card */
+.card-stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.card-stat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  flex: 1;
+  min-width: 70px;
+}
+.card-stat-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
+.card-stat-value { font-size: 14px; font-weight: 600; letter-spacing: -.3px; }
+
+/* Tags + arrow */
+.card-footer {
+  display: flex; align-items: center; gap: 6px;
+}
+.card-tag {
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px; border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text2);
+  transition: background var(--transition);
+}
+.card-arrow { margin-left: auto; font-size: 14px; color: var(--text3); transition: transform var(--transition); }
+.app-card:hover .card-arrow { transform: translateX(3px); color: var(--text2); }
+
+/* Soon */
+.app-card.soon {
+  opacity: .45; pointer-events: none; border-style: dashed;
+}
+.soon-badge {
+  position: absolute; top: 14px; right: 14px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .4px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text3); padding: 3px 8px; border-radius: 20px;
+}
+
+/* ── PROFILE CARD ── */
+.profile-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 0;
+  animation: fadeUp .5s .25s ease both;
+  transition: background var(--transition);
+}
+
+.profile-top {
+  padding: 24px 24px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Avatar with initials */
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #1c1c1e 0%, #3a3a3c 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  letter-spacing: -.5px;
+  position: relative;
+}
+[data-theme="dark"] .avatar {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+}
+.avatar-status {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--green);
+  border: 2px solid var(--surface);
+}
+
+.profile-info { flex: 1; }
+.profile-name { font-size: 16px; font-weight: 700; letter-spacing: -.3px; }
+.profile-handle { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+.profile-edit {
+  font-size: 12px; font-weight: 600;
+  color: var(--blue); cursor: pointer;
+  padding: 7px 16px; border-radius: 20px;
+  border: 1px solid rgba(0,113,227,.2);
+  background: var(--blue-l);
+  text-decoration: none; transition: var(--transition);
+}
+.profile-edit:hover { opacity: .75; }
+
+/* Profile chips */
+.profile-chips {
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.chip {
+  font-size: 11.5px; font-weight: 500;
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text2);
+  display: flex; align-items: center; gap: 5px;
+  transition: background var(--transition);
+}
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  padding: 8px 0 22px;
+  z-index: 100; justify-content: space-around;
+  transition: background var(--transition);
+}
+[data-theme="dark"] .bottom-nav { background: rgba(14,14,16,0.92); }
+@media (max-width: 600px) { .bottom-nav { display: flex; } }
+
+.bn-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  text-decoration: none; color: var(--text3);
+  padding: 4px 14px; border-radius: 10px;
+  transition: color var(--transition);
+}
+.bn-item.active { color: var(--blue); }
+.bn-icon  { font-size: 22px; }
+.bn-label { font-size: 10px; font-weight: 500; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/">
+    <div class="logo-icon">🌐</div>
+    <div>
+      <div class="logo-text">Paul's Apps</div>
+      <div class="logo-sub">Persönliches Dashboard</div>
+    </div>
+  </a>
+  <div class="header-actions">
+    <button class="icon-btn" id="themeToggle" title="Dark Mode">🌙</button>
+    <button class="icon-btn" title="Einstellungen">⚙️</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Greeting -->
+  <div class="greeting">
+    <div class="greeting-label" id="timeLabel">Guten Morgen</div>
+    <div class="greeting-text">Hallo, <strong>Paul</strong> 👋</div>
+  </div>
+
+  <!-- Apps -->
+  <div class="section-label">Apps</div>
+  <div class="app-grid">
+
+    <!-- Finanzen -->
+    <a class="app-card c-green" href="/finanzen/">
+      <div class="card-icon green">💶</div>
+      <div class="card-title">Finanzen</div>
+      <div class="card-desc">Budgetplanung, Einnahmen & Ausgaben mit automatischer Restverteilung und Cloud-Sync.</div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <div class="card-stat-label">Sync</div>
+          <div class="card-stat-value">JSONBin</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-label">Modus</div>
+          <div class="card-stat-value">Monatlich</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Einnahmen</span>
+        <span class="card-tag">Ausgaben</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Kalender -->
+    <a class="app-card c-blue" href="/kalender/">
+      <div class="card-icon blue">📅</div>
+      <div class="card-title">Kalender</div>
+      <div class="card-desc">Termine, Kids-Wochen im Wechselmodell, Hellomed & private Events auf einen Blick.</div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <div class="card-stat-label">Jahr</div>
+          <div class="card-stat-value">2026</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-label">Kalender</div>
+          <div class="card-stat-value">29</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="card-tag">Kids</span>
+        <span class="card-tag">Hellomed</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Placeholder -->
+    <a class="app-card soon" href="#">
+      <span class="soon-badge">Bald</span>
+      <div class="card-icon purple">➕</div>
+      <div class="card-title">Neue App</div>
+      <div class="card-desc">Platz für die nächste Idee.</div>
+      <div class="card-footer">
+        <span class="card-tag">In Planung</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Profil -->
+  <div class="section-label">Profil</div>
+  <div class="profile-card">
+    <div class="profile-top">
+      <div class="avatar">
+        PB
+        <div class="avatar-status"></div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Paul Bendzko</div>
+        <div class="profile-handle">paulbendzko-bit.github.io</div>
+      </div>
+      <a class="profile-edit" href="#">Bearbeiten</a>
+    </div>
+    <div class="profile-chips">
+      <span class="chip">📍 Berlin</span>
+      <span class="chip">💼 Hellomed</span>
+      <span class="chip">🚴 Cycling</span>
+      <span class="chip">📈 Investing</span>
+      <span class="chip">🍳 Cooking</span>
+    </div>
+  </div>
+
+</main>
+
+<!-- Bottom Nav (mobile) -->
+<nav class="bottom-nav">
+  <a class="bn-item active" href="/">
+    <span class="bn-icon">🏠</span>
+    <span class="bn-label">Hub</span>
+  </a>
+  <a class="bn-item" href="/finanzen/">
+    <span class="bn-icon">💶</span>
+    <span class="bn-label">Finanzen</span>
+  </a>
+  <a class="bn-item" href="/kalender/">
+    <span class="bn-icon">📅</span>
+    <span class="bn-label">Kalender</span>
+  </a>
+  <a class="bn-item" href="#">
+    <span class="bn-icon">⚙️</span>
+    <span class="bn-label">Settings</span>
+  </a>
+</nav>
+
+<script>
+  // Greeting
+  const h = new Date().getHours();
+  document.getElementById('timeLabel').textContent =
+    h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+
+  // Dark Mode Toggle
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  const saved = localStorage.getItem('theme');
+  if (saved) { root.setAttribute('data-theme', saved); btn.textContent = saved === 'dark' ? '☀️' : '🌙'; }
+
+  btn.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    btn.textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  });
+</script>
+
+</body>
+</html>

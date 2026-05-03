@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Kalender – Paul 2026</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface2: #f5f5f7;
+  --border: rgba(0,0,0,.08);
+  --text: #1d1d1f;
+  --text2: #6e6e73;
+  --text3: #aeaeb2;
+  --blue: #0071e3;
+  --blue-l: #e8f1fb;
+  --red: #ff3b30;
+}
+body {
+  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px 28px 0;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-icon { font-size: 22px; line-height: 1; }
+.header-text h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--text);
+}
+.header-text p {
+  font-size: 10.5px;
+  color: var(--text2);
+  margin-top: 1px;
+}
+/* Legend inside header */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0 0 8px;
+  justify-content: flex-start;
+  position: static;
+  border: none;
+  background: transparent;
+}
+/* Today strip inside header */
+.today-panel {
+  background: transparent;
+  border-top: 1px solid var(--border);
+  padding: 6px 0 8px;
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+  max-height: 60px;
+  opacity: 1;
+}
+.today-panel.hidden {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  border-top: none;
+}
+
+/* Legend */
+/* legend in header */
+.li {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 500; color: var(--text2);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 8px;
+  cursor: pointer; transition: .15s; user-select: none;
+}
+.li:hover { border-color: var(--blue); color: var(--blue); transform: scale(1.04); }
+.li.active { border-color: currentColor; box-shadow: 0 0 0 2px currentColor; }
+.ld { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* today-panel moved into header */
+.tp-header {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+}
+.tp-title {
+  font-size: 11px; font-weight: 800; color: var(--blue);
+  text-transform: uppercase; letter-spacing: .8px;
+}
+.tp-date {
+  font-size: 11px; color: var(--text3); font-weight: 400;
+}
+.tp-list {
+  display: flex; flex-wrap: wrap; gap: 6px; flex: 1;
+}
+.tp-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 500; color: var(--text);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 7px; padding: 3px 9px;
+  cursor: pointer; transition: .15s; white-space: nowrap;
+}
+.tp-item:hover { border-color: var(--blue); background: var(--blue-l); }
+.tp-empty {
+  font-size: 12px; color: var(--text3); padding: 4px 0; font-style: italic;
+}
+
+/* Filter Bottom Sheet */
+.filter-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+  -webkit-tap-highlight-color: transparent;
+}
+.filter-backdrop.on { display: block; }
+.filter-panel {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 201;
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 0;
+  max-height: 60vh;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.filter-panel.on {
+  display: flex;
+  transform: translateY(0);
+}
+.filter-panel-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+.filter-panel-inner {
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+.fp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.fp-title { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+.fp-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface2);
+  cursor: pointer; font-size: 13px; color: var(--text2);
+  display: flex; align-items: center; justify-content: center;
+  transition: .15s;
+}
+.fp-close:hover { background: var(--border); }
+.fp-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 6px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
+  padding-bottom: 8px;
+}
+@media (max-width: 600px) {
+  .fp-list { grid-template-columns: 1fr; }
+}
+.fp-item {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 7px 12px;
+  font-size: 12.5px; font-weight: 500; color: var(--text);
+  cursor: pointer; transition: .15s;
+}
+.fp-item:hover { border-color: var(--blue); background: var(--blue-l); }
+.fp-date { font-size: 11px; color: var(--text2); margin-left: 2px; }
+
+/* MAIN */
+.main { padding: 24px 32px 60px; max-width: 1100px; margin: 0 auto; }
+
+/* Month card */
+.mc {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  overflow: clip;
+}
+.mt { font-size: 18px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 14px; }
+
+.wh {
+  display: grid;
+  grid-template-columns: 26px repeat(7, 1fr);
+  gap: 2px; margin-bottom: 3px;
+}
+.wh span {
+  text-align: center; font-size: 10px; font-weight: 600;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .3px; padding: 3px 0;
+}
+.wh .we { color: var(--red); opacity: .7; }
+
+.cg { display: flex; flex-direction: column; gap: 2px; }
+.wr { display: grid; grid-template-columns: 26px repeat(7, 1fr); gap: 2px; }
+
+.kw {
+  font-size: 8.5px; font-weight: 600; color: var(--text3);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 7px;
+}
+
+.day {
+  background: var(--surface2);
+  border-radius: 9px;
+  height: 90px;
+  padding: 5px 6px;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+  position: relative;
+  overflow: hidden;
+}
+.day:not(.empty):hover { transform: scale(1.025); box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 2; }
+.day.empty { background: transparent; pointer-events: none; }
+.day.past { opacity: .32; }
+.day.today { background: var(--blue-l); box-shadow: inset 0 0 0 1.5px var(--blue); }
+
+.dn {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; margin-bottom: 3px;
+}
+.day.today .dn  { background: var(--blue); color: #fff; font-size: 11px; }
+.day.weekend .dn { color: var(--red); }
+.day.today.weekend .dn { color: #fff; }
+
+.evt {
+  font-size: 9px; font-weight: 500;
+  padding: 1.5px 5px; border-radius: 5px;
+  margin-bottom: 1.5px; display: block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.5;
+}
+
+/* ── FARBEN – MAXIMALER KONTRAST ── */
+/* Kids bei Paul – leuchtendes Royal-Blau */
+.e-kids     { background: #1a56db; color: #ffffff; font-weight: 700; }
+/* Kids bei Dani – Mittelgrau */
+.e-dani     { background: #d1d5db; color: #374151; }
+/* Schwerin – sattes Orange */
+.e-schwerin { background: #f97316; color: #fff7ed; font-weight: 700; }
+/* Mit Maja – kräftiges Magenta */
+.e-maja     { background: #db2777; color: #fff0f6; font-weight: 700; }
+/* Ausflug/Urlaub – saftiges Grün */
+.e-trip     { background: #059669; color: #ecfdf5; font-weight: 700; }
+/* Events/Veranstaltungen – tiefes Violett */
+.e-event    { background: #7c3aed; color: #f5f3ff; font-weight: 600; }
+/* Arbeit/Kongress – Dunkelblau */
+.e-work     { background: #1e40af; color: #dbeafe; font-weight: 600; }
+/* Kids-Events (Schule etc) – kräftiges Rot */
+.e-kidev    { background: #dc2626; color: #fff5f5; font-weight: 600; }
+/* Geburtstage – helles Grau kursiv */
+.e-bday     { background: #f3f4f6; color: #9ca3af; font-style: italic; }
+/* Wohnungsbesichtigung – Smaragd */
+.e-haus     { background: #00a0e3; color: #ffffff; font-weight: 600; }
+/* Union Berlin */
+.e-union    { background: #b91c1c; color: #fee2e2; font-weight: 700; }
+/* Geburtstage */
+.e-bday-filter { display: none; }
+/* Konzerte & Events */
+.e-konzert  { background: #16a34a; color: #f0fdf4; font-weight: 700; }
+/* Invisible duplicate tag - only for filter, hidden in calendar */
+.e-konzert-hidden { display: none; }
+/* Feiertage & Schulferien Berlin */
+.e-feier    { background: #fef9c3; color: #713f12; font-weight: 600; }
+
+/* Detail panel */
+.dp {
+  display: none; background: var(--surface); border-radius: 14px;
+  padding: 16px 20px; margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  animation: fu .2s ease;
+}
+.dp.on { display: block; }
+@keyframes fu { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+.dp h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.dp .ds { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
+.eli .en { font-size: 13px; font-weight: 500; }
+.eli .et { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.eli-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
+
+.close-dp {
+  float: right; font-size: 18px; color: var(--text3);
+  cursor: pointer; margin-top: -2px; line-height: 1;
+}
+.close-dp:hover { color: var(--text); }
+
+.toast {
+  position: fixed; bottom: 22px; left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #1d1d1f; color: #fff; font-size: 12.5px; font-weight: 500;
+  padding: 9px 18px; border-radius: 20px; opacity: 0; transition: .28s;
+  z-index: 200; pointer-events: none;
+}
+.toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Scroll to today btn */
+.today-btn {
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 5px 12px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text2); cursor: pointer; transition: .15s;
+}
+.today-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-l); }
+/* Expanded day cell */
+.day.expanded {
+  position: fixed !important;
+  z-index: 50;
+  border-radius: 16px !important;
+  background: var(--surface) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.22) !important;
+  padding: 14px !important;
+  min-height: unset !important;
+  height: auto !important;
+  overflow: visible !important;
+  cursor: pointer;
+  animation: expandIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.day.expanded .dn { font-size: 16px !important; width: 30px !important; height: 30px !important; margin-bottom: 8px !important; }
+.day.expanded .evt { font-size: 12px !important; padding: 4px 8px !important; border-radius: 7px !important; margin-bottom: 4px !important; white-space: normal !important; overflow: visible !important; text-overflow: unset !important; line-height: 1.5 !important; }
+.day-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 49;
+  backdrop-filter: blur(2px);
+}
+.day-overlay.on { display: block; }
+@keyframes expandIn {
+  from { opacity: 0.7; transform: scale(0.9); }
+  to   { opacity: 1;   transform: scale(1); }
+}
+
+/* Sticky month + weekday bar */
+.sticky-bar {
+  position: sticky;
+  top: var(--header-h, 0px);
+  z-index: 5;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 22px 4px;
+  margin: -22px -22px 8px -22px;
+  border-radius: 14px 14px 0 0;
+}
+.sticky-bar-month {
+  font-size: 13px; font-weight: 700; color: var(--text);
+  letter-spacing: -.2px; margin-bottom: 4px;
+}
+.sticky-bar-days {
+  display: grid;
+  grid-template-columns: 26px repeat(7, 1fr);
+  gap: 2px;
+}
+.sticky-bar-days span {
+  text-align: center; font-size: 10px; font-weight: 600;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .3px;
+  padding: 2px 0;
+}
+.sticky-bar-days span.we { color: var(--red); opacity: .7; }
+
+@media (max-width: 600px) {
+  .sticky-bar { padding: 6px 8px 3px; margin: -12px -8px 8px -8px; }
+  .sticky-bar-month { font-size: 12px; }
+  .sticky-bar-days { grid-template-columns: 18px repeat(7, 1fr); gap: 1px; }
+  .sticky-bar-days span { font-size: 9px; }
+}
+
+@keyframes wobble {
+  0%   { transform: scale(1); box-shadow: none; }
+  25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
+  50%  { transform: scale(0.96); }
+  70%  { transform: scale(1.05); }
+  85%  { transform: scale(0.99); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+.wobble {
+  animation: wobble 0.55s cubic-bezier(.36,.07,.19,.97) forwards !important;
+  z-index: 10;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE MOBILE (iPhone 16 Pro ~393px)
+   ═══════════════════════════════════════════ */
+@media (max-width: 600px) {
+  body { font-size: 13px; }
+
+  /* Header */
+  .header { padding: 10px 16px 0; }
+  .header-top { gap: 10px; margin-bottom: 6px; }
+  .header-icon { font-size: 18px; }
+  .header-text h1 { font-size: 14px; }
+  .header-text p { font-size: 10px; }
+  .today-btn { font-size: 10px; padding: 4px 10px; }
+
+  /* Legend - scrollable horizontal strip */
+  .legend {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 5px;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .legend::-webkit-scrollbar { display: none; }
+  .li { flex-shrink: 0; font-size: 10px; padding: 3px 8px; }
+
+  /* Today strip */
+  .today-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 6px 0 8px;
+    max-height: 120px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .today-panel::-webkit-scrollbar { display: none; }
+  .today-panel.hidden { max-height: 0; padding: 0; }
+  .tp-header { width: 100%; margin-bottom: 2px; }
+  .tp-title { font-size: 10px; letter-spacing: .6px; }
+  .tp-date { font-size: 10px; }
+  .tp-list { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .tp-item { font-size: 11px; padding: 4px 10px; width: 100%; }
+
+  /* Main */
+  .main { padding: 12px 10px 40px; }
+
+  /* Month card */
+  .mc { padding: 12px 8px; border-radius: 12px; margin-bottom: 12px; }
+  .mt { font-size: 15px; margin-bottom: 10px; }
+
+  /* Week header */
+  .wh { grid-template-columns: 18px repeat(7, 1fr); gap: 1px; }
+  .wh span { font-size: 9px; padding: 2px 0; }
+
+  /* Calendar grid */
+  .wr { grid-template-columns: 18px repeat(7, 1fr); gap: 1px; }
+  .kw { font-size: 7px; padding-top: 6px; }
+
+  /* Day cells - compact */
+  .day { min-height: 52px; padding: 3px 3px; border-radius: 7px; }
+  .dn { font-size: 10px; width: 18px; height: 18px; margin-bottom: 1px; }
+  .day.today .dn { font-size: 9px; }
+  .evt { font-size: 7.5px; padding: 1px 3px; border-radius: 3px; margin-bottom: 1px; line-height: 1.3; }
+
+  /* Detail panel */
+  .dp { padding: 12px 14px; border-radius: 12px; }
+  .dp h3 { font-size: 14px; }
+  .eli { padding: 8px 10px; }
+  .eli .en { font-size: 12px; }
+  .eli .et { font-size: 10px; }
+
+  /* Filter panel */
+  .filter-panel { max-height: 65vh; border-radius: 16px 16px 0 0; }
+  .filter-panel-inner { padding: 10px 16px 16px; }
+  .fp-title { font-size: 13px; }
+  .fp-item { padding: 10px 12px; border-radius: 10px; }
+  .fp-item div div:first-child { font-size: 12px; }
+  .fp-date { font-size: 10px; }
+
+  /* Today button highlight on mobile */
+  .today-btn { border-color: var(--blue); color: var(--blue); }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">
+      <span class="header-icon">📅</span>
+      <div class="header-text">
+        <h1>Kalender 2026 – Paul</h1>
+        <p id="headerDate"></p>
+      </div>
+    </div>
+    <button class="today-btn" onclick="scrollToToday()">Heute</button>
+  </div>
+  <div class="legend" id="legend">
+  <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div> Kids bei Paul</div>
+  <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div> Kids bei Dani</div>
+  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
+  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
+  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
+  <div class="li" onclick="filterBy('e-work')" data-cat="e-work"><div class="ld" style="background:#1e40af"></div> Arbeit</div>
+  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
+  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
+  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
+  <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div> Konzerte & Events</div>
+  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
+  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
+</div><!-- end legend -->
+  <div class="today-panel" id="todayPanel">
+    <div class="tp-header">
+      <span class="tp-title" id="tpTitle">Heute</span>
+      <span class="tp-date" id="tpDate"></span>
+    </div>
+    <div class="tp-list" id="tpList"></div>
+  </div>
+</div><!-- end header -->
+
+<!-- Filter Panel -->
+<div class="filter-panel" id="filterPanel">
+  <div class="filter-panel-handle"></div>
+  <div class="filter-panel-inner">
+    <div class="fp-header">
+      <span class="fp-title" id="fpTitle">—</span>
+      <button class="fp-close" onclick="closeFilter()">✕</button>
+    </div>
+    <div class="fp-list" id="fpList"></div>
+  </div>
+</div>
+
+<div class="day-overlay" id="dayOverlay" onclick="collapseDay()"></div>
+<div class="filter-backdrop" id="filterBackdrop" onclick="closeFilter()"></div>
+<div class="main" id="main">
+<div class="filter-panel" id="filterPanel">
+  <div class="filter-panel-handle"></div>
+  <div class="filter-panel-inner">
+    <div class="fp-header">
+      <span class="fp-title" id="fpTitle">—</span>
+      <button class="fp-close" onclick="closeFilter()">✕</button>
+    </div>
+    <div class="fp-list" id="fpList"></div>
+  </div>
+</div>
+  <div class="dp" id="dp">
+    <span class="close-dp" onclick="closeDp()">✕</span>
+    <h3 id="dp-title">—</h3>
+    <div class="ds" id="dp-date"></div>
+    <div id="dp-evts"></div>
+  </div>
+  <div id="cal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const today = new Date();
+
+const MN = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+const DN = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const WD = ["Mo","Di","Mi","Do","Fr","Sa","So"];
+
+// ── ALLE TERMINE APRIL – DEZEMBER 2026 ──────────────────────────────
+const SE = {
+  // APRIL
+  "2026-04-28": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-04-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Rosa Bday", c:"e-bday"}],
+  "2026-04-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+
+  // MAI
+  "2026-05-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎉 Tag der Arbeit", c:"e-feier"}],
+  "2026-05-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"☕ KaWi Frühstücken 10:00", c:"e-maja"}, {t:"⚽ Union – Köln 15:30", c:"e-union"}],
+  "2026-05-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏃 Rosa Spendenlauf 14:00", c:"e-kidev"}],
+  "2026-05-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏠 Vertragsunterzeichnung Berlinovo 08:00", c:"e-haus"}],
+  "2026-05-07": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-08": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-05-09": [{t:"🏙️ Schwerin", c:"e-schwerin"}, {t:"🎂 T. Mattern", c:"e-bday"}],
+  "2026-05-10": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}, {t:"⚽ Mainz – Union 19:30", c:"e-union"}],
+  "2026-05-11": [{t:"Kids bei Dani", c:"e-dani"}, {t:"📋 Eltern-Kind-Gespräch Rosa 09:45", c:"e-kidev"}],
+  "2026-05-12": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎶 Olivia Dean 19:00", c:"e-maja"},{t:"🎶 Olivia Dean", c:"e-konzert-hidden"}],
+  "2026-05-13": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎂 Thomas Gens", c:"e-bday"}],
+  "2026-05-14": [{t:"Kids bei Dani", c:"e-dani"}, {t:"⛪ Christi Himmelfahrt", c:"e-feier"}, {t:"🌸 Pfingstferien Berlin →", c:"e-feier"}],
+  "2026-05-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"⚽ Union – Augsburg 15:30", c:"e-union"}],
+  "2026-05-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Ph. Büttner", c:"e-bday"}],
+  "2026-05-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-20": [{t:"Kids → Dani", c:"e-dani"}, {t:"🥂 Drinks D & P 17:00", c:"e-bday"}],
+  "2026-05-21": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-05-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🌸 Pfingstferien Berlin ←", c:"e-feier"}],
+  "2026-05-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎨 IKONO 16:30", c:"e-maja"}, {t:"🏕️ Pfingsten → Maja", c:"e-maja"}],
+  "2026-05-24": [{t:"🏕️ Pfingsten mit Maja", c:"e-maja"}, {t:"⛪ Pfingstsonntag", c:"e-feier"}],
+  "2026-05-25": [{t:"🏕️ Pfingsten mit Maja", c:"e-maja"}, {t:"⛪ Pfingstmontag", c:"e-feier"}],
+  "2026-05-26": [{t:"🏕️ Pfingsten ← Maja", c:"e-maja"}],
+  "2026-05-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-05-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Übernachtung Schule Rosa", c:"e-kidev"}, {t:"🍺 Bierwalker Kneipenquiz 19:00", c:"e-konzert"}],
+  "2026-05-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Schule ← 10:00", c:"e-kidev"}],
+  "2026-05-31": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+
+  // JUNI
+  "2026-06-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🦷 Prophylaxe 16:00", c:"e-kidev"}],
+  "2026-06-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-03": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-05": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-06": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-07": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-09": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Pauls Geburtstag! 🎉", c:"e-bday"}],
+  "2026-06-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🍹 Geburtstagsdrinks Havanna 20:00", c:"e-maja"}],
+  "2026-06-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-16": [{t:"Kids → Dani", c:"e-dani"}, {t:"🦷 Kiefer Rosa 16:00", c:"e-kidev"}],
+  "2026-06-17": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-18": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-19": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-06-20": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-06-21": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-06-22": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-23": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Ch. Goldstein", c:"e-bday"}],
+  "2026-06-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-06-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+
+  // JULI
+  "2026-07-01": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-07-02": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-03": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎤 6K United Konzert Rosa", c:"e-kidev"},{t:"🎤 6K United", c:"e-konzert-hidden"}],
+  "2026-07-04": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎵 Finch Alte Försterei 18:00", c:"e-maja"},{t:"🎵 Finch", c:"e-konzert-hidden"}],
+  "2026-07-05": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎓 Abschluss 4. Klasse / Fr. Hanisch", c:"e-kidev"}],
+  "2026-07-06": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-07": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎶 Sing dela Sing 20:30", c:"e-maja"},{t:"🎶 Sing dela Sing", c:"e-konzert-hidden"}],
+  "2026-07-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-09": [{t:"Kids bei Dani", c:"e-dani"}, {t:"☀️ Sommerferien Berlin →", c:"e-feier"}],
+  "2026-07-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-07-11": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-07-12": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-07-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Polnische Ostsee →", c:"e-trip"}],
+  "2026-07-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
+  "2026-07-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
+  "2026-07-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
+  "2026-07-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
+  "2026-07-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
+  "2026-07-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-07-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-07-21": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-07-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-07-23": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-07-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin →", c:"e-kidev"}],
+  "2026-07-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
+  "2026-07-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin ←", c:"e-kidev"}],
+  "2026-07-27": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-07-28": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-29": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-30": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-07-31": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+
+  // AUGUST
+  "2026-08-01": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-08-02": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-08-03": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-04": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-05": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎊 Hochzeitstag Tim & Melina", c:"e-bday"}],
+  "2026-08-06": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-07": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-09": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Inge Mattern", c:"e-bday"}],
+  "2026-08-17": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-08-18": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-19": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-20": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-21": [{t:"Kids bei Dani", c:"e-dani"}, {t:"☀️ Sommerferien Berlin ←", c:"e-feier"}],
+  "2026-08-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-23": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-08-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Daniel Furch", c:"e-bday"}],
+  "2026-08-27": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-08-28": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-29": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-30": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-08-31": [{t:"Kids bei Dani", c:"e-dani"}],
+
+  // SEPTEMBER
+  "2026-09-01": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-09-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-07": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-08": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-09": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-09-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour mit Matze →", c:"e-trip"}],
+  "2026-09-11": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
+  "2026-09-12": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
+  "2026-09-13": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
+  "2026-09-14": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour ←", c:"e-trip"}],
+  "2026-09-15": [{t:"Kids bei Dani", c:"e-dani"}, {t:"💉 FSME Impfung 16:50", c:"e-kidev"}],
+  "2026-09-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-09-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-09-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-09-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-09-21": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Chris", c:"e-bday"}],
+  "2026-09-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"✈️ Emil Englandfahrt", c:"e-trip"}],
+  "2026-09-23": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-09-24": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-09-25": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
+  "2026-09-26": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
+  "2026-09-27": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-09-28": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎂 Matze Bodien", c:"e-bday"}],
+  "2026-09-29": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-09-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+
+  // OKTOBER
+  "2026-10-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎉 Tag der Einheit", c:"e-feier"}],
+  "2026-10-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-07": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-10-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-09": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-10": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-11": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-12": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-13": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-10-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-10-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-21": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-24": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-25": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 17:00", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-26": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-27": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
+  "2026-10-31": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎃 Halloween", c:"e-bday"}],
+
+  // NOVEMBER
+  "2026-11-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-04": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-11-05": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-06": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-07": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-09": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👁️ Augenarzt Emil 16:00", c:"e-kidev"}],
+  "2026-11-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-20": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-11-21": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-11-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-11-23": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-24": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-25": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-26": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-11-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-11-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+
+  // DEZEMBER
+  "2026-12-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-02": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-12-03": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-04": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-05": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-06": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-07": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-08": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-09": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎭 Markus Krebs 19:00", c:"e-konzert"}],
+  "2026-12-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-16": [{t:"Kids → Dani", c:"e-dani"}],
+  "2026-12-17": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-18": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
+  "2026-12-19": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
+  "2026-12-20": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
+  "2026-12-21": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-22": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-12-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎄 Weihnachtsferien Berlin →", c:"e-feier"}],
+  "2026-12-24": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎄 Heiligabend", c:"e-feier"}, {t:"🎄 Weihnachtsferien Berlin", c:"e-feier"}],
+  "2026-12-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎄 1. Weihnachtstag", c:"e-feier"}],
+  "2026-12-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎄 2. Weihnachtstag", c:"e-feier"}],
+  "2026-12-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
+  "2026-12-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin →", c:"e-kidev"}],
+  "2026-12-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
+  "2026-12-30": [{t:"Kids → Dani", c:"e-dani"}, {t:"👶 Alma in Berlin ←", c:"e-kidev"}],
+  "2026-12-31": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎆 Silvester", c:"e-feier"}, {t:"🎄 Weihnachtsferien Berlin", c:"e-feier"}],
+};
+
+// ── HELPERS ──────────────────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2,'0'); }
+function dk(y,m,d) { return `${y}-${pad(m+1)}-${pad(d)}`; }
+function kw(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const ys = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d-ys)/86400000)+1)/7);
+}
+function fmtDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  const dow = new Date(y,m-1,d).getDay();
+  const di = dow===0?6:dow-1;
+  return `${DN[di]}, ${d}. ${MN[m-1]} ${y}`;
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────
+function buildMonth(year, month) {
+  const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
+  let dow = fl.getDay(); if(dow===0) dow=7; dow--;
+
+  const card = document.createElement('div');
+  card.className = 'mc';
+  card.id = `m-${year}-${month}`;
+
+  // Sticky bar with month name + weekdays
+  const stickyBar = document.createElement('div');
+  stickyBar.className = 'sticky-bar';
+  const stickyMonth = document.createElement('div');
+  stickyMonth.className = 'sticky-bar-month';
+  stickyMonth.textContent = `${MN[month]} ${year}`;
+  const stickyDays = document.createElement('div');
+  stickyDays.className = 'sticky-bar-days';
+  stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
+  stickyBar.appendChild(stickyMonth);
+  stickyBar.appendChild(stickyDays);
+  card.appendChild(stickyBar);
+
+  const grid = document.createElement('div');
+  grid.className = 'cg';
+  // Only show days from start of current week onwards
+  const now2 = new Date();
+  const nowDow = now2.getDay() === 0 ? 6 : now2.getDay() - 1;
+  const weekMon = new Date(now2);
+  weekMon.setDate(now2.getDate() - nowDow);
+  weekMon.setHours(0,0,0,0);
+
+  // Skip day counter to first visible day
+  let day=1, wk=0;
+
+  while(day <= ll.getDate()) {
+    // Check if entire week is in the past — skip it
+    const firstDayOfWeek = new Date(year, month, day + (wk===0 ? 0 : 0));
+    // Find the last day of this row
+    const rowStart = wk===0 ? 1 : day;
+    const rowEnd = new Date(year, month, rowStart + (6 - (wk===0 ? dow : 0)));
+    if(rowEnd < weekMon) {
+      // Skip this entire week row
+      const daysInRow = wk===0 ? (7 - dow) : 7;
+      day += daysInRow;
+      wk++;
+      continue;
+    }
+
+    const row = document.createElement('div');
+    row.className = 'wr';
+    const cur = new Date(year, month, day);
+    const kwDiv = document.createElement('div');
+    kwDiv.className = 'kw';
+    kwDiv.textContent = kw(cur);
+    row.appendChild(kwDiv);
+
+    for(let col=0; col<7; col++) {
+      const cell = document.createElement('div');
+      if((wk===0 && col<dow) || day>ll.getDate()) {
+        cell.className = 'day empty';
+        row.appendChild(cell);
+        continue;
+      }
+      const key = dk(year, month, day);
+      const cd = new Date(year, month, day);
+      const isPast = cd < weekMon;
+      const isToday = year===today.getFullYear() && month===today.getMonth() && day===today.getDate();
+      const isWE = col >= 5;
+
+      cell.className = 'day' + (isToday?' today':'') + (isWE?' weekend':'') + (isPast?' past':'');
+      cell.dataset.key = key;
+
+      const num = document.createElement('span');
+      num.className = 'dn';
+      num.textContent = day;
+      cell.appendChild(num);
+
+      const evs = SE[key] || [];
+      evs.slice(0,3).forEach(ev => {
+        const e = document.createElement('span');
+        e.className = `evt ${ev.c}`;
+        e.textContent = ev.t;
+        cell.appendChild(e);
+      });
+      if(evs.length > 3) {
+        const m = document.createElement('span');
+        m.className = 'evt e-bday';
+        m.textContent = `+${evs.length-3} mehr`;
+        cell.appendChild(m);
+      }
+
+      cell.onclick = (e) => {
+        if(expandedDay === cell) { collapseDay(); return; }
+        if(expandedDay) { collapseDay(); }
+        expandDay(cell, e);
+        openDp(key);
+      };
+      row.appendChild(cell);
+      day++;
+    }
+    grid.appendChild(row);
+    wk++;
+  }
+  card.appendChild(grid);
+  return card;
+}
+
+let selectedCell = null;
+
+function openDp(key) {
+  // Remove highlight from previous selected cell
+  if(selectedCell) {
+    selectedCell.style.outline = '';
+    selectedCell.style.outlineOffset = '';
+  }
+  // Briefly highlight clicked cell, then remove
+  const clickedCell = document.querySelector(`.day[data-key="${key}"]`);
+  if(clickedCell) {
+    // Clear previous
+    document.querySelectorAll('.day').forEach(d => { d.style.outline = ''; d.style.outlineOffset = ''; });
+    clickedCell.style.outline = '2.5px solid var(--blue)';
+    clickedCell.style.outlineOffset = '2px';
+    selectedCell = clickedCell;
+    // Auto-remove after 1.5s
+    setTimeout(() => {
+      clickedCell.style.outline = '';
+      clickedCell.style.outlineOffset = '';
+      selectedCell = null;
+    }, 1500);
+  }
+
+  const panel = document.getElementById('dp');
+  panel.classList.add('on');
+  document.getElementById('dp-title').textContent = fmtDate(key);
+  const ec = document.getElementById('dp-evts');
+  ec.innerHTML = '';
+  const evs = SE[key] || [];
+  if(!evs.length) {
+    ec.innerHTML = '<p style="font-size:12.5px;color:var(--text3);padding:6px 0">Keine Termine.</p>';
+  }
+
+  const colorMap = {
+    'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+    'e-maja':'#db2777','e-trip':'#059669',
+    'e-work':'#1e40af','e-kidev':'#dc2626','e-bday':'#9ca3af',
+    'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+  };
+
+  evs.filter(ev => !ev.c.includes('hidden')).forEach(ev => {
+    const el = document.createElement('div');
+    el.className = 'eli';
+    const color = colorMap[ev.c] || '#aeaeb2';
+    el.innerHTML = `<div class="eli-dot" style="background:${color}"></div><div><div class="en">${ev.t}</div></div>`;
+    ec.appendChild(el);
+  });
+
+  // Detail panel is at top of main - no extra scroll needed
+}
+
+function closeDp() {
+  document.getElementById('dp').classList.remove('on');
+  if(selectedCell) {
+    selectedCell.style.outline = '';
+    selectedCell.style.outlineOffset = '';
+    selectedCell = null;
+  }
+}
+
+function scrollToToday() {
+  // Clear any previously selected/highlighted cell
+  if(selectedCell) {
+    selectedCell.style.outline = '';
+    selectedCell.style.outlineOffset = '';
+    selectedCell = null;
+  }
+  // Also clear any leftover outlines from filter clicks
+  document.querySelectorAll('.day').forEach(d => {
+    d.style.outline = '';
+    d.style.outlineOffset = '';
+  });
+
+  const cell = document.querySelector('.day.today');
+  if(!cell) return;
+
+  const header = document.querySelector('.header');
+  const headerH = header ? header.offsetHeight : 160;
+  const cellAbsTop = cell.getBoundingClientRect().top + window.pageYOffset;
+  // On mobile add extra offset for sticky month+weekday bar (~60px)
+  const isMobile = window.innerWidth <= 600;
+  const extraPad = isMobile ? 70 : 16;
+  window.scrollTo({ top: cellAbsTop - headerH - extraPad, behavior: 'smooth' });
+
+  setTimeout(() => {
+    cell.classList.add('wobble');
+    setTimeout(() => cell.classList.remove('wobble'), 600);
+  }, 350);
+}
+
+// Render months from current week onwards
+function renderAll() {
+  const cal = document.getElementById('cal');
+  cal.innerHTML = '';
+  // Find Monday of current week
+  const now = new Date();
+  const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - dow);
+  const startMonth = weekStart.getMonth();
+  const startYear  = weekStart.getFullYear();
+
+  for(let m=startMonth; m<=11; m++) {
+    cal.appendChild(buildMonth(startYear, m));
+  }
+  // Scroll so current week is at top
+  setTimeout(() => {
+    const cell = document.querySelector('.day.today') ||
+                 document.querySelector(`[data-key="${dk(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate())}"]`);
+    if(cell) {
+      const offset = 220;
+      const top = cell.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({top, behavior:'instant'});
+    }
+  }, 50);
+}
+
+// ── EXPAND/COLLAPSE DAY ─────────────────────────────────────────────
+let expandedDay = null;
+let expandedRect = null;
+
+function expandDay(cell, e) {
+  e.stopPropagation();
+  if(cell.classList.contains('expanded')) {
+    collapseDay();
+    return;
+  }
+  if(expandedDay) collapseDay();
+
+  // Save original rect for collapse animation
+  expandedRect = cell.getBoundingClientRect();
+  expandedDay = cell;
+
+  // Position expanded cell centered on screen
+  const w = Math.min(280, window.innerWidth - 32);
+  const h = 'auto';
+  const left = Math.max(16, (window.innerWidth - w) / 2);
+  const top = Math.max(80, (window.innerHeight - 300) / 2);
+
+  cell.style.width = w + 'px';
+  cell.style.left = left + 'px';
+  cell.style.top = top + 'px';
+  cell.classList.add('expanded');
+  document.getElementById('dayOverlay').classList.add('on');
+}
+
+function collapseDay() {
+  if(!expandedDay) return;
+  expandedDay.classList.remove('expanded');
+  expandedDay.style.width = '';
+  expandedDay.style.left = '';
+  expandedDay.style.top = '';
+  expandedDay = null;
+  document.getElementById('dayOverlay').classList.remove('on');
+}
+
+// ── TODAY PANEL ──────────────────────────────────────────────────────
+function renderToday() {
+  const now = today;
+  const key = dk(now.getFullYear(), now.getMonth(), now.getDate());
+  const evs = SE[key] || [];
+
+  const DN2 = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+  const dow = DN2[now.getDay()];
+  const DN3 = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
+  const hdow = DN3[now.getDay()];
+  document.getElementById('headerDate').textContent =
+    `Heute: ${hdow}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
+  document.getElementById('tpDate').textContent =
+    `${dow}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
+
+  const list = document.getElementById('tpList');
+  list.innerHTML = '';
+
+  if(!evs.length) {
+    list.innerHTML = '<span class="tp-empty">Keine Termine heute</span>';
+    return;
+  }
+
+  const colorMap2 = {
+    'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
+    'e-maja':'#db2777','e-trip':'#059669','e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af',
+    'e-work':'#1e40af','e-kidev':'#dc2626','e-bday':'#9ca3af',
+    'e-haus':'#00a0e3','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af'
+  };
+
+  evs.forEach(ev => {
+    const item = document.createElement('div');
+    item.className = 'tp-item';
+    const color = colorMap2[ev.c] || '#9ca3af';
+    item.innerHTML = `<span style="color:${color};font-size:11px">●</span> ${ev.t}`;
+    item.onclick = () => {
+      const cell = document.querySelector(`.day[data-key="${key}"]`);
+      if(cell) {
+        const offset = 280;
+        const top = cell.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({top, behavior:'smooth'});
+        openDp(key);
+      }
+    };
+    list.appendChild(item);
+  });
+}
+
+// ── FILTER ───────────────────────────────────────────────────────────
+const catLabels = {
+  'e-kids':'Kids bei Paul','e-dani':'Kids bei Dani','e-schwerin':'Schwerin',
+  'e-maja':'Maja','e-trip':'Ausflug/Urlaub',
+  'e-work':'Arbeit','e-kidev':'Schule/Kids-Event','e-haus':'Besichtigungen',
+  'e-feier':'Feiertage & Schulferien Berlin','e-union':'1. FC Union Berlin',
+  'e-konzert':'Konzerte & Events','e-bday':'Geburtstage'
+};
+const catColors = {
+  'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
+  'e-maja':'#db2777','e-trip':'#059669',
+  'e-work':'#1e40af','e-kidev':'#dc2626','e-haus':'#00a0e3',
+  'e-feier':'#713f12','e-union':'#b91c1c',
+  'e-konzert':'#16a34a','e-bday':'#9ca3af'
+};
+
+let activeFilter = null;
+
+function filterBy(cat) {
+  const panel = document.getElementById('filterPanel');
+  const list  = document.getElementById('fpList');
+  const title = document.getElementById('fpTitle');
+
+  // Toggle off
+  if(activeFilter === cat) {
+    closeFilter(); return;
+  }
+  activeFilter = cat;
+
+  // Update legend active state
+  document.querySelectorAll('.li').forEach(el => {
+    el.classList.toggle('active', el.dataset.cat === cat);
+    if(el.dataset.cat === cat) el.style.color = catColors[cat];
+    else el.style.color = '';
+  });
+
+  // Collect matching dates
+  const matches = [];
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  const allDates = Object.keys(SE).sort().filter(d => d >= todayKey);
+  allDates.forEach(d => {
+    const evs = SE[d] || [];
+    const matched = evs.filter(ev => ev.c === cat || ev.c === cat+'-hidden');
+    if(matched.length) matches.push({dk: d, evs: matched});
+  });
+
+  title.textContent = `${catLabels[cat]} (${matches.length} Einträge)`;
+  list.innerHTML = '';
+
+  if(!matches.length) {
+    list.innerHTML = '<span style="font-size:12.5px;color:var(--text3)">Keine Einträge gefunden.</span>';
+  } else {
+    matches.forEach(({dk, evs}) => {
+      evs.forEach(ev => {
+        const item = document.createElement('div');
+        item.className = 'fp-item';
+        item.onclick = () => {
+          const cell = document.querySelector(`.day[data-key="${dk}"]`);
+          const header = document.querySelector('.header');
+          const headerH = header ? header.offsetHeight : 160;
+          if(cell) {
+            // Get absolute position relative to page
+            const cellTop = cell.getBoundingClientRect().top + window.pageYOffset;
+            const filterPanel = document.getElementById('filterPanel');
+            const filterH = filterPanel ? filterPanel.offsetHeight : 0;
+            window.scrollTo({ top: cellTop - headerH - filterH - 16, behavior: 'smooth' });
+            setTimeout(() => {
+              closeFilter();
+              openDp(dk);
+            }, 500);
+          } else {
+            closeFilter();
+            openDp(dk);
+          }
+        };
+        item.innerHTML = `<span style="color:${catColors[cat]};font-size:13px">●</span> <div><div>${ev.t.replace(/^[^\w\s]*\s*/,'')}</div><div class="fp-date">${fmtDate(dk)}</div></div>`;
+        list.appendChild(item);
+      });
+    });
+  }
+
+  panel.classList.add('on');
+  document.getElementById('filterBackdrop').classList.add('on');
+}
+
+function closeFilter() {
+  activeFilter = null;
+  document.getElementById('filterPanel').classList.remove('on');
+  document.getElementById('filterBackdrop').classList.remove('on');
+  document.querySelectorAll('.li').forEach(el => {
+    el.classList.remove('active');
+    el.style.color = '';
+  });
+}
+
+renderToday();
+renderAll();
+
+// Set header height CSS variable for sticky bars
+function updateHeaderVar() {
+  const h = document.querySelector('.header');
+  if(h) {
+    const hh = h.offsetHeight;
+    document.documentElement.style.setProperty('--header-h', hh + 'px');
+    // Also update on next frame to catch transitions
+    requestAnimationFrame(() => {
+      const hh2 = h.offsetHeight;
+      document.documentElement.style.setProperty('--header-h', hh2 + 'px');
+    });
+  }
+}
+updateHeaderVar();
+window.addEventListener('resize', updateHeaderVar, {passive:true});
+// Update after today-panel transitions
+window.addEventListener('scroll', () => { updateHeaderVar(); }, {passive:true, once:false});
+
+// Fade today strip on scroll
+window.addEventListener('scroll', () => {
+  const tp = document.getElementById('todayPanel');
+  if(!tp) return;
+  if(window.scrollY > 40) {
+    tp.classList.add('hidden');
+  } else {
+    tp.classList.remove('hidden');
+  }
+}, {passive: true});
+
+// Update header title on scroll to show current visible month
+
+</script>
+</body>
+</html>
