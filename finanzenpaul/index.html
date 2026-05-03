@@ -674,10 +674,10 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <div class="d-ps">
       <div class="d-plbl">Rest-Verteilung <span style="float:right;color:var(--t1);font-weight:600;font-size:11px;" id="d-restlbl">–</span></div>
       <div class="d-pcard">
-        <div class="d-drow"><span class="d-dlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput="RI('invest',this.value,'d')"><span class="d-dval" id="d-invest-val">0 €</span></div>
-        <div class="d-drow"><span class="d-dlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput="RI('notgr',this.value,'d')"><span class="d-dval" id="d-notgr-val">100 €</span></div>
-        <div class="d-drow"><span class="d-dlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput="RI('urlaub',this.value,'d')"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
-        <div class="d-drow"><span class="d-dlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput="RI('sonder',this.value,'d')"><span class="d-dval" id="d-sonder-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput="RI('invest',this.value,'d')"><span class="d-dval" id="d-invest-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput="RI('notgr',this.value,'d')"><span class="d-dval" id="d-notgr-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput="RI('urlaub',this.value,'d')"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput="RI('sonder',this.value,'d')"><span class="d-dval" id="d-sonder-val">0 €</span></div>
       </div>
     </div>
     <div class="d-ps">
@@ -752,10 +752,10 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 
       <div class="m-slbl"><span class="m-slbl-inner">Rest-Verteilung</span><span class="m-slbl-tot" id="m-restlbl">–</span></div>
       <div class="m-rcard">
-        <div class="m-rrow"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m')"><span class="m-rval" id="m-invest-val">0 €</span></div>
-        <div class="m-rrow"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-notgr" style="width:90px;" oninput="RI('notgr',this.value,'m')"><span class="m-rval" id="m-notgr-val">100 €</span></div>
-        <div class="m-rrow"><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-urlaub" style="width:90px;" oninput="RI('urlaub',this.value,'m')"><span class="m-rval" id="m-urlaub-val">100 €</span></div>
-        <div class="m-rrow"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput="RI('sonder',this.value,'m')"><span class="m-rval" id="m-sonder-val">0 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('invest')"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m')"><span class="m-rval" id="m-invest-val">0 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('notgr')"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-notgr" style="width:90px;" oninput="RI('notgr',this.value,'m')"><span class="m-rval" id="m-notgr-val">100 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-urlaub" style="width:90px;" oninput="RI('urlaub',this.value,'m')"><span class="m-rval" id="m-urlaub-val">100 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('sonder')"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput="RI('sonder',this.value,'m')"><span class="m-rval" id="m-sonder-val">0 €</span></div>
       </div>
     </div>
 
@@ -1694,7 +1694,50 @@ function OE(k) {
   setTimeout(()=>document.getElementById('em-amt').focus(),80);
 }
 
-function CE() { document.getElementById('edit-modal').classList.remove('on'); editKey=null; }
+
+const REST_META = {
+  invest: {label:'Investieren', icon:'📈', min:0, max:1500, step:10},
+  notgr:  {label:'Notgroschen', icon:'🐷', min:0, max:1500, step:10},
+  urlaub: {label:'Urlaub',      icon:'✈️', min:0, max:1500, step:10},
+  sonder: {label:'Sonderausgaben', icon:'🎯', min:0, max:1500, step:10},
+};
+
+function OR(k) {
+  if(event.target.tagName==='INPUT') return;
+  const meta = REST_META[k];
+  if(!meta) return;
+  editKey = k;
+  editIsCustom = false;
+
+  document.getElementById('em-title').textContent = meta.label+' bearbeiten';
+  document.getElementById('em-name').value = meta.label;
+  document.getElementById('em-name').disabled = true;
+  document.getElementById('em-name').style.opacity = '0.5';
+  document.getElementById('em-amt').value = S[k].v;
+
+  // Hide freq and cat — rest items are always monthly
+  document.getElementById('em-freq-section').style.display = 'none';
+  document.getElementById('em-cat-section').style.display = 'none';
+  document.getElementById('em-del').style.display = 'none';
+
+  // Show a note
+  const noteEl = document.getElementById('em-note');
+  if(noteEl) noteEl.textContent = 'Maximaler Wert: 1.500 €/Monat';
+
+  mFreq = 'monthly';
+  EU();
+  document.getElementById('edit-modal').classList.add('on');
+  setTimeout(()=>document.getElementById('em-amt').focus(),80);
+}
+function CE() {
+  document.getElementById('edit-modal').classList.remove('on');
+  editKey=null;
+  // Reset hidden sections
+  const fs=document.getElementById('em-freq-section');if(fs)fs.style.display='';
+  const cs=document.getElementById('em-cat-section');if(cs)cs.style.display='';
+  const del=document.getElementById('em-del');if(del)del.style.display='flex';
+  const note=document.getElementById('em-note');if(note)note.textContent='';
+}
 
 function EF(btn) {
   document.querySelectorAll('.efbtn').forEach(b=>b.classList.remove('on'));
@@ -1732,19 +1775,32 @@ function SE() {
   else if(mFreq==='quarterly') monthly=R2(amt/3);
   const k=editKey;
 
+  // Check if it's a rest item
+  if(REST_META[k]) {
+    S[k].v = Math.min(1500, Math.round(monthly));
+    // Update both sliders
+    ['dsl-','msl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.value=S[k].v;});
+    // Update values
+    ['d-'+k+'-val','m-'+k+'-val'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=FI(S[k].v);});
+    // Show freq/cat again for next open
+    const fs=document.getElementById('em-freq-section');if(fs)fs.style.display='';
+    SAVE(); RC(); CE();
+    return;
+  }
+
   if(editIsCustom) {
     const ci=CI.find(i=>i.k===k); if(!ci) return;
     ci.name=document.getElementById('em-name').value.trim()||ci.name;
     ci.amt=amt; ci.freq=mFreq; ci.monthly=monthly; ci.cat=mCat;
     S[k].v=monthly; S[k].cat=mCat;
-    // Update labels
     ['dlbl-','mrlbl-'].forEach(p=>{const e=document.getElementById(p+k);if(e){const star=mFreq==='yearly'?' <span style="color:#FF3B30;font-size:10px;font-weight:700;">*</span>':mFreq==='quarterly'?' <span style="color:#FF9500;font-size:10px;font-weight:700;">*</span>':'';e.innerHTML=ci.name+star;}});
   } else {
     S[k].v=monthly;
   }
-  // Update sliders and values
   setSlider(k,monthly,S[k].on!==false);
   setVal(k,monthly);
+  // Show freq/cat again for next open
+  const fs=document.getElementById('em-freq-section');if(fs)fs.style.display='';
   SAVE(); RC(); CE();
 }
 
@@ -1939,7 +1995,7 @@ LOAD();RC();
       <input type="text" id="em-amt" inputmode="decimal" oninput="EU()" style="width:100%;padding:12px 14px;font-size:15px;font-family:inherit;background:var(--card2);color:var(--t1);border:0.5px solid var(--sep);border-radius:12px;outline:none;-webkit-appearance:none;">
     </div>
 
-    <div style="padding:14px 20px 0;">
+    <div id="em-freq-section" style="padding:14px 20px 0;">
       <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:7px;">Zahlungsrhythmus</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
         <button type="button" class="efbtn" data-freq="monthly" onclick="EF(this)" style="padding:10px 4px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--t2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.12s;">Monatlich</button>
@@ -1964,7 +2020,8 @@ LOAD();RC();
       <div id="em-prev" style="background:var(--card2);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--t2);min-height:44px;display:flex;align-items:center;flex-wrap:wrap;gap:4px;">Betrag eingeben…</div>
     </div>
 
-    <div style="display:flex;gap:10px;padding:16px 20px 0;">
+    <div id="em-note" style="padding:6px 20px 0;font-size:12px;color:var(--t3);"></div>
+    <div style="display:flex;gap:10px;padding:12px 20px 0;">
       <button type="button" id="em-del" onclick="DEL_EDIT()" style="padding:14px;border-radius:14px;border:0.5px solid rgba(255,59,48,0.3);background:rgba(255,59,48,0.08);color:var(--red);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">🗑 Löschen</button>
       <button type="button" onclick="CE()" style="flex:1;padding:14px;border-radius:14px;border:0.5px solid var(--sep);background:var(--card2);color:var(--t2);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Abbrechen</button>
       <button type="button" onclick="SE()" style="flex:2;padding:14px;border-radius:14px;border:none;background:var(--acc);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">Speichern</button>
