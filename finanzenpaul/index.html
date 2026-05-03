@@ -195,20 +195,31 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 .m-hsv.b{color:#0A84FF;} .m-hsv.r{color:#FF453A;} .m-hsv.g{color:#30D158;} .m-hsv.a{color:#FF9F0A;}
 .m-alert{margin:0 16px 10px;padding:10px 14px;border-radius:14px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;}
 .m-alert-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:currentColor;}
-.m-card{margin:0 16px 10px;background:var(--card);border-radius:16px;overflow:hidden;border:0.5px solid var(--sep2);}
+.m-card{margin:0 16px 12px;background:var(--card);border-radius:18px;overflow:hidden;border:0.5px solid var(--sep2);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.m-card-hdr{display:none;}
+.msec{margin:0 16px 12px;background:var(--card);border-radius:18px;overflow:hidden;border:0.5px solid var(--sep2);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 .m-card-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:0.5px solid var(--sep2);}
 .m-card-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);}
 .m-card-tot{font-size:13px;font-weight:700;color:var(--t1);}
-.mr{display:flex;align-items:center;gap:10px;padding:10px 16px;}
+.mr{display:flex;align-items:center;gap:12px;padding:14px 16px;position:relative;}
 .mr+.mr{border-top:0.5px solid var(--sep2);}
-.mico{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+.mico{font-size:22px;width:42px;height:42px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.mico img{width:28px;height:28px;border-radius:6px;object-fit:cover;}
 .mrm{flex:1;min-width:0;}
-.mrlbl{font-size:14px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;}
+.mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.mrlbl{font-size:15px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:4px;}
 .mrlbl.dim{color:var(--t3);}
-.msl{width:100%;margin-top:5px;}
-.mrval{font-size:13px;font-weight:600;color:var(--t1);min-width:60px;text-align:right;white-space:nowrap;}
-.m-slbl{padding:16px 20px 5px;font-size:13px;font-weight:600;color:var(--t3);display:flex;justify-content:space-between;align-items:center;}
-.m-slbl-tot{color:var(--t1);font-size:13px;}
+.mrval{font-size:15px;font-weight:700;color:var(--t1);white-space:nowrap;}
+.msl{width:100%;}
+.mr-tog{position:absolute;top:10px;right:12px;width:24px;height:24px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;background:none;padding:0;}
+.mr-tog.on{color:var(--grn);}
+.mr-tog.off{color:var(--t3);}
+.m-slbl{padding:24px 16px 10px;display:flex;justify-content:space-between;align-items:center;}
+.m-slbl-inner{font-size:18px;font-weight:700;letter-spacing:-0.3px;color:var(--t1);}
+.m-slbl-tot{font-size:14px;font-weight:600;color:var(--t3);background:var(--card2);padding:3px 10px;border-radius:99px;}
+.mseclbl{display:flex;justify-content:space-between;align-items:center;padding:24px 20px 10px;}
+.mseclbl-txt{font-size:20px;font-weight:700;letter-spacing:-0.4px;color:var(--t1);}
+.msectot{font-size:13px;font-weight:600;color:var(--t3);background:var(--card2);padding:4px 12px;border-radius:99px;white-space:nowrap;}
 .m-gheroe{margin:0 16px 10px;padding:18px;border-radius:16px;background:var(--card);border:0.5px solid var(--sep2);}
 .m-ghlbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:3px;}
 .m-ghval{font-size:24px;font-weight:700;color:var(--acc);letter-spacing:-0.5px;margin-bottom:10px;}
@@ -751,7 +762,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         </div>
       </div>
 
-      <div class="m-slbl" style="padding-top:6px;">Einnahmen</div>
+      <div class="m-slbl" style="padding-top:6px;"><span class="m-slbl-inner">Einnahmen</span></div>
       <div class="m-gheroe">
         <div class="m-ghlbl">Gehalt netto</div>
         <div class="m-ghval" id="m-gh-val">3.887 €</div>
@@ -765,7 +776,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         </div>
       </div>
 
-      <div class="m-slbl">Rest-Verteilung <span class="m-slbl-tot" id="m-restlbl">–</span></div>
+      <div class="m-slbl"><span class="m-slbl-inner">Rest-Verteilung</span><span class="m-slbl-tot" id="m-restlbl">–</span></div>
       <div class="m-rcard">
         <div class="m-rrow"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m')"><span class="m-rval" id="m-invest-val">0 €</span></div>
         <div class="m-rrow"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-notgr" style="width:90px;" oninput="RI('notgr',this.value,'m')"><span class="m-rval" id="m-notgr-val">100 €</span></div>
@@ -777,313 +788,360 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <!-- AUSGABEN PAGE -->
     <div class="m-page" id="mp-ausgaben">
 
-    <div class="mseclbl">
-      🏠 Wohnen
-      <span class="msectot" id="mtot-wohnen">–</span>
-    </div>
+    <div class="mseclbl"><span class="mseclbl-txt">🏠 Wohnen</span><span class="msectot" id="mtot-wohnen">–</span></div>
     <div class="msec" id="mbody-wohnen">
       <div class="mr" id="mr-miete">
-        <button type="button" class="mtog on" id="mtog-miete" onclick="MT(this,'miete')"></button>
         <span class="mico">🏠</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-miete">Miete</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-miete">Miete</div>
+            <span class="mrval" id="mrval-miete">1808 €</span>
+          </div>
           <input type="range" class="msl" min="500" max="2500" step="10" value="1808" id="msl-miete" oninput="MI('miete',this.value)">
         </div>
-        <span class="mrval" id="mrval-miete">1808 €</span>
+        <button type="button" class="mr-tog on" id="mtog-miete" onclick="MT(this,'miete')">✓</button>
       </div>
       <div class="mr" id="mr-strom">
-        <button type="button" class="mtog on" id="mtog-strom" onclick="MT(this,'strom')"></button>
-        <span class="mico">⚡</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=vattenfall.de&sz=64" onerror="this.parentNode.textContent='⚡'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-strom">Strom</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-strom">Strom</div>
+            <span class="mrval" id="mrval-strom">43 €</span>
+          </div>
           <input type="range" class="msl" min="10" max="120" step="1" value="43" id="msl-strom" oninput="MI('strom',this.value)">
         </div>
-        <span class="mrval" id="mrval-strom">43 €</span>
+        <button type="button" class="mr-tog on" id="mtog-strom" onclick="MT(this,'strom')">✓</button>
       </div>
       <div class="mr" id="mr-internet">
-        <button type="button" class="mtog on" id="mtog-internet" onclick="MT(this,'internet')"></button>
-        <span class="mico">📡</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=telekom.de&sz=64" onerror="this.parentNode.textContent='📡'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-internet">Telekom Internet</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-internet">Telekom Internet</div>
+            <span class="mrval" id="mrval-internet">45 €</span>
+          </div>
           <input type="range" class="msl" min="10" max="80" step="1" value="45" id="msl-internet" oninput="MI('internet',this.value)">
         </div>
-        <span class="mrval" id="mrval-internet">45 €</span>
+        <button type="button" class="mr-tog on" id="mtog-internet" onclick="MT(this,'internet')">✓</button>
       </div>
       <div class="mr" id="mr-lebensmittel">
-        <button type="button" class="mtog on" id="mtog-lebensmittel" onclick="MT(this,'lebensmittel')"></button>
         <span class="mico">🛒</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-lebensmittel">Lebensmittel</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-lebensmittel">Lebensmittel</div>
+            <span class="mrval" id="mrval-lebensmittel">450 €</span>
+          </div>
           <input type="range" class="msl" min="100" max="900" step="10" value="450" id="msl-lebensmittel" oninput="MI('lebensmittel',this.value)">
         </div>
-        <span class="mrval" id="mrval-lebensmittel">450 €</span>
+        <button type="button" class="mr-tog on" id="mtog-lebensmittel" onclick="MT(this,'lebensmittel')">✓</button>
       </div>
       <div class="mr" id="mr-schufa">
-        <button type="button" class="mtog on" id="mtog-schufa" onclick="MT(this,'schufa')"></button>
-        <span class="mico">📋</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-schufa">Schufa</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-schufa">Schufa</div>
+            <span class="mrval" id="mrval-schufa">4,95 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="15" step="0.5" value="4.95" id="msl-schufa" oninput="MI('schufa',this.value)">
         </div>
-        <span class="mrval" id="mrval-schufa">4,95 €</span>
+        <button type="button" class="mr-tog on" id="mtog-schufa" onclick="MT(this,'schufa')">✓</button>
       </div>
       <div class="mr" id="mr-ing">
-        <button type="button" class="mtog on" id="mtog-ing" onclick="MT(this,'ing')"></button>
-        <span class="mico">🏦</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-ing">ING Gebühren</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-ing">ING Gebühren</div>
+            <span class="mrval" id="mrval-ing">1,49 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="10" step="0.5" value="1.49" id="msl-ing" oninput="MI('ing',this.value)">
         </div>
-        <span class="mrval" id="mrval-ing">1,49 €</span>
+        <button type="button" class="mr-tog on" id="mtog-ing" onclick="MT(this,'ing')">✓</button>
       </div>
     </div>
-    <div class="mseclbl">
-      🛡️ Versicherungen
-      <span class="msectot" id="mtot-versicherungen">–</span>
-    </div>
+    <div class="mseclbl"><span class="mseclbl-txt">🛡️ Versicherungen</span><span class="msectot" id="mtot-versicherungen">–</span></div>
     <div class="msec" id="mbody-versicherungen">
       <div class="mr" id="mr-haftpflicht">
-        <button type="button" class="mtog on" id="mtog-haftpflicht" onclick="MT(this,'haftpflicht')"></button>
         <span class="mico">🛡️</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-haftpflicht">9,08 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="20" step="0.01" value="9.08" id="msl-haftpflicht" oninput="MI('haftpflicht',this.value)">
         </div>
-        <span class="mrval" id="mrval-haftpflicht">9,08 €</span>
+        <button type="button" class="mr-tog on" id="mtog-haftpflicht" onclick="MT(this,'haftpflicht')">✓</button>
       </div>
       <div class="mr" id="mr-rechtsschutz">
-        <button type="button" class="mtog on" id="mtog-rechtsschutz" onclick="MT(this,'rechtsschutz')"></button>
         <span class="mico">⚖️</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-rechtsschutz">31,42 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="50" step="0.01" value="31.42" id="msl-rechtsschutz" oninput="MI('rechtsschutz',this.value)">
         </div>
-        <span class="mrval" id="mrval-rechtsschutz">31,42 €</span>
+        <button type="button" class="mr-tog on" id="mtog-rechtsschutz" onclick="MT(this,'rechtsschutz')">✓</button>
       </div>
       <div class="mr" id="mr-kredit">
-        <button type="button" class="mtog on" id="mtog-kredit" onclick="MT(this,'kredit')"></button>
         <span class="mico">💳</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-kredit">Kredit Rate</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-kredit">Kredit Rate</div>
+            <span class="mrval" id="mrval-kredit">320 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="800" step="10" value="320" id="msl-kredit" oninput="MI('kredit',this.value)">
         </div>
-        <span class="mrval" id="mrval-kredit">320 €</span>
+        <button type="button" class="mr-tog on" id="mtog-kredit" onclick="MT(this,'kredit')">✓</button>
       </div>
       <div class="mr" id="mr-gez">
-        <button type="button" class="mtog on" id="mtog-gez" onclick="MT(this,'gez')"></button>
-        <span class="mico">📺</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=rundfunkbeitrag.de&sz=64" onerror="this.parentNode.textContent='📺'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-gez">18,33 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="30" step="0.01" value="18.33" id="msl-gez" oninput="MI('gez',this.value)">
         </div>
-        <span class="mrval" id="mrval-gez">18,33 €</span>
+        <button type="button" class="mr-tog on" id="mtog-gez" onclick="MT(this,'gez')">✓</button>
       </div>
     </div>
-    <div class="mseclbl">
-      👨‍👧‍👦 Familie
-      <span class="msectot" id="mtot-familie">–</span>
-    </div>
+    <div class="mseclbl"><span class="mseclbl-txt">👨‍👧‍👦 Familie</span><span class="msectot" id="mtot-familie">–</span></div>
     <div class="msec" id="mbody-familie">
       <div class="mr" id="mr-unterhalt">
-        <button type="button" class="mtog on" id="mtog-unterhalt" onclick="MT(this,'unterhalt')"></button>
         <span class="mico">👨‍👧‍👦</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-unterhalt">Unterhalt</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-unterhalt">Unterhalt</div>
+            <span class="mrval" id="mrval-unterhalt">360 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="600" step="10" value="360" id="msl-unterhalt" oninput="MI('unterhalt',this.value)">
         </div>
-        <span class="mrval" id="mrval-unterhalt">360 €</span>
+        <button type="button" class="mr-tog on" id="mtog-unterhalt" onclick="MT(this,'unterhalt')">✓</button>
       </div>
       <div class="mr" id="mr-kids">
-        <button type="button" class="mtog on" id="mtog-kids" onclick="MT(this,'kids')"></button>
         <span class="mico">🐷</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-kids">Sparen Kids</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-kids">Sparen Kids</div>
+            <span class="mrval" id="mrval-kids">150 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="300" step="10" value="150" id="msl-kids" oninput="MI('kids',this.value)">
         </div>
-        <span class="mrval" id="mrval-kids">150 €</span>
+        <button type="button" class="mr-tog on" id="mtog-kids" onclick="MT(this,'kids')">✓</button>
       </div>
       <div class="mr" id="mr-handyemil">
-        <button type="button" class="mtog on" id="mtog-handyemil" onclick="MT(this,'handyemil')"></button>
         <span class="mico">📱</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-handyemil">Handy Emil</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-handyemil">Handy Emil</div>
+            <span class="mrval" id="mrval-handyemil">7,99 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="20" step="0.5" value="7.99" id="msl-handyemil" oninput="MI('handyemil',this.value)">
         </div>
-        <span class="mrval" id="mrval-handyemil">7,99 €</span>
+        <button type="button" class="mr-tog on" id="mtog-handyemil" onclick="MT(this,'handyemil')">✓</button>
       </div>
       <div class="mr" id="mr-handyrosa">
-        <button type="button" class="mtog on" id="mtog-handyrosa" onclick="MT(this,'handyrosa')"></button>
         <span class="mico">📱</span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-handyrosa">Handy Rosa</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-handyrosa">Handy Rosa</div>
+            <span class="mrval" id="mrval-handyrosa">7,99 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="20" step="0.5" value="7.99" id="msl-handyrosa" oninput="MI('handyrosa',this.value)">
         </div>
-        <span class="mrval" id="mrval-handyrosa">7,99 €</span>
+        <button type="button" class="mr-tog on" id="mtog-handyrosa" onclick="MT(this,'handyrosa')">✓</button>
       </div>
       <div class="mr" id="mr-ukv">
-        <button type="button" class="mtog on" id="mtog-ukv" onclick="MT(this,'ukv')"></button>
-        <span class="mico">🏥</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=ukv.de&sz=64" onerror="this.parentNode.textContent='🏥'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-ukv">UKV Emil</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-ukv">UKV Emil</div>
+            <span class="mrval" id="mrval-ukv">9,89 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="20" step="0.5" value="9.89" id="msl-ukv" oninput="MI('ukv',this.value)">
         </div>
-        <span class="mrval" id="mrval-ukv">9,89 €</span>
+        <button type="button" class="mr-tog on" id="mtog-ukv" onclick="MT(this,'ukv')">✓</button>
       </div>
       <div class="mr" id="mr-sparta">
-        <button type="button" class="mtog on" id="mtog-sparta" onclick="MT(this,'sparta')"></button>
-        <span class="mico">⚽</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=sparta-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-sparta">Sparta Emil</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-sparta">Sparta Emil</div>
+            <span class="mrval" id="mrval-sparta">15 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="30" step="1" value="15" id="msl-sparta" oninput="MI('sparta',this.value)">
         </div>
-        <span class="mrval" id="mrval-sparta">15 €</span>
+        <button type="button" class="mr-tog on" id="mtog-sparta" onclick="MT(this,'sparta')">✓</button>
       </div>
       <div class="mr" id="mr-bling">
-        <button type="button" class="mtog on" id="mtog-bling" onclick="MT(this,'bling')"></button>
-        <span class="mico">💰</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=bling.eu&sz=64" onerror="this.parentNode.textContent='💰'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-bling">Bling Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-bling">Bling Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-bling">2,67 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="2.67" id="msl-bling" oninput="MI('bling',this.value)">
         </div>
-        <span class="mrval" id="mrval-bling">2,67 €</span>
+        <button type="button" class="mr-tog on" id="mtog-bling" onclick="MT(this,'bling')">✓</button>
       </div>
       <div class="mr" id="mr-unionemil">
-        <button type="button" class="mtog on" id="mtog-unionemil" onclick="MT(this,'unionemil')"></button>
-        <span class="mico">⚽</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-unionemil">Union Beitrag Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-unionemil">Union Beitrag Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-unionemil">3,5 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="3.5" id="msl-unionemil" oninput="MI('unionemil',this.value)">
         </div>
-        <span class="mrval" id="mrval-unionemil">3,5 €</span>
+        <button type="button" class="mr-tog on" id="mtog-unionemil" onclick="MT(this,'unionemil')">✓</button>
       </div>
     </div>
-    <div class="mseclbl">
-      📱 Abos
-      <span class="msectot" id="mtot-abos">–</span>
-    </div>
+    <div class="mseclbl"><span class="mseclbl-txt">📱 Abos</span><span class="msectot" id="mtot-abos">–</span></div>
     <div class="msec" id="mbody-abos">
       <div class="mr" id="mr-handypaul">
-        <button type="button" class="mtog on" id="mtog-handypaul" onclick="MT(this,'handypaul')"></button>
-        <span class="mico">📶</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=vodafone.de&sz=64" onerror="this.parentNode.textContent='📶'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-handypaul">Handy Paul</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-handypaul">Handy Paul</div>
+            <span class="mrval" id="mrval-handypaul">11 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="30" step="1" value="11" id="msl-handypaul" oninput="MI('handypaul',this.value)">
         </div>
-        <span class="mrval" id="mrval-handypaul">11 €</span>
+        <button type="button" class="mr-tog on" id="mtog-handypaul" onclick="MT(this,'handypaul')">✓</button>
       </div>
       <div class="mr" id="mr-icloud">
-        <button type="button" class="mtog on" id="mtog-icloud" onclick="MT(this,'icloud')"></button>
-        <span class="mico">☁️</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=icloud.com&sz=64" onerror="this.parentNode.textContent='☁️'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-icloud">iCloud</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-icloud">iCloud</div>
+            <span class="mrval" id="mrval-icloud">9,99 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="15" step="0.5" value="9.99" id="msl-icloud" oninput="MI('icloud',this.value)">
         </div>
-        <span class="mrval" id="mrval-icloud">9,99 €</span>
+        <button type="button" class="mr-tog on" id="mtog-icloud" onclick="MT(this,'icloud')">✓</button>
       </div>
       <div class="mr" id="mr-spotify">
-        <button type="button" class="mtog on" id="mtog-spotify" onclick="MT(this,'spotify')"></button>
-        <span class="mico">🎵</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=64" onerror="this.parentNode.textContent='🎵'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-spotify">Spotify</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-spotify">Spotify</div>
+            <span class="mrval" id="mrval-spotify">21,99 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="30" step="0.5" value="21.99" id="msl-spotify" oninput="MI('spotify',this.value)">
         </div>
-        <span class="mrval" id="mrval-spotify">21,99 €</span>
+        <button type="button" class="mr-tog on" id="mtog-spotify" onclick="MT(this,'spotify')">✓</button>
       </div>
       <div class="mr" id="mr-finanzguru">
-        <button type="button" class="mtog on" id="mtog-finanzguru" onclick="MT(this,'finanzguru')"></button>
-        <span class="mico">💹</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=finanzguru.de&sz=64" onerror="this.parentNode.textContent='💹'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-finanzguru">Finanzguru</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-finanzguru">Finanzguru</div>
+            <span class="mrval" id="mrval-finanzguru">2,99 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="10" step="0.5" value="2.99" id="msl-finanzguru" oninput="MI('finanzguru',this.value)">
         </div>
-        <span class="mrval" id="mrval-finanzguru">2,99 €</span>
+        <button type="button" class="mr-tog on" id="mtog-finanzguru" onclick="MT(this,'finanzguru')">✓</button>
       </div>
       <div class="mr" id="mr-claude">
-        <button type="button" class="mtog on" id="mtog-claude" onclick="MT(this,'claude')"></button>
-        <span class="mico">🤖</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" onerror="this.parentNode.textContent='🤖'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-claude">Claude</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-claude">Claude</div>
+            <span class="mrval" id="mrval-claude">22 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="40" step="1" value="22" id="msl-claude" oninput="MI('claude',this.value)">
         </div>
-        <span class="mrval" id="mrval-claude">22 €</span>
+        <button type="button" class="mr-tog on" id="mtog-claude" onclick="MT(this,'claude')">✓</button>
       </div>
       <div class="mr" id="mr-unionmitgl">
-        <button type="button" class="mtog on" id="mtog-unionmitgl" onclick="MT(this,'unionmitgl')"></button>
-        <span class="mico">⚽</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-unionmitgl">Union Mitgliedschaft</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-unionmitgl">Union Mitgliedschaft</div>
+            <span class="mrval" id="mrval-unionmitgl">10 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="20" step="1" value="10" id="msl-unionmitgl" oninput="MI('unionmitgl',this.value)">
         </div>
-        <span class="mrval" id="mrval-unionmitgl">10 €</span>
+        <button type="button" class="mr-tog on" id="mtog-unionmitgl" onclick="MT(this,'unionmitgl')">✓</button>
       </div>
       <div class="mr" id="mr-amazon">
-        <button type="button" class="mtog on" id="mtog-amazon" onclick="MT(this,'amazon')"></button>
-        <span class="mico">📦</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=amazon.de&sz=64" onerror="this.parentNode.textContent='📦'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-amazon">Amazon Prime <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-amazon">Amazon Prime <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-amazon">7,42 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="15" step="0.01" value="7.42" id="msl-amazon" oninput="MI('amazon',this.value)">
         </div>
-        <span class="mrval" id="mrval-amazon">7,42 €</span>
+        <button type="button" class="mr-tog on" id="mtog-amazon" onclick="MT(this,'amazon')">✓</button>
       </div>
       <div class="mr" id="mr-parqet">
-        <button type="button" class="mtog on" id="mtog-parqet" onclick="MT(this,'parqet')"></button>
-        <span class="mico">📈</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=parqet.com&sz=64" onerror="this.parentNode.textContent='📈'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-parqet">Parqet <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-parqet">Parqet <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-parqet">4,5 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="10" step="0.01" value="4.5" id="msl-parqet" oninput="MI('parqet',this.value)">
         </div>
-        <span class="mrval" id="mrval-parqet">4,5 €</span>
+        <button type="button" class="mr-tog on" id="mtog-parqet" onclick="MT(this,'parqet')">✓</button>
       </div>
       <div class="mr" id="mr-futbology">
-        <button type="button" class="mtog on" id="mtog-futbology" onclick="MT(this,'futbology')"></button>
-        <span class="mico">⚽</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=futbology.com&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-futbology">Futbology <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-futbology">Futbology <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-futbology">0,83 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0.83" id="msl-futbology" oninput="MI('futbology',this.value)">
         </div>
-        <span class="mrval" id="mrval-futbology">0,83 €</span>
+        <button type="button" class="mr-tog on" id="mtog-futbology" onclick="MT(this,'futbology')">✓</button>
       </div>
       <div class="mr" id="mr-fotmob">
-        <button type="button" class="mtog on" id="mtog-fotmob" onclick="MT(this,'fotmob')"></button>
-        <span class="mico">📊</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fotmob.com&sz=64" onerror="this.parentNode.textContent='📊'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-fotmob">FotMob <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-fotmob">FotMob <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-fotmob">0,71 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0.71" id="msl-fotmob" oninput="MI('fotmob',this.value)">
         </div>
-        <span class="mrval" id="mrval-fotmob">0,71 €</span>
+        <button type="button" class="mr-tog on" id="mtog-fotmob" onclick="MT(this,'fotmob')">✓</button>
       </div>
     </div>
-    <div class="mseclbl">
-      ⚽ Freizeit
-      <span class="msectot" id="mtot-freizeit">–</span>
-    </div>
+    <div class="mseclbl"><span class="mseclbl-txt">⚽ Freizeit</span><span class="msectot" id="mtot-freizeit">–</span></div>
     <div class="msec" id="mbody-freizeit">
       <div class="mr" id="mr-bvg">
-        <button type="button" class="mtog on" id="mtog-bvg" onclick="MT(this,'bvg')"></button>
-        <span class="mico">🚇</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=bvg.de&sz=64" onerror="this.parentNode.textContent='🚇'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-bvg">BVG Ticket</div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-bvg">BVG Ticket</div>
+            <span class="mrval" id="mrval-bvg">63 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="120" step="1" value="63" id="msl-bvg" oninput="MI('bvg',this.value)">
         </div>
-        <span class="mrval" id="mrval-bvg">63 €</span>
+        <button type="button" class="mr-tog on" id="mtog-bvg" onclick="MT(this,'bvg')">✓</button>
       </div>
       <div class="mr" id="mr-dauerkarte">
-        <button type="button" class="mtog on" id="mtog-dauerkarte" onclick="MT(this,'dauerkarte')"></button>
-        <span class="mico">🎟️</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='🎟️'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-dauerkarte">Dauerkarte Union <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-dauerkarte">Dauerkarte Union <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-dauerkarte">21,67 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="30" step="0.01" value="21.67" id="msl-dauerkarte" oninput="MI('dauerkarte',this.value)">
         </div>
-        <span class="mrval" id="mrval-dauerkarte">21,67 €</span>
+        <button type="button" class="mr-tog on" id="mtog-dauerkarte" onclick="MT(this,'dauerkarte')">✓</button>
       </div>
       <div class="mr" id="mr-garmin">
-        <button type="button" class="mtog on" id="mtog-garmin" onclick="MT(this,'garmin')"></button>
-        <span class="mico">⌚</span>
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=garmin.com&sz=64" onerror="this.parentNode.textContent='⌚'" style="width:26px;height:26px;border-radius:6px;"></span>
         <div class="mrm">
-          <div class="mrlbl" id="mrlbl-garmin">Garmin <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-garmin">Garmin <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <span class="mrval" id="mrval-garmin">7,42 €</span>
+          </div>
           <input type="range" class="msl" min="0" max="15" step="0.01" value="7.42" id="msl-garmin" oninput="MI('garmin',this.value)">
         </div>
-        <span class="mrval" id="mrval-garmin">7,42 €</span>
+        <button type="button" class="mr-tog on" id="mtog-garmin" onclick="MT(this,'garmin')">✓</button>
       </div>
     </div>
     </div>
@@ -1271,7 +1329,14 @@ function DT(el,k){
   const on=el.classList.contains('on');
   if(!S[k])return;
   S[k].on=on;
-  // sync other tog
+  // Update emoji toggle if it's a mr-tog
+  if(el.classList.contains('mr-tog')){
+    el.textContent=on?'✓':'○';
+    el.classList.toggle('off',!on);
+    // sync desktop toggle
+    const dtog=document.getElementById('dtog-'+k);
+    if(dtog){if(on)dtog.classList.add('on');else dtog.classList.remove('on');}
+  }
   if(k==='zusatz'){
     ['dtog-zusatz','mtog-zusatz'].forEach(id=>{const e=document.getElementById(id);if(e&&e!==el){if(on)e.classList.add('on');else e.classList.remove('on');}});
     ['dsl-zusatz','msl-zusatz'].forEach(id=>{const e=document.getElementById(id);if(e)e.disabled=!on;});
