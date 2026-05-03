@@ -324,7 +324,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 .m-confirm{flex:2;padding:14px;border-radius:14px;border:none;background:var(--acc);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font);transition:opacity 0.12s;}
 .m-confirm:disabled{opacity:0.3;}
 
-#edit-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;}
+#edit-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;}
 #edit-modal.on{display:flex;}
 .efbtn.on{background:var(--acc)!important;border-color:var(--acc)!important;color:#fff!important;font-weight:600!important;}
 .ecbtn.on{background:rgba(0,122,255,0.12)!important;border-color:var(--acc)!important;color:var(--acc)!important;}
@@ -1609,31 +1609,31 @@ const ITEM_META = {
   'lebensmittel': {label:'Lebensmittel',defVal:450,min:100,max:900,step:10,freq:'monthly'},
   'schufa': {label:'Schufa',defVal:4.95,min:0,max:15,step:0.5,freq:'monthly'},
   'ing': {label:'ING Gebühren',defVal:1.49,min:0,max:10,step:0.5,freq:'monthly'},
-  'haftpflicht': {label:'Haftpflicht/Hausrat',defVal:9.08,min:0,max:20,step:0.01,freq:'yearly'},
-  'rechtsschutz': {label:'Rechtsschutz',defVal:31.42,min:0,max:50,step:0.01,freq:'yearly'},
+  'haftpflicht': {label:'Haftpflicht/Hausrat',defVal:109,min:0,max:500,step:1,freq:'yearly'},
+  'rechtsschutz': {label:'Rechtsschutz',defVal:377,min:0,max:1000,step:1,freq:'yearly'},
   'kredit': {label:'Kredit Rate',defVal:320,min:0,max:800,step:10,freq:'monthly'},
-  'gez': {label:'GEZ',defVal:18.33,min:0,max:30,step:0.01,freq:'quarterly'},
+  'gez': {label:'GEZ',defVal:55,min:0,max:200,step:1,freq:'quarterly'},
   'unterhalt': {label:'Unterhalt',defVal:360,min:0,max:600,step:10,freq:'monthly'},
   'kids': {label:'Sparen Kids',defVal:150,min:0,max:300,step:10,freq:'monthly'},
   'handyemil': {label:'Handy Emil',defVal:7.99,min:0,max:20,step:0.5,freq:'monthly'},
   'handyrosa': {label:'Handy Rosa',defVal:7.99,min:0,max:20,step:0.5,freq:'monthly'},
   'ukv': {label:'UKV Emil',defVal:9.89,min:0,max:20,step:0.5,freq:'monthly'},
   'sparta': {label:'Sparta Emil',defVal:15,min:0,max:30,step:1,freq:'monthly'},
-  'bling': {label:'Bling Emil',defVal:2.67,min:0,max:5,step:0.01,freq:'yearly'},
-  'unionemil': {label:'Union Beitrag Emil',defVal:3.5,min:0,max:5,step:0.01,freq:'yearly'},
+  'bling': {label:'Bling Emil',defVal:32,min:0,max:200,step:1,freq:'yearly'},
+  'unionemil': {label:'Union Beitrag Emil',defVal:42,min:0,max:200,step:1,freq:'yearly'},
   'handypaul': {label:'Handy Paul',defVal:11,min:0,max:30,step:1,freq:'monthly'},
   'icloud': {label:'iCloud',defVal:9.99,min:0,max:15,step:0.5,freq:'monthly'},
   'spotify': {label:'Spotify',defVal:21.99,min:0,max:30,step:0.5,freq:'monthly'},
   'finanzguru': {label:'Finanzguru',defVal:2.99,min:0,max:10,step:0.5,freq:'monthly'},
   'claude': {label:'Claude',defVal:22,min:0,max:40,step:1,freq:'monthly'},
   'unionmitgl': {label:'Union Mitgliedschaft',defVal:10,min:0,max:20,step:1,freq:'monthly'},
-  'amazon': {label:'Amazon Prime',defVal:7.42,min:0,max:15,step:0.01,freq:'yearly'},
-  'parqet': {label:'Parqet',defVal:4.5,min:0,max:10,step:0.01,freq:'yearly'},
-  'futbology': {label:'Futbology',defVal:0.83,min:0,max:5,step:0.01,freq:'yearly'},
-  'fotmob': {label:'FotMob',defVal:0.71,min:0,max:5,step:0.01,freq:'yearly'},
+  'amazon': {label:'Amazon Prime',defVal:89,min:0,max:300,step:1,freq:'yearly'},
+  'parqet': {label:'Parqet',defVal:54,min:0,max:200,step:1,freq:'yearly'},
+  'futbology': {label:'Futbology',defVal:9.99,min:0,max:100,step:0.01,freq:'yearly'},
+  'fotmob': {label:'FotMob',defVal:8.49,min:0,max:100,step:0.01,freq:'yearly'},
   'bvg': {label:'BVG Ticket',defVal:63,min:0,max:120,step:1,freq:'monthly'},
-  'dauerkarte': {label:'Dauerkarte Union',defVal:21.67,min:0,max:30,step:0.01,freq:'yearly'},
-  'garmin': {label:'Garmin',defVal:7.42,min:0,max:15,step:0.01,freq:'yearly'},
+  'dauerkarte': {label:'Dauerkarte Union',defVal:260,min:0,max:1000,step:1,freq:'yearly'},
+  'garmin': {label:'Garmin',defVal:89,min:0,max:300,step:1,freq:'yearly'},
 };
 
 function OE(k) {
@@ -1921,7 +1921,7 @@ LOAD();RC();
 
 
 <!-- EDIT MODAL -->
-<div id="edit-modal" onclick="if(event.target===this)CE()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+<div id="edit-modal" onclick="if(event.target===this)CE()">
   <div style="background:var(--card);border-radius:24px 24px 0 0;width:100%;max-width:540px;padding:0 0 env(safe-area-inset-bottom,20px);border-top:0.5px solid var(--sep);max-height:90vh;overflow-y:auto;animation:su 0.28s cubic-bezier(0.32,0.72,0,1);">
     <div style="width:36px;height:5px;border-radius:3px;background:var(--sep);margin:10px auto 0;"></div>
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0;">
