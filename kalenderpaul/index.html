@@ -24,77 +24,95 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --surface: #1c1c1e;
-    --surface2: #2c2c2e;
-    --border: rgba(255,255,255,.1);
+    --bg: #1c1c1e;
+    --surface: #2c2c2e;
+    --surface2: #3a3a3c;
+    --border: rgba(255,255,255,.12);
     --text: #f5f5f7;
     --text2: #98989d;
     --text3: #636366;
     --blue: #0a84ff;
-    --blue-l: #0a2d4d;
+    --blue-l: #0a2a4a;
     --red: #ff453a;
   }
 
-  /* Dark mode event colors - slightly muted */
-  .e-kids     { background: #0a3d8f; color: #a8c8ff; }
-  .e-dani     { background: #3a3a3c; color: #98989d; }
-  .e-schwerin { background: #6b3a00; color: #ffd580; }
-  .e-maja     { background: #6b1040; color: #ffb0d0; }
-  .e-trip     { background: #0a4a35; color: #80e8c0; }
-  .e-work     { background: #0a2a6b; color: #80b0ff; }
-  .e-kidev    { background: #6b0a0a; color: #ffa0a0; }
-  .e-feier    { background: #4a3800; color: #ffd580; }
-  .e-union    { background: #6b0a0a; color: #ffa0a0; }
-  .e-konzert  { background: #0a4a20; color: #80e0a0; }
-  .e-haus     { background: #004a6b; color: #80d0f0; }
-  .e-bday     { background: #2c2c2e; color: #636366; }
+  body { background: #1c1c1e; }
 
-  /* Dark header */
-  .header {
-    background: rgba(28,28,30,0.94);
-  }
-  .sticky-bar {
-    background: rgba(28,28,30,0.97);
-  }
-  .wh {
-    background: rgba(28,28,30,0.97);
-  }
-  .filter-panel {
-    background: #1c1c1e;
-  }
-  .filter-backdrop {
-    background: rgba(0,0,0,0.6);
-  }
-  .day-overlay {
-    background: rgba(0,0,0,0.5);
-  }
-  .day.expanded {
-    background: #1c1c1e !important;
-  }
-  .today-btn {
-    background: var(--surface2);
-    border-color: var(--border);
-  }
-  .fp-item {
-    background: #2c2c2e;
-    border-color: rgba(255,255,255,.08);
-  }
-  .fp-item:hover {
-    background: #3a3a3c;
-    border-color: var(--blue);
-  }
-  .tp-item {
-    background: #2c2c2e;
-    border-color: rgba(255,255,255,.08);
-  }
-  .li {
-    background: #2c2c2e;
-    border-color: rgba(255,255,255,.08);
-  }
-  .eli {
-    background: #2c2c2e;
-  }
+  /* Event colors dark */
+  .e-kids     { background: #0a3d8f; color: #a8c8ff; font-weight: 700; }
+  .e-dani     { background: #3a3a3c; color: #98989d; }
+  .e-schwerin { background: #6b3a00; color: #ffd580; font-weight: 700; }
+  .e-maja     { background: #7b1050; color: #ffb0d0; font-weight: 700; }
+  .e-trip     { background: #0a4a30; color: #80e8c0; font-weight: 700; }
+  .e-work     { background: #0a2a6b; color: #80b0ff; font-weight: 600; }
+  .e-kidev    { background: #7b0a0a; color: #ffa0a0; font-weight: 600; }
+  .e-feier    { background: #4a3800; color: #ffd580; font-weight: 600; }
+  .e-union    { background: #7b0a0a; color: #ffa0a0; font-weight: 700; }
+  .e-konzert  { background: #0a4a20; color: #80e0a0; font-weight: 700; }
+  .e-haus     { background: #004a6b; color: #80d0f0; font-weight: 600; }
+  .e-bday     { background: #3a3a3c; color: #636366; font-style: italic; }
+
+  /* Header */
+  .header { background: rgba(28,28,30,0.95); }
+  .header-text h1 { color: #f5f5f7; }
+  .header-text p  { color: #98989d; }
+
+  /* Sticky bar + weekdays */
+  .sticky-bar { background: rgba(44,44,46,0.97); border-bottom-color: rgba(255,255,255,.08); }
+
+  /* Month card */
+  .mc { background: #2c2c2e; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+  .mt { color: #f5f5f7; }
+
+  /* Day cells */
+  .day { background: #3a3a3c; }
+  .day.today { background: #0a2a4a; box-shadow: inset 0 0 0 1.5px #0a84ff; }
+  .day.empty { background: transparent; }
+  .day.past  { opacity: .25; }
+  .dn { color: #f5f5f7; }
+  .day.weekend .dn { color: #ff453a; }
+  .day.today .dn { background: #0a84ff; color: #fff; }
+
+  /* Detail panel */
+  .dp { background: #2c2c2e; }
+  .dp h3 { color: #f5f5f7; }
+  .eli { background: #3a3a3c; }
+  .eli .en { color: #f5f5f7; }
+
+  /* Filter sheet */
+  .filter-panel { background: #2c2c2e; }
+  .filter-panel-handle { background: #636366; }
+  .fp-title { color: #f5f5f7; }
+  .fp-close { background: #3a3a3c; color: #98989d; border-color: rgba(255,255,255,.1); }
+  .fp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+  .fp-item:hover { background: #48484a; border-color: #0a84ff; }
+  .fp-date { color: #98989d; }
+  .filter-backdrop { background: rgba(0,0,0,0.65); }
+
+  /* Legend chips */
+  .li { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
+  .li:hover { background: #48484a; color: #0a84ff; border-color: #0a84ff; }
+
+  /* Today strip */
+  .today-panel { border-top-color: rgba(255,255,255,.1); }
+  .tp-title { color: #0a84ff; }
+  .tp-date { color: #636366; }
+  .tp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+
+  /* Buttons */
+  .today-btn { background: #3a3a3c; border-color: #0a84ff; color: #0a84ff; }
+
+  /* Day overlay */
+  .day-overlay { background: rgba(0,0,0,0.55); }
+  .day.expanded { background: #2c2c2e !important; }
+
+  /* Weekday labels */
+  .wh span { color: #636366; }
+  .wh span.we { color: #ff453a; opacity: .8; }
+  .sticky-bar-days span { color: #636366; }
+  .sticky-bar-days span.we { color: #ff453a; }
+  .sticky-bar-month { color: #f5f5f7; }
+  .kw { color: #636366; }
 }
 body {
   font-family: -apple-system, 'Helvetica Neue', sans-serif;
@@ -106,7 +124,7 @@ body {
 
 /* HEADER */
 .header {
-  background: rgba(255,255,255,0.94);
+  background: var(--surface);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
@@ -302,6 +320,7 @@ body {
   margin-bottom: 20px;
   box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
   overflow: clip;
+  color: var(--text);
 }
 .mt { font-size: 18px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 14px; }
 
@@ -333,6 +352,7 @@ body {
   transition: transform .12s, box-shadow .12s;
   position: relative;
   overflow: hidden;
+  color: var(--text);
 }
 .day:not(.empty):hover { transform: scale(1.025); box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 2; }
 .day.empty { background: transparent; pointer-events: none; }
@@ -462,7 +482,7 @@ body {
   position: sticky;
   top: var(--header-h, 0px);
   z-index: 5;
-  background: rgba(255,255,255,0.97);
+  background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
@@ -988,19 +1008,26 @@ function buildMonth(year, month) {
   weekMon.setDate(now2.getDate() - nowDow);
   weekMon.setHours(0,0,0,0);
 
-  // Skip day counter to first visible day
   let day=1, wk=0;
 
   while(day <= ll.getDate()) {
-    // Check if entire week is in the past — skip it
-    const firstDayOfWeek = new Date(year, month, day + (wk===0 ? 0 : 0));
-    // Find the last day of this row
-    const rowStart = wk===0 ? 1 : day;
-    const rowEnd = new Date(year, month, rowStart + (6 - (wk===0 ? dow : 0)));
-    if(rowEnd < weekMon) {
-      // Skip this entire week row
-      const daysInRow = wk===0 ? (7 - dow) : 7;
-      day += daysInRow;
+    // Calculate the last day of this grid row
+    let lastDayInRow;
+    if(wk === 0) {
+      // First row: starts at day 1, ends at day (7 - dow)
+      lastDayInRow = 7 - dow;
+    } else {
+      lastDayInRow = day + 6;
+    }
+    const rowEndDate = new Date(year, month, Math.min(lastDayInRow, ll.getDate()));
+    
+    if(rowEndDate < weekMon) {
+      // Entire row is in the past — skip
+      if(wk === 0) {
+        day = 7 - dow + 1;
+      } else {
+        day += 7;
+      }
       wk++;
       continue;
     }
@@ -1164,8 +1191,19 @@ function renderAll() {
   const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
   const weekStart = new Date(now);
   weekStart.setDate(now.getDate() - dow);
-  const startMonth = weekStart.getMonth();
-  const startYear  = weekStart.getFullYear();
+  weekStart.setHours(0,0,0,0);
+
+  // Start from the month that contains the first VISIBLE week
+  // If weekStart is in a previous month but all rows of that month are past, skip it
+  let startMonth = weekStart.getMonth();
+  const startYear = weekStart.getFullYear();
+
+  // Check: does the current month have any visible rows?
+  // A month has visible rows if its last day >= weekStart
+  const lastDayOfStartMonth = new Date(startYear, startMonth + 1, 0);
+  if(lastDayOfStartMonth < weekStart) {
+    startMonth++; // skip to next month
+  }
 
   for(let m=startMonth; m<=11; m++) {
     cal.appendChild(buildMonth(startYear, m));
