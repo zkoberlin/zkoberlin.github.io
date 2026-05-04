@@ -165,14 +165,17 @@ body {
 /* Legend inside header */
 .legend {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 5px;
   padding: 0 0 8px;
   justify-content: flex-start;
   position: static;
   border: none;
   background: transparent;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.legend::-webkit-scrollbar { display: none; }
 /* Today strip inside header */
 .today-panel {
   background: transparent;
