@@ -22,6 +22,8 @@
   --blue-l:    #e8f1fb;
   --green:     #34c759;
   --green-l:   rgba(52,199,89,0.12);
+  --red:       #ff3b30;
+  --red-l:     rgba(255,59,48,0.12);
   --orange:    #ff9500;
   --orange-l:  rgba(255,149,0,0.12);
   --purple:    #af52de;
@@ -48,6 +50,8 @@
     --blue-l:    rgba(64,156,255,0.12);
     --green:     #30d158;
     --green-l:   rgba(48,209,88,0.12);
+    --red:       #ff453a;
+    --red-l:     rgba(255,69,58,0.12);
     --orange:    #ff9f0a;
     --orange-l:  rgba(255,159,10,0.12);
     --purple:    #bf5af2;
@@ -63,7 +67,7 @@ body {
   min-height: 100vh; -webkit-font-smoothing: antialiased;
 }
 
-/* ── HEADER ── */
+/* HEADER */
 header {
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -72,8 +76,7 @@ header {
   padding: 12px 24px;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
+  align-items: center; gap: 12px;
 }
 @media (prefers-color-scheme: dark) { header { background: rgba(14,14,16,0.88); } }
 
@@ -82,41 +85,32 @@ header {
 .logo-text { font-size: 14px; font-weight: 600; letter-spacing: -.3px; }
 .logo-sub  { font-size: 10px; color: var(--text2); margin-top: 1px; }
 
-/* Greeting in header – always visible */
-.header-greeting {
-  text-align: center;
-  font-size: 14px; font-weight: 600;
-  letter-spacing: -.2px;
-  white-space: nowrap;
-}
+.header-greeting { text-align: center; font-size: 14px; font-weight: 600; letter-spacing: -.2px; white-space: nowrap; }
 .header-greeting span { color: var(--text2); font-weight: 400; }
 
 .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
 .header-clock { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
 .header-date  { font-size: 10px; color: var(--text2); }
 
-@media (max-width: 500px) {
-  .header-greeting { font-size: 12px; }
-  .logo-sub { display: none; }
-}
+@media (max-width: 500px) { .header-greeting { font-size: 12px; } .logo-sub { display: none; } }
 
-/* ── MAIN ── */
+/* MAIN */
 main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
 
 /* Quote */
 .quote-card {
   background: var(--surface); border-radius: var(--radius-md);
   border: 1px solid var(--border); padding: 12px 16px;
-  margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 18px; display: flex; align-items: flex-start; gap: 10px;
   box-shadow: var(--shadow-sm); animation: fadeUp .5s ease both;
 }
-.quote-icon { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+.quote-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
 .quote-text { font-size: 12px; color: var(--text2); line-height: 1.5; font-style: italic; }
 
 /* Widgets */
 .widgets-row {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 20px;
+  gap: 10px; margin-bottom: 18px;
   animation: fadeUp .5s .05s ease both;
 }
 @media (max-width: 480px) { .widgets-row { grid-template-columns: 1fr; } }
@@ -135,7 +129,7 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
 .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--text3); margin-bottom: 12px; margin-left: 2px; }
 
 /* App Grid */
-.app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+.app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 18px; }
 @media (max-width: 580px) { .app-grid { grid-template-columns: 1fr; } }
 
 .app-card {
@@ -162,55 +156,34 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
 .app-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .app-card:active { transform: scale(.98); }
 
-/* Status dot */
-.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 11px; }
 .card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 21px; }
 .card-icon.green  { background: var(--green-l); }
 .card-icon.blue   { background: var(--blue-l); }
 .card-icon.purple { background: var(--purple-l); }
 
-.status-dot {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 9.5px; font-weight: 600; color: var(--text3);
-  text-transform: uppercase; letter-spacing: .4px;
-}
-.status-dot::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 6px var(--green);
-  animation: pulse 2s infinite;
-}
+.status-dot { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .4px; }
+.status-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
 
 .card-title { font-size: 15px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
 .card-desc  { font-size: 11.5px; color: var(--text2); line-height: 1.45; margin-bottom: 11px; flex: 1; }
 
-/* Preview */
+/* Preview – the important info box */
 .card-preview {
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 9px 11px; margin-bottom: 10px;
+  border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px;
 }
-.card-preview-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 3px; }
-.card-preview-value { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -.2px; }
-.card-preview-sub { font-size: 10.5px; color: var(--text2); margin-top: 2px; }
-
-/* Stats */
-.card-stats { display: flex; gap: 7px; margin-bottom: 10px; }
-.card-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 5px 9px; flex: 1; }
-.card-stat-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
-.card-stat-value { font-size: 12px; font-weight: 600; letter-spacing: -.2px; }
-
-/* Footer */
-.card-footer { display: flex; align-items: center; gap: 6px; }
-.card-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); }
-.card-arrow { margin-left: auto; font-size: 14px; color: var(--text3); transition: transform var(--transition); }
-.app-card:hover .card-arrow { transform: translateX(3px); color: var(--text2); }
-
-.app-card.soon { opacity: .4; pointer-events: none; border-style: dashed; }
-.soon-badge { position: absolute; top: 14px; right: 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--surface2); border: 1px solid var(--border); color: var(--text3); padding: 3px 8px; border-radius: 20px; }
+.card-preview-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 4px; }
+.card-preview-value { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+.card-preview-value.green { color: var(--green); }
+.card-preview-value.red   { color: var(--red); }
+.card-preview-sub { font-size: 10.5px; color: var(--text2); margin-top: 3px; }
 
 /* Shortcuts */
 .shortcuts-row {
   display: flex; gap: 8px; flex-wrap: wrap;
   animation: fadeUp .5s .2s ease both;
+  margin-bottom: 18px;
 }
 .shortcut-btn {
   display: flex; align-items: center; gap: 7px;
@@ -219,12 +192,33 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
   text-decoration: none; color: var(--text2);
   font-size: 12px; font-weight: 500;
   box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-  white-space: nowrap;
+  transition: var(--transition); white-space: nowrap;
 }
 .shortcut-btn:hover { background: var(--surface2); color: var(--text); transform: translateY(-1px); }
 .shortcut-btn:active { transform: scale(.97); }
 .shortcut-icon { font-size: 14px; }
+
+/* Union Widget */
+.union-card {
+  background: var(--surface); border-radius: var(--radius-md);
+  border: 1px solid var(--border); padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; gap: 14px;
+  animation: fadeUp .5s .22s ease both;
+  text-decoration: none; color: inherit;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.union-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.union-badge {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: #e8001c; display: flex; align-items: center;
+  justify-content: center; font-size: 20px; flex-shrink: 0;
+}
+.union-info { flex: 1; }
+.union-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 3px; }
+.union-match { font-size: 13px; font-weight: 700; letter-spacing: -.2px; }
+.union-sub   { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.union-arrow { font-size: 14px; color: var(--text3); }
 
 /* Bottom Nav */
 .bottom-nav {
@@ -242,14 +236,8 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
 .bn-icon  { font-size: 22px; }
 .bn-label { font-size: 10px; font-weight: 500; }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .4; }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse  { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 </style>
 </head>
 <body>
@@ -262,12 +250,12 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
       <div class="logo-sub">Persönliches Dashboard</div>
     </div>
   </a>
-  <div class="header-greeting" id="headerGreeting">
+  <div class="header-greeting">
     <span id="greetLabel">Guten Morgen</span>, Paul 👋
   </div>
   <div class="header-right">
     <div class="header-clock" id="headerClock">--:--</div>
-    <div class="header-date" id="headerDate">--</div>
+    <div class="header-date"  id="headerDate">--</div>
   </div>
 </header>
 
@@ -286,7 +274,7 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
       <div class="widget-info">
         <div class="widget-label">Berlin · Wetter</div>
         <div class="widget-value" id="weatherTemp">--°</div>
-        <div class="widget-sub" id="weatherDesc">Wird geladen…</div>
+        <div class="widget-sub"  id="weatherDesc">Wird geladen…</div>
       </div>
     </div>
     <div class="widget">
@@ -294,7 +282,7 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
       <div class="widget-info">
         <div class="widget-label">Heute</div>
         <div class="widget-value" id="todayDate">--</div>
-        <div class="widget-sub" id="todayKW">--</div>
+        <div class="widget-sub"  id="todayKW">--</div>
       </div>
     </div>
   </div>
@@ -312,23 +300,12 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
       <div class="card-title">Finanzen</div>
       <div class="card-desc">Budgetplanung, Einnahmen & Ausgaben mit automatischer Restverteilung.</div>
       <div class="card-preview">
-        <div class="card-preview-label">Aktueller Monat</div>
-        <div class="card-preview-value" id="finanzMonat">--</div>
-        <div class="card-preview-sub" id="finanzGeaendert">--</div>
+        <div class="card-preview-label">Freier Puffer · <span id="finanzMonat">--</span></div>
+        <div class="card-preview-value" id="pufferWert">Lade…</div>
+        <div class="card-preview-sub"   id="pufferSub">--</div>
       </div>
-      <div class="card-stats">
-        <div class="card-stat">
-          <div class="card-stat-label">Sync</div>
-          <div class="card-stat-value">JSONBin</div>
-        </div>
-        <div class="card-stat">
-          <div class="card-stat-label">Modus</div>
-          <div class="card-stat-value">Monatlich</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="card-tag">Einnahmen</span>
-        <span class="card-tag">Ausgaben</span>
+      <div class="card-footer" style="margin-top:auto;">
+        <span style="font-size:11px;color:var(--text3);">Sync: JSONBin · Monatlich</span>
         <span class="card-arrow">→</span>
       </div>
     </a>
@@ -340,40 +317,29 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
         <div class="status-dot">Aktiv</div>
       </div>
       <div class="card-title">Kalender</div>
-      <div class="card-desc">Termine, Kids-Wochen im Wechselmodell, Hellomed & private Events.</div>
+      <div class="card-desc">Termine, Kids-Wochen im Wechselmodell & private Events.</div>
+      <div class="card-preview" style="margin-bottom:7px;">
+        <div class="card-preview-label">💗 Nächstes mit Maja</div>
+        <div class="card-preview-value" id="nextMajaTitle" style="font-size:12.5px;">Kalender öffnen</div>
+        <div class="card-preview-sub"   id="nextMajaDate">–</div>
+      </div>
       <div class="card-preview">
-        <div class="card-preview-label">Aktuelle Woche</div>
-        <div class="card-preview-value" id="kalenderKW">KW --</div>
-        <div class="card-preview-sub" id="kalenderRange">--</div>
+        <div class="card-preview-label">🎟️ Nächste Veranstaltung</div>
+        <div class="card-preview-value" id="nextKonzertTitle" style="font-size:12.5px;">Kalender öffnen</div>
+        <div class="card-preview-sub"   id="nextKonzertDate">–</div>
       </div>
-      <div class="card-stats">
-        <div class="card-stat">
-          <div class="card-stat-label">Jahr</div>
-          <div class="card-stat-value">2026</div>
-        </div>
-        <div class="card-stat">
-          <div class="card-stat-label">Kalender</div>
-          <div class="card-stat-value">29</div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <span class="card-tag">Kids</span>
-        <span class="card-tag">Hellomed</span>
+      <div class="card-footer" style="margin-top:10px;">
+        <span style="font-size:11px;color:var(--text3);">KW <span id="kalenderKW">--</span> · <span id="kalenderRange">--</span></span>
         <span class="card-arrow">→</span>
       </div>
     </a>
 
     <!-- Bald -->
-    <a class="app-card soon" href="#">
-      <span class="soon-badge">Bald</span>
-      <div class="card-header">
-        <div class="card-icon purple">➕</div>
-      </div>
+    <a class="app-card soon" href="#" style="opacity:.4;pointer-events:none;border-style:dashed;">
+      <span style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;text-transform:uppercase;background:var(--surface2);border:1px solid var(--border);color:var(--text3);padding:3px 8px;border-radius:20px;">Bald</span>
+      <div class="card-header"><div class="card-icon purple">➕</div></div>
       <div class="card-title">Neue App</div>
       <div class="card-desc">Platz für die nächste Idee.</div>
-      <div class="card-footer">
-        <span class="card-tag">In Planung</span>
-      </div>
     </a>
 
   </div>
@@ -381,11 +347,23 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
   <!-- Shortcuts -->
   <div class="section-label">Schnellzugriff</div>
   <div class="shortcuts-row">
-    <a class="shortcut-btn" href="/kalenderpaul/"><span class="shortcut-icon">📅</span>Aktuelle Woche</a>
-    <a class="shortcut-btn" href="/finanzenpaul/"><span class="shortcut-icon">💶</span>Budget öffnen</a>
+    <a class="shortcut-btn" href="/kalenderpaul/"><span class="shortcut-icon">📅</span>Aktuelle KW</a>
+    <a class="shortcut-btn" href="/finanzenpaul/"><span class="shortcut-icon">💶</span>Budget</a>
     <a class="shortcut-btn" href="/kalenderpaul/"><span class="shortcut-icon">👧</span>Kids-Woche</a>
     <a class="shortcut-btn" href="/finanzenpaul/"><span class="shortcut-icon">📊</span>Monatsübersicht</a>
   </div>
+
+  <!-- Union Berlin -->
+  <div class="section-label">Nächstes Spiel</div>
+  <a class="union-card" href="https://www.bundesliga.com" target="_blank">
+    <div class="union-badge">⚽</div>
+    <div class="union-info">
+      <div class="union-label">1. FC Union Berlin · Bundesliga</div>
+      <div class="union-match">FSV Mainz vs Union Berlin</div>
+      <div class="union-sub">So. 10. Mai · 19:30 Uhr · Auswärts</div>
+    </div>
+    <div class="union-arrow">→</div>
+  </a>
 
 </main>
 
@@ -396,44 +374,39 @@ main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
 </nav>
 
 <script>
-const monate = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const wochentage = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const monate     = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const monateKurz = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const wochentage = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 
 function pad(n) { return String(n).padStart(2,'0'); }
+function fmt(v) { return v.toLocaleString('de-DE', {style:'currency', currency:'EUR', minimumFractionDigits:0, maximumFractionDigits:0}); }
 
 // Clock
 function updateClock() {
-  const now = new Date();
-  document.getElementById('headerClock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const n = new Date();
+  document.getElementById('headerClock').textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}`;
 }
-updateClock();
-setInterval(updateClock, 1000);
+updateClock(); setInterval(updateClock, 1000);
 
 const now = new Date();
 const h = now.getHours();
-const greet = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
-document.getElementById('greetLabel').textContent = greet;
-
-// Header date
+document.getElementById('greetLabel').textContent = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
 document.getElementById('headerDate').textContent = `${wochentage[now.getDay()]}, ${now.getDate()}. ${monateKurz[now.getMonth()]}`;
-
-// Today widget
-document.getElementById('todayDate').textContent = `${now.getDate()}. ${monate[now.getMonth()]}`;
+document.getElementById('todayDate').textContent  = `${now.getDate()}. ${monate[now.getMonth()]}`;
+document.getElementById('finanzMonat').textContent = `${monate[now.getMonth()]} ${now.getFullYear()}`;
 
 // KW
 function getKW(d) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   const day = date.getUTCDay() || 7;
   date.setUTCDate(date.getUTCDate() + 4 - day);
-  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-  return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  const y0 = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return Math.ceil((((date - y0) / 86400000) + 1) / 7);
 }
 const kw = getKW(now);
 document.getElementById('todayKW').textContent = `KW ${kw} · ${now.getFullYear()}`;
-document.getElementById('kalenderKW').textContent = `KW ${kw} · ${now.getFullYear()}`;
+document.getElementById('kalenderKW').textContent = kw;
 
-// Wochenrange für Kalender
 function getWeekRange(d) {
   const day = d.getDay() || 7;
   const mon = new Date(d); mon.setDate(d.getDate() - day + 1);
@@ -442,14 +415,88 @@ function getWeekRange(d) {
 }
 document.getElementById('kalenderRange').textContent = getWeekRange(now);
 
-// Finanz Monat
-document.getElementById('finanzMonat').textContent = `${monate[now.getMonth()]} ${now.getFullYear()}`;
-document.getElementById('finanzGeaendert').textContent = `Budget aktiv · ${now.getFullYear()}`;
+// ── Events aus Kalender-App (localStorage) ──
+function fmtEventDate(dk, time) {
+  const d = new Date(dk + 'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((d - today) / 86400000);
+  const wd = ['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()];
+  const label = diff === 0 ? 'Heute' : diff === 1 ? 'Morgen' : diff === 2 ? 'Übermorgen' : `${wd}, ${d.getDate()}. ${monateKurz[d.getMonth()]}`;
+  return time ? `${label} · ${time} Uhr` : label;
+}
+
+function loadNextEvents() {
+  try {
+    const majaRaw = localStorage.getItem('hub_next_maja');
+    const konzertRaw = localStorage.getItem('hub_next_konzert');
+
+    if (majaRaw) {
+      const m = JSON.parse(majaRaw);
+      if (m) {
+        document.getElementById('nextMajaTitle').textContent = m.title || '–';
+        document.getElementById('nextMajaDate').textContent  = fmtEventDate(m.date, m.time);
+      }
+    } else {
+      document.getElementById('nextMajaDate').textContent = 'Kalender einmal öffnen';
+    }
+
+    if (konzertRaw) {
+      const k = JSON.parse(konzertRaw);
+      if (k) {
+        document.getElementById('nextKonzertTitle').textContent = k.title || '–';
+        document.getElementById('nextKonzertDate').textContent  = fmtEventDate(k.date, k.time);
+      }
+    } else {
+      document.getElementById('nextKonzertDate').textContent = 'Kalender einmal öffnen';
+    }
+  } catch(e) {}
+}
+loadNextEvents();
+
+// ── PUFFER aus localStorage (von Finanz-App) ──
+function loadPuffer() {
+  try {
+    const raw = localStorage.getItem('fp3');
+    if (!raw) { document.getElementById('pufferWert').textContent = 'App öffnen'; document.getElementById('pufferSub').textContent = 'Noch keine Daten geladen'; return; }
+    const S = JSON.parse(raw);
+
+    const g = S.gehalt?.v || 0;
+    const z = (S.zusatz?.on && S.zusatz?.v) ? S.zusatz.v : 0;
+    const ein = g + z;
+
+    // Alle aktiven Ausgabe-Items summieren
+    const ITEM_KEYS = ['miete','nebenkosten','strom','internet','gez','versicherung','handy','spotify','netflix','amazon','gym','lebensmittel','drogerie','kleidung','transport','freizeit','kinder','sonstiges','inv','notg','url','sond'];
+    let total = 0, inv = 0, notg = 0, url = 0, sond = 0;
+    ITEM_KEYS.forEach(k => {
+      if (S[k]?.on) {
+        const v = S[k].v || 0;
+        const f = S[k].freq || 'monthly';
+        const mv = f === 'quarterly' ? v/3 : f === 'annual' ? v/12 : v;
+        total += mv;
+        if (k === 'inv')  inv  += mv;
+        if (k === 'notg') notg += mv;
+        if (k === 'url')  url  += mv;
+        if (k === 'sond') sond += mv;
+      }
+    });
+
+    const rest = ein - total;
+    const puf  = rest - inv - notg - url - sond;
+    const el   = document.getElementById('pufferWert');
+    el.textContent = fmt(puf);
+    el.className   = 'card-preview-value ' + (puf >= 0 ? 'green' : 'red');
+    document.getElementById('pufferSub').textContent = puf >= 0 ? 'Im Plan ✓' : 'Überbudget – prüfen!';
+  } catch(e) {
+    document.getElementById('pufferWert').textContent = '--';
+    document.getElementById('pufferSub').textContent  = 'Daten nicht lesbar';
+  }
+}
+loadPuffer();
 
 // Wetter
 async function loadWetter() {
   try {
-    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');
+    const res  = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');
     const data = await res.json();
     const temp = Math.round(data.current.temperature_2m);
     const code = data.current.weathercode;
@@ -475,7 +522,7 @@ const quotes = [
   "Tue heute, was andere nicht wollen – lebe morgen, wie andere nicht können.",
   "Fortschritt, nicht Perfektion.",
   "Jeder Tag ist eine neue Chance.",
-  "Investiere in dich selbst – es ist die beste Rendite die es gibt.",
+  "Investiere in dich selbst – die beste Rendite die es gibt.",
   "Klarheit kommt durch Handeln, nicht durch Nachdenken.",
   "Vertraue dem Prozess.",
   "Ruhe ist keine Schwäche – sie ist Strategie.",
