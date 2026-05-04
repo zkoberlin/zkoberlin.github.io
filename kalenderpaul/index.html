@@ -206,6 +206,7 @@ body {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: 20px; padding: 3px 8px;
   cursor: pointer; transition: .15s; user-select: none;
+  white-space: nowrap; flex-shrink: 0;
 }
 .li:hover { border-color: var(--blue); color: var(--blue); transform: scale(1.04); }
 .li.active { border-color: currentColor; box-shadow: 0 0 0 2px currentColor; }
@@ -362,10 +363,18 @@ body {
   overflow: hidden;
   color: var(--text);
 }
-.day:not(.empty):hover { transform: scale(1.025); box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 2; }
+.day:not(.empty):not(.expanded):hover { transform: scale(1.025); box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 2; }
+.day.expanded:hover { transform: none; }
 .day.empty { background: transparent; pointer-events: none; }
 .day.past { opacity: .32; }
-.day.today { background: var(--blue-l); box-shadow: inset 0 0 0 1.5px var(--blue); }
+.day.today {
+  background: var(--blue-l);
+  box-shadow: inset 0 0 0 2px var(--blue);
+  outline: 2px solid var(--blue);
+  outline-offset: -1px;
+  z-index: 1;
+  position: relative;
+}
 
 .dn {
   font-size: 12px; font-weight: 600; color: var(--text);
@@ -521,6 +530,57 @@ body {
   .sticky-bar-days span { font-size: 9px; }
 }
 
+.header-search {
+  margin-bottom: 7px;
+}
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-search input {
+  width: 100%;
+  max-width: 280px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+  padding: 6px 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+.header-search input:focus { border-color: var(--blue); }
+.header-search input::placeholder { color: var(--text3); }
+.search-count {
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+.search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: .15s;
+}
+.search-clear:hover { color: var(--red); background: var(--surface2); }
+
+.day.search-match {
+  outline: 2px solid var(--blue) !important;
+  outline-offset: -1px;
+  z-index: 2;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .header-search input { max-width: 100%; font-size: 11px; }
+}
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -634,19 +694,24 @@ body {
     </div>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
   </div>
+  <div class="header-search">
+    <input type="text" id="searchInput" placeholder="🔍  Termin suchen…" oninput="searchCalendar(this.value)" />
+    <span class="search-count" id="searchCount"></span>
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+  </div>
   <div class="legend" id="legend">
+  <div class="li" onclick="filterBy('e-work')" data-cat="e-work"><div class="ld" style="background:#1e40af"></div> Arbeit</div>
+  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
+  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
+  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
+  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
   <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div> Kids bei Paul</div>
   <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div> Kids bei Dani</div>
-  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
-  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
-  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
-  <div class="li" onclick="filterBy('e-work')" data-cat="e-work"><div class="ld" style="background:#1e40af"></div> Arbeit</div>
-  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
-  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
-  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
   <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div> Konzerte & Events</div>
-  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
-  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
+  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
+  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
+  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
+  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
 </div><!-- end legend -->
   <div class="today-panel" id="todayPanel">
     <div class="tp-header">
@@ -1181,10 +1246,12 @@ function scrollToToday() {
   const header = document.querySelector('.header');
   const headerH = header ? header.offsetHeight : 160;
   const cellAbsTop = cell.getBoundingClientRect().top + window.pageYOffset;
-  // On mobile add extra offset for sticky month+weekday bar (~60px)
+  // Account for sticky-bar (month+weekdays) height
+  const stickyBar = cell.closest('.mc')?.querySelector('.sticky-bar');
+  const stickyBarH = stickyBar ? stickyBar.offsetHeight : 0;
   const isMobile = window.innerWidth <= 600;
-  const extraPad = isMobile ? 70 : 16;
-  window.scrollTo({ top: cellAbsTop - headerH - extraPad, behavior: 'smooth' });
+  const extraPad = isMobile ? 16 : 16;
+  window.scrollTo({ top: cellAbsTop - headerH - stickyBarH - extraPad, behavior: 'smooth' });
 
   setTimeout(() => {
     cell.classList.add('wobble');
@@ -1412,8 +1479,74 @@ function closeFilter() {
   });
 }
 
+function hideEmptyFilters() {
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  const futureDates = Object.keys(SE).filter(d => d >= todayKey);
+  
+  document.querySelectorAll('.li[data-cat]').forEach(chip => {
+    const cat = chip.dataset.cat;
+    const hasEntries = futureDates.some(d => 
+      (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
+    );
+    chip.style.display = hasEntries ? '' : 'none';
+  });
+}
+
+function searchCalendar(query) {
+  document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
+  const clearBtn = document.getElementById('searchClear');
+  const countEl = document.getElementById('searchCount');
+  
+  if(!query || query.trim().length < 2) {
+    clearBtn.style.display = 'none';
+    countEl.textContent = '';
+    return;
+  }
+  
+  clearBtn.style.display = 'block';
+  
+  // Support multi-word search (all words must match)
+  const words = query.toLowerCase().trim().split(/\s+/);
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  let matches = 0;
+  let firstMatch = null;
+  
+  Object.keys(SE).sort().forEach(key => {
+    if(key < todayKey) return; // skip past
+    const evs = SE[key] || [];
+    const text = evs.map(ev => ev.t).join(' ').toLowerCase();
+    const matched = words.every(w => text.includes(w));
+    if(matched) {
+      const cell = document.querySelector(`.day[data-key="${key}"]`);
+      if(cell) {
+        cell.classList.add('search-match');
+        matches++;
+        if(!firstMatch) firstMatch = cell;
+      }
+    }
+  });
+  
+  countEl.textContent = matches > 0 ? `${matches} Treffer` : 'Kein Treffer';
+  countEl.style.color = matches > 0 ? 'var(--blue)' : 'var(--red)';
+  
+  if(firstMatch) {
+    const header = document.querySelector('.header');
+    const headerH = header ? header.offsetHeight : 160;
+    const cellTop = firstMatch.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: cellTop - headerH - 16, behavior: 'smooth' });
+  }
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  document.getElementById('searchCount').textContent = '';
+  document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
+}
+
 renderToday();
 renderAll();
+hideEmptyFilters();
 
 // Set header height CSS variable for sticky bars
 function updateHeaderVar() {
