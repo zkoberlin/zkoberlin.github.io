@@ -407,11 +407,12 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 
   <div class="d-sidebar">
     <div class="d-navlbl">Kategorien</div>
-    <div class="d-nav on" onclick="NC(this,'dsec-wohnen')"><div class="d-nav-l">🏠 Wohnen</div><span class="d-nav-t" id="dnav-wohnen">–</span></div>
-    <div class="d-nav" onclick="NC(this,'dsec-versicherungen')"><div class="d-nav-l">🛡️ Versicherungen</div><span class="d-nav-t" id="dnav-versicherungen">–</span></div>
-    <div class="d-nav" onclick="NC(this,'dsec-familie')"><div class="d-nav-l">👨‍👧‍👦 Familie</div><span class="d-nav-t" id="dnav-familie">–</span></div>
-    <div class="d-nav" onclick="NC(this,'dsec-abos')"><div class="d-nav-l">📱 Abos</div><span class="d-nav-t" id="dnav-abos">–</span></div>
-    <div class="d-nav" onclick="NC(this,'dsec-freizeit')"><div class="d-nav-l">⚽ Freizeit</div><span class="d-nav-t" id="dnav-freizeit">–</span></div>
+    <div class="d-nav on" onclick="NC(this,'dsec-wohnen')" title="Miete, Strom, Internet …"><div class="d-nav-l">🏠 Wohnen</div><span class="d-nav-t" id="dnav-wohnen">–</span></div>
+    <div class="d-nav" onclick="NC(this,'dsec-versicherungen')" title="Haftpflicht, Rechtsschutz, GEZ …"><div class="d-nav-l">🛡️ Versicherungen</div><span class="d-nav-t" id="dnav-versicherungen">–</span></div>
+    <div class="d-nav" onclick="NC(this,'dsec-kredite')" title="Kredit, Schufa, ING …"><div class="d-nav-l">💳 Kredite & Finanzen</div><span class="d-nav-t" id="dnav-kredite">–</span></div>
+    <div class="d-nav" onclick="NC(this,'dsec-familie')" title="Unterhalt, Kids, Handys …"><div class="d-nav-l">👨‍👧‍👦 Familie</div><span class="d-nav-t" id="dnav-familie">–</span></div>
+    <div class="d-nav" onclick="NC(this,'dsec-abos')" title="Spotify, iCloud, Amazon …"><div class="d-nav-l">📱 Abos</div><span class="d-nav-t" id="dnav-abos">–</span></div>
+    <div class="d-nav" onclick="NC(this,'dsec-freizeit')" title="BVG, Dauerkarte, Garmin …"><div class="d-nav-l">⚽ Freizeit</div><span class="d-nav-t" id="dnav-freizeit">–</span></div>
     <div class="d-navlbl" style="margin-top:8px;">Gesamt</div>
     <div class="d-sb-box">
       <div class="d-sb-row"><span class="d-sb-l">Einnahmen</span><span class="d-sb-v" id="dsb-ein" style="color:var(--acc)">–</span></div>
@@ -459,19 +460,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         <input type="range" class="dsl" min="100" max="900" step="10" value="450" id="dsl-lebensmittel" oninput=\"DI('lebensmittel',this.value,event)\">
         <span class="dval" id="dval-lebensmittel">450 €</span>
       </div>
-      <div class="dr" id="dr-schufa" style="cursor:pointer;" onclick="OE('schufa')">
-        <span class="dico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-schufa">Schufa</span>
-        <input type="range" class="dsl" min="0" max="15" step="0.5" value="4.95" id="dsl-schufa" oninput=\"DI('schufa',this.value,event)\">
-        <span class="dval" id="dval-schufa">4,95 €</span>
-      </div>
-      <div class="dr" id="dr-ing" style="cursor:pointer;" onclick="OE('ing')">
-        <span class="dico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-ing">ING Gebühren</span>
-        <input type="range" class="dsl" min="0" max="10" step="0.5" value="1.49" id="dsl-ing" oninput=\"DI('ing',this.value,event)\">
-        <span class="dval" id="dval-ing">1,49 €</span>
-      </div>
-      </div>
+</div>
     </div>
     <div class="dsec" id="dsec-versicherungen">
       <div class="dsec-hdr">
@@ -491,12 +480,6 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         <input type="range" class="dsl" min="0" max="50" step="0.01" value="31.42" id="dsl-rechtsschutz" oninput=\"DI('rechtsschutz',this.value,event)\">
         <span class="dval" id="dval-rechtsschutz">31,42 €</span>
       </div>
-      <div class="dr" id="dr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
-        <span class="dico">💳</span>
-        <span class="dlbl" id="dlbl-kredit">Kredit Rate</span>
-        <input type="range" class="dsl" min="0" max="800" step="10" value="320" id="dsl-kredit" oninput=\"DI('kredit',this.value,event)\">
-        <span class="dval" id="dval-kredit">320 €</span>
-      </div>
       <div class="dr" id="dr-gez" style="cursor:pointer;" onclick="OE('gez')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=rundfunkbeitrag.de&sz=64" onerror="this.parentNode.textContent='📺'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></span>
@@ -505,6 +488,33 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       </div>
       </div>
     </div>
+    <div class="dsec" id="dsec-kredite">
+      <div class="dsec-hdr">
+        <span class="dsec-title">💳 Kredite & Finanzen</span>
+        <span class="dsec-tot" id="dtot-kredite">–</span>
+      </div>
+      <div id="dbody-kredite">
+        <div class="dr" id="dr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
+          <span class="dico">💳</span>
+          <span class="dlbl" id="dlbl-kredit">Kredit Rate</span>
+          <input type="range" class="dsl" min="0" max="800" step="10" value="320" id="dsl-kredit" oninput="DI('kredit',this.value,event)">
+          <span class="dval" id="dval-kredit">320 €</span>
+        </div>
+        <div class="dr" id="dr-schufa" style="cursor:pointer;" onclick="OE('schufa')">
+          <span class="dico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
+          <span class="dlbl" id="dlbl-schufa">Schufa</span>
+          <input type="range" class="dsl" min="0" max="15" step="0.5" value="4.95" id="dsl-schufa" oninput="DI('schufa',this.value,event)">
+          <span class="dval" id="dval-schufa">4,95 €</span>
+        </div>
+        <div class="dr" id="dr-ing" style="cursor:pointer;" onclick="OE('ing')">
+          <span class="dico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
+          <span class="dlbl" id="dlbl-ing">ING Gebühren</span>
+          <input type="range" class="dsl" min="0" max="10" step="0.5" value="1.49" id="dsl-ing" oninput="DI('ing',this.value,event)">
+          <span class="dval" id="dval-ing">1,49 €</span>
+        </div>
+      </div>
+    </div>
+
     <div class="dsec" id="dsec-familie">
       <div class="dsec-hdr">
         <span class="dsec-title">👨‍👧‍👦 Familie</span>
@@ -885,6 +895,43 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         
       </div>
     </div>
+    <div class="mseclbl"><span class="mseclbl-txt">💳 Kredite & Finanzen</span><span class="msectot" id="mtot-kredite">–</span></div>
+    <div class="msec" id="mbody-kredite">
+      <div class="mr" id="mr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
+        <span class="mico">💳</span>
+        <div class="mrm">
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-kredit">Kredit Rate</div>
+            <span class="mrval" id="mrval-kredit">320 €</span>
+          </div>
+          <input type="range" class="msl" min="0" max="800" step="10" value="320" id="msl-kredit" oninput="MI('kredit',this.value,event)">
+        </div>
+        <button type="button" class="mr-del" onclick="confirmDel('kredit','Kredit Rate')">&times;</button>
+      </div>
+      <div class="mr" id="mr-schufa" style="cursor:pointer;" onclick="OE('schufa')">
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
+        <div class="mrm">
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-schufa">Schufa</div>
+            <span class="mrval" id="mrval-schufa">4,95 €</span>
+          </div>
+          <input type="range" class="msl" min="0" max="15" step="0.5" value="4.95" id="msl-schufa" oninput="MI('schufa',this.value,event)">
+        </div>
+        <button type="button" class="mr-del" onclick="confirmDel('schufa','Schufa')">&times;</button>
+      </div>
+      <div class="mr" id="mr-ing" style="cursor:pointer;" onclick="OE('ing')">
+        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
+        <div class="mrm">
+          <div class="mr-top">
+            <div class="mrlbl" id="mrlbl-ing">ING Gebühren</div>
+            <span class="mrval" id="mrval-ing">1,49 €</span>
+          </div>
+          <input type="range" class="msl" min="0" max="10" step="0.5" value="1.49" id="msl-ing" oninput="MI('ing',this.value,event)">
+        </div>
+        <button type="button" class="mr-del" onclick="confirmDel('ing','ING Gebühren')">&times;</button>
+      </div>
+    </div>
+
     <div class="mseclbl"><span class="mseclbl-txt">👨‍👧‍👦 Familie</span><span class="msectot" id="mtot-familie">–</span></div>
     <div class="msec" id="mbody-familie">
       <div class="mr" id="mr-unterhalt" style="cursor:pointer;" onclick="OE('unterhalt')">
@@ -1141,7 +1188,7 @@ const R2=v=>Math.round(v*100)/100;
 
 const ITEMS=[{k:"miete",cat:"Wohnen",def:1808},{k:"strom",cat:"Wohnen",def:43},{k:"internet",cat:"Wohnen",def:45},{k:"lebensmittel",cat:"Wohnen",def:450},{k:"schufa",cat:"Wohnen",def:4.95},{k:"ing",cat:"Wohnen",def:1.49},{k:"haftpflicht",cat:"Versicherungen",def:9.08},{k:"rechtsschutz",cat:"Versicherungen",def:31.42},{k:"kredit",cat:"Versicherungen",def:320},{k:"gez",cat:"Versicherungen",def:18.33},{k:"unterhalt",cat:"Familie",def:360},{k:"kids",cat:"Familie",def:150},{k:"handyemil",cat:"Familie",def:7.99},{k:"handyrosa",cat:"Familie",def:7.99},{k:"ukv",cat:"Familie",def:9.89},{k:"sparta",cat:"Familie",def:15},{k:"bling",cat:"Familie",def:2.67},{k:"unionemil",cat:"Familie",def:3.5},{k:"handypaul",cat:"Abos",def:11},{k:"icloud",cat:"Abos",def:9.99},{k:"spotify",cat:"Abos",def:21.99},{k:"finanzguru",cat:"Abos",def:2.99},{k:"claude",cat:"Abos",def:22},{k:"unionmitgl",cat:"Abos",def:10},{k:"amazon",cat:"Abos",def:7.42},{k:"parqet",cat:"Abos",def:4.5},{k:"futbology",cat:"Abos",def:0.83},{k:"fotmob",cat:"Abos",def:0.71},{k:"bvg",cat:"Freizeit",def:63},{k:"dauerkarte",cat:"Freizeit",def:21.67},{k:"garmin",cat:"Freizeit",def:7.42}];
 
-const CC={'Wohnen':'#2563EB','Versicherungen':'#D97706','Familie':'#DB2777','Abos':'#7C3AED','Freizeit':'#059669'};
+const CC={'Wohnen':'#2563EB','Versicherungen':'#D97706','Kredite & Finanzen':'#DC2626','Familie':'#DB2777','Abos':'#7C3AED','Freizeit':'#059669'};
 
 // STATE
 const S={};
@@ -1409,20 +1456,45 @@ function RC(){
   setAlert('m-alert','m-alert-txt',ac,at);
 
   // section totals
-  const SECS={wohnen:['miete','strom','internet','lebensmittel','schufa','ing'],
-    versicherungen:['haftpflicht','rechtsschutz','kredit','gez'],
+  const SECS={wohnen:['miete','strom','internet','lebensmittel'],
+    versicherungen:['haftpflicht','rechtsschutz','gez'],
+    kredite:['kredit','schufa','ing'],
     familie:['unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil'],
     abos:['handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob'],
     freizeit:['bvg','dauerkarte','garmin']};
+  const catSums={};
   Object.entries(SECS).forEach(([sec,keys])=>{
     let sum=keys.reduce((s,k)=>s+(S[k]&&S[k].on?S[k].v:0),0);
     CI.filter(i=>i.cat.toLowerCase()===sec||i.cat===sec).forEach(i=>{if(S[i.k]&&S[i.k].on)sum+=S[i.k].v;});
     sum=R2(sum);
+    catSums[sec]=sum;
     set('dtot-'+sec,F(sum)); set('dnav-'+sec,F(sum)); set('mtot-'+sec,F(sum));
   });
+  // Sort desktop sidebar nav by value descending
+  sortSidebarNav(catSums);
 
   RWF(ein,total,rest,inv,notg,url,sond,puf);
   RPIE(ct);
+}
+
+function sortSidebarNav(catSums) {
+  const sidebar = document.querySelector('.d-sidebar');
+  if(!sidebar) return;
+  const navItems = Array.from(sidebar.querySelectorAll('.d-nav'));
+  if(navItems.length === 0) return;
+  // Sort by category sum descending
+  navItems.sort((a,b)=>{
+    const aKey = a.querySelector('[id^="dnav-"]')?.id?.replace('dnav-','');
+    const bKey = b.querySelector('[id^="dnav-"]')?.id?.replace('dnav-','');
+    return (catSums[bKey]||0) - (catSums[aKey]||0);
+  });
+  // Find insertion point - after first navlbl
+  const firstLbl = sidebar.querySelector('.d-navlbl');
+  const secondLbl = Array.from(sidebar.querySelectorAll('.d-navlbl'))[1];
+  navItems.forEach(el=>{
+    if(secondLbl) sidebar.insertBefore(el, secondLbl);
+    else sidebar.appendChild(el);
+  });
 }
 
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
@@ -1575,6 +1647,8 @@ function renderCR(it){
   const db=document.getElementById('dbody-'+cat);
   if(db){
     const d=document.createElement('div');d.className='dr';d.id='dr-'+it.k;
+    d.style.cursor='pointer';
+    d.onclick=(e)=>{if(e.target.tagName!=='INPUT')OE(it.k);};
     d.innerHTML=`<span class="dico">✏️</span><span class="dlbl" id="dlbl-${it.k}">${it.name}${star}</span><input type="range" class="dsl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="dsl-${it.k}" oninput=\"DI('${it.k}',this.value,event)\"><span class="dval" id="dval-${it.k}">${F(it.monthly)}</span>`;
     db.appendChild(d);
   }
@@ -1582,7 +1656,9 @@ function renderCR(it){
   const mb=document.getElementById('mbody-'+cat);
   if(mb){
     const m=document.createElement('div');m.className='mr';m.id='mr-'+it.k;
-    m.innerHTML=`<button type="button" class="mtog on" id="mtog-${it.k}" onclick="DT(this,'${it.k}')"></button><span class="mico">✏️</span><div class="mrm"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput=\"MI('${it.k}',this.value,event)\"></div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span><button type="button" class="mdel" onclick="DC2('${it.k}')">&times;</button>`;
+    m.style.cursor='pointer';
+    m.onclick=(e)=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON')OE(it.k);};
+    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput=\"MI('${it.k}',this.value,event)\"></div><button type="button" class="mr-del" onclick="confirmDel('${it.k}','${it.name}')">&times;</button>`;
     mb.appendChild(m);
   }
 }
