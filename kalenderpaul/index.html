@@ -1579,6 +1579,38 @@ window.addEventListener('scroll', () => {
 
 // Update header title on scroll to show current visible month
 
+// ── Hub-Sync: nächste Events in localStorage schreiben ──
+function syncNextEventsToHub() {
+  try {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const keys = Object.keys(EVENTS).sort();
+    let nextMaja = null, nextKonzert = null;
+
+    for (const dk of keys) {
+      const d = new Date(dk + 'T00:00:00');
+      if (d < today) continue;
+      const evs = EVENTS[dk];
+      for (const ev of evs) {
+        const timeMatch = ev.t.match(/(\d{2}:\d{2})/);
+        const time = timeMatch ? timeMatch[1] : '';
+        const title = ev.t.replace(/^[\u{1F000}-\u{1FFFF}\u2600-\u27FF\uFE00-\uFE0F\s]*/u, '').replace(/\s+\d{2}:\d{2}.*$/, '').trim();
+        if (!nextMaja && ev.c === 'e-maja') {
+          nextMaja = { date: dk, title, time };
+        }
+        if (!nextKonzert && ev.c === 'e-konzert') {
+          nextKonzert = { date: dk, title, time };
+        }
+        if (nextMaja && nextKonzert) break;
+      }
+      if (nextMaja && nextKonzert) break;
+    }
+    localStorage.setItem('hub_next_maja', JSON.stringify(nextMaja));
+    localStorage.setItem('hub_next_konzert', JSON.stringify(nextKonzert));
+  } catch(e) {}
+}
+syncNextEventsToHub();
+
 </script>
 </body>
 </html>
