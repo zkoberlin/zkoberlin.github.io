@@ -123,7 +123,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-s
 .d-zrow{display:flex;align-items:center;gap:8px;padding-top:9px;margin-top:9px;border-top:0.5px solid var(--sep2);}
 .d-zlbl{font-size:12px;color:var(--t2);flex:1;}
 .d-zval{font-size:12px;font-weight:600;color:var(--t1);min-width:44px;text-align:right;}
-.d-drow{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.d-drow{display:flex;align-items:center;gap:8px;margin-bottom:6px;white-space:nowrap;overflow:hidden;}
 .d-drow:last-child{margin:0;}
 .d-dlbl{font-size:12px;color:var(--t2);flex:1;}
 .d-dval{font-size:12px;font-weight:600;color:var(--t1);min-width:52px;text-align:right;}
@@ -692,10 +692,10 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <div class="d-ps">
       <div class="d-plbl">Rest-Verteilung <span style="float:right;color:var(--t1);font-weight:600;font-size:11px;" id="d-restlbl">–</span></div>
       <div class="d-pcard">
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput=\"RI('invest',this.value,'d',event)\"><span class="d-dval" id="d-invest-val">0 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput=\"RI('notgr',this.value,'d',event)\"><span class="d-dval" id="d-notgr-val">100 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput=\"RI('urlaub',this.value,'d',event)\"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput=\"RI('sonder',this.value,'d',event)\"><span class="d-dval" id="d-sonder-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl" style="min-width:80px;">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput=\"RI('invest',this.value,'d',event)\"><span class="d-dval" id="d-invest-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl" style="min-width:80px;">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput=\"RI('notgr',this.value,'d',event)\"><span class="d-dval" id="d-notgr-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl" style="min-width:80px;">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput=\"RI('urlaub',this.value,'d',event)\"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl" style="min-width:80px;">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput=\"RI('sonder',this.value,'d',event)\"><span class="d-dval" id="d-sonder-val">0 €</span></div>
       </div>
     </div>
     <div class="d-ps">
@@ -825,23 +825,13 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         </div>
         
       </div>
-      <div class="mr" id="mr-schufa" style="cursor:pointer;" onclick="OE('schufa')">
-        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
-        <div class="mrm">
-          <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-schufa">Schufa</div>
-            <span class="mrval" id="mrval-schufa">4,95 €</span>
+      <span class="mrval" id="mrval-schufa">4,95 €</span>
           </div>
           <input type="range" class="msl" min="0" max="15" step="0.5" value="4.95" id="msl-schufa" oninput=\"MI('schufa',this.value,event)\">
         </div>
         
       </div>
-      <div class="mr" id="mr-ing" style="cursor:pointer;" onclick="OE('ing')">
-        <span class="mico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
-        <div class="mrm">
-          <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-ing">ING Gebühren</div>
-            <span class="mrval" id="mrval-ing">1,49 €</span>
+      <span class="mrval" id="mrval-ing">1,49 €</span>
           </div>
           <input type="range" class="msl" min="0" max="10" step="0.5" value="1.49" id="msl-ing" oninput=\"MI('ing',this.value,event)\">
         </div>
@@ -872,12 +862,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         </div>
         
       </div>
-      <div class="mr" id="mr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
-        <span class="mico">💳</span>
-        <div class="mrm">
-          <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-kredit">Kredit Rate</div>
-            <span class="mrval" id="mrval-kredit">320 €</span>
+      <span class="mrval" id="mrval-kredit">320 €</span>
           </div>
           <input type="range" class="msl" min="0" max="800" step="10" value="320" id="msl-kredit" oninput=\"MI('kredit',this.value,event)\">
         </div>
@@ -906,7 +891,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
           </div>
           <input type="range" class="msl" min="0" max="800" step="10" value="320" id="msl-kredit" oninput="MI('kredit',this.value,event)">
         </div>
-        <button type="button" class="mr-del" onclick="confirmDel('kredit','Kredit Rate')">&times;</button>
+        
       </div>
       <div class="mr" id="mr-schufa" style="cursor:pointer;" onclick="OE('schufa')">
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=schufa.de&sz=64" onerror="this.parentNode.textContent='📋'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
@@ -917,7 +902,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
           </div>
           <input type="range" class="msl" min="0" max="15" step="0.5" value="4.95" id="msl-schufa" oninput="MI('schufa',this.value,event)">
         </div>
-        <button type="button" class="mr-del" onclick="confirmDel('schufa','Schufa')">&times;</button>
+        
       </div>
       <div class="mr" id="mr-ing" style="cursor:pointer;" onclick="OE('ing')">
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=ing.de&sz=64" onerror="this.parentNode.textContent='🏦'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
@@ -928,7 +913,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
           </div>
           <input type="range" class="msl" min="0" max="10" step="0.5" value="1.49" id="msl-ing" oninput="MI('ing',this.value,event)">
         </div>
-        <button type="button" class="mr-del" onclick="confirmDel('ing','ING Gebühren')">&times;</button>
+        
       </div>
     </div>
 
@@ -1658,7 +1643,7 @@ function renderCR(it){
     const m=document.createElement('div');m.className='mr';m.id='mr-'+it.k;
     m.style.cursor='pointer';
     m.onclick=(e)=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON')OE(it.k);};
-    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput=\"MI('${it.k}',this.value,event)\"></div><button type="button" class="mr-del" onclick="confirmDel('${it.k}','${it.name}')">&times;</button>`;
+    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput=\"MI('${it.k}',this.value,event)\"></div>`;
     mb.appendChild(m);
   }
 }
