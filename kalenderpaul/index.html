@@ -131,7 +131,12 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 10px 28px 0;
+  padding: 10px 0 0;
+}
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 28px;
 }
 .header-top {
   display: flex;
@@ -615,6 +620,7 @@ body {
 <body>
 
 <div class="header">
+  <div class="header-inner">
   <div class="header-top">
     <div class="header-title">
       <span class="header-icon">📅</span>
@@ -646,6 +652,7 @@ body {
     </div>
     <div class="tp-list" id="tpList"></div>
   </div>
+  </div><!-- end header-inner -->
 </div><!-- end header -->
 
 <!-- Filter Panel -->
