@@ -59,76 +59,88 @@
 
 body {
   font-family: 'DM Sans', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
 }
 
+/* ── HEADER ── */
 header {
   background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 100;
-  padding: 14px 28px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
 }
-@media (prefers-color-scheme: dark) {
-  header { background: rgba(14,14,16,0.88); }
-}
+@media (prefers-color-scheme: dark) { header { background: rgba(14,14,16,0.88); } }
 
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-.logo-icon {
-  width: 34px; height: 34px; background: var(--text);
-  border-radius: 9px; display: flex; align-items: center;
-  justify-content: center; font-size: 17px; flex-shrink: 0;
+.logo-icon { width: 32px; height: 32px; background: var(--text); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.logo-text { font-size: 14px; font-weight: 600; letter-spacing: -.3px; }
+.logo-sub  { font-size: 10px; color: var(--text2); margin-top: 1px; }
+
+/* Greeting in header – always visible */
+.header-greeting {
+  text-align: center;
+  font-size: 14px; font-weight: 600;
+  letter-spacing: -.2px;
+  white-space: nowrap;
 }
-.logo-text { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
-.logo-sub  { font-size: 11px; color: var(--text2); margin-top: 1px; }
-.header-clock { font-size: 14px; font-weight: 500; color: var(--text2); letter-spacing: -.2px; }
+.header-greeting span { color: var(--text2); font-weight: 400; }
 
-main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
+.header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.header-clock { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
+.header-date  { font-size: 10px; color: var(--text2); }
 
-.greeting { margin-bottom: 20px; animation: fadeUp .5s ease both; }
-.greeting-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 4px; }
-.greeting-text { font-size: 28px; font-weight: 300; letter-spacing: -.8px; line-height: 1.15; }
-.greeting-text strong { font-weight: 700; }
+@media (max-width: 500px) {
+  .header-greeting { font-size: 12px; }
+  .logo-sub { display: none; }
+}
 
+/* ── MAIN ── */
+main { max-width: 900px; margin: 0 auto; padding: 24px 24px 100px; }
+
+/* Quote */
 .quote-card {
   background: var(--surface); border-radius: var(--radius-md);
-  border: 1px solid var(--border); padding: 13px 16px;
-  margin-bottom: 24px; display: flex; align-items: flex-start; gap: 10px;
-  box-shadow: var(--shadow-sm); animation: fadeUp .5s .05s ease both;
+  border: 1px solid var(--border); padding: 12px 16px;
+  margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;
+  box-shadow: var(--shadow-sm); animation: fadeUp .5s ease both;
 }
-.quote-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-.quote-text { font-size: 12.5px; color: var(--text2); line-height: 1.5; font-style: italic; }
+.quote-icon { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+.quote-text { font-size: 12px; color: var(--text2); line-height: 1.5; font-style: italic; }
 
+/* Widgets */
 .widgets-row {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 24px;
-  animation: fadeUp .5s .08s ease both;
+  gap: 10px; margin-bottom: 20px;
+  animation: fadeUp .5s .05s ease both;
 }
 @media (max-width: 480px) { .widgets-row { grid-template-columns: 1fr; } }
 
 .widget {
   background: var(--surface); border-radius: var(--radius-md);
-  border: 1px solid var(--border); padding: 14px 16px;
+  border: 1px solid var(--border); padding: 13px 15px;
   box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 12px;
 }
-.widget-icon { font-size: 26px; flex-shrink: 0; }
-.widget-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 2px; }
-.widget-value { font-size: 17px; font-weight: 600; letter-spacing: -.3px; }
+.widget-icon { font-size: 24px; flex-shrink: 0; }
+.widget-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 2px; }
+.widget-value { font-size: 16px; font-weight: 600; letter-spacing: -.3px; }
 .widget-sub   { font-size: 11px; color: var(--text2); margin-top: 1px; }
 
+/* Section */
 .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--text3); margin-bottom: 12px; margin-left: 2px; }
 
-.app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+/* App Grid */
+.app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
 @media (max-width: 580px) { .app-grid { grid-template-columns: 1fr; } }
 
 .app-card {
   background: var(--surface); border-radius: var(--radius-lg);
-  padding: 22px; border: 1px solid var(--border);
+  padding: 20px; border: 1px solid var(--border);
   text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
   position: relative; overflow: hidden;
@@ -136,9 +148,9 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
   transition: transform var(--transition), box-shadow var(--transition);
   animation: fadeUp .5s ease both;
 }
-.app-card:nth-child(1) { animation-delay: .1s; }
-.app-card:nth-child(2) { animation-delay: .15s; }
-.app-card:nth-child(3) { animation-delay: .2s; }
+.app-card:nth-child(1) { animation-delay: .08s; }
+.app-card:nth-child(2) { animation-delay: .12s; }
+.app-card:nth-child(3) { animation-delay: .16s; }
 .app-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -150,26 +162,43 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
 .app-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .app-card:active { transform: scale(.98); }
 
-.card-icon { width: 46px; height: 46px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
+/* Status dot */
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 21px; }
 .card-icon.green  { background: var(--green-l); }
 .card-icon.blue   { background: var(--blue-l); }
 .card-icon.purple { background: var(--purple-l); }
 
-.card-title { font-size: 15px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
-.card-desc  { font-size: 12px; color: var(--text2); line-height: 1.45; margin-bottom: 12px; flex: 1; }
+.status-dot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 9.5px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.status-dot::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s infinite;
+}
 
+.card-title { font-size: 15px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 3px; }
+.card-desc  { font-size: 11.5px; color: var(--text2); line-height: 1.45; margin-bottom: 11px; flex: 1; }
+
+/* Preview */
 .card-preview {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 9px 11px; margin-bottom: 10px;
 }
-.card-preview-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 3px; }
+.card-preview-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 3px; }
 .card-preview-value { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -.2px; }
+.card-preview-sub { font-size: 10.5px; color: var(--text2); margin-top: 2px; }
 
-.card-stats { display: flex; gap: 8px; margin-bottom: 10px; }
+/* Stats */
+.card-stats { display: flex; gap: 7px; margin-bottom: 10px; }
 .card-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 5px 9px; flex: 1; }
 .card-stat-label { font-size: 9px; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
-.card-stat-value { font-size: 12.5px; font-weight: 600; letter-spacing: -.2px; }
+.card-stat-value { font-size: 12px; font-weight: 600; letter-spacing: -.2px; }
 
+/* Footer */
 .card-footer { display: flex; align-items: center; gap: 6px; }
 .card-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); }
 .card-arrow { margin-left: auto; font-size: 14px; color: var(--text3); transition: transform var(--transition); }
@@ -178,6 +207,26 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
 .app-card.soon { opacity: .4; pointer-events: none; border-style: dashed; }
 .soon-badge { position: absolute; top: 14px; right: 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--surface2); border: 1px solid var(--border); color: var(--text3); padding: 3px 8px; border-radius: 20px; }
 
+/* Shortcuts */
+.shortcuts-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  animation: fadeUp .5s .2s ease both;
+}
+.shortcut-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 22px; padding: 8px 14px;
+  text-decoration: none; color: var(--text2);
+  font-size: 12px; font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.shortcut-btn:hover { background: var(--surface2); color: var(--text); transform: translateY(-1px); }
+.shortcut-btn:active { transform: scale(.97); }
+.shortcut-icon { font-size: 14px; }
+
+/* Bottom Nav */
 .bottom-nav {
   display: none; position: fixed; bottom: 0; left: 0; right: 0;
   background: rgba(255,255,255,0.92);
@@ -197,6 +246,10 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .4; }
+}
 </style>
 </head>
 <body>
@@ -209,26 +262,29 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
       <div class="logo-sub">Persönliches Dashboard</div>
     </div>
   </a>
-  <div class="header-clock" id="headerClock">--:--</div>
+  <div class="header-greeting" id="headerGreeting">
+    <span id="greetLabel">Guten Morgen</span>, Paul 👋
+  </div>
+  <div class="header-right">
+    <div class="header-clock" id="headerClock">--:--</div>
+    <div class="header-date" id="headerDate">--</div>
+  </div>
 </header>
 
 <main>
 
-  <div class="greeting">
-    <div class="greeting-label" id="timeLabel">Guten Morgen</div>
-    <div class="greeting-text">Hallo, <strong>Paul</strong> 👋</div>
-  </div>
-
+  <!-- Quote -->
   <div class="quote-card">
     <span class="quote-icon">💬</span>
     <div class="quote-text" id="quoteText">Wird geladen…</div>
   </div>
 
+  <!-- Widgets -->
   <div class="widgets-row">
     <div class="widget">
       <div class="widget-icon" id="weatherIcon">⏳</div>
       <div class="widget-info">
-        <div class="widget-label">Berlin</div>
+        <div class="widget-label">Berlin · Wetter</div>
         <div class="widget-value" id="weatherTemp">--°</div>
         <div class="widget-sub" id="weatherDesc">Wird geladen…</div>
       </div>
@@ -238,21 +294,27 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
       <div class="widget-info">
         <div class="widget-label">Heute</div>
         <div class="widget-value" id="todayDate">--</div>
-        <div class="widget-sub" id="todayWeekday">--</div>
+        <div class="widget-sub" id="todayKW">--</div>
       </div>
     </div>
   </div>
 
+  <!-- Apps -->
   <div class="section-label">Apps</div>
   <div class="app-grid">
 
+    <!-- Finanzen -->
     <a class="app-card c-green" href="/finanzenpaul/">
-      <div class="card-icon green">💶</div>
+      <div class="card-header">
+        <div class="card-icon green">💶</div>
+        <div class="status-dot">Aktiv</div>
+      </div>
       <div class="card-title">Finanzen</div>
       <div class="card-desc">Budgetplanung, Einnahmen & Ausgaben mit automatischer Restverteilung.</div>
       <div class="card-preview">
         <div class="card-preview-label">Aktueller Monat</div>
         <div class="card-preview-value" id="finanzMonat">--</div>
+        <div class="card-preview-sub" id="finanzGeaendert">--</div>
       </div>
       <div class="card-stats">
         <div class="card-stat">
@@ -271,13 +333,18 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
       </div>
     </a>
 
+    <!-- Kalender -->
     <a class="app-card c-blue" href="/kalenderpaul/">
-      <div class="card-icon blue">📅</div>
+      <div class="card-header">
+        <div class="card-icon blue">📅</div>
+        <div class="status-dot">Aktiv</div>
+      </div>
       <div class="card-title">Kalender</div>
       <div class="card-desc">Termine, Kids-Wochen im Wechselmodell, Hellomed & private Events.</div>
       <div class="card-preview">
         <div class="card-preview-label">Aktuelle Woche</div>
         <div class="card-preview-value" id="kalenderKW">KW --</div>
+        <div class="card-preview-sub" id="kalenderRange">--</div>
       </div>
       <div class="card-stats">
         <div class="card-stat">
@@ -296,9 +363,12 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
       </div>
     </a>
 
+    <!-- Bald -->
     <a class="app-card soon" href="#">
       <span class="soon-badge">Bald</span>
-      <div class="card-icon purple">➕</div>
+      <div class="card-header">
+        <div class="card-icon purple">➕</div>
+      </div>
       <div class="card-title">Neue App</div>
       <div class="card-desc">Platz für die nächste Idee.</div>
       <div class="card-footer">
@@ -307,6 +377,16 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
     </a>
 
   </div>
+
+  <!-- Shortcuts -->
+  <div class="section-label">Schnellzugriff</div>
+  <div class="shortcuts-row">
+    <a class="shortcut-btn" href="/kalenderpaul/"><span class="shortcut-icon">📅</span>Aktuelle Woche</a>
+    <a class="shortcut-btn" href="/finanzenpaul/"><span class="shortcut-icon">💶</span>Budget öffnen</a>
+    <a class="shortcut-btn" href="/kalenderpaul/"><span class="shortcut-icon">👧</span>Kids-Woche</a>
+    <a class="shortcut-btn" href="/finanzenpaul/"><span class="shortcut-icon">📊</span>Monatsübersicht</a>
+  </div>
+
 </main>
 
 <nav class="bottom-nav">
@@ -318,9 +398,11 @@ main { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
 <script>
 const monate = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const wochentage = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const monateKurz = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
 function pad(n) { return String(n).padStart(2,'0'); }
 
+// Clock
 function updateClock() {
   const now = new Date();
   document.getElementById('headerClock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
@@ -330,11 +412,16 @@ setInterval(updateClock, 1000);
 
 const now = new Date();
 const h = now.getHours();
-document.getElementById('timeLabel').textContent = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
-document.getElementById('todayDate').textContent = `${now.getDate()}. ${monate[now.getMonth()]}`;
-document.getElementById('todayWeekday').textContent = wochentage[now.getDay()];
-document.getElementById('finanzMonat').textContent = `${monate[now.getMonth()]} ${now.getFullYear()}`;
+const greet = h < 12 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+document.getElementById('greetLabel').textContent = greet;
 
+// Header date
+document.getElementById('headerDate').textContent = `${wochentage[now.getDay()]}, ${now.getDate()}. ${monateKurz[now.getMonth()]}`;
+
+// Today widget
+document.getElementById('todayDate').textContent = `${now.getDate()}. ${monate[now.getMonth()]}`;
+
+// KW
 function getKW(d) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   const day = date.getUTCDay() || 7;
@@ -342,8 +429,24 @@ function getKW(d) {
   const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
   return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
 }
-document.getElementById('kalenderKW').textContent = `KW ${getKW(now)} · ${now.getFullYear()}`;
+const kw = getKW(now);
+document.getElementById('todayKW').textContent = `KW ${kw} · ${now.getFullYear()}`;
+document.getElementById('kalenderKW').textContent = `KW ${kw} · ${now.getFullYear()}`;
 
+// Wochenrange für Kalender
+function getWeekRange(d) {
+  const day = d.getDay() || 7;
+  const mon = new Date(d); mon.setDate(d.getDate() - day + 1);
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  return `${mon.getDate()}. ${monateKurz[mon.getMonth()]} – ${sun.getDate()}. ${monateKurz[sun.getMonth()]}`;
+}
+document.getElementById('kalenderRange').textContent = getWeekRange(now);
+
+// Finanz Monat
+document.getElementById('finanzMonat').textContent = `${monate[now.getMonth()]} ${now.getFullYear()}`;
+document.getElementById('finanzGeaendert').textContent = `Budget aktiv · ${now.getFullYear()}`;
+
+// Wetter
 async function loadWetter() {
   try {
     const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');
@@ -357,11 +460,12 @@ async function loadWetter() {
     document.getElementById('weatherDesc').textContent = descs[code] || 'Berlin';
   } catch(e) {
     document.getElementById('weatherTemp').textContent = '--°';
-    document.getElementById('weatherDesc').textContent = 'Keine Daten';
+    document.getElementById('weatherDesc').textContent = 'Keine Verbindung';
   }
 }
 loadWetter();
 
+// Tagesspruch
 const quotes = [
   "Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.",
   "Kleine Schritte führen zu großen Zielen.",
