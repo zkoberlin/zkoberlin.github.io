@@ -1512,7 +1512,7 @@ function searchCalendar(query) {
   clearBtn.style.display = 'block';
   
   // Support multi-word search (all words must match)
-  const words = query.toLowerCase().trim().split(/\s+/);
+  const words = query.toLowerCase().trim().split(' ').filter(w => w.length > 0);
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   let matches = 0;
   let firstMatch = null;
@@ -1558,10 +1558,7 @@ const ICAL_URL = 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail
 // ── iCAL PARSER ──────────────────────────────────────────────────────
 function parseICS(text) {
   const events = [];
-  const lines = text.replace(/
- /g, '').replace(/
-	/g, '').split('
-');
+  const lines = text.replace(/\r\n /g, '').replace(/\r\n\t/g, '').split(/\r\n|\n/);
   let current = null;
 
   for(const line of lines) {
