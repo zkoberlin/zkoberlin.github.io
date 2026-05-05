@@ -584,6 +584,25 @@ body {
   .header-search input { max-width: 100%; font-size: 11px; }
 }
 
+.chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.12);
+  color: inherit;
+  font-size: 9.5px;
+  font-weight: 700;
+  margin-left: 3px;
+  letter-spacing: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .chip-count { background: rgba(255,255,255,0.15); }
+}
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -1489,10 +1508,25 @@ function hideEmptyFilters() {
   
   document.querySelectorAll('.li[data-cat]').forEach(chip => {
     const cat = chip.dataset.cat;
-    const hasEntries = futureDates.some(d => 
+    // Count unique dates with this category
+    const count = futureDates.filter(d => 
       (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
-    );
-    chip.style.display = hasEntries ? '' : 'none';
+    ).length;
+    
+    if(count === 0) {
+      chip.style.display = 'none';
+      return;
+    }
+    chip.style.display = '';
+    
+    // Add or update count badge
+    let badge = chip.querySelector('.chip-count');
+    if(!badge) {
+      badge = document.createElement('span');
+      badge.className = 'chip-count';
+      chip.appendChild(badge);
+    }
+    badge.textContent = count;
   });
 }
 
