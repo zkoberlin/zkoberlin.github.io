@@ -160,6 +160,22 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 .bn-l{font-size:10px;font-weight:600;}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* Kategorie-Bars */
+.fin-cats{margin:0 12px 10px;display:flex;flex-direction:column;gap:5px;}
+.fin-cat-row{display:flex;align-items:center;gap:8px;}
+.fin-cat-lbl{font-size:10px;color:var(--t2);width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fin-cat-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.fin-cat-bar{height:5px;border-radius:3px;transition:width .6s;}
+.fin-cat-val{font-size:10px;font-weight:600;color:var(--t2);width:44px;text-align:right;flex-shrink:0;}
+
+/* Sparquote */
+.fin-spar{margin:0 12px 10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;}
+.fin-spar-left{}
+.fin-spar-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.fin-spar-val{font-size:16px;font-weight:700;letter-spacing:-.4px;color:var(--blue);}
+.fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
+.fin-spar-ring{width:44px;height:44px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -230,6 +246,18 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
       <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
       <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
     </div>
+    <div class="fin-spar">
+      <div class="fin-spar-left">
+        <div class="fin-spar-lbl">Sparquote</div>
+        <div class="fin-spar-val" id="sparQuote">–</div>
+        <div class="fin-spar-sub" id="sparAbs">– gespart</div>
+      </div>
+      <svg class="fin-spar-ring" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" fill="none" stroke="var(--border)" stroke-width="4"/>
+        <circle id="sparRing" cx="22" cy="22" r="18" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)" style="transition:stroke-dashoffset .8s"/>
+      </svg>
+    </div>
+    <div class="fin-cats" id="finCats"></div>
     <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
@@ -361,6 +389,34 @@ function loadFin(){
     // Sync status
     document.getElementById('syncDot').style.background='var(--green)';
     document.getElementById('finUpdated').textContent='Zuletzt: '+new Date().toLocaleDateString('de-DE');
+
+    // Sparquote = (invest + notgr + urlaub + sonder) / ein
+    const spar=inv+notg+url+sond;
+    const sparPct=ein>0?Math.round((spar/ein)*100):0;
+    document.getElementById('sparQuote').textContent=sparPct+'%';
+    document.getElementById('sparAbs').textContent=fmt(spar)+' / Monat';
+    const circ=113;
+    document.getElementById('sparRing').style.strokeDashoffset=circ-(circ*sparPct/100);
+
+    // Kategorien
+    const cats={};
+    const KEYS2=['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'];
+    const catMap={miete:'Wohnen',strom:'Wohnen',internet:'Wohnen',lebensmittel:'Wohnen',schufa:'Wohnen',ing:'Wohnen',haftpflicht:'Versicherung',rechtsschutz:'Versicherung',kredit:'Versicherung',gez:'Versicherung',unterhalt:'Familie',kids:'Familie',handyemil:'Familie',handyrosa:'Familie',ukv:'Familie',sparta:'Familie',bling:'Familie',unionemil:'Familie',handypaul:'Abos',icloud:'Abos',spotify:'Abos',finanzguru:'Abos',claude:'Abos',unionmitgl:'Abos',amazon:'Abos',parqet:'Abos',futbology:'Abos',fotmob:'Abos',bvg:'Freizeit',dauerkarte:'Freizeit',garmin:'Freizeit'};
+    const catColors={'Wohnen':'#0071e3','Familie':'#34c759','Versicherung':'#ff9500','Abos':'#af52de','Freizeit':'#ff3b30','Sonstiges':'#98989d'};
+    KEYS2.forEach(k=>{if(S[k]?.on){const c=catMap[k]||'Sonstiges';cats[c]=(cats[c]||0)+(S[k].v||0);}});
+    const ci2=JSON.parse(localStorage.getItem('fp3c')||'[]');
+    ci2.forEach(it=>{if(S[it.k]?.on){const c=it.cat||'Sonstiges';cats[c]=(cats[c]||0)+(S[it.k].v||0);}});
+    const catEl=document.getElementById('finCats');
+    catEl.innerHTML='';
+    Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([name,val])=>{
+      const pct=total>0?Math.round((val/total)*100):0;
+      const col=catColors[name]||'#98989d';
+      catEl.innerHTML+=`<div class="fin-cat-row">
+        <div class="fin-cat-lbl">${name}</div>
+        <div class="fin-cat-bar-wrap"><div class="fin-cat-bar" style="width:${pct}%;background:${col}"></div></div>
+        <div class="fin-cat-val">${pct}%</div>
+      </div>`;
+    });
   }catch(e){document.getElementById('pufSub').textContent='Fehler beim Laden';}
 }
 loadFin();
@@ -452,7 +508,7 @@ async function loadICAL(){
       const script = document.createElement('script');
       const timeout = setTimeout(() => { delete window[cb]; script.remove(); reject(new Error('timeout')); }, 10000);
       window[cb] = (data) => { clearTimeout(timeout); delete window[cb]; script.remove(); resolve(data); };
-      script.src = 'https://script.google.com/macros/s/AKfycby7a9swrZo0QckU4tGbL68zaxUTLO3QsqAuFZ-36j8aUME5cAtHABITql5GCZbqf_Jq/exec?callback=' + cb;
+      script.src = 'https://script.google.com/macros/s/AKfycbxKCvaHOfa6frQB95peFpRVhiRINwMm5yOqcefx1y3FebXl3DATnYsPV0xfOQ-14xZg/exec?callback=' + cb;
       script.onerror = () => { clearTimeout(timeout); delete window[cb]; script.remove(); reject(new Error('script error')); };
       document.head.appendChild(script);
     });
