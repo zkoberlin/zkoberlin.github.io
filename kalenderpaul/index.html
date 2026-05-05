@@ -194,19 +194,13 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, border 0.3s ease;
+  transition: opacity 0.3s ease;
   overflow: hidden;
-  max-height: 120px;
   opacity: 1;
 }
 .today-panel.hidden {
   opacity: 0;
   pointer-events: none;
-  visibility: hidden;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 0;
 }
 
 /* Legend */
@@ -510,7 +504,7 @@ body {
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
-  top: var(--header-h, 160px);
+  top: var(--header-h, 140px);
   z-index: 5;
   background: var(--surface);
   backdrop-filter: blur(16px);
@@ -1094,10 +1088,16 @@ function buildMonth(year, month) {
       }
 
       cell.onclick = (e) => {
-        if(expandedDay === cell) { collapseDay(); return; }
-        if(expandedDay) { collapseDay(); }
-        expandDay(cell, e);
-        openDp(key);
+        if(window.innerWidth > 600) {
+          // Desktop: just open detail panel, no expand
+          openDp(key);
+        } else {
+          // Mobile: expand cell + open detail
+          if(expandedDay === cell) { collapseDay(); return; }
+          if(expandedDay) { collapseDay(); }
+          expandDay(cell, e);
+          openDp(key);
+        }
       };
       row.appendChild(cell);
       day++;
@@ -1974,15 +1974,18 @@ loadAllDynamicData().then(() => {
 // Load iCal events after initial render
 loadICalEvents();
 
-// Set header height CSS variable for sticky bars
-// Header height tracked via ResizeObserver (no scroll jank)
+// Set header height once on load + on resize only
 function updateHeaderVar() {
   const h = document.querySelector('.header');
-  if(h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+  if(h) {
+    const hh = h.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--header-h', Math.round(hh) + 'px');
+  }
 }
-const headerObserver = new ResizeObserver(() => updateHeaderVar());
-headerObserver.observe(document.querySelector('.header') || document.body);
-updateHeaderVar();
+window.addEventListener('resize', updateHeaderVar, {passive: true});
+// Set once after everything renders
+setTimeout(updateHeaderVar, 100);
+setTimeout(updateHeaderVar, 500);
 
 // Fade today strip on scroll
 let lastScrolled = false;
