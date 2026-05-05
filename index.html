@@ -7,756 +7,474 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:       #f2f2f7;
-  --card:     #ffffff;
-  --card2:    #f4f4f8;
-  --border:   rgba(0,0,0,0.07);
-  --text:     #1c1c1e;
-  --text2:    #6e6e73;
-  --text3:    #aeaeb2;
-  --blue:     #0071e3;
-  --blue-l:   rgba(0,113,227,0.10);
-  --blue-b:   rgba(0,113,227,0.25);
-  --green:    #34c759;
-  --green-l:  rgba(52,199,89,0.11);
-  --green-b:  rgba(52,199,89,0.30);
-  --red:      #ff3b30;
-  --red-l:    rgba(255,59,48,0.10);
-  --orange:   #ff9500;
-  --purple:   #af52de;
-  --purple-l: rgba(175,82,222,0.11);
-  --pink:     #db2777;
-  --pink-l:   rgba(219,39,119,0.10);
-  --union:    #e8001c;
-  --union-l:  rgba(232,0,28,0.09);
-  --shadow:   0 1px 4px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.05);
-  --shadow-h: 0 6px 32px rgba(0,0,0,.13);
-  --r:        20px;
-  --r2:       13px;
-  --r3:       9px;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f2f2f7;--card:#fff;--card2:#f4f4f8;--border:rgba(0,0,0,.07);
+  --t:#1c1c1e;--t2:#6e6e73;--t3:#aeaeb2;
+  --blue:#0071e3;--blue-l:rgba(0,113,227,.10);--blue-b:rgba(0,113,227,.28);
+  --green:#34c759;--green-l:rgba(52,199,89,.11);--green-b:rgba(52,199,89,.30);
+  --red:#ff3b30;--red-l:rgba(255,59,48,.10);
+  --pink:#db2777;--pink-l:rgba(219,39,119,.10);
+  --union:#e8001c;--union-l:rgba(232,0,28,.09);
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.05);
+  --sh-h:0 6px 32px rgba(0,0,0,.13);
+  --r:20px;--r2:13px;--r3:9px;
 }
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
+  --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
+  --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
+  --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
+  --red:#ff453a;--red-l:rgba(255,69,58,.12);
+  --pink:#f472b6;--pink-l:rgba(244,114,182,.12);
+  --union:#ff453a;--union-l:rgba(255,69,58,.10);
+  --sh:0 1px 4px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.2);
+  --sh-h:0 6px 32px rgba(0,0,0,.45);
+}}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg:       #0e0e10;
-    --card:     #1c1c1e;
-    --card2:    #2a2a2c;
-    --border:   rgba(255,255,255,0.07);
-    --text:     #f5f5f7;
-    --text2:    #98989d;
-    --text3:    #48484a;
-    --blue:     #409cff;
-    --blue-l:   rgba(64,156,255,0.12);
-    --blue-b:   rgba(64,156,255,0.30);
-    --green:    #30d158;
-    --green-l:  rgba(48,209,88,0.12);
-    --green-b:  rgba(48,209,88,0.30);
-    --red:      #ff453a;
-    --red-l:    rgba(255,69,58,0.12);
-    --orange:   #ff9f0a;
-    --purple:   #bf5af2;
-    --purple-l: rgba(191,90,242,0.12);
-    --pink:     #f472b6;
-    --pink-l:   rgba(244,114,182,0.12);
-    --union:    #ff453a;
-    --union-l:  rgba(255,69,58,0.10);
-    --shadow:   0 1px 4px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.2);
-    --shadow-h: 0 6px 32px rgba(0,0,0,.45);
-  }
-}
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;}
+@media(prefers-color-scheme:dark){header{background:rgba(14,14,16,.90);}}
+.h-left{display:flex;align-items:center;gap:10px;}
+.h-logo{width:31px;height:31px;background:var(--t);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.h-greet{font-size:15px;font-weight:600;letter-spacing:-.3px;}
+.h-right{text-align:right;}
+.h-clock{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;}
+.h-date{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
-body {
-  font-family: 'DM Sans', -apple-system, sans-serif;
-  background: var(--bg); color: var(--text);
-  min-height: 100vh; -webkit-font-smoothing: antialiased;
-}
+/* MAIN */
+main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-direction:column;gap:12px;}
 
-/* ── HEADER ── */
-header {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(242,242,247,0.88);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-  padding: 13px 22px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-@media (prefers-color-scheme: dark) { header { background: rgba(14,14,16,0.90); } }
+/* QUOTE */
+.quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:11px 15px;display:flex;gap:8px;align-items:flex-start;}
+.q-icon{font-size:13px;flex-shrink:0;margin-top:2px;opacity:.55;}
+.q-text{font-size:11.5px;color:var(--t2);line-height:1.55;font-style:italic;}
 
-.header-left { display: flex; align-items: center; gap: 10px; }
-.logo-icon { width: 31px; height: 31px; background: var(--text); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.header-greeting { font-size: 15px; font-weight: 600; letter-spacing: -.3px; }
-.header-right { text-align: right; }
-.header-clock { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; letter-spacing: -.2px; }
-.header-date  { font-size: 10.5px; color: var(--text2); margin-top: 1px; }
+/* TOP ROW */
+.top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:400px){.top-row{grid-template-columns:1fr;}}
+.mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:11px;}
+.mini-icon{font-size:24px;flex-shrink:0;}
+.mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
+.mini-val{font-size:17px;font-weight:700;letter-spacing:-.4px;}
+.mini-sub{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
-/* ── MAIN ── */
-main { max-width: 860px; margin: 0 auto; padding: 18px 16px 90px; display: flex; flex-direction: column; gap: 12px; }
+/* SECTION */
+.sec{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-bottom:-2px;}
 
-/* ── QUOTE ── */
-.quote {
-  background: var(--card); border-radius: var(--r2);
-  border: 1px solid var(--border); box-shadow: var(--shadow);
-  padding: 12px 16px; display: flex; gap: 9px; align-items: flex-start;
-}
-.quote-icon { font-size: 13px; flex-shrink: 0; margin-top: 2px; opacity: .6; }
-.quote-text { font-size: 11.5px; color: var(--text2); line-height: 1.55; font-style: italic; }
+/* EMIL & ROSA */
+.er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.er-top{padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
+.er-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
+.er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
+.er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
+.er-nums{display:grid;grid-template-columns:1fr 1fr;}
+.er-num{padding:18px 22px;border-right:1px solid var(--border);}
+.er-num:last-child{border-right:none;}
+.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
+.er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
+.er-n{font-size:48px;font-weight:300;letter-spacing:-2.5px;line-height:1;}
+.er-n.g{color:var(--green);}
+.er-n.b{color:var(--blue);}
+.er-n.gr{color:var(--t3);}
+.er-unit{font-size:13px;color:var(--t2);margin-bottom:7px;}
+.er-sub{font-size:11px;color:var(--t2);}
+.er-timeline{padding:14px 20px 15px;border-top:1px solid var(--border);}
+.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:9px;}
+.er-track{display:flex;gap:3px;height:26px;}
+.er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:default;}
+.er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
+.er-day.dani{background:var(--card2);border:1px solid var(--border);}
+.er-day.today{outline:2px solid var(--blue);outline-offset:1px;}
+.er-dl{font-size:7.5px;font-weight:700;color:var(--t3);}
+.er-day.paul .er-dl{color:var(--green);}
+.er-leg{display:flex;gap:12px;margin-top:8px;}
+.er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
+.er-ld{width:8px;height:8px;border-radius:2px;}
+.er-next{padding:10px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
+.er-next strong{color:var(--t);font-weight:600;}
 
-/* ── TOP ROW ── */
-.top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 400px) { .top-row { grid-template-columns: 1fr; } }
+/* APP CARDS */
+.app-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.app-row{grid-template-columns:1fr;}}
 
-.mini-card {
-  background: var(--card); border-radius: var(--r2);
-  border: 1px solid var(--border); padding: 13px 15px;
-  box-shadow: var(--shadow); display: flex; align-items: center; gap: 11px;
-}
-.mini-icon { font-size: 24px; flex-shrink: 0; }
-.mini-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text3); margin-bottom: 2px; }
-.mini-value { font-size: 17px; font-weight: 700; letter-spacing: -.4px; }
-.mini-sub   { font-size: 10.5px; color: var(--text2); margin-top: 1px; }
+.acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden;}
+.acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
+.acard.kal:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--blue-b);}
+.acard:active{transform:scale(.98);}
 
-/* ── SECTION TITLE ── */
-.section-title { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .9px; color: var(--text3); padding-left: 2px; margin-bottom: -2px; }
+.a-top{padding:16px 16px 11px;display:flex;align-items:flex-start;justify-content:space-between;}
+.a-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.a-icon.g{background:var(--green-l);}
+.a-icon.b{background:var(--blue-l);}
+.a-status{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
+.a-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 2s infinite;}
+.a-name{font-size:15px;font-weight:700;letter-spacing:-.3px;padding:0 16px 3px;}
+.a-desc{font-size:11px;color:var(--t2);padding:0 16px 12px;}
 
-/* ════════════════════════════════
-   EMIL & ROSA CARD
-════════════════════════════════ */
-.er-card {
-  background: var(--card); border-radius: var(--r);
-  border: 1px solid var(--border); box-shadow: var(--shadow);
-  overflow: hidden;
-}
+/* Finanzen internals */
+.fin-box{margin:0 12px 10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 13px;}
+.fin-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
+.fin-val{font-size:24px;font-weight:700;letter-spacing:-.6px;margin-bottom:7px;}
+.fin-val.g{color:var(--green);}
+.fin-val.r{color:var(--red);}
+.fin-bar-wrap{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+.fin-bar{height:4px;border-radius:4px;background:var(--green);transition:width .6s;}
+.fin-bar.r{background:var(--red);}
+.fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9.5px;color:var(--t3);}
+.fin-row2{display:flex;gap:7px;margin:0 12px 12px;}
+.fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 10px;}
+.fin-mini-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:3px;}
+.fin-mini-val{font-size:13px;font-weight:600;letter-spacing:-.3px;}
+.fin-sync{font-size:9px;color:var(--t3);padding:0 16px 12px;display:flex;align-items:center;gap:4px;}
+.fin-sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);}
 
-.er-top {
-  padding: 18px 20px 16px;
-  display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-}
+/* Kalender internals – event list */
+.kal-ev{margin:0 12px 7px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;gap:9px;}
+.kal-ev-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.kal-ev-info{flex:1;min-width:0;}
+.kal-ev-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.kal-ev-title{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kal-ev-date{font-size:10px;color:var(--t2);margin-top:1px;}
+.kal-ev-when{font-size:10px;font-weight:700;color:var(--t3);flex-shrink:0;}
 
-.er-names { display: flex; align-items: center; gap: 10px; }
-.er-title { font-size: 16px; font-weight: 700; letter-spacing: -.3px; }
-.er-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; font-weight: 500; padding: 3px 11px;
-  border-radius: 20px; border: 1px solid;
-}
-.er-badge.paul { color: var(--green); border-color: var(--green); background: var(--green-l); }
-.er-badge.dani { color: var(--text2); border-color: var(--border); background: var(--card2); }
+/* Union inside Kalender card */
+.kal-union{margin:0 12px 12px;background:var(--union-l);border:1px solid rgba(232,0,28,.18);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;gap:9px;}
+.kal-union-icon{font-size:18px;flex-shrink:0;}
+.kal-union-info{flex:1;min-width:0;}
+.kal-union-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.kal-union-match{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kal-union-date{font-size:10px;color:var(--t2);margin-top:1px;}
 
-/* Big counters */
-.er-counters {
-  display: grid; grid-template-columns: 1fr 1fr;
-}
-.er-counter {
-  padding: 20px 22px;
-  border-right: 1px solid var(--border);
-  position: relative;
-}
-.er-counter:last-child { border-right: none; }
+.a-footer{border-top:1px solid var(--border);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;font-size:10.5px;color:var(--t3);margin-top:auto;}
 
-.er-counter-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text3); margin-bottom: 10px; }
+/* Bottom nav */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;}
+@media(prefers-color-scheme:dark){.bnav{background:rgba(14,14,16,.92);}}
+@media(max-width:600px){.bnav{display:flex;}}
+.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--t3);padding:4px 16px;}
+.bn.on{color:var(--blue);}
+.bn-i{font-size:22px;}
+.bn-l{font-size:10px;font-weight:600;}
 
-.er-big {
-  display: flex; align-items: flex-end; gap: 0;
-  margin-bottom: 4px;
-}
-.er-num {
-  font-size: 52px; font-weight: 300; letter-spacing: -3px; line-height: 1;
-}
-.er-num.green { color: var(--green); }
-.er-num.blue  { color: var(--blue); }
-.er-num.grey  { color: var(--text3); }
-.er-unit { font-size: 14px; color: var(--text2); font-weight: 400; margin-bottom: 8px; margin-left: 4px; }
-.er-sub  { font-size: 11px; color: var(--text2); }
-
-/* Ring around number */
-.er-ring-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
-.er-ring { position: absolute; top: -8px; left: -8px; width: calc(100% + 16px); height: calc(100% + 16px); }
-
-/* Timeline */
-.er-timeline { padding: 14px 20px 16px; border-top: 1px solid var(--border); }
-.er-timeline-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--text3); margin-bottom: 10px; }
-.er-timeline-track {
-  display: flex; gap: 3px; height: 28px; align-items: stretch;
-}
-.er-day {
-  flex: 1; border-radius: 5px; position: relative;
-  display: flex; align-items: center; justify-content: center;
-  cursor: default;
-  transition: opacity .15s;
-}
-.er-day:hover { opacity: .8; }
-.er-day.paul { background: var(--green-l); border: 1px solid var(--green-b); }
-.er-day.dani { background: var(--card2); border: 1px solid var(--border); }
-.er-day.today { outline: 2px solid var(--blue); outline-offset: 1px; }
-.er-day-label { font-size: 8px; font-weight: 700; color: var(--text3); }
-.er-day.paul .er-day-label { color: var(--green); }
-
-.er-legend { display: flex; gap: 14px; margin-top: 9px; }
-.er-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--text2); }
-.er-legend-dot { width: 8px; height: 8px; border-radius: 2px; }
-
-.er-next { padding: 11px 20px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
-.er-next strong { color: var(--text); font-weight: 600; }
-
-/* ════════════════════════════════
-   APP CARDS
-════════════════════════════════ */
-.app-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 500px) { .app-row { grid-template-columns: 1fr; } }
-
-.app-card {
-  background: var(--card); border-radius: var(--r);
-  border: 1px solid var(--border); box-shadow: var(--shadow);
-  text-decoration: none; color: inherit;
-  display: flex; flex-direction: column;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
-  overflow: hidden;
-}
-.app-card.fin:hover { transform: translateY(-2px); box-shadow: var(--shadow-h); border-color: var(--green-b); }
-.app-card.kal:hover { transform: translateY(-2px); box-shadow: var(--shadow-h); border-color: var(--blue-b); }
-.app-card:active { transform: scale(.98); }
-
-.app-top { padding: 17px 17px 12px; display: flex; align-items: flex-start; justify-content: space-between; }
-.app-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.app-icon.green { background: var(--green-l); }
-.app-icon.blue  { background: var(--blue-l); }
-
-.app-status { display: flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; }
-.app-status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); animation: pulse 2s infinite; }
-
-.app-name { font-size: 15px; font-weight: 700; letter-spacing: -.3px; padding: 0 17px 3px; }
-.app-desc { font-size: 11px; color: var(--text2); padding: 0 17px 13px; }
-
-/* Finanzen: progress bar */
-.fin-puffer { margin: 0 13px 10px; background: var(--card2); border: 1px solid var(--border); border-radius: var(--r3); padding: 11px 13px; }
-.fin-puffer-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 6px; }
-.fin-puffer-val { font-size: 22px; font-weight: 700; letter-spacing: -.6px; margin-bottom: 8px; }
-.fin-puffer-val.green { color: var(--green); }
-.fin-puffer-val.red   { color: var(--red); }
-.fin-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; overflow: hidden; }
-.fin-bar { height: 4px; border-radius: 4px; background: var(--green); transition: width .6s; }
-.fin-bar.red { background: var(--red); }
-.fin-bar-labels { display: flex; justify-content: space-between; margin-top: 5px; font-size: 9.5px; color: var(--text3); }
-
-.fin-row { display: flex; gap: 7px; margin: 0 13px 13px; }
-.fin-mini { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: var(--r3); padding: 8px 10px; }
-.fin-mini-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--text3); margin-bottom: 3px; }
-.fin-mini-val   { font-size: 13px; font-weight: 600; letter-spacing: -.3px; }
-
-/* Kalender events */
-.kal-event { margin: 0 13px 8px; background: var(--card2); border: 1px solid var(--border); border-radius: var(--r3); padding: 9px 12px; display: flex; align-items: center; gap: 9px; }
-.kal-event-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.kal-event-info { flex: 1; min-width: 0; }
-.kal-event-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 2px; }
-.kal-event-title { font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.kal-event-date  { font-size: 10px; color: var(--text2); margin-top: 1px; }
-
-.app-footer {
-  border-top: 1px solid var(--border); padding: 10px 17px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 10.5px; color: var(--text3); margin-top: auto;
-}
-
-/* ── EVENTS LIST ── */
-.events-card {
-  background: var(--card); border-radius: var(--r);
-  border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;
-}
-.events-head { padding: 15px 18px 11px; font-size: 14px; font-weight: 700; border-bottom: 1px solid var(--border); }
-.event-item { display: flex; align-items: center; gap: 11px; padding: 10px 18px; border-bottom: 1px solid var(--border); transition: background .12s; }
-.event-item:last-child { border-bottom: none; }
-.event-item:hover { background: var(--card2); }
-.event-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.event-date-col { width: 52px; flex-shrink: 0; }
-.event-day  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); }
-.event-num  { font-size: 18px; font-weight: 700; letter-spacing: -.5px; line-height: 1.1; }
-.event-title { font-size: 12.5px; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.event-when { font-size: 10.5px; font-weight: 600; color: var(--text3); flex-shrink: 0; }
-.event-today .event-num { color: var(--blue); }
-.event-empty { padding: 22px 18px; font-size: 12px; color: var(--text3); text-align: center; }
-
-/* ── UNION ── */
-.union-card {
-  background: var(--card); border-radius: var(--r);
-  border: 1px solid var(--border); box-shadow: var(--shadow);
-  text-decoration: none; color: inherit;
-  display: flex; align-items: center; gap: 14px; padding: 15px 18px;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
-}
-.union-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-h); border-color: rgba(232,0,28,.3); }
-.union-badge { width: 44px; height: 44px; border-radius: 12px; background: var(--union-l); border: 1px solid rgba(232,0,28,.2); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.union-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text3); margin-bottom: 3px; }
-.union-match { font-size: 14px; font-weight: 700; letter-spacing: -.2px; }
-.union-sub   { font-size: 11px; color: var(--text2); margin-top: 2px; }
-.union-arrow { font-size: 18px; color: var(--text3); margin-left: auto; }
-
-/* ── BOTTOM NAV ── */
-.bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(242,242,247,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid var(--border); padding: 8px 0 22px; z-index: 100; justify-content: space-around; }
-@media (prefers-color-scheme: dark) { .bottom-nav { background: rgba(14,14,16,0.92); } }
-@media (max-width: 600px) { .bottom-nav { display: flex; } }
-.bn-item { display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: var(--text3); padding: 4px 16px; }
-.bn-item.active { color: var(--blue); }
-.bn-icon { font-size: 22px; }
-.bn-label { font-size: 10px; font-weight: 600; }
-
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="header-left">
-    <div class="logo-icon">🌐</div>
-    <div class="header-greeting" id="greeting">Hallo, Paul 👋</div>
+  <div class="h-left">
+    <div class="h-logo">🌐</div>
+    <div class="h-greet" id="greet">Hallo, Paul 👋</div>
   </div>
-  <div class="header-right">
-    <div class="header-clock" id="clock">--:--</div>
-    <div class="header-date" id="hdate">--</div>
+  <div class="h-right">
+    <div class="h-clock" id="clock">--:--</div>
+    <div class="h-date" id="hdate">--</div>
   </div>
 </header>
 
 <main>
 
-  <!-- Quote -->
-  <div class="quote">
-    <span class="quote-icon">💬</span>
-    <div class="quote-text" id="quote">…</div>
+<div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
+
+<div class="top-row">
+  <div class="mini"><div class="mini-icon" id="wIcon">⏳</div><div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div></div>
+  <div class="mini"><div class="mini-icon">📆</div><div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div></div>
+</div>
+
+<div class="sec">👧 Emil & Rosa</div>
+<div class="er">
+  <div class="er-top">
+    <div class="er-title">Emil & Rosa</div>
+    <div class="er-badge paul" id="erBadge">Lädt…</div>
   </div>
-
-  <!-- Weather + Date -->
-  <div class="top-row">
-    <div class="mini-card">
-      <div class="mini-icon" id="wIcon">⏳</div>
-      <div>
-        <div class="mini-label">Berlin · Wetter</div>
-        <div class="mini-value" id="wTemp">--°</div>
-        <div class="mini-sub" id="wDesc">Lädt…</div>
-      </div>
+  <div class="er-nums">
+    <div class="er-num">
+      <div class="er-num-lbl" id="c1lbl">Noch bei Paul</div>
+      <div class="er-big"><div class="er-n g" id="c1n">–</div><div class="er-unit">Tage</div></div>
+      <div class="er-sub" id="c1s">–</div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon">📆</div>
-      <div>
-        <div class="mini-label">Heute</div>
-        <div class="mini-value" id="todayStr">--</div>
-        <div class="mini-sub" id="kwStr">--</div>
-      </div>
+    <div class="er-num">
+      <div class="er-num-lbl" id="c2lbl">Wieder bei Paul</div>
+      <div class="er-big"><div class="er-n b" id="c2n">–</div><div class="er-unit">Tage</div></div>
+      <div class="er-sub" id="c2s">–</div>
     </div>
   </div>
-
-  <!-- Emil & Rosa -->
-  <div class="section-title">👧 Emil & Rosa</div>
-  <div class="er-card">
-    <div class="er-top">
-      <div class="er-names">
-        <div class="er-title">Emil & Rosa</div>
-      </div>
-      <div class="er-badge paul" id="erBadge">Lädt…</div>
+  <div class="er-timeline">
+    <div class="er-tl-lbl">Nächste 14 Tage</div>
+    <div class="er-track" id="erTrack"></div>
+    <div class="er-leg">
+      <div class="er-li"><div class="er-ld" style="background:var(--green-l);border:1px solid var(--green-b)"></div>Bei Paul</div>
+      <div class="er-li"><div class="er-ld" style="background:var(--card2);border:1px solid var(--border)"></div>Bei Dani</div>
     </div>
-
-    <div class="er-counters">
-      <div class="er-counter">
-        <div class="er-counter-label" id="c1Label">Noch bei Paul</div>
-        <div class="er-big">
-          <div class="er-num green" id="c1Num">–</div>
-          <div class="er-unit">Tage</div>
-        </div>
-        <div class="er-sub" id="c1Sub">–</div>
-      </div>
-      <div class="er-counter">
-        <div class="er-counter-label" id="c2Label">Wieder bei Paul</div>
-        <div class="er-big">
-          <div class="er-num blue" id="c2Num">–</div>
-          <div class="er-unit">Tage</div>
-        </div>
-        <div class="er-sub" id="c2Sub">–</div>
-      </div>
-    </div>
-
-    <!-- Timeline: 14 days -->
-    <div class="er-timeline">
-      <div class="er-timeline-label">Nächste 14 Tage</div>
-      <div class="er-timeline-track" id="erTrack">
-        <!-- filled by JS -->
-      </div>
-      <div class="er-legend">
-        <div class="er-legend-item"><div class="er-legend-dot" style="background:var(--green-l);border:1px solid var(--green-b)"></div>Bei Paul</div>
-        <div class="er-legend-item"><div class="er-legend-dot" style="background:var(--card2);border:1px solid var(--border)"></div>Bei Dani</div>
-      </div>
-    </div>
-
-    <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
   </div>
+  <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
+</div>
 
-  <!-- Apps -->
-  <div class="section-title">📱 Apps</div>
-  <div class="app-row">
+<div class="sec">📱 Apps</div>
+<div class="app-row">
 
-    <!-- Finanzen -->
-    <a class="app-card fin" href="/finanzenpaul/">
-      <div class="app-top">
-        <div class="app-icon green">💶</div>
-        <div class="app-status">Aktiv</div>
-      </div>
-      <div class="app-name">Finanzen</div>
-      <div class="app-desc">Budget & Ausgaben</div>
-      <div class="fin-puffer">
-        <div class="fin-puffer-label">Freier Puffer · <span id="finMonth">--</span></div>
-        <div class="fin-puffer-val green" id="puffer">–</div>
-        <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
-        <div class="fin-bar-labels"><span id="pufferSub">App einmal öffnen</span><span id="finPct"></span></div>
-      </div>
-      <div class="fin-row">
-        <div class="fin-mini">
-          <div class="fin-mini-label">Einnahmen</div>
-          <div class="fin-mini-val" id="einnahmen">–</div>
-        </div>
-        <div class="fin-mini">
-          <div class="fin-mini-label">Ausgaben</div>
-          <div class="fin-mini-val" id="ausgaben">–</div>
-        </div>
-      </div>
-      <div class="app-footer"><span>JSONBin · Monatlich</span><span>→</span></div>
-    </a>
-
-    <!-- Kalender -->
-    <a class="app-card kal" href="/kalenderpaul/">
-      <div class="app-top">
-        <div class="app-icon blue">📅</div>
-        <div class="app-status">Aktiv</div>
-      </div>
-      <div class="app-name">Kalender</div>
-      <div class="app-desc">Termine & Events</div>
-      <div class="kal-event" id="kalMaja">
-        <div class="kal-event-dot" style="background:#db2777"></div>
-        <div class="kal-event-info">
-          <div class="kal-event-label">💗 Mit Maja</div>
-          <div class="kal-event-title" id="majaTitle">Lädt…</div>
-          <div class="kal-event-date"  id="majaDate">–</div>
-        </div>
-      </div>
-      <div class="kal-event" id="kalKonzert">
-        <div class="kal-event-dot" style="background:#16a34a"></div>
-        <div class="kal-event-info">
-          <div class="kal-event-label">🎟️ Veranstaltung</div>
-          <div class="kal-event-title" id="konzertTitle">Lädt…</div>
-          <div class="kal-event-date"  id="konzertDate">–</div>
-        </div>
-      </div>
-      <div class="app-footer">
-        <span>KW <span id="kw">--</span> · <span id="kwRange">--</span></span>
-        <span>→</span>
-      </div>
-    </a>
-
-  </div>
-
-  <!-- Events next 3 days -->
-  <div class="section-title">🗓️ Nächste 3 Tage</div>
-  <div class="events-card">
-    <div class="events-head">Kommende Termine</div>
-    <div id="eventsList"><div class="event-empty">Lädt Kalender…</div></div>
-  </div>
-
-  <!-- Union -->
-  <div class="section-title">⚽ 1. FC Union Berlin</div>
-  <a class="union-card" href="https://www.fc-union-berlin.de" target="_blank">
-    <div class="union-badge">⚽</div>
-    <div>
-      <div class="union-label">Nächstes Spiel · Bundesliga</div>
-      <div class="union-match" id="unionMatch">Lädt…</div>
-      <div class="union-sub"   id="unionSub">–</div>
+  <!-- FINANZEN -->
+  <a class="acard fin" href="/finanzenpaul/">
+    <div class="a-top"><div class="a-icon g">💶</div><div class="a-status">Aktiv</div></div>
+    <div class="a-name">Finanzen</div>
+    <div class="a-desc">Budget & Ausgaben</div>
+    <div class="fin-box">
+      <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
+      <div class="fin-val g" id="puffer">–</div>
+      <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
+      <div class="fin-bar-foot"><span id="pufSub">App öffnen um Daten zu laden</span><span id="finPct"></span></div>
     </div>
-    <div class="union-arrow">→</div>
+    <div class="fin-row2">
+      <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
+      <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
+    </div>
+    <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
+    <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
+
+  <!-- KALENDER -->
+  <a class="acard kal" href="/kalenderpaul/">
+    <div class="a-top"><div class="a-icon b">📅</div><div class="a-status">Aktiv</div></div>
+    <div class="a-name">Kalender</div>
+    <div class="a-desc">Termine & Events</div>
+    <div class="kal-ev" id="evMaja">
+      <div class="kal-ev-dot" style="background:#db2777"></div>
+      <div class="kal-ev-info">
+        <div class="kal-ev-lbl">💗 Mit Maja</div>
+        <div class="kal-ev-title" id="majaT">Lädt…</div>
+        <div class="kal-ev-date" id="majaD">–</div>
+      </div>
+      <div class="kal-ev-when" id="majaW">–</div>
+    </div>
+    <div class="kal-ev" id="evNext">
+      <div class="kal-ev-dot" id="nextDot" style="background:#6e6e73"></div>
+      <div class="kal-ev-info">
+        <div class="kal-ev-lbl">📅 Nächster Termin</div>
+        <div class="kal-ev-title" id="nextT">Lädt…</div>
+        <div class="kal-ev-date" id="nextD">–</div>
+      </div>
+      <div class="kal-ev-when" id="nextW">–</div>
+    </div>
+    <div class="kal-ev" id="evNext2">
+      <div class="kal-ev-dot" id="next2Dot" style="background:#6e6e73"></div>
+      <div class="kal-ev-info">
+        <div class="kal-ev-lbl">📅 Übernächster Termin</div>
+        <div class="kal-ev-title" id="next2T">–</div>
+        <div class="kal-ev-date" id="next2D">–</div>
+      </div>
+      <div class="kal-ev-when" id="next2W">–</div>
+    </div>
+    <div class="kal-union">
+      <div class="kal-union-icon">⚽</div>
+      <div class="kal-union-info">
+        <div class="kal-union-lbl">1. FC Union Berlin</div>
+        <div class="kal-union-match" id="unionM">Lädt…</div>
+        <div class="kal-union-date" id="unionD">–</div>
+      </div>
+    </div>
+    <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
+  </a>
+
+</div>
 
 </main>
 
-<nav class="bottom-nav">
-  <a class="bn-item active" href="/"><span class="bn-icon">🏠</span><span class="bn-label">Hub</span></a>
-  <a class="bn-item" href="/finanzenpaul/"><span class="bn-icon">💶</span><span class="bn-label">Finanzen</span></a>
-  <a class="bn-item" href="/kalenderpaul/"><span class="bn-icon">📅</span><span class="bn-label">Kalender</span></a>
+<nav class="bnav">
+  <a class="bn on" href="/"><span class="bn-i">🏠</span><span class="bn-l">Hub</span></a>
+  <a class="bn" href="/finanzenpaul/"><span class="bn-i">💶</span><span class="bn-l">Finanzen</span></a>
+  <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
 </nav>
 
 <script>
-const MON   = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-const MON_K = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-const WD    = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-const WD_K  = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-
+const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const MK=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+const WK=['So','Mo','Di','Mi','Do','Fr','Sa'];
 function pad(n){return String(n).padStart(2,'0');}
 function fmt(v){return v.toLocaleString('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0});}
-function diffDays(a,b){return Math.round((b-a)/86400000);}
-function stripTime(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
-function getKW(d){
-  const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
-  const day=dt.getUTCDay()||7; dt.setUTCDate(dt.getUTCDate()+4-day);
-  const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));
-  return Math.ceil((((dt-y0)/86400000)+1)/7);
-}
+function diff(a,b){return Math.round((b-a)/86400000);}
+function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
+function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
-// Clock
 const now=new Date();
+// Clock
 function tick(){const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}`;}
-tick(); setInterval(tick,1000);
-
+tick();setInterval(tick,1000);
 // Greeting
 const h=now.getHours();
-document.getElementById('greeting').textContent=(h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
-
+document.getElementById('greet').textContent=(h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
 // Date
-document.getElementById('hdate').textContent=`${WD[now.getDay()]}, ${now.getDate()}. ${MON_K[now.getMonth()]} ${now.getFullYear()}`;
+document.getElementById('hdate').textContent=`${WD[now.getDay()]}, ${now.getDate()}. ${MK[now.getMonth()]} ${now.getFullYear()}`;
 document.getElementById('todayStr').textContent=`${now.getDate()}. ${MON[now.getMonth()]}`;
 const kw=getKW(now);
 document.getElementById('kwStr').textContent=`KW ${kw} · ${now.getFullYear()}`;
 document.getElementById('kw').textContent=kw;
 document.getElementById('finMonth').textContent=`${MON[now.getMonth()]} ${now.getFullYear()}`;
-function kwRange(d){
-  const day=d.getDay()||7;
-  const mon=new Date(d); mon.setDate(d.getDate()-day+1);
-  const sun=new Date(mon); sun.setDate(mon.getDate()+6);
-  return `${mon.getDate()}. ${MON_K[mon.getMonth()]} – ${sun.getDate()}. ${MON_K[sun.getMonth()]}`;
-}
-document.getElementById('kwRange').textContent=kwRange(now);
+function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
+document.getElementById('kwR').textContent=kwRange(now);
 
 // Quote
-const QUOTES=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute, was andere nicht wollen – lebe morgen, wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
-document.getElementById('quote').textContent=QUOTES[now.getDate()%QUOTES.length];
+const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
+document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
 
 // Wetter
-async function loadWetter(){
-  try{
-    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');
-    const d=await r.json();
-    const icons={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
-    const descs={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
-    document.getElementById('wIcon').textContent=icons[d.current.weathercode]||'🌡️';
-    document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
-    document.getElementById('wDesc').textContent=descs[d.current.weathercode]||'Berlin';
-  }catch(e){document.getElementById('wTemp').textContent='--';}
+async function loadW(){
+  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');const d=await r.json();
+  const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+  const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
+  document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
+  document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
+  document.getElementById('wDesc').textContent=dc[d.current.weathercode]||'Berlin';}catch(e){document.getElementById('wTemp').textContent='--';}
 }
-loadWetter();
+loadW();
 
-// Finanzen
-function loadFinanzen(){
+// FINANZEN – direkt aus localStorage mit korrekten Keys
+function loadFin(){
   try{
-    const raw=localStorage.getItem('fp3'); if(!raw)return;
+    const raw=localStorage.getItem('fp3');
+    if(!raw){document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';return;}
     const S=JSON.parse(raw);
-    const g=S.gehalt?.v||0, z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0, ein=g+z;
+    // Einnahmen
+    const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
+    // Ausgaben: ITEMS Keys aus der App
+    const KEYS=['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'];
     let total=0;
-    ['miete','nebenkosten','strom','internet','gez','versicherung','handy','spotify','netflix','amazon','gym','lebensmittel','drogerie','kleidung','transport','freizeit','kinder','sonstiges','inv','notg','url','sond'].forEach(k=>{
-      if(S[k]?.on){const v=S[k].v||0,f=S[k].freq||'monthly';total+=f==='quarterly'?v/3:f==='annual'?v/12:v;}
-    });
-    const inv=(S.inv?.on?S.inv.v:0),notg=(S.notg?.on?S.notg.v:0),url=(S.url?.on?S.url.v:0),sond=(S.sond?.on?S.sond.v:0);
-    const puf=ein-total-inv-notg-url-sond;
-    const pct=Math.min(100,Math.max(0,Math.round((puf/ein)*100)));
+    // Custom items
+    const ci=JSON.parse(localStorage.getItem('fp3c')||'[]');
+    KEYS.forEach(k=>{if(S[k]?.on)total+=S[k].v||0;});
+    ci.forEach(it=>{if(S[it.k]?.on)total+=S[it.k].v||0;});
+    const rest=ein-total;
+    // Rücklagen mit korrekten Keys: invest, notgr, urlaub, sonder
+    const inv=S.invest?.v||0,notg=S.notgr?.v||0,url=S.urlaub?.v||0,sond=S.sonder?.v||0;
+    const puf=rest-inv-notg-url-sond;
+    const pct=Math.min(100,Math.max(0,ein>0?Math.round((puf/ein)*100):0));
     const el=document.getElementById('puffer');
-    el.textContent=fmt(puf); el.className='fin-puffer-val '+(puf>=0?'green':'red');
+    el.textContent=fmt(puf);el.className='fin-val '+(puf>=0?'g':'r');
     document.getElementById('finBar').style.width=pct+'%';
-    document.getElementById('finBar').className='fin-bar '+(puf>=0?'':'red');
-    document.getElementById('pufferSub').textContent=puf>=0?'Im Plan ✓':'Überbudget!';
+    document.getElementById('finBar').className='fin-bar'+(puf>=0?'':' r');
+    document.getElementById('pufSub').textContent=puf>=0?'Im Plan ✓':'Überbudget!';
     document.getElementById('finPct').textContent=pct+'% frei';
-    document.getElementById('einnahmen').textContent=fmt(ein);
-    document.getElementById('ausgaben').textContent=fmt(total);
-  }catch(e){}
+    document.getElementById('ein').textContent=fmt(ein);
+    document.getElementById('aus').textContent=fmt(total);
+    // Sync status
+    document.getElementById('syncDot').style.background='var(--green)';
+    document.getElementById('finUpdated').textContent='Zuletzt: '+new Date().toLocaleDateString('de-DE');
+  }catch(e){document.getElementById('pufSub').textContent='Fehler beim Laden';}
 }
-loadFinanzen();
+loadFin();
 
-// Kids from Sheet
+// KIDS
 async function loadKids(){
   try{
     const ID='1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
     const r=await fetch(`https://docs.google.com/spreadsheets/d/${ID}/gviz/tq?tqx=out:csv`);
     const csv=await r.text();
     const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',').map(c=>c.replace(/^"|"$/g,'')));
-    const today=stripTime(new Date());
-
+    const today=st(new Date());
     const entries=rows.map(r=>{
       const p=r[0]?.trim().split('/');
       if(!p||p.length<3)return null;
-      const d=stripTime(new Date(`${p[2]}-${p[1]}-${p[0]}`));
+      const d=st(new Date(`${p[2]}-${p[1]}-${p[0]}`));
       return isNaN(d)?null:{date:d,who:r[2]?.trim()};
     }).filter(Boolean).sort((a,b)=>a.date-b.date);
 
-    // Timeline: 14 days
-    const track=document.getElementById('erTrack');
-    track.innerHTML='';
+    // Timeline 14 days
+    const track=document.getElementById('erTrack');track.innerHTML='';
     for(let i=0;i<14;i++){
-      const d=new Date(today); d.setDate(today.getDate()+i);
-      const entry=entries.find(e=>diffDays(d,e.date)===0);
-      const isPaul=entry?.who==='Paul';
-      const isToday=i===0;
+      const d=new Date(today);d.setDate(today.getDate()+i);
+      const e=entries.find(e=>diff(d,e.date)===0);
+      const isPaul=e?.who==='Paul';
       const div=document.createElement('div');
-      div.className='er-day '+(isPaul?'paul':'dani')+(isToday?' today':'');
-      div.title=`${WD_K[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${isPaul?'Bei Paul':'Bei Dani'}`;
-      div.innerHTML=`<span class="er-day-label">${WD_K[d.getDay()][0]}</span>`;
+      div.className='er-day '+(isPaul?'paul':'dani')+(i===0?' today':'');
+      div.title=`${WK[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${isPaul?'Bei Paul':'Bei Dani'}`;
+      div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
       track.appendChild(div);
     }
 
-    // Today
-    const todayEntry=entries.find(e=>diffDays(today,e.date)===0);
-    const whoToday=todayEntry?.who||'?';
-    document.getElementById('erBadge').textContent=whoToday==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
-    document.getElementById('erBadge').className='er-badge '+(whoToday==='Paul'?'paul':'dani');
+    const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
+    document.getElementById('erBadge').textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
+    document.getElementById('erBadge').className='er-badge '+(todayWho==='Paul'?'paul':'dani');
 
-    const futureFromToday=entries.filter(e=>e.date>=today);
-
-    if(whoToday==='Paul'){
-      let count=0;
-      for(const e of futureFromToday){if(e.who==='Paul')count++;else break;}
-      document.getElementById('c1Label').textContent='Noch bei Paul';
-      document.getElementById('c1Num').textContent=count;
-      document.getElementById('c1Num').className='er-num green';
-      document.getElementById('c1Sub').textContent=count===1?'Heute letzter Tag':'inkl. heute';
-
-      const nextDani=futureFromToday.find(e=>e.who==='Dani');
-      const nextPaul=nextDani?futureFromToday.find(e=>e.date>nextDani.date&&e.who==='Paul'):null;
-      if(nextPaul){
-        const days=diffDays(today,nextPaul.date);
-        document.getElementById('c2Label').textContent='Wieder bei Paul';
-        document.getElementById('c2Num').textContent=days;
-        document.getElementById('c2Num').className='er-num blue';
-        document.getElementById('c2Sub').textContent=`Ab ${WD_K[nextPaul.date.getDay()]}. ${nextPaul.date.getDate()}. ${MON_K[nextPaul.date.getMonth()]}`;
-      }
-      if(nextDani){
-        document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WD_K[nextDani.date.getDay()]}. ${nextDani.date.getDate()}. ${MON_K[nextDani.date.getMonth()]}</strong></span>`;
-      }
+    const fut=entries.filter(e=>e.date>=today);
+    if(todayWho==='Paul'){
+      let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
+      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n g';
+      document.getElementById('c1s').textContent=cnt===1?'Heute letzter Tag':'inkl. heute';
+      const nd=fut.find(e=>e.who==='Dani'),np=nd?fut.find(e=>e.date>nd.date&&e.who==='Paul'):null;
+      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;}
+      if(nd){document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WK[nd.date.getDay()]}. ${nd.date.getDate()}. ${MK[nd.date.getMonth()]}</strong></span>`;}
     } else {
-      let count=0;
-      for(const e of futureFromToday){if(e.who==='Dani')count++;else break;}
-      document.getElementById('c1Label').textContent='Noch bei Dani';
-      document.getElementById('c1Num').textContent=count;
-      document.getElementById('c1Num').className='er-num grey';
-      document.getElementById('c1Sub').textContent='inkl. heute';
-
-      const nextPaul=futureFromToday.find(e=>e.who==='Paul');
-      if(nextPaul){
-        const days=diffDays(today,nextPaul.date);
-        document.getElementById('c2Label').textContent='Wieder bei Paul';
-        document.getElementById('c2Num').textContent=days;
-        document.getElementById('c2Num').className='er-num blue';
-        document.getElementById('c2Sub').textContent=`Ab ${WD_K[nextPaul.date.getDay()]}. ${nextPaul.date.getDate()}. ${MON_K[nextPaul.date.getMonth()]}`;
-        document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen wieder: <strong>${WD_K[nextPaul.date.getDay()]}. ${nextPaul.date.getDate()}. ${MON_K[nextPaul.date.getMonth()]}</strong></span>`;
-      }
+      document.getElementById('c1lbl').textContent='Noch bei Dani';
+      let cnt=0;for(const e of fut){if(e.who==='Dani')cnt++;else break;}
+      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n gr';
+      document.getElementById('c1s').textContent='inkl. heute';
+      const np=fut.find(e=>e.who==='Paul');
+      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
+      document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;}
     }
-  }catch(e){
-    document.getElementById('erNext').innerHTML='<span>⚠️</span><span>Sheet nicht erreichbar</span>';
-  }
+  }catch(e){document.getElementById('erNext').innerHTML='<span>⚠️</span><span>Sheet nicht erreichbar</span>';}
 }
 loadKids();
 
-// iCal
-function parseICS(text){
-  const events=[];
-  const blocks=text.split('BEGIN:VEVENT');
+// iCAL via Google Apps Script Proxy
+function parseICS(txt){
+  const evs=[];const blocks=txt.split('BEGIN:VEVENT');
   for(let i=1;i<blocks.length;i++){
     const b=blocks[i];
     const get=k=>{const m=b.match(new RegExp(k+'(?:;[^:]*)?:([^\\r\\n]+)'));return m?m[1].trim():''};
-    const dtraw=get('DTSTART');
-    const summary=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
-    if(!dtraw||!summary)continue;
+    const dtraw=get('DTSTART'),sum=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
+    if(!dtraw||!sum)continue;
     let date,hasTime=false;
-    if(/^\d{8}$/.test(dtraw)){
-      date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);
-    } else {
-      const clean=dtraw.replace(/Z$/,'').replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/,'$1-$2-$3T$4:$5:$6');
-      date=new Date(clean); hasTime=true;
-    }
+    if(/^\d{8}$/.test(dtraw)){date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);}
+    else{const cl=dtraw.replace(/Z$/,'').replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/,'$1-$2-$3T$4:$5:$6');date=new Date(cl);hasTime=true;}
     if(isNaN(date))continue;
-
     // Color
-    let color='#6e6e73';
-    const s=summary.toLowerCase();
-    if(s.includes('maja'))color='#db2777';
-    else if(s.includes('union')||s.includes('köln')||s.includes('augsburg')||s.includes('mainz')||s.includes('fcunion')||s.includes('⚽'))color='#e8001c';
-    else if(s.includes('kids')||s.includes('rosa')||s.includes('emil')||s.includes('alma')||s.includes('👧')||s.includes('👨‍👧'))color='#1a56db';
-    else if(s.includes('konzert')||s.includes('olivia')||s.includes('finch')||s.includes('sing')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭'))color='#16a34a';
-    else if(s.includes('feier')||s.includes('pfingst')||s.includes('feiertag')||s.includes('⛪'))color='#a16207';
-    else if(s.includes('urlaub')||s.includes('trip')||s.includes('🏕️'))color='#059669';
-    else if(s.includes('geburt')||s.includes('birthday')||s.includes('bday'))color='#7c3aed';
-
-    events.push({date,summary,color,hasTime});
+    let col='#6e6e73';const s=sum.toLowerCase();
+    if(s.includes('maja'))col='#db2777';
+    else if(s.includes('union')||s.includes('köln')||s.includes('augsburg')||s.includes('mainz')||s.includes('bochum')||s.includes('wolfsburg')||s.includes('leverkusen')||s.includes('dortmund')||s.includes('münchen')||s.includes('stuttgart')||s.includes('freiburg')||s.includes('heidenheim')||s.includes('hoffenheim')||s.includes('frankfurt')||s.includes('werder')||s.includes('pauli')||s.includes('fcunion'))col='#e8001c';
+    else if(s.includes('konzert')||s.includes('olivia')||s.includes('finch')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭')||s.includes('bierwalker')||s.includes('sing'))col='#16a34a';
+    else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
+    else if(s.includes('feier')||s.includes('pfingst')||s.includes('feiertag'))col='#a16207';
+    else if(s.includes('urlaub')||s.includes('🏕️'))col='#059669';
+    evs.push({date,sum,col,hasTime});
   }
-  return events;
+  return evs;
 }
-
-function fmtWhen(d){
-  const today=stripTime(new Date());
-  const diff=diffDays(today,stripTime(d));
-  if(diff===0)return'Heute';
-  if(diff===1)return'Morgen';
-  if(diff===2)return'Übermorgen';
-  return`in ${diff} Tagen`;
-}
-
-function fmtFull(d){
-  return`${WD[d.getDay()]}, ${d.getDate()}. ${MON_K[d.getMonth()]}`;
-}
+function fmtW(d){const t=st(new Date());const df=diff(t,st(d));if(df===0)return'Heute';if(df===1)return'Morgen';if(df===2)return'Übermorgen';return`${WK[d.getDay()]}. ${d.getDate()}. ${MK[d.getMonth()]}`;}
+function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]}`+(d.getHours()>0?` · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`:'');}
 
 async function loadICAL(){
   try{
-    const ICAL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
-    const PROXY='https://corsproxy.io/?url='+encodeURIComponent(ICAL);
-    const r=await fetch(PROXY);
-    if(!r.ok)throw new Error('fetch failed');
-    const text=await r.text();
-    const events=parseICS(text);
+    const PROXY='https://script.google.com/macros/s/AKfycbwyBXh8Lv5YlBnTrW-y4loa8Mq3mjFlxCiyjNeMurua-fLxXBp9wmf1kCHZBO2Gd6J3/exec';
+    const r=await fetch(PROXY,{signal:AbortSignal.timeout(10000)});
+    if(!r.ok)throw new Error();
+    const txt=await r.text();
+    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error();
+    const evs=parseICS(txt);
+    const today=st(new Date());
 
-    const today=stripTime(new Date());
-    const in3=new Date(today); in3.setDate(today.getDate()+3);
+    // Next Maja
+    const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
+    if(maja){document.getElementById('majaT').textContent=maja.sum;document.getElementById('majaD').textContent=fmtFull(maja.date);document.getElementById('majaW').textContent=fmtW(maja.date);}
+    else{document.getElementById('majaT').textContent='Kein Termin geplant';document.getElementById('majaD').textContent='–';document.getElementById('majaW').textContent='';}
 
-    // Next 3 days – ALL events
-    const upcoming=events
-      .filter(e=>stripTime(e.date)>=today&&stripTime(e.date)<in3)
-      .sort((a,b)=>a.date-b.date)
-      .slice(0,10);
-
-    const list=document.getElementById('eventsList');
-    if(upcoming.length===0){
-      list.innerHTML='<div class="event-empty">Keine Termine in den nächsten 3 Tagen 🎉</div>';
-    } else {
-      list.innerHTML=upcoming.map(e=>{
-        const isToday=diffDays(today,stripTime(e.date))===0;
-        const timeStr=e.hasTime?` · ${pad(e.date.getHours())}:${pad(e.date.getMinutes())} Uhr`:'';
-        return`<div class="event-item${isToday?' event-today':''}">
-          <div class="event-dot" style="background:${e.color}"></div>
-          <div class="event-date-col">
-            <div class="event-day">${WD_K[e.date.getDay()]}</div>
-            <div class="event-num">${e.date.getDate()}</div>
-          </div>
-          <div class="event-title">${e.summary}${timeStr}</div>
-          <div class="event-when">${fmtWhen(e.date)}</div>
-        </div>`;
-      }).join('');
-    }
-
-    // Maja
-    const nextMaja=events.filter(e=>stripTime(e.date)>=today&&e.color==='#db2777').sort((a,b)=>a.date-b.date)[0];
-    document.getElementById('majaTitle').textContent=nextMaja?nextMaja.summary:'Kein Termin geplant';
-    document.getElementById('majaDate').textContent=nextMaja?`${fmtWhen(nextMaja.date)} · ${fmtFull(nextMaja.date)}`:'–';
-
-    // Konzert
-    const nextKonzert=events.filter(e=>stripTime(e.date)>=today&&e.color==='#16a34a').sort((a,b)=>a.date-b.date)[0];
-    document.getElementById('konzertTitle').textContent=nextKonzert?nextKonzert.summary:'Kein Event geplant';
-    document.getElementById('konzertDate').textContent=nextKonzert?`${fmtWhen(nextKonzert.date)} · ${fmtFull(nextKonzert.date)}`:'–';
+    // Next 2 events (non-maja, non-union)
+    const others=evs.filter(e=>st(e.date)>=today&&e.col!=='#db2777'&&e.col!=='#e8001c').sort((a,b)=>a.date-b.date);
+    const n1=others[0],n2=others[1];
+    if(n1){document.getElementById('nextDot').style.background=n1.col;document.getElementById('nextT').textContent=n1.sum;document.getElementById('nextD').textContent=fmtFull(n1.date);document.getElementById('nextW').textContent=fmtW(n1.date);}
+    else{document.getElementById('nextT').textContent='Keine Termine';document.getElementById('nextW').textContent='';}
+    if(n2){document.getElementById('next2Dot').style.background=n2.col;document.getElementById('next2T').textContent=n2.sum;document.getElementById('next2D').textContent=fmtFull(n2.date);document.getElementById('next2W').textContent=fmtW(n2.date);}
+    else{document.getElementById('evNext2').style.display='none';}
 
     // Union
-    const nextUnion=events.filter(e=>stripTime(e.date)>=today&&e.color==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    if(nextUnion){
-      document.getElementById('unionMatch').textContent=nextUnion.summary;
-      document.getElementById('unionSub').textContent=`${fmtFull(nextUnion.date)} · ${fmtWhen(nextUnion.date)}`;
-    } else {
-      document.getElementById('unionMatch').textContent='FSV Mainz vs Union Berlin';
-      document.getElementById('unionSub').textContent='Sa. 10. Mai · 19:30 Uhr · Auswärts';
-    }
+    const union=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
+    if(union){document.getElementById('unionM').textContent=union.sum;document.getElementById('unionD').textContent=fmtFull(union.date)+' · '+fmtW(union.date);}
+    else{document.getElementById('unionM').textContent='FSV Mainz vs Union Berlin';document.getElementById('unionD').textContent='Sa. 10. Mai · 19:30 Uhr · Auswärts';}
 
   }catch(e){
-    document.getElementById('eventsList').innerHTML='<div class="event-empty">⚠️ Kalender nicht erreichbar – corsproxy.io prüfen</div>';
-    document.getElementById('majaTitle').textContent='Kalender nicht erreichbar';
-    document.getElementById('konzertTitle').textContent='Kalender nicht erreichbar';
+    ['majaT','nextT','next2T','unionM'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Kalender nicht erreichbar';});
   }
 }
 loadICAL();
