@@ -358,12 +358,23 @@ async function loadW(){
 }
 loadW();
 
-// FINANZEN – direkt aus localStorage mit korrekten Keys
-function loadFin(){
+// FINANZEN – live von JSONBin, Fallback auf localStorage
+async function loadFin(){
   try{
-    const raw=localStorage.getItem('fp3');
-    if(!raw){document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';return;}
-    const S=JSON.parse(raw);
+    const jbKey=localStorage.getItem('fp3_jb_key')||'';
+    const jbBin=localStorage.getItem('fp3_jb_bin')||'';
+    let S=null;
+    if(jbKey&&jbBin){
+      try{
+        const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
+        if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}
+      }catch(e){}
+    }
+    if(!S){
+      const raw=localStorage.getItem('fp3');
+      if(!raw){document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';return;}
+      S=JSON.parse(raw);
+    }
     // Einnahmen
     const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
     // Ausgaben: ITEMS Keys aus der App
@@ -388,7 +399,8 @@ function loadFin(){
     document.getElementById('aus').textContent=fmt(total);
     // Sync status
     document.getElementById('syncDot').style.background='var(--green)';
-    document.getElementById('finUpdated').textContent='Zuletzt: '+new Date().toLocaleDateString('de-DE');
+    document.getElementById('syncLbl').textContent=(jbKey&&jbBin?'JSONBin Live':'localStorage')+'  · Monatlich';
+    document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
 
     // Sparquote = (invest + notgr + urlaub + sonder) / ein
     const spar=inv+notg+url+sond;
