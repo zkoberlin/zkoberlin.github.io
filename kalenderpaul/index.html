@@ -191,16 +191,14 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
+  transition: opacity 0.3s ease;
   overflow: hidden;
-  max-height: 60px;
+  min-height: 38px;
   opacity: 1;
 }
 .today-panel.hidden {
-  max-height: 0;
   opacity: 0;
-  padding: 0;
-  border-top: none;
+  pointer-events: none;
 }
 
 /* Legend */
@@ -816,7 +814,7 @@ const SE = {
   "2026-06-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🦷 Prophylaxe 16:00", c:"e-kidev"}],
   "2026-06-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
   "2026-06-03": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏃 Firmenlauf Hellomed 18:00", c:"e-work"}],
+  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}],
   "2026-06-05": [{t:"Kids bei Dani", c:"e-dani"}],
   "2026-06-06": [{t:"Kids bei Dani", c:"e-dani"}],
   "2026-06-07": [{t:"Kids bei Dani", c:"e-dani"}],
