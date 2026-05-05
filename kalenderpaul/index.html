@@ -1756,13 +1756,22 @@ function setLoadStatus(id, state, text) {
   const el = document.getElementById(id);
   if(!el) return;
   el.className = 'load-item visible ' + state;
-  const dot = el.querySelector('.load-dot');
+  const dot = document.createElement('span');
+  dot.className = 'load-dot';
   el.textContent = '';
   el.appendChild(dot);
   el.appendChild(document.createTextNode(' ' + text));
-  // Auto-fade after 5s on success
   if(state === 'ok') {
-    setTimeout(() => { el.style.opacity = '0.3'; }, 5000);
+    // Fade to 30% after 5s
+    setTimeout(() => { el.style.transition = 'opacity 1s ease'; el.style.opacity = '0.3'; }, 5000);
+    // Hide completely after 20s
+    setTimeout(() => { 
+      el.style.transition = 'opacity 1s ease, max-height 1s ease, margin 1s ease';
+      el.style.opacity = '0';
+      el.style.maxHeight = '0';
+      el.style.overflow = 'hidden';
+      el.style.margin = '0';
+    }, 20000);
   }
 }
 
@@ -1832,6 +1841,7 @@ async function loadSchulferien() {
       }
     }
     console.log(`✅ Schulferien geladen`);
+    setLoadStatus('ls-ferien', 'ok', '✓ Schulferien');
   } catch(err) {
     console.warn('Schulferien API error:', err.message);
     setLoadStatus('ls-ferien', 'err', '✗ Schulferien');
