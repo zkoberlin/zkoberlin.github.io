@@ -606,6 +606,7 @@ body {
   .chip-count { background: rgba(255,255,255,0.15); }
 }
 
+<<<<<<< HEAD
 /* Event Detail Modal */
 .evt-modal-overlay {
   display: none;
@@ -713,6 +714,8 @@ body {
   .src-badge { background: rgba(255,255,255,0.08); }
 }
 
+=======
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -1433,6 +1436,7 @@ function hideEmptyFilters() {
   
   document.querySelectorAll('.li[data-cat]').forEach(chip => {
     const cat = chip.dataset.cat;
+<<<<<<< HEAD
     if(cat === 'e-work') { chip.style.display = 'none'; return; } // always hide old work filter
     
     // Count all future dates that have at least one event of this category
@@ -1440,6 +1444,12 @@ function hideEmptyFilters() {
       (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
     );
     const count = matchingDates.length;
+=======
+    // Count unique dates with this category
+    const count = futureDates.filter(d => 
+      (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
+    ).length;
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
     
     if(count === 0) {
       chip.style.display = 'none';
@@ -1447,6 +1457,10 @@ function hideEmptyFilters() {
     }
     chip.style.display = '';
     
+<<<<<<< HEAD
+=======
+    // Add or update count badge
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
     let badge = chip.querySelector('.chip-count');
     if(!badge) {
       badge = document.createElement('span');
@@ -1510,6 +1524,7 @@ function clearSearch() {
 }
 
 // ── iCAL CONFIGURATION ───────────────────────────────────────────────
+<<<<<<< HEAD
 const ICAL_URLS = [
   'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics',
   'https://calendar.google.com/calendar/ical/bendzko%40hellomed.com/private-47446a2b152be60bee5ced55d79b08eb/basic.ics',
@@ -1537,6 +1552,13 @@ function sortEvents(evs) {
   return [...allDay, ...timed];
 }
 
+=======
+// Trage hier deine Google Calendar Secret iCal URL ein:
+// Google Kalender → Einstellungen → Kalender → "Geheime Adresse im iCal-Format"
+const ICAL_URL = 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics'; // z.B. 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-xxxx/basic.ics'
+
+// ── iCAL PARSER ──────────────────────────────────────────────────────
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
 function parseICS(text) {
   const events = [];
   const lines = text.replace(/\r\n /g, '').replace(/\r\n\t/g, '').split(/\r\n|\n/);
@@ -1562,6 +1584,7 @@ function parseICS(text) {
         current.startRaw = val;
         current.start = parseICSDate(val);
         current.allDay = !val.includes('T');
+<<<<<<< HEAD
         if(val.includes('T')) {
           // Extract HH:MM from time component
           const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
@@ -1575,6 +1598,8 @@ function parseICS(text) {
             current.startTime = h + ':' + m2;
           }
         }
+=======
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
       }
       if(key === 'DTEND') {
         current.endRaw = val;
@@ -1605,12 +1630,20 @@ function catFromTitle(title) {
   if(t.includes('spendenlauf') || t.includes('schule') || t.includes('rosa') || t.includes('emil') || t.includes('kiefer') || t.includes('prophylaxe') || t.includes('eltern')) return 'e-kidev';
   if(t.includes('besichtigung') || t.includes('berlinovo')) return 'e-haus';
   if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
+<<<<<<< HEAD
   if(t.includes('hellomed') || t.includes('paul & sina') || t.includes('paul und sina') || t.includes('hel') || t.includes('firmenlauf') || t.includes('etiketten') || t.includes('klientenliste') || t.includes('prolog') || t.includes('polog') || t.includes('pharma')) return 'e-hellomed';
+=======
+  if(t.includes('firmenlauf') || t.includes('kongress')) return 'e-work';
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
   return 'e-event-ical';
 }
 
 // Inject iCal events into SE object
+<<<<<<< HEAD
 function injectICalEvents(events, url='') {
+=======
+function injectICalEvents(events) {
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
 
   for(const ev of events) {
@@ -1620,8 +1653,12 @@ function injectICalEvents(events, url='') {
     // Skip events already covered by static data
     const title = ev.title.trim();
 
+<<<<<<< HEAD
     const isHellomed = url.includes('hellomed');
     const cat = isHellomed ? 'e-hellomed' : catFromTitle(title);
+=======
+    const cat = catFromTitle(title);
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
     const display = title;
 
     // For multi-day events, add to each day
@@ -1631,34 +1668,49 @@ function injectICalEvents(events, url='') {
       while(cur < endD) {
         const key = cur.toISOString().substring(0,10);
         if(!SE[key]) SE[key] = [];
+<<<<<<< HEAD
         if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
           const entry = {t: display, c: cat, fromIcal: true};
           if(ev.startTime && cur.toISOString().substring(0,10) === ev.start) entry.startTime = ev.startTime;
           if(ev.location) entry.location = ev.location;
           if(ev.description) entry.description = ev.description;
           SE[key].push(entry);
+=======
+        // Don't duplicate
+        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
+          SE[key].push({t: display, c: cat, fromIcal: true});
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
         }
         cur.setDate(cur.getDate() + 1);
       }
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
       if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
+<<<<<<< HEAD
         const entry = {t: display, c: cat, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
         SE[ev.start].push(entry);
+=======
+        SE[ev.start].push({t: display, c: cat, fromIcal: true});
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
       }
     }
   }
 }
 
 async function loadICalEvents() {
+<<<<<<< HEAD
   if(!ICAL_URLS || !ICAL_URLS.length) return;
+=======
+  if(!ICAL_URL) return; // No URL configured
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
 
   const statusEl = document.getElementById('ical-status');
   if(statusEl) statusEl.textContent = '🔄 Kalender wird geladen…';
 
+<<<<<<< HEAD
   let totalEvents = 0;
   let errors = 0;
 
@@ -1684,11 +1736,29 @@ async function loadICalEvents() {
     setTimeout(() => { if(statusEl) statusEl.textContent = ''; }, 3000);
   }
 
+=======
+  try {
+    const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(ICAL_URL);
+    const res = await fetch(proxyUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const events = parseICS(text);
+    injectICalEvents(events);
+    if(statusEl) statusEl.textContent = `✅ ${events.length} Termine geladen`;
+    setTimeout(() => { if(statusEl) statusEl.textContent = ''; }, 3000);
+  } catch(err) {
+    if(statusEl) statusEl.textContent = '⚠️ iCal nicht verfügbar (Server läuft?)';
+    console.warn('iCal load error:', err.message);
+  }
+
+  // Re-render with fresh data
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
   renderAll();
   renderToday();
   hideEmptyFilters();
 }
 
+<<<<<<< HEAD
 // ── DYNAMIC DATA LOADERS ─────────────────────────────────────────────
 
 async function loadFeiertage() {
@@ -1857,10 +1927,13 @@ async function loadAllDynamicData() {
   await Promise.all([loadFeiertage(), loadSchulferien(), loadUnionGames(), loadKidsSheet()]);
 }
 
+=======
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
 renderToday();
 renderAll();
 hideEmptyFilters();
 
+<<<<<<< HEAD
 // Load dynamic data and re-render
 loadAllDynamicData().then(() => {
   renderAll();
@@ -1868,6 +1941,8 @@ loadAllDynamicData().then(() => {
   hideEmptyFilters();
 });
 
+=======
+>>>>>>> 77178c4fd0b9735dcee614051d70c5705b770f4d
 // Load iCal events after initial render
 loadICalEvents();
 
