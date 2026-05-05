@@ -1988,18 +1988,23 @@ window.addEventListener('resize', updateHeaderVar, {passive:true});
 window.addEventListener('scroll', () => { updateHeaderVar(); }, {passive:true, once:false});
 
 // Fade today strip on scroll
+let lastScrolled = false;
 window.addEventListener('scroll', () => {
   const tp = document.getElementById('todayPanel');
   const header = document.querySelector('.header');
   if(!tp || !header) return;
-  if(window.scrollY > 40) {
+  const scrolled = window.scrollY > 40;
+  if(scrolled === lastScrolled) return; // no change, skip
+  lastScrolled = scrolled;
+  if(scrolled) {
     tp.classList.add('hidden');
     header.style.paddingTop = '6px';
   } else {
     tp.classList.remove('hidden');
     header.style.paddingTop = '';
   }
-  updateHeaderVar();
+  // Recalculate header height after transition settles
+  setTimeout(updateHeaderVar, 320);
 }, {passive: true});
 
 // Update header title on scroll to show current visible month
