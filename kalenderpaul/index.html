@@ -1407,7 +1407,8 @@ function filterBy(cat) {
         const srcLabel = ev.fromIcal ? '<span style="font-size:9px;font-weight:700;opacity:.5;margin-left:5px;color:#34d399">● iCal</span>'
                         : ev.fromSheet ? '<span style="font-size:9px;font-weight:700;opacity:.6;margin-left:5px;color:#a78bfa">● Sheet</span>'
                         : ev.fromApi ? '<span style="font-size:9px;font-weight:700;opacity:.5;margin-left:5px;color:#f59e0b">● API</span>' : '';
-        item.innerHTML = `<span style="color:${catColors[cat]};font-size:13px">●</span> <div><div>${ev.t.replace(/^[^\w\s]*\s*/,'')}${srcLabel}</div><div class="fp-date">${fmtDate(dk)}</div></div>`;
+        const cleanT = ev.t.replace(/^[^\w\s]*/,'').trim();
+        item.innerHTML = `<span style="color:${catColors[cat]};font-size:13px">●</span> <div><div>${cleanT}${srcLabel}</div><div class="fp-date">${fmtDate(dk)}</div></div>`;
         list.appendChild(item);
       });
     });
