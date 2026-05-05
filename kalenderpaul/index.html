@@ -194,18 +194,19 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease, max-height 0.25s ease, padding 0.25s ease;
   overflow: hidden;
   opacity: 1;
+  max-height: 200px;
 }
 .today-panel.hidden {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  max-height: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  overflow: hidden !important;
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  border-top: none;
+  pointer-events: none;
 }
+
 
 /* Legend */
 /* legend in header */
@@ -810,13 +811,16 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
-    padding: 6px 0 8px;
-    max-height: 120px;
-    overflow-y: auto;
-    overflow-x: hidden;
   }
   .today-panel::-webkit-scrollbar { display: none; }
-  .today-panel.hidden { max-height: 0 !important; padding: 0 !important; border: none !important; }
+  .today-panel.hidden {
+    max-height: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
+  }
+  
   .tp-header { width: 100%; margin-bottom: 2px; }
   .tp-title { font-size: 10px; letter-spacing: .6px; }
   .tp-date { font-size: 10px; }
@@ -973,6 +977,7 @@ const WD = ["Mo","Di","Mi","Do","Fr","Sa","So"];
 
 // ── ALLE TERMINE APRIL – DEZEMBER 2026 ──────────────────────────────
 const SE = {};
+let todayHasEvents = false;
 
 // ── HELPERS ──────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2,'0'); }
@@ -1367,12 +1372,9 @@ function renderToday() {
   const list = document.getElementById('tpList');
   list.innerHTML = '';
 
-  const panel = document.getElementById('todayPanel');
-  if(!evs.length) {
-    if(panel) panel.style.display = 'none';
-    return;
-  }
-  if(panel) panel.style.display = '';
+  todayHasEvents = evs.length > 0;
+  updateTodayPanel();
+  if(!evs.length) return;
 
   const colorMap2 = {
     'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
@@ -2001,20 +2003,25 @@ setTimeout(updateHeaderVar, 500);
 
 // Fade today strip on scroll
 let lastScrolled = false;
-window.addEventListener('scroll', () => {
+
+function updateTodayPanel() {
   const tp = document.getElementById('todayPanel');
-  const header = document.querySelector('.header');
-  if(!tp || !header) return;
+  if(!tp) return;
   const scrolled = window.scrollY > 40;
-  if(scrolled === lastScrolled) return; // no change, skip
-  lastScrolled = scrolled;
-  if(scrolled) {
+  // Hide if scrolled OR no events today
+  if(scrolled || !todayHasEvents) {
     tp.classList.add('hidden');
   } else {
     tp.classList.remove('hidden');
   }
+}
 
-}, {passive: true});
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY > 40;
+  if(scrolled === lastScrolled) return;
+  lastScrolled = scrolled;
+  updateTodayPanel();
+}, {passive: true});;
 
 // Update header title on scroll to show current visible month
 
