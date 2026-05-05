@@ -161,21 +161,22 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
-/* Drag & Drop sorting */
-.sort-block{position:relative;}
-.sort-block.dragging{opacity:.4;transform:scale(.98);}
-.sort-block.drag-over{outline:2px dashed var(--blue);outline-offset:4px;border-radius:var(--r);}
-.drag-handle{
+/* Sort blocks */
+.sort-block{position:relative;transition:transform .2s;}
+.sort-controls{
   display:none;
-  position:absolute;top:10px;right:10px;z-index:10;
-  width:28px;height:28px;border-radius:8px;
-  background:var(--card2);border:1px solid var(--border);
-  align-items:center;justify-content:center;
-  cursor:grab;font-size:14px;color:var(--t3);
-  touch-action:none;
+  position:absolute;top:50%;right:-12px;transform:translateY(-50%);
+  flex-direction:column;gap:3px;z-index:20;
 }
-.drag-handle:active{cursor:grabbing;}
-@media(max-width:600px){.drag-handle{display:flex;}}
+@media(max-width:600px){.sort-controls{display:flex;}}
+.sort-btn{
+  width:26px;height:26px;border-radius:8px;border:1px solid var(--border);
+  background:var(--card);color:var(--t2);font-size:13px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh);transition:.15s;
+}
+.sort-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.sort-btn:disabled{opacity:.25;pointer-events:none;}
 .sort-edit-btn{
   display:none;
   position:fixed;bottom:90px;right:16px;z-index:200;
@@ -186,8 +187,9 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
   align-items:center;justify-content:center;
 }
 @media(max-width:600px){.sort-edit-btn{display:flex;}}
-.sort-editing .drag-handle{display:flex!important;}
+.sort-editing .sort-controls{display:flex;}
 .sort-editing .sort-edit-btn{background:var(--green);}
+.sort-editing main{padding-right:36px;}
 
 /* Kategorie-Bars */
 .fin-cats{margin:0 12px 10px;display:flex;flex-direction:column;gap:5px;}
@@ -223,12 +225,12 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 <div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
 
 <div id="sortable-container">
-<div class="sort-block" data-id="weather"><div class="drag-handle">⠿</div><div class="top-row">
+<div class="sort-block" data-id="weather"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="top-row">
   <div class="mini"><div class="mini-icon" id="wIcon">⏳</div><div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div></div>
   <div class="mini"><div class="mini-icon">📆</div><div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div></div>
 </div></div><!-- /weather -->
 
-<div class="sort-block" data-id="kids"><div class="drag-handle">⠿</div><div class="sec">👧 Emil & Rosa</div>
+<div class="sort-block" data-id="kids"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="sec">👧 Emil & Rosa</div>
 <div class="er">
   <div class="er-top">
     <div class="er-title">Emil & Rosa</div>
@@ -257,7 +259,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
 </div></div><!-- /kids -->
 
-<div class="sort-block" data-id="apps"><div class="drag-handle">⠿</div><div class="sec">📱 Apps</div>
+<div class="sort-block" data-id="apps"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="sec">📱 Apps</div>
 <div class="app-row">
 
   <!-- FINANZEN -->
