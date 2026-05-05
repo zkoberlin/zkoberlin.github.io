@@ -192,14 +192,17 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, border 0.3s ease;
   overflow: hidden;
-  min-height: 38px;
+  max-height: 120px;
   opacity: 1;
 }
 .today-panel.hidden {
   opacity: 0;
   pointer-events: none;
+  max-height: 0;
+  padding: 0;
+  border-top: none;
 }
 
 /* Legend */
@@ -713,6 +716,40 @@ body {
   .src-badge { background: rgba(255,255,255,0.08); }
 }
 
+.load-status {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 5px 0 2px;
+  min-height: 20px;
+  transition: opacity 0.5s ease;
+}
+.load-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: .2px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(2px);
+}
+.load-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.load-item.loading { color: var(--text3); }
+.load-item.ok  { color: #34d399; }
+.load-item.err { color: #f87171; }
+.load-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -853,6 +890,26 @@ body {
       <span class="tp-date" id="tpDate"></span>
     </div>
     <div class="tp-list" id="tpList"></div>
+  </div>
+  <div class="load-status" id="loadStatus">
+    <div class="load-item" id="ls-ical1">
+      <span class="load-dot"></span> Gmail iCal
+    </div>
+    <div class="load-item" id="ls-ical2">
+      <span class="load-dot"></span> Hellomed iCal
+    </div>
+    <div class="load-item" id="ls-feier">
+      <span class="load-dot"></span> Feiertage
+    </div>
+    <div class="load-item" id="ls-ferien">
+      <span class="load-dot"></span> Schulferien
+    </div>
+    <div class="load-item" id="ls-union">
+      <span class="load-dot"></span> Union Berlin
+    </div>
+    <div class="load-item" id="ls-sheet">
+      <span class="load-dot"></span> Kids Sheet
+    </div>
   </div>
   </div><!-- end header-inner -->
 </div><!-- end header -->
@@ -1663,7 +1720,10 @@ async function loadICalEvents() {
   let totalEvents = 0;
   let errors = 0;
 
-  await Promise.all(ICAL_URLS.map(async (url) => {
+  await Promise.all(ICAL_URLS.map(async (url, idx) => {
+    const statusId = idx === 0 ? 'ls-ical1' : 'ls-ical2';
+    const label = idx === 0 ? 'Gmail iCal' : 'Hellomed iCal';
+    setLoadStatus(statusId, 'loading', label + ' …');
     try {
       const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(url);
       const res = await fetch(proxyUrl);
@@ -1672,8 +1732,10 @@ async function loadICalEvents() {
       const events = parseICS(text);
       injectICalEvents(events, url);
       totalEvents += events.length;
+      setLoadStatus(statusId, 'ok', `✓ ${label} (${events.length})`);
     } catch(err) {
       errors++;
+      setLoadStatus(statusId, 'err', `✗ ${label}`);
       console.warn('iCal load error for', url, ':', err.message);
     }
   }));
@@ -1691,10 +1753,26 @@ async function loadICalEvents() {
 }
 
 // ── DYNAMIC DATA LOADERS ─────────────────────────────────────────────
+function setLoadStatus(id, state, text) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.className = 'load-item visible ' + state;
+  const dot = el.querySelector('.load-dot');
+  el.textContent = '';
+  el.appendChild(dot);
+  el.appendChild(document.createTextNode(' ' + text));
+  // Auto-fade after 5s on success
+  if(state === 'ok') {
+    setTimeout(() => { el.style.opacity = '0.3'; }, 5000);
+  }
+}
+
+
 
 async function loadFeiertage() {
   const year = new Date().getFullYear();
   const nextYear = year + 1;
+  setLoadStatus('ls-feier', 'loading', 'Feiertage …');
   try {
     // OpenHolidays API - Feiertage Berlin
     const url = `https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${year}-01-01&validTo=${nextYear}-12-31`;
@@ -1717,14 +1795,17 @@ async function loadFeiertage() {
       }
     }
     console.log(`✅ ${data.length} Feiertage geladen`);
+    setLoadStatus('ls-feier', 'ok', `✓ Feiertage (${data.length})`);
   } catch(err) {
     console.warn('Feiertage API error:', err.message);
+    setLoadStatus('ls-feier', 'err', '✗ Feiertage');
   }
 }
 
 async function loadSchulferien() {
   const year = new Date().getFullYear();
   const nextYear = year + 1;
+  setLoadStatus('ls-ferien', 'loading', 'Schulferien …');
   try {
     // OpenHolidays API - Schulferien Berlin
     const url = `https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${year}-01-01&validTo=${nextYear}-12-31`;
@@ -1754,10 +1835,12 @@ async function loadSchulferien() {
     console.log(`✅ Schulferien geladen`);
   } catch(err) {
     console.warn('Schulferien API error:', err.message);
+    setLoadStatus('ls-ferien', 'err', '✗ Schulferien');
   }
 }
 
 async function loadUnionGames() {
+  setLoadStatus('ls-union', 'loading', 'Union Berlin …');
   try {
     // Use a CORS proxy for sports data - openligadb.de (free, no key needed)
     const currentSeason = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear() - 1;
@@ -1787,13 +1870,16 @@ async function loadUnionGames() {
       }
     }
     console.log('✅ Union Spiele geladen');
+    setLoadStatus('ls-union', 'ok', '✓ Union Berlin');
   } catch(err) {
     console.warn('Union API error:', err.message);
+    setLoadStatus('ls-union', 'err', '✗ Union Berlin');
     // Fallback: keep static entries
   }
 }
 
 async function loadKidsSheet() {
+  setLoadStatus('ls-sheet', 'loading', 'Kids Sheet …');
   try {
     // Google Sheets as CSV - works if sheet is publicly readable
     const sheetId = '1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
@@ -1849,8 +1935,10 @@ async function loadKidsSheet() {
       }
     }
     console.log(`✅ Kids Sheet: ${kidsAdded} Tage, ${infosAdded} Infos geladen`);
+    setLoadStatus('ls-sheet', 'ok', `✓ Kids Sheet (${kidsAdded} Tage)`);
   } catch(err) {
     console.warn('Google Sheets error:', err.message);
+    setLoadStatus('ls-sheet', 'err', '✗ Kids Sheet');
   }
 }
 
