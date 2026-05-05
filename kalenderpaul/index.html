@@ -165,17 +165,22 @@ body {
 /* Legend inside header */
 .legend {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 5px;
   padding: 0 0 8px;
   justify-content: flex-start;
   position: static;
   border: none;
   background: transparent;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
-.legend::-webkit-scrollbar { display: none; }
+@media (max-width: 600px) {
+  .legend {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .legend::-webkit-scrollbar { display: none; }
+}
 /* Today strip inside header */
 .today-panel {
   background: transparent;
@@ -690,6 +695,7 @@ body {
       <div class="header-text">
         <h1>Kalender 2026 – Paul</h1>
         <p id="headerDate"></p>
+        <span id="ical-status" style="font-size:10px;color:var(--text3);margin-left:8px;"></span>
       </div>
     </div>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
@@ -810,7 +816,7 @@ const SE = {
   "2026-06-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🦷 Prophylaxe 16:00", c:"e-kidev"}],
   "2026-06-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
   "2026-06-03": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}],
+  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏃 Firmenlauf Hellomed 18:00", c:"e-work"}],
   "2026-06-05": [{t:"Kids bei Dani", c:"e-dani"}],
   "2026-06-06": [{t:"Kids bei Dani", c:"e-dani"}],
   "2026-06-07": [{t:"Kids bei Dani", c:"e-dani"}],
@@ -1544,9 +1550,142 @@ function clearSearch() {
   document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
 }
 
+// ── iCAL CONFIGURATION ───────────────────────────────────────────────
+// Trage hier deine Google Calendar Secret iCal URL ein:
+// Google Kalender → Einstellungen → Kalender → "Geheime Adresse im iCal-Format"
+const ICAL_URL = 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics'; // z.B. 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-xxxx/basic.ics'
+
+// ── iCAL PARSER ──────────────────────────────────────────────────────
+function parseICS(text) {
+  const events = [];
+  const lines = text.replace(/
+ /g, '').replace(/
+	/g, '').split('
+');
+  let current = null;
+
+  for(const line of lines) {
+    if(line === 'BEGIN:VEVENT') {
+      current = {};
+    } else if(line === 'END:VEVENT' && current) {
+      events.push(current);
+      current = null;
+    } else if(current) {
+      const sep = line.indexOf(':');
+      if(sep === -1) continue;
+      const key = line.substring(0, sep).split(';')[0].toUpperCase();
+      const val = line.substring(sep + 1);
+
+      if(key === 'SUMMARY')      current.title = val;
+      if(key === 'DESCRIPTION')  current.description = val;
+      if(key === 'LOCATION')     current.location = val;
+      if(key === 'UID')          current.uid = val;
+      if(key === 'DTSTART') {
+        current.startRaw = val;
+        current.start = parseICSDate(val);
+        current.allDay = !val.includes('T');
+      }
+      if(key === 'DTEND') {
+        current.endRaw = val;
+        current.end = parseICSDate(val);
+      }
+    }
+  }
+  return events;
+}
+
+function parseICSDate(val) {
+  // Format: 20260515 or 20260515T180000Z or 20260515T180000
+  const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
+  const y = clean.substring(0,4);
+  const m = clean.substring(4,6);
+  const d = clean.substring(6,8);
+  return `${y}-${m}-${d}`;
+}
+
+function catFromTitle(title) {
+  const t = (title||'').toLowerCase();
+  if(t.includes('schwerin'))                          return 'e-schwerin';
+  if(t.includes('maja') || t.includes('kawi') || t.includes('sing dela') || t.includes('finch') || t.includes('olivia') || t.includes('geburtstagsdrinks')) return 'e-maja';
+  if(t.includes('konzert') || t.includes('bierwalker') || t.includes('markus krebs') || t.includes('6k united')) return 'e-konzert';
+  if(t.includes('kids bei dani'))                     return 'e-dani';
+  if(t.includes('kids'))                              return 'e-kids';
+  if(t.includes('alma'))                              return 'e-kidev';
+  if(t.includes('spendenlauf') || t.includes('schule') || t.includes('rosa') || t.includes('emil') || t.includes('kiefer') || t.includes('prophylaxe') || t.includes('eltern')) return 'e-kidev';
+  if(t.includes('besichtigung') || t.includes('berlinovo')) return 'e-haus';
+  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
+  if(t.includes('firmenlauf') || t.includes('kongress')) return 'e-work';
+  return 'e-event-ical';
+}
+
+// Inject iCal events into SE object
+function injectICalEvents(events) {
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+
+  for(const ev of events) {
+    if(!ev.start || !ev.title) continue;
+    // Skip past events
+    if(ev.start < todayKey) continue;
+    // Skip events already covered by static data
+    const title = ev.title.trim();
+
+    const cat = catFromTitle(title);
+    const display = title;
+
+    // For multi-day events, add to each day
+    if(ev.end && ev.end > ev.start) {
+      let cur = new Date(ev.start + 'T00:00:00');
+      const endD = new Date(ev.end + 'T00:00:00');
+      while(cur < endD) {
+        const key = cur.toISOString().substring(0,10);
+        if(!SE[key]) SE[key] = [];
+        // Don't duplicate
+        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
+          SE[key].push({t: display, c: cat, fromIcal: true});
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+    } else {
+      if(!SE[ev.start]) SE[ev.start] = [];
+      if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
+        SE[ev.start].push({t: display, c: cat, fromIcal: true});
+      }
+    }
+  }
+}
+
+async function loadICalEvents() {
+  if(!ICAL_URL) return; // No URL configured
+
+  const statusEl = document.getElementById('ical-status');
+  if(statusEl) statusEl.textContent = '🔄 Kalender wird geladen…';
+
+  try {
+    const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(ICAL_URL);
+    const res = await fetch(proxyUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const events = parseICS(text);
+    injectICalEvents(events);
+    if(statusEl) statusEl.textContent = `✅ ${events.length} Termine geladen`;
+    setTimeout(() => { if(statusEl) statusEl.textContent = ''; }, 3000);
+  } catch(err) {
+    if(statusEl) statusEl.textContent = '⚠️ iCal nicht verfügbar (Server läuft?)';
+    console.warn('iCal load error:', err.message);
+  }
+
+  // Re-render with fresh data
+  renderAll();
+  renderToday();
+  hideEmptyFilters();
+}
+
 renderToday();
 renderAll();
 hideEmptyFilters();
+
+// Load iCal events after initial render
+loadICalEvents();
 
 // Set header height CSS variable for sticky bars
 function updateHeaderVar() {
@@ -1578,38 +1717,6 @@ window.addEventListener('scroll', () => {
 }, {passive: true});
 
 // Update header title on scroll to show current visible month
-
-// ── Hub-Sync: nächste Events in localStorage schreiben ──
-function syncNextEventsToHub() {
-  try {
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    const keys = Object.keys(EVENTS).sort();
-    let nextMaja = null, nextKonzert = null;
-
-    for (const dk of keys) {
-      const d = new Date(dk + 'T00:00:00');
-      if (d < today) continue;
-      const evs = EVENTS[dk];
-      for (const ev of evs) {
-        const timeMatch = ev.t.match(/(\d{2}:\d{2})/);
-        const time = timeMatch ? timeMatch[1] : '';
-        const title = ev.t.replace(/^[\u{1F000}-\u{1FFFF}\u2600-\u27FF\uFE00-\uFE0F\s]*/u, '').replace(/\s+\d{2}:\d{2}.*$/, '').trim();
-        if (!nextMaja && ev.c === 'e-maja') {
-          nextMaja = { date: dk, title, time };
-        }
-        if (!nextKonzert && ev.c === 'e-konzert') {
-          nextKonzert = { date: dk, title, time };
-        }
-        if (nextMaja && nextKonzert) break;
-      }
-      if (nextMaja && nextKonzert) break;
-    }
-    localStorage.setItem('hub_next_maja', JSON.stringify(nextMaja));
-    localStorage.setItem('hub_next_konzert', JSON.stringify(nextKonzert));
-  } catch(e) {}
-}
-syncNextEventsToHub();
 
 </script>
 </body>
