@@ -542,10 +542,17 @@ body {
 .header-search {
   margin-bottom: 7px;
 }
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 7px;
+}
 .header-search {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 .header-search input {
   width: 100%;
@@ -587,7 +594,10 @@ body {
 }
 
 @media (max-width: 600px) {
+  .search-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .header-search { width: 100%; }
   .header-search input { max-width: 100%; font-size: 11px; }
+  .load-status { order: -1; } /* show above search on mobile */
 }
 
 .chip-count {
@@ -718,11 +728,10 @@ body {
 
 .load-status {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  padding: 5px 0 2px;
-  min-height: 20px;
-  transition: opacity 0.5s ease;
+  align-items: center;
+  flex: 1;
 }
 .load-item {
   display: inline-flex;
@@ -864,10 +873,20 @@ body {
     </div>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
   </div>
-  <div class="header-search">
-    <input type="text" id="searchInput" placeholder="🔍  Termin suchen…" oninput="searchCalendar(this.value)" />
-    <span class="search-count" id="searchCount"></span>
-    <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+  <div class="search-row">
+    <div class="header-search">
+      <input type="text" id="searchInput" placeholder="🔍  Termin suchen…" oninput="searchCalendar(this.value)" />
+      <span class="search-count" id="searchCount"></span>
+      <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+    </div>
+    <div class="load-status" id="loadStatus">
+      <div class="load-item" id="ls-ical1"><span class="load-dot"></span> Gmail iCal</div>
+      <div class="load-item" id="ls-ical2"><span class="load-dot"></span> Hellomed iCal</div>
+      <div class="load-item" id="ls-feier"><span class="load-dot"></span> Feiertage</div>
+      <div class="load-item" id="ls-ferien"><span class="load-dot"></span> Schulferien</div>
+      <div class="load-item" id="ls-union"><span class="load-dot"></span> Union Berlin</div>
+      <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
+    </div>
   </div>
   <div class="legend" id="legend">
   <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
@@ -890,26 +909,6 @@ body {
       <span class="tp-date" id="tpDate"></span>
     </div>
     <div class="tp-list" id="tpList"></div>
-  </div>
-  <div class="load-status" id="loadStatus">
-    <div class="load-item" id="ls-ical1">
-      <span class="load-dot"></span> Gmail iCal
-    </div>
-    <div class="load-item" id="ls-ical2">
-      <span class="load-dot"></span> Hellomed iCal
-    </div>
-    <div class="load-item" id="ls-feier">
-      <span class="load-dot"></span> Feiertage
-    </div>
-    <div class="load-item" id="ls-ferien">
-      <span class="load-dot"></span> Schulferien
-    </div>
-    <div class="load-item" id="ls-union">
-      <span class="load-dot"></span> Union Berlin
-    </div>
-    <div class="load-item" id="ls-sheet">
-      <span class="load-dot"></span> Kids Sheet
-    </div>
   </div>
   </div><!-- end header-inner -->
 </div><!-- end header -->
@@ -1981,12 +1980,16 @@ window.addEventListener('scroll', () => { updateHeaderVar(); }, {passive:true, o
 // Fade today strip on scroll
 window.addEventListener('scroll', () => {
   const tp = document.getElementById('todayPanel');
-  if(!tp) return;
+  const header = document.querySelector('.header');
+  if(!tp || !header) return;
   if(window.scrollY > 40) {
     tp.classList.add('hidden');
+    header.style.paddingTop = '6px';
   } else {
     tp.classList.remove('hidden');
+    header.style.paddingTop = '';
   }
+  updateHeaderVar();
 }, {passive: true});
 
 // Update header title on scroll to show current visible month
