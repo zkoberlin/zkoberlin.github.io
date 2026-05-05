@@ -262,37 +262,6 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 <div class="sort-block" data-id="apps"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="sec">📱 Apps</div>
 <div class="app-row">
 
-  <!-- FINANZEN -->
-  <a class="acard fin" href="/finanzenpaul/">
-    <div class="a-top"><div class="a-icon g">💶</div><div class="a-status">Aktiv</div></div>
-    <div class="a-name">Finanzen</div>
-    <div class="a-desc">Budget & Ausgaben</div>
-    <div class="fin-box">
-      <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
-      <div class="fin-val g" id="puffer">–</div>
-      <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
-      <div class="fin-bar-foot"><span id="pufSub">App öffnen um Daten zu laden</span><span id="finPct"></span></div>
-    </div>
-    <div class="fin-row2">
-      <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
-      <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
-    </div>
-    <div class="fin-spar">
-      <div class="fin-spar-left">
-        <div class="fin-spar-lbl">Sparquote</div>
-        <div class="fin-spar-val" id="sparQuote">–</div>
-        <div class="fin-spar-sub" id="sparAbs">– gespart</div>
-      </div>
-      <svg class="fin-spar-ring" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="18" fill="none" stroke="var(--border)" stroke-width="4"/>
-        <circle id="sparRing" cx="22" cy="22" r="18" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)" style="transition:stroke-dashoffset .8s"/>
-      </svg>
-    </div>
-    <div class="fin-cats" id="finCats"></div>
-    <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
-    <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
-  </a>
-
   <!-- KALENDER -->
   <a class="acard kal" href="/kalenderpaul/">
     <div class="a-top"><div class="a-icon b">📅</div><div class="a-status">Aktiv</div></div>
@@ -334,6 +303,37 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
       </div>
     </div>
     <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
+  </a>
+
+  <!-- FINANZEN -->
+  <a class="acard fin" href="/finanzenpaul/">
+    <div class="a-top"><div class="a-icon g">💶</div><div class="a-status">Aktiv</div></div>
+    <div class="a-name">Finanzen</div>
+    <div class="a-desc">Budget &amp; Ausgaben</div>
+    <div class="fin-box">
+      <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
+      <div class="fin-val g" id="puffer">–</div>
+      <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
+      <div class="fin-bar-foot"><span id="pufSub">App öffnen um Daten zu laden</span><span id="finPct"></span></div>
+    </div>
+    <div class="fin-row2">
+      <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
+      <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
+    </div>
+    <div class="fin-spar">
+      <div class="fin-spar-left">
+        <div class="fin-spar-lbl">Sparquote</div>
+        <div class="fin-spar-val" id="sparQuote">–</div>
+        <div class="fin-spar-sub" id="sparAbs">– gespart</div>
+      </div>
+      <svg class="fin-spar-ring" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" fill="none" stroke="var(--border)" stroke-width="4"/>
+        <circle id="sparRing" cx="22" cy="22" r="18" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)" style="transition:stroke-dashoffset .8s"/>
+      </svg>
+    </div>
+    <div class="fin-cats" id="finCats"></div>
+    <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
+    <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
 
 </div></div><!-- /apps -->
@@ -436,7 +436,7 @@ async function loadFin(){
     document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
 
     // Sparquote = (invest + notgr + urlaub + sonder) / ein
-    const spar=inv+notg+url+sond;
+    const spar=inv+notg;
     const sparPct=ein>0?Math.round((spar/ein)*100):0;
     document.getElementById('sparQuote').textContent=sparPct+'%';
     document.getElementById('sparAbs').textContent=fmt(spar)+' / Monat';
