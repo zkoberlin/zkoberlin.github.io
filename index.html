@@ -447,7 +447,7 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const PROXY='https://script.google.com/macros/s/AKfycbwyBXh8Lv5YlBnTrW-y4loa8Mq3mjFlxCiyjNeMurua-fLxXBp9wmf1kCHZBO2Gd6J3/exec';
+    const PROXY='https://script.google.com/macros/s/AKfycbzfqcgkp3-tkruQ_Iq8LXH1yOWVyedjwbVNEAOM7pEIXMucvWgO-X41cV9Gf-Vq_hrj/exec';
     const r=await fetch(PROXY,{signal:AbortSignal.timeout(10000)});
     if(!r.ok)throw new Error();
     const txt=await r.text();
