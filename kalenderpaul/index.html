@@ -199,8 +199,12 @@ body {
   opacity: 1;
 }
 .today-panel.hidden {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
 }
 
 /* Legend */
@@ -325,6 +329,9 @@ body {
 
 /* MAIN */
 .main { padding: 24px 32px 60px; max-width: 1100px; margin: 0 auto; }
+@media (max-width: 600px) {
+  .main { padding: 12px 10px 80px; }
+}
 
 /* Month card */
 .mc {
@@ -809,7 +816,7 @@ body {
     overflow-x: hidden;
   }
   .today-panel::-webkit-scrollbar { display: none; }
-  .today-panel.hidden { max-height: 0; padding: 0; }
+  .today-panel.hidden { max-height: 0 !important; padding: 0 !important; border: none !important; }
   .tp-header { width: 100%; margin-bottom: 2px; }
   .tp-title { font-size: 10px; letter-spacing: .6px; }
   .tp-date { font-size: 10px; }
@@ -1088,15 +1095,15 @@ function buildMonth(year, month) {
       }
 
       cell.onclick = (e) => {
-        if(window.innerWidth > 600) {
-          // Desktop: just open detail panel, no expand
-          openDp(key);
-        } else {
-          // Mobile: expand cell + open detail
-          if(expandedDay === cell) { collapseDay(); return; }
-          if(expandedDay) { collapseDay(); }
-          expandDay(cell, e);
-          openDp(key);
+        // Both desktop and mobile: open detail panel + scroll to top
+        if(expandedDay) collapseDay();
+        openDp(key);
+        // Scroll detail panel into view
+        const dp = document.getElementById('dp');
+        if(dp && dp.classList.contains('on')) {
+          const header = document.querySelector('.header');
+          const headerH = header ? header.offsetHeight : 160;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       };
       row.appendChild(cell);
@@ -1169,7 +1176,10 @@ function openDp(key) {
     ec.appendChild(el);
   });
 
-  // Detail panel is at top of main - no extra scroll needed
+  // Scroll to top so detail panel is visible
+  if(window.innerWidth <= 600) {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
+  }
 }
 
 function closeDp() {
