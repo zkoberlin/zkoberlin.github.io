@@ -1372,7 +1372,7 @@ function RC(){
   const rest=R2(ein-total);
   const inv=S.invest.v,notg=S.notgr.v,url=S.urlaub.v,sond=S.sonder.v;
   const puf=R2(rest-inv-notg-url-sond);
-  const quote=ein>0?Math.round((inv+notg+url)/ein*100):0;
+  const quote=ein>0?Math.round((inv+notg)/ein*100):0;
 
   // fmt helpers
   const fp=R2(Math.max(0,puf));
