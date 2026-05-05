@@ -449,16 +449,18 @@ async function loadICAL(){
   try{
     const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
     const PROXIES=[
-      'https://api.allorigins.win/raw?url='+encodeURIComponent(ICAL_URL),
+      'https://api.allorigins.win/get?url='+encodeURIComponent(ICAL_URL),
       'https://corsproxy.io/?url='+encodeURIComponent(ICAL_URL),
       'https://thingproxy.freeboard.io/fetch/'+ICAL_URL,
     ];
     let txt=null;
-    for(const px of PROXIES){
+    for(let i=0;i<PROXIES.length;i++){
       try{
-        const r=await fetch(px,{signal:AbortSignal.timeout(8000)});
+        const r=await fetch(PROXIES[i],{signal:AbortSignal.timeout(8000)});
         if(!r.ok)continue;
-        const t=await r.text();
+        let t=await r.text();
+        // allorigins /get returns JSON with contents field
+        if(i===0){try{const j=JSON.parse(t);t=j.contents||t;}catch(e){}}
         if(t.includes('BEGIN:VCALENDAR')){txt=t;break;}
       }catch(e){continue;}
     }
