@@ -447,24 +447,16 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
-    const PROXIES=[
-      'https://api.allorigins.win/get?url='+encodeURIComponent(ICAL_URL),
-      'https://corsproxy.io/?url='+encodeURIComponent(ICAL_URL),
-      'https://thingproxy.freeboard.io/fetch/'+ICAL_URL,
-    ];
-    let txt=null;
-    for(let i=0;i<PROXIES.length;i++){
-      try{
-        const r=await fetch(PROXIES[i],{signal:AbortSignal.timeout(8000)});
-        if(!r.ok)continue;
-        let t=await r.text();
-        // allorigins /get returns JSON with contents field
-        if(i===0){try{const j=JSON.parse(t);t=j.contents||t;}catch(e){}}
-        if(t.includes('BEGIN:VCALENDAR')){txt=t;break;}
-      }catch(e){continue;}
-    }
-    if(!txt)throw new Error('alle Proxies fehlgeschlagen');
+    const txt = await new Promise((resolve, reject) => {
+      const cb = 'ical_cb_' + Date.now();
+      const script = document.createElement('script');
+      const timeout = setTimeout(() => { delete window[cb]; script.remove(); reject(new Error('timeout')); }, 10000);
+      window[cb] = (data) => { clearTimeout(timeout); delete window[cb]; script.remove(); resolve(data); };
+      script.src = 'https://script.google.com/macros/s/AKfycby7a9swrZo0QckU4tGbL68zaxUTLO3QsqAuFZ-36j8aUME5cAtHABITql5GCZbqf_Jq/exec?callback=' + cb;
+      script.onerror = () => { clearTimeout(timeout); delete window[cb]; script.remove(); reject(new Error('script error')); };
+      document.head.appendChild(script);
+    });
+    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error('kein Kalender');
     const evs=parseICS(txt);
     const today=st(new Date());
 
