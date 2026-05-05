@@ -48,6 +48,7 @@
   .e-kidev    { background: #7b0a0a; color: #ffa0a0; font-weight: 600; }
   .e-feier    { background: #4a3800; color: #ffd580; font-weight: 600; }
   .e-union    { background: #7b0a0a; color: #ffa0a0; font-weight: 700; }
+  .e-hellomed { background: #8099E8; color: #ffffff; font-weight: 600; }
   .e-konzert  { background: #0a4a20; color: #80e0a0; font-weight: 700; }
   .e-haus     { background: #004a6b; color: #80d0f0; font-weight: 600; }
   .e-bday     { background: #3a3a3c; color: #636366; font-style: italic; }
@@ -165,17 +166,22 @@ body {
 /* Legend inside header */
 .legend {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 5px;
   padding: 0 0 8px;
   justify-content: flex-start;
   position: static;
   border: none;
   background: transparent;
-  overflow-x: auto;
-  scrollbar-width: none;
 }
-.legend::-webkit-scrollbar { display: none; }
+@media (max-width: 600px) {
+  .legend {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .legend::-webkit-scrollbar { display: none; }
+}
 /* Today strip inside header */
 .today-panel {
   background: transparent;
@@ -186,16 +192,14 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease;
+  transition: opacity 0.3s ease;
   overflow: hidden;
-  max-height: 60px;
+  min-height: 38px;
   opacity: 1;
 }
 .today-panel.hidden {
-  max-height: 0;
   opacity: 0;
-  padding: 0;
-  border-top: none;
+  pointer-events: none;
 }
 
 /* Legend */
@@ -416,6 +420,8 @@ body {
 .e-haus     { background: #00a0e3; color: #ffffff; font-weight: 600; }
 /* Union Berlin */
 .e-union    { background: #b91c1c; color: #fee2e2; font-weight: 700; }
+/* Hellomed */
+.e-hellomed  { background: #8099E8; color: #ffffff; font-weight: 600; }
 /* Geburtstage */
 .e-bday-filter { display: none; }
 /* Konzerte & Events */
@@ -581,6 +587,132 @@ body {
   .header-search input { max-width: 100%; font-size: 11px; }
 }
 
+.chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.12);
+  color: inherit;
+  font-size: 9.5px;
+  font-weight: 700;
+  margin-left: 3px;
+  letter-spacing: 0;
+}
+@media (prefers-color-scheme: dark) {
+  .chip-count { background: rgba(255,255,255,0.15); }
+}
+
+/* Event Detail Modal */
+.evt-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 300;
+  backdrop-filter: blur(4px);
+  align-items: flex-end;
+  justify-content: center;
+}
+.evt-modal-overlay.on { display: flex; }
+.evt-modal {
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 0 0 env(safe-area-inset-bottom, 20px);
+  width: 100%;
+  max-width: 480px;
+  max-height: 70vh;
+  overflow-y: auto;
+  animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.evt-modal-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+.evt-modal-content { padding: 16px 22px 24px; }
+.evt-modal-cat {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  margin-bottom: 10px;
+}
+.evt-modal-title {
+  font-size: 19px; font-weight: 700;
+  letter-spacing: -.3px; margin-bottom: 14px;
+  color: var(--text);
+}
+.evt-modal-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 10px; font-size: 13.5px; color: var(--text2);
+}
+.evt-modal-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.evt-modal-close {
+  position: absolute; top: 16px; right: 20px;
+  width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: var(--surface2);
+  color: var(--text2); cursor: pointer;
+  font-size: 14px; display: flex; align-items: center; justify-content: center;
+}
+.evt-modal-close:hover { background: var(--border); }
+.evt-modal-header { position: relative; }
+
+@media (min-width: 601px) {
+  .evt-modal-overlay { align-items: center; }
+  .evt-modal {
+    border-radius: 20px;
+    max-width: 420px;
+    margin: 0 auto;
+    animation: pop .2s ease;
+  }
+}
+
+.hellomed-logo {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 2px;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+
+.src-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.src-ical  { background: #34d399; } /* green = Google Calendar */
+.src-api   { background: #f59e0b; } /* amber = API (Ferien/Union) */
+.src-sheet { background: #a78bfa; } /* purple = Google Sheets */
+
+/* In detail panel */
+.src-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 700;
+  margin-left: 6px; vertical-align: middle;
+  text-transform: uppercase; letter-spacing: .3px;
+  padding: 1px 5px; border-radius: 4px;
+  background: rgba(0,0,0,0.06);
+}
+@media (prefers-color-scheme: dark) {
+  .src-badge { background: rgba(255,255,255,0.08); }
+}
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -690,6 +822,7 @@ body {
       <div class="header-text">
         <h1>Kalender 2026 – Paul</h1>
         <p id="headerDate"></p>
+        <span id="ical-status" style="font-size:10px;color:var(--text3);margin-left:8px;"></span>
       </div>
     </div>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
@@ -700,18 +833,19 @@ body {
     <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
   </div>
   <div class="legend" id="legend">
-  <div class="li" onclick="filterBy('e-work')" data-cat="e-work"><div class="ld" style="background:#1e40af"></div> Arbeit</div>
+  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
+  <div class="li" onclick="filterBy('e-work')" data-cat="e-work" style="display:none"><div class="ld" style="background:#8099E8"></div> Arbeit</div>
   <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
   <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
   <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
   <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
+  <div class="li" onclick="filterBy('e-hellomed')" data-cat="e-hellomed"><div class="ld" style="background:#8099E8"></div> Hellomed</div>
   <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div> Kids bei Paul</div>
   <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div> Kids bei Dani</div>
   <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div> Konzerte & Events</div>
   <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
   <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
   <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
-  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
 </div><!-- end legend -->
   <div class="today-panel" id="todayPanel">
     <div class="tp-header">
@@ -736,6 +870,15 @@ body {
 </div>
 
 <div class="day-overlay" id="dayOverlay" onclick="collapseDay()"></div>
+<div class="evt-modal-overlay" id="evtModalOverlay" onclick="closeEvtModal()">
+  <div class="evt-modal" onclick="event.stopPropagation()">
+    <div class="evt-modal-handle"></div>
+    <div class="evt-modal-header">
+      <button class="evt-modal-close" onclick="closeEvtModal()">✕</button>
+    </div>
+    <div class="evt-modal-content" id="evtModalContent"></div>
+  </div>
+</div>
 <div class="filter-backdrop" id="filterBackdrop" onclick="closeFilter()"></div>
 <div class="main" id="main">
 <div class="filter-panel" id="filterPanel">
@@ -767,273 +910,7 @@ const DN = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Son
 const WD = ["Mo","Di","Mi","Do","Fr","Sa","So"];
 
 // ── ALLE TERMINE APRIL – DEZEMBER 2026 ──────────────────────────────
-const SE = {
-  // APRIL
-  "2026-04-28": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-04-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Rosa Bday", c:"e-bday"}],
-  "2026-04-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-
-  // MAI
-  "2026-05-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎉 Tag der Arbeit", c:"e-feier"}],
-  "2026-05-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"☕ KaWi Frühstücken 10:00", c:"e-maja"}, {t:"⚽ Union – Köln 15:30", c:"e-union"}],
-  "2026-05-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏃 Rosa Spendenlauf 14:00", c:"e-kidev"}],
-  "2026-05-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏠 Vertragsunterzeichnung Berlinovo 08:00", c:"e-haus"}],
-  "2026-05-07": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-08": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-05-09": [{t:"🏙️ Schwerin", c:"e-schwerin"}, {t:"🎂 T. Mattern", c:"e-bday"}],
-  "2026-05-10": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}, {t:"⚽ Mainz – Union 19:30", c:"e-union"}],
-  "2026-05-11": [{t:"Kids bei Dani", c:"e-dani"}, {t:"📋 Eltern-Kind-Gespräch Rosa 09:45", c:"e-kidev"}],
-  "2026-05-12": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎶 Olivia Dean 19:00", c:"e-maja"},{t:"🎶 Olivia Dean", c:"e-konzert-hidden"}],
-  "2026-05-13": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎂 Thomas Gens", c:"e-bday"}],
-  "2026-05-14": [{t:"Kids bei Dani", c:"e-dani"}, {t:"⛪ Christi Himmelfahrt", c:"e-feier"}, {t:"🌸 Pfingstferien Berlin →", c:"e-feier"}],
-  "2026-05-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"⚽ Union – Augsburg 15:30", c:"e-union"}],
-  "2026-05-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Ph. Büttner", c:"e-bday"}],
-  "2026-05-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-20": [{t:"Kids → Dani", c:"e-dani"}, {t:"🥂 Drinks D & P 17:00", c:"e-bday"}],
-  "2026-05-21": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-05-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🌸 Pfingstferien Berlin ←", c:"e-feier"}],
-  "2026-05-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎨 IKONO 16:30", c:"e-maja"}, {t:"🏕️ Pfingsten → Maja", c:"e-maja"}],
-  "2026-05-24": [{t:"🏕️ Pfingsten mit Maja", c:"e-maja"}, {t:"⛪ Pfingstsonntag", c:"e-feier"}],
-  "2026-05-25": [{t:"🏕️ Pfingsten mit Maja", c:"e-maja"}, {t:"⛪ Pfingstmontag", c:"e-feier"}],
-  "2026-05-26": [{t:"🏕️ Pfingsten ← Maja", c:"e-maja"}],
-  "2026-05-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-05-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Übernachtung Schule Rosa", c:"e-kidev"}, {t:"🍺 Bierwalker Kneipenquiz 19:00", c:"e-konzert"}],
-  "2026-05-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Schule ← 10:00", c:"e-kidev"}],
-  "2026-05-31": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-
-  // JUNI
-  "2026-06-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🦷 Prophylaxe 16:00", c:"e-kidev"}],
-  "2026-06-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-03": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-06-04": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-05": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-06": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-07": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-09": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Pauls Geburtstag! 🎉", c:"e-bday"}],
-  "2026-06-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🍹 Geburtstagsdrinks Havanna 20:00", c:"e-maja"}],
-  "2026-06-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-16": [{t:"Kids → Dani", c:"e-dani"}, {t:"🦷 Kiefer Rosa 16:00", c:"e-kidev"}],
-  "2026-06-17": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-18": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-19": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-06-20": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-06-21": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-06-22": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-23": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-06-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Ch. Goldstein", c:"e-bday"}],
-  "2026-06-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-06-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-
-  // JULI
-  "2026-07-01": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-07-02": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-03": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎤 6K United Konzert Rosa", c:"e-kidev"},{t:"🎤 6K United", c:"e-konzert-hidden"}],
-  "2026-07-04": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎵 Finch Alte Försterei 18:00", c:"e-maja"},{t:"🎵 Finch", c:"e-konzert-hidden"}],
-  "2026-07-05": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎓 Abschluss 4. Klasse / Fr. Hanisch", c:"e-kidev"}],
-  "2026-07-06": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-07": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎶 Sing dela Sing 20:30", c:"e-maja"},{t:"🎶 Sing dela Sing", c:"e-konzert-hidden"}],
-  "2026-07-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-09": [{t:"Kids bei Dani", c:"e-dani"}, {t:"☀️ Sommerferien Berlin →", c:"e-feier"}],
-  "2026-07-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-07-11": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-07-12": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-07-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Polnische Ostsee →", c:"e-trip"}],
-  "2026-07-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
-  "2026-07-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
-  "2026-07-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
-  "2026-07-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
-  "2026-07-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏖️ Łeba", c:"e-trip"}],
-  "2026-07-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-07-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-07-21": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-07-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-07-23": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-07-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin →", c:"e-kidev"}],
-  "2026-07-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
-  "2026-07-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin ←", c:"e-kidev"}],
-  "2026-07-27": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-07-28": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-29": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-30": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-07-31": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-
-  // AUGUST
-  "2026-08-01": [{t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-08-02": [{t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-08-03": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-04": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-05": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎊 Hochzeitstag Tim & Melina", c:"e-bday"}],
-  "2026-08-06": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-07": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-09": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Inge Mattern", c:"e-bday"}],
-  "2026-08-17": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-08-18": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-19": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-20": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-21": [{t:"Kids bei Dani", c:"e-dani"}, {t:"☀️ Sommerferien Berlin ←", c:"e-feier"}],
-  "2026-08-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-23": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-24": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-08-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Daniel Furch", c:"e-bday"}],
-  "2026-08-27": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-08-28": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-29": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-30": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-08-31": [{t:"Kids bei Dani", c:"e-dani"}],
-
-  // SEPTEMBER
-  "2026-09-01": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-09-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-07": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-08": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-09": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-09-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour mit Matze →", c:"e-trip"}],
-  "2026-09-11": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
-  "2026-09-12": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
-  "2026-09-13": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour", c:"e-trip"}],
-  "2026-09-14": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🚴 Bodensee Tour ←", c:"e-trip"}],
-  "2026-09-15": [{t:"Kids bei Dani", c:"e-dani"}, {t:"💉 FSME Impfung 16:50", c:"e-kidev"}],
-  "2026-09-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-09-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-09-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-09-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-09-21": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎂 Chris", c:"e-bday"}],
-  "2026-09-22": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"✈️ Emil Englandfahrt", c:"e-trip"}],
-  "2026-09-23": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-09-24": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-09-25": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
-  "2026-09-26": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
-  "2026-09-27": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-09-28": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎂 Matze Bodien", c:"e-bday"}],
-  "2026-09-29": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-09-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-
-  // OKTOBER
-  "2026-10-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎉 Tag der Einheit", c:"e-feier"}],
-  "2026-10-04": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-05": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-06": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-07": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-10-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-09": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-10": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-11": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-12": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-13": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-10-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-10-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-20": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-21": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-24": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-25": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 17:00", c:"e-schwerin"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-26": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-27": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🏫 Herbstferien Berlin", c:"e-feier"}],
-  "2026-10-31": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎃 Halloween", c:"e-bday"}],
-
-  // NOVEMBER
-  "2026-11-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-02": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-03": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-04": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-11-05": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-06": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-07": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-09": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-10": [{t:"Kids bei Dani", c:"e-dani"}, {t:"👁️ Augenarzt Emil 16:00", c:"e-kidev"}],
-  "2026-11-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-16": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-17": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-18": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-19": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-20": [{t:"Kids → Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-11-21": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-11-22": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-11-23": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-24": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-25": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-26": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-11-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-11-30": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-
-  // DEZEMBER
-  "2026-12-01": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-02": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-12-03": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-04": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-05": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-06": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-07": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-08": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-09": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-10": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-11": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-12": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-13": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎭 Markus Krebs 19:00", c:"e-konzert"}],
-  "2026-12-14": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-15": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-16": [{t:"Kids → Dani", c:"e-dani"}],
-  "2026-12-17": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-18": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin → 17:00", c:"e-schwerin"}],
-  "2026-12-19": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin", c:"e-schwerin"}],
-  "2026-12-20": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🏙️ Schwerin ← 18:00", c:"e-schwerin"}],
-  "2026-12-21": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-22": [{t:"Kids bei Dani", c:"e-dani"}],
-  "2026-12-23": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎄 Weihnachtsferien Berlin →", c:"e-feier"}],
-  "2026-12-24": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎄 Heiligabend", c:"e-feier"}, {t:"🎄 Weihnachtsferien Berlin", c:"e-feier"}],
-  "2026-12-25": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎄 1. Weihnachtstag", c:"e-feier"}],
-  "2026-12-26": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"🎄 2. Weihnachtstag", c:"e-feier"}],
-  "2026-12-27": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}],
-  "2026-12-28": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin →", c:"e-kidev"}],
-  "2026-12-29": [{t:"👨‍👧‍👦 Kids bei Paul", c:"e-kids"}, {t:"👶 Alma in Berlin", c:"e-kidev"}],
-  "2026-12-30": [{t:"Kids → Dani", c:"e-dani"}, {t:"👶 Alma in Berlin ←", c:"e-kidev"}],
-  "2026-12-31": [{t:"Kids bei Dani", c:"e-dani"}, {t:"🎆 Silvester", c:"e-feier"}, {t:"🎄 Weihnachtsferien Berlin", c:"e-feier"}],
-};
+const SE = {};
 
 // ── HELPERS ──────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2,'0'); }
@@ -1136,11 +1013,16 @@ function buildMonth(year, month) {
       num.textContent = day;
       cell.appendChild(num);
 
-      const evs = SE[key] || [];
+      const evs = sortEvents(SE[key] || []);
       evs.slice(0,3).forEach(ev => {
         const e = document.createElement('span');
         e.className = `evt ${ev.c}`;
-        e.textContent = ev.t;
+        const timePrefix = ev.startTime ? ev.startTime + ' ' : '';
+        const cleanTitle = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '');
+        e.textContent = timePrefix + cleanTitle;
+        e.title = ev.t;
+        e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
+        e.style.cursor = 'pointer';
         cell.appendChild(e);
       });
       if(evs.length > 3) {
@@ -1195,7 +1077,7 @@ function openDp(key) {
   document.getElementById('dp-title').textContent = fmtDate(key);
   const ec = document.getElementById('dp-evts');
   ec.innerHTML = '';
-  const evs = SE[key] || [];
+  const evs = sortEvents(SE[key] || []);
   if(!evs.length) {
     ec.innerHTML = '<p style="font-size:12.5px;color:var(--text3);padding:6px 0">Keine Termine.</p>';
   }
@@ -1203,7 +1085,7 @@ function openDp(key) {
   const colorMap = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
     'e-maja':'#db2777','e-trip':'#059669',
-    'e-work':'#1e40af','e-kidev':'#dc2626','e-bday':'#9ca3af',
+    'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
 
@@ -1211,7 +1093,18 @@ function openDp(key) {
     const el = document.createElement('div');
     el.className = 'eli';
     const color = colorMap[ev.c] || '#aeaeb2';
-    el.innerHTML = `<div class="eli-dot" style="background:${color}"></div><div><div class="en">${ev.t}</div></div>`;
+    // Extract time from startTime property or from title
+    const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+    const cleanTitle = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · ' + ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+    const srcBadge = badges.join('');
+    el.innerHTML = `<div class="eli-dot" style="background:${color}"></div><div class="evt-info"><div class="en">${cleanTitle}${srcBadge}</div>${timeHtml}</div>`;
+    el.style.cursor = 'pointer';
+    el.onclick = () => openEvtModal(ev, key);
     ec.appendChild(el);
   });
 
@@ -1326,6 +1219,55 @@ function expandDay(cell, e) {
   document.getElementById('dayOverlay').classList.add('on');
 }
 
+// ── EVENT DETAIL MODAL ───────────────────────────────────────────────
+const catColorMap = {
+  'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
+  'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+  'e-kidev':'#dc2626','e-bday':'#9ca3af','e-feier':'#713f12',
+  'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+};
+const catNameMap = {
+  'e-kids':'Kids bei Paul','e-dani':'Kids bei Dani','e-schwerin':'Schwerin',
+  'e-maja':'Maja','e-trip':'Ausflug/Urlaub','e-hellomed':'Hellomed',
+  'e-kidev':'Schule/Kids-Event','e-bday':'Geburtstag','e-feier':'Feiertag/Ferien',
+  'e-union':'1. FC Union Berlin','e-konzert':'Konzert/Event','e-haus':'Besichtigung'
+};
+
+function openEvtModal(ev, dateKey) {
+  const overlay = document.getElementById('evtModalOverlay');
+  const content = document.getElementById('evtModalContent');
+  const color = catColorMap[ev.c] || '#9ca3af';
+  const catName = catNameMap[ev.c] || '';
+  const dateStr = fmtDate(dateKey);
+
+  // Extract time from title if present
+  const timeMatch = ev.t.match(/(\d{1,2}:\d{2})/);
+  const time = timeMatch ? timeMatch[1] + ' Uhr' : 'Ganztägig';
+  const cleanTitle = ev.t.replace(/^\S+\s/, '').replace(/\s*\d{1,2}:\d{2}$/, '').trim();
+
+  content.innerHTML = `
+    <div class="evt-modal-cat" style="background:${color}22;color:${color}">
+      ${catName}
+    </div>
+    <div class="evt-modal-title">${ev.t.replace(/^\S+\s/, '')}</div>
+    <div class="evt-modal-row">
+      <span class="evt-modal-icon">📅</span>
+      <span>${dateStr}</span>
+    </div>
+    <div class="evt-modal-row">
+      <span class="evt-modal-icon">🕐</span>
+      <span>${time}</span>
+    </div>
+    ${ev.location ? `<div class="evt-modal-row"><span class="evt-modal-icon">📍</span><span>${ev.location}</span></div>` : ''}
+    ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
+  `;
+  overlay.classList.add('on');
+}
+
+function closeEvtModal() {
+  document.getElementById('evtModalOverlay').classList.remove('on');
+}
+
 function collapseDay() {
   if(!expandedDay) return;
   expandedDay.classList.remove('expanded');
@@ -1362,7 +1304,7 @@ function renderToday() {
   const colorMap2 = {
     'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
     'e-maja':'#db2777','e-trip':'#059669','e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af',
-    'e-work':'#1e40af','e-kidev':'#dc2626','e-bday':'#9ca3af',
+    'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
     'e-haus':'#00a0e3','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af'
   };
 
@@ -1370,7 +1312,10 @@ function renderToday() {
     const item = document.createElement('div');
     item.className = 'tp-item';
     const color = colorMap2[ev.c] || '#9ca3af';
-    item.innerHTML = `<span style="color:${color};font-size:11px">●</span> ${ev.t}`;
+    const srcLabel = ev.fromIcal ? ' <span style="font-size:9px;opacity:.5">iCal</span>' 
+                  : ev.fromSheet ? ' <span style="font-size:9px;opacity:.5;color:#a78bfa">Sheet</span>'
+                  : ev.fromApi ? ' <span style="font-size:9px;opacity:.5;color:#f59e0b">API</span>' : '';
+    item.innerHTML = `<span style="color:${color};font-size:11px">●</span> ${ev.t}${srcLabel}`;
     item.onclick = () => {
       const cell = document.querySelector(`.day[data-key="${key}"]`);
       if(cell) {
@@ -1388,14 +1333,14 @@ function renderToday() {
 const catLabels = {
   'e-kids':'Kids bei Paul','e-dani':'Kids bei Dani','e-schwerin':'Schwerin',
   'e-maja':'Maja','e-trip':'Ausflug/Urlaub',
-  'e-work':'Arbeit','e-kidev':'Schule/Kids-Event','e-haus':'Besichtigungen',
+  'e-hellomed':'Hellomed','e-kidev':'Schule/Kids-Event','e-haus':'Besichtigungen',
   'e-feier':'Feiertage & Schulferien Berlin','e-union':'1. FC Union Berlin',
   'e-konzert':'Konzerte & Events','e-bday':'Geburtstage'
 };
 const catColors = {
   'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
   'e-maja':'#db2777','e-trip':'#059669',
-  'e-work':'#1e40af','e-kidev':'#dc2626','e-haus':'#00a0e3',
+  'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-haus':'#00a0e3',
   'e-feier':'#713f12','e-union':'#b91c1c',
   'e-konzert':'#16a34a','e-bday':'#9ca3af'
 };
@@ -1459,7 +1404,10 @@ function filterBy(cat) {
             openDp(dk);
           }
         };
-        item.innerHTML = `<span style="color:${catColors[cat]};font-size:13px">●</span> <div><div>${ev.t.replace(/^[^\w\s]*\s*/,'')}</div><div class="fp-date">${fmtDate(dk)}</div></div>`;
+        const srcLabel = ev.fromIcal ? '<span style="font-size:9px;font-weight:700;opacity:.5;margin-left:5px;color:#34d399">● iCal</span>'
+                        : ev.fromSheet ? '<span style="font-size:9px;font-weight:700;opacity:.6;margin-left:5px;color:#a78bfa">● Sheet</span>'
+                        : ev.fromApi ? '<span style="font-size:9px;font-weight:700;opacity:.5;margin-left:5px;color:#f59e0b">● API</span>' : '';
+        item.innerHTML = `<span style="color:${catColors[cat]};font-size:13px">●</span> <div><div>${ev.t.replace(/^[^\w\s]*\s*/,'')}${srcLabel}</div><div class="fp-date">${fmtDate(dk)}</div></div>`;
         list.appendChild(item);
       });
     });
@@ -1485,10 +1433,27 @@ function hideEmptyFilters() {
   
   document.querySelectorAll('.li[data-cat]').forEach(chip => {
     const cat = chip.dataset.cat;
-    const hasEntries = futureDates.some(d => 
+    if(cat === 'e-work') { chip.style.display = 'none'; return; } // always hide old work filter
+    
+    // Count all future dates that have at least one event of this category
+    const matchingDates = futureDates.filter(d => 
       (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
     );
-    chip.style.display = hasEntries ? '' : 'none';
+    const count = matchingDates.length;
+    
+    if(count === 0) {
+      chip.style.display = 'none';
+      return;
+    }
+    chip.style.display = '';
+    
+    let badge = chip.querySelector('.chip-count');
+    if(!badge) {
+      badge = document.createElement('span');
+      badge.className = 'chip-count';
+      chip.appendChild(badge);
+    }
+    badge.textContent = count;
   });
 }
 
@@ -1506,7 +1471,7 @@ function searchCalendar(query) {
   clearBtn.style.display = 'block';
   
   // Support multi-word search (all words must match)
-  const words = query.toLowerCase().trim().split(/\s+/);
+  const words = query.toLowerCase().trim().split(' ').filter(w => w.length > 0);
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   let matches = 0;
   let firstMatch = null;
@@ -1544,9 +1509,367 @@ function clearSearch() {
   document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
 }
 
+// ── iCAL CONFIGURATION ───────────────────────────────────────────────
+const ICAL_URLS = [
+  'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics',
+  'https://calendar.google.com/calendar/ical/bendzko%40hellomed.com/private-47446a2b152be60bee5ced55d79b08eb/basic.ics',
+];; // z.B. 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-xxxx/basic.ics'
+
+// ── iCAL PARSER ──────────────────────────────────────────────────────
+function extractTime(title) {
+  // Extract HH:MM from title like "Meeting 09:30" or "09:30 Meeting"
+  const m = title.match(/(\d{1,2}:\d{2})/);
+  return m ? m[1] : null;
+}
+
+function sortEvents(evs) {
+  // Separate all-day (no time) from timed events
+  const allDay = evs.filter(ev => !extractTime(ev.t) && !ev.startTime);
+  const timed  = evs.filter(ev =>  extractTime(ev.t) ||  ev.startTime);
+  
+  // Sort timed by time
+  timed.sort((a, b) => {
+    const ta = a.startTime || extractTime(a.t) || '99:99';
+    const tb = b.startTime || extractTime(b.t) || '99:99';
+    return ta.localeCompare(tb);
+  });
+  
+  return [...allDay, ...timed];
+}
+
+function parseICS(text) {
+  const events = [];
+  const lines = text.replace(/\r\n /g, '').replace(/\r\n\t/g, '').split(/\r\n|\n/);
+  let current = null;
+
+  for(const line of lines) {
+    if(line === 'BEGIN:VEVENT') {
+      current = {};
+    } else if(line === 'END:VEVENT' && current) {
+      events.push(current);
+      current = null;
+    } else if(current) {
+      const sep = line.indexOf(':');
+      if(sep === -1) continue;
+      const key = line.substring(0, sep).split(';')[0].toUpperCase();
+      const val = line.substring(sep + 1);
+
+      if(key === 'SUMMARY')      current.title = val;
+      if(key === 'DESCRIPTION')  current.description = val;
+      if(key === 'LOCATION')     current.location = val;
+      if(key === 'UID')          current.uid = val;
+      if(key === 'DTSTART') {
+        current.startRaw = val;
+        current.start = parseICSDate(val);
+        current.allDay = !val.includes('T');
+        if(val.includes('T')) {
+          // Extract HH:MM from time component
+          const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
+          const h = clean.substring(9,11);
+          const m2 = clean.substring(11,13);
+          // Convert UTC to local if Z suffix
+          if(val.endsWith('Z')) {
+            const d = new Date(Date.UTC(+clean.substring(0,4),+clean.substring(4,6)-1,+clean.substring(6,8),+h,+m2));
+            current.startTime = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+          } else {
+            current.startTime = h + ':' + m2;
+          }
+        }
+      }
+      if(key === 'DTEND') {
+        current.endRaw = val;
+        current.end = parseICSDate(val);
+      }
+    }
+  }
+  return events;
+}
+
+function parseICSDate(val) {
+  // Format: 20260515 or 20260515T180000Z or 20260515T180000
+  const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
+  const y = clean.substring(0,4);
+  const m = clean.substring(4,6);
+  const d = clean.substring(6,8);
+  return `${y}-${m}-${d}`;
+}
+
+function catFromTitle(title) {
+  const t = (title||'').toLowerCase();
+  if(t.includes('schwerin'))                          return 'e-schwerin';
+  if(t.includes('maja') || t.includes('kawi') || t.includes('sing dela') || t.includes('finch') || t.includes('olivia') || t.includes('geburtstagsdrinks')) return 'e-maja';
+  if(t.includes('konzert') || t.includes('bierwalker') || t.includes('markus krebs') || t.includes('6k united')) return 'e-konzert';
+  if(t.includes('kids bei dani'))                     return 'e-dani';
+  if(t.includes('kids'))                              return 'e-kids';
+  if(t.includes('alma'))                              return 'e-kidev';
+  if(t.includes('spendenlauf') || t.includes('schule') || t.includes('rosa') || t.includes('emil') || t.includes('kiefer') || t.includes('prophylaxe') || t.includes('eltern')) return 'e-kidev';
+  if(t.includes('besichtigung') || t.includes('berlinovo')) return 'e-haus';
+  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
+  if(t.includes('hellomed') || t.includes('paul & sina') || t.includes('paul und sina') || t.includes('hel') || t.includes('firmenlauf') || t.includes('etiketten') || t.includes('klientenliste') || t.includes('prolog') || t.includes('polog') || t.includes('pharma')) return 'e-hellomed';
+  return 'e-event-ical';
+}
+
+// Inject iCal events into SE object
+function injectICalEvents(events, url='') {
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+
+  for(const ev of events) {
+    if(!ev.start || !ev.title) continue;
+    // Skip past events
+    if(ev.start < todayKey) continue;
+    // Skip events already covered by static data
+    const title = ev.title.trim();
+
+    const isHellomed = url.includes('hellomed');
+    const cat = isHellomed ? 'e-hellomed' : catFromTitle(title);
+    const display = title;
+
+    // For multi-day events, add to each day
+    if(ev.end && ev.end > ev.start) {
+      let cur = new Date(ev.start + 'T00:00:00');
+      const endD = new Date(ev.end + 'T00:00:00');
+      while(cur < endD) {
+        const key = cur.toISOString().substring(0,10);
+        if(!SE[key]) SE[key] = [];
+        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
+          const entry = {t: display, c: cat, fromIcal: true};
+          if(ev.startTime && cur.toISOString().substring(0,10) === ev.start) entry.startTime = ev.startTime;
+          if(ev.location) entry.location = ev.location;
+          if(ev.description) entry.description = ev.description;
+          SE[key].push(entry);
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+    } else {
+      if(!SE[ev.start]) SE[ev.start] = [];
+      if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
+        const entry = {t: display, c: cat, fromIcal: true};
+        if(ev.startTime) entry.startTime = ev.startTime;
+        if(ev.location) entry.location = ev.location;
+        if(ev.description) entry.description = ev.description;
+        SE[ev.start].push(entry);
+      }
+    }
+  }
+}
+
+async function loadICalEvents() {
+  if(!ICAL_URLS || !ICAL_URLS.length) return;
+
+  const statusEl = document.getElementById('ical-status');
+  if(statusEl) statusEl.textContent = '🔄 Kalender wird geladen…';
+
+  let totalEvents = 0;
+  let errors = 0;
+
+  await Promise.all(ICAL_URLS.map(async (url) => {
+    try {
+      const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(url);
+      const res = await fetch(proxyUrl);
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const events = parseICS(text);
+      injectICalEvents(events, url);
+      totalEvents += events.length;
+    } catch(err) {
+      errors++;
+      console.warn('iCal load error for', url, ':', err.message);
+    }
+  }));
+
+  if(statusEl) {
+    statusEl.textContent = errors > 0
+      ? `⚠️ ${totalEvents} Termine geladen (${errors} Fehler)`
+      : `✅ ${totalEvents} Termine geladen`;
+    setTimeout(() => { if(statusEl) statusEl.textContent = ''; }, 3000);
+  }
+
+  renderAll();
+  renderToday();
+  hideEmptyFilters();
+}
+
+// ── DYNAMIC DATA LOADERS ─────────────────────────────────────────────
+
+async function loadFeiertage() {
+  const year = new Date().getFullYear();
+  const nextYear = year + 1;
+  try {
+    // OpenHolidays API - Feiertage Berlin
+    const url = `https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${year}-01-01&validTo=${nextYear}-12-31`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    
+    const emoji = { 'Neujahr':'🎆','Karfreitag':'✝️','Ostersonntag':'🐣','Ostermontag':'🐣',
+      'Tag der Arbeit':'🎉','Christi Himmelfahrt':'⛪','Pfingstsonntag':'⛪','Pfingstmontag':'⛪',
+      'Tag der Deutschen Einheit':'🎉','Internationaler Frauentag':'💐','Tag der Befreiung':'🕊️',
+      '1. Weihnachtstag':'🎄','2. Weihnachtstag':'🎄' };
+    
+    for(const h of data) {
+      const date = h.startDate.substring(0,10);
+      const name = h.name.find(n => n.language === 'DE')?.text || h.name[0]?.text || 'Feiertag';
+      const icon = emoji[name] || '🗓️';
+      if(!SE[date]) SE[date] = [];
+      if(!SE[date].some(e => e.c === 'e-feier' && e.t.includes(name))) {
+        SE[date].push({t: `${icon} ${name}`, c: 'e-feier', fromApi: true});
+      }
+    }
+    console.log(`✅ ${data.length} Feiertage geladen`);
+  } catch(err) {
+    console.warn('Feiertage API error:', err.message);
+  }
+}
+
+async function loadSchulferien() {
+  const year = new Date().getFullYear();
+  const nextYear = year + 1;
+  try {
+    // OpenHolidays API - Schulferien Berlin
+    const url = `https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${year}-01-01&validTo=${nextYear}-12-31`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    
+    const emoji = { 'Winterferien':'❄️','Osterferien':'🐣','Pfingstferien':'🌸',
+      'Sommerferien':'☀️','Herbstferien':'🍂','Weihnachtsferien':'🎄' };
+    
+    for(const f of data) {
+      const name = f.name.find(n => n.language === 'DE')?.text || 'Schulferien';
+      const icon = Object.entries(emoji).find(([k]) => name.includes(k))?.[1] || '🏫';
+      const label = `${icon} ${name} Berlin`;
+      
+      let cur = new Date(f.startDate);
+      const end = new Date(f.endDate);
+      while(cur <= end) {
+        const key = cur.toISOString().substring(0,10);
+        if(!SE[key]) SE[key] = [];
+        if(!SE[key].some(e => e.c === 'e-feier' && e.t.includes(name))) {
+          SE[key].push({t: label, c: 'e-feier', fromApi: true});
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+    }
+    console.log(`✅ Schulferien geladen`);
+  } catch(err) {
+    console.warn('Schulferien API error:', err.message);
+  }
+}
+
+async function loadUnionGames() {
+  try {
+    // Use a CORS proxy for sports data - openligadb.de (free, no key needed)
+    const currentSeason = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear() - 1;
+    const url = `https://api.openligadb.de/getmatchdata/bl1/${currentSeason}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const matches = await res.json();
+    
+    const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    for(const m of matches) {
+      // Check if Union Berlin is playing
+      const isUnion = m.team1?.teamName?.includes('Union Berlin') || m.team2?.teamName?.includes('Union Berlin');
+      if(!isUnion) continue;
+      
+      const matchDate = m.matchDateTime?.substring(0,10);
+      if(!matchDate || matchDate < todayKey) continue;
+      
+      const isHome = m.team1?.teamName?.includes('Union Berlin');
+      const opponent = isHome ? m.team2?.teamName : m.team1?.teamName;
+      const time = m.matchDateTime?.substring(11,16) || '';
+      const label = isHome ? `⚽ Union – ${opponent} ${time}` : `⚽ ${opponent} – Union ${time}`;
+      
+      if(!SE[matchDate]) SE[matchDate] = [];
+      if(!SE[matchDate].some(e => e.c === 'e-union' && e.t.includes('Union'))) {
+        SE[matchDate].push({t: label, c: 'e-union', fromApi: true});
+      }
+    }
+    console.log('✅ Union Spiele geladen');
+  } catch(err) {
+    console.warn('Union API error:', err.message);
+    // Fallback: keep static entries
+  }
+}
+
+async function loadKidsSheet() {
+  try {
+    // Google Sheets as CSV - works if sheet is publicly readable
+    const sheetId = '1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
+    const tabName = 'Kids';
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+    const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(sheetUrl);
+    const res = await fetch(proxyUrl);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const csv = await res.text();
+    
+    const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+    const lines = csv.split('\n').slice(1); // skip header
+    
+    let kidsAdded = 0, infosAdded = 0;
+    
+    for(const line of lines) {
+      if(!line.trim()) continue;
+      // Parse CSV - handle quoted fields
+      const cols = line.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
+      const clean = cols.map(c => c.replace(/^"|"$/g, '').trim());
+      
+      const rawDate = clean[0]; // DD/MM/YYYY
+      const who = clean[2];     // Paul or Dani
+      const info = clean[4];    // Infos column E
+      
+      if(!rawDate || !who) continue;
+      
+      // Parse date DD/MM/YYYY → YYYY-MM-DD
+      const parts = rawDate.split('/');
+      if(parts.length !== 3) continue;
+      const dateKey = `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+      
+      // Skip past dates
+      if(dateKey < todayKey) continue;
+      
+      if(!SE[dateKey]) SE[dateKey] = [];
+      
+      // Add Kids bei Paul / Kids bei Dani if not already from iCal
+      const cat = who.toLowerCase().includes('paul') ? 'e-kids' : 'e-dani';
+      const label = who.toLowerCase().includes('paul') ? '👨‍👧‍👦 Kids bei Paul' : 'Kids bei Dani';
+      
+      if(!SE[dateKey].some(e => e.c === cat)) {
+        SE[dateKey].push({t: label, c: cat, fromSheet: true});
+        kidsAdded++;
+      }
+      
+      // Add info as Schule/Kids event if present
+      if(info && info.length > 2) {
+        if(!SE[dateKey].some(e => e.t.includes(info.substring(0,20)))) {
+          SE[dateKey].push({t: '📋 ' + info, c: 'e-kidev', fromSheet: true});
+          infosAdded++;
+        }
+      }
+    }
+    console.log(`✅ Kids Sheet: ${kidsAdded} Tage, ${infosAdded} Infos geladen`);
+  } catch(err) {
+    console.warn('Google Sheets error:', err.message);
+  }
+}
+
+async function loadAllDynamicData() {
+  await Promise.all([loadFeiertage(), loadSchulferien(), loadUnionGames(), loadKidsSheet()]);
+}
+
 renderToday();
 renderAll();
 hideEmptyFilters();
+
+// Load dynamic data and re-render
+loadAllDynamicData().then(() => {
+  renderAll();
+  renderToday();
+  hideEmptyFilters();
+});
+
+// Load iCal events after initial render
+loadICalEvents();
 
 // Set header height CSS variable for sticky bars
 function updateHeaderVar() {
@@ -1578,38 +1901,6 @@ window.addEventListener('scroll', () => {
 }, {passive: true});
 
 // Update header title on scroll to show current visible month
-
-// ── Hub-Sync: nächste Events in localStorage schreiben ──
-function syncNextEventsToHub() {
-  try {
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    const keys = Object.keys(EVENTS).sort();
-    let nextMaja = null, nextKonzert = null;
-
-    for (const dk of keys) {
-      const d = new Date(dk + 'T00:00:00');
-      if (d < today) continue;
-      const evs = EVENTS[dk];
-      for (const ev of evs) {
-        const timeMatch = ev.t.match(/(\d{2}:\d{2})/);
-        const time = timeMatch ? timeMatch[1] : '';
-        const title = ev.t.replace(/^[\u{1F000}-\u{1FFFF}\u2600-\u27FF\uFE00-\uFE0F\s]*/u, '').replace(/\s+\d{2}:\d{2}.*$/, '').trim();
-        if (!nextMaja && ev.c === 'e-maja') {
-          nextMaja = { date: dk, title, time };
-        }
-        if (!nextKonzert && ev.c === 'e-konzert') {
-          nextKonzert = { date: dk, title, time };
-        }
-        if (nextMaja && nextKonzert) break;
-      }
-      if (nextMaja && nextKonzert) break;
-    }
-    localStorage.setItem('hub_next_maja', JSON.stringify(nextMaja));
-    localStorage.setItem('hub_next_konzert', JSON.stringify(nextKonzert));
-  } catch(e) {}
-}
-syncNextEventsToHub();
 
 </script>
 </body>
