@@ -1357,10 +1357,12 @@ function renderToday() {
   const list = document.getElementById('tpList');
   list.innerHTML = '';
 
+  const panel = document.getElementById('todayPanel');
   if(!evs.length) {
-    list.innerHTML = '<span class="tp-empty">Keine Termine heute</span>';
+    if(panel) panel.style.display = 'none';
     return;
   }
+  if(panel) panel.style.display = '';
 
   const colorMap2 = {
     'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
