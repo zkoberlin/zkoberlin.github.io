@@ -132,8 +132,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 10px 0 0;
-  will-change: auto;
+  padding: 8px 0 0;
   transform: translateZ(0);
 }
 .header-inner {
@@ -188,22 +187,21 @@ body {
 .today-panel {
   background: transparent;
   border-top: 1px solid var(--border);
-  padding: 6px 0 8px;
-  position: static;
+  padding: 4px 0 6px;
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  transition: opacity 0.25s ease, max-height 0.25s ease, padding 0.25s ease;
   overflow: hidden;
-  opacity: 1;
   max-height: 200px;
+  opacity: 1;
+  transition: max-height 0.2s ease, opacity 0.2s ease, padding 0.2s ease, border 0.2s ease;
 }
 .today-panel.hidden {
-  opacity: 0;
-  max-height: 0;
-  padding: 0;
-  border-top: none;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  padding: 0 !important;
+  border: none !important;
   pointer-events: none;
 }
 
@@ -521,7 +519,6 @@ body {
   padding: 6px 22px 4px;
   margin: -22px -22px 8px -22px;
   border-radius: 14px 14px 0 0;
-  will-change: top;
 }
 .sticky-bar-month {
   font-size: 13px; font-weight: 700; color: var(--text);
@@ -766,6 +763,49 @@ body {
   flex-shrink: 0;
 }
 
+/* Mobile filter dropdown */
+.filter-toggle-row {
+  display: none; /* hidden on desktop */
+}
+.filter-toggle-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 6px;
+}
+.legend.collapsed {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.legend {
+  transition: max-height 0.25s ease;
+  max-height: 500px;
+}
+
+@media (max-width: 600px) {
+  .filter-toggle-row { display: block; }
+  .legend {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: visible;
+    gap: 4px;
+  }
+  .legend.collapsed {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+  .li { flex-shrink: 0; justify-content: space-between; width: 100%; border-radius: 10px; font-size: 11px; padding: 8px 12px; }
+}
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -787,7 +827,7 @@ body {
   body { font-size: 13px; }
 
   /* Header */
-  .header { padding: 10px 16px 0; }
+  .header { padding: 6px 16px 0; }
   .header-top { gap: 10px; margin-bottom: 6px; }
   .header-icon { font-size: 18px; }
   .header-text h1 { font-size: 14px; }
@@ -897,6 +937,11 @@ body {
       <div class="load-item" id="ls-union"><span class="load-dot"></span> Union Berlin</div>
       <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
     </div>
+  </div>
+  <div class="filter-toggle-row">
+    <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterDropdown()">
+      <span id="filterToggleLabel">🔽 Filter</span>
+    </button>
   </div>
   <div class="legend" id="legend">
   <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
@@ -1533,6 +1578,18 @@ function hideEmptyFilters() {
   });
 }
 
+function toggleFilterDropdown() {
+  const legend = document.getElementById('legend');
+  const btn = document.getElementById('filterToggleLabel');
+  const isCollapsed = legend.classList.toggle('collapsed');
+  btn.textContent = isCollapsed ? '🔽 Filter anzeigen' : '🔼 Filter ausblenden';
+}
+
+// Start collapsed on mobile
+if(window.innerWidth <= 600) {
+  document.getElementById('legend')?.classList.add('collapsed');
+}
+
 function searchCalendar(query) {
   document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
   const clearBtn = document.getElementById('searchClear');
@@ -1997,9 +2054,10 @@ function updateHeaderVar() {
   }
 }
 window.addEventListener('resize', updateHeaderVar, {passive: true});
-// Set once after everything renders
-setTimeout(updateHeaderVar, 100);
-setTimeout(updateHeaderVar, 500);
+setTimeout(updateHeaderVar, 150);
+setTimeout(updateHeaderVar, 600);
+// Also update after scroll state changes (today panel transition)
+document.getElementById('todayPanel')?.addEventListener('transitionend', updateHeaderVar);
 
 // Fade today strip on scroll
 let lastScrolled = false;
