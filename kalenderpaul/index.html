@@ -1718,12 +1718,33 @@ function parseICS(text) {
 }
 
 function parseICSDate(val) {
-  // Format: 20260515 or 20260515T180000Z or 20260515T180000
-  const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
-  const y = clean.substring(0,4);
-  const m = clean.substring(4,6);
-  const d = clean.substring(6,8);
-  return `${y}-${m}-${d}`;
+  // Format: 20260515 (all-day) or 20260515T180000Z (UTC) or 20260515T180000 (local)
+  const isAllDay = !val.includes('T');
+  const clean = val.replace(/TZID=[^:]+:/,'');
+  
+  if(isAllDay) {
+    // All-day: take date as-is, no timezone conversion
+    const d = clean.replace('Z','');
+    return `${d.substring(0,4)}-${d.substring(4,6)}-${d.substring(6,8)}`;
+  }
+  
+  // Timed event
+  const isUTC = clean.endsWith('Z');
+  const base = clean.replace('Z','');
+  const y = base.substring(0,4);
+  const mo = base.substring(4,6);
+  const d = base.substring(6,8);
+  
+  if(isUTC) {
+    // Convert UTC to local date
+    const utcDate = new Date(Date.UTC(+y, +mo-1, +d, +base.substring(9,11), +base.substring(11,13)));
+    // Use Berlin timezone offset (CET=+1, CEST=+2) for display
+    const berlinOffset = utcDate.getTimezoneOffset(); // negative of local offset
+    const localDate = new Date(utcDate.getTime() - berlinOffset * 60000);
+    return `${localDate.getUTCFullYear()}-${String(localDate.getUTCMonth()+1).padStart(2,'0')}-${String(localDate.getUTCDate()).padStart(2,'0')}`;
+  }
+  
+  return `${y}-${mo}-${d}`;
 }
 
 function catFromTitle(title) {
@@ -1758,14 +1779,17 @@ function injectICalEvents(events, url='') {
 
     // For multi-day events, add to each day
     if(ev.end && ev.end > ev.start) {
-      let cur = new Date(ev.start + 'T00:00:00');
-      const endD = new Date(ev.end + 'T00:00:00');
+      let cur = new Date(ev.start + 'T12:00:00'); // noon to avoid DST issues
+      // iCal DTEND is exclusive for all-day events
+      const endD = new Date(ev.end + 'T12:00:00');
       while(cur < endD) {
-        const key = cur.toISOString().substring(0,10);
+        const key = cur.getFullYear() + '-' + 
+                    String(cur.getMonth()+1).padStart(2,'0') + '-' + 
+                    String(cur.getDate()).padStart(2,'0');
         if(!SE[key]) SE[key] = [];
         if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
           const entry = {t: display, c: cat, fromIcal: true};
-          if(ev.startTime && cur.toISOString().substring(0,10) === ev.start) entry.startTime = ev.startTime;
+          if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.location) entry.location = ev.location;
           if(ev.description) entry.description = ev.description;
           SE[key].push(entry);
