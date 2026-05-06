@@ -44,7 +44,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdr
 .h-date{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
 /* MAIN */
-main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-direction:column;gap:12px;}
+main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-direction:column;gap:14px;}
 
 /* QUOTE */
 .quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:11px 15px;display:flex;gap:8px;align-items:flex-start;}
@@ -53,7 +53,6 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 
 /* TOP ROW */
 .top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:400px){.top-row{grid-template-columns:1fr;}}
 .mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:11px;}
 .mini-icon{font-size:24px;flex-shrink:0;}
 .mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
@@ -61,16 +60,17 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 .mini-sub{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
 /* SECTION */
-.sec{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-bottom:-2px;}
+.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-bottom:0px;margin-top:8px;}
 
 /* EMIL & ROSA */
-.er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;width:100%;}
 .er-top{padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
 .er-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
 .er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
 .er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:400px){.er-nums{grid-template-columns:1fr;}}
 .er-num{padding:18px 22px;border-right:1px solid var(--border);}
 .er-num:last-child{border-right:none;}
 .er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
@@ -98,7 +98,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 
 /* APP CARDS */
 .app-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:500px){.app-row{grid-template-columns:1fr;}}
+@media(max-width:580px){.app-row{grid-template-columns:1fr;}}
 
 .acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden;}
 .acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
@@ -199,7 +199,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 <div class="top-row">
   <div class="mini"><div class="mini-icon" id="wIcon">⏳</div><div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div></div>
   <div class="mini"><div class="mini-icon">📆</div><div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div></div>
-
+</div>
 
 <div class="sec">👧 Emil & Rosa</div>
 <div class="er">
@@ -228,7 +228,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
     </div>
   </div>
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
-
+</div>
 
 <div class="sec">📱 Apps</div>
 <div class="app-row">
