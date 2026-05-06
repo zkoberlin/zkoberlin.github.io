@@ -195,7 +195,7 @@ body {
   overflow: hidden;
   max-height: 200px;
   opacity: 1;
-  transition: max-height 0.2s ease, opacity 0.2s ease, padding 0.2s ease, border 0.2s ease;
+  /* NO transition - avoids layout shifts that move sticky-bar */
 }
 .today-panel.hidden {
   max-height: 0 !important;
@@ -786,7 +786,6 @@ body {
   margin: 0;
 }
 .legend {
-  transition: max-height 0.25s ease;
   max-height: 500px;
 }
 
@@ -2057,7 +2056,7 @@ window.addEventListener('resize', updateHeaderVar, {passive: true});
 setTimeout(updateHeaderVar, 150);
 setTimeout(updateHeaderVar, 600);
 // Also update after scroll state changes (today panel transition)
-document.getElementById('todayPanel')?.addEventListener('transitionend', updateHeaderVar);
+// No transitionend needed since we removed transitions
 
 // Fade today strip on scroll
 let lastScrolled = false;
@@ -2066,12 +2065,17 @@ function updateTodayPanel() {
   const tp = document.getElementById('todayPanel');
   if(!tp) return;
   const scrolled = window.scrollY > 40;
-  // Hide if scrolled OR no events today
-  if(scrolled || !todayHasEvents) {
+  const shouldHide = scrolled || !todayHasEvents;
+  const isHidden = tp.classList.contains('hidden');
+  if(shouldHide === isHidden) return; // no change needed
+  if(shouldHide) {
     tp.classList.add('hidden');
   } else {
     tp.classList.remove('hidden');
   }
+  // Immediately recalculate header height after class change
+  // Use double rAF to ensure DOM has updated
+  requestAnimationFrame(() => requestAnimationFrame(updateHeaderVar));
 }
 
 window.addEventListener('scroll', () => {
