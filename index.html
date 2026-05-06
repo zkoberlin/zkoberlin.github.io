@@ -161,35 +161,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
-/* Sort blocks */
-.sort-block{position:relative;transition:transform .2s;}
-.sort-controls{
-  display:none;
-  position:absolute;top:50%;right:-12px;transform:translateY(-50%);
-  flex-direction:column;gap:3px;z-index:20;
-}
-@media(max-width:600px){.sort-controls{display:flex;}}
-.sort-btn{
-  width:26px;height:26px;border-radius:8px;border:1px solid var(--border);
-  background:var(--card);color:var(--t2);font-size:13px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  box-shadow:var(--sh);transition:.15s;
-}
-.sort-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
-.sort-btn:disabled{opacity:.25;pointer-events:none;}
-.sort-edit-btn{
-  display:none;
-  position:fixed;bottom:90px;right:16px;z-index:200;
-  width:44px;height:44px;border-radius:50%;
-  background:var(--blue);color:#fff;border:none;
-  font-size:18px;cursor:pointer;
-  box-shadow:0 4px 16px rgba(0,113,227,.4);
-  align-items:center;justify-content:center;
-}
-@media(max-width:600px){.sort-edit-btn{display:flex;}}
-.sort-editing .sort-controls{display:flex;}
-.sort-editing .sort-edit-btn{background:var(--green);}
-.sort-editing main{padding-right:36px;}
+
 
 /* Kategorie-Bars */
 .fin-cats{margin:0 12px 10px;display:flex;flex-direction:column;gap:5px;}
@@ -224,13 +196,12 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 
 <div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
 
-<div id="sortable-container">
-<div class="sort-block" data-id="weather"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="top-row">
+<div class="top-row">
   <div class="mini"><div class="mini-icon" id="wIcon">⏳</div><div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div></div>
   <div class="mini"><div class="mini-icon">📆</div><div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div></div>
-</div></div><!-- /weather -->
 
-<div class="sort-block" data-id="kids"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="sec">👧 Emil & Rosa</div>
+
+<div class="sec">👧 Emil & Rosa</div>
 <div class="er">
   <div class="er-top">
     <div class="er-title">Emil & Rosa</div>
@@ -257,9 +228,9 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
     </div>
   </div>
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
-</div></div><!-- /kids -->
 
-<div class="sort-block" data-id="apps"><div class="sort-controls"><button class="sort-btn up-btn" onclick="moveBlock(this,-1)">↑</button><button class="sort-btn down-btn" onclick="moveBlock(this,1)">↓</button></div><div class="sec">📱 Apps</div>
+
+<div class="sec">📱 Apps</div>
 <div class="app-row">
 
   <!-- KALENDER -->
@@ -336,10 +307,8 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
 
-</div></div><!-- /apps -->
 
-</div><!-- end sortable-container -->
-<button class="sort-edit-btn" id="sortEditBtn" onclick="toggleEdit()" title="Reihenfolge ändern">✦</button>
+
 </main>
 
 <nav class="bnav">
@@ -586,112 +555,6 @@ async function loadICAL(){
 loadICAL();
 
 // ── DRAG & DROP SORT ──
-const SORT_KEY = 'hub_sort_order';
-const container = document.getElementById('sortable-container');
-let dragSrc = null;
-let editMode = false;
-
-function toggleEdit(){
-  editMode = !editMode;
-  document.body.classList.toggle('sort-editing', editMode);
-  document.getElementById('sortEditBtn').textContent = editMode ? '✓' : '✦';
-  document.getElementById('sortEditBtn').title = editMode ? 'Fertig' : 'Reihenfolge ändern';
-}
-
-function saveOrder(){
-  const blocks = [...container.querySelectorAll('.sort-block')];
-  localStorage.setItem(SORT_KEY, JSON.stringify(blocks.map(b=>b.dataset.id)));
-}
-
-function loadOrder(){
-  try{
-    const saved = JSON.parse(localStorage.getItem(SORT_KEY)||'[]');
-    if(!saved.length) return;
-    saved.forEach(id=>{
-      const el = container.querySelector(`[data-id="${id}"]`);
-      if(el) container.appendChild(el);
-    });
-  }catch(e){}
-}
-
-// Touch drag
-let touchDragEl = null, touchClone = null, touchStartY = 0;
-
-function initDrag(){
-  container.querySelectorAll('.sort-block').forEach(block=>{
-    const handle = block.querySelector('.drag-handle');
-    if(!handle) return;
-
-    // Mouse drag
-    handle.addEventListener('mousedown', e=>{
-      if(!editMode) return;
-      block.setAttribute('draggable','true');
-    });
-    block.addEventListener('dragstart', e=>{
-      if(!editMode){e.preventDefault();return;}
-      dragSrc = block;
-      setTimeout(()=>block.classList.add('dragging'),0);
-      e.dataTransfer.effectAllowed='move';
-    });
-    block.addEventListener('dragend', ()=>{
-      block.classList.remove('dragging');
-      block.removeAttribute('draggable');
-      container.querySelectorAll('.sort-block').forEach(b=>b.classList.remove('drag-over'));
-      saveOrder();
-    });
-    block.addEventListener('dragover', e=>{
-      if(!editMode||!dragSrc||dragSrc===block) return;
-      e.preventDefault();
-      e.dataTransfer.dropEffect='move';
-      container.querySelectorAll('.sort-block').forEach(b=>b.classList.remove('drag-over'));
-      block.classList.add('drag-over');
-    });
-    block.addEventListener('drop', e=>{
-      if(!editMode||!dragSrc||dragSrc===block) return;
-      e.preventDefault();
-      block.classList.remove('drag-over');
-      const blocks=[...container.querySelectorAll('.sort-block')];
-      const srcIdx=blocks.indexOf(dragSrc), tgtIdx=blocks.indexOf(block);
-      if(srcIdx<tgtIdx) block.after(dragSrc); else block.before(dragSrc);
-      saveOrder();
-    });
-
-    // Touch drag
-    handle.addEventListener('touchstart', e=>{
-      if(!editMode) return;
-      touchDragEl = block;
-      touchStartY = e.touches[0].clientY;
-      block.classList.add('dragging');
-      e.preventDefault();
-    },{passive:false});
-
-    handle.addEventListener('touchmove', e=>{
-      if(!touchDragEl) return;
-      e.preventDefault();
-      const y = e.touches[0].clientY;
-      const blocks = [...container.querySelectorAll('.sort-block')];
-      blocks.forEach(b=>b.classList.remove('drag-over'));
-      // Find block under touch point
-      const el = document.elementFromPoint(e.touches[0].clientX, y);
-      const target = el?.closest('.sort-block');
-      if(target && target !== touchDragEl){
-        target.classList.add('drag-over');
-        const srcIdx=blocks.indexOf(touchDragEl), tgtIdx=blocks.indexOf(target);
-        if(srcIdx<tgtIdx) target.after(touchDragEl); else target.before(touchDragEl);
-      }
-    },{passive:false});
-
-    handle.addEventListener('touchend', ()=>{
-      if(!touchDragEl) return;
-      touchDragEl.classList.remove('dragging');
-      container.querySelectorAll('.sort-block').forEach(b=>b.classList.remove('drag-over'));
-      saveOrder();
-      touchDragEl = null;
-    });
-  });
-}
-
-loadOrder();
 initDrag();
 </script>
 </body>
