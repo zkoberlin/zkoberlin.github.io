@@ -470,12 +470,21 @@ body {
 .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Scroll to today btn */
+.hub-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text2); text-decoration: none; font-size: 15px;
+  transition: .15s; flex-shrink: 0;
+}
+.hub-btn:hover { border-color: var(--blue); color: var(--blue); }
 .today-btn {
   font-family: inherit; font-size: 11px; font-weight: 600;
-  padding: 5px 12px; border-radius: 7px;
-  border: 1px solid var(--border); background: var(--surface2);
-  color: var(--text2); cursor: pointer; transition: .15s;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid var(--blue); background: transparent;
+  color: var(--blue); cursor: pointer; transition: .15s;
 }
+.today-btn:hover { background: var(--blue); color: #fff; }
 .today-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-l); }
 /* Expanded day cell */
 .day.expanded {
@@ -807,7 +816,7 @@ body {
 
 .add-event-btn {
   font-family: inherit; font-size: 11px; font-weight: 600;
-  padding: 5px 12px; border-radius: 7px;
+  padding: 5px 12px; border-radius: 20px;
   border: none; background: var(--blue);
   color: #fff; cursor: pointer; transition: .15s;
 }
@@ -831,11 +840,13 @@ body {
   padding: 0;
   width: 100%;
   max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
   animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
 }
 @media (min-width: 601px) {
   .add-modal-overlay { align-items: center; }
-  .add-modal { border-radius: 20px; max-width: 440px; }
+  .add-modal { border-radius: 20px; max-width: 440px; max-height: 90vh; }
 }
 .add-modal-handle {
   width: 36px; height: 4px; background: var(--border);
@@ -986,6 +997,7 @@ body {
         <span id="ical-status" style="font-size:10px;color:var(--text3);margin-left:8px;"></span>
       </div>
     </div>
+    <a class="hub-btn" href="https://paulbendzko-bit.github.io" title="Zurück zum Hub">⌂</a>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
     <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
   </div>
@@ -1010,19 +1022,19 @@ body {
     </button>
   </div>
   <div class="legend" id="legend">
-  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
-  <div class="li" onclick="filterBy('e-work')" data-cat="e-work" style="display:none"><div class="ld" style="background:#8099E8"></div> Arbeit</div>
-  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
-  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
-  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
-  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
-  <div class="li" onclick="filterBy('e-hellomed')" data-cat="e-hellomed"><div class="ld" style="background:#8099E8"></div> Hellomed</div>
-  <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div> Kids bei Paul</div>
-  <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div> Kids bei Dani</div>
-  <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div> Konzerte & Events</div>
-  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
-  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
-  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
+  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div>
+  <div class="li" onclick="filterBy('e-work')" data-cat="e-work" style="display:none"><div class="ld" style="background:#8099E8"></div>
+  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div>
+  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div>
+  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div>
+  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div>
+  <div class="li" onclick="filterBy('e-hellomed')" data-cat="e-hellomed"><div class="ld" style="background:#8099E8"></div>
+  <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div>
+  <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div>
+  <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div>
+  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div>
+  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div>
+  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div>
 </div><!-- end legend -->
   <div class="today-panel" id="todayPanel">
     <div class="tp-header">
@@ -1054,6 +1066,10 @@ body {
       <button class="evt-modal-close" onclick="closeEvtModal()">✕</button>
     </div>
     <div class="evt-modal-content" id="evtModalContent"></div>
+    <div id="evtModalActions" style="display:none;padding:0 22px 20px;gap:10px;display:none">
+      <button id="evtEditBtn" onclick="editCurrentEvent()" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">✏️ Bearbeiten</button>
+      <button id="evtDeleteBtn" onclick="deleteCurrentEvent()" style="flex:1;padding:10px;border:none;border-radius:10px;background:#fee2e2;color:#dc2626;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">🗑️ Löschen</button>
+    </div>
   </div>
 </div>
 <div class="filter-backdrop" id="filterBackdrop" onclick="closeFilter()"></div>
@@ -1201,6 +1217,12 @@ function buildMonth(year, month) {
         e.title = ev.t;
         e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
         e.style.cursor = 'pointer';
+        // Show tiny edit indicator for own Gmail iCal events
+        if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
+          const dot = document.createElement('span');
+          dot.style.cssText = 'display:inline-block;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.6);margin-left:3px;vertical-align:middle;flex-shrink:0';
+          e.appendChild(dot);
+        }
         cell.appendChild(e);
       });
       if(evs.length > 3) {
@@ -1420,9 +1442,19 @@ const catNameMap = {
   'e-union':'1. FC Union Berlin','e-konzert':'Konzert/Event','e-haus':'Besichtigung'
 };
 
+let currentEvtId = null;
+let currentEvtData = null;
+
 function openEvtModal(ev, dateKey) {
   const overlay = document.getElementById('evtModalOverlay');
   const content = document.getElementById('evtModalContent');
+  currentEvtId = ev.googleId || null;
+  currentEvtData = ev;
+  // Show edit/delete only for own Gmail events
+  const actions = document.getElementById('evtModalActions');
+  if(actions) {
+    actions.style.display = (ev.fromIcal && !ev.fromHellomed) ? 'flex' : 'none';
+  }
   const color = catColorMap[ev.c] || '#9ca3af';
   const catName = catNameMap[ev.c] || '';
   const dateStr = fmtDate(dateKey);
@@ -1453,6 +1485,44 @@ function openEvtModal(ev, dateKey) {
 
 function closeEvtModal() {
   document.getElementById('evtModalOverlay').classList.remove('on');
+  currentEvtId = null;
+  currentEvtData = null;
+}
+
+async function deleteCurrentEvent() {
+  if(!currentEvtId) return;
+  if(!confirm('Termin wirklich löschen?')) return;
+  const doDelete = async () => {
+    try {
+      const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/paul.bendzko%40gmail.com/events/${currentEvtId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + gAccessToken }
+      });
+      if(res.status === 204 || res.ok) {
+        // Remove from SE
+        Object.keys(SE).forEach(dk => {
+          SE[dk] = SE[dk].filter(e => e.googleId !== currentEvtId);
+        });
+        closeEvtModal();
+        renderAll();
+        renderToday();
+        alert('✅ Termin gelöscht!');
+      } else {
+        alert('❌ Fehler beim Löschen');
+      }
+    } catch(err) {
+      alert('❌ ' + err.message);
+    }
+  };
+  if(isTokenValid()) doDelete();
+  else requestToken(doDelete);
+}
+
+function editCurrentEvent() {
+  if(!currentEvtId) return;
+  // Open Google Calendar directly for editing
+  const gcalUrl = `https://calendar.google.com/calendar/r/eventedit/${currentEvtId}`;
+  window.open(gcalUrl, '_blank');
 }
 
 function collapseDay() {
@@ -1756,7 +1826,7 @@ function parseICS(text) {
       if(key === 'SUMMARY')      current.title = val;
       if(key === 'DESCRIPTION')  current.description = val;
       if(key === 'LOCATION')     current.location = val;
-      if(key === 'UID')          current.uid = val;
+      if(key === 'UID')          current.uid = val.split('@')[0]; // Google event ID
       if(key === 'DTSTART') {
         current.startRaw = val;
         current.start = parseICSDate(val);
@@ -1870,6 +1940,8 @@ function injectICalEvents(events, url='') {
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
+        if(ev.uid) entry.googleId = ev.uid.replace('@google.com','');
+        if(url.includes('hellomed')) entry.fromHellomed = true;
         SE[ev.start].push(entry);
       }
     }
@@ -2127,7 +2199,7 @@ hideEmptyFilters();
 
 // ── GOOGLE OAUTH + EVENT CREATION ─────────────────────────────────────
 const GCAL_CLIENT_ID = '272507955688-7s4g9anuhiimmooisg0iqlk940r2a0jt.apps.googleusercontent.com';
-const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.events';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar';
 let gAccessToken = null;
 let tokenExpiry = 0;
 
@@ -2139,17 +2211,20 @@ function requestToken(callback) {
   const client = google.accounts.oauth2.initTokenClient({
     client_id: GCAL_CLIENT_ID,
     scope: GCAL_SCOPE,
+    hint: 'paul.bendzko@gmail.com',
     callback: (resp) => {
       if(resp.error) {
-        document.getElementById('addStatus').textContent = '❌ Anmeldung fehlgeschlagen';
+        document.getElementById('addStatus').textContent = '❌ Anmeldung fehlgeschlagen: ' + resp.error;
+        console.error('OAuth error:', resp);
         return;
       }
       gAccessToken = resp.access_token;
       tokenExpiry = Date.now() + (resp.expires_in - 60) * 1000;
+      console.log('Token OK, scope:', resp.scope);
       if(callback) callback();
     },
   });
-  client.requestAccessToken();
+  client.requestAccessToken({prompt: 'consent'});
 }
 
 function openAddEvent() {
@@ -2241,6 +2316,13 @@ async function saveEvent() {
       setTimeout(closeAddEvent, 1200);
     } catch(err) {
       document.getElementById('addStatus').textContent = '❌ Fehler: ' + err.message;
+      console.error('Calendar API error:', err);
+      // Try to get more details from response
+      try {
+        const errData = await res.json();
+        console.error('API response:', errData);
+        document.getElementById('addStatus').textContent = '❌ ' + (errData.error?.message || err.message);
+      } catch(e) {}
     } finally {
       btn.disabled = false;
     }
@@ -2312,7 +2394,10 @@ window.addEventListener('scroll', () => {
   <div class="add-modal" onclick="event.stopPropagation()">
     <div class="add-modal-handle"></div>
     <div class="add-modal-body">
-      <div class="add-modal-title">Neuer Termin</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div class="add-modal-title" style="margin-bottom:0">Neuer Termin</div>
+        <button onclick="closeAddEvent()" style="width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
       <div id="addAuthHint" class="auth-hint" style="display:none">
         🔐 Bitte zuerst mit Google anmelden
       </div>
