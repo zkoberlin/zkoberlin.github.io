@@ -95,7 +95,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .q-text{font-size:11px;color:var(--t2);line-height:1.55;font-style:italic;}
 
 /* ── TOP ROW ── */
-.top-row{display:grid;grid-template-columns:1fr;gap:10px;}
+.top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;text-decoration:none;color:inherit;}
 .mini:hover{transform:translateY(-2px);box-shadow:var(--sh-h);}
 .mini-icon{font-size:22px;flex-shrink:0;}
@@ -328,27 +328,39 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Weather + Date -->
 <div class="top-row">
-  <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank" style="grid-column:1/-1;">
-    <div class="weather-main">
-      <div class="weather-icon" id="wIcon">⏳</div>
-      <div class="weather-info">
-        <div class="weather-city"><span id="wCity">Standort</span> · Wetter</div>
-        <div class="weather-temp" id="wTemp">--°</div>
-        <div class="weather-desc" id="wDesc">Lädt…</div>
-        <div class="weather-feels" id="wFeels"></div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:10px;">
+    <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
+      <div class="weather-main">
+        <div class="weather-icon" id="wIcon">⏳</div>
+        <div class="weather-info">
+          <div class="weather-city"><span id="wCity">Standort</span> · Wetter</div>
+          <div class="weather-temp" id="wTemp">--°</div>
+          <div class="weather-desc" id="wDesc">Lädt…</div>
+          <div class="weather-feels" id="wFeels"></div>
+        </div>
       </div>
-      <a class="mini date hcard" href="https://calendar.google.com" target="_blank" style="flex-shrink:0;margin-left:auto;background:var(--card2);border-radius:var(--r2);border:1px solid var(--border);padding:10px 12px;text-decoration:none;color:inherit;min-width:100px;text-align:center;">
-        <div class="mini-lbl" style="text-align:center;">Heute</div>
-        <div class="mini-val" id="todayStr" style="text-align:center;">--</div>
-        <div class="mini-sub" id="kwStr" style="text-align:center;">--</div>
+      <div class="weather-forecast" id="wForecast">
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+      </div>
+    </a>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;">
+        <div class="mini-icon">📆</div>
+        <div style="text-align:center;">
+          <div class="mini-lbl">Heute</div>
+          <div class="mini-val" id="todayStr">--</div>
+          <div class="mini-sub" id="kwStr">--</div>
+        </div>
       </a>
+      <div class="mini" style="flex-direction:column;align-items:flex-start;gap:3px;flex:1;" id="dayInfoCard">
+        <div class="mini-lbl" id="dayInfoLbl">Tag</div>
+        <div style="font-size:12px;font-weight:600;color:var(--t);line-height:1.3;" id="dayInfoVal">–</div>
+        <div style="font-size:10px;color:var(--t2);margin-top:1px;" id="dayInfoSub"></div>
+      </div>
     </div>
-    <div class="weather-forecast" id="wForecast">
-      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
-      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
-      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
-    </div>
-  </a>
+  </div>
 </div>
 
 <!-- Emil & Rosa -->
@@ -602,6 +614,82 @@ document.getElementById('kwR').textContent=kwRange(now);
 const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
 document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
 
+// ── TAG-INFO (Feiertage, Geburtstage, Skurrile Tage) ──
+function loadDayInfo(){
+  const d=now.getDate(), m=now.getMonth()+1;
+  const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+  // Berlin Feiertage 2026
+  const feiertage={
+    '01-01':'🎆 Neujahr','03-08':'♀️ Internationaler Frauentag','04-03':'✝️ Karfreitag',
+    '04-06':'🐣 Ostermontag','05-01':'✊ Tag der Arbeit','05-08':'🕊️ Tag der Befreiung (Berlin)',
+    '05-14':'⛪ Christi Himmelfahrt','05-25':'🙏 Pfingstmontag','10-03':'🇩🇪 Tag der Deutschen Einheit',
+    '12-25':'🎄 1. Weihnachtstag','12-26':'🎄 2. Weihnachtstag'
+  };
+
+  // Bekannte Geburtstage
+  const bdays={
+    '01-08':'David Bowie 🎂','01-17':'Michelle Obama 🎂','01-26':'Ellen DeGeneres 🎂',
+    '02-06':'Bob Marley 🎂','02-11':'Sheryl Crow 🎂','02-14':'Valentinstag 💝',
+    '03-14':'Albert Einstein 🎂','03-31':'Ewan McGregor 🎂',
+    '04-04':'Heath Ledger 🎂','04-14':'Adrien Brody 🎂',
+    '05-02':'David Beckham 🎂','05-05':'Adele 🎂','05-09':'Rosario Dawson 🎂',
+    '05-19':'Malcolm X 🎂','05-25':'Mike Myers 🎂',
+    '06-01':'Marilyn Monroe 🎂','06-12':'Anne Frank 🎂','06-25':'Michael Jackson 🎂',
+    '07-04':'Post Malone 🎂','07-23':'Daniel Radcliffe 🎂',
+    '08-04':'Barack Obama 🎂','08-09':'Whitney Houston 🎂',
+    '09-07':'Evan Rachel Wood 🎂','09-15':'Tom Hardy 🎂',
+    '10-02':'Sting 🎂','10-04':'Alicia Silverstone 🎂','10-26':'Hillary Clinton 🎂',
+    '11-01':'Aishwarya Rai 🎂','11-18':'Owen Wilson 🎂',
+    '12-05':'Walt Disney 🎂','12-18':'Brad Pitt 🎂','12-25':'Jesus Christus 🎂 / Humphrey Bogart 🎂'
+  };
+
+  // Skurrile/besondere Tage
+  const special={
+    '01-02':'😊 Weltglückstag','01-11':'🙏 Welttag des Dankens',
+    '02-10':'🍕 Internationaler Pizzatag','02-18':'🐻‍❄️ Weltbärentag',
+    '03-04':'📚 Weltbuchtag','03-20':'😊 Internationaler Glückstag',
+    '04-01':'🃏 April, April!','04-22':'🌍 Earth Day',
+    '05-03':'🌍 Weltpressefreiheitstag','05-04':'🚀 Star Wars Day – May the 4th',
+    '05-08':'🕊️ Tag der Befreiung','05-10':'👩‍👩‍👧 Muttertag',
+    '05-15':'🌮 Internationaler Tacos-Tag','05-17':'🌈 Internationaler Tag gegen Homophobie',
+    '06-05':'🌿 Weltumwelttag','06-21':'☀️ Sommersonnenwende',
+    '07-14':'🎭 Bastille-Tag (Vive la France!)','07-17':'🌮 Weltsmileytag',
+    '08-08':'🐱 Internationaler Katzentag','08-12':'👶 Internationaler Jugendtag',
+    '09-13':'🍫 Internationaler Schokoladentag','09-21':'☮️ Internationaler Friedenstag',
+    '10-01':'🎵 Internationaler Musiktag','10-10':'🧠 Weltmental-Gesundheitstag',
+    '10-31':'🎃 Halloween','11-11':'🥐 St. Martin / Laternenumzug',
+    '12-01':'🎗️ Welt-Aids-Tag','12-21':'❄️ Wintersonnenwende'
+  };
+
+  let lbl='', val='', sub='';
+
+  if(feiertage[key]){
+    lbl='🎉 Feiertag heute';
+    val=feiertage[key];
+    sub='Gesetzlicher Feiertag Berlin';
+  } else if(bdays[key]){
+    lbl='🎂 Prominenter Geburtstag';
+    val=bdays[key];
+    sub='Heute vor vielen Jahren…';
+  } else if(special[key]){
+    lbl='📅 Besonderer Tag';
+    val=special[key];
+    sub='Internationaler Aktionstag';
+  } else {
+    // Skurrile Alltagstage nach Wochentag
+    const skurril=['Montag-Modus: Kaffee first ☕','Dienstag: Fast schon Mittwoch 💪','Humpday! 🐪 Wochenberg überwunden','Donnerstag: Wochenende naht 🎉','Freitag! 🥳 TGIF!','Samstag: Ausschlafen erlaubt 😴','Sonntag: Familientag ❤️'];
+    lbl='💡 Wussten Sie?';
+    val=skurril[now.getDay()];
+    sub='Schönen '+['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'][now.getDay()]+'!';
+  }
+
+  document.getElementById('dayInfoLbl').textContent=lbl;
+  document.getElementById('dayInfoVal').textContent=val;
+  document.getElementById('dayInfoSub').textContent=sub;
+}
+loadDayInfo();
+
 // ── WETTER ──
 const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
 const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
@@ -796,7 +884,7 @@ function parseICS(txt){
     else if(['köln','augsburg','mainz','bochum','wolfsburg','leverkusen','dortmund','münchen','stuttgart','freiburg','heidenheim','hoffenheim','frankfurt','werder','pauli','fcunion','union berlin'].some(x=>s.includes(x)))col='#e8001c';
     else if(s.includes('konzert')||s.includes('olivia')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭'))col='#16a34a';
     else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
-    else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁'))col='#af52de';
+    else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁')||s.includes('geburts'))col='#af52de';
     else if(s.includes('schwerin')||s.includes('alma'))col='#f97316';
     evs.push({date,sum,col,hasTime});
   }
