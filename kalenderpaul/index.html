@@ -805,6 +805,71 @@ body {
   .li { flex-shrink: 0; justify-content: space-between; width: 100%; border-radius: 10px; font-size: 11px; padding: 8px 12px; }
 }
 
+.add-event-btn {
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  padding: 5px 12px; border-radius: 7px;
+  border: none; background: var(--blue);
+  color: #fff; cursor: pointer; transition: .15s;
+}
+.add-event-btn:hover { background: #0062c3; }
+
+/* Add Event Modal */
+.add-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 400;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.add-modal-overlay.on { display: flex; }
+.add-modal {
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: 480px;
+  animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
+}
+@media (min-width: 601px) {
+  .add-modal-overlay { align-items: center; }
+  .add-modal { border-radius: 20px; max-width: 440px; }
+}
+.add-modal-handle {
+  width: 36px; height: 4px; background: var(--border);
+  border-radius: 2px; margin: 12px auto 0;
+}
+.add-modal-body { padding: 20px 24px 32px; }
+.add-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.add-field { margin-bottom: 14px; }
+.add-field label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .3px; }
+.add-field input, .add-field select {
+  width: 100%; padding: 10px 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; font-family: inherit; font-size: 14px;
+  color: var(--text); outline: none; transition: border-color .15s;
+  box-sizing: border-box;
+}
+.add-field input:focus, .add-field select:focus { border-color: var(--blue); }
+.add-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.add-actions { display: flex; gap: 10px; margin-top: 20px; }
+.add-save-btn {
+  flex: 1; padding: 12px; border: none; border-radius: 12px;
+  background: var(--blue); color: #fff; font-family: inherit;
+  font-size: 15px; font-weight: 600; cursor: pointer; transition: .15s;
+}
+.add-save-btn:hover { background: #0062c3; }
+.add-save-btn:disabled { opacity: .5; cursor: default; }
+.add-cancel-btn {
+  padding: 12px 20px; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--surface2); color: var(--text2); font-family: inherit;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+}
+.add-status { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; min-height: 18px; }
+.auth-hint { font-size: 12px; color: var(--text3); text-align: center; padding: 8px 0; }
+
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
   25%  { transform: scale(1.1); box-shadow: 0 8px 24px rgba(0,113,227,0.25); }
@@ -906,6 +971,7 @@ body {
   .today-btn { border-color: var(--blue); color: var(--blue); }
 }
 </style>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -921,6 +987,7 @@ body {
       </div>
     </div>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
+    <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
   </div>
   <div class="search-row">
     <div class="header-search">
@@ -2058,6 +2125,134 @@ renderToday();
 renderAll();
 hideEmptyFilters();
 
+// ── GOOGLE OAUTH + EVENT CREATION ─────────────────────────────────────
+const GCAL_CLIENT_ID = '526394429114-idt5p5amg7kroetoaik93aqah10bumri.apps.googleusercontent.com';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.events';
+let gAccessToken = null;
+let tokenExpiry = 0;
+
+function isTokenValid() {
+  return gAccessToken && Date.now() < tokenExpiry;
+}
+
+function requestToken(callback) {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: GCAL_CLIENT_ID,
+    scope: GCAL_SCOPE,
+    callback: (resp) => {
+      if(resp.error) {
+        document.getElementById('addStatus').textContent = '❌ Anmeldung fehlgeschlagen';
+        return;
+      }
+      gAccessToken = resp.access_token;
+      tokenExpiry = Date.now() + (resp.expires_in - 60) * 1000;
+      if(callback) callback();
+    },
+  });
+  client.requestAccessToken();
+}
+
+function openAddEvent() {
+  const overlay = document.getElementById('addModalOverlay');
+  overlay.classList.add('on');
+  // Pre-fill today's date
+  const d = new Date();
+  const dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  document.getElementById('addDate').value = dateStr;
+  document.getElementById('addStatus').textContent = '';
+  document.getElementById('addTitle').focus();
+}
+
+function closeAddEvent() {
+  document.getElementById('addModalOverlay').classList.remove('on');
+}
+
+function handleOverlayClick(e) {
+  if(e.target === document.getElementById('addModalOverlay')) closeAddEvent();
+}
+
+async function saveEvent() {
+  const title = document.getElementById('addTitle').value.trim();
+  const date = document.getElementById('addDate').value;
+  const time = document.getElementById('addTime').value;
+  const endTime = document.getElementById('addEndTime').value;
+  const cat = document.getElementById('addCat').value;
+  const location = document.getElementById('addLocation').value.trim();
+
+  if(!title) { document.getElementById('addStatus').textContent = '⚠️ Bitte Titel eingeben'; return; }
+  if(!date) { document.getElementById('addStatus').textContent = '⚠️ Bitte Datum wählen'; return; }
+
+  const doSave = async () => {
+    const btn = document.getElementById('addSaveBtn');
+    btn.disabled = true;
+    document.getElementById('addStatus').textContent = '⏳ Wird gespeichert…';
+
+    // Build event object
+    let event;
+    if(time) {
+      const startDT = `${date}T${time}:00`;
+      const endDT = endTime ? `${date}T${endTime}:00` : `${date}T${time.split(':')[0].padStart(2,'0')}:${String(parseInt(time.split(':')[1])+60).padStart(2,'0').slice(-2)}:00`;
+      event = {
+        summary: title,
+        start: { dateTime: startDT, timeZone: 'Europe/Berlin' },
+        end: { dateTime: endTime ? `${date}T${endTime}:00` : new Date(new Date(startDT).getTime() + 3600000).toISOString().replace('Z',''), timeZone: 'Europe/Berlin' },
+      };
+    } else {
+      // All-day
+      event = {
+        summary: title,
+        start: { date },
+        end: { date: new Date(new Date(date).getTime() + 86400000).toISOString().substring(0,10) },
+      };
+    }
+
+    if(location) event.location = location;
+    // Add category as description tag
+    if(cat) event.description = `#${cat}`;
+
+    try {
+      const res = await fetch('https://www.googleapis.com/calendar/v3/calendars/paul.bendzko%40gmail.com/events', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + gAccessToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+      });
+
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      // Add to local SE object immediately
+      if(cat && date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
+        if(!SE[date]) SE[date] = [];
+        const timePrefix = time ? time + ' ' : '';
+        SE[date].push({t: timePrefix + title, c: cat, fromIcal: true});
+        renderAll();
+        renderToday();
+        hideEmptyFilters();
+      }
+
+      document.getElementById('addStatus').textContent = '✅ Termin gespeichert!';
+      document.getElementById('addTitle').value = '';
+      document.getElementById('addTime').value = '';
+      document.getElementById('addEndTime').value = '';
+      document.getElementById('addLocation').value = '';
+      setTimeout(closeAddEvent, 1200);
+    } catch(err) {
+      document.getElementById('addStatus').textContent = '❌ Fehler: ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  };
+
+  if(isTokenValid()) {
+    doSave();
+  } else {
+    requestToken(doSave);
+  }
+}
+
 // Load dynamic data and re-render
 loadAllDynamicData().then(() => {
   renderAll();
@@ -2112,5 +2307,64 @@ window.addEventListener('scroll', () => {
 // Update header title on scroll to show current visible month
 
 </script>
+<!-- Add Event Modal -->
+<div class="add-modal-overlay" id="addModalOverlay" onclick="handleOverlayClick(event)">
+  <div class="add-modal" onclick="event.stopPropagation()">
+    <div class="add-modal-handle"></div>
+    <div class="add-modal-body">
+      <div class="add-modal-title">Neuer Termin</div>
+      <div id="addAuthHint" class="auth-hint" style="display:none">
+        🔐 Bitte zuerst mit Google anmelden
+      </div>
+      <div id="addForm">
+        <div class="add-field">
+          <label>Titel</label>
+          <input type="text" id="addTitle" placeholder="z.B. Arzttermin" />
+        </div>
+        <div class="add-row">
+          <div class="add-field">
+            <label>Datum</label>
+            <input type="date" id="addDate" />
+          </div>
+          <div class="add-field">
+            <label>Uhrzeit (optional)</label>
+            <input type="time" id="addTime" />
+          </div>
+        </div>
+        <div class="add-row">
+          <div class="add-field">
+            <label>Bis (optional)</label>
+            <input type="time" id="addEndTime" />
+          </div>
+          <div class="add-field">
+            <label>Kategorie</label>
+            <select id="addCat">
+              <option value="">— keine —</option>
+              <option value="e-kids">👨‍👧‍👦 Kids bei Paul</option>
+              <option value="e-dani">Kids bei Dani</option>
+              <option value="e-schwerin">🏙️ Schwerin</option>
+              <option value="e-maja">💗 Maja</option>
+              <option value="e-trip">✈️ Ausflug/Urlaub</option>
+              <option value="e-konzert">🎵 Konzert/Event</option>
+              <option value="e-kidev">🏫 Schule/Kids-Event</option>
+              <option value="e-haus">🏠 Besichtigung</option>
+              <option value="e-bday">🎂 Geburtstag</option>
+            </select>
+          </div>
+        </div>
+        <div class="add-field">
+          <label>Ort (optional)</label>
+          <input type="text" id="addLocation" placeholder="z.B. Berlin Mitte" />
+        </div>
+        <div class="add-actions">
+          <button class="add-cancel-btn" onclick="closeAddEvent()">Abbrechen</button>
+          <button class="add-save-btn" id="addSaveBtn" onclick="saveEvent()">Speichern</button>
+        </div>
+        <div class="add-status" id="addStatus"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
