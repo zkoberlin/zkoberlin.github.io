@@ -114,7 +114,8 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 /* Glow borders on hover */
 .acard.fin:hover{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
 .acard.kal:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
-.mini:hover{box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
+.mini.weather:hover{border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
+.mini.date:hover{border-color:rgba(175,82,222,.35);box-shadow:0 0 0 2px rgba(175,82,222,.12),var(--sh-h);}
 .alma-big:hover{border-color:var(--orange-b)!important;box-shadow:0 0 0 2px var(--orange-l),var(--sh-h)!important;}
 .alma-small:hover{border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
 .er.er-hover:hover,.hcard:has(.er):hover .er{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
@@ -255,6 +256,36 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .bn-l{font-size:10px;font-weight:600;}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* Union Card */
+.union-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.35);box-shadow:0 0 0 2px rgba(232,0,28,.10),var(--sh-h);}
+.union-header{background:linear-gradient(135deg,#e8001c,#b5001a);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.union-club{display:flex;align-items:center;gap:10px;}
+.union-badge{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.union-clubname{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.union-league{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;}
+.union-rank{text-align:right;}
+.union-rank-num{font-size:28px;font-weight:300;color:#fff;letter-spacing:-1.5px;line-height:1;}
+.union-rank-lbl{font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;}
+.union-body{padding:14px 18px;display:flex;flex-direction:column;gap:12px;}
+.union-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
+.union-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
+.union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;}
+.union-stat-sub{font-size:10px;color:var(--t2);margin-top:2px;}
+.union-form{display:flex;gap:4px;align-items:center;}
+.union-form-dot{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
+.union-form-dot.w{background:var(--green-l);color:var(--green);}
+.union-form-dot.l{background:var(--red-l);color:var(--red);}
+.union-form-dot.d{background:var(--card2);color:var(--t2);}
+.union-next{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
+.union-next-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;}
+.union-next-game{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.union-next-game:last-child{margin-bottom:0;}
+.union-next-teams{font-size:12px;font-weight:600;}
+.union-next-date{font-size:10.5px;color:var(--t2);}
+.union-prob{font-size:10px;color:var(--t3);}
 </style>
 </head>
 <body>
@@ -280,11 +311,11 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Weather + Date -->
 <div class="top-row">
-  <a class="mini hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
+  <a class="mini weather hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
     <div class="mini-icon" id="wIcon">⏳</div>
     <div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div>
   </a>
-  <a class="mini hcard" href="https://calendar.google.com" target="_blank">
+  <a class="mini date hcard" href="https://calendar.google.com" target="_blank">
     <div class="mini-icon">📆</div>
     <div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div>
   </a>
@@ -373,6 +404,69 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   </a>
 
 </div>
+
+<!-- Union Berlin Card -->
+<div class="sec">⚽ 1. FC Union Berlin</div>
+<div class="union-card">
+  <div class="union-header">
+    <div class="union-club">
+      <div class="union-badge">⚽</div>
+      <div>
+        <div class="union-clubname">1. FC Union Berlin</div>
+        <div class="union-league">Bundesliga 2025/26</div>
+      </div>
+    </div>
+    <div class="union-rank">
+      <div class="union-rank-num">13.</div>
+      <div class="union-rank-lbl">Platz</div>
+    </div>
+  </div>
+  <div class="union-body">
+    <!-- Stats row -->
+    <div class="union-row">
+      <div class="union-stat">
+        <div class="union-stat-lbl">Punkte</div>
+        <div class="union-stat-val">33 Pkt.</div>
+        <div class="union-stat-sub">8S · 9U · 15N</div>
+      </div>
+      <div class="union-stat">
+        <div class="union-stat-lbl">Letzte 5 Spiele</div>
+        <div class="union-form">
+          <div class="union-form-dot d">U</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot d">U</div>
+        </div>
+      </div>
+    </div>
+    <!-- Last game -->
+    <div class="union-stat">
+      <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai</div>
+      <div class="union-stat-val">Union Berlin 2:2 1. FC Köln</div>
+      <div class="union-stat-sub">Heimspiel · Bundesliga</div>
+    </div>
+    <!-- Next games -->
+    <div class="union-next">
+      <div class="union-next-lbl">Nächste Spiele</div>
+      <div class="union-next-game">
+        <div>
+          <div class="union-next-teams">FSV Mainz vs Union Berlin</div>
+          <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
+        </div>
+        <div class="union-prob">Siegchance 22%</div>
+      </div>
+      <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+        <div>
+          <div class="union-next-teams">Union Berlin vs FC Augsburg</div>
+          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heim</div>
+        </div>
+        <div class="union-prob">Saisonfinale</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <nav class="bnav">
@@ -599,16 +693,20 @@ async function loadICAL(){
     const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
     const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)).sort((a,b)=>a.date-b.date);
 
-    // Always show: maja, bday, union — fill rest with others
+    // 1. Maja always first
+    // 2-5. Next 4 events (no maja, no union, no bday, no filtered)
+    // 6. Next bday if NOT this month
     const displayEvs=[];
     if(maja)displayEvs.push({...maja,_type:'maja'});
-    if(bday)displayEvs.push({...bday,_type:'bday'});
-    if(union2)displayEvs.push({...union2,_type:'union'});
-    // Fill with others up to 6 total
-    const reserved=new Set([maja?.sum,bday?.sum,union2?.sum].filter(Boolean));
-    const fillOthers=others2.filter(e=>!reserved.has(e.sum));
-    let needed=6-displayEvs.length;
-    fillOthers.slice(0,Math.max(needed,0)).forEach(e=>displayEvs.push({...e,_type:'other'}));
+    const reserved=new Set([maja?.sum].filter(Boolean));
+    const fillOthers=others2.filter(e=>!reserved.has(e.sum)&&e.col!=='#af52de');
+    fillOthers.slice(0,4).forEach(e=>displayEvs.push({...e,_type:'other'}));
+    // Bday: only if not this month
+    if(bday){
+      const bdayMonth=st(bday.date).getMonth();
+      const curMonth=new Date().getMonth();
+      if(bdayMonth!==curMonth)displayEvs.push({...bday,_type:'bday'});
+    }
 
     const kalList=document.getElementById('kalEvList');
     if(displayEvs.length===0){
