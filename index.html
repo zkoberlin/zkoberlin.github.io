@@ -313,7 +313,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="top-row">
   <a class="mini weather hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
     <div class="mini-icon" id="wIcon">⏳</div>
-    <div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div>
+    <div><div class="mini-lbl"><span id="wCity">Standort</span> · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div>
   </a>
   <a class="mini date hcard" href="https://calendar.google.com" target="_blank">
     <div class="mini-icon">📆</div>
@@ -413,7 +413,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="union-badge">⚽</div>
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league">Bundesliga 2025/26</div>
+        <div class="union-league">Bundesliga 2025/26 · Saisonende</div>
       </div>
     </div>
     <div class="union-rank">
@@ -422,48 +422,95 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     </div>
   </div>
   <div class="union-body">
-    <!-- Stats row -->
+
+    <!-- Top stats row -->
+    <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Punkte</div>
+        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;">33</div>
+        <div class="union-stat-sub">von 102 mögl.</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Bilanz</div>
+        <div class="union-stat-val" style="font-size:14px;">8S · 9U · 15N</div>
+        <div class="union-stat-sub">32 Spiele</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Tore</div>
+        <div class="union-stat-val" style="font-size:14px;">38 : 54</div>
+        <div class="union-stat-sub">-16 Differenz</div>
+      </div>
+    </div>
+
+    <!-- Form + Abstand -->
     <div class="union-row">
       <div class="union-stat">
-        <div class="union-stat-lbl">Punkte</div>
-        <div class="union-stat-val">33 Pkt.</div>
-        <div class="union-stat-sub">8S · 9U · 15N</div>
+        <div class="union-stat-lbl">Letzte 5 Spiele</div>
+        <div class="union-form" style="margin-top:6px;">
+          <div class="union-form-dot d">U</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot d">U</div>
+        </div>
+        <div class="union-stat-sub" style="margin-top:6px;">2 Pkt. aus 5 Spielen</div>
       </div>
       <div class="union-stat">
-        <div class="union-stat-lbl">Letzte 5 Spiele</div>
-        <div class="union-form">
-          <div class="union-form-dot d">U</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot d">U</div>
+        <div class="union-stat-lbl">Tabellenumfeld</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">12. Hamburger SV</span><span style="font-weight:700;">34 Pkt.</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;background:var(--union-l);padding:2px 5px;border-radius:4px;"><span style="color:var(--union);font-weight:600;">13. Union Berlin</span><span style="font-weight:700;color:var(--union);">33 Pkt.</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">14. 1. FC Köln</span><span style="font-weight:700;">32 Pkt.</span></div>
         </div>
       </div>
     </div>
-    <!-- Last game -->
+
+    <!-- Letztes Spiel -->
     <div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai</div>
-      <div class="union-stat-val">Union Berlin 2:2 1. FC Köln</div>
-      <div class="union-stat-sub">Heimspiel · Bundesliga</div>
+      <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai · Heimspiel</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+        <div style="font-size:13px;font-weight:700;">Union Berlin</div>
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);">2 : 2</div>
+        <div style="font-size:13px;font-weight:700;text-align:right;">1. FC Köln</div>
+      </div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:3px;">Unentschieden · Bundesliga</div>
     </div>
-    <!-- Next games -->
+
+    <!-- Nächste Spiele -->
     <div class="union-next">
-      <div class="union-next-lbl">Nächste Spiele</div>
+      <div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>
       <div class="union-next-game">
-        <div>
-          <div class="union-next-teams">FSV Mainz vs Union Berlin</div>
+        <div style="flex:1;">
+          <div class="union-next-teams">FSV Mainz <span style="color:var(--t3);font-weight:400;">vs</span> Union Berlin</div>
           <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
         </div>
-        <div class="union-prob">Siegchance 22%</div>
+        <div style="text-align:right;">
+          <div class="union-prob">Siegchance 22%</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Unentschieden 24%</div>
+        </div>
       </div>
       <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
-        <div>
-          <div class="union-next-teams">Union Berlin vs FC Augsburg</div>
-          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heim</div>
+        <div style="flex:1;">
+          <div class="union-next-teams">Union Berlin <span style="color:var(--t3);font-weight:400;">vs</span> FC Augsburg</div>
+          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
         </div>
-        <div class="union-prob">Saisonfinale</div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div>
+        </div>
       </div>
     </div>
+
+    <!-- Saisonziel -->
+    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
+      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">
+        Klassenerhalt gesichert 🔴 · Noch <strong style="color:var(--t);">2 Spiele</strong> verbleibend · 
+        Max. <strong style="color:var(--t);">39 Punkte</strong> möglich · 
+        Abstand zu Platz 12: <strong style="color:var(--t);">1 Punkt</strong>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -526,13 +573,35 @@ const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt
 document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
 
 // ── WETTER ──
+const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
+
+async function fetchWetter(lat,lon,city){
+  try{
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`);
+    const d=await r.json();
+    document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
+    document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
+    document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
+    document.getElementById('wCity').textContent=city;
+  }catch(e){document.getElementById('wTemp').textContent='--°';}
+}
+
 async function loadW(){
-  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');const d=await r.json();
-  const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
-  const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
-  document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
-  document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
-  document.getElementById('wDesc').textContent=dc[d.current.weathercode]||'Berlin';}catch(e){}
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      const {latitude:lat,longitude:lon}=pos.coords;
+      // Reverse geocode city name
+      try{
+        const gr=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const gd=await gr.json();
+        const city=gd.address?.city||gd.address?.town||gd.address?.village||'Aktuell';
+        fetchWetter(lat,lon,city);
+      }catch(e){fetchWetter(lat,lon,'Aktuell');}
+    }, ()=>fetchWetter(52.52,13.41,'Berlin'));
+  } else {
+    fetchWetter(52.52,13.41,'Berlin');
+  }
 }
 loadW();
 
