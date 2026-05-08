@@ -95,7 +95,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .q-text{font-size:11px;color:var(--t2);line-height:1.55;font-style:italic;}
 
 /* ── TOP ROW ── */
-.top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.top-row{display:grid;grid-template-columns:1fr;gap:10px;}
 .mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;text-decoration:none;color:inherit;}
 .mini:hover{transform:translateY(-2px);box-shadow:var(--sh-h);}
 .mini-icon{font-size:22px;flex-shrink:0;}
@@ -105,6 +105,23 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 
 /* ── SECTION ── */
 .sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
+
+/* Weather expanded */
+.weather-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
+.weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
+.weather-icon{font-size:32px;flex-shrink:0;}
+.weather-info{flex:1;}
+.weather-city{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
+.weather-temp{font-size:28px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
+.weather-desc{font-size:11px;color:var(--t2);margin-top:2px;}
+.weather-feels{font-size:10px;color:var(--t3);margin-top:1px;}
+.weather-forecast{border-top:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.weather-day{text-align:center;padding:6px 4px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);}
+.weather-day-name{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;}
+.weather-day-icon{font-size:18px;margin-bottom:3px;}
+.weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
+.weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
 
 /* ── HOVER CARD ── */
 .hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
@@ -311,13 +328,26 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Weather + Date -->
 <div class="top-row">
-  <a class="mini weather hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
-    <div class="mini-icon" id="wIcon">⏳</div>
-    <div><div class="mini-lbl"><span id="wCity">Standort</span> · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div>
-  </a>
-  <a class="mini date hcard" href="https://calendar.google.com" target="_blank">
-    <div class="mini-icon">📆</div>
-    <div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div>
+  <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank" style="grid-column:1/-1;">
+    <div class="weather-main">
+      <div class="weather-icon" id="wIcon">⏳</div>
+      <div class="weather-info">
+        <div class="weather-city"><span id="wCity">Standort</span> · Wetter</div>
+        <div class="weather-temp" id="wTemp">--°</div>
+        <div class="weather-desc" id="wDesc">Lädt…</div>
+        <div class="weather-feels" id="wFeels"></div>
+      </div>
+      <a class="mini date hcard" href="https://calendar.google.com" target="_blank" style="flex-shrink:0;margin-left:auto;background:var(--card2);border-radius:var(--r2);border:1px solid var(--border);padding:10px 12px;text-decoration:none;color:inherit;min-width:100px;text-align:center;">
+        <div class="mini-lbl" style="text-align:center;">Heute</div>
+        <div class="mini-val" id="todayStr" style="text-align:center;">--</div>
+        <div class="mini-sub" id="kwStr" style="text-align:center;">--</div>
+      </a>
+    </div>
+    <div class="weather-forecast" id="wForecast">
+      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+      <div class="weather-day"><div class="weather-day-name">Lädt</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+    </div>
   </a>
 </div>
 
@@ -578,12 +608,31 @@ const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebe
 
 async function fetchWetter(lat,lon,city){
   try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`);
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&forecast_days=4&timezone=auto`);
     const d=await r.json();
+    // Current
     document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
     document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
     document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
     document.getElementById('wCity').textContent=city;
+    document.getElementById('wFeels').textContent=`Gefühlt ${Math.round(d.current.apparent_temperature)}°C`;
+    // Forecast: next 3 days (skip today = index 0)
+    const days=d.daily;
+    const fEl=document.getElementById('wForecast');
+    const names=['So','Mo','Di','Mi','Do','Fr','Sa'];
+    fEl.innerHTML=[1,2,3].map(i=>{
+      const date=new Date(days.time[i]);
+      const name=names[date.getDay()];
+      const max=Math.round(days.temperature_2m_max[i]);
+      const min=Math.round(days.temperature_2m_min[i]);
+      const icon=ic[days.weathercode[i]]||'🌡️';
+      return `<div class="weather-day">
+        <div class="weather-day-name">${name}</div>
+        <div class="weather-day-icon">${icon}</div>
+        <div class="weather-day-temp">${max}°</div>
+        <div class="weather-day-range">${min}° – ${max}°</div>
+      </div>`;
+    }).join('');
   }catch(e){document.getElementById('wTemp').textContent='--°';}
 }
 
