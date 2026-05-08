@@ -109,7 +109,18 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 /* ── HOVER CARD ── */
 .hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
 .hcard:hover{transform:translateY(-2px);box-shadow:var(--sh-h)!important;}
+.er:hover,.alma-big:hover,.alma-small:hover{box-shadow:var(--sh-h)!important;}
+
+/* Glow borders on hover */
+.acard.fin:hover{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
+.acard.kal:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
+.mini:hover{box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
+.alma-big:hover{border-color:var(--orange-b)!important;box-shadow:0 0 0 2px var(--orange-l),var(--sh-h)!important;}
+.alma-small:hover{border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
+.er.er-hover:hover,.hcard:has(.er):hover .er{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
 .hcard:active{transform:scale(.98);}
+.er-link:hover #erCard{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
+.er-link{border-radius:var(--r);display:block;}
 
 /* ── EMIL & ROSA ── */
 .er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;width:100%;}
@@ -281,8 +292,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Emil & Rosa -->
 <div class="sec">👧 Emil & Rosa</div>
-<a class="hcard" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
-<div class="er">
+<a class="hcard er-link" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
+<div class="er" id="erCard">
   <div class="er-top">
     <div class="er-title">Emil & Rosa</div>
     <div class="er-badge paul" id="erBadge">Lädt…</div>
@@ -588,12 +599,16 @@ async function loadICAL(){
     const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
     const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)).sort((a,b)=>a.date-b.date);
 
+    // Always show: maja, bday, union — fill rest with others
     const displayEvs=[];
     if(maja)displayEvs.push({...maja,_type:'maja'});
     if(bday)displayEvs.push({...bday,_type:'bday'});
-    let needed=5-displayEvs.length-(union2?1:0);
-    others2.slice(0,Math.max(needed,0)).forEach(e=>displayEvs.push({...e,_type:'other'}));
     if(union2)displayEvs.push({...union2,_type:'union'});
+    // Fill with others up to 6 total
+    const reserved=new Set([maja?.sum,bday?.sum,union2?.sum].filter(Boolean));
+    const fillOthers=others2.filter(e=>!reserved.has(e.sum));
+    let needed=6-displayEvs.length;
+    fillOthers.slice(0,Math.max(needed,0)).forEach(e=>displayEvs.push({...e,_type:'other'}));
 
     const kalList=document.getElementById('kalEvList');
     if(displayEvs.length===0){
