@@ -1271,7 +1271,7 @@ body {
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v1.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v2.5</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2102,14 +2102,8 @@ function sortEvents(evs) {
 
 function parseICS(text) {
   const events = [];
-  // Unfold lines (CRLF followed by space/tab = continuation)
-  const unfolded = text.replace(/
-[ 	]/g, '').replace(/
-[ 	]/g, '');
-  const lines = unfolded.split(/
-|
-|
-/);
+  const unfolded = text.replace(/\r\n[ \t]/g, '').replace(/\n[ \t]/g, '');
+  const lines = unfolded.split(/\r\n|\r|\n/);
   let current = null;
   let uidCount = 0;
 
