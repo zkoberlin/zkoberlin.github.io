@@ -22,21 +22,7 @@
   --red: #ff3b30;
 }
 
-@media (prefers-color-scheme: dark) { /* fallback only */
-  :root {
-    --bg: #1c1c1e;
-    --surface: #2c2c2e;
-    --surface2: #3a3a3c;
-    --border: rgba(255,255,255,.12);
-    --text: #f5f5f7;
-    --text2: #98989d;
-    --text3: #636366;
-    --blue: #0a84ff;
-    --blue-l: #0a2a4a;
-    --red: #ff453a;
-  }
 
-  body { background: #1c1c1e; }
 
   /* Event colors dark */
   .e-kids     { background: #0a3d8f; color: #a8c8ff; font-weight: 700; }
@@ -526,7 +512,7 @@ body {
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
-  top: var(--header-h, 140px);
+  top: var(--header-h, 200px);
   z-index: 5;
   background: var(--surface);
   backdrop-filter: blur(16px);
@@ -635,9 +621,7 @@ body {
   margin-left: 3px;
   letter-spacing: 0;
 }
-@media (prefers-color-scheme: dark) { /* fallback only */
-  .chip-count { background: rgba(255,255,255,0.15); }
-}
+
 
 /* Event Detail Modal */
 .evt-modal-overlay {
@@ -742,9 +726,7 @@ body {
   padding: 1px 5px; border-radius: 4px;
   background: rgba(0,0,0,0.06);
 }
-@media (prefers-color-scheme: dark) { /* fallback only */
-  .src-badge { background: rgba(255,255,255,0.08); }
-}
+
 
 .load-status {
   display: flex;
@@ -1072,6 +1054,64 @@ body {
   /* Today button highlight on mobile */
   .today-btn { border-color: var(--blue); color: var(--blue); }
 }
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --bg: #1c1c1e; --surface: #2c2c2e; --surface2: #3a3a3c;
+  --border: rgba(255,255,255,.12); --text: #f5f5f7; --text2: #98989d;
+  --text3: #636366; --blue: #0a84ff; --blue-l: #0a2a4a; --red: #ff453a;
+}
+[data-theme="dark"] body { background: #1c1c1e; }
+[data-theme="dark"] .e-kids     { background: #0a3d8f; color: #a8c8ff; font-weight:700; }
+[data-theme="dark"] .e-dani     { background: #3a3a3c; color: #98989d; }
+[data-theme="dark"] .e-schwerin { background: #6b3a00; color: #ffd580; font-weight:700; }
+[data-theme="dark"] .e-maja     { background: #7b1050; color: #ffb0d0; font-weight:700; }
+[data-theme="dark"] .e-trip     { background: #0a4a30; color: #80e8c0; font-weight:700; }
+[data-theme="dark"] .e-hellomed { background: #8099E8; color: #fff; font-weight:600; }
+[data-theme="dark"] .e-kidev   { background: #7b0a0a; color: #ffa0a0; font-weight:600; }
+[data-theme="dark"] .e-feier   { background: #4a3800; color: #ffd580; font-weight:600; }
+[data-theme="dark"] .e-union   { background: #7b0a0a; color: #ffa0a0; font-weight:700; }
+[data-theme="dark"] .e-konzert { background: #0a4a20; color: #80e0a0; font-weight:700; }
+[data-theme="dark"] .e-haus    { background: #004a6b; color: #80d0f0; font-weight:600; }
+[data-theme="dark"] .e-bday    { background: #3a3a3c; color: #636366; }
+[data-theme="dark"] .header    { background: rgba(28,28,30,0.95); }
+[data-theme="dark"] .header-text h1 { color: #f5f5f7; }
+[data-theme="dark"] .header-text p  { color: #98989d; }
+[data-theme="dark"] .sticky-bar { background: rgba(44,44,46,0.97); border-bottom-color: rgba(255,255,255,.08); }
+[data-theme="dark"] .sticky-bar-month { color: #f5f5f7; }
+[data-theme="dark"] .sticky-bar-days span { color: #636366; }
+[data-theme="dark"] .sticky-bar-days span.we { color: #ff453a; }
+[data-theme="dark"] .mc   { background: #2c2c2e; }
+[data-theme="dark"] .day  { background: #3a3a3c; }
+[data-theme="dark"] .day.today { background: #0a2a4a; box-shadow: inset 0 0 0 2px #0a84ff; outline: 2px solid #0a84ff; }
+[data-theme="dark"] .day.empty { background: transparent; }
+[data-theme="dark"] .day.past  { opacity: .25; }
+[data-theme="dark"] .dn   { color: #f5f5f7; }
+[data-theme="dark"] .kw   { color: #636366; }
+[data-theme="dark"] .mt   { color: #f5f5f7; }
+[data-theme="dark"] .li   { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
+[data-theme="dark"] .tp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+[data-theme="dark"] .today-panel { border-top-color: rgba(255,255,255,.1); }
+[data-theme="dark"] .today-btn { border-color: #0a84ff; color: #0a84ff; }
+[data-theme="dark"] .filter-panel { background: #2c2c2e; }
+[data-theme="dark"] .filter-panel-handle { background: #636366; }
+[data-theme="dark"] .fp-title { color: #f5f5f7; }
+[data-theme="dark"] .fp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+[data-theme="dark"] .fp-close { background: #3a3a3c; color: #98989d; }
+[data-theme="dark"] .dp   { background: #2c2c2e; }
+[data-theme="dark"] .eli  { background: #3a3a3c; }
+[data-theme="dark"] .en   { color: #f5f5f7; }
+[data-theme="dark"] .add-modal { background: #2c2c2e; }
+[data-theme="dark"] .add-modal-title { color: #f5f5f7; }
+[data-theme="dark"] .add-field input, [data-theme="dark"] .add-field select { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #f5f5f7; }
+[data-theme="dark"] .add-cancel-btn { background: #3a3a3c; color: #98989d; border-color: rgba(255,255,255,.1); }
+[data-theme="dark"] .hub-btn { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
+[data-theme="dark"] .theme-btn { background: #3a3a3c; border-color: rgba(255,255,255,.1); }
+[data-theme="dark"] .search-row input { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #f5f5f7; }
+[data-theme="dark"] .day-overlay { background: rgba(0,0,0,.55); }
+[data-theme="dark"] .evt-modal { background: #2c2c2e; }
+[data-theme="dark"] .chip-count { background: rgba(255,255,255,.15); }
+
 </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1309,7 +1349,7 @@ function buildMonth(year, month) {
         e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
         e.style.cursor = 'pointer';
         // Show pencil for own Gmail events (editable)
-        if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
+        if(ev.fromIcal && !ev.fromHellomed) {
           e.style.paddingRight = '14px';
           e.style.position = 'relative';
           const pencil = document.createElement('span');
@@ -2433,6 +2473,14 @@ async function saveEvent() {
       }
 
       document.getElementById('addStatus').textContent = '✅ Termin gespeichert!';
+      // Store googleId on newly created event so it can be edited/deleted
+      if(cat && date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
+        const newEntry = SE[date]?.[SE[date].length - 1];
+        if(newEntry && data.id) {
+          newEntry.googleId = data.id;
+          newEntry.fromIcal = true;
+        }
+      }
       document.getElementById('addTitle').value = '';
       document.getElementById('addTime').value = '';
       document.getElementById('addEndTime').value = '';
@@ -2498,15 +2546,7 @@ function updateTodayPanel() {
   } else {
     tp.classList.remove('hidden');
   }
-  // Update sticky-bar top WITHOUT re-reading offsetHeight (causes jitter)
-  // Instead adjust top by known today-panel height
-  const tpHeight = shouldHide ? 0 : (tp.scrollHeight || 38);
-  const currentH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 160;
-  const baseH = parseFloat(document.documentElement.dataset.baseHeaderH || currentH);
-  if(!document.documentElement.dataset.baseHeaderH) {
-    document.documentElement.dataset.baseHeaderH = currentH;
-  }
-  document.documentElement.style.setProperty('--header-h', (baseH - (shouldHide ? tpHeight : 0)) + 'px');
+  // No dynamic header height changes - prevents jitter
 }
 
 window.addEventListener('scroll', () => {
