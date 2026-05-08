@@ -273,6 +273,16 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .bn-l{font-size:10px;font-weight:600;}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media(max-width:500px){.weather-grid{grid-template-columns:1fr!important;}}
+
+/* Loading skeleton */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{background:linear-gradient(90deg,var(--card2) 25%,var(--border) 50%,var(--card2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;height:12px;margin-bottom:6px;}
+.skeleton-sm{height:10px;width:70%;}
+.kal-loading{padding:11px;display:flex;flex-direction:column;gap:8px;}
+.kal-loading-item{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);}
+.kal-loading-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;}
+.kal-loading-lines{flex:1;display:flex;flex-direction:column;gap:5px;}
 
 /* Union Card */
 .union-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
@@ -328,7 +338,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Weather + Date -->
 <div class="top-row">
-  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:10px;">
+  <div style="display:grid;grid-template-columns:3fr 2fr;gap:10px;" class="weather-grid">
     <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
       <div class="weather-main">
         <div class="weather-icon" id="wIcon">⏳</div>
@@ -410,7 +420,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="a-top"><div class="a-icon b">📅</div><div class="a-status">Aktiv</div></div>
     <div class="a-name">Kalender</div>
     <div class="a-desc">Termine & Events</div>
-    <div id="kalEvList"></div>
+    <div id="kalEvList">
+  <div class="kal-loading">
+    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+  </div>
+</div>
     <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
   </a>
 
@@ -916,12 +932,12 @@ async function loadICAL(){
     // ── Kalender Kachel ──
     const isFiltered=s=>{
       const l=s.toLowerCase();
-      return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma');
+      return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma')||l.includes('geburts')||l.includes('birthday')||l.includes('bday');
     };
     const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
     const union2=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
     const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
-    const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)).sort((a,b)=>a.date-b.date);
+    const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)&&e.col!=='#af52de').sort((a,b)=>a.date-b.date);
 
     // 1. Maja always first
     // 2-5. Next 4 events (no maja, no union, no bday, no filtered)
