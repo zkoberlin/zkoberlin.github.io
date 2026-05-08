@@ -22,7 +22,7 @@
   --red: #ff3b30;
 }
 
-@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
+@media (prefers-color-scheme: dark) { /* fallback only */
   :root {
     --bg: #1c1c1e;
     --surface: #2c2c2e;
@@ -635,7 +635,7 @@ body {
   margin-left: 3px;
   letter-spacing: 0;
 }
-@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
+@media (prefers-color-scheme: dark) { /* fallback only */
   .chip-count { background: rgba(255,255,255,0.15); }
 }
 
@@ -742,7 +742,7 @@ body {
   padding: 1px 5px; border-radius: 4px;
   background: rgba(0,0,0,0.06);
 }
-@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
+@media (prefers-color-scheme: dark) { /* fallback only */
   .src-badge { background: rgba(255,255,255,0.08); }
 }
 
@@ -895,6 +895,52 @@ body {
 }
 .add-status { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; min-height: 18px; }
 .auth-hint { font-size: 12px; color: var(--text3); text-align: center; padding: 8px 0; }
+
+/* Manual dark theme override */
+[data-theme="dark"] {
+  --bg: #1c1c1e;
+  --surface: #2c2c2e;
+  --surface2: #3a3a3c;
+  --border: rgba(255,255,255,.12);
+  --text: #f5f5f7;
+  --text2: #98989d;
+  --text3: #636366;
+  --blue: #0a84ff;
+  --blue-l: #0a2a4a;
+  --red: #ff453a;
+}
+[data-theme="dark"] body { background: #1c1c1e; color: #f5f5f7; }
+[data-theme="dark"] .e-kids     { background: #0a3d8f; color: #a8c8ff; }
+[data-theme="dark"] .e-dani     { background: #3a3a3c; color: #98989d; }
+[data-theme="dark"] .e-schwerin { background: #6b3a00; color: #ffd580; }
+[data-theme="dark"] .e-maja     { background: #7b1050; color: #ffb0d0; }
+[data-theme="dark"] .e-trip     { background: #0a4a30; color: #80e8c0; }
+[data-theme="dark"] .e-hellomed { background: #8099E8; color: #ffffff; }
+[data-theme="dark"] .e-kidev    { background: #7b0a0a; color: #ffa0a0; }
+[data-theme="dark"] .e-feier    { background: #4a3800; color: #ffd580; }
+[data-theme="dark"] .e-union    { background: #7b0a0a; color: #ffa0a0; }
+[data-theme="dark"] .e-konzert  { background: #0a4a20; color: #80e0a0; }
+[data-theme="dark"] .e-haus     { background: #004a6b; color: #80d0f0; }
+[data-theme="dark"] .e-bday     { background: #3a3a3c; color: #636366; }
+[data-theme="dark"] .header     { background: rgba(28,28,30,0.95); }
+[data-theme="dark"] .sticky-bar { background: rgba(44,44,46,0.97); }
+[data-theme="dark"] .mc         { background: #2c2c2e; }
+[data-theme="dark"] .day        { background: #3a3a3c; }
+[data-theme="dark"] .day.today  { background: #0a2a4a; box-shadow: inset 0 0 0 2px #0a84ff; }
+[data-theme="dark"] .day.empty  { background: transparent; }
+[data-theme="dark"] .li         { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
+[data-theme="dark"] .tp-item    { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+[data-theme="dark"] .filter-panel { background: #2c2c2e; }
+[data-theme="dark"] .filter-panel-handle { background: #636366; }
+[data-theme="dark"] .fp-item    { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+[data-theme="dark"] .dp         { background: #2c2c2e; }
+[data-theme="dark"] .eli        { background: #3a3a3c; }
+[data-theme="dark"] .add-modal  { background: #2c2c2e; }
+[data-theme="dark"] .add-field input, [data-theme="dark"] .add-field select { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #f5f5f7; }
+[data-theme="dark"] .today-btn  { border-color: #0a84ff; color: #0a84ff; }
+[data-theme="dark"] .dn         { color: #f5f5f7; }
+[data-theme="dark"] .mt         { color: #f5f5f7; }
+[data-theme="dark"] .kw         { color: #636366; }
 
 :root[data-theme="light"] {
   --bg: #f5f5f7 !important;
@@ -1262,11 +1308,14 @@ function buildMonth(year, month) {
         e.title = ev.t;
         e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
         e.style.cursor = 'pointer';
-        // Show tiny edit indicator for own Gmail iCal events
+        // Show pencil for own Gmail events (editable)
         if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
-          const dot = document.createElement('span');
-          dot.style.cssText = 'display:inline-block;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.6);margin-left:3px;vertical-align:middle;flex-shrink:0';
-          e.appendChild(dot);
+          e.style.paddingRight = '14px';
+          e.style.position = 'relative';
+          const pencil = document.createElement('span');
+          pencil.textContent = '✏';
+          pencil.style.cssText = 'position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:7px;opacity:0.7;line-height:1';
+          e.appendChild(pencil);
         }
         cell.appendChild(e);
       });
@@ -1879,7 +1928,7 @@ function parseICS(text) {
       if(key === 'SUMMARY')      current.title = val;
       if(key === 'DESCRIPTION')  current.description = val;
       if(key === 'LOCATION')     current.location = val;
-      if(key === 'UID')          current.uid = val.split('@')[0]; // Google event ID
+      if(key === 'UID')          current.uid = val.trim();
       if(key === 'DTSTART') {
         current.startRaw = val;
         current.start = parseICSDate(val);
@@ -1993,7 +2042,12 @@ function injectICalEvents(events, url='') {
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
-        if(ev.uid) entry.googleId = ev.uid.replace('@google.com','');
+        if(ev.uid) {
+          // Google Calendar UID format: eventId@google.com or eventId_timestamp@google.com
+          const uid = ev.uid.trim();
+          // Extract the base event ID (before @)
+          entry.googleId = uid.includes('@') ? uid.split('@')[0] : uid;
+        }
         if(url.includes('hellomed')) entry.fromHellomed = true;
         SE[ev.start].push(entry);
       }
@@ -2438,15 +2492,21 @@ function updateTodayPanel() {
   const scrolled = window.scrollY > 40;
   const shouldHide = scrolled || !todayHasEvents;
   const isHidden = tp.classList.contains('hidden');
-  if(shouldHide === isHidden) return; // no change needed
+  if(shouldHide === isHidden) return;
   if(shouldHide) {
     tp.classList.add('hidden');
   } else {
     tp.classList.remove('hidden');
   }
-  // Immediately recalculate header height after class change
-  // Use double rAF to ensure DOM has updated
-  requestAnimationFrame(() => requestAnimationFrame(updateHeaderVar));
+  // Update sticky-bar top WITHOUT re-reading offsetHeight (causes jitter)
+  // Instead adjust top by known today-panel height
+  const tpHeight = shouldHide ? 0 : (tp.scrollHeight || 38);
+  const currentH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 160;
+  const baseH = parseFloat(document.documentElement.dataset.baseHeaderH || currentH);
+  if(!document.documentElement.dataset.baseHeaderH) {
+    document.documentElement.dataset.baseHeaderH = currentH;
+  }
+  document.documentElement.style.setProperty('--header-h', (baseH - (shouldHide ? tpHeight : 0)) + 'px');
 }
 
 window.addEventListener('scroll', () => {
