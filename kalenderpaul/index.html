@@ -102,7 +102,7 @@
   .kw { color: #636366; }
 }
 body {
-  font-family: -apple-system, 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -129,9 +129,19 @@ body {
 .header-top {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 16px;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 .header-title {
   display: flex;
@@ -456,26 +466,30 @@ body {
 .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Scroll to today btn */
-.hub-btn {
+.hub-btn, .theme-btn, .today-btn, .add-event-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 8px;
+  height: 32px;
+  border-radius: 10px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: .15s; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.hub-btn {
+  width: 32px;
   border: 1px solid var(--border); background: var(--surface2);
-  color: var(--text2); text-decoration: none; font-size: 15px;
-  transition: .15s; flex-shrink: 0;
+  color: var(--text2); text-decoration: none; font-size: 14px;
 }
 .hub-btn:hover { border-color: var(--blue); color: var(--blue); }
 .theme-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 8px;
+  width: 32px;
   border: 1px solid var(--border); background: var(--surface2);
-  cursor: pointer; font-size: 14px; transition: .15s; flex-shrink: 0;
+  font-size: 14px;
 }
 .theme-btn:hover { border-color: var(--blue); }
 .today-btn {
-  font-family: inherit; font-size: 11px; font-weight: 600;
-  padding: 5px 12px; border-radius: 20px;
+  padding: 0 14px;
   border: 1.5px solid var(--blue); background: transparent;
-  color: var(--blue); cursor: pointer; transition: .15s;
+  color: var(--blue);
 }
 .today-btn:hover { background: var(--blue); color: #fff; }
 .today-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-l); }
@@ -512,7 +526,7 @@ body {
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
-  top: var(--header-h, 200px);
+  top: var(--header-h-min, 140px);
   z-index: 5;
   background: var(--surface);
   backdrop-filter: blur(16px);
@@ -733,7 +747,7 @@ body {
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
-  flex: 1;
+  padding-bottom: 6px;
 }
 .load-item {
   display: inline-flex;
@@ -804,10 +818,9 @@ body {
 }
 
 .add-event-btn {
-  font-family: inherit; font-size: 11px; font-weight: 600;
-  padding: 5px 12px; border-radius: 20px;
+  padding: 0 14px;
   border: none; background: var(--blue);
-  color: #fff; cursor: pointer; transition: .15s;
+  color: #fff;
 }
 .add-event-btn:hover { background: #0062c3; }
 
@@ -1112,6 +1125,141 @@ body {
 [data-theme="dark"] .evt-modal { background: #2c2c2e; }
 [data-theme="dark"] .chip-count { background: rgba(255,255,255,.15); }
 
+
+.version-badge {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text3);
+  letter-spacing: .2px;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+/* Apple design refinements */
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Tighter, more Apple-like spacing */
+.header-text h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  line-height: 1.2;
+}
+.header-text p {
+  font-size: 11px;
+  color: var(--text2);
+  letter-spacing: -.1px;
+}
+
+/* Apple-style inputs */
+.add-field input, .add-field select {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 11px 13px;
+}
+
+/* Apple-style buttons */
+.add-save-btn {
+  border-radius: 14px;
+  font-size: 17px;
+  letter-spacing: -.2px;
+}
+.add-cancel-btn {
+  border-radius: 14px;
+  font-size: 17px;
+}
+
+/* Cleaner event tags */
+.evt {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: -.1px;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+
+/* Apple-like detail panel */
+.dp {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+.dp h3 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+}
+.eli .en {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: -.2px;
+}
+.et {
+  font-size: 13px;
+  letter-spacing: -.1px;
+}
+
+/* Smoother shadows */
+.mc {
+  box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 0 1px rgba(0,0,0,.04);
+}
+
+/* Apple modal style */
+.evt-modal {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+}
+.evt-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+}
+.evt-modal-row {
+  font-size: 15px;
+  letter-spacing: -.2px;
+}
+
+/* Filter chips - Apple style */
+.li {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: -.1px;
+}
+
+/* Search field - Apple style */
+#searchInput {
+  font-size: 13px;
+  letter-spacing: -.1px;
+  border-radius: 10px;
+}
+
+/* Today strip */
+.tp-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .6px;
+}
+
+/* Day numbers */
+.dn {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -.2px;
+}
+
+/* Month title */
+.sticky-bar-month {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+}
+
+/* Weekday labels */
+.sticky-bar-days span, .wh span {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+}
 </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1120,33 +1268,27 @@ body {
 <div class="header">
   <div class="header-inner">
   <div class="header-top">
-    <div class="header-title">
+    <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul</h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v1.0</span></h1>
         <p id="headerDate"></p>
-        <span id="ical-status" style="font-size:10px;color:var(--text3);margin-left:8px;"></span>
       </div>
     </div>
-    <a class="hub-btn" href="https://zkoberlin.github.io" title="Zurück zum Hub">⌂</a>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">☀️</button>
-    <button class="today-btn" onclick="scrollToToday()">Heute</button>
-    <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
+    <div class="header-right">
+      <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
+      <button class="today-btn" onclick="scrollToToday()">Heute</button>
+      <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
+    </div>
   </div>
-  <div class="search-row">
-    <div class="header-search">
-      <input type="text" id="searchInput" placeholder="🔍  Termin suchen…" oninput="searchCalendar(this.value)" />
-      <span class="search-count" id="searchCount"></span>
-      <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
-    </div>
-    <div class="load-status" id="loadStatus">
-      <div class="load-item" id="ls-ical1"><span class="load-dot"></span> Gmail iCal</div>
-      <div class="load-item" id="ls-ical2"><span class="load-dot"></span> Hellomed iCal</div>
-      <div class="load-item" id="ls-feier"><span class="load-dot"></span> Feiertage</div>
-      <div class="load-item" id="ls-ferien"><span class="load-dot"></span> Schulferien</div>
-      <div class="load-item" id="ls-union"><span class="load-dot"></span> Union Berlin</div>
-      <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
-    </div>
+  <div class="load-status" id="loadStatus">
+    <div class="load-item" id="ls-ical1"><span class="load-dot"></span> Gmail iCal</div>
+    <div class="load-item" id="ls-ical2"><span class="load-dot"></span> Hellomed iCal</div>
+    <div class="load-item" id="ls-feier"><span class="load-dot"></span> Feiertage</div>
+    <div class="load-item" id="ls-ferien"><span class="load-dot"></span> Schulferien</div>
+    <div class="load-item" id="ls-union"><span class="load-dot"></span> Union Berlin</div>
+    <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
   </div>
   <div class="filter-toggle-row">
     <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterDropdown()">
@@ -1591,10 +1733,13 @@ function openEvtModal(ev, dateKey) {
   const content = document.getElementById('evtModalContent');
   currentEvtId = ev.googleId || null;
   currentEvtData = ev;
-  // Show edit/delete only for own Gmail events
+  console.log('Event clicked:', ev.t, '| googleId:', ev.googleId, '| fromIcal:', ev.fromIcal, '| fromHellomed:', ev.fromHellomed);
+  // Show edit/delete only for own Gmail events that have a googleId
   const actions = document.getElementById('evtModalActions');
   if(actions) {
-    actions.style.display = (ev.fromIcal && !ev.fromHellomed) ? 'flex' : 'none';
+    const canEdit = ev.fromIcal && !ev.fromHellomed && ev.googleId;
+    actions.style.display = canEdit ? 'flex' : 'none';
+    console.log('canEdit:', canEdit, '| googleId:', ev.googleId, '| fromIcal:', ev.fromIcal);
   }
   const color = catColorMap[ev.c] || '#9ca3af';
   const catName = catNameMap[ev.c] || '';
@@ -1631,7 +1776,10 @@ function closeEvtModal() {
 }
 
 async function deleteCurrentEvent() {
-  if(!currentEvtId) { alert('Keine Event-ID gefunden'); return; }
+  if(!currentEvtId) {
+    alert('Diese Funktion ist nur für Termine aus deinem Google Kalender verfügbar, die über iCal geladen wurden. Öffne den Termin direkt in Google Calendar um ihn zu löschen.');
+    return;
+  }
   if(!confirm('Termin wirklich löschen?')) return;
   
   const doDelete = async () => {
@@ -1662,7 +1810,11 @@ async function deleteCurrentEvent() {
 }
 
 function editCurrentEvent() {
-  if(!currentEvtId) { alert('Keine Event-ID gefunden'); return; }
+  if(!currentEvtId) {
+    // Fall back to opening Google Calendar
+    window.open('https://calendar.google.com', '_blank');
+    return;
+  }
   // Try to open in Google Calendar
   window.open(`https://calendar.google.com/calendar/r/eventedit?eid=${btoa(currentEvtId + ' paul.bendzko@gmail.com')}`, '_blank');
 }
@@ -1950,8 +2102,16 @@ function sortEvents(evs) {
 
 function parseICS(text) {
   const events = [];
-  const lines = text.replace(/\r\n /g, '').replace(/\r\n\t/g, '').split(/\r\n|\n/);
+  // Unfold lines (CRLF followed by space/tab = continuation)
+  const unfolded = text.replace(/
+[ 	]/g, '').replace(/
+[ 	]/g, '');
+  const lines = unfolded.split(/
+|
+|
+/);
   let current = null;
+  let uidCount = 0;
 
   for(const line of lines) {
     if(line === 'BEGIN:VEVENT') {
@@ -1968,7 +2128,7 @@ function parseICS(text) {
       if(key === 'SUMMARY')      current.title = val;
       if(key === 'DESCRIPTION')  current.description = val;
       if(key === 'LOCATION')     current.location = val;
-      if(key === 'UID')          current.uid = val.trim();
+      if(key === 'UID') { current.uid = val.trim(); uidCount++; }
       if(key === 'DTSTART') {
         current.startRaw = val;
         current.start = parseICSDate(val);
@@ -1993,6 +2153,8 @@ function parseICS(text) {
       }
     }
   }
+  console.log('parseICS: found', events.length, 'events,', uidCount, 'with UIDs');
+  if(uidCount === 0) console.warn('NO UIDs found! First 3 lines:', lines.slice(0,3));
   return events;
 }
 
@@ -2083,10 +2245,11 @@ function injectICalEvents(events, url='') {
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
         if(ev.uid) {
-          // Google Calendar UID format: eventId@google.com or eventId_timestamp@google.com
           const uid = ev.uid.trim();
-          // Extract the base event ID (before @)
+          // Google Calendar API event IDs are base64url encoded
+          // UID format: <id>@google.com → extract <id>
           entry.googleId = uid.includes('@') ? uid.split('@')[0] : uid;
+          // UID logged above
         }
         if(url.includes('hellomed')) entry.fromHellomed = true;
         SE[ev.start].push(entry);
@@ -2462,25 +2625,23 @@ async function saveEvent() {
       if(!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
 
-      // Add to local SE object immediately
-      if(cat && date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
+      // Add to local SE with googleId immediately
+      if(date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
         if(!SE[date]) SE[date] = [];
         const timePrefix = time ? time + ' ' : '';
-        SE[date].push({t: timePrefix + title, c: cat, fromIcal: true});
+        const newEntry = {
+          t: timePrefix + title,
+          c: cat || 'e-bday',
+          fromIcal: true,
+          googleId: data.id  // store immediately from API response
+        };
+        if(location) newEntry.location = location;
+        SE[date].push(newEntry);
         renderAll();
         renderToday();
         hideEmptyFilters();
       }
-
       document.getElementById('addStatus').textContent = '✅ Termin gespeichert!';
-      // Store googleId on newly created event so it can be edited/deleted
-      if(cat && date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
-        const newEntry = SE[date]?.[SE[date].length - 1];
-        if(newEntry && data.id) {
-          newEntry.googleId = data.id;
-          newEntry.fromIcal = true;
-        }
-      }
       document.getElementById('addTitle').value = '';
       document.getElementById('addTime').value = '';
       document.getElementById('addEndTime').value = '';
@@ -2546,7 +2707,9 @@ function updateTodayPanel() {
   } else {
     tp.classList.remove('hidden');
   }
-  // No dynamic header height changes - prevents jitter
+  // Update --header-h for filter panel positioning only
+  const h = document.querySelector('.header');
+  if(h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
 }
 
 window.addEventListener('scroll', () => {
