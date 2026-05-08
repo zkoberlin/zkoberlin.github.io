@@ -580,7 +580,7 @@ async function loadICAL(){
     // Build display list: maja first, then others to fill, union last — target ~5 rows
     const displayEvs = [];
     if(maja) displayEvs.push({...maja, _type:'maja'});
-    let needed = 4 - displayEvs.length - (union2 ? 1 : 0);
+    let needed = 5 - displayEvs.length - (union2 ? 1 : 0);
     others2.slice(0, Math.max(needed, 0)).forEach(e => displayEvs.push({...e, _type:'other'}));
     if(union2) displayEvs.push({...union2, _type:'union'});
 
