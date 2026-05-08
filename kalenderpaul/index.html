@@ -22,7 +22,7 @@
   --red: #ff3b30;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
   :root {
     --bg: #1c1c1e;
     --surface: #2c2c2e;
@@ -478,6 +478,13 @@ body {
   transition: .15s; flex-shrink: 0;
 }
 .hub-btn:hover { border-color: var(--blue); color: var(--blue); }
+.theme-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface2);
+  cursor: pointer; font-size: 14px; transition: .15s; flex-shrink: 0;
+}
+.theme-btn:hover { border-color: var(--blue); }
 .today-btn {
   font-family: inherit; font-size: 11px; font-weight: 600;
   padding: 5px 12px; border-radius: 20px;
@@ -628,7 +635,7 @@ body {
   margin-left: 3px;
   letter-spacing: 0;
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
   .chip-count { background: rgba(255,255,255,0.15); }
 }
 
@@ -735,7 +742,7 @@ body {
   padding: 1px 5px; border-radius: 4px;
   background: rgba(0,0,0,0.06);
 }
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark), :root[data-theme="dark"] {
   .src-badge { background: rgba(255,255,255,0.08); }
 }
 
@@ -827,26 +834,34 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.5);
   z-index: 400;
   align-items: flex-end;
   justify-content: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .add-modal-overlay.on { display: flex; }
 .add-modal {
   background: var(--surface);
-  border-radius: 20px 20px 0 0;
+  border-radius: 24px 24px 0 0;
   padding: 0;
   width: 100%;
   max-width: 480px;
-  max-height: 85vh;
+  max-height: 75vh;
   overflow-y: auto;
-  animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
+  -webkit-overflow-scrolling: touch;
+  animation: slideUp .3s cubic-bezier(0.32,0.72,0,1);
+  padding-bottom: env(safe-area-inset-bottom, 16px);
 }
 @media (min-width: 601px) {
   .add-modal-overlay { align-items: center; }
-  .add-modal { border-radius: 20px; max-width: 440px; max-height: 90vh; }
+  .add-modal {
+    border-radius: 20px;
+    max-width: 440px;
+    max-height: 90vh;
+    padding-bottom: 0;
+  }
 }
 .add-modal-handle {
   width: 36px; height: 4px; background: var(--border);
@@ -880,6 +895,36 @@ body {
 }
 .add-status { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; min-height: 18px; }
 .auth-hint { font-size: 12px; color: var(--text3); text-align: center; padding: 8px 0; }
+
+:root[data-theme="light"] {
+  --bg: #f5f5f7 !important;
+  --surface: #ffffff !important;
+  --surface2: #f5f5f7 !important;
+  --border: rgba(0,0,0,.08) !important;
+  --text: #1d1d1f !important;
+  --text2: #6e6e73 !important;
+  --text3: #aeaeb2 !important;
+  --blue: #0071e3 !important;
+  --blue-l: #e8f1fb !important;
+  --red: #ff3b30 !important;
+}
+:root[data-theme="light"] .e-kids     { background: #1a56db; color: #ffffff; }
+:root[data-theme="light"] .e-dani     { background: #d1d5db; color: #374151; }
+:root[data-theme="light"] .e-schwerin { background: #f97316; color: #fff7ed; }
+:root[data-theme="light"] .e-maja     { background: #db2777; color: #fff0f6; }
+:root[data-theme="light"] .e-trip     { background: #059669; color: #ecfdf5; }
+:root[data-theme="light"] .e-hellomed { background: #8099E8; color: #ffffff; }
+:root[data-theme="light"] .e-kidev    { background: #dc2626; color: #fff5f5; }
+:root[data-theme="light"] .e-feier    { background: #fef9c3; color: #713f12; }
+:root[data-theme="light"] .e-union    { background: #b91c1c; color: #fee2e2; }
+:root[data-theme="light"] .e-konzert  { background: #16a34a; color: #f0fdf4; }
+:root[data-theme="light"] .e-haus     { background: #00a0e3; color: #ffffff; }
+:root[data-theme="light"] .e-bday     { background: #f3f4f6; color: #6b7280; }
+:root[data-theme="light"] .header     { background: rgba(255,255,255,0.94); }
+:root[data-theme="light"] .sticky-bar { background: #ffffff; }
+:root[data-theme="light"] .mc         { background: #ffffff; }
+:root[data-theme="light"] .day        { background: #f5f5f7; }
+:root[data-theme="light"] .filter-panel { background: rgba(255,255,255,0.97); }
 
 @keyframes wobble {
   0%   { transform: scale(1); box-shadow: none; }
@@ -998,6 +1043,7 @@ body {
       </div>
     </div>
     <a class="hub-btn" href="https://zkoberlin.github.io" title="Zurück zum Hub">⌂</a>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Hell/Dunkel">☀️</button>
     <button class="today-btn" onclick="scrollToToday()">Heute</button>
     <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
   </div>
@@ -1310,6 +1356,13 @@ function openDp(key) {
     el.innerHTML = `<div class="eli-dot" style="background:${color}"></div><div class="evt-info"><div class="en">${cleanTitle}${srcBadge}</div>${timeHtml}</div>`;
     el.style.cursor = 'pointer';
     el.onclick = () => openEvtModal(ev, key);
+    // Show edit pencil for own Gmail events
+    if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
+      const pencil = document.createElement('span');
+      pencil.textContent = '✏️';
+      pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
+      el.appendChild(pencil);
+    }
     ec.appendChild(el);
   });
 
@@ -1489,25 +1542,27 @@ function closeEvtModal() {
 }
 
 async function deleteCurrentEvent() {
-  if(!currentEvtId) return;
+  if(!currentEvtId) { alert('Keine Event-ID gefunden'); return; }
   if(!confirm('Termin wirklich löschen?')) return;
+  
   const doDelete = async () => {
     try {
-      const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/paul.bendzko%40gmail.com/events/${currentEvtId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': 'Bearer ' + gAccessToken }
-      });
+      const res = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/paul.bendzko%40gmail.com/events/${currentEvtId}`,
+        { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + gAccessToken } }
+      );
       if(res.status === 204 || res.ok) {
-        // Remove from SE
-        Object.keys(SE).forEach(dk => {
-          SE[dk] = SE[dk].filter(e => e.googleId !== currentEvtId);
+        const idToRemove = currentEvtId;
+        Object.keys(SE).forEach(d => {
+          SE[d] = (SE[d] || []).filter(e => e.googleId !== idToRemove);
         });
         closeEvtModal();
         renderAll();
         renderToday();
         alert('✅ Termin gelöscht!');
       } else {
-        alert('❌ Fehler beim Löschen');
+        const errData = await res.json().catch(() => ({}));
+        alert('❌ ' + (errData.error?.message || 'Fehler ' + res.status));
       }
     } catch(err) {
       alert('❌ ' + err.message);
@@ -1518,10 +1573,9 @@ async function deleteCurrentEvent() {
 }
 
 function editCurrentEvent() {
-  if(!currentEvtId) return;
-  // Open Google Calendar directly for editing
-  const gcalUrl = `https://calendar.google.com/calendar/r/eventedit/${currentEvtId}`;
-  window.open(gcalUrl, '_blank');
+  if(!currentEvtId) { alert('Keine Event-ID gefunden'); return; }
+  // Try to open in Google Calendar
+  window.open(`https://calendar.google.com/calendar/r/eventedit?eid=${btoa(currentEvtId + ' paul.bendzko@gmail.com')}`, '_blank');
 }
 
 function collapseDay() {
@@ -2195,6 +2249,23 @@ async function loadAllDynamicData() {
 renderToday();
 renderAll();
 hideEmptyFilters();
+
+// ── DARK/LIGHT THEME TOGGLE ──────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+}
+// Init theme from system or saved preference
+(function() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '🌙' : '☀️';
+})();
 
 // ── GOOGLE OAUTH + EVENT CREATION ─────────────────────────────────────
 const GCAL_CLIENT_ID = '272507955688-7s4g9anuhiimmooisg0iqlk940r2a0jt.apps.googleusercontent.com';
