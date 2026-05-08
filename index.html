@@ -666,7 +666,7 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const PROXY='https://script.google.com/macros/s/AKfycbxKCvaHOfa6frQB95peFpRVhiRINwMm5yOqcefx1y3FebXl3DATnYsPV0xfOQ-14xZg/exec';
+    const PROXY='https://script.google.com/macros/s/AKfycbznvFGm95G3PiGivqnMakGwpeWLiw3_auRDj3UUoQjjuxDplG-VnTVKMU2jRE3sGdk9/exec';
     const txt=await new Promise((resolve,reject)=>{
       const cb='ical_cb_'+Date.now();
       const script=document.createElement('script');
