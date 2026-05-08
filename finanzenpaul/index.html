@@ -16,6 +16,21 @@
   --tog:#34C759;
   --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
+/* ── Manual theme override (takes priority) ── */
+html.theme-light :root, html.theme-light{
+  --bg:#F2F2F7 !important;--card:#FFFFFF !important;--card2:#F2F2F7 !important;
+  --sep:rgba(0,0,0,0.08) !important;--sep2:rgba(0,0,0,0.06) !important;
+  --t1:#000 !important;--t2:#3C3C43 !important;--t3:#8E8E93 !important;
+  --acc:#007AFF !important;--grn:#34C759 !important;--red:#FF3B30 !important;--amb:#FF9500 !important;
+  --tog:#34C759 !important;
+}
+html.theme-dark :root, html.theme-dark{
+  --bg:#000 !important;--card:#1C1C1E !important;--card2:#2C2C2E !important;
+  --sep:rgba(255,255,255,0.15) !important;--sep2:rgba(255,255,255,0.08) !important;
+  --t1:#FFF !important;--t2:rgba(255,255,255,0.75) !important;--t3:rgba(255,255,255,0.4) !important;
+  --acc:#0A84FF !important;--grn:#30D158 !important;--red:#FF453A !important;--amb:#FF9F0A !important;
+  --tog:#30D158 !important;
+}
 @media(prefers-color-scheme:dark){
   :root{
     --bg:#000;--card:#1C1C1E;--card2:#2C2C2E;
@@ -391,6 +406,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
     <span class="d-topbar-title">Finanzplanung</span>
     <span class="d-topbar-sub">Paul</span>
+    <span style="font-size:11px;color:var(--t3);background:var(--card2);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">v2.4</span>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -401,6 +417,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <span id="d-sync-lbl" style="font-size:11px;color:var(--t3);">API-Key einrichten</span>
     </div>
     <button type="button" class="d-btn" onclick="OM()">＋ Hinzufügen</button>
+    <button type="button" id="d-theme-btn" onclick="toggleTheme()" style="padding:5px 12px;border-radius:8px;border:none;background:var(--sep2);color:var(--t2);font-size:16px;cursor:pointer;transition:background 0.12s;" title="Hell/Dunkel umschalten">🌙</button>
     <button type="button" class="d-btn exp" onclick="EX()">↓ Export</button>
     <button type="button" class="d-btn imp" onclick="document.getElementById('fi').click()">↑ Import</button>
     <input type="file" id="fi" accept=".json" style="display:none" onchange="IM(event)">
@@ -720,6 +737,8 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="m-topbar-title">Finanzen · Paul</div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
+        <span style="font-size:10px;color:var(--t3);background:var(--card2);padding:2px 7px;border-radius:99px;">v2.4</span>
+        <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
         <button type="button" class="m-icon-btn" onclick="openSM()" title="Cloud-Sync" style="font-size:18px;"><span id="m-sync-ico">⚙️</span></button>
         <span id="m-sync-lbl" style="font-size:10px;color:var(--t3);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
         <button type="button" class="m-add-btn" onclick="OM()">＋</button>
@@ -1635,6 +1654,31 @@ function DC2(k){
 }
 
 // ESC
+// ── THEME TOGGLE ──
+(function initTheme() {
+  const saved = localStorage.getItem('fp_theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = saved ? saved === 'dark' : prefersDark;
+  document.documentElement.classList.add(isDark ? 'theme-dark' : 'theme-light');
+  updateThemeBtn(isDark);
+})();
+
+function updateThemeBtn(isDark) {
+  ['d-theme-btn','m-theme-btn'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = isDark ? '☀️' : '🌙';
+  });
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.classList.contains('theme-dark');
+  html.classList.remove('theme-dark','theme-light');
+  html.classList.add(isDark ? 'theme-light' : 'theme-dark');
+  localStorage.setItem('fp_theme', isDark ? 'light' : 'dark');
+  updateThemeBtn(!isDark);
+}
+
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){CM();closeSM();CE();closeGehaltEdit();}});
 
 function editGehalt(side) {
