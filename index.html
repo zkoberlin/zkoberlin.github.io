@@ -96,6 +96,13 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 .er-next{padding:10px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
 
 /* Alma card */
+.alma-wrap{display:flex;flex-direction:column;gap:8px;}
+.alma-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.alma-mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;}
+.alma-mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
+.alma-mini-title{font-size:12px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.alma-mini-date{font-size:10.5px;color:var(--t2);margin-top:2px;}
+.alma-mini-counter{display:inline-block;margin-top:6px;font-size:10px;font-weight:700;color:#f97316;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);padding:2px 8px;border-radius:20px;}
 .alma{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
 .alma-left{background:linear-gradient(135deg,#f97316,#fb923c);padding:16px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:80px;}
 .alma-emoji{font-size:26px;margin-bottom:4px;}
@@ -249,16 +256,33 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 </div>
 
 <div class="sec">🧡 Alma · Schwerin</div>
-<div class="alma" id="almaCard">
-  <div class="alma-left">
-    <div class="alma-emoji">👧</div>
-    <div class="alma-days" id="almaDays">–</div>
-    <div class="alma-days-lbl">Tage</div>
+<div class="alma-wrap">
+  <!-- Aktuell / Nächster (big) -->
+  <div class="alma" id="almaCard">
+    <div class="alma-left">
+      <div class="alma-emoji">👧</div>
+      <div class="alma-days" id="almaDays">–</div>
+      <div class="alma-days-lbl" id="almaDaysLbl">Tage</div>
+    </div>
+    <div class="alma-right">
+      <div class="alma-lbl" id="almaLbl">Nächster Besuch</div>
+      <div class="alma-title" id="almaTitle">Lädt…</div>
+      <div class="alma-date" id="almaDate">–</div>
+    </div>
   </div>
-  <div class="alma-right">
-    <div class="alma-lbl">Nächster Besuch</div>
-    <div class="alma-title" id="almaTitle">Lädt…</div>
-    <div class="alma-date" id="almaDate">–</div>
+  <!-- Nächster + Übernächster (small row) -->
+  <div class="alma-row" id="almaRow" style="display:none;">
+    <div class="alma-mini" id="almaNext">
+      <div class="alma-mini-lbl">Nächster</div>
+      <div class="alma-mini-title" id="almaNextTitle">–</div>
+      <div class="alma-mini-date" id="almaNextDate">–</div>
+    </div>
+    <div class="alma-mini" id="almaOver">
+      <div class="alma-mini-lbl">Übernächster</div>
+      <div class="alma-mini-title" id="almaOverTitle">–</div>
+      <div class="alma-mini-date" id="almaOverDate">–</div>
+      <div class="alma-mini-counter" id="almaOverCounter">–</div>
+    </div>
   </div>
 </div>
 
@@ -606,24 +630,76 @@ loadICAL();
 function loadAlma(evs){
   try{
     const today = st(new Date());
-    const schwerin = evs
-      .filter(e => st(e.date) >= today && e.sum.toLowerCase().includes('schwerin'))
-      .sort((a,b) => a.date - b.date)[0];
+    const all = evs
+      .filter(e => e.sum.toLowerCase().includes('schwerin'))
+      .sort((a,b) => a.date - b.date);
 
-    if(schwerin){
-      const days = diff(today, st(schwerin.date));
-      document.getElementById('almaDays').textContent = days === 0 ? '🎉' : days;
-      document.getElementById('almaTitle').textContent = schwerin.sum;
-      document.getElementById('almaDate').textContent = days === 0 ? 'Heute! 🎉' : fmtFull(schwerin.date) + (days === 1 ? ' · Morgen' : ` · in ${days} Tagen`);
-      if(days === 0){
-        document.getElementById('almaCard').style.borderColor = 'rgba(249,115,22,.35)';
-      }
+    // Split: current (today or past but ongoing), future
+    const current = all.filter(e => st(e.date) <= today).slice(-1)[0]; // last one that started
+    const future = all.filter(e => st(e.date) >= today);
+    const next = future[0];
+    const overNext = future[1];
+
+    // Big card: current if today, else next
+    const main = current && diff(st(current.date), today) === 0 ? current : next;
+
+    if(main){
+      const days = diff(today, st(main.date));
+      const isCurrent = days === 0 || (current && diff(st(current.date), today) === 0);
+      document.getElementById('almaDays').textContent = isCurrent ? '🎉' : days;
+      document.getElementById('almaDaysLbl').textContent = isCurrent ? '' : 'Tage';
+      document.getElementById('almaLbl').textContent = isCurrent ? 'Aktueller Besuch' : 'Nächster Besuch';
+      document.getElementById('almaTitle').textContent = main.sum;
+      document.getElementById('almaDate').textContent = isCurrent
+        ? 'Heute in Schwerin! 🎉'
+        : fmtFull(main.date) + (days === 1 ? ' · Morgen' : ` · in ${days} Tagen`);
+      if(isCurrent) document.getElementById('almaCard').style.borderColor = 'rgba(249,115,22,.4)';
     } else {
       document.getElementById('almaDays').textContent = '?';
       document.getElementById('almaTitle').textContent = 'Kein Termin geplant';
       document.getElementById('almaDate').textContent = '–';
     }
-  }catch(e){}
+
+    // Small row: next + overNext (only if current is shown in big card)
+    const showNext = main && current && diff(st(current.date), today) === 0 ? next : future[1] ? null : null;
+    const smallNext = (current && diff(st(current.date), today) === 0) ? future[0] : future[1];
+    const smallOver = (current && diff(st(current.date), today) === 0) ? future[1] : future[2];
+
+    if(smallNext || smallOver){
+      document.getElementById('almaRow').style.display = 'grid';
+      if(smallNext){
+        const d = diff(today, st(smallNext.date));
+        document.getElementById('almaNextTitle').textContent = smallNext.sum;
+        document.getElementById('almaNextDate').textContent = fmtFull(smallNext.date);
+      }
+      if(smallOver){
+        const d = diff(today, st(smallOver.date));
+        document.getElementById('almaOverTitle').textContent = smallOver.sum;
+        document.getElementById('almaOverDate').textContent = fmtFull(smallOver.date);
+        document.getElementById('almaOverCounter').textContent = `in ${d} Tagen`;
+      } else {
+        document.getElementById('almaOver').style.display = 'none';
+      }
+    }
+
+    // If not current visit: show next + overNext as small cards
+    if(!(current && diff(st(current.date), today) === 0)){
+      const n = future[1], o = future[2];
+      if(n || o){
+        document.getElementById('almaRow').style.display = 'grid';
+        if(n){
+          document.getElementById('almaNextTitle').textContent = n.sum;
+          document.getElementById('almaNextDate').textContent = fmtFull(n.date);
+        } else { document.getElementById('almaNext').style.display='none'; }
+        if(o){
+          const d = diff(today, st(o.date));
+          document.getElementById('almaOverTitle').textContent = o.sum;
+          document.getElementById('almaOverDate').textContent = fmtFull(o.date);
+          document.getElementById('almaOverCounter').textContent = `in ${d} Tagen`;
+        } else { document.getElementById('almaOver').style.display='none'; }
+      }
+    }
+  }catch(e){ console.log('Alma error:', e); }
 }
 
 // ── DRAG & DROP SORT ──
