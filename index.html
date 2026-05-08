@@ -715,8 +715,32 @@ function parseICS(txt){
     const dtraw=get('DTSTART'),sum=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
     if(!dtraw||!sum)continue;
     let date,hasTime=false;
-    if(/^\d{8}$/.test(dtraw)){date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);}
-    else{const cl=dtraw.replace(/Z$/,'').replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/,'$1-$2-$3T$4:$5:$6');date=new Date(cl);hasTime=true;}
+    if(/^\d{8}$/.test(dtraw)){
+      // All-day event – no time
+      date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);
+    } else if(dtraw.endsWith('Z')){
+      // Explicit UTC
+      date=new Date(dtraw.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/,'$1-$2-$3T$4:$5:$6Z'));
+      hasTime=true;
+    } else {
+      // Local time with TZID (e.g. Europe/Berlin) or floating
+      // Parse digits and treat as Europe/Berlin
+      const m=dtraw.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
+      if(m){
+        const iso=`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}`;
+        // Determine Berlin offset at this moment (CET=+1 or CEST=+2)
+        const probe=new Date(iso+'Z');
+        const berlinStr=probe.toLocaleString('en-US',{timeZone:'Europe/Berlin',hour12:false,hour:'2-digit'});
+        const utcHour=probe.getUTCHours();
+        const berlinHour=parseInt(berlinStr);
+        const offsetH=(berlinHour-utcHour+24)%24;
+        date=new Date(iso+'Z');
+        date=new Date(date.getTime()-offsetH*3600000);
+      } else {
+        date=new Date(dtraw);
+      }
+      hasTime=true;
+    }
     if(isNaN(date))continue;
     let col='#6e6e73';const s=sum.toLowerCase();
     if(s.includes('maja'))col='#db2777';
