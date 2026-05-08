@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="auto">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,225 +8,280 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* ── TOKENS ── */
 :root{
   --bg:#f2f2f7;--card:#fff;--card2:#f4f4f8;--border:rgba(0,0,0,.07);
   --t:#1c1c1e;--t2:#6e6e73;--t3:#aeaeb2;
   --blue:#0071e3;--blue-l:rgba(0,113,227,.10);--blue-b:rgba(0,113,227,.28);
   --green:#34c759;--green-l:rgba(52,199,89,.11);--green-b:rgba(52,199,89,.30);
+  --neon:rgba(52,199,89,.13);--neon-b:rgba(52,199,89,.35);
   --red:#ff3b30;--red-l:rgba(255,59,48,.10);
   --pink:#db2777;--pink-l:rgba(219,39,119,.10);
+  --orange:#f97316;--orange-l:rgba(249,115,22,.10);--orange-b:rgba(249,115,22,.28);
   --union:#e8001c;--union-l:rgba(232,0,28,.09);
   --sh:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.05);
   --sh-h:0 6px 32px rgba(0,0,0,.13);
   --r:20px;--r2:13px;--r3:9px;
 }
-@media(prefers-color-scheme:dark){:root{
+@media(prefers-color-scheme:dark){
+  html:not([data-theme="light"]):root{
+    --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
+    --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
+    --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
+    --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
+    --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
+    --red:#ff453a;--red-l:rgba(255,69,58,.12);
+    --pink:#f472b6;--pink-l:rgba(244,114,182,.12);
+    --orange:#fb923c;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
+    --union:#ff453a;--union-l:rgba(255,69,58,.10);
+    --sh:0 1px 4px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.2);
+    --sh-h:0 6px 32px rgba(0,0,0,.45);
+  }
+}
+html[data-theme="dark"]:root{
   --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
   --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
   --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
   --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
+  --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
   --red:#ff453a;--red-l:rgba(255,69,58,.12);
   --pink:#f472b6;--pink-l:rgba(244,114,182,.12);
+  --orange:#fb923c;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
   --union:#ff453a;--union-l:rgba(255,69,58,.10);
   --sh:0 1px 4px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.2);
   --sh-h:0 6px 32px rgba(0,0,0,.45);
-}}
-body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;}
+}
+html[data-theme="light"]:root{
+  --bg:#f2f2f7;--card:#fff;--card2:#f4f4f8;--border:rgba(0,0,0,.07);
+  --t:#1c1c1e;--t2:#6e6e73;--t3:#aeaeb2;
+  --blue:#0071e3;--blue-l:rgba(0,113,227,.10);--blue-b:rgba(0,113,227,.28);
+  --green:#34c759;--green-l:rgba(52,199,89,.11);--green-b:rgba(52,199,89,.30);
+  --neon:rgba(52,199,89,.13);--neon-b:rgba(52,199,89,.35);
+  --red:#ff3b30;--red-l:rgba(255,59,48,.10);
+  --pink:#db2777;--pink-l:rgba(219,39,119,.10);
+  --orange:#f97316;--orange-l:rgba(249,115,22,.10);--orange-b:rgba(249,115,22,.28);
+  --union:#e8001c;--union-l:rgba(232,0,28,.09);
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.05);
+  --sh-h:0 6px 32px rgba(0,0,0,.13);
+}
 
-/* HEADER */
-header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;}
-@media(prefers-color-scheme:dark){header{background:rgba(14,14,16,.90);}}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+html[data-theme="dark"] header{background:rgba(14,14,16,.90);}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) header{background:rgba(14,14,16,.90);}}
+
 .h-left{display:flex;align-items:center;gap:10px;}
-.h-logo{width:31px;height:31px;background:var(--t);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.h-logo{width:30px;height:30px;background:var(--t);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .3s;}
 .h-greet{font-size:15px;font-weight:600;letter-spacing:-.3px;}
-.h-right{text-align:right;}
-.h-clock{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;}
-.h-date{font-size:10.5px;color:var(--t2);margin-top:1px;}
+.h-center{flex:1;text-align:center;}
+.h-right{display:flex;align-items:center;gap:8px;}
+.h-clock-wrap{text-align:right;}
+.h-clock{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;}
+.h-date{font-size:10px;color:var(--t2);margin-top:1px;}
 
-/* MAIN */
-main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-direction:column;gap:14px;}
+/* Dark mode toggle */
+.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--card2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0;}
+.theme-btn:hover{transform:scale(1.1);background:var(--card);}
 
-/* QUOTE */
-.quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:11px 15px;display:flex;gap:8px;align-items:flex-start;}
-.q-icon{font-size:13px;flex-shrink:0;margin-top:2px;opacity:.55;}
-.q-text{font-size:11.5px;color:var(--t2);line-height:1.55;font-style:italic;}
+/* ── MAIN ── */
+main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-direction:column;gap:12px;}
 
-/* TOP ROW */
+/* ── QUOTE ── */
+.quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:10px 14px;display:flex;gap:8px;align-items:flex-start;}
+.q-icon{font-size:12px;flex-shrink:0;margin-top:2px;opacity:.5;}
+.q-text{font-size:11px;color:var(--t2);line-height:1.55;font-style:italic;}
+
+/* ── TOP ROW ── */
 .top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:11px;}
-.mini-icon{font-size:24px;flex-shrink:0;}
+.mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;text-decoration:none;color:inherit;}
+.mini:hover{transform:translateY(-2px);box-shadow:var(--sh-h);}
+.mini-icon{font-size:22px;flex-shrink:0;}
 .mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
-.mini-val{font-size:17px;font-weight:700;letter-spacing:-.4px;}
-.mini-sub{font-size:10.5px;color:var(--t2);margin-top:1px;}
+.mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
+.mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
-/* SECTION */
-.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-bottom:0px;margin-top:8px;}
+/* ── SECTION ── */
+.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
 
-/* EMIL & ROSA */
+/* ── HOVER CARD ── */
+.hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
+.hcard:hover{transform:translateY(-2px);box-shadow:var(--sh-h)!important;}
+.hcard:active{transform:scale(.98);}
+
+/* ── EMIL & ROSA ── */
 .er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;width:100%;}
-.er-top{padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
 .er-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
 .er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
 .er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
-@media(max-width:400px){.er-nums{grid-template-columns:1fr;}}
-.er-num{padding:18px 22px;border-right:1px solid var(--border);}
+.er-num{padding:16px 20px;border-right:1px solid var(--border);}
 .er-num:last-child{border-right:none;}
-.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
+.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:7px;}
 .er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
-.er-n{font-size:48px;font-weight:300;letter-spacing:-2.5px;line-height:1;}
+.er-n{font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1;}
 .er-n.g{color:var(--green);}
 .er-n.b{color:var(--blue);}
 .er-n.gr{color:var(--t3);}
-.er-unit{font-size:13px;color:var(--t2);margin-bottom:7px;}
+.er-unit{font-size:12px;color:var(--t2);margin-bottom:6px;}
 .er-sub{font-size:11px;color:var(--t2);}
-.er-timeline{padding:14px 20px 15px;border-top:1px solid var(--border);}
-.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:9px;}
-.er-track{display:flex;gap:3px;height:26px;}
-.er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:default;}
+.er-timeline{padding:13px 20px 14px;border-top:1px solid var(--border);}
+.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
+.er-track{display:flex;gap:3px;height:24px;}
+.er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;}
 .er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
 .er-day.dani{background:var(--card2);border:1px solid var(--border);}
 .er-day.today{outline:2px solid var(--blue);outline-offset:1px;}
-.er-dl{font-size:7.5px;font-weight:700;color:var(--t3);}
+.er-dl{font-size:7px;font-weight:700;color:var(--t3);}
 .er-day.paul .er-dl{color:var(--green);}
-.er-leg{display:flex;gap:12px;margin-top:8px;}
+.er-leg{display:flex;gap:12px;margin-top:7px;}
 .er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
-.er-ld{width:8px;height:8px;border-radius:2px;}
-.er-next{padding:10px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
-
-/* Alma card */
-.alma-wrap{display:flex;flex-direction:column;gap:8px;}
-.alma-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.alma-mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;}
-.alma-mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:5px;}
-.alma-mini-title{font-size:12px;font-weight:600;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.alma-mini-date{font-size:10.5px;color:var(--t2);margin-top:2px;}
-.alma-mini-counter{display:inline-block;margin-top:6px;font-size:10px;font-weight:700;color:#f97316;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);padding:2px 8px;border-radius:20px;}
-.alma{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
-.alma-left{background:linear-gradient(135deg,#f97316,#fb923c);padding:16px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:80px;}
-.alma-emoji{font-size:26px;margin-bottom:4px;}
-.alma-days{font-size:36px;font-weight:300;letter-spacing:-2px;color:#fff;line-height:1;}
-.alma-days-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);}
-.alma-right{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
-.alma-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
-.alma-title{font-size:14px;font-weight:700;letter-spacing:-.2px;}
-.alma-date{font-size:11.5px;color:var(--t2);margin-top:2px;}
-.alma-none{font-size:12px;color:var(--t3);font-style:italic;}
+.er-ld{width:7px;height:7px;border-radius:2px;}
+.er-next{padding:9px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
 .er-next strong{color:var(--t);font-weight:600;}
 
-/* APP CARDS */
+/* ── ALMA ── */
+.alma-wrap{display:flex;flex-direction:column;gap:8px;}
+
+/* Big countdown card */
+.alma-big{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
+.alma-big-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:18px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:88px;flex-shrink:0;}
+.alma-big-n{font-size:44px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;}
+.alma-big-unit{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
+.alma-big-emoji{font-size:28px;}
+.alma-big-right{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px;}
+.alma-big-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
+.alma-big-title{font-size:14px;font-weight:700;letter-spacing:-.2px;}
+.alma-big-date{font-size:11.5px;color:var(--t2);}
+.alma-big-range{font-size:10.5px;color:var(--t2);margin-top:1px;}
+
+/* Small alma card */
+.alma-small{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:12px;}
+.alma-small-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.alma-small-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;}
+.alma-small-title{font-size:13px;font-weight:600;letter-spacing:-.2px;}
+.alma-small-date{font-size:10.5px;color:var(--t2);margin-top:1px;}
+.alma-small-counter{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--orange);margin-left:auto;flex-shrink:0;}
+
+/* ── APP CARDS ── */
 .app-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:580px){.app-row{grid-template-columns:1fr;}}
 
-.acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s,border-color .18s;overflow:hidden;}
+.acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;}
 .acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
 .acard.kal:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--blue-b);}
 .acard:active{transform:scale(.98);}
 
-.a-top{padding:16px 16px 11px;display:flex;align-items:flex-start;justify-content:space-between;}
-.a-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.a-top{padding:15px 15px 10px;display:flex;align-items:flex-start;justify-content:space-between;}
+.a-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
 .a-icon.g{background:var(--green-l);}
 .a-icon.b{background:var(--blue-l);}
 .a-status{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
 .a-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 2s infinite;}
-.a-name{font-size:15px;font-weight:700;letter-spacing:-.3px;padding:0 16px 3px;}
-.a-desc{font-size:11px;color:var(--t2);padding:0 16px 12px;}
+.a-name{font-size:14px;font-weight:700;letter-spacing:-.3px;padding:0 15px 3px;}
+.a-desc{font-size:11px;color:var(--t2);padding:0 15px 11px;}
 
-/* Finanzen internals */
-.fin-box{margin:0 12px 10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 13px;}
+/* Finanzen */
+.fin-box{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
 .fin-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
-.fin-val{font-size:24px;font-weight:700;letter-spacing:-.6px;margin-bottom:7px;}
+.fin-val{font-size:22px;font-weight:700;letter-spacing:-.6px;margin-bottom:6px;}
 .fin-val.g{color:var(--green);}
 .fin-val.r{color:var(--red);}
 .fin-bar-wrap{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
 .fin-bar{height:4px;border-radius:4px;background:var(--green);transition:width .6s;}
 .fin-bar.r{background:var(--red);}
-.fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9.5px;color:var(--t3);}
-.fin-row2{display:flex;gap:7px;margin:0 12px 12px;}
-.fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 10px;}
-.fin-mini-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:3px;}
-.fin-mini-val{font-size:13px;font-weight:600;letter-spacing:-.3px;}
-.fin-sync{font-size:9px;color:var(--t3);padding:0 16px 12px;display:flex;align-items:center;gap:4px;}
+.fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:var(--t3);}
+.fin-row2{display:flex;gap:6px;margin:0 11px 9px;}
+.fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:7px 9px;}
+.fin-mini-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;}
+.fin-mini-val{font-size:12.5px;font-weight:600;letter-spacing:-.3px;}
+.fin-spar{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;justify-content:space-between;}
+.fin-spar-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.fin-spar-val{font-size:15px;font-weight:700;letter-spacing:-.4px;color:var(--blue);}
+.fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
+.fin-spar-ring{width:40px;height:40px;flex-shrink:0;}
+.fin-cats{margin:0 11px 9px;display:flex;flex-direction:column;gap:5px;}
+.fin-cat-row{display:flex;align-items:center;gap:7px;}
+.fin-cat-lbl{font-size:9.5px;color:var(--t2);width:76px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fin-cat-bw{flex:1;height:4px;background:var(--border);border-radius:3px;overflow:hidden;}
+.fin-cat-b{height:4px;border-radius:3px;transition:width .6s;}
+.fin-cat-val{font-size:9.5px;font-weight:600;color:var(--t2);width:32px;text-align:right;flex-shrink:0;}
+.fin-sync{font-size:9px;color:var(--t3);padding:0 15px 10px;display:flex;align-items:center;gap:4px;}
 .fin-sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);}
 
-/* Kalender internals – event list */
-.kal-ev{margin:0 12px 7px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;gap:9px;}
+/* Kalender events */
+.kal-ev{margin:0 11px 6px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 11px;display:flex;align-items:center;gap:8px;transition:background .15s;}
+.kal-ev:last-of-type{margin-bottom:0;}
 .kal-ev-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .kal-ev-info{flex:1;min-width:0;}
-.kal-ev-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
-.kal-ev-title{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.kal-ev-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.kal-ev-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .kal-ev-date{font-size:10px;color:var(--t2);margin-top:1px;}
 .kal-ev-when{font-size:10px;font-weight:700;color:var(--t3);flex-shrink:0;}
-.kal-ev.today{background:rgba(52,199,89,.08);border-color:rgba(52,199,89,.25);}
+
+/* Today = neon green */
+.kal-ev.today{background:var(--neon);border-color:var(--neon-b);}
 .kal-ev.today .kal-ev-when{color:var(--green);font-weight:800;}
 .kal-ev.today .kal-ev-title{color:var(--green);}
-@media(prefers-color-scheme:dark){.kal-ev.today{background:rgba(48,209,88,.10);border-color:rgba(48,209,88,.28);}}
-.kal-ev.union-ev{background:var(--union-l);border-color:rgba(232,0,28,.18);}
-.kal-ev.maja-ev{background:var(--pink-l);border-color:rgba(219,39,119,.15);}
+.kal-ev.union-ev{background:var(--union-l);border-color:rgba(232,0,28,.15);}
+.kal-ev.maja-ev{background:var(--pink-l);border-color:rgba(219,39,119,.13);}
+.kal-ev.bday-ev{background:rgba(175,82,222,.08);border-color:rgba(175,82,222,.18);}
 
-/* Union inside Kalender card */
-.kal-union{margin:0 12px 12px;background:var(--union-l);border:1px solid rgba(232,0,28,.18);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;gap:9px;}
-.kal-union-icon{font-size:18px;flex-shrink:0;}
-.kal-union-info{flex:1;min-width:0;}
-.kal-union-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
-.kal-union-match{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.kal-union-date{font-size:10px;color:var(--t2);margin-top:1px;}
+.a-footer{border-top:1px solid var(--border);padding:9px 15px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:auto;}
 
-.a-footer{border-top:1px solid var(--border);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;font-size:10.5px;color:var(--t3);margin-top:auto;}
-
-/* Bottom nav */
-.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;}
-@media(prefers-color-scheme:dark){.bnav{background:rgba(14,14,16,.92);}}
+/* ── BOTTOM NAV ── */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
+html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) .bnav{background:rgba(14,14,16,.92);}}
 @media(max-width:600px){.bnav{display:flex;}}
 .bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--t3);padding:4px 16px;}
 .bn.on{color:var(--blue);}
-.bn-i{font-size:22px;}
+.bn-i{font-size:21px;}
 .bn-l{font-size:10px;font-weight:600;}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-
-
-
-/* Kategorie-Bars */
-.fin-cats{margin:0 12px 10px;display:flex;flex-direction:column;gap:5px;}
-.fin-cat-row{display:flex;align-items:center;gap:8px;}
-.fin-cat-lbl{font-size:10px;color:var(--t2);width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fin-cat-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.fin-cat-bar{height:5px;border-radius:3px;transition:width .6s;}
-.fin-cat-val{font-size:10px;font-weight:600;color:var(--t2);width:44px;text-align:right;flex-shrink:0;}
-
-/* Sparquote */
-.fin-spar{margin:0 12px 10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;}
-.fin-spar-left{}
-.fin-spar-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
-.fin-spar-val{font-size:16px;font-weight:700;letter-spacing:-.4px;color:var(--blue);}
-.fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
-.fin-spar-ring{width:44px;height:44px;flex-shrink:0;}
 </style>
 </head>
 <body>
+
 <header>
   <div class="h-left">
     <div class="h-logo">🌐</div>
     <div class="h-greet" id="greet">Hallo, Paul 👋</div>
   </div>
   <div class="h-right">
-    <div class="h-clock" id="clock">--:--</div>
-    <div class="h-date" id="hdate">--</div>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light Mode">🌙</button>
+    <div class="h-clock-wrap">
+      <div class="h-clock" id="clock">--:--</div>
+      <div class="h-date" id="hdate">--</div>
+    </div>
   </div>
 </header>
 
 <main>
 
+<!-- Quote -->
 <div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
 
+<!-- Weather + Date -->
 <div class="top-row">
-  <div class="mini"><div class="mini-icon" id="wIcon">⏳</div><div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div></div>
-  <div class="mini"><div class="mini-icon">📆</div><div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div></div>
+  <a class="mini hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
+    <div class="mini-icon" id="wIcon">⏳</div>
+    <div><div class="mini-lbl">Berlin · Wetter</div><div class="mini-val" id="wTemp">--°</div><div class="mini-sub" id="wDesc">Lädt…</div></div>
+  </a>
+  <a class="mini hcard" href="https://calendar.google.com" target="_blank">
+    <div class="mini-icon">📆</div>
+    <div><div class="mini-lbl">Heute</div><div class="mini-val" id="todayStr">--</div><div class="mini-sub" id="kwStr">--</div></div>
+  </a>
 </div>
 
+<!-- Emil & Rosa -->
 <div class="sec">👧 Emil & Rosa</div>
+<a class="hcard" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
 <div class="er">
   <div class="er-top">
     <div class="er-title">Emil & Rosa</div>
@@ -254,82 +309,51 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
   </div>
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
 </div>
+</a>
 
+<!-- Alma -->
 <div class="sec">🧡 Alma · Schwerin</div>
-<div class="alma-wrap">
-  <!-- Aktuell / Nächster (big) -->
-  <div class="alma" id="almaCard">
-    <div class="alma-left">
-      <div class="alma-emoji">👧</div>
-      <div class="alma-days" id="almaDays">–</div>
-      <div class="alma-days-lbl" id="almaDaysLbl">Tage</div>
-    </div>
-    <div class="alma-right">
-      <div class="alma-lbl" id="almaLbl">Nächster Besuch</div>
-      <div class="alma-title" id="almaTitle">Lädt…</div>
-      <div class="alma-date" id="almaDate">–</div>
-    </div>
-  </div>
-  <!-- Nächster + Übernächster (small row) -->
-  <div class="alma-row" id="almaRow" style="display:none;">
-    <div class="alma-mini" id="almaNext">
-      <div class="alma-mini-lbl">Nächster</div>
-      <div class="alma-mini-title" id="almaNextTitle">–</div>
-      <div class="alma-mini-date" id="almaNextDate">–</div>
-    </div>
-    <div class="alma-mini" id="almaOver">
-      <div class="alma-mini-lbl">Übernächster</div>
-      <div class="alma-mini-title" id="almaOverTitle">–</div>
-      <div class="alma-mini-date" id="almaOverDate">–</div>
-      <div class="alma-mini-counter" id="almaOverCounter">–</div>
-    </div>
-  </div>
+<div class="alma-wrap" id="almaWrap">
+  <!-- filled by JS -->
 </div>
 
+<!-- Apps -->
 <div class="sec">📱 Apps</div>
 <div class="app-row">
 
   <!-- KALENDER -->
-  <a class="acard kal" href="/kalenderpaul/">
+  <a class="acard kal hcard" href="/kalenderpaul/">
     <div class="a-top"><div class="a-icon b">📅</div><div class="a-status">Aktiv</div></div>
     <div class="a-name">Kalender</div>
     <div class="a-desc">Termine & Events</div>
-    <div id="kalEvList" style="display:flex;flex-direction:column;gap:0;"></div>
-    <div class="kal-union">
-      <div class="kal-union-icon">⚽</div>
-      <div class="kal-union-info">
-        <div class="kal-union-lbl">1. FC Union Berlin</div>
-        <div class="kal-union-match" id="unionM">Lädt…</div>
-        <div class="kal-union-date" id="unionD">–</div>
-      </div>
-    </div>
+    <div id="kalEvList"></div>
     <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
   </a>
 
   <!-- FINANZEN -->
-  <a class="acard fin" href="/finanzenpaul/">
+  <a class="acard fin hcard" href="/finanzenpaul/">
     <div class="a-top"><div class="a-icon g">💶</div><div class="a-status">Aktiv</div></div>
     <div class="a-name">Finanzen</div>
-    <div class="a-desc">Budget &amp; Ausgaben</div>
+    <div class="a-desc">Budget & Ausgaben</div>
     <div class="fin-box">
       <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
       <div class="fin-val g" id="puffer">–</div>
       <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
-      <div class="fin-bar-foot"><span id="pufSub">App öffnen um Daten zu laden</span><span id="finPct"></span></div>
+      <div class="fin-bar-foot"><span id="pufSub">App einmal öffnen</span><span id="finPct"></span></div>
     </div>
     <div class="fin-row2">
       <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
       <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
     </div>
     <div class="fin-spar">
-      <div class="fin-spar-left">
+      <div>
         <div class="fin-spar-lbl">Sparquote</div>
         <div class="fin-spar-val" id="sparQuote">–</div>
-        <div class="fin-spar-sub" id="sparAbs">– gespart</div>
+        <div class="fin-spar-sub" id="sparAbs">–</div>
       </div>
-      <svg class="fin-spar-ring" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="18" fill="none" stroke="var(--border)" stroke-width="4"/>
-        <circle id="sparRing" cx="22" cy="22" r="18" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)" style="transition:stroke-dashoffset .8s"/>
+      <svg class="fin-spar-ring" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="var(--border)" stroke-width="4"/>
+        <circle id="sparRing" cx="20" cy="20" r="16" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="101" stroke-dashoffset="101" transform="rotate(-90 20 20)" style="transition:stroke-dashoffset .8s"/>
       </svg>
     </div>
     <div class="fin-cats" id="finCats"></div>
@@ -337,8 +361,7 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
 
-
-
+</div>
 </main>
 
 <nav class="bnav">
@@ -358,14 +381,32 @@ function diff(a,b){return Math.round((b-a)/86400000);}
 function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
 function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
+// ── THEME ──
+const THEME_KEY='hub_theme';
+function applyTheme(t){
+  const html=document.documentElement;
+  html.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
+  localStorage.setItem(THEME_KEY,t);
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const isDark=cur==='dark'||(cur==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  applyTheme(isDark?'light':'dark');
+}
+// Init theme
+const saved=localStorage.getItem(THEME_KEY);
+if(saved){applyTheme(saved);}
+else{document.getElementById('themeBtn').textContent=window.matchMedia('(prefers-color-scheme:dark)').matches?'☀️':'🌙';}
+
+// ── CLOCK ──
 const now=new Date();
-// Clock
 function tick(){const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}`;}
 tick();setInterval(tick,1000);
-// Greeting
+
+// ── GREETING ──
 const h=now.getHours();
 document.getElementById('greet').textContent=(h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
-// Date
 document.getElementById('hdate').textContent=`${WD[now.getDay()]}, ${now.getDate()}. ${MK[now.getMonth()]} ${now.getFullYear()}`;
 document.getElementById('todayStr').textContent=`${now.getDate()}. ${MON[now.getMonth()]}`;
 const kw=getKW(now);
@@ -375,51 +416,41 @@ document.getElementById('finMonth').textContent=`${MON[now.getMonth()]} ${now.ge
 function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
 document.getElementById('kwR').textContent=kwRange(now);
 
-// Quote
+// ── QUOTE ──
 const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
 document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
 
-// Wetter
+// ── WETTER ──
 async function loadW(){
   try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,weathercode&timezone=Europe/Berlin');const d=await r.json();
   const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
   const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
   document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
   document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
-  document.getElementById('wDesc').textContent=dc[d.current.weathercode]||'Berlin';}catch(e){document.getElementById('wTemp').textContent='--';}
+  document.getElementById('wDesc').textContent=dc[d.current.weathercode]||'Berlin';}catch(e){}
 }
 loadW();
 
-// FINANZEN – live von JSONBin, Fallback auf localStorage
+// ── FINANZEN ──
 async function loadFin(){
   try{
     const jbKey=localStorage.getItem('fp3_jb_key')||'';
     const jbBin=localStorage.getItem('fp3_jb_bin')||'';
     let S=null;
     if(jbKey&&jbBin){
-      try{
-        const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
-        if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}
-      }catch(e){}
+      try{const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
+      if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}}catch(e){}
     }
-    if(!S){
-      const raw=localStorage.getItem('fp3');
-      if(!raw){document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';return;}
-      S=JSON.parse(raw);
-    }
-    // Einnahmen
+    if(!S){const raw=localStorage.getItem('fp3');if(!raw){return;}S=JSON.parse(raw);}
     const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
-    // Ausgaben: ITEMS Keys aus der App
-    const KEYS=['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'];
     let total=0;
-    // Custom items
+    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
+      if(S[k]?.on){const v=S[k].v||0,f=S[k].freq||'monthly';total+=f==='quarterly'?v/3:f==='annual'?v/12:v;}
+    });
     const ci=JSON.parse(localStorage.getItem('fp3c')||'[]');
-    KEYS.forEach(k=>{if(S[k]?.on)total+=S[k].v||0;});
     ci.forEach(it=>{if(S[it.k]?.on)total+=S[it.k].v||0;});
-    const rest=ein-total;
-    // Rücklagen mit korrekten Keys: invest, notgr, urlaub, sonder
     const inv=S.invest?.v||0,notg=S.notgr?.v||0,url=S.urlaub?.v||0,sond=S.sonder?.v||0;
-    const puf=rest-inv-notg-url-sond;
+    const puf=ein-total-inv-notg-url-sond;
     const pct=Math.min(100,Math.max(0,ein>0?Math.round((puf/ein)*100):0));
     const el=document.getElementById('puffer');
     el.textContent=fmt(puf);el.className='fin-val '+(puf>=0?'g':'r');
@@ -429,43 +460,31 @@ async function loadFin(){
     document.getElementById('finPct').textContent=pct+'% frei';
     document.getElementById('ein').textContent=fmt(ein);
     document.getElementById('aus').textContent=fmt(total);
-    // Sync status
-    document.getElementById('syncDot').style.background='var(--green)';
-    document.getElementById('syncLbl').textContent=(jbKey&&jbBin?'JSONBin Live':'localStorage')+'  · Monatlich';
-    document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
-
-    // Sparquote = (invest + notgr + urlaub + sonder) / ein
     const spar=inv+notg;
     const sparPct=ein>0?Math.round((spar/ein)*100):0;
     document.getElementById('sparQuote').textContent=sparPct+'%';
     document.getElementById('sparAbs').textContent=fmt(spar)+' / Monat';
-    const circ=113;
-    document.getElementById('sparRing').style.strokeDashoffset=circ-(circ*sparPct/100);
-
-    // Kategorien
+    document.getElementById('sparRing').style.strokeDashoffset=101-(101*sparPct/100);
+    const syncLbl=document.getElementById('syncLbl');
+    syncLbl.textContent=(jbKey&&jbBin?'JSONBin Live':'localStorage')+' · Monatlich';
+    document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
     const cats={};
-    const KEYS2=['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'];
     const catMap={miete:'Wohnen',strom:'Wohnen',internet:'Wohnen',lebensmittel:'Wohnen',schufa:'Wohnen',ing:'Wohnen',haftpflicht:'Versicherung',rechtsschutz:'Versicherung',kredit:'Versicherung',gez:'Versicherung',unterhalt:'Familie',kids:'Familie',handyemil:'Familie',handyrosa:'Familie',ukv:'Familie',sparta:'Familie',bling:'Familie',unionemil:'Familie',handypaul:'Abos',icloud:'Abos',spotify:'Abos',finanzguru:'Abos',claude:'Abos',unionmitgl:'Abos',amazon:'Abos',parqet:'Abos',futbology:'Abos',fotmob:'Abos',bvg:'Freizeit',dauerkarte:'Freizeit',garmin:'Freizeit'};
-    const catColors={'Wohnen':'#0071e3','Familie':'#34c759','Versicherung':'#ff9500','Abos':'#af52de','Freizeit':'#ff3b30','Sonstiges':'#98989d'};
-    KEYS2.forEach(k=>{if(S[k]?.on){const c=catMap[k]||'Sonstiges';cats[c]=(cats[c]||0)+(S[k].v||0);}});
-    const ci2=JSON.parse(localStorage.getItem('fp3c')||'[]');
-    ci2.forEach(it=>{if(S[it.k]?.on){const c=it.cat||'Sonstiges';cats[c]=(cats[c]||0)+(S[it.k].v||0);}});
-    const catEl=document.getElementById('finCats');
-    catEl.innerHTML='';
-    Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([name,val])=>{
-      const pct=total>0?Math.round((val/total)*100):0;
-      const col=catColors[name]||'#98989d';
-      catEl.innerHTML+=`<div class="fin-cat-row">
-        <div class="fin-cat-lbl">${name}</div>
-        <div class="fin-cat-bar-wrap"><div class="fin-cat-bar" style="width:${pct}%;background:${col}"></div></div>
-        <div class="fin-cat-val">${pct}%</div>
-      </div>`;
+    const catColors={'Wohnen':'#0071e3','Familie':'#34c759','Versicherung':'#ff9500','Abos':'#af52de','Freizeit':'#ff3b30'};
+    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
+      if(S[k]?.on){const c=catMap[k]||'Sonstiges';cats[c]=(cats[c]||0)+(S[k].v||0);}
     });
-  }catch(e){document.getElementById('pufSub').textContent='Fehler beim Laden';}
+    const catEl=document.getElementById('finCats');catEl.innerHTML='';
+    Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([name,val])=>{
+      const pct2=total>0?Math.round((val/total)*100):0;
+      const col=catColors[name]||'#98989d';
+      catEl.innerHTML+=`<div class="fin-cat-row"><div class="fin-cat-lbl">${name}</div><div class="fin-cat-bw"><div class="fin-cat-b" style="width:${pct2}%;background:${col}"></div></div><div class="fin-cat-val">${pct2}%</div></div>`;
+    });
+  }catch(e){}
 }
 loadFin();
 
-// KIDS
+// ── KIDS ──
 async function loadKids(){
   try{
     const ID='1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
@@ -474,13 +493,10 @@ async function loadKids(){
     const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',').map(c=>c.replace(/^"|"$/g,'')));
     const today=st(new Date());
     const entries=rows.map(r=>{
-      const p=r[0]?.trim().split('/');
-      if(!p||p.length<3)return null;
+      const p=r[0]?.trim().split('/');if(!p||p.length<3)return null;
       const d=st(new Date(`${p[2]}-${p[1]}-${p[0]}`));
       return isNaN(d)?null:{date:d,who:r[2]?.trim()};
     }).filter(Boolean).sort((a,b)=>a.date-b.date);
-
-    // Timeline 14 days
     const track=document.getElementById('erTrack');track.innerHTML='';
     for(let i=0;i<14;i++){
       const d=new Date(today);d.setDate(today.getDate()+i);
@@ -492,11 +508,9 @@ async function loadKids(){
       div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
       track.appendChild(div);
     }
-
     const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
     document.getElementById('erBadge').textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
     document.getElementById('erBadge').className='er-badge '+(todayWho==='Paul'?'paul':'dani');
-
     const fut=entries.filter(e=>e.date>=today);
     if(todayWho==='Paul'){
       let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
@@ -514,11 +528,11 @@ async function loadKids(){
       if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
       document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;}
     }
-  }catch(e){document.getElementById('erNext').innerHTML='<span>⚠️</span><span>Sheet nicht erreichbar</span>';}
+  }catch(e){}
 }
 loadKids();
 
-// iCAL via Google Apps Script Proxy
+// ── iCAL ──
 function parseICS(txt){
   const evs=[];const blocks=txt.split('BEGIN:VEVENT');
   for(let i=1;i<blocks.length;i++){
@@ -530,80 +544,73 @@ function parseICS(txt){
     if(/^\d{8}$/.test(dtraw)){date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);}
     else{const cl=dtraw.replace(/Z$/,'').replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/,'$1-$2-$3T$4:$5:$6');date=new Date(cl);hasTime=true;}
     if(isNaN(date))continue;
-    // Color
     let col='#6e6e73';const s=sum.toLowerCase();
     if(s.includes('maja'))col='#db2777';
-    else if(s.includes('union')||s.includes('köln')||s.includes('augsburg')||s.includes('mainz')||s.includes('bochum')||s.includes('wolfsburg')||s.includes('leverkusen')||s.includes('dortmund')||s.includes('münchen')||s.includes('stuttgart')||s.includes('freiburg')||s.includes('heidenheim')||s.includes('hoffenheim')||s.includes('frankfurt')||s.includes('werder')||s.includes('pauli')||s.includes('fcunion'))col='#e8001c';
-    else if(s.includes('konzert')||s.includes('olivia')||s.includes('finch')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭')||s.includes('bierwalker')||s.includes('sing'))col='#16a34a';
+    else if(['köln','augsburg','mainz','bochum','wolfsburg','leverkusen','dortmund','münchen','stuttgart','freiburg','heidenheim','hoffenheim','frankfurt','werder','pauli','fcunion','union berlin'].some(x=>s.includes(x)))col='#e8001c';
+    else if(s.includes('konzert')||s.includes('olivia')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭'))col='#16a34a';
     else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
-    else if(s.includes('feier')||s.includes('pfingst')||s.includes('feiertag'))col='#a16207';
-    else if(s.includes('urlaub')||s.includes('🏕️'))col='#059669';
+    else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁'))col='#af52de';
+    else if(s.includes('schwerin')||s.includes('alma'))col='#f97316';
     evs.push({date,sum,col,hasTime});
   }
   return evs;
 }
+
 function fmtW(d){const t=st(new Date());const df=diff(t,st(d));if(df===0)return'Heute';if(df===1)return'Morgen';if(df===2)return'Übermorgen';return`${WK[d.getDay()]}. ${d.getDate()}. ${MK[d.getMonth()]}`;}
 function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]}`+(d.getHours()>0?` · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`:'');}
 
 async function loadICAL(){
   try{
-    const txt = await new Promise((resolve, reject) => {
-      const cb = 'ical_cb_' + Date.now();
-      const script = document.createElement('script');
-      const timeout = setTimeout(() => { delete window[cb]; script.remove(); reject(new Error('timeout')); }, 10000);
-      window[cb] = (data) => { clearTimeout(timeout); delete window[cb]; script.remove(); resolve(data); };
-      script.src = 'https://script.google.com/macros/s/AKfycbxKCvaHOfa6frQB95peFpRVhiRINwMm5yOqcefx1y3FebXl3DATnYsPV0xfOQ-14xZg/exec?callback=' + cb;
-      script.onerror = () => { clearTimeout(timeout); delete window[cb]; script.remove(); reject(new Error('script error')); };
+    const PROXY='https://script.google.com/macros/s/AKfycbxKCvaHOfa6frQB95peFpRVhiRINwMm5yOqcefx1y3FebXl3DATnYsPV0xfOQ-14xZg/exec';
+    const txt=await new Promise((resolve,reject)=>{
+      const cb='ical_cb_'+Date.now();
+      const script=document.createElement('script');
+      const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},10000);
+      window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
+      script.src=PROXY+'?callback='+cb;
+      script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
       document.head.appendChild(script);
     });
-    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error('kein Kalender');
+    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error();
     const evs=parseICS(txt);
     const today=st(new Date());
 
-    // Keywords to filter out
-    const isKids = s => {
-      const l = s.toLowerCase();
-      return l.includes('kids bei') || l.includes('bei dani') || l.includes('bei paul') || l.includes('wechsel') || l.includes('kids') || l.includes('schwerin') || l.includes('alma');
+    // ── Alma ──
+    loadAlma(evs);
+
+    // ── Kalender Kachel ──
+    const isFiltered=s=>{
+      const l=s.toLowerCase();
+      return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma');
     };
+    const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
+    const union2=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
+    const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
+    const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)).sort((a,b)=>a.date-b.date);
 
-    // Next Maja
-    const maja = evs.filter(e => st(e.date) >= today && e.col === '#db2777').sort((a,b) => a.date-b.date)[0];
+    const displayEvs=[];
+    if(maja)displayEvs.push({...maja,_type:'maja'});
+    if(bday)displayEvs.push({...bday,_type:'bday'});
+    let needed=5-displayEvs.length-(union2?1:0);
+    others2.slice(0,Math.max(needed,0)).forEach(e=>displayEvs.push({...e,_type:'other'}));
+    if(union2)displayEvs.push({...union2,_type:'union'});
 
-    // Next Union
-    const union2 = evs.filter(e => st(e.date) >= today && e.col === '#e8001c').sort((a,b) => a.date-b.date)[0];
-
-    // Other events: filtered, no kids, no union, no maja
-    const others2 = evs
-      .filter(e => st(e.date) >= today && e.col !== '#e8001c' && e.col !== '#db2777' && !isKids(e.sum))
-      .sort((a,b) => a.date-b.date);
-
-    // Build display list: maja first, then others to fill, union last — target ~5 rows
-    const displayEvs = [];
-    if(maja) displayEvs.push({...maja, _type:'maja'});
-    let needed = 5 - displayEvs.length - (union2 ? 1 : 0);
-    others2.slice(0, Math.max(needed, 0)).forEach(e => displayEvs.push({...e, _type:'other'}));
-    if(union2) displayEvs.push({...union2, _type:'union'});
-
-    const kalList = document.getElementById('kalEvList');
-    if(displayEvs.length === 0){
-      kalList.innerHTML = '<div class="kal-ev"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">Keine Termine geplant</div></div></div>';
+    const kalList=document.getElementById('kalEvList');
+    if(displayEvs.length===0){
+      kalList.innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">Keine Termine geplant</div></div></div>';
     } else {
-      kalList.innerHTML = displayEvs.map(e => {
-        const when = fmtW(e.date);
-        const isToday = when === 'Heute';
-        const isNext = !isToday && displayEvs.indexOf(e) === (maja ? 1 : 0) && e._type !== 'union';
-        let cls = 'kal-ev';
-        if(isToday) cls += ' today';
-        if(e._type === 'union') cls += ' union-ev';
-        if(e._type === 'maja') cls += ' maja-ev';
-
-        const icon = e._type === 'union' ? '⚽' : e._type === 'maja' ? '💗' : '';
-        const lbl = e._type === 'union' ? '1. FC Union Berlin' : e._type === 'maja' ? 'Mit Maja' : '';
-
-        return `<div class="${cls}">
+      kalList.innerHTML=displayEvs.map(e=>{
+        const when=fmtW(e.date);const isToday=when==='Heute';
+        let cls='kal-ev';
+        if(isToday)cls+=' today';
+        if(e._type==='union')cls+=' union-ev';
+        if(e._type==='maja')cls+=' maja-ev';
+        if(e._type==='bday')cls+=' bday-ev';
+        const lbl=e._type==='union'?'⚽ 1. FC Union Berlin':e._type==='maja'?'💗 Mit Maja':e._type==='bday'?'🎂 Geburtstag':'';
+        return`<div class="${cls}">
           <div class="kal-ev-dot" style="background:${e.col}"></div>
           <div class="kal-ev-info">
-            ${lbl ? `<div class="kal-ev-lbl">${icon} ${lbl}</div>` : ''}
+            ${lbl?`<div class="kal-ev-lbl">${lbl}</div>`:''}
             <div class="kal-ev-title">${e.sum}</div>
             <div class="kal-ev-date">${fmtFull(e.date)}</div>
           </div>
@@ -612,98 +619,97 @@ async function loadICAL(){
       }).join('');
     }
 
-    // Alma
-    loadAlma(evs);
-
-    // Union card below
-    const unionCard = evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    if(unionCard){document.getElementById('unionM').textContent=unionCard.sum;document.getElementById('unionD').textContent=fmtFull(unionCard.date)+' · '+fmtW(unionCard.date);}
-    else{document.getElementById('unionM').textContent='FSV Mainz vs Union Berlin';document.getElementById('unionD').textContent='Sa. 10. Mai · 19:30 Uhr · Auswärts';}
+    // ── Union card footer ──
+    const unionCard=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
 
   }catch(e){
-    ['majaT','nextT','next2T','unionM'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='Kalender nicht erreichbar';});
+    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div></div></div>';
   }
 }
-loadICAL();
 
-// ── ALMA (Schwerin) ──
+// ── ALMA ──
 function loadAlma(evs){
   try{
-    const today = st(new Date());
-    const all = evs
-      .filter(e => e.sum.toLowerCase().includes('schwerin'))
-      .sort((a,b) => a.date - b.date);
+    const today=st(new Date());
+    const all=evs.filter(e=>e.sum.toLowerCase().includes('schwerin')).sort((a,b)=>a.date-b.date);
+    // Current: event that started on or before today and ends after today
+    // We treat consecutive schwerin events as a "trip"
+    const past=all.filter(e=>st(e.date)<=today);
+    const future=all.filter(e=>st(e.date)>today);
+    const todayEv=all.find(e=>diff(today,st(e.date))===0);
+    const wrap=document.getElementById('almaWrap');
 
-    // Split: current (today or past but ongoing), future
-    const current = all.filter(e => st(e.date) <= today).slice(-1)[0]; // last one that started
-    const future = all.filter(e => st(e.date) >= today);
-    const next = future[0];
-    const overNext = future[1];
-
-    // Big card: current if today, else next
-    const main = current && diff(st(current.date), today) === 0 ? current : next;
-
-    if(main){
-      const days = diff(today, st(main.date));
-      const isCurrent = days === 0 || (current && diff(st(current.date), today) === 0);
-      document.getElementById('almaDays').textContent = isCurrent ? '🎉' : days;
-      document.getElementById('almaDaysLbl').textContent = isCurrent ? '' : 'Tage';
-      document.getElementById('almaLbl').textContent = isCurrent ? 'Aktueller Besuch' : 'Nächster Besuch';
-      document.getElementById('almaTitle').textContent = main.sum;
-      document.getElementById('almaDate').textContent = isCurrent
-        ? 'Heute in Schwerin! 🎉'
-        : fmtFull(main.date) + (days === 1 ? ' · Morgen' : ` · in ${days} Tagen`);
-      if(isCurrent) document.getElementById('almaCard').style.borderColor = 'rgba(249,115,22,.4)';
+    if(todayEv){
+      // Currently in Schwerin – show current + next
+      const next=future[0];
+      let html=`
+        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank" style="border-color:var(--orange-b);">
+          <div class="alma-big-left">
+            <div class="alma-big-emoji">🎉</div>
+            <div class="alma-big-unit">Heute!</div>
+          </div>
+          <div class="alma-big-right">
+            <div class="alma-big-lbl">Aktueller Besuch</div>
+            <div class="alma-big-title">${todayEv.sum}</div>
+            <div class="alma-big-date">${fmtFull(todayEv.date)}</div>
+          </div>
+        </a>`;
+      if(next){
+        const d=diff(today,st(next.date));
+        html+=`
+        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
+          <div class="alma-small-icon">👧</div>
+          <div>
+            <div class="alma-small-lbl">Nächster Besuch</div>
+            <div class="alma-small-title">${next.sum}</div>
+            <div class="alma-small-date">${fmtFull(next.date)}</div>
+          </div>
+          <div class="alma-small-counter">in ${d} Tagen</div>
+        </a>`;
+      }
+      wrap.innerHTML=html;
     } else {
-      document.getElementById('almaDays').textContent = '?';
-      document.getElementById('almaTitle').textContent = 'Kein Termin geplant';
-      document.getElementById('almaDate').textContent = '–';
-    }
-
-    // Small row: next + overNext (only if current is shown in big card)
-    const showNext = main && current && diff(st(current.date), today) === 0 ? next : future[1] ? null : null;
-    const smallNext = (current && diff(st(current.date), today) === 0) ? future[0] : future[1];
-    const smallOver = (current && diff(st(current.date), today) === 0) ? future[1] : future[2];
-
-    if(smallNext || smallOver){
-      document.getElementById('almaRow').style.display = 'grid';
-      if(smallNext){
-        const d = diff(today, st(smallNext.date));
-        document.getElementById('almaNextTitle').textContent = smallNext.sum;
-        document.getElementById('almaNextDate').textContent = fmtFull(smallNext.date);
+      // Not currently in Schwerin – show countdown to next
+      const next=future[0];
+      const overNext=future[1];
+      if(!next){
+        wrap.innerHTML=`<a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank"><div class="alma-big-left"><div class="alma-big-emoji">👧</div><div class="alma-big-n">?</div><div class="alma-big-unit">Tage</div></div><div class="alma-big-right"><div class="alma-big-lbl">Nächster Besuch</div><div class="alma-big-title">Kein Termin geplant</div><div class="alma-big-date">–</div></div></a>`;
+        return;
       }
-      if(smallOver){
-        const d = diff(today, st(smallOver.date));
-        document.getElementById('almaOverTitle').textContent = smallOver.sum;
-        document.getElementById('almaOverDate').textContent = fmtFull(smallOver.date);
-        document.getElementById('almaOverCounter').textContent = `in ${d} Tagen`;
-      } else {
-        document.getElementById('almaOver').style.display = 'none';
+      const d=diff(today,st(next.date));
+      let html=`
+        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
+          <div class="alma-big-left">
+            <div class="alma-big-emoji">👧</div>
+            <div class="alma-big-n">${d}</div>
+            <div class="alma-big-unit">Tage</div>
+          </div>
+          <div class="alma-big-right">
+            <div class="alma-big-lbl">Nächster Besuch · Schwerin</div>
+            <div class="alma-big-title">${next.sum}</div>
+            <div class="alma-big-date">${fmtFull(next.date)}</div>
+            ${d===1?'<div class="alma-big-range" style="color:var(--orange);font-weight:600;">Morgen! 🎉</div>':''}
+          </div>
+        </a>`;
+      if(overNext){
+        const d2=diff(today,st(overNext.date));
+        html+=`
+        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
+          <div class="alma-small-icon">👧</div>
+          <div>
+            <div class="alma-small-lbl">Übernächster Besuch</div>
+            <div class="alma-small-title">${overNext.sum}</div>
+            <div class="alma-small-date">${fmtFull(overNext.date)}</div>
+          </div>
+          <div class="alma-small-counter">in ${d2} Tagen</div>
+        </a>`;
       }
+      wrap.innerHTML=html;
     }
-
-    // If not current visit: show next + overNext as small cards
-    if(!(current && diff(st(current.date), today) === 0)){
-      const n = future[1], o = future[2];
-      if(n || o){
-        document.getElementById('almaRow').style.display = 'grid';
-        if(n){
-          document.getElementById('almaNextTitle').textContent = n.sum;
-          document.getElementById('almaNextDate').textContent = fmtFull(n.date);
-        } else { document.getElementById('almaNext').style.display='none'; }
-        if(o){
-          const d = diff(today, st(o.date));
-          document.getElementById('almaOverTitle').textContent = o.sum;
-          document.getElementById('almaOverDate').textContent = fmtFull(o.date);
-          document.getElementById('almaOverCounter').textContent = `in ${d} Tagen`;
-        } else { document.getElementById('almaOver').style.display='none'; }
-      }
-    }
-  }catch(e){ console.log('Alma error:', e); }
+  }catch(e){console.log('Alma error:',e);}
 }
 
-// ── DRAG & DROP SORT ──
-initDrag();
+loadICAL();
 </script>
 </body>
 </html>
