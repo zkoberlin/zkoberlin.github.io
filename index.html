@@ -94,6 +94,18 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 .er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
 .er-ld{width:8px;height:8px;border-radius:2px;}
 .er-next{padding:10px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
+
+/* Alma card */
+.alma{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
+.alma-left{background:linear-gradient(135deg,#f97316,#fb923c);padding:16px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:80px;}
+.alma-emoji{font-size:26px;margin-bottom:4px;}
+.alma-days{font-size:36px;font-weight:300;letter-spacing:-2px;color:#fff;line-height:1;}
+.alma-days-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);}
+.alma-right{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
+.alma-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
+.alma-title{font-size:14px;font-weight:700;letter-spacing:-.2px;}
+.alma-date{font-size:11.5px;color:var(--t2);margin-top:2px;}
+.alma-none{font-size:12px;color:var(--t3);font-style:italic;}
 .er-next strong{color:var(--t);font-weight:600;}
 
 /* APP CARDS */
@@ -139,9 +151,12 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
 .kal-ev-title{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .kal-ev-date{font-size:10px;color:var(--t2);margin-top:1px;}
 .kal-ev-when{font-size:10px;font-weight:700;color:var(--t3);flex-shrink:0;}
-.kal-ev.today{background:rgba(0,113,227,.07);border-color:rgba(0,113,227,.18);}
-.kal-ev.today .kal-ev-when{color:var(--blue);}
-@media(prefers-color-scheme:dark){.kal-ev.today{background:rgba(64,156,255,.09);border-color:rgba(64,156,255,.20);}}
+.kal-ev.today{background:rgba(52,199,89,.08);border-color:rgba(52,199,89,.25);}
+.kal-ev.today .kal-ev-when{color:var(--green);font-weight:800;}
+.kal-ev.today .kal-ev-title{color:var(--green);}
+@media(prefers-color-scheme:dark){.kal-ev.today{background:rgba(48,209,88,.10);border-color:rgba(48,209,88,.28);}}
+.kal-ev.union-ev{background:var(--union-l);border-color:rgba(232,0,28,.18);}
+.kal-ev.maja-ev{background:var(--pink-l);border-color:rgba(219,39,119,.15);}
 
 /* Union inside Kalender card */
 .kal-union{margin:0 12px 12px;background:var(--union-l);border:1px solid rgba(232,0,28,.18);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;gap:9px;}
@@ -231,6 +246,20 @@ main{max-width:860px;margin:0 auto;padding:18px 16px 90px;display:flex;flex-dire
     </div>
   </div>
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
+</div>
+
+<div class="sec">🧡 Alma · Schwerin</div>
+<div class="alma" id="almaCard">
+  <div class="alma-left">
+    <div class="alma-emoji">👧</div>
+    <div class="alma-days" id="almaDays">–</div>
+    <div class="alma-days-lbl">Tage</div>
+  </div>
+  <div class="alma-right">
+    <div class="alma-lbl">Nächster Besuch</div>
+    <div class="alma-title" id="almaTitle">Lädt…</div>
+    <div class="alma-date" id="almaDate">–</div>
+  </div>
 </div>
 
 <div class="sec">📱 Apps</div>
@@ -507,23 +536,50 @@ async function loadICAL(){
     const evs=parseICS(txt);
     const today=st(new Date());
 
-    // Filter: no Kids events, no union, from today, max 4
-    const isKids = s => s.toLowerCase().includes('kids bei') || s.toLowerCase().includes('bei dani') || s.toLowerCase().includes('bei paul') || s.toLowerCase().includes('wechsel');
-    const upcoming = evs
-      .filter(e => st(e.date) >= today && e.col !== '#e8001c' && !isKids(e.sum))
-      .sort((a,b) => a.date - b.date)
-      .slice(0, 4);
+    // Keywords to filter out
+    const isKids = s => {
+      const l = s.toLowerCase();
+      return l.includes('kids bei') || l.includes('bei dani') || l.includes('bei paul') || l.includes('wechsel');
+    };
+
+    // Next Maja
+    const maja = evs.filter(e => st(e.date) >= today && e.col === '#db2777').sort((a,b) => a.date-b.date)[0];
+
+    // Next Union
+    const union2 = evs.filter(e => st(e.date) >= today && e.col === '#e8001c').sort((a,b) => a.date-b.date)[0];
+
+    // Other events: filtered, no kids, no union, no maja
+    const others2 = evs
+      .filter(e => st(e.date) >= today && e.col !== '#e8001c' && e.col !== '#db2777' && !isKids(e.sum))
+      .sort((a,b) => a.date-b.date);
+
+    // Build display list: maja first, then others to fill, union last — target ~5 rows
+    const displayEvs = [];
+    if(maja) displayEvs.push({...maja, _type:'maja'});
+    let needed = 4 - displayEvs.length - (union2 ? 1 : 0);
+    others2.slice(0, Math.max(needed, 0)).forEach(e => displayEvs.push({...e, _type:'other'}));
+    if(union2) displayEvs.push({...union2, _type:'union'});
 
     const kalList = document.getElementById('kalEvList');
-    if(upcoming.length === 0){
+    if(displayEvs.length === 0){
       kalList.innerHTML = '<div class="kal-ev"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">Keine Termine geplant</div></div></div>';
     } else {
-      kalList.innerHTML = upcoming.map(e => {
+      kalList.innerHTML = displayEvs.map(e => {
         const when = fmtW(e.date);
         const isToday = when === 'Heute';
-        return `<div class="kal-ev${isToday?' today':''}">
+        const isNext = !isToday && displayEvs.indexOf(e) === (maja ? 1 : 0) && e._type !== 'union';
+        let cls = 'kal-ev';
+        if(isToday) cls += ' today';
+        if(e._type === 'union') cls += ' union-ev';
+        if(e._type === 'maja') cls += ' maja-ev';
+
+        const icon = e._type === 'union' ? '⚽' : e._type === 'maja' ? '💗' : '';
+        const lbl = e._type === 'union' ? '1. FC Union Berlin' : e._type === 'maja' ? 'Mit Maja' : '';
+
+        return `<div class="${cls}">
           <div class="kal-ev-dot" style="background:${e.col}"></div>
           <div class="kal-ev-info">
+            ${lbl ? `<div class="kal-ev-lbl">${icon} ${lbl}</div>` : ''}
             <div class="kal-ev-title">${e.sum}</div>
             <div class="kal-ev-date">${fmtFull(e.date)}</div>
           </div>
@@ -532,12 +588,12 @@ async function loadICAL(){
       }).join('');
     }
 
-    // Next Maja (for reference, keep updating union)
-    const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
+    // Alma
+    loadAlma(evs);
 
-    // Union
-    const union=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    if(union){document.getElementById('unionM').textContent=union.sum;document.getElementById('unionD').textContent=fmtFull(union.date)+' · '+fmtW(union.date);}
+    // Union card below
+    const unionCard = evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
+    if(unionCard){document.getElementById('unionM').textContent=unionCard.sum;document.getElementById('unionD').textContent=fmtFull(unionCard.date)+' · '+fmtW(unionCard.date);}
     else{document.getElementById('unionM').textContent='FSV Mainz vs Union Berlin';document.getElementById('unionD').textContent='Sa. 10. Mai · 19:30 Uhr · Auswärts';}
 
   }catch(e){
@@ -545,6 +601,30 @@ async function loadICAL(){
   }
 }
 loadICAL();
+
+// ── ALMA (Schwerin) ──
+function loadAlma(evs){
+  try{
+    const today = st(new Date());
+    const schwerin = evs
+      .filter(e => st(e.date) >= today && e.sum.toLowerCase().includes('schwerin'))
+      .sort((a,b) => a.date - b.date)[0];
+
+    if(schwerin){
+      const days = diff(today, st(schwerin.date));
+      document.getElementById('almaDays').textContent = days === 0 ? '🎉' : days;
+      document.getElementById('almaTitle').textContent = schwerin.sum;
+      document.getElementById('almaDate').textContent = days === 0 ? 'Heute! 🎉' : fmtFull(schwerin.date) + (days === 1 ? ' · Morgen' : ` · in ${days} Tagen`);
+      if(days === 0){
+        document.getElementById('almaCard').style.borderColor = 'rgba(249,115,22,.35)';
+      }
+    } else {
+      document.getElementById('almaDays').textContent = '?';
+      document.getElementById('almaTitle').textContent = 'Kein Termin geplant';
+      document.getElementById('almaDate').textContent = '–';
+    }
+  }catch(e){}
+}
 
 // ── DRAG & DROP SORT ──
 initDrag();
