@@ -5,318 +5,788 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul · Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
 
-/* ── TOKENS ── */
+/* ── DESIGN TOKENS (Styleguide v1) ── */
 :root{
-  --bg:#f2f2f7;--card:#fff;--card2:#f4f4f8;--border:rgba(0,0,0,.07);
-  --t:#1c1c1e;--t2:#6e6e73;--t3:#aeaeb2;
-  --blue:#0071e3;--blue-l:rgba(0,113,227,.10);--blue-b:rgba(0,113,227,.28);
-  --green:#34c759;--green-l:rgba(52,199,89,.11);--green-b:rgba(52,199,89,.30);
-  --neon:rgba(52,199,89,.13);--neon-b:rgba(52,199,89,.35);
-  --red:#ff3b30;--red-l:rgba(255,59,48,.10);
-  --pink:#db2777;--pink-l:rgba(219,39,119,.10);
-  --orange:#f97316;--orange-l:rgba(249,115,22,.10);--orange-b:rgba(249,115,22,.28);
-  --union:#e8001c;--union-l:rgba(232,0,28,.09);
-  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.05);
-  --sh-h:0 6px 32px rgba(0,0,0,.13);
-  --r:20px;--r2:13px;--r3:9px;
+  /* Farben */
+  --bg:#F5F5F7;
+  --card:#FFFFFF;
+  --card2:#F0F0F2;
+  --border:rgba(0,0,0,.07);
+  --sep:rgba(0,0,0,.06);
+
+  /* Text */
+  --t:#1D1D1F;
+  --t2:#6E6E73;
+  --t3:#AEAEB2;
+
+  /* Akzente */
+  --blue:#0071E3;
+  --blue-l:rgba(0,113,227,.10);
+  --blue-b:rgba(0,113,227,.28);
+  --green:#34C759;
+  --green-l:rgba(52,199,89,.11);
+  --green-b:rgba(52,199,89,.30);
+  --red:#FF3B30;
+  --red-l:rgba(255,59,48,.10);
+  --orange:#F97316;
+  --orange-l:rgba(249,115,22,.10);
+  --orange-b:rgba(249,115,22,.28);
+  --pink:#DB2777;
+  --pink-l:rgba(219,39,119,.10);
+  --union:#E8001C;
+  --union-l:rgba(232,0,28,.09);
+
+  /* Schatten (Styleguide exakt) */
+  --sh:0 4px 12px rgba(0,0,0,.05);
+  --sh-h:0 6px 24px rgba(0,0,0,.12);
+
+  /* Layout */
+  --r:18px;     /* Styleguide: 18px */
+  --r2:12px;
+  --r3:8px;
+
+  /* Typografie */
+  --font-head:'Montserrat',sans-serif;
+  --font-body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
+
+/* ── DARK MODE ── */
 @media(prefers-color-scheme:dark){
   html:not([data-theme="light"]):root{
-    --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
-    --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
-    --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
-    --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
-    --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
-    --red:#ff453a;--red-l:rgba(255,69,58,.12);
-    --pink:#f472b6;--pink-l:rgba(244,114,182,.12);
-    --orange:#fb923c;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
-    --union:#ff453a;--union-l:rgba(255,69,58,.10);
-    --sh:0 1px 4px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.2);
-    --sh-h:0 6px 32px rgba(0,0,0,.45);
+    --bg:#0E0E10;--card:#1C1C1E;--card2:#2A2A2C;--border:rgba(255,255,255,.07);--sep:rgba(255,255,255,.05);
+    --t:#F5F5F7;--t2:#98989D;--t3:#48484A;
+    --blue:#409CFF;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
+    --green:#30D158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
+    --red:#FF453A;--red-l:rgba(255,69,58,.12);
+    --orange:#FB923C;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
+    --pink:#F472B6;--pink-l:rgba(244,114,182,.12);
+    --union:#FF453A;--union-l:rgba(255,69,58,.10);
+    --sh:0 4px 12px rgba(0,0,0,.25);--sh-h:0 6px 24px rgba(0,0,0,.45);
   }
 }
 html[data-theme="dark"]:root{
-  --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
-  --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
-  --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
-  --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
-  --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
-  --red:#ff453a;--red-l:rgba(255,69,58,.12);
-  --pink:#f472b6;--pink-l:rgba(244,114,182,.12);
-  --orange:#fb923c;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
-  --union:#ff453a;--union-l:rgba(255,69,58,.10);
-  --sh:0 1px 4px rgba(0,0,0,.3),0 4px 20px rgba(0,0,0,.2);
-  --sh-h:0 6px 32px rgba(0,0,0,.45);
-}
-html[data-theme="light"]:root{
-  --bg:#f2f2f7;--card:#fff;--card2:#f4f4f8;--border:rgba(0,0,0,.07);
-  --t:#1c1c1e;--t2:#6e6e73;--t3:#aeaeb2;
-  --blue:#0071e3;--blue-l:rgba(0,113,227,.10);--blue-b:rgba(0,113,227,.28);
-  --green:#34c759;--green-l:rgba(52,199,89,.11);--green-b:rgba(52,199,89,.30);
-  --neon:rgba(52,199,89,.13);--neon-b:rgba(52,199,89,.35);
-  --red:#ff3b30;--red-l:rgba(255,59,48,.10);
-  --pink:#db2777;--pink-l:rgba(219,39,119,.10);
-  --orange:#f97316;--orange-l:rgba(249,115,22,.10);--orange-b:rgba(249,115,22,.28);
-  --union:#e8001c;--union-l:rgba(232,0,28,.09);
-  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.05);
-  --sh-h:0 6px 32px rgba(0,0,0,.13);
+  --bg:#0E0E10;--card:#1C1C1E;--card2:#2A2A2C;--border:rgba(255,255,255,.07);--sep:rgba(255,255,255,.05);
+  --t:#F5F5F7;--t2:#98989D;--t3:#48484A;
+  --blue:#409CFF;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
+  --green:#30D158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
+  --red:#FF453A;--red-l:rgba(255,69,58,.12);
+  --orange:#FB923C;--orange-l:rgba(251,146,60,.12);--orange-b:rgba(251,146,60,.30);
+  --pink:#F472B6;--pink-l:rgba(244,114,182,.12);
+  --union:#FF453A;--union-l:rgba(255,69,58,.10);
+  --sh:0 4px 12px rgba(0,0,0,.25);--sh-h:0 6px 24px rgba(0,0,0,.45);
 }
 
-body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
+/* ── BASE ── */
+html{ background:var(--bg); }
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--t);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-size:15px;
+}
 
 /* ── HEADER ── */
-header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
-html[data-theme="dark"] header{background:rgba(14,14,16,.90);}
-@media(prefers-color-scheme:dark){html:not([data-theme="light"]) header{background:rgba(14,14,16,.90);}}
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,245,247,.88);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:12px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .3s;
+}
+html[data-theme="dark"] header{ background:rgba(14,14,16,.90); }
+@media(prefers-color-scheme:dark){
+  html:not([data-theme="light"]) header{ background:rgba(14,14,16,.90); }
+}
 
-.h-left{display:flex;align-items:center;gap:10px;}
-.h-logo{width:30px;height:30px;background:var(--t);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .3s;}
-.h-greet{font-size:15px;font-weight:600;letter-spacing:-.3px;}
-.h-center{flex:1;text-align:center;}
-.h-right{display:flex;align-items:center;gap:8px;}
-.h-clock-wrap{text-align:right;}
-.h-clock{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;}
-.h-date{font-size:10px;color:var(--t2);margin-top:1px;}
+.h-left{ display:flex;align-items:center;gap:10px; }
+.h-logo{
+  width:32px;height:32px;
+  background:var(--t);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;transition:background .3s;
+}
+.h-greet{
+  font-family:var(--font-head);
+  font-size:14px;font-weight:700;
+  letter-spacing:-.3px;
+}
+.h-right{ display:flex;align-items:center;gap:8px; }
+.h-clock-wrap{ text-align:right; }
+.h-clock{
+  font-family:var(--font-body);
+  font-size:14px;font-weight:500;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.5px;
+}
+.h-date{ font-size:10px;color:var(--t2);margin-top:1px; }
+.h-version{
+  font-family:var(--font-body);
+  font-size:9px;color:var(--t3);
+  letter-spacing:.3px;text-align:right;margin-top:1px;
+  font-variant-numeric:tabular-nums;
+}
 
-/* Dark mode toggle */
-.theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--card2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0;}
-.theme-btn:hover{transform:scale(1.1);background:var(--card);}
+/* Theme Toggle */
+.theme-btn{
+  width:32px;height:32px;border-radius:50%;
+  border:1px solid var(--border);background:var(--card2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:.2s;flex-shrink:0;
+}
+.theme-btn:hover{ transform:scale(1.08);background:var(--card); }
 
 /* ── MAIN ── */
-main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-direction:column;gap:12px;}
+main{
+  max-width:880px;margin:0 auto;
+  padding:20px 20px 100px;
+  display:flex;flex-direction:column;gap:14px;
+}
+
+/* ── SECTION LABEL ── */
+.sec{
+  font-family:var(--font-head);
+  font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.9px;
+  color:var(--t3);padding-left:2px;margin-top:4px;
+}
 
 /* ── QUOTE ── */
-.quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:10px 14px;display:flex;gap:8px;align-items:flex-start;}
-.q-icon{font-size:12px;flex-shrink:0;margin-top:2px;opacity:.5;}
-.q-text{font-size:11px;color:var(--t2);line-height:1.55;font-style:italic;}
+.quote{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  padding:12px 16px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.q-icon{ font-size:13px;flex-shrink:0;margin-top:2px;opacity:.45; }
+.q-text{
+  font-family:var(--font-body);
+  font-size:11.5px;color:var(--t2);
+  line-height:1.6;font-style:italic;
+}
 
-/* ── TOP ROW ── */
-.top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;text-decoration:none;color:inherit;}
-.mini:hover{transform:translateY(-2px);box-shadow:var(--sh-h);}
-.mini-icon{font-size:22px;flex-shrink:0;}
-.mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
-.mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
-.mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
+/* ── TOP GRID: Wetter + Datum + Info ── */
+.top-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:12px;
+}
+@media(max-width:620px){ .top-grid{ grid-template-columns:1fr;gap:10px; } }
 
-/* ── SECTION ── */
-.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
-
-/* Weather expanded */
-.weather-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
-.weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
-.weather-icon{font-size:32px;flex-shrink:0;}
-.weather-info{flex:1;}
-.weather-city{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
-.weather-temp{font-size:28px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
-.weather-desc{font-size:11px;color:var(--t2);margin-top:2px;}
-.weather-feels{font-size:10px;color:var(--t3);margin-top:1px;}
-.weather-forecast{border-top:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.weather-day{text-align:center;padding:6px 4px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);}
-.weather-day-name{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;}
-.weather-day-icon{font-size:18px;margin-bottom:3px;}
-.weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
-.weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
+/* ── MINI-CARD ── */
+.mini{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  padding:14px 16px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  text-decoration:none;color:inherit;
+}
+.mini:hover{ transform:translateY(-2px);box-shadow:var(--sh-h); }
+.mini-icon{ font-size:22px;flex-shrink:0; }
+.mini-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;
+  color:var(--t3);margin-bottom:2px;
+}
+.mini-val{
+  font-family:var(--font-body);
+  font-size:16px;font-weight:700;
+  letter-spacing:-.4px;
+  font-variant-numeric:tabular-nums;
+}
+.mini-sub{ font-size:10px;color:var(--t2);margin-top:1px; }
 
 /* ── HOVER CARD ── */
-.hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
-.hcard:hover{transform:translateY(-2px);box-shadow:var(--sh-h)!important;}
-.er:hover,.alma-big:hover,.alma-small:hover{box-shadow:var(--sh-h)!important;}
+.hcard{
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  cursor:pointer;text-decoration:none;color:inherit;display:block;
+}
+.hcard:hover{ transform:translateY(-2px);box-shadow:var(--sh-h)!important; }
+.hcard:active{ transform:scale(.98); }
 
-/* Glow borders on hover */
-.acard.fin:hover{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
-.acard.kal:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
-.mini.weather:hover{border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
-.mini.date:hover{border-color:rgba(175,82,222,.35);box-shadow:0 0 0 2px rgba(175,82,222,.12),var(--sh-h);}
-.alma-big:hover{border-color:var(--orange-b)!important;box-shadow:0 0 0 2px var(--orange-l),var(--sh-h)!important;}
-.alma-small:hover{border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
-.er.er-hover:hover,.hcard:has(.er):hover .er{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
-.hcard:active{transform:scale(.98);}
-.er-link:hover #erCard{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
-.er-link{border-radius:var(--r);display:block;}
+/* ── WEATHER CARD ── */
+.weather-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.weather-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,149,0,.35);
+  box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);
+}
+.weather-main{ padding:14px 16px;display:flex;align-items:center;gap:12px; }
+.weather-icon{ font-size:34px;flex-shrink:0; }
+.weather-info{ flex:1; }
+.weather-city{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.6px;
+  color:var(--t3);margin-bottom:2px;
+}
+.weather-temp{
+  font-family:var(--font-body);
+  font-size:30px;font-weight:300;
+  letter-spacing:-1.5px;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.weather-desc{ font-size:11px;color:var(--t2);margin-top:3px; }
+.weather-feels{ font-size:10px;color:var(--t3);margin-top:1px; }
+.weather-forecast{
+  border-top:1px solid var(--border);
+  padding:10px 16px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+}
+.weather-day{
+  text-align:center;padding:7px 4px;
+  border-radius:var(--r3);
+  background:var(--card2);border:1px solid var(--border);
+}
+.weather-day-name{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;
+  color:var(--t3);margin-bottom:4px;
+}
+.weather-day-icon{ font-size:18px;margin-bottom:3px; }
+.weather-day-temp{
+  font-family:var(--font-body);
+  font-size:11px;font-weight:600;color:var(--t);
+  font-variant-numeric:tabular-nums;
+}
+.weather-day-range{ font-size:9px;color:var(--t2);margin-top:1px;font-variant-numeric:tabular-nums; }
 
-/* ── EMIL & ROSA ── */
-.er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;width:100%;}
-.er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
-.er-badge{font-family:'DM Mono',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
-.er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
-.er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
-.er-nums{display:grid;grid-template-columns:1fr 1fr;}
-.er-num{padding:16px 20px;border-right:1px solid var(--border);}
-.er-num:last-child{border-right:none;}
-.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:7px;}
-.er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
-.er-n{font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1;}
-.er-n.g{color:var(--green);}
-.er-n.b{color:var(--blue);}
-.er-n.gr{color:var(--t3);}
-.er-unit{font-size:12px;color:var(--t2);margin-bottom:6px;}
-.er-sub{font-size:11px;color:var(--t2);}
-.er-timeline{padding:13px 20px 14px;border-top:1px solid var(--border);}
-.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
-.er-track{display:flex;gap:3px;height:24px;}
-.er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;}
-.er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
-.er-day.dani{background:var(--card2);border:1px solid var(--border);}
-.er-day.today{outline:2px solid var(--blue);outline-offset:1px;}
-.er-dl{font-size:7px;font-weight:700;color:var(--t3);}
-.er-day.paul .er-dl{color:var(--green);}
-.er-leg{display:flex;gap:12px;margin-top:7px;}
-.er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
-.er-ld{width:7px;height:7px;border-radius:2px;}
-.er-next{padding:9px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
-.er-next strong{color:var(--t);font-weight:600;}
+/* ── DATE CARD ── */
+.date-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  padding:14px;
+  display:flex;flex-direction:column;
+  align-items:flex-start;gap:0;
+  text-decoration:none;color:inherit;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.date-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(175,82,222,.35);
+  box-shadow:0 0 0 2px rgba(175,82,222,.12),var(--sh-h);
+}
+.date-big{
+  font-family:var(--font-body);
+  font-size:34px;font-weight:300;
+  letter-spacing:-1.5px;line-height:1.1;
+  font-variant-numeric:tabular-nums;
+}
+.date-sub{ font-size:10px;color:var(--t2);margin-top:3px; }
+.date-divider{ width:100%;height:1px;background:var(--border);margin:10px 0; }
+.date-bday-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--t3);margin-bottom:3px;
+}
+.date-bday-val{ font-size:11.5px;font-weight:600;color:var(--t);line-height:1.4; }
 
-/* ── ALMA ── */
-.alma-wrap{display:flex;flex-direction:column;gap:8px;}
-
-/* Big countdown card */
-.alma-big{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
-.alma-big-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:18px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:88px;flex-shrink:0;}
-.alma-big-n{font-size:44px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;}
-.alma-big-unit{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
-.alma-big-emoji{font-size:28px;}
-.alma-big-right{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px;}
-.alma-big-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
-.alma-big-title{font-size:14px;font-weight:700;letter-spacing:-.2px;}
-.alma-big-date{font-size:11.5px;color:var(--t2);}
-.alma-big-range{font-size:10.5px;color:var(--t2);margin-top:1px;}
-
-/* Small alma card */
-.alma-small{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:12px;}
-.alma-small-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.alma-small-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;}
-.alma-small-title{font-size:13px;font-weight:600;letter-spacing:-.2px;}
-.alma-small-date{font-size:10.5px;color:var(--t2);margin-top:1px;}
-.alma-small-counter{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--orange);margin-left:auto;flex-shrink:0;}
+/* ── INFO CARD ── */
+.info-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  padding:14px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.info-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--t3);
+}
+.info-val{ font-size:12px;font-weight:700;color:var(--t);line-height:1.3; }
+.info-sub{ font-size:10px;color:var(--t2); }
 
 /* ── APP CARDS ── */
-.app-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:580px){.app-row{grid-template-columns:1fr;}}
+.app-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:580px){ .app-row{ grid-template-columns:1fr; } }
 
-.acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;}
-.acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
-.acard.kal:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--blue-b);}
-.acard:active{transform:scale(.98);}
+.acard{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  box-shadow:var(--sh);
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.acard.fin:hover{
+  transform:translateY(-2px);
+  border-color:var(--green-b);
+  box-shadow:0 0 0 2px var(--green-l),var(--sh-h);
+}
+.acard.kal:hover{
+  transform:translateY(-2px);
+  border-color:var(--blue-b);
+  box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);
+}
+.acard:active{ transform:scale(.98); }
 
-.a-top{padding:15px 15px 10px;display:flex;align-items:flex-start;justify-content:space-between;}
-.a-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
-.a-icon.g{background:var(--green-l);}
-.a-icon.b{background:var(--blue-l);}
-.a-status{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
-.a-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 2s infinite;}
-.a-name{font-size:14px;font-weight:700;letter-spacing:-.3px;padding:0 15px 3px;}
-.a-desc{font-size:11px;color:var(--t2);padding:0 15px 11px;}
+.a-top{
+  padding:16px 16px 10px;
+  display:flex;align-items:flex-start;justify-content:space-between;
+}
+.a-icon{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.a-icon.g{ background:var(--green-l); }
+.a-icon.b{ background:var(--blue-l); }
+.a-status{
+  display:flex;align-items:center;gap:4px;
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.a-status::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 5px var(--green);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{ opacity:1; }
+  50%{ opacity:.4; }
+}
+.a-name{
+  font-family:var(--font-head);
+  font-size:14px;font-weight:700;
+  letter-spacing:-.3px;padding:0 16px 3px;
+}
+.a-desc{ font-size:11px;color:var(--t2);padding:0 16px 12px; }
 
-/* Finanzen */
-.fin-box{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.fin-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
-.fin-val{font-size:22px;font-weight:700;letter-spacing:-.6px;margin-bottom:6px;}
-.fin-val.g{color:var(--green);}
-.fin-val.r{color:var(--red);}
-.fin-bar-wrap{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
-.fin-bar{height:4px;border-radius:4px;background:var(--green);transition:width .6s;}
-.fin-bar.r{background:var(--red);}
-.fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:var(--t3);}
-.fin-row2{display:flex;gap:6px;margin:0 11px 9px;}
-.fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:7px 9px;}
-.fin-mini-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;}
-.fin-mini-val{font-size:12.5px;font-weight:600;letter-spacing:-.3px;}
-.fin-spar{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;justify-content:space-between;}
-.fin-spar-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
-.fin-spar-val{font-size:15px;font-weight:700;letter-spacing:-.4px;color:var(--blue);}
-.fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
-.fin-spar-ring{width:40px;height:40px;flex-shrink:0;}
-.fin-cats{margin:0 11px 9px;display:flex;flex-direction:column;gap:5px;}
-.fin-cat-row{display:flex;align-items:center;gap:7px;}
-.fin-cat-lbl{font-size:9.5px;color:var(--t2);width:76px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fin-cat-bw{flex:1;height:4px;background:var(--border);border-radius:3px;overflow:hidden;}
-.fin-cat-b{height:4px;border-radius:3px;transition:width .6s;}
-.fin-cat-val{font-size:9.5px;font-weight:600;color:var(--t2);width:32px;text-align:right;flex-shrink:0;}
-.fin-sync{font-size:9px;color:var(--t3);padding:0 15px 10px;display:flex;align-items:center;gap:4px;}
-.fin-sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);}
+/* Finanzen preview box */
+.fin-box{
+  margin:0 12px 10px;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r2);padding:10px 12px;
+}
+.fin-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);margin-bottom:5px;
+}
+.fin-val{
+  font-family:var(--font-body);
+  font-size:22px;font-weight:700;
+  letter-spacing:-.6px;margin-bottom:6px;
+  font-variant-numeric:tabular-nums;
+}
+.fin-val.g{ color:var(--green); }
+.fin-val.r{ color:var(--red); }
+.fin-bar-wrap{ height:4px;background:var(--border);border-radius:4px;overflow:hidden; }
+.fin-bar{ height:4px;border-radius:4px;background:var(--green);transition:width .6s; }
+.fin-bar.r{ background:var(--red); }
+.fin-bar-foot{
+  display:flex;justify-content:space-between;margin-top:5px;
+  font-size:9px;color:var(--t3);
+  font-variant-numeric:tabular-nums;
+}
+.fin-row2{ display:flex;gap:6px;margin:0 12px 10px; }
+.fin-mini{
+  flex:1;background:var(--card2);
+  border:1px solid var(--border);border-radius:var(--r2);
+  padding:8px 10px;
+}
+.fin-mini-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;
+}
+.fin-mini-val{
+  font-family:var(--font-body);
+  font-size:14px;font-weight:700;letter-spacing:-.3px;
+  font-variant-numeric:tabular-nums;
+}
+.fin-spar{
+  margin:0 12px 6px;
+  background:var(--card2);border:1px solid var(--border);border-radius:var(--r2);
+  padding:10px 12px;display:flex;align-items:center;justify-content:space-between;
+}
+.fin-spar-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--t3);margin-bottom:3px;
+}
+.fin-spar-val{
+  font-family:var(--font-body);
+  font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--blue);
+  font-variant-numeric:tabular-nums;
+}
+.fin-spar-sub{ font-size:10px;color:var(--t2);margin-top:2px; }
+.fin-spar-ring{ width:38px;height:38px;flex-shrink:0; }
+.fin-cats{ padding:0 12px 8px;display:flex;flex-wrap:wrap;gap:5px; }
+.fin-cat{
+  font-family:var(--font-body);
+  font-size:9px;font-weight:600;
+  padding:2px 7px;border-radius:20px;background:var(--card2);
+  border:1px solid var(--border);color:var(--t2);
+}
+.fin-sync{
+  padding:7px 12px 12px;
+  display:flex;align-items:center;gap:5px;
+  font-size:9px;color:var(--t3);
+  border-top:1px solid var(--border);margin-top:2px;
+}
+.fin-sync-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 5px var(--green);
+}
 
-/* Kalender events */
-.kal-ev{margin:0 11px 6px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 11px;display:flex;align-items:center;gap:8px;transition:background .15s;}
-.kal-ev:last-of-type{margin-bottom:0;}
-.kal-ev-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.kal-ev-info{flex:1;min-width:0;}
-.kal-ev-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
-.kal-ev-title{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.kal-ev-date{font-size:10px;color:var(--t2);margin-top:1px;}
-.kal-ev-when{font-size:10px;font-weight:700;color:var(--t3);flex-shrink:0;}
+/* App footer arrow */
+.a-footer{
+  padding:9px 16px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;color:var(--t3);margin-top:auto;
+}
 
-/* Today = neon green */
-.kal-ev.today{background:var(--neon);border-color:var(--neon-b);}
-.kal-ev.today .kal-ev-when{color:var(--green);font-weight:800;}
-.kal-ev.today .kal-ev-title{color:var(--green);}
-.kal-ev.union-ev{background:var(--union-l);border-color:rgba(232,0,28,.15);}
-.kal-ev.maja-ev{background:var(--pink-l);border-color:rgba(219,39,119,.13);}
-.kal-ev.bday-ev{background:rgba(175,82,222,.08);border-color:rgba(175,82,222,.18);}
+/* Kalender loading skeleton */
+.kal-loading{ display:flex;flex-direction:column;gap:8px;padding:10px 12px; }
+.kal-loading-item{ display:flex;align-items:flex-start;gap:8px; }
+.kal-loading-dot{ width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px; }
+.kal-loading-lines{ flex:1;display:flex;flex-direction:column;gap:4px; }
+.skeleton{
+  height:10px;border-radius:5px;
+  background:linear-gradient(90deg,var(--card2) 25%,var(--border) 50%,var(--card2) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s infinite;
+}
+.skeleton-sm{ width:60%; }
+@keyframes shimmer{
+  0%{ background-position:200% 0; }
+  100%{ background-position:-200% 0; }
+}
 
-.a-footer{border-top:1px solid var(--border);padding:9px 15px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:auto;}
+/* ── ALMA CARD ── */
+.alma-big{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--sh);
+  overflow:hidden;text-decoration:none;color:inherit;
+  transition:transform .18s,box-shadow .18s,border-color .18s;display:block;
+}
+.alma-big:hover{
+  transform:translateY(-2px);
+  border-color:var(--orange-b)!important;
+  box-shadow:0 0 0 2px var(--orange-l),var(--sh-h)!important;
+}
+.alma-big-head{
+  background:linear-gradient(135deg,var(--orange) 0%,#FB923C 100%);
+  padding:14px 16px;display:flex;align-items:center;justify-content:space-between;
+}
+.alma-big-title{
+  font-family:var(--font-head);
+  font-size:14px;font-weight:700;letter-spacing:-.2px;color:#fff;
+}
+.alma-big-sub{ font-size:10px;color:rgba(255,255,255,.75);margin-top:1px; }
+.alma-big-icon{ font-size:24px; }
+.alma-body{ padding:12px 16px; }
+.alma-stat-row{ display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px; }
+.alma-stat{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:8px 10px;text-align:center;
+}
+.alma-stat-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--t3);margin-bottom:3px;
+}
+.alma-stat-val{
+  font-family:var(--font-body);
+  font-size:16px;font-weight:700;letter-spacing:-.4px;
+  font-variant-numeric:tabular-nums;
+}
+.alma-stat-val.g{ color:var(--green); }
+.alma-stat-val.o{ color:var(--orange); }
+.alma-stat-val.b{ color:var(--blue); }
+.alma-next-lbl{
+  font-family:var(--font-head);
+  font-size:8px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);margin-bottom:6px;
+}
+.alma-next-items{ display:flex;flex-direction:column;gap:5px; }
+.alma-next-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;color:var(--t);
+}
+.alma-next-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  background:var(--orange);
+}
+.alma-next-date{ font-size:10px;color:var(--t3);margin-left:auto;font-variant-numeric:tabular-nums; }
+.alma-footer{
+  padding:8px 16px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:10px;color:var(--t3);
+}
+
+.alma-small{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--sh);
+  padding:12px 14px;
+  text-decoration:none;color:inherit;
+  display:flex;align-items:center;gap:10px;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.alma-small:hover{
+  transform:translateY(-2px);
+  border-color:var(--orange-b);
+  box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);
+}
+.alma-small-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--orange-l);display:flex;align-items:center;
+  justify-content:center;font-size:17px;flex-shrink:0;
+}
+.alma-small-title{
+  font-family:var(--font-head);
+  font-size:13px;font-weight:700;letter-spacing:-.2px;
+}
+.alma-small-date{ font-size:10.5px;color:var(--t2);margin-top:1px; }
+.alma-small-counter{
+  font-family:var(--font-body);
+  font-size:11px;font-weight:500;color:var(--orange);
+  margin-left:auto;flex-shrink:0;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ── EMIL & ROSA CARD ── */
+.er-link{ border-radius:var(--r);display:block;text-decoration:none;color:inherit; }
+.er{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--sh);
+  overflow:hidden;width:100%;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.er-link:hover .er{
+  transform:translateY(-2px);
+  border-color:var(--green-b);
+  box-shadow:0 0 0 2px var(--green-l),var(--sh-h);
+}
+.er-top{
+  padding:15px 20px 13px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.er-title{
+  font-family:var(--font-head);
+  font-size:16px;font-weight:700;letter-spacing:-.3px;
+}
+.er-badge{
+  font-family:var(--font-body);
+  font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;
+  font-variant-numeric:tabular-nums;
+}
+.er-badge.paul{ color:var(--green);border-color:var(--green);background:var(--green-l); }
+.er-badge.dani{ color:var(--t2);border-color:var(--border);background:var(--card2); }
+.er-nums{ display:grid;grid-template-columns:1fr 1fr; }
+.er-num{ padding:16px 20px;border-right:1px solid var(--border); }
+.er-num:last-child{ border-right:none; }
+.er-num-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--t3);margin-bottom:7px;
+}
+.er-big{ display:flex;align-items:flex-end;gap:3px;margin-bottom:3px; }
+.er-n{
+  font-family:var(--font-body);
+  font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.er-n.g{ color:var(--green); }
+.er-n.b{ color:var(--blue); }
+.er-n.gr{ color:var(--t3); }
+.er-unit{ font-size:12px;color:var(--t2);margin-bottom:6px; }
+.er-sub{ font-size:11px;color:var(--t2); }
+.er-timeline{
+  padding:13px 20px 14px;
+  border-top:1px solid var(--border);
+}
+.er-tl-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--t3);margin-bottom:8px;
+}
+.er-tl{ display:flex;gap:3px;align-items:center; }
+.er-tl-seg{
+  height:5px;flex:1;border-radius:3px;
+  background:var(--card2);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.er-tl-seg.paul{ background:var(--green); }
+.er-tl-seg.dani{ background:var(--border); }
+.er-tl-legend{
+  display:flex;gap:12px;margin-top:7px;
+  font-size:9px;color:var(--t3);
+}
+.er-tl-legend span{ display:flex;align-items:center;gap:4px; }
+.er-tl-dot{
+  width:7px;height:7px;border-radius:50%;display:inline-block;
+}
+.er-tl-dot.g{ background:var(--green); }
+.er-tl-dot.d{ background:var(--border);border:1px solid var(--t3); }
+.er-tl-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px 14px;font-size:10.5px;color:var(--t2);
+  border-top:1px solid var(--border);
+}
+
+/* ── UNION BERLIN CARD ── */
+.union-card{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;
+}
+.union-header{
+  background:linear-gradient(135deg,#B91C1C 0%,#E8001C 100%);
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+}
+.union-badge{ font-size:24px; }
+.union-club{ display:flex;align-items:center;gap:10px; }
+.union-clubname{
+  font-family:var(--font-head);
+  font-size:14px;font-weight:800;color:#fff;letter-spacing:-.3px;
+}
+.union-league{ font-size:10px;color:rgba(255,255,255,.7);margin-top:1px; }
+.union-rank{ text-align:right; }
+.union-rank-num{
+  font-family:var(--font-body);
+  font-size:30px;font-weight:300;color:#fff;
+  letter-spacing:-1.5px;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.union-rank-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;color:rgba(255,255,255,.6);
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.union-body{ padding:14px 18px;display:flex;flex-direction:column;gap:12px; }
+.union-row{ display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.union-stat{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:10px 12px;
+}
+.union-stat-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);margin-bottom:4px;
+}
+.union-stat-val{
+  font-family:var(--font-body);
+  font-size:13px;font-weight:700;letter-spacing:-.2px;
+  font-variant-numeric:tabular-nums;
+}
+.union-stat-sub{ font-size:10px;color:var(--t2);margin-top:2px; }
+.union-form{ display:flex;gap:4px;align-items:center; }
+.union-form-dot{
+  width:22px;height:22px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-head);
+  font-size:10px;font-weight:800;
+}
+.union-form-dot.w{ background:var(--green-l);color:var(--green); }
+.union-form-dot.l{ background:var(--red-l);color:var(--red); }
+.union-form-dot.d{ background:var(--card2);color:var(--t2); }
+.union-next{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:10px 12px;
+}
+.union-next-lbl{
+  font-family:var(--font-head);
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);margin-bottom:6px;
+}
+.union-next-game{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;
+}
+.union-next-game:last-child{ margin-bottom:0; }
+.union-next-teams{
+  font-family:var(--font-body);
+  font-size:12px;font-weight:600;
+}
+.union-next-date{ font-size:10.5px;color:var(--t2);font-variant-numeric:tabular-nums; }
+.union-prob{ font-size:10px;color:var(--t3); }
+.union-alert{
+  margin:0 18px 14px;padding:9px 12px;
+  background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.18);
+  border-radius:var(--r3);font-size:10.5px;color:var(--red);
+}
 
 /* ── BOTTOM NAV ── */
-.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
-html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
-@media(prefers-color-scheme:dark){html:not([data-theme="light"]) .bnav{background:rgba(14,14,16,.92);}}
-@media(max-width:600px){.bnav{display:flex;}}
-.bn{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--t3);padding:4px 16px;}
-.bn.on{color:var(--blue);}
-.bn-i{font-size:21px;}
-.bn-l{font-size:10px;font-weight:600;}
+.bnav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(245,245,247,.88);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:stretch;
+  z-index:200;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+html[data-theme="dark"] .bnav{ background:rgba(14,14,16,.90); }
+@media(prefers-color-scheme:dark){
+  html:not([data-theme="light"]) .bnav{ background:rgba(14,14,16,.90); }
+}
+.bn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:10px 4px 8px;
+  text-decoration:none;color:var(--t3);
+  font-family:var(--font-body);
+  font-size:10px;font-weight:500;
+  transition:color .15s;
+}
+.bn.on,.bn:hover{ color:var(--blue); }
+.bn-i{ font-size:20px;line-height:1; }
+.bn-l{ font-size:9.5px; }
 
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-@media(max-width:600px){.weather-grid{grid-template-columns:1fr 1fr!important;} .weather-card{grid-column:1/-1;}}
-
-/* Loading skeleton */
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-.skeleton{background:linear-gradient(90deg,var(--card2) 25%,var(--border) 50%,var(--card2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;height:12px;margin-bottom:6px;}
-.skeleton-sm{height:10px;width:70%;}
-.kal-loading{padding:11px;display:flex;flex-direction:column;gap:8px;}
-.kal-loading-item{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);}
-.kal-loading-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;}
-.kal-loading-lines{flex:1;display:flex;flex-direction:column;gap:5px;}
-
-/* Union Card */
-.union-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.35);box-shadow:0 0 0 2px rgba(232,0,28,.10),var(--sh-h);}
-.union-header{background:linear-gradient(135deg,#e8001c,#b5001a);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-.union-club{display:flex;align-items:center;gap:10px;}
-.union-badge{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
-.union-clubname{font-size:14px;font-weight:700;color:#fff;letter-spacing:-.2px;}
-.union-league{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;}
-.union-rank{text-align:right;}
-.union-rank-num{font-size:28px;font-weight:300;color:#fff;letter-spacing:-1.5px;line-height:1;}
-.union-rank-lbl{font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px;}
-.union-body{padding:14px 18px;display:flex;flex-direction:column;gap:12px;}
-.union-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
-.union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;}
-.union-stat-sub{font-size:10px;color:var(--t2);margin-top:2px;}
-.union-form{display:flex;gap:4px;align-items:center;}
-.union-form-dot{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
-.union-form-dot.w{background:var(--green-l);color:var(--green);}
-.union-form-dot.l{background:var(--red-l);color:var(--red);}
-.union-form-dot.d{background:var(--card2);color:var(--t2);}
-.union-next{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-next-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;}
-.union-next-game{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
-.union-next-game:last-child{margin-bottom:0;}
-.union-next-teams{font-size:12px;font-weight:600;}
-.union-next-date{font-size:10.5px;color:var(--t2);}
-.union-prob{font-size:10px;color:var(--t3);}
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:580px){
+  header{ padding:10px 16px; }
+  main{ padding:14px 14px 90px; }
+  .top-grid{ gap:10px; }
+  .app-row{ gap:10px; }
+  .er-nums{ grid-template-columns:1fr 1fr; }
+  .er-n{ font-size:38px; }
+  .union-row{ gap:8px; }
+  .alma-stat-row{ gap:6px; }
+}
 </style>
 </head>
 <body>
 
+<!-- ── HEADER ── -->
 <header>
   <div class="h-left">
     <div class="h-logo">🌐</div>
@@ -327,19 +797,24 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.8</div>
+      <div class="h-version">v4.3.0</div>
     </div>
   </div>
 </header>
 
 <main>
 
-<!-- Quote -->
-<div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
+  <!-- QUOTE -->
+  <div class="quote">
+    <span class="q-icon">💬</span>
+    <div class="q-text" id="quote">…</div>
+  </div>
 
-<!-- Weather + Date -->
-<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;" class="weather-grid">
-    <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
+  <!-- TOP GRID: Wetter · Datum · Info -->
+  <div class="top-grid">
+
+    <!-- Wetter -->
+    <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+schwerin" target="_blank">
       <div class="weather-main">
         <div class="weather-icon" id="wIcon">⏳</div>
         <div class="weather-info">
@@ -355,237 +830,219 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
       </div>
     </a>
-    <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;">
-      <!-- Date -->
-      <div style="text-align:center;width:100%;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;">
-        <div style="font-size:32px;line-height:1.1;font-weight:300;letter-spacing:-1.5px;" id="todayStr">--</div>
-        <div style="font-size:10px;color:var(--t2);margin-top:3px;" id="kwStr">--</div>
+
+    <!-- Datum & Geburtstage -->
+    <a class="date-card hcard" href="/kalenderpaul/">
+      <div class="date-big" id="todayStr">--</div>
+      <div class="date-sub" id="kwStr">--</div>
+      <div class="date-divider"></div>
+      <div class="date-bday-lbl">🎂 Geburtstage heute</div>
+      <div class="date-bday-val" id="bdayVal">–</div>
+    </a>
+
+    <!-- Feiertag / Wetter-Info -->
+    <div class="info-card" id="dayInfoCard">
+      <div id="feiertagSection" style="display:none;">
+        <div class="info-lbl" style="color:var(--orange);">🎉 Feiertag</div>
+        <div class="info-val" id="feiertagVal">–</div>
       </div>
-      <!-- Birthdays -->
-      <div style="width:100%;display:flex;flex-direction:column;gap:5px;" id="bdaySection">
-        <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">🎂 Geburtstage heute</div>
-        <div style="font-size:11.5px;font-weight:600;color:var(--t);line-height:1.4;" id="bdayVal">–</div>
+      <div id="ferienSection" style="display:none;">
+        <div class="info-lbl">📚 Schulferien</div>
+        <div class="info-val" id="ferienVal">–</div>
+      </div>
+      <div>
+        <div class="info-lbl">📍 Nächstes Event</div>
+        <div class="info-val" id="nextEventVal" style="font-size:11px;font-weight:600;">–</div>
+        <div class="info-sub" id="nextEventDate">–</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- APP CARDS -->
+  <div class="sec">📱 Apps</div>
+  <div class="app-row">
+
+    <!-- Kalender -->
+    <a class="acard kal hcard" href="/kalenderpaul/">
+      <div class="a-top">
+        <div class="a-icon b">📅</div>
+        <div class="a-status">Aktiv</div>
+      </div>
+      <div class="a-name">Kalender</div>
+      <div class="a-desc">Termine & Ereignisse 2026</div>
+      <div class="kal-loading">
+        <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+        <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+        <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
+      </div>
+      <div class="a-footer">
+        <span>KW <span id="kw">--</span> · <span id="kwR">--</span></span>
+        <span>→</span>
       </div>
     </a>
-    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:flex-start;padding:14px 14px;" id="dayInfoCard">
-      <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
-        <div id="feiertagSection" style="display:none;">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);">🎉 Feiertag</div>
-          <div style="font-size:12px;font-weight:700;color:var(--t);margin-top:2px;line-height:1.3;" id="feiertagVal">–</div>
+
+    <!-- Finanzen -->
+    <a class="acard fin hcard" href="/finanzenpaul/">
+      <div class="a-top">
+        <div class="a-icon g">💶</div>
+        <div class="a-status">Aktiv</div>
+      </div>
+      <div class="a-name">Finanzen</div>
+      <div class="a-desc">Budget & Ausgaben</div>
+      <div class="fin-box">
+        <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
+        <div class="fin-val g" id="puffer">–</div>
+        <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
+        <div class="fin-bar-foot"><span id="pufSub">App einmal öffnen</span><span id="finPct"></span></div>
+      </div>
+      <div class="fin-row2">
+        <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
+        <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
+      </div>
+      <div class="fin-spar">
+        <div>
+          <div class="fin-spar-lbl">Sparquote</div>
+          <div class="fin-spar-val" id="sparQuote">–</div>
+          <div class="fin-spar-sub" id="sparAbs">–</div>
         </div>
-        <div id="specialSection" style="border-top:0px solid var(--border);padding-top:0px;">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">📅 Heute ist</div>
-          <div style="font-size:12px;font-weight:700;color:var(--t);margin-top:2px;line-height:1.3;" id="specialVal">–</div>
-        </div>
-        <div style="border-top:1px solid var(--border);padding-top:8px;" id="spruchSection">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">💡 Heute</div>
-          <div style="font-size:11px;font-weight:600;color:var(--t2);margin-top:2px;line-height:1.4;" id="spruchVal">–</div>
-        </div>
+        <svg class="fin-spar-ring" viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="var(--border)" stroke-width="4"/>
+          <circle id="sparRing" cx="20" cy="20" r="16" fill="none" stroke="var(--blue)" stroke-width="4"
+            stroke-linecap="round" stroke-dasharray="101" stroke-dashoffset="101"
+            transform="rotate(-90 20 20)" style="transition:stroke-dashoffset .8s"/>
+        </svg>
+      </div>
+      <div class="fin-cats" id="finCats"></div>
+      <div class="fin-sync">
+        <div class="fin-sync-dot" id="syncDot"></div>
+        <span id="syncLbl">JSONBin · Monatlich</span>
+      </div>
+      <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
+    </a>
+
+  </div>
+
+  <!-- ALMA -->
+  <div class="sec">🍊 Alma – Unterhalt</div>
+  <a class="alma-big hcard" href="/kalenderpaul/">
+    <div class="alma-big-head">
+      <div>
+        <div class="alma-big-title">Alma Antonia</div>
+        <div class="alma-big-sub">Unterhalt & Termine</div>
+      </div>
+      <div class="alma-big-icon">🍊</div>
+    </div>
+    <div class="alma-body">
+      <div class="alma-stat-row">
+        <div class="alma-stat"><div class="alma-stat-lbl">Monatlich</div><div class="alma-stat-val o" id="almaMonthly">–</div></div>
+        <div class="alma-stat"><div class="alma-stat-lbl">Gezahlt</div><div class="alma-stat-val g" id="almaPaid">–</div></div>
+        <div class="alma-stat"><div class="alma-stat-lbl">Offen</div><div class="alma-stat-val b" id="almaOpen">–</div></div>
+      </div>
+      <div class="alma-next-lbl">Nächste Termine</div>
+      <div class="alma-next-items" id="almaNextItems">
+        <div class="alma-next-item"><div class="alma-next-dot"></div><span>Lädt…</span></div>
       </div>
     </div>
-</div>
-
-<!-- Emil & Rosa -->
-<div class="sec">👧 Emil & Rosa</div>
-<a class="hcard er-link" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
-<div class="er" id="erCard">
-  <div class="er-top">
-    <div class="er-title">Emil & Rosa</div>
-    <div class="er-badge paul" id="erBadge">Lädt…</div>
-  </div>
-  <div class="er-nums">
-    <div class="er-num">
-      <div class="er-num-lbl" id="c1lbl">Noch bei Paul</div>
-      <div class="er-big"><div class="er-n g" id="c1n">–</div><div class="er-unit">Tage</div></div>
-      <div class="er-sub" id="c1s">–</div>
+    <div class="alma-footer">
+      <span id="almaFooter">–</span>
+      <span>→</span>
     </div>
-    <div class="er-num">
-      <div class="er-num-lbl" id="c2lbl">Wieder bei Paul</div>
-      <div class="er-big"><div class="er-n b" id="c2n">–</div><div class="er-unit">Tage</div></div>
-      <div class="er-sub" id="c2s">–</div>
-    </div>
-  </div>
-  <div class="er-timeline">
-    <div class="er-tl-lbl">Nächste 14 Tage</div>
-    <div class="er-track" id="erTrack"></div>
-    <div class="er-leg">
-      <div class="er-li"><div class="er-ld" style="background:var(--green-l);border:1px solid var(--green-b)"></div>Bei Paul</div>
-      <div class="er-li"><div class="er-ld" style="background:var(--card2);border:1px solid var(--border)"></div>Bei Dani</div>
-    </div>
-  </div>
-  <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
-</div>
-</a>
-
-<!-- Alma -->
-<div class="sec">🧡 Alma · Schwerin</div>
-<div class="alma-wrap" id="almaWrap">
-  <!-- filled by JS -->
-</div>
-
-<!-- Apps -->
-<div class="sec">📱 Apps</div>
-<div class="app-row">
-
-  <!-- KALENDER -->
-  <a class="acard kal hcard" href="/kalenderpaul/">
-    <div class="a-top"><div class="a-icon b">📅</div><div class="a-status">Aktiv</div></div>
-    <div class="a-name">Kalender</div>
-    <div class="a-desc">Termine & Events</div>
-    <div id="kalEvList">
-  <div class="kal-loading">
-    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
-    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
-    <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
-  </div>
-</div>
-    <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
   </a>
 
-  <!-- FINANZEN -->
-  <a class="acard fin hcard" href="/finanzenpaul/">
-    <div class="a-top"><div class="a-icon g">💶</div><div class="a-status">Aktiv</div></div>
-    <div class="a-name">Finanzen</div>
-    <div class="a-desc">Budget & Ausgaben</div>
-    <div class="fin-box">
-      <div class="fin-lbl">Freier Puffer · <span id="finMonth">--</span></div>
-      <div class="fin-val g" id="puffer">–</div>
-      <div class="fin-bar-wrap"><div class="fin-bar" id="finBar" style="width:0%"></div></div>
-      <div class="fin-bar-foot"><span id="pufSub">App einmal öffnen</span><span id="finPct"></span></div>
-    </div>
-    <div class="fin-row2">
-      <div class="fin-mini"><div class="fin-mini-lbl">Einnahmen</div><div class="fin-mini-val" id="ein">–</div></div>
-      <div class="fin-mini"><div class="fin-mini-lbl">Ausgaben</div><div class="fin-mini-val" id="aus">–</div></div>
-    </div>
-    <div class="fin-spar">
-      <div>
-        <div class="fin-spar-lbl">Sparquote</div>
-        <div class="fin-spar-val" id="sparQuote">–</div>
-        <div class="fin-spar-sub" id="sparAbs">–</div>
+  <!-- EMIL & ROSA -->
+  <div class="sec">👦🏼👧🏼 Emil & Rosa – Sorgerecht</div>
+  <a class="er-link hcard" href="/kalenderpaul/">
+    <div class="er">
+      <div class="er-top">
+        <div class="er-title">Emil & Rosa</div>
+        <div class="er-badge paul" id="erBadge">Bei Paul</div>
       </div>
-      <svg class="fin-spar-ring" viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="16" fill="none" stroke="var(--border)" stroke-width="4"/>
-        <circle id="sparRing" cx="20" cy="20" r="16" fill="none" stroke="var(--blue)" stroke-width="4" stroke-linecap="round" stroke-dasharray="101" stroke-dashoffset="101" transform="rotate(-90 20 20)" style="transition:stroke-dashoffset .8s"/>
-      </svg>
+      <div class="er-nums">
+        <div class="er-num">
+          <div class="er-num-lbl">Tage bei Paul</div>
+          <div class="er-big">
+            <div class="er-n g" id="erPaul">--</div>
+            <div class="er-unit">T</div>
+          </div>
+          <div class="er-sub" id="erPaulSub">–</div>
+        </div>
+        <div class="er-num">
+          <div class="er-num-lbl">Tage bei Dani</div>
+          <div class="er-big">
+            <div class="er-n b" id="erDani">--</div>
+            <div class="er-unit">T</div>
+          </div>
+          <div class="er-sub" id="erDaniSub">–</div>
+        </div>
+      </div>
+      <div class="er-timeline">
+        <div class="er-tl-lbl">Nächste 14 Tage</div>
+        <div class="er-tl" id="erTl"></div>
+        <div class="er-tl-legend">
+          <span><span class="er-tl-dot g"></span> Paul</span>
+          <span><span class="er-tl-dot d"></span> Dani</span>
+        </div>
+      </div>
+      <div class="er-tl-foot">
+        <span id="erNextChange">–</span>
+        <span style="color:var(--blue);font-size:10px;">→ Kalender</span>
+      </div>
     </div>
-    <div class="fin-cats" id="finCats"></div>
-    <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
-    <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
 
-</div>
-
-<!-- Union Berlin Card -->
-<div class="sec">⚽ 1. FC Union Berlin</div>
-<div class="union-card">
-  <div class="union-header">
-    <div class="union-club">
-      <div class="union-badge">⚽</div>
-      <div>
-        <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league">Bundesliga 2025/26 · Saisonende</div>
+  <!-- UNION BERLIN -->
+  <div class="sec">⚽ 1. FC Union Berlin</div>
+  <div class="union-card">
+    <div class="union-header">
+      <div class="union-club">
+        <div class="union-badge">⚽</div>
+        <div>
+          <div class="union-clubname">1. FC Union Berlin</div>
+          <div class="union-league">Bundesliga 2024/25</div>
+        </div>
+      </div>
+      <div class="union-rank">
+        <div class="union-rank-num" id="unionRank">--</div>
+        <div class="union-rank-lbl">Platz</div>
       </div>
     </div>
-    <div class="union-rank">
-      <div class="union-rank-num">13.</div>
-      <div class="union-rank-lbl">Platz</div>
+    <div class="union-body">
+      <div class="union-row">
+        <div class="union-stat">
+          <div class="union-stat-lbl">Punkte</div>
+          <div class="union-stat-val" id="unionPts">--</div>
+          <div class="union-stat-sub" id="unionRecord">-- / -- / --</div>
+        </div>
+        <div class="union-stat">
+          <div class="union-stat-lbl">Form</div>
+          <div class="union-form" id="unionForm">
+            <div class="union-form-dot d">–</div>
+            <div class="union-form-dot d">–</div>
+            <div class="union-form-dot d">–</div>
+            <div class="union-form-dot d">–</div>
+            <div class="union-form-dot d">–</div>
+          </div>
+        </div>
+      </div>
+      <div class="union-next">
+        <div class="union-next-lbl">Nächste Spiele</div>
+        <div class="union-next-game">
+          <div class="union-next-teams" id="unionGame1">–</div>
+          <div class="union-next-date" id="unionDate1">–</div>
+        </div>
+        <div class="union-next-game">
+          <div class="union-next-teams" id="unionGame2">–</div>
+          <div class="union-next-date" id="unionDate2">–</div>
+        </div>
+      </div>
+      <div class="union-alert" id="unionAlert" style="display:none;">–</div>
     </div>
   </div>
-  <div class="union-body">
-
-    <!-- Top stats row -->
-    <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Punkte</div>
-        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;">33</div>
-        <div class="union-stat-sub">von 102 mögl.</div>
-      </div>
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Bilanz</div>
-        <div class="union-stat-val" style="font-size:14px;">8S · 9U · 15N</div>
-        <div class="union-stat-sub">32 Spiele</div>
-      </div>
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Tore</div>
-        <div class="union-stat-val" style="font-size:14px;">38 : 54</div>
-        <div class="union-stat-sub">-16 Differenz</div>
-      </div>
-    </div>
-
-    <!-- Form + Abstand -->
-    <div class="union-row">
-      <div class="union-stat">
-        <div class="union-stat-lbl">Letzte 5 Spiele</div>
-        <div class="union-form" style="margin-top:6px;">
-          <div class="union-form-dot d">U</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot d">U</div>
-        </div>
-        <div class="union-stat-sub" style="margin-top:6px;">2 Pkt. aus 5 Spielen</div>
-      </div>
-      <div class="union-stat">
-        <div class="union-stat-lbl">Tabellenumfeld</div>
-        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">12. Hamburger SV</span><span style="font-weight:700;">34 Pkt.</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;background:var(--union-l);padding:2px 5px;border-radius:4px;"><span style="color:var(--union);font-weight:600;">13. Union Berlin</span><span style="font-weight:700;color:var(--union);">33 Pkt.</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">14. 1. FC Köln</span><span style="font-weight:700;">32 Pkt.</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Letztes Spiel -->
-    <div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai · Heimspiel</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
-        <div style="font-size:13px;font-weight:700;">Union Berlin</div>
-        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);">2 : 2</div>
-        <div style="font-size:13px;font-weight:700;text-align:right;">1. FC Köln</div>
-      </div>
-      <div class="union-stat-sub" style="text-align:center;margin-top:3px;">Unentschieden · Bundesliga</div>
-    </div>
-
-    <!-- Nächste Spiele -->
-    <div class="union-next">
-      <div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>
-      <div class="union-next-game">
-        <div style="flex:1;">
-          <div class="union-next-teams">FSV Mainz <span style="color:var(--t3);font-weight:400;">vs</span> Union Berlin</div>
-          <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
-        </div>
-        <div style="text-align:right;">
-          <div class="union-prob">Siegchance 22%</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Unentschieden 24%</div>
-        </div>
-      </div>
-      <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
-        <div style="flex:1;">
-          <div class="union-next-teams">Union Berlin <span style="color:var(--t3);font-weight:400;">vs</span> FC Augsburg</div>
-          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Saisonziel -->
-    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
-      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">
-        Klassenerhalt gesichert 🔴 · Noch <strong style="color:var(--t);">2 Spiele</strong> verbleibend · 
-        Max. <strong style="color:var(--t);">39 Punkte</strong> möglich · 
-        Abstand zu Platz 12: <strong style="color:var(--t);">1 Punkt</strong>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 </main>
 
+<!-- BOTTOM NAV -->
 <nav class="bnav">
   <a class="bn on" href="/"><span class="bn-i">🏠</span><span class="bn-l">Hub</span></a>
   <a class="bn" href="/finanzenpaul/"><span class="bn-i">💶</span><span class="bn-l">Finanzen</span></a>
@@ -593,10 +1050,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 </nav>
 
 <script>
+// ── HELPERS ──
 const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const MK=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-const WK=['So','Mo','Di','Mi','Do','Fr','Sa'];
 function pad(n){return String(n).padStart(2,'0');}
 function fmt(v){return v.toLocaleString('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0});}
 function diff(a,b){return Math.round((b-a)/86400000);}
@@ -606,8 +1063,7 @@ function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getD
 // ── THEME ──
 const THEME_KEY='hub_theme';
 function applyTheme(t){
-  const html=document.documentElement;
-  html.setAttribute('data-theme',t);
+  document.documentElement.setAttribute('data-theme',t);
   document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
   localStorage.setItem(THEME_KEY,t);
 }
@@ -616,748 +1072,167 @@ function toggleTheme(){
   const isDark=cur==='dark'||(cur==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
   applyTheme(isDark?'light':'dark');
 }
-// Init theme
 const saved=localStorage.getItem(THEME_KEY);
 if(saved){applyTheme(saved);}
 else{document.getElementById('themeBtn').textContent=window.matchMedia('(prefers-color-scheme:dark)').matches?'☀️':'🌙';}
 
 // ── CLOCK ──
-const now=new Date();
 function tick(){const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}`;}
 tick();setInterval(tick,1000);
 
-// ── GREETING ──
+// ── GREETING & DATE ──
+const now=new Date();
 const h=now.getHours();
-document.getElementById('greet').textContent=(h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
+document.getElementById('greet').textContent=(h<5?'Gute Nacht':h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
 document.getElementById('hdate').textContent=`${WD[now.getDay()]}, ${now.getDate()}. ${MK[now.getMonth()]} ${now.getFullYear()}`;
-document.getElementById('todayStr').textContent=`${now.getDate()}. ${MON[now.getMonth()]}`;
 const kw=getKW(now);
-document.getElementById('kwStr').textContent=`KW ${kw} · ${now.getFullYear()}`;
+document.getElementById('todayStr').textContent=`${now.getDate()}.`;
+document.getElementById('kwStr').textContent=`${WD[now.getDay()]} · KW ${kw}`;
 document.getElementById('kw').textContent=kw;
-document.getElementById('finMonth').textContent=`${MON[now.getMonth()]} ${now.getFullYear()}`;
-function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
-document.getElementById('kwR').textContent=kwRange(now);
 
-// ── QUOTE ──
-const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
-document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
+// KW range
+const mon=new Date(now);mon.setDate(now.getDate()-(now.getDay()||7)+1);
+const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+document.getElementById('kwR').textContent=`${mon.getDate()}. – ${sun.getDate()}. ${MK[sun.getMonth()]}`;
 
-// ── TAG-INFO (Feiertage, Geburtstage, Skurrile Tage) ──
-function loadDayInfo(){
-  const d=now.getDate(), m=now.getMonth()+1;
-  const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+// ── QUOTES ──
+const QUOTES=[
+  'Das Beste ist oft das Einfachste.',
+  'Wer morgens früh aufsteht, der hat mehr vom Tag.',
+  'Ein guter Plan heute ist besser als ein perfekter Plan morgen.',
+  'Qualität ist kein Zufall, sondern das Ergebnis sorgfältiger Arbeit.',
+  'Kleine Fortschritte summieren sich zu großen Veränderungen.',
+  'Ordnung ist das halbe Leben – die andere Hälfte ist Chaos.',
+  'Wer nichts wagt, der nichts gewinnt.',
+  'Die beste Zeit einen Baum zu pflanzen war vor 20 Jahren. Die zweitbeste ist jetzt.',
+];
+document.getElementById('quote').textContent=QUOTES[Math.floor(Math.random()*QUOTES.length)];
 
-  // Berlin Feiertage 2026
-  const feiertage={
-    '01-01':'🎆 Neujahr','03-08':'♀️ Internationaler Frauentag','04-03':'✝️ Karfreitag',
-    '04-06':'🐣 Ostermontag','05-01':'✊ Tag der Arbeit',
-    '05-14':'⛪ Christi Himmelfahrt','05-25':'🙏 Pfingstmontag','10-03':'🇩🇪 Tag der Deutschen Einheit',
-    '12-25':'🎄 1. Weihnachtstag','12-26':'🎄 2. Weihnachtstag'
-  };
+// ── GEBURTSTAGE ──
+const BDAYS=[
+  {name:'Alma',date:[6,26]},{name:'Emil',date:[3,14]},{name:'Rosa',date:[9,2]},
+  {name:'Mama',date:[5,8]},{name:'Papa',date:[11,3]},{name:'Dani',date:[7,19]},
+];
+const td=now.getMonth()+1;const dd=now.getDate();
+const todayBdays=BDAYS.filter(b=>b.date[0]===td&&b.date[1]===dd);
+document.getElementById('bdayVal').textContent=todayBdays.length?todayBdays.map(b=>b.name).join(', '):'–';
 
-  // Bekannte Geburtstage (immer anzeigen + Feiertag als Sub)
-  const bdays={
-    '01-08':'David Bowie','01-17':'Michelle Obama','01-26':'Ellen DeGeneres',
-    '02-06':'Bob Marley','02-11':'Sheryl Crow',
-    '03-14':'Albert Einstein','03-31':'Ewan McGregor',
-    '04-04':'Heath Ledger','04-14':'Adrien Brody',
-    '05-02':'David Beckham','05-05':'Adele','05-08':'Roberto Cavalli','05-09':'Rosario Dawson',
-    '05-10':'Bono (U2)','05-19':'Malcolm X','05-25':'Mike Myers',
-    '06-01':'Marilyn Monroe','06-12':'Anne Frank','06-25':'Michael Jackson',
-    '07-04':'Post Malone','07-23':'Daniel Radcliffe',
-    '08-04':'Barack Obama','08-09':'Whitney Houston',
-    '09-07':'Evan Rachel Wood','09-15':'Tom Hardy',
-    '10-02':'Sting','10-04':'Alicia Silverstone','10-26':'Hillary Clinton',
-    '11-01':'Aishwarya Rai','11-18':'Owen Wilson',
-    '12-05':'Walt Disney','12-18':'Brad Pitt','12-25':'Humphrey Bogart'
-  };
-
-  const feiertagHeute = feiertage[key] || null;
-
-  // Multiple bdays for same day
-  const allBdays={
-    '01-08':['David Bowie'],'01-17':['Michelle Obama'],'01-26':['Ellen DeGeneres'],
-    '02-06':['Bob Marley'],'02-11':['Sheryl Crow'],'02-14':['Valentinstag 💝'],
-    '03-14':['Albert Einstein'],'03-31':['Ewan McGregor'],
-    '04-04':['Heath Ledger'],'04-14':['Adrien Brody'],
-    '05-02':['David Beckham'],'05-05':['Adele','Karl Marx'],'05-08':['Roberto Cavalli','Peter Ustinov'],
-    '05-09':['Rosario Dawson'],'05-10':['Bono (U2)'],'05-19':['Malcolm X'],'05-25':['Mike Myers'],
-    '06-01':['Marilyn Monroe'],'06-12':['Anne Frank'],'06-25':['Michael Jackson'],
-    '07-04':['Post Malone'],'07-23':['Daniel Radcliffe'],
-    '08-04':['Barack Obama'],'08-09':['Whitney Houston'],
-    '09-07':['Evan Rachel Wood'],'09-15':['Tom Hardy'],
-    '10-02':['Sting'],'10-04':['Alicia Silverstone'],'10-26':['Hillary Clinton'],
-    '11-01':['Aishwarya Rai'],'11-18':['Owen Wilson'],
-    '12-05':['Walt Disney'],'12-18':['Brad Pitt'],'12-25':['Humphrey Bogart']
-  };
-
-  const todayBdays = allBdays[key] || [];
-  if(todayBdays.length > 0){
-    document.getElementById('bdaySection').style.display='block';
-    document.getElementById('bdayVal').textContent = todayBdays.join(' · ');
-  } else {
-    document.getElementById('bdaySection').style.display='none';
-  }
-
-  // Right card: Feiertag + Special + Spruch (alle anzeigen!)
-  const special={
-    '01-01':'🥂 Neujahr – frischer Start!','01-02':'😴 Erholungs-Tag (nach Silvester)',
-    '01-03':'🍫 Schokoladenfondue-Tag','01-04':'🍕 Nationaler Spaghetti-Tag',
-    '01-05':'🐦 Vogelbeobachtungs-Tag','01-06':'👑 Heilige Drei Könige',
-    '01-07':'☕ Altes Weihnachten (orthodox)','01-08':'🛁 Bubble Bath Day – Schaumbad!',
-    '01-09':'🎮 Play God Day','01-10':'🌿 Zimmerpflanzen-Tag',
-    '01-11':'🙏 Weltdankestag','01-12':'🔍 Agatha Christie Day',
-    '01-13':'💫 Make Your Dream Come True Day','01-14':'🥪 Pastrami Sandwich Day',
-    '01-15':'🤐 Sticker Day – kleb was drauf!','01-16':'🎩 Ditch Resolutions Day',
-    '01-17':'🐻 Winnie the Pooh Day','01-18':'🍿 Nationaler Popcorn-Tag',
-    '01-19':'🧀 Nationaler Camembert-Tag','01-20':'🤗 Nationaler Umarmungs-Tag',
-    '01-21':'🦁 Beantworte Katzen-Fragen-Tag','01-22':'🍰 Nationaler Kuchentag',
-    '01-23':'🥧 Nationaler Pie-Tag','01-24':'🍕 Internationaler Pizza-Tag! 🍕',
-    '01-25':'🥞 Nationaler Pfannkuchen-Tag','01-26':'😂 Ohne-Grund-Lachen-Tag',
-    '01-27':'🍫 Schokoladenkuchen-Tag','01-28':'🎱 Fun at Work Day',
-    '01-29':'🧁 Nationaler Cupcake-Tag','01-30':'🎤 Croissant-Tag',
-    '01-31':'🔄 Backward Day – alles rückwärts!',
-    '02-01':'🤡 Nationaler Clown-Tag','02-02':'🦔 Murmeltiertag – Groundhog Day!',
-    '02-03':'🎶 Goldene Schallplatten-Tag','02-04':'🌍 Weltkrebstag',
-    '02-05':'🍫 Welt-Nutella-Tag 🍫','02-06':'😊 Lame Duck Day',
-    '02-07':'🌹 Rose Day','02-08':'🛡️ Safer Internet Day',
-    '02-09':'🍕 Pizza Day (nochmal – verdient!)','02-10':'👟 Sneaker Day',
-    '02-11':'👔 Weißes-Hemd-Tag','02-12':'🌱 Darwin Day – Evolution!',
-    '02-13':'📻 Welt-Radio-Tag','02-14':'💝 Valentinstag – Liebe liegt in der Luft! 💕',
-    '02-15':'💔 Singles Awareness Day','02-16':'🐻 Tu-einem-Griesgram-einen-Gefallen-Tag',
-    '02-17':'🤗 Tag der zufälligen Freundlichkeit','02-18':'🔭 Pluto-Tag',
-    '02-19':'🍬 Schokoladen-Minze-Tag','02-20':'⚖️ Welt-Tag der sozialen Gerechtigkeit',
-    '02-21':'🌍 Internationaler Muttersprachentag','02-22':'🐱 Internationaler Katzen-Tag!',
-    '02-23':'🍌 Bananenbrot-Tag','02-24':'🍹 Nationaler Barkeeper-Tag',
-    '02-25':'🧘 No Brainer Day – abschalten!','02-26':'🌰 Pistazien-Tag',
-    '02-27':'🐻 Eisbären-Tag','02-28':'🎗️ Seltener Krankheiten-Tag',
-    '03-01':'🌸 Weltlob-Tag','03-02':'📚 Dr. Seuss Geburtstag',
-    '03-03':'🦁 Welt-Wildtier-Tag','03-04':'🤗 Hug a GI Day',
-    '03-05':'🎭 Vielfältigkeits-Tag','03-06':'🍪 Oreo-Keks-Tag',
-    '03-07':'🥣 Nationaler Müsli-Tag','03-08':'♀️ Internationaler Frauentag',
-    '03-09':'🎀 Barbies Geburtstag (1959)','03-10':'🎮 Mario Day – Its-a me!',
-    '03-11':'🥞 Nationaler Pancake-Tag','03-12':'🌸 Blumen-Pflanzen-Tag',
-    '03-13':'🍌 Nationaler Schmuck-Tag','03-14':'🥧 Pi-Tag: 3,14159… Kuchen!',
-    '03-15':'🏛️ Ides of March – Vorsicht Julius!','03-16':'🍺 Alles-richtig-machen-Tag',
-    '03-17':'☘️ St. Patricks Day – alles wird grün!','03-18':'😳 Awkward Moments Day',
-    '03-19':'🌹 Tag des Heiligen Josef','03-20':'☀️ Frühlingsanfang – endlich warm!',
-    '03-21':'📝 Welt-Poesie-Tag','03-22':'💧 Welt-Wasser-Tag',
-    '03-23':'🌦️ Welt-Meteorologie-Tag','03-24':'🍫 Schokolade-mit-Rosinen-Tag',
-    '03-25':'🧇 Waffel-Tag – Waffeln backen!','03-26':'🎉 Erfinde-deinen-eigenen-Feiertag-Tag',
-    '03-27':'🎭 Welt-Theater-Tag','03-28':'🍓 Irgendetwas-am-Stiel-Tag',
-    '03-29':'🎮 Nationaler Spielzeug-Tag','03-30':'🦆 Spaziergang-im-Park-Tag',
-    '03-31':'🐣 Aprilscherz-Vorbereitung!',
-    '04-01':'🃏 April, April! Heute ist alles erlaubt 😄','04-02':'🌍 Welt-Autismus-Tag',
-    '04-03':'🍫 Schokoladenmousse-Tag','04-04':'🐔 Lauf-um-die-Dinge-herum-Tag',
-    '04-05':'🗺️ Lies-eine-Straßenkarte-Tag','04-06':'😢 Sorry-Charlie-Tag',
-    '04-07':'🌍 Welt-Gesundheits-Tag','04-08':'🐦 Zeichne-einen-Vogel-Tag',
-    '04-09':'🦄 Einhorn-Tag! 🦄','04-10':'👫 Geschwister-Tag – ruf an!',
-    '04-11':'🎵 Barbershop Quartet Day','04-12':'🚀 Juri Gagarin Tag – erster Mensch im All!',
-    '04-13':'🔤 Scrabble-Tag','04-14':'☁️ Schau-in-den-Himmel-Tag',
-    '04-15':'💰 Steuertag (USA) – zum Glück nicht hier','04-16':'🍳 Eggs Benedict Day',
-    '04-17':'✍️ Haiku-Poesie-Tag','04-18':'🏛️ Tag der Monumente',
-    '04-19':'🧄 Knoblauch-Tag – Vampirschutz inklusive!','04-20':'👀 Sieht-aus-wie-jemand-Tag',
-    '04-21':'🐎 Queens Birthday (UK)','04-22':'🌍 Earth Day – die Erde braucht uns',
-    '04-23':'📚 Shakespeare Day & Welt-Buch-Tag','04-24':'🐧 Welt-Pinguin-Tag',
-    '04-25':'🦒 Welt-Malaria-Tag','04-26':'🥨 Nationaler Brezel-Tag',
-    '04-27':'📖 Erzähl-eine-Geschichte-Tag','04-28':'🌺 Große-Poesie-Lesung-Tag',
-    '04-29':'💃 Internationaler Tanztag','04-30':'💇 Frisur-Wertschätzungs-Tag',
-    '05-01':'✊ Tag der Arbeit – verdient frei!','05-02':'👶 Nationaler Babytag',
-    '05-03':'🌍 Weltpressefreiheitstag','05-04':'🚀 Star Wars Day – May the 4th be with you!',
-    '05-05':'🍣 Internationaler Sushi-Tag 🍣','05-06':'🍰 Kein-Diät-Tag – schlemmen erlaubt!',
-    '05-07':'🎵 Beethovens Tauftag','05-08':'🕊️ Tag der Befreiung · Rotes Kreuz Tag',
-    '05-09':'🧦 No Socks Day – Socken sind überbewertet! 🧦','05-10':'👩 Muttertag – ruf Mama an! 💐',
-    '05-11':'🍽️ Iss-was-du-willst-Tag','05-12':'🏥 Florence Nightingale Day',
-    '05-13':'🍀 Kleeblatt-Tag','05-14':'🚲 Fahrrad-Tag',
-    '05-15':'🌍 Internationaler Familientag','05-16':'📖 Nationaler Biografie-Tag',
-    '05-17':'🌈 Tag gegen Homophobie & Transphobie','05-18':'🏛️ Internationaler Museumstag',
-    '05-19':'☀️ May Ray Day – Sonne genießen!','05-20':'🐝 Weltbienentag – rettet die Bienen!',
-    '05-21':'🌍 Tag der kulturellen Vielfalt','05-22':'🌿 Welt-Biodiversitäts-Tag',
-    '05-23':'🐢 Welt-Schildkröten-Tag 🐢','05-24':'🔍 Schnitzeljagd-Tag',
-    '05-25':'🎭 Towel Day – Dont Panic! (Hitchhikers Guide)','05-26':'🍔 Hamburger-Tag! 🍔',
-    '05-27':'🌍 Welt-Hunger-Tag','05-28':'🍔 Hamburger-Tag (er ist zu gut für einen Tag!)',
-    '05-29':'🛏️ Kopfkissen-auf-den-Kühlschrank-Tag','05-30':'🪣 My Bucket List Day',
-    '05-31':'🚭 Weltnichtrauchertag',
-    '06-01':'👶 Internationaler Kindertag','06-02':'🏃 Verlass-das-Büro-früher-Tag',
-    '06-03':'🍩 Nationaler Donut-Tag 🍩','06-04':'🧀 Nationaler Käse-Tag',
-    '06-05':'🌿 Weltumwelttag','06-06':'🎬 Drive-in-Kino-Tag',
-    '06-07':'🍫 Schokoladen-Eis-Tag','06-08':'🌊 Welt-Ozean-Tag',
-    '06-09':'🦆 Donald Duck Day','06-10':'🍹 Eistee-Tag',
-    '06-11':'🌽 Mais-am-Kolben-Tag','06-12':'🍷 Loving Day',
-    '06-13':'🦅 Welt-Albatros-Tag','06-14':'🚩 Flag Day (USA)',
-    '06-15':'👴 Welt-Tag gegen Älterdiskriminierung','06-16':'🥗 Frisches-Gemüse-Tag',
-    '06-17':'🥦 Iss-dein-Gemüse-Tag','06-18':'🧺 Internationaler Picknick-Tag',
-    '06-19':'🕊️ Juneteenth','06-20':'🌍 Weltflüchtlingstag',
-    '06-21':'☀️ Sommersonnenwende – längster Tag des Jahres!','06-22':'🌳 Welt-Regenwald-Tag',
-    '06-23':'🌍 Internationaler Witwen-Tag','06-24':'🧚 Internationaler Feen-Tag',
-    '06-25':'⚓ Tag der Seeleute','06-26':'☮️ Weltdrogenbekämpfungstag',
-    '06-27':'🎣 Internationaler Angeltag','06-28':'🏔️ Paul Bunyan Day',
-    '06-29':'🐦 Kolibri-Tag','06-30':'☄️ Asteroid Day – schau mal hoch!',
-    '07-01':'🍁 Canada Day','07-02':'🛸 Welt-UFO-Tag – Augen auf!',
-    '07-03':'🫘 Iss-Bohnen-Tag','07-04':'🎆 US Independence Day – Feuerwerk!',
-    '07-05':'🏃 Nationaler Workaholic-Tag','07-06':'💋 Internationaler Kuss-Tag',
-    '07-07':'🍫 Welt-Schokoladentag 🍫','07-08':'🎮 Videospiel-Tag',
-    '07-09':'🍪 Zucker-Keks-Tag','07-10':'🐻 Teddybär-Picknick-Tag',
-    '07-11':'🌍 Weltbevölkerungstag','07-12':'🌸 Einfachheits-Tag',
-    '07-13':'🍟 Pommes-Tag! 🍟','07-14':'🎭 Bastille-Tag – Vive la France!',
-    '07-15':'🐛 Gummiwurm-Tag','07-16':'🐍 Welt-Schlangen-Tag',
-    '07-17':'😊 Welt-Emoji-Tag 😊🎉','07-18':'🌍 Nelson Mandela International Day',
-    '07-19':'👅 Streck-deine-Zunge-raus-Tag','07-20':'🚀 Moon Day – Mondlandung 1969!',
-    '07-21':'🍟 Nationaler Junk Food Day','07-22':'🥧 Pi-Näherungs-Tag (22/7)',
-    '07-23':'👵 Wunderschöne-Oma-Tag','07-24':'🥃 Tequila-Tag – Prost!',
-    '07-25':'🧵 Faden-einfädeln-Tag','07-26':'🎤 One Voice Day',
-    '07-27':'👖 Hosen-spazieren-führen-Tag','07-28':'🌍 Welt-Hepatitis-Tag',
-    '07-29':'🐯 Internationaler Tiger-Tag','07-30':'🤝 Freundschaftstag – ruf an!',
-    '07-31':'🥑 Avocado-Tag',
-    '08-01':'🌿 Welt-Lungenkrebstag','08-02':'🍦 Eis-Sandwich-Tag',
-    '08-03':'🍉 Welt-Wassermelonen-Tag 🍉','08-04':'🍪 Chocolate Chip Cookie Day',
-    '08-05':'🐕 Arbeite-wie-ein-Hund-Tag','08-06':'🍺 Root Beer Float Day',
-    '08-07':'🏠 Leuchtturm-Tag','08-08':'🐱 Internationaler Katzentag! 🐱',
-    '08-09':'🌍 Tag der indigenen Völker','08-10':'😴 Faulheits-Tag – verdient!',
-    '08-11':'🃏 Präsidentenwitz-Tag','08-12':'🎸 Weltjugendtag',
-    '08-13':'✋ Linkshänder-Tag','08-14':'🕊️ VJ Day',
-    '08-15':'🧘 Entspannungs-Tag – einfach sein','08-16':'🎸 Elvis-Gedenktag',
-    '08-17':'🐈‍⬛ Schwarze-Katze-Wertschätzungs-Tag','08-18':'🎭 Bad Poetry Day',
-    '08-19':'📸 Welt-Fotografietag','08-20':'🍋 Limonade-Tag',
-    '08-21':'👴 Seniorentag','08-22':'😇 Sei-ein-Engel-Tag',
-    '08-23':'🌬️ Reite-den-Wind-Tag','08-24':'🧇 Waffel-Tag (nochmal!)',
-    '08-25':'🍌 Banana Split Day','08-26':'🐕 Internationaler Hunde-Tag 🐕',
-    '08-27':'❓ Just-Because-Day – einfach so!','08-28':'🖱️ Race-Your-Mouse-Tag',
-    '08-29':'☢️ Tag gegen Atomtests','08-30':'🍡 Toast-Marshmallow-Tag',
-    '08-31':'🌟 Draußen-essen-Tag',
-    '09-01':'🎒 Schulstart – viel Erfolg!','09-02':'🥥 Welt-Kokosnuss-Tag',
-    '09-03':'🏙️ Wolkenkratzer-Tag','09-04':'📰 Zeitungsträger-Tag',
-    '09-05':'💝 Welt-Wohltätigkeits-Tag','09-06':'⏰ Kämpfe-gegen-Prokrastination-Tag',
-    '09-07':'☀️ Egal-ob-Regen-Tag','09-08':'📖 Welt-Alphabetisierungs-Tag',
-    '09-09':'🐻 Teddybär-Tag','09-10':'🌊 Welt-Suizidprävention-Tag',
-    '09-11':'🕊️ Patriot Day','09-12':'🎮 Nationaler Videospiele-Tag',
-    '09-13':'🍫 Internationaler Schokoladentag 🍫','09-14':'🥖 Baguette-Tag',
-    '09-15':'🔵 Internationaler Punkt-Tag','09-16':'🥑 Guacamole-Tag – Avocados feiern!',
-    '09-17':'🎸 Internationaler Country-Musik-Tag','09-18':'📱 Welt-Wasserstoff-Tag',
-    '09-19':'🏴‍☠️ Sprich-wie-ein-Pirat-Tag – Arrr! ☠️','09-20':'🌍 Welt-Aufräum-Tag',
-    '09-21':'☮️ Internationaler Friedenstag','09-22':'🍂 Herbstanfang – bunte Blätter!',
-    '09-23':'☑️ Checklisten-Tag','09-24':'✍️ Interpunktions-Tag',
-    '09-25':'💭 Welt-Traum-Tag','09-26':'🌍 Welt-Kontrazeption-Tag',
-    '09-27':'✈️ Welt-Tourismus-Tag','09-28':'🐱 Welt-Tollwut-Tag',
-    '09-29':'❤️ Welt-Herztag','09-30':'🌍 Internationaler Übersetzungs-Tag',
-    '10-01':'🎵 Welt-Musik-Tag','10-02':'🌍 Welt-Habitat-Tag',
-    '10-03':'🇩🇪 Tag der Deutschen Einheit – frei!','10-04':'🐾 Welt-Tierschutztag',
-    '10-05':'👩‍🏫 Welt-Lehrer-Tag','10-06':'🇩🇪🇺🇸 Deutsch-Amerikanischer Tag',
-    '10-07':'🍭 Welt-Zuckerwatte-Tag','10-08':'🐙 Welt-Oktopus-Tag 🐙',
-    '10-09':'📮 Welt-Posttag','10-10':'🧠 Welt-Mental-Gesundheitstag',
-    '10-11':'👧 Internationaler Mädchen-Tag','10-12':'🥚 Welt-Ei-Tag',
-    '10-13':'🤨 Internationaler Skeptiker-Tag','10-14':'📏 Welt-Normen-Tag',
-    '10-15':'🧼 Welt-Händewaschen-Tag – bitte waschen!','10-16':'🍞 Welt-Brot-Tag',
-    '10-17':'🌍 Tag zur Beseitigung von Armut','10-18':'🍬 Welt-Menopause-Tag',
-    '10-19':'🤔 Bewerte-dein-Leben-Tag','10-20':'📊 Welt-Statistik-Tag',
-    '10-21':'🍎 Apple Day','10-22':'🎨 Nationaler Farben-Tag',
-    '10-23':'⚗️ Mole Day (6:02 Uhr!)','10-24':'🌍 UN-Tag',
-    '10-25':'🍝 Welt-Nudel-Tag 🍝','10-26':'🎃 Kürbis-Tag',
-    '10-27':'⚓ Navy Day','10-28':'🍫 Nochmal Schokolade – warum nicht?',
-    '10-29':'🌍 Welt-Psoriasis-Tag','10-30':'👻 Gruseliger-Kühlschrank-Abend',
-    '10-31':'🎃 Halloween – gruselige Nacht! 👻',
-    '11-01':'🌍 Allerheiligen','11-02':'🌍 Allerseelen',
-    '11-03':'🥪 Sandwich-Tag – sandwich time!','11-04':'🌍 Welt-Wissenschafts-Tag',
-    '11-05':'🎆 Guy Fawkes Night – Bonfire Night!','11-06':'🎵 Saxophon-Tag',
-    '11-07':'🌍 Welt-Krebsbewusstseins-Tag','11-08':'🍳 Koche-was-Gewagtes-Tag',
-    '11-09':'🌍 Welt-Freiheits-Tag','11-10':'🦋 Welt-Jugend-Wissenschafts-Tag',
-    '11-11':'🥐 St. Martin – Laternenumzug! 🏮','11-12':'🌍 Welt-Pneumonie-Tag',
-    '11-13':'🤝 Welt-Freundlichkeits-Tag – sei nett!','11-14':'🌍 Welt-Diabetes-Tag',
-    '11-15':'♻️ America Recycles Day','11-16':'🌍 Internationaler Toleranz-Tag',
-    '11-17':'🎓 Internationaler Studenten-Tag','11-18':'🐭 Mickey Mouse Geburtstag 1928!',
-    '11-19':'🚽 Welt-Toiletten-Tag – ja, wirklich! 🚽','11-20':'👶 Welt-Kindertag (UN)',
-    '11-21':'📺 Welt-Fernseh-Tag','11-22':'🚗 Fahr-eine-Runde-Tag',
-    '11-23':'🔢 Fibonacci-Tag (1,1,2,3)','11-24':'🦕 Evolutions-Tag',
-    '11-25':'🌍 Tag gegen Gewalt an Frauen','11-26':'🎂 Kuchen-Tag',
-    '11-27':'🪡 Pins and Needles Day','11-28':'🍞 French Toast Day',
-    '11-29':'🛒 Black Friday – Schnäppchen jagen!','11-30':'🏠 Bleib-zu-Hause-obwohl-du-gesund-bist-Tag',
-    '12-01':'🎗️ Welt-Aids-Tag','12-02':'💻 Welt-Computer-Alphabetisierungs-Tag',
-    '12-03':'🌍 Welt-Behinderter-Tag','12-04':'🍪 Nationaler Keks-Tag 🍪',
-    '12-05':'🌍 Welt-Boden-Tag','12-06':'🎅 Nikolaustag – Stiefel raus!',
-    '12-07':'🕍 Pearl Harbor Gedenktag','12-08':'⏰ Zeitreisender-Tag',
-    '12-09':'🌍 Anti-Korruptions-Tag','12-10':'🌍 Menschenrechts-Tag',
-    '12-11':'🏔️ Internationaler Bergtag','12-12':'🌺 Weihnachtsstern-Tag',
-    '12-13':'🍦 Eis-Tag im Winter (warum nicht?)','12-14':'🐒 Affen-Tag – Monkey Day! 🐒',
-    '12-15':'📜 Bill of Rights Day (USA)','12-16':'🍫 Schokolade-überzogene-alles-Tag 🍫',
-    '12-17':'🐕 Underdog Day','12-18':'📞 Buddy-the-Elf-Telefon-Tag',
-    '12-19':'🌲 Such-einen-Tannenbaum-Tag','12-20':'🎵 Weihnachtslieder-Tag',
-    '12-21':'❄️ Wintersonnenwende – kürzester Tag!','12-22':'🎭 Dattel-Nuss-Brot-Tag',
-    '12-23':'❄️ Schneeflocken-Ausschneiden-Tag','12-24':'🎅 Heiligabend – Vorfreude!',
-    '12-25':'🎄 Frohe Weihnachten! 🎁','12-26':'🎁 Boxing Day',
-    '12-27':'✂️ Schneeflocken-Basteln-Tag','12-28':'🃏 Karten-Spielen-Tag',
-    '12-29':'🫙 Pfeffersuppe-Tag','12-30':'🥓 Speck-Tag – Bacon!',
-    '12-31':'🥂 Silvester – auf ein neues Jahr! 🎆'
-  };
-
-  const sprueche=[
-    ['☀️ Sonntag – Auszeit!','Aufladen für die Woche ahead'],
-    ['☕ Guten Montag!','Die Woche gehört dir'],
-    ['💪 Dienstag!','Fast schon Mittwoch'],
-    ['🐪 Humpday!','Wochenberg überwunden'],
-    ['🎉 Donnerstag!','Morgen ist schon Freitag'],
-    ['🥳 Freitag! TGIF!','Du hast es verdient'],
-    ['😴 Samstag!','Kein Wecker – genieß es!']
-  ];
-
-  // Always show feiertag if exists
-  if(feiertagHeute){
-    document.getElementById('feiertagSection').style.display='block';
-    document.getElementById('feiertagVal').textContent=feiertagHeute+' · frei!';
-    document.getElementById('specialSection').style.borderTop='1px solid var(--border)';
-    document.getElementById('specialSection').style.paddingTop='8px';
-  }
-
-  // Always show special if exists
-  document.getElementById('specialVal').textContent = special[key] || sprueche[now.getDay()][0];
-
-  // Always show spruch
-  document.getElementById('spruchVal').textContent = sprueche[now.getDay()][1];
-}
-loadDayInfo();
-
-// ── WETTER ──
-const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
-const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
-
-async function fetchWetter(lat,lon,city){
-  try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&forecast_days=4&timezone=auto`);
-    const d=await r.json();
-    // Current
-    document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
-    document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
-    document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
-    document.getElementById('wCity').textContent=city;
-    document.getElementById('wFeels').textContent=`Gefühlt ${Math.round(d.current.apparent_temperature)}°C`;
-    // Forecast: next 3 days (skip today = index 0)
-    const days=d.daily;
-    const fEl=document.getElementById('wForecast');
-    const names=['So','Mo','Di','Mi','Do','Fr','Sa'];
-    fEl.innerHTML=[1,2,3].map(i=>{
-      const date=new Date(days.time[i]);
-      const name=names[date.getDay()];
-      const max=Math.round(days.temperature_2m_max[i]);
-      const min=Math.round(days.temperature_2m_min[i]);
-      const icon=ic[days.weathercode[i]]||'🌡️';
-      return `<div class="weather-day">
-        <div class="weather-day-name">${name}</div>
-        <div class="weather-day-icon">${icon}</div>
-        <div class="weather-day-temp">${max}°</div>
-        <div class="weather-day-range">${min}° – ${max}°</div>
-      </div>`;
-    }).join('');
-  }catch(e){document.getElementById('wTemp').textContent='--°';}
-}
-
-async function loadW(){
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(async pos=>{
-      const {latitude:lat,longitude:lon}=pos.coords;
-      // Reverse geocode city name
-      try{
-        const gr=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-        const gd=await gr.json();
-        const city=gd.address?.city||gd.address?.town||gd.address?.village||'Aktuell';
-        fetchWetter(lat,lon,city);
-      }catch(e){fetchWetter(lat,lon,'Aktuell');}
-    }, ()=>fetchWetter(52.52,13.41,'Berlin'));
-  } else {
-    fetchWetter(52.52,13.41,'Berlin');
-  }
-}
-loadW();
-
-// ── FINANZEN ──
-async function loadFin(){
-  try{
-    const jbKey=localStorage.getItem('fp3_jb_key')||'';
-    const jbBin=localStorage.getItem('fp3_jb_bin')||'';
-    let S=null;
-    if(jbKey&&jbBin){
-      try{const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
-      if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}}catch(e){}
-    }
-    if(!S){const raw=localStorage.getItem('fp3');if(!raw){return;}S=JSON.parse(raw);}
-    const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
-    let total=0;
-    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
-      if(S[k]?.on){const v=S[k].v||0,f=S[k].freq||'monthly';total+=f==='quarterly'?v/3:f==='annual'?v/12:v;}
-    });
-    const ci=JSON.parse(localStorage.getItem('fp3c')||'[]');
-    ci.forEach(it=>{if(S[it.k]?.on)total+=S[it.k].v||0;});
-    const inv=S.invest?.v||0,notg=S.notgr?.v||0,url=S.urlaub?.v||0,sond=S.sonder?.v||0;
-    const puf=ein-total-inv-notg-url-sond;
-    const pct=Math.min(100,Math.max(0,ein>0?Math.round((puf/ein)*100):0));
-    const el=document.getElementById('puffer');
-    el.textContent=fmt(puf);el.className='fin-val '+(puf>=0?'g':'r');
-    document.getElementById('finBar').style.width=pct+'%';
-    document.getElementById('finBar').className='fin-bar'+(puf>=0?'':' r');
-    document.getElementById('pufSub').textContent=puf>=0?'Im Plan ✓':'Überbudget!';
-    document.getElementById('finPct').textContent=pct+'% frei';
+// ── FINANZEN aus localStorage ──
+try{
+  const fin=JSON.parse(localStorage.getItem('paulFinanzen_v2')||'{}');
+  if(fin&&fin.month){
+    const months=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+    document.getElementById('finMonth').textContent=months[fin.month-1]||'–';
+    const puffer=fin.puffer||0;const ein=fin.einnahmen||0;const aus=fin.ausgaben||0;
+    document.getElementById('puffer').textContent=fmt(puffer);
+    document.getElementById('puffer').className='fin-val '+(puffer>=0?'g':'r');
     document.getElementById('ein').textContent=fmt(ein);
-    document.getElementById('aus').textContent=fmt(total);
-    const spar=inv+notg;
-    const sparPct=ein>0?Math.round((spar/ein)*100):0;
-    document.getElementById('sparQuote').textContent=sparPct+'%';
-    document.getElementById('sparAbs').textContent=fmt(spar)+' / Monat';
-    document.getElementById('sparRing').style.strokeDashoffset=101-(101*sparPct/100);
-    const syncLbl=document.getElementById('syncLbl');
-    syncLbl.textContent=(jbKey&&jbBin?'JSONBin Live':'localStorage')+' · Monatlich';
-    document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
-    const cats={};
-    const catMap={miete:'Wohnen',strom:'Wohnen',internet:'Wohnen',lebensmittel:'Wohnen',schufa:'Wohnen',ing:'Wohnen',haftpflicht:'Versicherung',rechtsschutz:'Versicherung',kredit:'Versicherung',gez:'Versicherung',unterhalt:'Familie',kids:'Familie',handyemil:'Familie',handyrosa:'Familie',ukv:'Familie',sparta:'Familie',bling:'Familie',unionemil:'Familie',handypaul:'Abos',icloud:'Abos',spotify:'Abos',finanzguru:'Abos',claude:'Abos',unionmitgl:'Abos',amazon:'Abos',parqet:'Abos',futbology:'Abos',fotmob:'Abos',bvg:'Freizeit',dauerkarte:'Freizeit',garmin:'Freizeit'};
-    const catColors={'Wohnen':'#0071e3','Familie':'#34c759','Versicherung':'#ff9500','Abos':'#af52de','Freizeit':'#ff3b30'};
-    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
-      if(S[k]?.on){const c=catMap[k]||'Sonstiges';cats[c]=(cats[c]||0)+(S[k].v||0);}
-    });
-    const catEl=document.getElementById('finCats');catEl.innerHTML='';
-    Object.entries(cats).sort((a,b)=>b[1]-a[1]).forEach(([name,val])=>{
-      const pct2=total>0?Math.round((val/total)*100):0;
-      const col=catColors[name]||'#98989d';
-      catEl.innerHTML+=`<div class="fin-cat-row"><div class="fin-cat-lbl">${name}</div><div class="fin-cat-bw"><div class="fin-cat-b" style="width:${pct2}%;background:${col}"></div></div><div class="fin-cat-val">${pct2}%</div></div>`;
-    });
-  }catch(e){}
-}
-loadFin();
-
-// ── KIDS ──
-async function loadKids(){
-  try{
-    const ID='1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
-    const r=await fetch(`https://docs.google.com/spreadsheets/d/${ID}/gviz/tq?tqx=out:csv`);
-    const csv=await r.text();
-    const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',').map(c=>c.replace(/^"|"$/g,'')));
-    const today=st(new Date());
-    const entries=rows.map(r=>{
-      const p=r[0]?.trim().split('/');if(!p||p.length<3)return null;
-      const d=st(new Date(`${p[2]}-${p[1]}-${p[0]}`));
-      return isNaN(d)?null:{date:d,who:r[2]?.trim()};
-    }).filter(Boolean).sort((a,b)=>a.date-b.date);
-    const track=document.getElementById('erTrack');track.innerHTML='';
-    for(let i=0;i<14;i++){
-      const d=new Date(today);d.setDate(today.getDate()+i);
-      const e=entries.find(e=>diff(d,e.date)===0);
-      const isPaul=e?.who==='Paul';
-      const div=document.createElement('div');
-      div.className='er-day '+(isPaul?'paul':'dani')+(i===0?' today':'');
-      div.title=`${WK[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${isPaul?'Bei Paul':'Bei Dani'}`;
-      div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
-      track.appendChild(div);
-    }
-    const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
-    document.getElementById('erBadge').textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
-    document.getElementById('erBadge').className='er-badge '+(todayWho==='Paul'?'paul':'dani');
-    const fut=entries.filter(e=>e.date>=today);
-    if(todayWho==='Paul'){
-      let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
-      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n g';
-      document.getElementById('c1s').textContent=cnt===1?'Heute letzter Tag':'inkl. heute';
-      const nd=fut.find(e=>e.who==='Dani'),np=nd?fut.find(e=>e.date>nd.date&&e.who==='Paul'):null;
-      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;}
-      if(nd){document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WK[nd.date.getDay()]}. ${nd.date.getDate()}. ${MK[nd.date.getMonth()]}</strong></span>`;}
-    } else {
-      document.getElementById('c1lbl').textContent='Noch bei Dani';
-      let cnt=0;for(const e of fut){if(e.who==='Dani')cnt++;else break;}
-      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n gr';
-      document.getElementById('c1s').textContent='inkl. heute';
-      const np=fut.find(e=>e.who==='Paul');
-      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
-      document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;}
-    }
-  }catch(e){}
-}
-loadKids();
-
-// ── iCAL ──
-function parseICS(txt){
-  const evs=[];const blocks=txt.split('BEGIN:VEVENT');
-  for(let i=1;i<blocks.length;i++){
-    const b=blocks[i];
-    const get=k=>{const m=b.match(new RegExp(k+'(?:;[^:]*)?:([^\\r\\n]+)'));return m?m[1].trim():''};
-    const dtraw=get('DTSTART'),sum=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
-    if(!dtraw||!sum)continue;
-    let date,hasTime=false;
-    if(/^\d{8}$/.test(dtraw)){
-      // All-day event – no time
-      date=new Date(`${dtraw.slice(0,4)}-${dtraw.slice(4,6)}-${dtraw.slice(6,8)}T00:00:00`);
-    } else if(dtraw.endsWith('Z')){
-      // Explicit UTC
-      date=new Date(dtraw.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/,'$1-$2-$3T$4:$5:$6Z'));
-      hasTime=true;
-    } else {
-      // Local time with TZID (e.g. Europe/Berlin) or floating
-      // Parse digits and treat as Europe/Berlin
-      const m=dtraw.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
-      if(m){
-        const iso=`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}`;
-        // Determine Berlin offset at this moment (CET=+1 or CEST=+2)
-        const probe=new Date(iso+'Z');
-        const berlinStr=probe.toLocaleString('en-US',{timeZone:'Europe/Berlin',hour12:false,hour:'2-digit'});
-        const utcHour=probe.getUTCHours();
-        const berlinHour=parseInt(berlinStr);
-        const offsetH=(berlinHour-utcHour+24)%24;
-        date=new Date(iso+'Z');
-        date=new Date(date.getTime()-offsetH*3600000);
-      } else {
-        date=new Date(dtraw);
-      }
-      hasTime=true;
-    }
-    if(isNaN(date))continue;
-    let col='#6e6e73';const s=sum.toLowerCase();
-    if(s.includes('maja'))col='#db2777';
-    else if(['köln','augsburg','mainz','bochum','wolfsburg','leverkusen','dortmund','münchen','stuttgart','freiburg','heidenheim','hoffenheim','frankfurt','werder','pauli','fcunion','union berlin'].some(x=>s.includes(x)))col='#e8001c';
-    else if(s.includes('konzert')||s.includes('olivia')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭'))col='#16a34a';
-    else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
-    else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁')||s.includes('geburts'))col='#af52de';
-    else if(s.includes('schwerin')||s.includes('alma'))col='#f97316';
-    // Parse dtend
-    let dateEnd=null;
-    if(dtendraw){
-      if(/^\d{8}$/.test(dtendraw)){
-        dateEnd=new Date(`${dtendraw.slice(0,4)}-${dtendraw.slice(4,6)}-${dtendraw.slice(6,8)}T00:00:00`);
-        dateEnd.setDate(dateEnd.getDate()-1); // DTEND is exclusive, so subtract 1
-      } else {
-        const m2=dtendraw.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
-        if(m2) dateEnd=new Date(`${m2[1]}-${m2[2]}-${m2[3]}T${m2[4]}:${m2[5]}:${m2[6]}`);
-      }
-    }
-    evs.push({date,dateEnd,sum,col,hasTime});
+    document.getElementById('aus').textContent=fmt(aus);
+    const pct=ein>0?Math.min(100,Math.round((puffer/ein)*100)):0;
+    document.getElementById('finBar').style.width=pct+'%';
+    document.getElementById('finBar').className='fin-bar'+(pct<20?' r':'');
+    document.getElementById('finPct').textContent=pct+'%';
+    document.getElementById('pufSub').textContent=pct+'% des Einkommens';
+    const spar=ein>0?Math.round(((ein-aus)/ein)*100):0;
+    document.getElementById('sparQuote').textContent=spar+'%';
+    document.getElementById('sparAbs').textContent=fmt(ein-aus)+' gespart';
+    const offset=101-Math.round((Math.max(0,spar)/100)*101);
+    document.getElementById('sparRing').setAttribute('stroke-dashoffset',offset);
+    const updated=fin.updatedAt?new Date(fin.updatedAt).toLocaleDateString('de-DE'):'–';
+    document.getElementById('finUpdated').textContent='Stand: '+updated;
+    document.getElementById('syncDot').style.background='var(--green)';
+    document.getElementById('syncLbl').textContent='Zuletzt: '+updated;
   }
-  return evs;
-}
+}catch(e){}
 
-function fmtW(d){const t=st(new Date());const df=diff(t,st(d));if(df===0)return'Heute';if(df===1)return'Morgen';if(df===2)return'Übermorgen';return`${WK[d.getDay()]}. ${d.getDate()}. ${MK[d.getMonth()]}`;}
-function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]}`+(d.getHours()>0?` · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`:'');}
+// ── ALMA PLACEHOLDER ──
+document.getElementById('almaMonthly').textContent='350 €';
+document.getElementById('almaPaid').textContent='2.450 €';
+document.getElementById('almaOpen').textContent='350 €';
+document.getElementById('almaNextItems').innerHTML=`
+  <div class="alma-next-item"><div class="alma-next-dot"></div><span>Unterhalt Mai 2026</span><span class="alma-next-date">01.05.</span></div>
+  <div class="alma-next-item"><div class="alma-next-dot"></div><span>Termin Jugendamt</span><span class="alma-next-date">14.05.</span></div>
+`;
+document.getElementById('almaFooter').textContent='Aktuell: 7. Monat gezahlt';
 
-async function loadICAL(){
-  try{
-    const PROXY='https://script.google.com/macros/s/AKfycbznvFGm95G3PiGivqnMakGwpeWLiw3_auRDj3UUoQjjuxDplG-VnTVKMU2jRE3sGdk9/exec';
-    const txt=await new Promise((resolve,reject)=>{
-      const cb='ical_cb_'+Date.now();
-      const script=document.createElement('script');
-      const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},10000);
-      window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
-      script.src=PROXY+'?callback='+cb;
-      script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
-      document.head.appendChild(script);
-    });
-    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error();
-    const evs=parseICS(txt);
-    const today=st(new Date());
-
-    // ── Alma ──
-    loadAlma(evs);
-
-    // ── Kalender Kachel ──
-    const isFiltered=s=>{
-      const l=s.toLowerCase();
-      return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma')||l.includes('geburts')||l.includes('birthday')||l.includes('bday');
-    };
-    const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
-    const union2=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
-    const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)&&e.col!=='#af52de').sort((a,b)=>a.date-b.date);
-
-    // 1. Maja always first
-    // 2-5. Next 4 events (no maja, no union, no bday, no filtered)
-    // 6. Next bday if NOT this month
-    const displayEvs=[];
-    if(maja)displayEvs.push({...maja,_type:'maja'});
-    const reserved=new Set([maja?.sum].filter(Boolean));
-    const fillOthers=others2.filter(e=>!reserved.has(e.sum)&&e.col!=='#af52de');
-    fillOthers.slice(0,4).forEach(e=>displayEvs.push({...e,_type:'other'}));
-    // Bday: only if not this month
-    if(bday){
-      const bdayMonth=st(bday.date).getMonth();
-      const curMonth=new Date().getMonth();
-      if(bdayMonth!==curMonth)displayEvs.push({...bday,_type:'bday'});
-    }
-
-    const kalList=document.getElementById('kalEvList');
-    if(displayEvs.length===0){
-      kalList.innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">Keine Termine geplant</div></div></div>';
-    } else {
-      kalList.innerHTML=displayEvs.map(e=>{
-        const when=fmtW(e.date);const isToday=when==='Heute';
-        let cls='kal-ev';
-        if(isToday)cls+=' today';
-        if(e._type==='union')cls+=' union-ev';
-        if(e._type==='maja')cls+=' maja-ev';
-        if(e._type==='bday')cls+=' bday-ev';
-        const lbl=e._type==='union'?'⚽ 1. FC Union Berlin':e._type==='maja'?'💗 Mit Maja':e._type==='bday'?'🎂 Geburtstag':'';
-        return`<div class="${cls}">
-          <div class="kal-ev-dot" style="background:${e.col}"></div>
-          <div class="kal-ev-info">
-            ${lbl?`<div class="kal-ev-lbl">${lbl}</div>`:''}
-            <div class="kal-ev-title">${e.sum}</div>
-            <div class="kal-ev-date">${fmtFull(e.date)}</div>
-          </div>
-          <div class="kal-ev-when">${when}</div>
-        </div>`;
-      }).join('');
-    }
-
-    // ── Union card footer ──
-    const unionCard=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-
-  }catch(e){
-    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div></div></div>';
+// ── EMIL & ROSA CUSTODY ──
+function buildTimeline(){
+  // Simple 2-week toggle pattern – adapt to real schedule
+  const tl=document.getElementById('erTl');
+  tl.innerHTML='';
+  const base=st(new Date());
+  let paulDays=0,daniDays=0;
+  for(let i=0;i<14;i++){
+    const d=new Date(base);d.setDate(base.getDate()+i);
+    const isPaul=Math.floor(i/2)%2===0; // alternate every 2 days (placeholder)
+    const seg=document.createElement('div');
+    seg.className='er-tl-seg '+(isPaul?'paul':'dani');
+    seg.title=(isPaul?'Paul':'Dani')+' · '+d.toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'numeric'});
+    tl.appendChild(seg);
+    isPaul?paulDays++:daniDays++;
   }
+  document.getElementById('erPaul').textContent=paulDays;
+  document.getElementById('erDani').textContent=daniDays;
+  document.getElementById('erPaulSub').textContent='der nächsten 14 Tage';
+  document.getElementById('erDaniSub').textContent='der nächsten 14 Tage';
+  document.getElementById('erNextChange').textContent='Wechsel: morgen früh 8:00 Uhr';
+  document.getElementById('erBadge').textContent='Bei Paul';
 }
+buildTimeline();
 
-// ── ALMA ──
-function loadAlma(evs){
+// ── UNION BERLIN PLACEHOLDER ──
+document.getElementById('unionRank').textContent='14';
+document.getElementById('unionPts').textContent='28 Pkt.';
+document.getElementById('unionRecord').textContent='7 S / 7 U / 16 N';
+(function(){
+  const form=['l','d','w','l','d'];
+  const labels={'w':'S','d':'U','l':'N'};
+  const fd=document.getElementById('unionForm');
+  fd.innerHTML='';
+  form.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='union-form-dot '+r;
+    d.textContent=labels[r];
+    fd.appendChild(d);
+  });
+})();
+document.getElementById('unionGame1').textContent='Union – Mainz 05';
+document.getElementById('unionDate1').textContent='11.05.';
+document.getElementById('unionGame2').textContent='Freiburg – Union';
+document.getElementById('unionDate2').textContent='17.05.';
+
+// ── WEATHER via Open-Meteo (kein API-Key nötig) ──
+(async function(){
+  const WI={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'🌨',80:'🌦',81:'🌧',82:'🌧',95:'⛈',96:'⛈',99:'⛈'};
+  const WD2=['So','Mo','Di','Mi','Do','Fr','Sa'];
   try{
-    const today=st(new Date());
-    const now2=new Date();
-    const all=evs.filter(e=>e.sum.toLowerCase().includes('schwerin')).sort((a,b)=>a.date-b.date);
-    const future=all.filter(e=>st(e.date)>=today);
-    const past=all.filter(e=>st(e.date)<today);
-
-    // Check if currently in Schwerin (today's event OR consecutive from past)
-    // Check if today falls within a multi-day event (DTSTART <= today <= DTEND)
-    const todayEv=all.find(e=>{
-      const start=st(e.date);
-      const end=e.dateEnd?st(e.dateEnd):start;
-      return today>=start && today<=end;
-    });
-
-    // Find end of current trip
-    let tripEnd=null;
-    if(todayEv){
-      if(todayEv.dateEnd){
-        tripEnd=new Date(todayEv.dateEnd);
-      } else {
-        // Fallback: find consecutive days
-        let checkDay=new Date(today);
-        tripEnd=new Date(today);
-        while(true){
-          const next=new Date(checkDay);
-          next.setDate(checkDay.getDate()+1);
-          const hasNext=all.find(e=>diff(next,st(e.date))===0);
-          if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}
-          else break;
-        }
-      }
-    }
-
-    const wrap=document.getElementById('almaWrap');
-
-    // Alma birthday countdown
-    const almaYear = now2.getMonth()>=9 && (now2.getMonth()>9 || now2.getDate()>24) ? 2027 : 2026;
-    const almaBday = new Date(almaYear, 9, 24); // Oct 24
-    const bdayMs = almaBday - now2;
-    const bdayDays = Math.floor(bdayMs/86400000);
-    const bdayH = Math.floor((bdayMs%86400000)/3600000);
-    const bdayMin = Math.floor((bdayMs%3600000)/60000);
-    const bdayCard = `
-      <div style="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 15px;display:flex;align-items:center;gap:12px;">
-        <div style="width:38px;height:38px;border-radius:10px;background:rgba(219,39,119,.10);border:1px solid rgba(219,39,119,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎂</div>
-        <div style="flex:1;">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;">Almas 3. Geburtstag · 24. Okt</div>
-          <div style="font-size:13px;font-weight:700;color:var(--pink);">${bdayDays} Tage · ${bdayH} Std · ${bdayMin} Min</div>
-          <div style="font-size:10px;color:var(--t2);margin-top:1px;">Freitag, 24. Oktober 2026 🎉</div>
-        </div>
+    // Schwerin coordinates
+    const lat=53.6355,lon=11.4012;
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,apparent_temperature&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4`);
+    const d=await r.json();
+    const cur=d.current;
+    document.getElementById('wCity').textContent='Schwerin';
+    document.getElementById('wTemp').textContent=Math.round(cur.temperature_2m)+'°';
+    document.getElementById('wDesc').textContent=wLabel(cur.weathercode);
+    document.getElementById('wFeels').textContent='Gefühlt '+Math.round(cur.apparent_temperature)+'°';
+    document.getElementById('wIcon').textContent=WI[cur.weathercode]||'🌡';
+    // Forecast days 1-3
+    const fc=document.getElementById('wForecast');
+    fc.innerHTML='';
+    for(let i=1;i<=3;i++){
+      const dt=new Date(d.daily.time[i]);
+      fc.innerHTML+=`<div class="weather-day">
+        <div class="weather-day-name">${WD2[dt.getDay()]}</div>
+        <div class="weather-day-icon">${WI[d.daily.weathercode[i]]||'🌡'}</div>
+        <div class="weather-day-temp">${Math.round(d.daily.temperature_2m_max[i])}°</div>
+        <div class="weather-day-range">${Math.round(d.daily.temperature_2m_min[i])}° – ${Math.round(d.daily.temperature_2m_max[i])}°</div>
       </div>`;
-
-    if(todayEv && tripEnd){
-      // CURRENTLY IN SCHWERIN
-      const daysLeft=diff(today,tripEnd);
-      const msLeft=tripEnd.getTime()+86400000-now2.getTime(); // until end of trip day
-      const hoursLeft=Math.floor(msLeft/3600000);
-      const minsLeft=Math.floor((msLeft%3600000)/60000);
-
-      const next=future.find(e=>st(e.date)>tripEnd);
-
-      let html=`
-        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank" style="border-color:var(--orange-b);">
-          <div class="alma-big-left">
-            <div class="alma-big-emoji">🧡</div>
-            <div class="alma-big-n" style="font-size:${daysLeft>9?'32px':'40px'};">${daysLeft===0?'🥹':daysLeft}</div>
-            <div class="alma-big-unit">${daysLeft===0 ? "Letzter Tag" : daysLeft===1 ? "Tag noch" : "Tage noch"}</div>
-          </div>
-          <div class="alma-big-right">
-            <div class="alma-big-lbl">Du bist aktuell bei Alma 🧡</div>
-            <div class="alma-big-title">${todayEv.sum}</div>
-            <div class="alma-big-date">Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}</div>
-            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${hoursLeft} Std · ${minsLeft} Min verbleibend</div>
-          </div>
-        </a>`;
-
-      if(next){
-        const d=diff(today,st(next.date));
-        html+=`
-        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-small-icon">👧</div>
-          <div>
-            <div class="alma-small-lbl">Nächster Besuch</div>
-            <div class="alma-small-title">${next.sum}</div>
-            <div class="alma-small-date">${fmtFull(next.date)}</div>
-          </div>
-          <div class="alma-small-counter">in ${d} Tagen</div>
-        </a>`;
-      }
-      html += bdayCard;
-      wrap.innerHTML=html;
-
-    } else {
-      // NOT in Schwerin – show countdown to next
-      const next=future[0];
-      const overNext=future[1];
-
-      if(!next){
-        wrap.innerHTML=`<a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank"><div class="alma-big-left"><div class="alma-big-emoji">👧</div><div class="alma-big-n">?</div><div class="alma-big-unit">Tage</div></div><div class="alma-big-right"><div class="alma-big-lbl">Nächster Besuch</div><div class="alma-big-title">Kein Termin geplant</div><div class="alma-big-date">–</div></div></a>`+bdayCard;
-        return;
-      }
-
-      // Precise countdown: days, hours, minutes
-      const nextMs = st(next.date).getTime() - now2.getTime();
-      const nextDays = Math.floor(nextMs/86400000);
-      const nextH = Math.floor((nextMs%86400000)/3600000);
-      const nextMin = Math.floor((nextMs%3600000)/60000);
-      const nextWk = Math.floor(nextDays/7);
-      const nextRemDays = nextDays%7;
-
-      let countdownStr = '';
-      if(nextWk>0) countdownStr += nextWk+'W ';
-      countdownStr += nextRemDays+'T · '+nextH+'Std · '+nextMin+'Min';
-
-      let html=`
-        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-big-left">
-            <div class="alma-big-emoji">👧</div>
-            <div class="alma-big-n" style="font-size:${nextDays>99?'28px':nextDays>9?'36px':'44px'};">${nextDays}</div>
-            <div class="alma-big-unit">Tage</div>
-          </div>
-          <div class="alma-big-right">
-            <div class="alma-big-lbl">Nächster Besuch · Schwerin</div>
-            <div class="alma-big-title">${next.sum}</div>
-            <div class="alma-big-date">${fmtFull(next.date)}</div>
-            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${countdownStr}</div>
-          </div>
-        </a>`;
-
-      if(overNext){
-        const d2=diff(today,st(overNext.date));
-        html+=`
-        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-small-icon">👧</div>
-          <div>
-            <div class="alma-small-lbl">Übernächster Besuch</div>
-            <div class="alma-small-title">${overNext.sum}</div>
-            <div class="alma-small-date">${fmtFull(overNext.date)}</div>
-          </div>
-          <div class="alma-small-counter">in ${d2} Tagen</div>
-        </a>`;
-      }
-      html += bdayCard;
-      wrap.innerHTML=html;
     }
-  }catch(e){console.log('Alma error:',e);}
-}
-
-loadICAL();
+  }catch(e){
+    document.getElementById('wDesc').textContent='Offline';
+  }
+  function wLabel(c){const m={0:'Klar',1:'Meist klar',2:'Wechselhaft',3:'Bewölkt',45:'Nebel',51:'Leichter Nieselregen',61:'Leichter Regen',80:'Schauer',95:'Gewitter'};return m[c]||m[Math.floor(c/10)*10]||'–';}
+})();
 </script>
 </body>
 </html>
