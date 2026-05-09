@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" id="meta-theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" id="meta-theme-color-dark" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" id="meta-theme-color-manual" content="">
 <title>Finanzen · Paul</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -17,19 +20,21 @@
   --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
 /* ── Manual theme override (takes priority) ── */
-html.theme-light :root, html.theme-light{
-  --bg:#F2F2F7 !important;--card:#FFFFFF !important;--card2:#F2F2F7 !important;
-  --sep:rgba(0,0,0,0.08) !important;--sep2:rgba(0,0,0,0.06) !important;
-  --t1:#000 !important;--t2:#3C3C43 !important;--t3:#8E8E93 !important;
-  --acc:#007AFF !important;--grn:#34C759 !important;--red:#FF3B30 !important;--amb:#FF9500 !important;
-  --tog:#34C759 !important;
+html.theme-light{
+  --bg:#F2F2F7;--card:#FFFFFF;--card2:#F2F2F7;
+  --sep:rgba(0,0,0,0.08);--sep2:rgba(0,0,0,0.06);
+  --t1:#000;--t2:#3C3C43;--t3:#8E8E93;
+  --acc:#007AFF;--grn:#34C759;--red:#FF3B30;--amb:#FF9500;--tog:#34C759;
+  background:#F2F2F7; /* browser bar */
+  color-scheme: light;
 }
-html.theme-dark :root, html.theme-dark{
-  --bg:#000 !important;--card:#1C1C1E !important;--card2:#2C2C2E !important;
-  --sep:rgba(255,255,255,0.15) !important;--sep2:rgba(255,255,255,0.08) !important;
-  --t1:#FFF !important;--t2:rgba(255,255,255,0.75) !important;--t3:rgba(255,255,255,0.4) !important;
-  --acc:#0A84FF !important;--grn:#30D158 !important;--red:#FF453A !important;--amb:#FF9F0A !important;
-  --tog:#30D158 !important;
+html.theme-dark{
+  --bg:#000;--card:#1C1C1E;--card2:#2C2C2E;
+  --sep:rgba(255,255,255,0.15);--sep2:rgba(255,255,255,0.08);
+  --t1:#FFF;--t2:rgba(255,255,255,0.75);--t3:rgba(255,255,255,0.4);
+  --acc:#0A84FF;--grn:#30D158;--red:#FF453A;--amb:#FF9F0A;--tog:#30D158;
+  background:#000000; /* browser bar */
+  color-scheme: dark;
 }
 @media(prefers-color-scheme:dark){
   :root{
@@ -42,6 +47,7 @@ html.theme-dark :root, html.theme-dark{
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
+html{background:var(--bg);} /* ensures browser bars match */
 body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;font-size:15px;}
 
 /* ── LAYOUT SWITCH ── */
@@ -406,7 +412,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
     <span class="d-topbar-title">Finanzplanung</span>
     <span class="d-topbar-sub">Paul</span>
-    <span style="font-size:11px;color:var(--t3);background:var(--card2);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">v2.4</span>
+    <span style="font-size:11px;color:var(--t3);background:var(--card2);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">v2.5</span>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -737,7 +743,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="m-topbar-title">Finanzen · Paul</div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
-        <span style="font-size:10px;color:var(--t3);background:var(--card2);padding:2px 7px;border-radius:99px;">v2.4</span>
+        <span style="font-size:10px;color:var(--t3);background:var(--card2);padding:2px 7px;border-radius:99px;">v2.5</span>
         <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
         <button type="button" class="m-icon-btn" onclick="openSM()" title="Cloud-Sync" style="font-size:18px;"><span id="m-sync-ico">⚙️</span></button>
         <span id="m-sync-lbl" style="font-size:10px;color:var(--t3);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
@@ -1661,6 +1667,17 @@ function DC2(k){
   const isDark = saved ? saved === 'dark' : prefersDark;
   document.documentElement.classList.add(isDark ? 'theme-dark' : 'theme-light');
   updateThemeBtn(isDark);
+  // Set meta theme-color immediately so browser chrome matches
+  const manualMeta = document.getElementById('meta-theme-color-manual');
+  if(manualMeta) manualMeta.setAttribute('content', isDark ? '#000000' : '#F2F2F7');
+  // Remove media-conditional metas if we have a saved preference
+  if(saved) {
+    const lm = document.getElementById('meta-theme-color');
+    const dm = document.getElementById('meta-theme-color-dark');
+    if(lm) lm.removeAttribute('media');
+    if(dm) dm.remove();
+    if(lm) lm.content = isDark ? '#000000' : '#F2F2F7';
+  }
 })();
 
 function updateThemeBtn(isDark) {
@@ -1674,9 +1691,13 @@ function toggleTheme() {
   const html = document.documentElement;
   const isDark = html.classList.contains('theme-dark');
   html.classList.remove('theme-dark','theme-light');
-  html.classList.add(isDark ? 'theme-light' : 'theme-dark');
-  localStorage.setItem('fp_theme', isDark ? 'light' : 'dark');
-  updateThemeBtn(!isDark);
+  const newDark = !isDark;
+  html.classList.add(newDark ? 'theme-dark' : 'theme-light');
+  localStorage.setItem('fp_theme', newDark ? 'dark' : 'light');
+  updateThemeBtn(newDark);
+  // Update meta theme-color for browser chrome
+  const manualMeta = document.getElementById('meta-theme-color-manual');
+  if(manualMeta) manualMeta.content = newDark ? '#000000' : '#F2F2F7';
 }
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){CM();closeSM();CE();closeGehaltEdit();}});
