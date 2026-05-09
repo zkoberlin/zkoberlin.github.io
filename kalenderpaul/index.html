@@ -811,23 +811,39 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 }
 .add-event-btn:hover { background: #0062c3; }
 
-/* KW + Monat Badge neben Heute */
-.kw-month-badge {
-  display: none;
-  align-items: center;
-  gap: 5px;
+/* View Switcher (Tag / Woche / Monat) */
+.view-switcher {
+  display: inline-flex;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 0 10px;
-  height: 32px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text2);
+  padding: 2px;
+  gap: 2px;
   flex-shrink: 0;
+}
+.view-btn {
+  padding: 0 12px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text2);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .15s;
   white-space: nowrap;
 }
-.kw-month-badge .kw-num { color: var(--blue); font-weight: 700; }
+.view-btn.active {
+  background: var(--surface);
+  color: var(--blue);
+  box-shadow: 0 1px 4px rgba(0,0,0,.10);
+}
+.view-btn:not(.active):hover { color: var(--text); }
+
+/* Hide the kw-month-badge completely */
+.kw-month-badge { display: none !important; }
 
 /* Add Event Modal */
 .add-modal-overlay {
@@ -993,29 +1009,39 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   body { font-size: 13px; }
 
   /* Header */
-  .header { padding: 6px 16px 0; }
+  .header { padding: 8px 14px 0; }
   .header-top {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 8px;
+    flex-wrap: nowrap;
   }
-  .header-left { width: 100%; }
-  .header-right {
+  .header-left { flex: 1; min-width: 0; }
+  .header-text h1 { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-text p { font-size: 9px; }
+  .header-icon { font-size: 16px; }
+
+  /* On mobile: hub + theme stay small icon buttons, today + add get a second row */
+  .hub-btn, .theme-btn { width: 30px; height: 30px; flex: none; font-size: 14px; }
+  .today-btn, .add-event-btn {
+    flex: 1; height: 34px; font-size: 13px; font-weight: 700;
+  }
+  .today-btn { padding: 0; }
+  .add-event-btn { padding: 0; }
+
+  /* Second button row below header-top */
+  .header-btn-row {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0 4px;
+  }
+
+  /* View switcher full-width on mobile */
+  .view-switcher {
     width: 100%;
-    justify-content: flex-start;
-    gap: 8px;
+    justify-content: stretch;
   }
-  .hub-btn, .theme-btn, .today-btn, .add-event-btn {
-    flex: 1;
-    height: 36px;
-    font-size: 13px;
-  }
-  .header-top { gap: 10px; margin-bottom: 6px; }
-  .header-icon { font-size: 18px; }
-  .header-text h1 { font-size: 14px; }
-  .header-text p { font-size: 10px; }
-  .today-btn { font-size: 13px; padding: 0 12px; font-weight: 700; }
-  .kw-month-badge { display: inline-flex; }
+  .view-btn { flex: 1; font-size: 12px; }
   /* Legend - scrollable horizontal strip */
   .legend {
     flex-wrap: nowrap;
@@ -1280,20 +1306,31 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v2.8.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.0.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
-      <div class="kw-month-badge" id="kwMonthBadge">
-        <span>KW <span class="kw-num" id="headerKW">—</span></span>
-        <span style="color:var(--border)">·</span>
-        <span id="headerMonth">—</span>
+      <!-- View switcher – desktop only inline, mobile gets own row -->
+      <div class="view-switcher" id="viewSwitcher" style="display:none;">
+        <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
+        <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
+        <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
       </div>
       <button class="today-btn" onclick="scrollToToday()">Heute</button>
       <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
+    </div>
+  </div>
+  <!-- Mobile second row: Today + Add + View switcher -->
+  <div class="header-btn-row" id="mobileBtnRow" style="display:none;">
+    <button class="today-btn" style="flex:none;padding:0 14px;" onclick="scrollToToday()">Heute</button>
+    <button class="add-event-btn" style="flex:none;padding:0 14px;" onclick="openAddEvent()">+ Termin</button>
+    <div class="view-switcher" style="flex:1;">
+      <button class="view-btn" id="vbTagM" onclick="setView('tag')">Tag</button>
+      <button class="view-btn active" id="vbWocheM" onclick="setView('woche')">Woche</button>
+      <button class="view-btn" id="vbMonatM" onclick="setView('monat')">Monat</button>
     </div>
   </div>
   <div class="load-status" id="loadStatus">
@@ -1654,51 +1691,115 @@ function scrollToToday() {
 
 // Render months from current week onwards
 function renderAll() {
-  const cal = document.getElementById('cal');
-  cal.innerHTML = '';
-  // Find Monday of current week
+  // Set header date subtitle
   const now = new Date();
-  const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
-  const weekStart = new Date(now);
-  weekStart.setDate(now.getDate() - dow);
-  weekStart.setHours(0,0,0,0);
-
-  // Fill KW + month badge
-  const kwNum = kw(now);
-  const kwEl = document.getElementById('headerKW');
-  const moEl = document.getElementById('headerMonth');
-  if(kwEl) kwEl.textContent = kwNum;
-  if(moEl) moEl.textContent = MN[now.getMonth()].substring(0,3);
-  // Also set headerDate subtitle
   const hdEl = document.getElementById('headerDate');
   if(hdEl) hdEl.textContent = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
-
-  // Start from the month that contains the first VISIBLE week
-  // If weekStart is in a previous month but all rows of that month are past, skip it
-  let startMonth = weekStart.getMonth();
-  const startYear = weekStart.getFullYear();
-
-  // Check: does the current month have any visible rows?
-  // A month has visible rows if its last day >= weekStart
-  const lastDayOfStartMonth = new Date(startYear, startMonth + 1, 0);
-  if(lastDayOfStartMonth < weekStart) {
-    startMonth++; // skip to next month
-  }
-
-  for(let m=startMonth; m<=11; m++) {
-    cal.appendChild(buildMonth(startYear, m));
-  }
-  // Scroll so current week is at top
-  setTimeout(() => {
-    const cell = document.querySelector('.day.today') ||
-                 document.querySelector(`[data-key="${dk(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate())}"]`);
-    if(cell) {
-      const offset = 220;
-      const top = cell.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({top, behavior:'instant'});
-    }
-  }, 50);
+  initViewUI();
+  renderView();
 }
+
+// ── VIEW SWITCHER ────────────────────────────────────────────────────
+let currentView = 'woche'; // 'tag' | 'woche' | 'monat'
+
+function setView(v) {
+  currentView = v;
+  // Update all view buttons (desktop + mobile)
+  ['Tag','Woche','Monat'].forEach(n => {
+    const key = n.toLowerCase();
+    ['vb'+n, 'vb'+n+'M'].forEach(id => {
+      const btn = document.getElementById(id);
+      if(btn) btn.classList.toggle('active', key === v);
+    });
+  });
+  closeInlinePopup();
+  renderView();
+}
+
+function renderView() {
+  const cal = document.getElementById('cal');
+  cal.innerHTML = '';
+  const now = new Date();
+
+  if(currentView === 'monat') {
+    // Full month view: show current + remaining months
+    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - dow);
+    weekStart.setHours(0,0,0,0);
+    let startMonth = weekStart.getMonth();
+    const startYear = weekStart.getFullYear();
+    const lastDayOfStartMonth = new Date(startYear, startMonth + 1, 0);
+    if(lastDayOfStartMonth < weekStart) startMonth++;
+    for(let m=startMonth; m<=11; m++) cal.appendChild(buildMonth(startYear, m));
+    setTimeout(() => {
+      const cell = document.querySelector('.day.today');
+      if(cell) {
+        const top = cell.getBoundingClientRect().top + window.scrollY - 220;
+        window.scrollTo({top, behavior:'instant'});
+      }
+    }, 50);
+
+  } else if(currentView === 'woche') {
+    // Week view: show only current week's month, scroll to it
+    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - dow); weekStart.setHours(0,0,0,0);
+    let sm = weekStart.getMonth(); const sy = weekStart.getFullYear();
+    const lastDay = new Date(sy, sm+1, 0);
+    if(lastDay < weekStart) sm++;
+    for(let m=sm; m<=11; m++) cal.appendChild(buildMonth(sy, m));
+    setTimeout(() => {
+      const cell = document.querySelector('.day.today');
+      if(cell) {
+        const headerH = document.querySelector('.header')?.offsetHeight || 120;
+        const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 60;
+        window.scrollTo({top: Math.max(0,top), behavior:'instant'});
+      }
+    }, 50);
+
+  } else if(currentView === 'tag') {
+    // Tag view: show today's month, scroll to today, open inline popup for today
+    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
+    const weekStart = new Date(now); weekStart.setDate(now.getDate() - dow); weekStart.setHours(0,0,0,0);
+    let sm = weekStart.getMonth(); const sy = weekStart.getFullYear();
+    const lastDay = new Date(sy, sm+1, 0);
+    if(lastDay < weekStart) sm++;
+    for(let m=sm; m<=11; m++) cal.appendChild(buildMonth(sy, m));
+    setTimeout(() => {
+      const todayKey = dk(now.getFullYear(), now.getMonth(), now.getDate());
+      const cell = document.querySelector(`.day[data-key="${todayKey}"]`);
+      if(cell) {
+        const headerH = document.querySelector('.header')?.offsetHeight || 120;
+        const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 20;
+        window.scrollTo({top: Math.max(0,top), behavior:'instant'});
+        setTimeout(() => {
+          const row = cell.closest('.wr');
+          if(row) openInlinePopup(todayKey, row);
+        }, 80);
+      }
+    }, 60);
+  }
+}
+
+// Init: show mobile btn row on small screens, desktop view switcher on large
+function initViewUI() {
+  const isMobile = window.innerWidth <= 600;
+  const mobileRow = document.getElementById('mobileBtnRow');
+  const desktopSwitcher = document.getElementById('viewSwitcher');
+  const headerRight = document.querySelector('.header-right');
+  // On mobile: hide desktop today/add buttons and switcher, show mobile row
+  if(isMobile) {
+    if(mobileRow) mobileRow.style.display = 'flex';
+    if(desktopSwitcher) desktopSwitcher.style.display = 'none';
+    // Hide desktop today + add btns (they're duplicated in mobile row)
+    headerRight?.querySelectorAll('.today-btn, .add-event-btn').forEach(b => b.style.display = 'none');
+  } else {
+    if(mobileRow) mobileRow.style.display = 'none';
+    if(desktopSwitcher) desktopSwitcher.style.display = 'inline-flex';
+    headerRight?.querySelectorAll('.today-btn, .add-event-btn').forEach(b => b.style.display = '');
+  }
+}
+window.addEventListener('resize', initViewUI, {passive:true});
 
 // ── EXPAND/COLLAPSE DAY ─────────────────────────────────────────────
 let expandedDay = null;
