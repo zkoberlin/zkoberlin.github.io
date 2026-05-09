@@ -327,7 +327,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.7</div>
+      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.8</div>
     </div>
   </div>
 </header>
@@ -1132,31 +1132,17 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const SCRIPT='https://script.google.com/macros/s/AKfycbzu4CnNTDTyhhiOjPrGJ_b93MhDtdg8OkU5FKy91LzTauYxVkTZrAslGeeSuDpqd0MaTA/exec';
-    let txt=null;
-
-    // Method 1: JSONP (direct, fastest)
-    try{
-      txt=await new Promise((resolve,reject)=>{
-        const cb='ical_cb_'+Date.now();
-        const s=document.createElement('script');
-        const t=setTimeout(()=>{delete window[cb];s.remove();reject(new Error('timeout'));},10000);
-        window[cb]=(d)=>{clearTimeout(t);delete window[cb];s.remove();resolve(d);};
-        s.src=SCRIPT+'?callback='+cb;
-        s.onerror=()=>{clearTimeout(t);delete window[cb];s.remove();reject(new Error('error'));};
-        document.head.appendChild(s);
-      });
-    }catch(e1){txt=null;}
-
-    // Method 2: allorigins plain text (no JSONP wrapper needed now)
-    if(!txt||!txt.includes('BEGIN:VCALENDAR')){
-      try{
-        const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(SCRIPT),{signal:AbortSignal.timeout(8000)});
-        if(r.ok){const t=await r.text();if(t.includes('BEGIN:VCALENDAR'))txt=t;}
-      }catch(e2){}
-    }
-
-    if(!txt||!txt.includes('BEGIN:VCALENDAR'))throw new Error('no ical data');
+    const PROXY='https://script.google.com/macros/s/AKfycbznvFGm95G3PiGivqnMakGwpeWLiw3_auRDj3UUoQjjuxDplG-VnTVKMU2jRE3sGdk9/exec';
+    const txt=await new Promise((resolve,reject)=>{
+      const cb='ical_cb_'+Date.now();
+      const script=document.createElement('script');
+      const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},10000);
+      window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
+      script.src=PROXY+'?callback='+cb;
+      script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
+      document.head.appendChild(script);
+    });
+    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error();
     const evs=parseICS(txt);
     const today=st(new Date());
 
