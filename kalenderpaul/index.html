@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -12,16 +13,18 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #f5f5f7;
+  --bg: #F5F5F7;
   --surface: #ffffff;
-  --surface2: #f5f5f7;
-  --border: rgba(0,0,0,.08);
-  --text: #1d1d1f;
+  --surface2: #F0F0F4;
+  --border: rgba(0,0,0,.07);
+  --text: #1D1D1F;
   --text2: #6e6e73;
   --text3: #aeaeb2;
   --blue: #0071e3;
   --blue-l: #e8f1fb;
   --red: #ff3b30;
+  --sh: 0 4px 12px rgba(0,0,0,.05);
+  --sh-h: 0 6px 32px rgba(0,0,0,.13);
 }
 
 
@@ -103,12 +106,16 @@
   .kw { color: #636366; }
 }
 body {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
+
+/* Styleguide Fonts – Montserrat für Headlines */
+:root { --font-head: 'Montserrat', sans-serif; }
+h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-family: var(--font-head); }
 
 /* HEADER */
 .header {
@@ -298,7 +305,7 @@ body {
   border-radius: 16px;
   padding: 22px;
   margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
   overflow: clip;
   color: var(--text);
 }
@@ -402,7 +409,7 @@ body {
 .dp {
   display: none; background: var(--surface); border-radius: 14px;
   padding: 16px 20px; margin-bottom: 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
   animation: fu .2s ease;
 }
 .dp.on { display: block; }
@@ -1096,7 +1103,7 @@ body {
 
 
 .kw, .dn, .version-badge, .tp-title, .tp-date, .chip-count, .load-item, .sticky-bar-days span {
-  font-family: 'DM Mono', monospace;
+  font-family: 'Inter', monospace;
 }
 .version-badge {
   font-size: 9px;
@@ -1154,7 +1161,7 @@ body {
 
 /* Apple-like detail panel */
 .dp {
-  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 .dp h3 {
   font-size: 17px;
@@ -1173,12 +1180,12 @@ body {
 
 /* Smoother shadows */
 .mc {
-  box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 0 1px rgba(0,0,0,.04);
+  box-shadow: var(--sh, 0 4px 12px rgba(0,0,0,.05));
 }
 
 /* Apple modal style */
 .evt-modal {
-  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 .evt-modal-title {
   font-size: 20px;
@@ -1239,7 +1246,7 @@ body {
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v2.6.1</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v2.7.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
