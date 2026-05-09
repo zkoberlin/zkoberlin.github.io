@@ -1409,7 +1409,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.0.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.1.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1419,8 +1419,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
       <!-- View switcher – desktop only inline, mobile gets own row -->
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
-        <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
+        <button class="view-btn" id="vbWoche" onclick="setView('woche')">Woche</button>
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
+        <button class="view-btn active" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
       <button class="today-btn" onclick="scrollToToday()">Heute</button>
       <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
@@ -1432,8 +1433,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <button class="add-event-btn" style="flex:none;padding:0 14px;" onclick="openAddEvent()">+ Termin</button>
     <div class="view-switcher" style="flex:1;">
       <button class="view-btn" id="vbTagM" onclick="setView('tag')">Tag</button>
-      <button class="view-btn active" id="vbWocheM" onclick="setView('woche')">Woche</button>
+      <button class="view-btn" id="vbWocheM" onclick="setView('woche')">Woche</button>
       <button class="view-btn" id="vbMonatM" onclick="setView('monat')">Monat</button>
+      <button class="view-btn active" id="vbAlleM" onclick="setView('alle')">Alle</button>
     </div>
   </div>
   <div class="load-status" id="loadStatus">
@@ -1749,7 +1751,7 @@ function scrollToToday() {
   viewOffset = 0;
   renderView();
   // After render, scroll to today cell if in monat view
-  if(currentView === 'monat' || currentView === 'woche') {
+  if(currentView === 'monat' || currentView === 'woche' || currentView === 'alle') {
     setTimeout(() => {
       const cell = document.querySelector('.day.today');
       if(cell) {
@@ -1791,7 +1793,7 @@ function initViewUI() {
 window.addEventListener('resize', initViewUI, {passive:true});
 
 // ── VIEW SWITCHER ────────────────────────────────────────────────────
-let currentView = 'monat';
+let currentView = 'alle';
 // Navigation offsets (days offset for tag, weeks for woche, months for monat)
 let viewOffset = 0;
 
@@ -1817,7 +1819,7 @@ function navView(dir) {
 }
 
 function updateViewBtns() {
-  ['Tag','Woche','Monat'].forEach(n => {
+  ['Tag','Woche','Monat','Alle'].forEach(n => {
     ['vb'+n, 'vb'+n+'M'].forEach(id => {
       const btn = document.getElementById(id);
       if(btn) btn.classList.toggle('active', n.toLowerCase() === currentView);
@@ -1834,8 +1836,10 @@ function renderView() {
     renderTagView(cal, base);
   } else if(currentView === 'woche') {
     renderWocheView(cal, base);
-  } else {
+  } else if(currentView === 'monat') {
     renderMonatView(cal, base);
+  } else {
+    renderAlleView(cal, base);
   }
 }
 
@@ -1851,40 +1855,58 @@ function renderTagView(cal, base) {
   nav.className = 'view-nav';
   nav.innerHTML = `
     <button class="view-nav-btn" onclick="navView(-1)">‹</button>
-    <div>
-      <div class="view-nav-title">${isToday ? 'Heute · ' : ''}${DN[(d.getDay()||7)-1]}, ${d.getDate()}. ${MN[d.getMonth()]}</div>
-    </div>
+    <div class="view-nav-title">${isToday ? 'Heute · ' : ''}${DN[(d.getDay()||7)-1]}, ${d.getDate()}. ${MN[d.getMonth()]} ${d.getFullYear()}</div>
     <button class="view-nav-btn" onclick="navView(1)">›</button>`;
   cal.appendChild(nav);
 
-  // Events
-  const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
-  const card = document.createElement('div');
-  card.className = 'tag-view';
+  // Events container – reuses dp-popup style for consistency with the popup look
+  const popup = document.createElement('div');
+  popup.className = 'dp-popup';
+  popup.style.margin = '0 0 6px';
 
+  const head = document.createElement('div');
+  head.className = 'dp-popup-head';
+  head.innerHTML = `<span class="dp-popup-title">${fmtDate(key)}</span>`;
+  popup.appendChild(head);
+
+  const body = document.createElement('div');
+  body.className = 'dp-popup-body';
+
+  const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
   if(!evs.length) {
-    const empty = document.createElement('div');
-    empty.className = 'tag-evt-card';
-    empty.innerHTML = '<div class="tag-empty">🗓 Keine Termine für diesen Tag.</div>';
-    card.appendChild(empty);
+    body.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:6px 0">Keine Termine für diesen Tag.</div>';
   } else {
-    const evCard = document.createElement('div');
-    evCard.className = 'tag-evt-card';
-    evs.forEach(ev => {
+    evs.forEach((ev, i) => {
       const color = colorMap[ev.c] || '#aeaeb2';
       const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
       const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      const item = document.createElement('div');
-      item.className = 'tag-evt-item';
-      item.innerHTML = `<div class="tag-evt-dot" style="background:${color}"></div>
-        <div><div class="tag-evt-title">${title}</div>
-        ${time ? `<div class="tag-evt-time">${time} Uhr${ev.location?' · '+ev.location:''}</div>` : (ev.location?`<div class="tag-evt-time">${ev.location}</div>`:'')}</div>`;
-      item.onclick = () => openEvtModal(ev, key);
-      evCard.appendChild(item);
+      const timeHtml = time
+        ? `<div class="et">${time} Uhr${ev.location ? ' · ' + ev.location.replace(/\\/g,'') : ''}</div>`
+        : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
+      const badges = [];
+      if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+      if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+      if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+      const el = document.createElement('div');
+      el.className = 'eli';
+      el.style.cursor = 'pointer';
+      el.innerHTML = `<div class="eli-dot" style="background:${color}"></div>
+        <div class="evt-info">
+          <div class="en">${title}${badges.join('')}</div>
+          ${timeHtml}
+        </div>`;
+      if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
+        const pencil = document.createElement('span');
+        pencil.textContent = '✏️';
+        pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
+        el.appendChild(pencil);
+      }
+      el.addEventListener('click', () => openEvtModal(ev, key));
+      body.appendChild(el);
     });
-    card.appendChild(evCard);
   }
-  cal.appendChild(card);
+  popup.appendChild(body);
+  cal.appendChild(popup);
 }
 
 // ── WOCHE-ANSICHT ────────────────────────────────────────────────────
@@ -2058,7 +2080,26 @@ function buildMonthFull(year, month, baseDate) {
   return card;
 }
 
-// ── EXPAND/COLLAPSE DAY ─────────────────────────────────────────────
+// ── ALLE-ANSICHT (original: alle Monate ab heute) ────────────────────
+function renderAlleView(cal, base) {
+  const dow = base.getDay() === 0 ? 6 : base.getDay() - 1;
+  const weekStart = new Date(base);
+  weekStart.setDate(base.getDate() - dow);
+  weekStart.setHours(0,0,0,0);
+  let startMonth = weekStart.getMonth();
+  const startYear = weekStart.getFullYear();
+  const lastDayOfStartMonth = new Date(startYear, startMonth + 1, 0);
+  if(lastDayOfStartMonth < weekStart) startMonth++;
+  for(let m = startMonth; m <= 11; m++) cal.appendChild(buildMonth(startYear, m));
+  setTimeout(() => {
+    const cell = document.querySelector('.day.today');
+    if(cell) {
+      const headerH = document.querySelector('.header')?.offsetHeight || 120;
+      const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 20;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+    }
+  }, 50);
+}
 let expandedDay = null;
 let expandedRect = null;
 
