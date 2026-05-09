@@ -327,7 +327,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.1</div>
+      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2</div>
     </div>
   </div>
 </header>
@@ -1199,40 +1199,71 @@ async function loadICAL(){
 function loadAlma(evs){
   try{
     const today=st(new Date());
+    const now2=new Date();
     const all=evs.filter(e=>e.sum.toLowerCase().includes('schwerin')).sort((a,b)=>a.date-b.date);
-    // Current: event that started on or before today and ends after today
-    // We treat consecutive schwerin events as a "trip"
-    const past=all.filter(e=>st(e.date)<=today);
-    const future=all.filter(e=>st(e.date)>today);
+    const future=all.filter(e=>st(e.date)>=today);
+    const past=all.filter(e=>st(e.date)<today);
+
+    // Check if currently in Schwerin (today's event OR consecutive from past)
     const todayEv=all.find(e=>diff(today,st(e.date))===0);
+
+    // Find end of current trip (consecutive schwerin days)
+    let tripEnd=null;
+    if(todayEv){
+      let checkDay=new Date(today);
+      tripEnd=new Date(today);
+      while(true){
+        const next=new Date(checkDay);
+        next.setDate(checkDay.getDate()+1);
+        const hasNext=all.find(e=>diff(next,st(e.date))===0);
+        if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}
+        else break;
+      }
+    }
+
     const wrap=document.getElementById('almaWrap');
 
-    if(todayEv){
-      // Currently in Schwerin – find end of current trip (consecutive days)
-      let tripEnd = todayEv.date;
-      for(const e of all){
-        if(st(e.date) > today){
-          const dayDiff = diff(st(tripEnd), st(e.date));
-          if(dayDiff <= 1){ tripEnd = e.date; }
-          else break;
-        }
-      }
-      const daysLeft = diff(today, st(tripEnd));
-      const next = future.find(e => st(e.date) > st(tripEnd));
+    // Alma birthday countdown
+    const almaYear = now2.getMonth()>=9 && (now2.getMonth()>9 || now2.getDate()>24) ? 2027 : 2026;
+    const almaBday = new Date(almaYear, 9, 24); // Oct 24
+    const bdayMs = almaBday - now2;
+    const bdayDays = Math.floor(bdayMs/86400000);
+    const bdayH = Math.floor((bdayMs%86400000)/3600000);
+    const bdayMin = Math.floor((bdayMs%3600000)/60000);
+    const bdayCard = `
+      <div style="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 15px;display:flex;align-items:center;gap:12px;">
+        <div style="width:38px;height:38px;border-radius:10px;background:rgba(219,39,119,.10);border:1px solid rgba(219,39,119,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎂</div>
+        <div style="flex:1;">
+          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;">Almas 3. Geburtstag · 24. Okt</div>
+          <div style="font-size:13px;font-weight:700;color:var(--pink);">${bdayDays} Tage · ${bdayH} Std · ${bdayMin} Min</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:1px;">Freitag, 24. Oktober 2026 🎉</div>
+        </div>
+      </div>`;
+
+    if(todayEv && tripEnd){
+      // CURRENTLY IN SCHWERIN
+      const daysLeft=diff(today,tripEnd);
+      const msLeft=tripEnd.getTime()+86400000-now2.getTime(); // until end of trip day
+      const hoursLeft=Math.floor(msLeft/3600000);
+      const minsLeft=Math.floor((msLeft%3600000)/60000);
+
+      const next=future.find(e=>st(e.date)>tripEnd);
+
       let html=`
         <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank" style="border-color:var(--orange-b);">
-          <div class="alma-big-left" style="background:linear-gradient(135deg,#f97316,#fb923c);">
+          <div class="alma-big-left">
             <div class="alma-big-emoji">🧡</div>
-            <div class="alma-big-n">${daysLeft}</div>
-            <div class="alma-big-unit">${daysLeft===1?'Tag noch':'Tage noch'}</div>
+            <div class="alma-big-n" style="font-size:${daysLeft>9?'32px':'40px'};">${daysLeft===0?'🥹':daysLeft}</div>
+            <div class="alma-big-unit">${daysLeft===0 ? "Letzter Tag" : daysLeft===1 ? "Tag noch" : "Tage noch"}</div>
           </div>
           <div class="alma-big-right">
-            <div class="alma-big-lbl">Du bist gerade bei Alma ✨</div>
+            <div class="alma-big-lbl">Du bist aktuell bei Alma 🧡</div>
             <div class="alma-big-title">${todayEv.sum}</div>
-            <div class="alma-big-date">Noch bis ${fmtFull(st(tripEnd))}</div>
-            ${daysLeft===0?'<div class="alma-big-range" style="color:var(--orange);font-weight:600;">Letzter Tag heute 🥺</div>':''}
+            <div class="alma-big-date">Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}</div>
+            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${hoursLeft} Std · ${minsLeft} Min verbleibend</div>
           </div>
         </a>`;
+
       if(next){
         const d=diff(today,st(next.date));
         html+=`
@@ -1246,30 +1277,46 @@ function loadAlma(evs){
           <div class="alma-small-counter">in ${d} Tagen</div>
         </a>`;
       }
+      html += bdayCard;
       wrap.innerHTML=html;
+
     } else {
-      // Not currently in Schwerin – show countdown to next
+      // NOT in Schwerin – show countdown to next
       const next=future[0];
       const overNext=future[1];
+
       if(!next){
-        wrap.innerHTML=`<a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank"><div class="alma-big-left"><div class="alma-big-emoji">👧</div><div class="alma-big-n">?</div><div class="alma-big-unit">Tage</div></div><div class="alma-big-right"><div class="alma-big-lbl">Nächster Besuch</div><div class="alma-big-title">Kein Termin geplant</div><div class="alma-big-date">–</div></div></a>`;
+        wrap.innerHTML=`<a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank"><div class="alma-big-left"><div class="alma-big-emoji">👧</div><div class="alma-big-n">?</div><div class="alma-big-unit">Tage</div></div><div class="alma-big-right"><div class="alma-big-lbl">Nächster Besuch</div><div class="alma-big-title">Kein Termin geplant</div><div class="alma-big-date">–</div></div></a>`+bdayCard;
         return;
       }
-      const d=diff(today,st(next.date));
+
+      // Precise countdown: days, hours, minutes
+      const nextMs = st(next.date).getTime() - now2.getTime();
+      const nextDays = Math.floor(nextMs/86400000);
+      const nextH = Math.floor((nextMs%86400000)/3600000);
+      const nextMin = Math.floor((nextMs%3600000)/60000);
+      const nextWk = Math.floor(nextDays/7);
+      const nextRemDays = nextDays%7;
+
+      let countdownStr = '';
+      if(nextWk>0) countdownStr += nextWk+'W ';
+      countdownStr += nextRemDays+'T · '+nextH+'Std · '+nextMin+'Min';
+
       let html=`
         <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
           <div class="alma-big-left">
             <div class="alma-big-emoji">👧</div>
-            <div class="alma-big-n">${d}</div>
+            <div class="alma-big-n" style="font-size:${nextDays>99?'28px':nextDays>9?'36px':'44px'};">${nextDays}</div>
             <div class="alma-big-unit">Tage</div>
           </div>
           <div class="alma-big-right">
             <div class="alma-big-lbl">Nächster Besuch · Schwerin</div>
             <div class="alma-big-title">${next.sum}</div>
             <div class="alma-big-date">${fmtFull(next.date)}</div>
-            ${d===1?'<div class="alma-big-range" style="color:var(--orange);font-weight:600;">Morgen! 🎉</div>':''}
+            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${countdownStr}</div>
           </div>
         </a>`;
+
       if(overNext){
         const d2=diff(today,st(overNext.date));
         html+=`
@@ -1283,6 +1330,7 @@ function loadAlma(evs){
           <div class="alma-small-counter">in ${d2} Tagen</div>
         </a>`;
       }
+      html += bdayCard;
       wrap.innerHTML=html;
     }
   }catch(e){console.log('Alma error:',e);}
