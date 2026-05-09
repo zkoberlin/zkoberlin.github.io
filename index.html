@@ -101,6 +101,11 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .top-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .mini{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;text-decoration:none;color:inherit;}
 .mini:hover{transform:translateY(-2px);box-shadow:var(--sh-h);}
+/* Date mini – purple border */
+a.mini.date{border-color:rgba(175,82,222,.30);}
+a.mini.date:hover{border-color:rgba(175,82,222,.55);box-shadow:0 0 0 2px rgba(175,82,222,.10),var(--sh-h);}
+/* Day info mini – blue border */
+div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-icon{font-size:22px;flex-shrink:0;}
 .mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
 .mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
@@ -110,8 +115,8 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
 
 /* Weather expanded */
-.weather-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
+.weather-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,149,0,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.55);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
 .weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
 .weather-icon{font-size:32px;flex-shrink:0;}
 .weather-info{flex:1;}
@@ -144,7 +149,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .er-link{border-radius:var(--r);display:block;}
 
 /* ── EMIL & ROSA ── */
-.er{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;width:100%;}
+.er{background:var(--card);border-radius:var(--r);border:1px solid rgba(52,199,89,.28);box-shadow:var(--sh);overflow:hidden;width:100%;}
 .er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
 .er-badge{font-family:'Inter',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
@@ -180,7 +185,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .alma-wrap{display:flex;flex-direction:column;gap:8px;}
 
 /* Big countdown card */
-.alma-big{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
+.alma-big{background:var(--card);border-radius:var(--r);border:1px solid rgba(249,115,22,.28);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
 .alma-big-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:18px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:88px;flex-shrink:0;}
 .alma-big-n{font-size:44px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;font-variant-numeric:tabular-nums;}
 .alma-big-unit{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
@@ -192,7 +197,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .alma-big-range{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
 /* Small alma card */
-.alma-small{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:12px;}
+.alma-small{background:var(--card);border-radius:var(--r2);border:1px solid rgba(249,115,22,.22);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:12px;}
 .alma-small-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .alma-small-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;}
 .alma-small-title{font-size:13px;font-weight:600;letter-spacing:-.2px;}
@@ -204,6 +209,8 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 @media(max-width:580px){.app-row{grid-template-columns:1fr;}}
 
 .acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;}
+.acard.fin{border-color:rgba(52,199,89,.28);}
+.acard.kal{border-color:rgba(0,113,227,.28);}
 .acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
 .acard.kal:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--blue-b);}
 .acard:active{transform:scale(.98);}
@@ -288,8 +295,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .kal-loading-lines{flex:1;display:flex;flex-direction:column;gap:5px;}
 
 /* Union Card */
-.union-card{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.35);box-shadow:0 0 0 2px rgba(232,0,28,.10),var(--sh-h);}
+.union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.55);box-shadow:0 0 0 2px rgba(232,0,28,.10),var(--sh-h);}
 .union-header{background:linear-gradient(135deg,#e8001c,#b5001a);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
 .union-club{display:flex;align-items:center;gap:10px;}
 .union-badge{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
@@ -316,6 +323,12 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-next-teams{font-size:12px;font-weight:600;}
 .union-next-date{font-size:10.5px;color:var(--t2);}
 .union-prob{font-size:10px;color:var(--t3);}
+/* Team matchup with logos */
+.match-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.match-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0;}
+.match-logo-emoji{width:22px;height:22px;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.match-vs{font-size:9px;color:var(--t3);font-weight:500;flex-shrink:0;}
+.match-team{font-size:12px;font-weight:700;}
 </style>
 </head>
 <body>
@@ -330,7 +343,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.3.0</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.4.0</div>
     </div>
   </div>
 </header>
@@ -417,6 +430,19 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     </div>
   </div>
   <div class="er-next" id="erNext"><span>⏳</span><span>Lädt…</span></div>
+  <!-- Geburtstags-Countdown -->
+  <div style="border-top:1px solid var(--border);padding:10px 20px 14px;display:flex;gap:8px;" id="erBdays">
+    <div style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;">
+      <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;">🎂 Emil · 30. März</div>
+      <div style="font-size:15px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;" id="emilBday">–</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:1px;" id="emilAge">–</div>
+    </div>
+    <div style="flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;">
+      <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;">🎂 Rosa · 29. April</div>
+      <div style="font-size:15px;font-weight:700;color:var(--pink);font-variant-numeric:tabular-nums;" id="rosaBday">–</div>
+      <div style="font-size:10px;color:var(--t2);margin-top:1px;" id="rosaAge">–</div>
+    </div>
+  </div>
 </div>
 </a>
 
@@ -541,33 +567,51 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <!-- Letztes Spiel -->
     <div class="union-stat">
       <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai · Heimspiel</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
-        <div style="font-size:13px;font-weight:700;">Union Berlin</div>
-        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);">2 : 2</div>
-        <div style="font-size:13px;font-weight:700;text-align:right;">1. FC Köln</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;flex:1;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" style="width:24px;height:24px;object-fit:contain;">
+          <span style="font-size:12px;font-weight:700;">Union Berlin</span>
+        </div>
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;">2 : 2</div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
+          <span style="font-size:12px;font-weight:700;">1. FC Köln</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/FC_Cologne_logo.svg/240px-FC_Cologne_logo.svg.png" style="width:24px;height:24px;object-fit:contain;">
+        </div>
       </div>
-      <div class="union-stat-sub" style="text-align:center;margin-top:3px;">Unentschieden · Bundesliga</div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:4px;">Unentschieden · Bundesliga</div>
     </div>
 
     <!-- Nächste Spiele -->
     <div class="union-next">
       <div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>
+      <!-- Mainz vs Union -->
       <div class="union-next-game">
         <div style="flex:1;">
-          <div class="union-next-teams">FSV Mainz <span style="color:var(--t3);font-weight:400;">vs</span> Union Berlin</div>
+          <div class="match-row">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/FSV_Mainz_05_Logo.svg/240px-FSV_Mainz_05_Logo.svg.png" class="match-logo" alt="Mainz">
+            <span class="match-vs">vs</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" class="match-logo" alt="Union">
+            <span class="match-team">FSV Mainz vs Union Berlin</span>
+          </div>
           <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
         </div>
-        <div style="text-align:right;">
+        <div style="text-align:right;flex-shrink:0;">
           <div class="union-prob">Siegchance 22%</div>
           <div style="font-size:10px;color:var(--t3);margin-top:1px;">Unentschieden 24%</div>
         </div>
       </div>
+      <!-- Union vs Augsburg -->
       <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
         <div style="flex:1;">
-          <div class="union-next-teams">Union Berlin <span style="color:var(--t3);font-weight:400;">vs</span> FC Augsburg</div>
+          <div class="match-row">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" class="match-logo" alt="Union">
+            <span class="match-vs">vs</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Augsburger_FCA_Logo.svg/240px-Augsburger_FCA_Logo.svg.png" class="match-logo" alt="Augsburg">
+            <span class="match-team">Union Berlin vs FC Augsburg</span>
+          </div>
           <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
         </div>
-        <div style="text-align:right;">
+        <div style="text-align:right;flex-shrink:0;">
           <div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div>
           <div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div>
         </div>
@@ -917,6 +961,38 @@ function loadDayInfo(){
   document.getElementById('spruchVal').textContent = sprueche[now.getDay()][1];
 }
 loadDayInfo();
+
+// ── GEBURTSTAGE EMIL & ROSA ──
+(function(){
+  const now2=new Date();
+  const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
+
+  function nextBday(month,day){
+    let y=now2.getFullYear();
+    const d=new Date(y,month-1,day);
+    if(d<today) d.setFullYear(y+1);
+    return d;
+  }
+  function daysUntil(d){return Math.round((d-today)/86400000);}
+  function age(birthYear,month,day){
+    const next=nextBday(month,day);
+    return next.getFullYear()-birthYear;
+  }
+
+  // Emil: 30.03.2011
+  const emilNext=nextBday(3,30);
+  const emilDays=daysUntil(emilNext);
+  const emilNextAge=age(2011,3,30);
+  document.getElementById('emilBday').textContent=emilDays===0?'🎉 Heute!':emilDays===1?'Morgen!':emilDays+' Tage';
+  document.getElementById('emilAge').textContent='wird '+emilNextAge+' Jahre alt';
+
+  // Rosa: 29.04.2016
+  const rosaNext=nextBday(4,29);
+  const rosaDays=daysUntil(rosaNext);
+  const rosaNextAge=age(2016,4,29);
+  document.getElementById('rosaBday').textContent=rosaDays===0?'🎉 Heute!':rosaDays===1?'Morgen!':rosaDays+' Tage';
+  document.getElementById('rosaAge').textContent='wird '+rosaNextAge+' Jahre alt';
+})();
 
 // ── WETTER ──
 const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
