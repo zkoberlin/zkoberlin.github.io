@@ -184,20 +184,37 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* ── ALMA ── */
 .alma-wrap{display:flex;flex-direction:column;gap:8px;}
 
-/* Big countdown card */
+/* Unified alma card */
+.alma-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(249,115,22,.28);box-shadow:var(--sh);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .18s,box-shadow .18s,border-color .18s;}
+.alma-card:hover{transform:translateY(-2px);border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
+/* Header strip inside unified card */
+.alma-card-head{background:linear-gradient(135deg,var(--orange),#fb923c);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
+.alma-card-head-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px;}
+.alma-card-head-sub{font-size:10px;color:rgba(255,255,255,.75);margin-top:1px;}
+/* Section within unified card = big countdown row */
+.alma-section{display:flex;align-items:stretch;}
+.alma-section+.alma-section{border-top:1px solid var(--border);}
+.alma-section-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:16px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:80px;flex-shrink:0;}
+.alma-section-n{font-size:40px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;font-variant-numeric:tabular-nums;}
+.alma-section-unit{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
+.alma-section-emoji{font-size:24px;}
+.alma-section-right{flex:1;padding:13px 15px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
+.alma-section-lbl{font-family:var(--font-head);font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
+.alma-section-title{font-size:13px;font-weight:700;letter-spacing:-.2px;}
+.alma-section-date{font-size:11px;color:var(--t2);}
+.alma-section-range{font-size:10px;color:var(--orange);margin-top:1px;font-variant-numeric:tabular-nums;}
+/* Small row (übernächster / bday) */
+.alma-row{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--border);}
+.alma-row-icon{width:32px;height:32px;border-radius:9px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.alma-row-icon.pink{background:rgba(219,39,119,.10);border-color:rgba(219,39,119,.2);}
+.alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.alma-row-title{font-size:12px;font-weight:600;letter-spacing:-.1px;}
+.alma-row-date{font-size:10px;color:var(--t2);margin-top:1px;}
+.alma-row-counter{font-family:var(--font-body);font-size:11px;font-weight:600;color:var(--orange);margin-left:auto;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.alma-row-counter.pink{color:var(--pink);}
+/* Keep old classes for backwards compat with JS */
 .alma-big{background:var(--card);border-radius:var(--r);border:1px solid rgba(249,115,22,.28);box-shadow:var(--sh);overflow:hidden;display:flex;align-items:stretch;}
-.alma-big-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:18px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:88px;flex-shrink:0;}
-.alma-big-n{font-size:44px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;font-variant-numeric:tabular-nums;}
-.alma-big-unit{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
-.alma-big-emoji{font-size:28px;}
-.alma-big-right{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px;}
-.alma-big-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
-.alma-big-title{font-size:14px;font-weight:700;letter-spacing:-.2px;}
-.alma-big-date{font-size:11.5px;color:var(--t2);}
-.alma-big-range{font-size:10.5px;color:var(--t2);margin-top:1px;}
 
-/* Small alma card */
-.alma-small{background:var(--card);border-radius:var(--r2);border:1px solid rgba(249,115,22,.22);box-shadow:var(--sh);padding:13px 15px;display:flex;align-items:center;gap:12px;}
 .alma-small-icon{width:36px;height:36px;border-radius:10px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .alma-small-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;}
 .alma-small-title{font-size:13px;font-weight:600;letter-spacing:-.2px;}
@@ -343,7 +360,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.4.0</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.0</div>
     </div>
   </div>
 </header>
@@ -448,9 +465,41 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <!-- Alma -->
 <div class="sec">🧡 Alma · Schwerin</div>
-<div class="alma-wrap" id="almaWrap">
-  <!-- filled by JS -->
-</div>
+<a class="alma-card" href="/kalenderpaul/?filter=schwerin" target="_blank" id="almaCard">
+  <!-- Section 1: Hauptcountdown (aktuell / nächster Besuch) -->
+  <div class="alma-section" id="almaMain">
+    <div class="alma-section-left">
+      <div class="alma-section-emoji">👧</div>
+      <div class="alma-section-n" id="almaN">–</div>
+      <div class="alma-section-unit" id="almaUnit">Tage</div>
+    </div>
+    <div class="alma-section-right">
+      <div class="alma-section-lbl" id="almaLbl">Nächster Besuch · Schwerin</div>
+      <div class="alma-section-title" id="almaTitle">Lädt…</div>
+      <div class="alma-section-date" id="almaDate">–</div>
+      <div class="alma-section-range" id="almaRange"></div>
+    </div>
+  </div>
+  <!-- Section 2: Übernächster / nächster nach aktuellem Trip (optional) -->
+  <div class="alma-row" id="almaNext" style="display:none;">
+    <div class="alma-row-icon">👧</div>
+    <div style="flex:1;min-width:0;">
+      <div class="alma-row-lbl" id="almaNextLbl">Nächster Besuch</div>
+      <div class="alma-row-title" id="almaNextTitle">–</div>
+      <div class="alma-row-date" id="almaNextDate">–</div>
+    </div>
+    <div class="alma-row-counter" id="almaNextCounter">–</div>
+  </div>
+  <!-- Section 3: Geburtstags-Countdown Alma -->
+  <div class="alma-row" id="almaBdayRow">
+    <div class="alma-row-icon pink">🎂</div>
+    <div style="flex:1;">
+      <div class="alma-row-lbl">Almas 3. Geburtstag · 24. Okt</div>
+      <div class="alma-row-title" id="almaBdayVal">–</div>
+      <div class="alma-row-date">Freitag, 24. Oktober 2026 🎉</div>
+    </div>
+  </div>
+</a>
 
 <!-- Apps -->
 <div class="sec">📱 Apps</div>
@@ -509,7 +558,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="union-card">
   <div class="union-header">
     <div class="union-club">
-      <div class="union-badge">⚽</div>
+      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union Berlin" style="width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3));">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
         <div class="union-league">Bundesliga 2025/26 · Saisonende</div>
@@ -569,13 +618,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai · Heimspiel</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
         <div style="display:flex;align-items:center;gap:6px;flex:1;">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" style="width:24px;height:24px;object-fit:contain;">
+          <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" style="width:24px;height:24px;object-fit:contain;" onerror="this.style.display='none'">
           <span style="font-size:12px;font-weight:700;">Union Berlin</span>
         </div>
         <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;">2 : 2</div>
         <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
           <span style="font-size:12px;font-weight:700;">1. FC Köln</span>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/FC_Cologne_logo.svg/240px-FC_Cologne_logo.svg.png" style="width:24px;height:24px;object-fit:contain;">
+          <img src="https://tmssl.akamaized.net/images/wappen/head/3.png" style="width:24px;height:24px;object-fit:contain;" onerror="this.style.display='none'">
         </div>
       </div>
       <div class="union-stat-sub" style="text-align:center;margin-top:4px;">Unentschieden · Bundesliga</div>
@@ -588,9 +637,9 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="union-next-game">
         <div style="flex:1;">
           <div class="match-row">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/FSV_Mainz_05_Logo.svg/240px-FSV_Mainz_05_Logo.svg.png" class="match-logo" alt="Mainz">
+            <img src="https://tmssl.akamaized.net/images/wappen/head/67.png" class="match-logo" alt="Mainz" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>⚽</span>'">
             <span class="match-vs">vs</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" class="match-logo" alt="Union">
+            <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" class="match-logo" alt="Union" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>🔴</span>'">
             <span class="match-team">FSV Mainz vs Union Berlin</span>
           </div>
           <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
@@ -604,9 +653,9 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
         <div style="flex:1;">
           <div class="match-row">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1._FC_Union_Berlin_Logo.svg/240px-1._FC_Union_Berlin_Logo.svg.png" class="match-logo" alt="Union">
+            <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" class="match-logo" alt="Union" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>🔴</span>'">
             <span class="match-vs">vs</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Augsburger_FCA_Logo.svg/240px-Augsburger_FCA_Logo.svg.png" class="match-logo" alt="Augsburg">
+            <img src="https://tmssl.akamaized.net/images/wappen/head/11.png" class="match-logo" alt="Augsburg" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>⚽</span>'">
             <span class="match-team">Union Berlin vs FC Augsburg</span>
           </div>
           <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
@@ -1112,6 +1161,8 @@ async function loadKids(){
       const d=st(new Date(`${p[2]}-${p[1]}-${p[0]}`));
       return isNaN(d)?null:{date:d,who:r[2]?.trim()};
     }).filter(Boolean).sort((a,b)=>a.date-b.date);
+
+    // Build 14-day timeline
     const track=document.getElementById('erTrack');track.innerHTML='';
     for(let i=0;i<14;i++){
       const d=new Date(today);d.setDate(today.getDate()+i);
@@ -1123,25 +1174,56 @@ async function loadKids(){
       div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
       track.appendChild(div);
     }
+
     const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
-    document.getElementById('erBadge').textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
-    document.getElementById('erBadge').className='er-badge '+(todayWho==='Paul'?'paul':'dani');
+    // Update badge: show who has the kids RIGHT NOW
+    const badge=document.getElementById('erBadge');
+    badge.textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
+    badge.className='er-badge '+(todayWho==='Paul'?'paul':'dani');
+
     const fut=entries.filter(e=>e.date>=today);
+
     if(todayWho==='Paul'){
+      // Kids are HERE → show remaining days + when next Paul-block starts after Dani
       let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
-      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n g';
+      document.getElementById('c1lbl').textContent='Noch bei Paul';
+      document.getElementById('c1n').textContent=cnt;
+      document.getElementById('c1n').className='er-n g';
       document.getElementById('c1s').textContent=cnt===1?'Heute letzter Tag':'inkl. heute';
-      const nd=fut.find(e=>e.who==='Dani'),np=nd?fut.find(e=>e.date>nd.date&&e.who==='Paul'):null;
-      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;}
+
+      // Next Paul block: how many days in a row?
+      const nd=fut.find(e=>e.who==='Dani');
+      const np=nd?fut.find(e=>e.date>nd.date&&e.who==='Paul'):null;
+      if(np){
+        // Count consecutive Paul days in that block
+        let npCnt=0;const npStart=np.date;
+        for(const e of fut.filter(e=>e.date>=npStart)){if(e.who==='Paul')npCnt++;else break;}
+        document.getElementById('c2lbl').textContent='Nächster Besuch';
+        document.getElementById('c2n').textContent=npCnt;
+        document.getElementById('c2n').className='er-n b';
+        document.getElementById('c2s').textContent=`${npCnt} Tage · ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
+      }
       if(nd){document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WK[nd.date.getDay()]}. ${nd.date.getDate()}. ${MK[nd.date.getMonth()]}</strong></span>`;}
+
     } else {
-      document.getElementById('c1lbl').textContent='Noch bei Dani';
+      // Kids at Dani → show remaining days there + how many days at Paul in next block
       let cnt=0;for(const e of fut){if(e.who==='Dani')cnt++;else break;}
-      document.getElementById('c1n').textContent=cnt;document.getElementById('c1n').className='er-n gr';
+      document.getElementById('c1lbl').textContent='Noch bei Dani';
+      document.getElementById('c1n').textContent=cnt;
+      document.getElementById('c1n').className='er-n gr';
       document.getElementById('c1s').textContent='inkl. heute';
+
+      // Next Paul block: how many consecutive days?
       const np=fut.find(e=>e.who==='Paul');
-      if(np){document.getElementById('c2n').textContent=diff(today,np.date);document.getElementById('c2s').textContent=`Ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
-      document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;}
+      if(np){
+        let npCnt=0;const npStart=np.date;
+        for(const e of fut.filter(e=>e.date>=npStart)){if(e.who==='Paul')npCnt++;else break;}
+        document.getElementById('c2lbl').textContent='Tage bei Paul danach';
+        document.getElementById('c2n').textContent=npCnt;
+        document.getElementById('c2n').className='er-n b';
+        document.getElementById('c2s').textContent=`ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
+        document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;
+      }
     }
   }catch(e){}
 }
@@ -1293,7 +1375,8 @@ async function loadICAL(){
   }catch(e){
     console.warn('iCal load error:',e);
     document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div><div class="kal-ev-date" style="color:var(--t3)">Bitte Kalender-App direkt öffnen</div></div></div>';
-    document.getElementById('almaWrap').innerHTML='<div style="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 15px;font-size:11px;color:var(--t3);">⚠️ Alma-Daten nicht erreichbar – iCal-Feed prüfen</div>';
+    document.getElementById('almaTitle').textContent='⚠️ iCal nicht erreichbar';
+    document.getElementById('almaDate').textContent='Kalender prüfen';
   }
 }
 
@@ -1304,146 +1387,103 @@ function loadAlma(evs){
     const now2=new Date();
     const all=evs.filter(e=>e.sum.toLowerCase().includes('schwerin')).sort((a,b)=>a.date-b.date);
     const future=all.filter(e=>st(e.date)>=today);
-    const past=all.filter(e=>st(e.date)<today);
 
-    // Check if currently in Schwerin (today's event OR consecutive from past)
-    // Check if today falls within a multi-day event (DTSTART <= today <= DTEND)
+    // Alma birthday countdown (always shown)
+    const almaYear=now2.getMonth()>=9&&(now2.getMonth()>9||now2.getDate()>24)?2027:2026;
+    const almaBday=new Date(almaYear,9,24);
+    const bdayMs=almaBday-now2;
+    const bdayDays=Math.floor(bdayMs/86400000);
+    const bdayH=Math.floor((bdayMs%86400000)/3600000);
+    const bdayMin=Math.floor((bdayMs%3600000)/60000);
+    document.getElementById('almaBdayVal').textContent=`${bdayDays} Tage · ${bdayH} Std · ${bdayMin} Min`;
+
+    // Check if currently in Schwerin
     const todayEv=all.find(e=>{
       const start=st(e.date);
       const end=e.dateEnd?st(e.dateEnd):start;
-      return today>=start && today<=end;
+      return today>=start&&today<=end;
     });
 
-    // Find end of current trip
     let tripEnd=null;
     if(todayEv){
-      if(todayEv.dateEnd){
-        tripEnd=new Date(todayEv.dateEnd);
-      } else {
-        // Fallback: find consecutive days
-        let checkDay=new Date(today);
-        tripEnd=new Date(today);
+      if(todayEv.dateEnd){tripEnd=new Date(todayEv.dateEnd);}
+      else{
+        let checkDay=new Date(today);tripEnd=new Date(today);
         while(true){
-          const next=new Date(checkDay);
-          next.setDate(checkDay.getDate()+1);
+          const next=new Date(checkDay);next.setDate(checkDay.getDate()+1);
           const hasNext=all.find(e=>diff(next,st(e.date))===0);
-          if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}
-          else break;
+          if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}else break;
         }
       }
     }
 
-    const wrap=document.getElementById('almaWrap');
-
-    // Alma birthday countdown
-    const almaYear = now2.getMonth()>=9 && (now2.getMonth()>9 || now2.getDate()>24) ? 2027 : 2026;
-    const almaBday = new Date(almaYear, 9, 24); // Oct 24
-    const bdayMs = almaBday - now2;
-    const bdayDays = Math.floor(bdayMs/86400000);
-    const bdayH = Math.floor((bdayMs%86400000)/3600000);
-    const bdayMin = Math.floor((bdayMs%3600000)/60000);
-    const bdayCard = `
-      <div style="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:12px 15px;display:flex;align-items:center;gap:12px;">
-        <div style="width:38px;height:38px;border-radius:10px;background:rgba(219,39,119,.10);border:1px solid rgba(219,39,119,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎂</div>
-        <div style="flex:1;">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;">Almas 3. Geburtstag · 24. Okt</div>
-          <div style="font-size:13px;font-weight:700;color:var(--pink);">${bdayDays} Tage · ${bdayH} Std · ${bdayMin} Min</div>
-          <div style="font-size:10px;color:var(--t2);margin-top:1px;">Freitag, 24. Oktober 2026 🎉</div>
-        </div>
-      </div>`;
-
-    if(todayEv && tripEnd){
+    if(todayEv&&tripEnd){
       // CURRENTLY IN SCHWERIN
       const daysLeft=diff(today,tripEnd);
-      const msLeft=tripEnd.getTime()+86400000-now2.getTime(); // until end of trip day
+      const msLeft=tripEnd.getTime()+86400000-now2.getTime();
       const hoursLeft=Math.floor(msLeft/3600000);
       const minsLeft=Math.floor((msLeft%3600000)/60000);
 
+      document.getElementById('almaMain').querySelector('.alma-section-left').style.background='linear-gradient(135deg,#f97316,#fb923c)';
+      document.getElementById('almaMain').querySelector('.alma-section-emoji').textContent='🧡';
+      document.getElementById('almaN').textContent=daysLeft===0?'🥹':daysLeft;
+      document.getElementById('almaN').style.fontSize=daysLeft>9?'32px':'40px';
+      document.getElementById('almaUnit').textContent=daysLeft===0?'Letzter Tag':daysLeft===1?'Tag noch':'Tage noch';
+      document.getElementById('almaLbl').textContent='Du bist aktuell bei Alma 🧡';
+      document.getElementById('almaTitle').textContent=todayEv.sum;
+      document.getElementById('almaDate').textContent=`Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}`;
+      document.getElementById('almaRange').textContent=`${hoursLeft} Std · ${minsLeft} Min verbleibend`;
+
+      // Show next trip in almaNext row
       const next=future.find(e=>st(e.date)>tripEnd);
-
-      let html=`
-        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank" style="border-color:var(--orange-b);">
-          <div class="alma-big-left">
-            <div class="alma-big-emoji">🧡</div>
-            <div class="alma-big-n" style="font-size:${daysLeft>9?'32px':'40px'};">${daysLeft===0?'🥹':daysLeft}</div>
-            <div class="alma-big-unit">${daysLeft===0 ? "Letzter Tag" : daysLeft===1 ? "Tag noch" : "Tage noch"}</div>
-          </div>
-          <div class="alma-big-right">
-            <div class="alma-big-lbl">Du bist aktuell bei Alma 🧡</div>
-            <div class="alma-big-title">${todayEv.sum}</div>
-            <div class="alma-big-date">Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}</div>
-            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${hoursLeft} Std · ${minsLeft} Min verbleibend</div>
-          </div>
-        </a>`;
-
       if(next){
         const d=diff(today,st(next.date));
-        html+=`
-        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-small-icon">👧</div>
-          <div>
-            <div class="alma-small-lbl">Nächster Besuch</div>
-            <div class="alma-small-title">${next.sum}</div>
-            <div class="alma-small-date">${fmtFull(next.date)}</div>
-          </div>
-          <div class="alma-small-counter">in ${d} Tagen</div>
-        </a>`;
+        document.getElementById('almaNext').style.display='flex';
+        document.getElementById('almaNextLbl').textContent='Nächster Besuch';
+        document.getElementById('almaNextTitle').textContent=next.sum;
+        document.getElementById('almaNextDate').textContent=fmtFull(next.date);
+        document.getElementById('almaNextCounter').textContent=`in ${d} Tagen`;
       }
-      html += bdayCard;
-      wrap.innerHTML=html;
 
     } else {
-      // NOT in Schwerin – show countdown to next
+      // NOT in Schwerin
       const next=future[0];
       const overNext=future[1];
 
       if(!next){
-        wrap.innerHTML=`<a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank"><div class="alma-big-left"><div class="alma-big-emoji">👧</div><div class="alma-big-n">?</div><div class="alma-big-unit">Tage</div></div><div class="alma-big-right"><div class="alma-big-lbl">Nächster Besuch</div><div class="alma-big-title">Kein Termin geplant</div><div class="alma-big-date">–</div></div></a>`+bdayCard;
+        document.getElementById('almaN').textContent='?';
+        document.getElementById('almaLbl').textContent='Nächster Besuch';
+        document.getElementById('almaTitle').textContent='Kein Termin geplant';
+        document.getElementById('almaDate').textContent='–';
         return;
       }
 
-      // Precise countdown: days, hours, minutes
-      const nextMs = st(next.date).getTime() - now2.getTime();
-      const nextDays = Math.floor(nextMs/86400000);
-      const nextH = Math.floor((nextMs%86400000)/3600000);
-      const nextMin = Math.floor((nextMs%3600000)/60000);
-      const nextWk = Math.floor(nextDays/7);
-      const nextRemDays = nextDays%7;
+      const nextMs=st(next.date).getTime()-now2.getTime();
+      const nextDays=Math.floor(nextMs/86400000);
+      const nextH=Math.floor((nextMs%86400000)/3600000);
+      const nextMin=Math.floor((nextMs%3600000)/60000);
+      const nextWk=Math.floor(nextDays/7);
+      const nextRemDays=nextDays%7;
+      let countdownStr='';
+      if(nextWk>0)countdownStr+=nextWk+'W ';
+      countdownStr+=nextRemDays+'T · '+nextH+'Std · '+nextMin+'Min';
 
-      let countdownStr = '';
-      if(nextWk>0) countdownStr += nextWk+'W ';
-      countdownStr += nextRemDays+'T · '+nextH+'Std · '+nextMin+'Min';
-
-      let html=`
-        <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-big-left">
-            <div class="alma-big-emoji">👧</div>
-            <div class="alma-big-n" style="font-size:${nextDays>99?'28px':nextDays>9?'36px':'44px'};">${nextDays}</div>
-            <div class="alma-big-unit">Tage</div>
-          </div>
-          <div class="alma-big-right">
-            <div class="alma-big-lbl">Nächster Besuch · Schwerin</div>
-            <div class="alma-big-title">${next.sum}</div>
-            <div class="alma-big-date">${fmtFull(next.date)}</div>
-            <div class="alma-big-range" style="color:var(--orange);font-size:10.5px;margin-top:3px;">${countdownStr}</div>
-          </div>
-        </a>`;
+      document.getElementById('almaN').textContent=nextDays;
+      document.getElementById('almaN').style.fontSize=nextDays>99?'28px':nextDays>9?'36px':'40px';
+      document.getElementById('almaUnit').textContent='Tage';
+      document.getElementById('almaLbl').textContent='Nächster Besuch · Schwerin';
+      document.getElementById('almaTitle').textContent=next.sum;
+      document.getElementById('almaDate').textContent=fmtFull(next.date);
+      document.getElementById('almaRange').textContent=countdownStr;
 
       if(overNext){
         const d2=diff(today,st(overNext.date));
-        html+=`
-        <a class="alma-small hcard" href="/kalenderpaul/?filter=schwerin" target="_blank">
-          <div class="alma-small-icon">👧</div>
-          <div>
-            <div class="alma-small-lbl">Übernächster Besuch</div>
-            <div class="alma-small-title">${overNext.sum}</div>
-            <div class="alma-small-date">${fmtFull(overNext.date)}</div>
-          </div>
-          <div class="alma-small-counter">in ${d2} Tagen</div>
-        </a>`;
+        document.getElementById('almaNext').style.display='flex';
+        document.getElementById('almaNextLbl').textContent='Übernächster Besuch';
+        document.getElementById('almaNextTitle').textContent=overNext.sum;
+        document.getElementById('almaNextDate').textContent=fmtFull(overNext.date);
+        document.getElementById('almaNextCounter').textContent=`in ${d2} Tagen`;
       }
-      html += bdayCard;
-      wrap.innerHTML=html;
     }
   }catch(e){console.log('Alma error:',e);}
 }
