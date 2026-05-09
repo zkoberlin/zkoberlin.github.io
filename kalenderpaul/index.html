@@ -2,6 +2,8 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -80,11 +82,10 @@
   .li { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
   .li:hover { background: #48484a; color: #0a84ff; border-color: #0a84ff; }
 
-  /* Today strip */
-  .today-panel { border-top-color: rgba(255,255,255,.1); }
-  .tp-title { color: #0a84ff; }
-  .tp-date { color: #636366; }
-  .tp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+  
+  
+  
+  
 
   /* Buttons */
   .today-btn { background: #3a3a3c; border-color: #0a84ff; color: #0a84ff; }
@@ -102,7 +103,7 @@
   .kw { color: #636366; }
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
@@ -173,33 +174,13 @@ body {
 }
 @media (max-width: 600px) {
   .legend {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
-  .legend::-webkit-scrollbar { display: none; }
+  .li { flex: 0 0 auto; }
 }
-/* Today strip inside header */
-.today-panel {
-  background: transparent;
-  border-top: 1px solid var(--border);
-  padding: 4px 0 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  overflow: hidden;
-  max-height: 200px;
-  opacity: 1;
-  /* NO transition - avoids layout shifts that move sticky-bar */
-}
-.today-panel.hidden {
-  max-height: 0 !important;
-  opacity: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  pointer-events: none;
-}
+
+
 
 
 /* Legend */
@@ -217,30 +198,13 @@ body {
 .ld { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
 /* today-panel moved into header */
-.tp-header {
-  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-}
-.tp-title {
-  font-size: 11px; font-weight: 800; color: var(--blue);
-  text-transform: uppercase; letter-spacing: .8px;
-}
-.tp-date {
-  font-size: 11px; color: var(--text3); font-weight: 400;
-}
-.tp-list {
-  display: flex; flex-wrap: wrap; gap: 6px; flex: 1;
-}
-.tp-item {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 10.5px; font-weight: 500; color: var(--text);
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 7px; padding: 3px 9px;
-  cursor: pointer; transition: .15s; white-space: nowrap;
-}
+
+
+
+
+
 .tp-item:hover { border-color: var(--blue); background: var(--blue-l); }
-.tp-empty {
-  font-size: 12px; color: var(--text3); padding: 4px 0; font-style: italic;
-}
+
 
 /* Filter Bottom Sheet */
 .filter-backdrop {
@@ -924,7 +888,7 @@ body {
 [data-theme="dark"] .day.today  { background: #0a2a4a; box-shadow: inset 0 0 0 2px #0a84ff; }
 [data-theme="dark"] .day.empty  { background: transparent; }
 [data-theme="dark"] .li         { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
-[data-theme="dark"] .tp-item    { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
+[data-theme="dark"] 
 [data-theme="dark"] .filter-panel { background: #2c2c2e; }
 [data-theme="dark"] .filter-panel-handle { background: #636366; }
 [data-theme="dark"] .fp-item    { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
@@ -989,6 +953,22 @@ body {
 
   /* Header */
   .header { padding: 6px 16px 0; }
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .header-left { width: 100%; }
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .hub-btn, .theme-btn, .today-btn, .add-event-btn {
+    flex: 1;
+    height: 36px;
+    font-size: 13px;
+  }
   .header-top { gap: 10px; margin-bottom: 6px; }
   .header-icon { font-size: 18px; }
   .header-text h1 { font-size: 14px; }
@@ -1007,26 +987,15 @@ body {
   .legend::-webkit-scrollbar { display: none; }
   .li { flex-shrink: 0; font-size: 10px; padding: 3px 8px; }
 
-  /* Today strip */
-  .today-panel {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  .today-panel::-webkit-scrollbar { display: none; }
-  .today-panel.hidden {
-    max-height: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    opacity: 0 !important;
-    overflow: hidden !important;
-  }
   
-  .tp-header { width: 100%; margin-bottom: 2px; }
-  .tp-title { font-size: 10px; letter-spacing: .6px; }
-  .tp-date { font-size: 10px; }
-  .tp-list { display: flex; flex-direction: column; gap: 4px; width: 100%; }
-  .tp-item { font-size: 11px; padding: 4px 10px; width: 100%; }
+  
+  
+  
+  
+  
+  
+  
+  
 
   /* Main */
   .main { padding: 12px 10px 40px; }
@@ -1103,8 +1072,8 @@ body {
 [data-theme="dark"] .kw   { color: #636366; }
 [data-theme="dark"] .mt   { color: #f5f5f7; }
 [data-theme="dark"] .li   { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
-[data-theme="dark"] .tp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
-[data-theme="dark"] .today-panel { border-top-color: rgba(255,255,255,.1); }
+[data-theme="dark"] 
+[data-theme="dark"] 
 [data-theme="dark"] .today-btn { border-color: #0a84ff; color: #0a84ff; }
 [data-theme="dark"] .filter-panel { background: #2c2c2e; }
 [data-theme="dark"] .filter-panel-handle { background: #636366; }
@@ -1126,6 +1095,9 @@ body {
 [data-theme="dark"] .chip-count { background: rgba(255,255,255,.15); }
 
 
+.kw, .dn, .version-badge, .tp-title, .tp-date, .chip-count, .load-item, .sticky-bar-days span {
+  font-family: 'DM Mono', monospace;
+}
 .version-badge {
   font-size: 9px;
   font-weight: 500;
@@ -1182,7 +1154,7 @@ body {
 
 /* Apple-like detail panel */
 .dp {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: 'DM Sans', -apple-system, sans-serif;
 }
 .dp h3 {
   font-size: 17px;
@@ -1206,7 +1178,7 @@ body {
 
 /* Apple modal style */
 .evt-modal {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-family: 'DM Sans', -apple-system, sans-serif;
 }
 .evt-modal-title {
   font-size: 20px;
@@ -1233,11 +1205,7 @@ body {
 }
 
 /* Today strip */
-.tp-title {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .6px;
-}
+
 
 /* Day numbers */
 .dn {
@@ -1271,7 +1239,7 @@ body {
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v2.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v2.6.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1308,15 +1276,7 @@ body {
   <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
   <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
   <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
-</div><!-- end legend -->
-  <div class="today-panel" id="todayPanel">
-    <div class="tp-header">
-      <span class="tp-title" id="tpTitle">Heute</span>
-      <span class="tp-date" id="tpDate"></span>
-    </div>
-    <div class="tp-list" id="tpList"></div>
-  </div>
-  </div><!-- end header-inner -->
+</div><!-- end legend --></div><!-- end header-inner -->
 </div><!-- end header -->
 
 <!-- Filter Panel -->
@@ -1377,7 +1337,7 @@ const WD = ["Mo","Di","Mi","Do","Fr","Sa","So"];
 
 // ── ALLE TERMINE APRIL – DEZEMBER 2026 ──────────────────────────────
 const SE = {};
-let todayHasEvents = false;
+
 
 // ── HELPERS ──────────────────────────────────────────────────────────
 function pad(n) { return String(n).padStart(2,'0'); }
@@ -1795,8 +1755,7 @@ async function deleteCurrentEvent() {
         });
         closeEvtModal();
         renderAll();
-        renderToday();
-        alert('✅ Termin gelöscht!');
+                alert('✅ Termin gelöscht!');
       } else {
         const errData = await res.json().catch(() => ({}));
         alert('❌ ' + (errData.error?.message || 'Fehler ' + res.status));
@@ -1830,54 +1789,7 @@ function collapseDay() {
 }
 
 // ── TODAY PANEL ──────────────────────────────────────────────────────
-function renderToday() {
-  const now = today;
-  const key = dk(now.getFullYear(), now.getMonth(), now.getDate());
-  const evs = SE[key] || [];
 
-  const DN2 = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
-  const dow = DN2[now.getDay()];
-  const DN3 = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
-  const hdow = DN3[now.getDay()];
-  document.getElementById('headerDate').textContent =
-    `Heute: ${hdow}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
-  document.getElementById('tpDate').textContent =
-    `${dow}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
-
-  const list = document.getElementById('tpList');
-  list.innerHTML = '';
-
-  todayHasEvents = evs.length > 0;
-  updateTodayPanel();
-  if(!evs.length) return;
-
-  const colorMap2 = {
-    'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669','e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af',
-    'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
-    'e-haus':'#00a0e3','e-union':'#b91c1c','e-konzert':'#16a34a','e-bday':'#9ca3af'
-  };
-
-  evs.forEach(ev => {
-    const item = document.createElement('div');
-    item.className = 'tp-item';
-    const color = colorMap2[ev.c] || '#9ca3af';
-    const srcLabel = ev.fromIcal ? ' <span style="font-size:9px;opacity:.5">iCal</span>' 
-                  : ev.fromSheet ? ' <span style="font-size:9px;opacity:.5;color:#a78bfa">Sheet</span>'
-                  : ev.fromApi ? ' <span style="font-size:9px;opacity:.5;color:#f59e0b">API</span>' : '';
-    item.innerHTML = `<span style="color:${color};font-size:11px">●</span> ${ev.t}${srcLabel}`;
-    item.onclick = () => {
-      const cell = document.querySelector(`.day[data-key="${key}"]`);
-      if(cell) {
-        const offset = 280;
-        const top = cell.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({top, behavior:'smooth'});
-        openDp(key);
-      }
-    };
-    list.appendChild(item);
-  });
-}
 
 // ── FILTER ───────────────────────────────────────────────────────────
 const catLabels = {
@@ -2289,8 +2201,7 @@ async function loadICalEvents() {
   }
 
   renderAll();
-  renderToday();
-  hideEmptyFilters();
+    hideEmptyFilters();
 }
 
 // ── DYNAMIC DATA LOADERS ─────────────────────────────────────────────
@@ -2497,7 +2408,6 @@ async function loadAllDynamicData() {
   await Promise.all([loadFeiertage(), loadSchulferien(), loadUnionGames(), loadKidsSheet()]);
 }
 
-renderToday();
 renderAll();
 hideEmptyFilters();
 
@@ -2632,8 +2542,7 @@ async function saveEvent() {
         if(location) newEntry.location = location;
         SE[date].push(newEntry);
         renderAll();
-        renderToday();
-        hideEmptyFilters();
+                hideEmptyFilters();
       }
       document.getElementById('addStatus').textContent = '✅ Termin gespeichert!';
       document.getElementById('addTitle').value = '';
@@ -2665,8 +2574,7 @@ async function saveEvent() {
 // Load dynamic data and re-render
 loadAllDynamicData().then(() => {
   renderAll();
-  renderToday();
-  hideEmptyFilters();
+    hideEmptyFilters();
 });
 
 // Load iCal events after initial render
@@ -2689,22 +2597,7 @@ setTimeout(updateHeaderVar, 600);
 // Fade today strip on scroll
 let lastScrolled = false;
 
-function updateTodayPanel() {
-  const tp = document.getElementById('todayPanel');
-  if(!tp) return;
-  const scrolled = window.scrollY > 40;
-  const shouldHide = scrolled || !todayHasEvents;
-  const isHidden = tp.classList.contains('hidden');
-  if(shouldHide === isHidden) return;
-  if(shouldHide) {
-    tp.classList.add('hidden');
-  } else {
-    tp.classList.remove('hidden');
-  }
-  // Update --header-h for filter panel positioning only
-  const h = document.querySelector('.header');
-  if(h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
-}
+function updateTodayPanel() {} // removed
 
 window.addEventListener('scroll', () => {
   const scrolled = window.scrollY > 40;
