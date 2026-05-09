@@ -525,10 +525,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 .sticky-bar {
   position: sticky;
   top: var(--header-h, 120px);
-  z-index: 5;
+  z-index: 9;
   background: var(--surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 6px 22px 4px;
   margin: -22px -22px 8px -22px;
@@ -1091,7 +1091,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 :root[data-theme="light"] .e-haus     { background: #00a0e3; color: #ffffff; }
 :root[data-theme="light"] .e-bday     { background: #f3f4f6; color: #6b7280; }
 :root[data-theme="light"] .header     { background: rgba(255,255,255,0.94); }
-:root[data-theme="light"] .sticky-bar { background: #ffffff; }
+:root[data-theme="light"] .sticky-bar { background: rgba(255,255,255,0.97); }
 :root[data-theme="light"] .mc         { background: #ffffff; }
 :root[data-theme="light"] .day        { background: #f5f5f7; }
 :root[data-theme="light"] .filter-panel { background: rgba(255,255,255,0.97); }
@@ -1414,7 +1414,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
