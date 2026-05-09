@@ -524,7 +524,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
-  top: var(--header-h, 120px);
+  top: var(--header-h, 160px);
   z-index: 9;
   background: var(--surface);
   backdrop-filter: blur(20px);
@@ -1414,7 +1414,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.1</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.2</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1846,6 +1846,8 @@ function renderView() {
   } else {
     renderAlleView(cal, base);
   }
+  // Re-measure header after render (mobile btn-row may change height)
+  setTimeout(updateHeaderVar, 0);
 }
 
 // ── TAG-ANSICHT ──────────────────────────────────────────────────────
@@ -3093,24 +3095,32 @@ async function saveEvent() {
 // Load dynamic data and re-render
 loadAllDynamicData().then(() => {
   renderAll();
-    hideEmptyFilters();
+  hideEmptyFilters();
+  setTimeout(updateHeaderVar, 0);
 });
 
 // Load iCal events after initial render
 loadICalEvents();
 
-// Set header height once on load + on resize only
+// Set header height – called immediately and after every render
 function updateHeaderVar() {
   const h = document.querySelector('.header');
   if(h) {
     const hh = h.getBoundingClientRect().height;
-    document.documentElement.style.setProperty('--header-h', Math.round(hh) + 'px');
-    document.documentElement.style.setProperty('--header-h-min', Math.round(hh) + 'px');
+    if(hh > 0) {
+      document.documentElement.style.setProperty('--header-h', Math.round(hh) + 'px');
+      document.documentElement.style.setProperty('--header-h-min', Math.round(hh) + 'px');
+    }
   }
 }
+// Run immediately (sync, before first paint)
+updateHeaderVar();
+// Run after fonts/layout settle
+window.addEventListener('load', updateHeaderVar);
 window.addEventListener('resize', updateHeaderVar, {passive: true});
-setTimeout(updateHeaderVar, 150);
-setTimeout(updateHeaderVar, 600);
+setTimeout(updateHeaderVar, 0);
+setTimeout(updateHeaderVar, 100);
+setTimeout(updateHeaderVar, 500);
 // Also update after scroll state changes (today panel transition)
 // No transitionend needed since we removed transitions
 
