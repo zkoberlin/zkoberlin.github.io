@@ -1077,7 +1077,7 @@ function parseICS(txt){
   for(let i=1;i<blocks.length;i++){
     const b=blocks[i];
     const get=k=>{const m=b.match(new RegExp(k+'(?:;[^:]*)?:([^\\r\\n]+)'));return m?m[1].trim():''};
-    const dtraw=get('DTSTART'),sum=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
+    const dtraw=get('DTSTART'),dtendraw=get('DTEND'),sum=get('SUMMARY').replace(/\\n/g,' ').replace(/\\,/g,',');
     if(!dtraw||!sum)continue;
     let date,hasTime=false;
     if(/^\d{8}$/.test(dtraw)){
@@ -1135,17 +1135,27 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const PROXY='https://script.google.com/macros/s/AKfycbznvFGm95G3PiGivqnMakGwpeWLiw3_auRDj3UUoQjjuxDplG-VnTVKMU2jRE3sGdk9/exec';
-    const txt=await new Promise((resolve,reject)=>{
-      const cb='ical_cb_'+Date.now();
-      const script=document.createElement('script');
-      const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},10000);
-      window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
-      script.src=PROXY+'?callback='+cb;
-      script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
-      document.head.appendChild(script);
-    });
-    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error();
+    // iCal URL – Google Calendar public iCal feed
+    const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
+
+    // Try multiple CORS proxies in order
+    const PROXIES=[
+      u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+      u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,
+      u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+    ];
+
+    let txt='';
+    for(const makeUrl of PROXIES){
+      try{
+        const r=await fetch(makeUrl(ICAL_URL),{signal:AbortSignal.timeout(8000)});
+        if(!r.ok)continue;
+        const t=await r.text();
+        if(t.includes('BEGIN:VCALENDAR')){txt=t;break;}
+      }catch(e){continue;}
+    }
+
+    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error('iCal nicht erreichbar');
     const evs=parseICS(txt);
     const today=st(new Date());
 
@@ -1205,7 +1215,9 @@ async function loadICAL(){
     const unionCard=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
 
   }catch(e){
-    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div></div></div>';
+    console.warn('iCal load error:',e);
+    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div><div class="kal-ev-date" style="color:var(--t3)">Bitte Kalender-App direkt öffnen</div></div></div>';
+    document.getElementById('almaWrap').innerHTML='<div style="background:var(--card);border-radius:var(--r2);border:1px solid var(--border);padding:12px 15px;font-size:11px;color:var(--t3);">⚠️ Alma-Daten nicht erreichbar – iCal-Feed prüfen</div>';
   }
 }
 
