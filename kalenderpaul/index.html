@@ -410,12 +410,39 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   display: none; background: var(--surface); border-radius: 14px;
   padding: 16px 20px; margin-bottom: 18px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
-  animation: fu .2s ease;
 }
 .dp.on { display: block; }
 @keyframes fu { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
 .dp h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
 .dp .ds { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+
+/* ── INLINE DAY POPUP ── */
+.dp-popup {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 4px 0 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10);
+  animation: fu .18s ease;
+}
+.dp-popup-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.dp-popup-title { font-size: 13px; font-weight: 700; letter-spacing: -.2px; }
+.dp-popup-close {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: none; background: var(--surface2);
+  color: var(--text3); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.dp-popup-close:hover { color: var(--text); }
+.dp-popup-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 4px; }
+[data-theme="dark"] .dp-popup { background: #2c2c2e; }
+[data-theme="dark"] .dp-popup-head { border-color: rgba(255,255,255,.08); }
+
 .eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
 .eli .en { font-size: 13px; font-weight: 500; }
 .eli .et { font-size: 11px; color: var(--text2); margin-top: 1px; }
@@ -841,6 +868,82 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   box-shadow: 0 1px 4px rgba(0,0,0,.10);
 }
 .view-btn:not(.active):hover { color: var(--text); }
+
+/* Navigation bar between views */
+.view-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 2px 4px;
+  gap: 8px;
+}
+.view-nav-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text2); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: .15s; flex-shrink: 0;
+}
+.view-nav-btn:hover { border-color: var(--blue); color: var(--blue); }
+.view-nav-title {
+  font-family: var(--font-head); font-size: 15px; font-weight: 700;
+  letter-spacing: -.3px; flex: 1; text-align: center;
+}
+
+/* Tag-Ansicht: große Terminkarte */
+.tag-view { display: flex; flex-direction: column; gap: 10px; }
+.tag-view-date {
+  font-size: 28px; font-weight: 300; letter-spacing: -1px; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.tag-view-dow { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.tag-evt-card {
+  background: var(--surface); border-radius: 14px; border: 1px solid var(--border);
+  box-shadow: var(--sh); overflow: hidden;
+}
+.tag-evt-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 16px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .12s;
+}
+.tag-evt-item:last-child { border-bottom: none; }
+.tag-evt-item:hover { background: var(--surface2); }
+.tag-evt-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.tag-evt-title { font-size: 14px; font-weight: 600; }
+.tag-evt-time { font-size: 12px; color: var(--text2); margin-top: 2px; }
+.tag-empty { font-size: 13px; color: var(--text3); padding: 20px 16px; text-align: center; }
+
+/* Woche-Ansicht: 7-Spalten-Grid mit vollen Terminnamen */
+.week-view { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--sh); overflow: hidden; }
+.week-header { display: grid; grid-template-columns: repeat(7,1fr); border-bottom: 1px solid var(--border); }
+.week-header-day {
+  text-align: center; padding: 8px 4px 6px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--text3);
+  border-right: 1px solid var(--border);
+}
+.week-header-day:last-child { border-right: none; }
+.week-header-day.we { color: var(--red); }
+.week-header-day.today-col { color: var(--blue); }
+.week-header-day .wh-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  font-size: 13px; font-weight: 700; margin-top: 2px;
+}
+.week-header-day.today-col .wh-num { background: var(--blue); color: #fff; }
+.week-cols { display: grid; grid-template-columns: repeat(7,1fr); min-height: 120px; }
+.week-col {
+  padding: 6px 4px; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 3px; min-height: 100px;
+  cursor: pointer; transition: background .12s;
+}
+.week-col:last-child { border-right: none; }
+.week-col:hover { background: var(--surface2); }
+.week-col.today-col { background: var(--blue-l); }
+.week-evt {
+  font-size: 10px; font-weight: 600; padding: 2px 5px;
+  border-radius: 4px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; line-height: 1.4;
+}
+.week-more { font-size: 9px; color: var(--text3); padding: 1px 4px; }
 
 /* Hide the kw-month-badge completely */
 .kw-month-badge { display: none !important; }
@@ -1553,20 +1656,7 @@ function buildMonth(year, month) {
 
       cell.onclick = (e) => {
         if(expandedDay) collapseDay();
-        // Remember the clicked cell position before opening panel
-        const cellRect = cell.getBoundingClientRect();
-        const cellScrollY = window.pageYOffset + cellRect.top;
-        openDp(key);
-        // On mobile: scroll so the clicked day stays visible, dp appears just below header
-        if(window.innerWidth <= 600) {
-          const header = document.querySelector('.header');
-          const headerH = header ? header.offsetHeight : 120;
-          const dp = document.getElementById('dp');
-          const dpH = dp ? dp.offsetHeight : 0;
-          // Target: keep clicked cell visible, scroll just enough so dp fits above it
-          const targetScroll = Math.max(0, cellScrollY - headerH - dpH - 12);
-          setTimeout(() => window.scrollTo({ top: targetScroll, behavior: 'smooth' }), 30);
-        }
+        openDp(key, cell);
       };
       row.appendChild(cell);
       day++;
@@ -1579,37 +1669,21 @@ function buildMonth(year, month) {
 }
 
 let selectedCell = null;
+let activePopupEl = null;
 
-function openDp(key) {
-  // Remove highlight from previous selected cell
-  if(selectedCell) {
-    selectedCell.style.outline = '';
-    selectedCell.style.outlineOffset = '';
-  }
-  // Briefly highlight clicked cell, then remove
-  const clickedCell = document.querySelector(`.day[data-key="${key}"]`);
+function closeInlinePopup() {
+  if(activePopupEl) { activePopupEl.remove(); activePopupEl = null; }
+  if(selectedCell) { selectedCell.style.outline = ''; selectedCell.style.outlineOffset = ''; selectedCell = null; }
+}
+
+function openDp(key, cellEl) {
+  closeInlinePopup();
+  const clickedCell = cellEl || document.querySelector(`.day[data-key="${key}"]`);
   if(clickedCell) {
-    // Clear previous
     document.querySelectorAll('.day').forEach(d => { d.style.outline = ''; d.style.outlineOffset = ''; });
     clickedCell.style.outline = '2.5px solid var(--blue)';
     clickedCell.style.outlineOffset = '2px';
     selectedCell = clickedCell;
-    // Auto-remove after 1.5s
-    setTimeout(() => {
-      clickedCell.style.outline = '';
-      clickedCell.style.outlineOffset = '';
-      selectedCell = null;
-    }, 1500);
-  }
-
-  const panel = document.getElementById('dp');
-  panel.classList.add('on');
-  document.getElementById('dp-title').textContent = fmtDate(key);
-  const ec = document.getElementById('dp-evts');
-  ec.innerHTML = '';
-  const evs = sortEvents(SE[key] || []);
-  if(!evs.length) {
-    ec.innerHTML = '<p style="font-size:12.5px;color:var(--text3);padding:6px 0">Keine Termine.</p>';
   }
 
   const colorMap = {
@@ -1618,167 +1692,84 @@ function openDp(key) {
     'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
+  const evs = sortEvents(SE[key] || []);
+  const visible = evs.filter(ev => !ev.c.includes('hidden'));
 
-  evs.filter(ev => !ev.c.includes('hidden')).forEach(ev => {
-    const el = document.createElement('div');
-    el.className = 'eli';
+  let evHtml = visible.length ? '' : '<div style="font-size:12px;color:var(--text3);padding:4px 0">Keine Termine.</div>';
+  visible.forEach((ev, i) => {
     const color = colorMap[ev.c] || '#aeaeb2';
-    // Extract time from startTime property or from title
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-    const cleanTitle = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · ' + ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
-    const badges = [];
-    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-    const srcBadge = badges.join('');
-    el.innerHTML = `<div class="eli-dot" style="background:${color}"></div><div class="evt-info"><div class="en">${cleanTitle}${srcBadge}</div>${timeHtml}</div>`;
-    el.style.cursor = 'pointer';
-    el.onclick = () => openEvtModal(ev, key);
-    // Show edit pencil for own Gmail events
-    if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
-      const pencil = document.createElement('span');
-      pencil.textContent = '✏️';
-      pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
-      el.appendChild(pencil);
-    }
-    ec.appendChild(el);
+    const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
+      <div class="eli-dot" style="background:${color}"></div>
+      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
+    </div>`;
   });
 
-  // Panel is now visible; scrolling handled by caller
+  const popup = document.createElement('div');
+  popup.className = 'dp-popup';
+  popup.innerHTML = `
+    <div class="dp-popup-head">
+      <span class="dp-popup-title">${fmtDate(key)}</span>
+      <button class="dp-popup-close" onclick="closeInlinePopup()">✕</button>
+    </div>
+    <div class="dp-popup-body">${evHtml}</div>`;
+
+  // Insert after the clicked cell's row
+  const row = clickedCell?.closest('.wr');
+  if(row) {
+    row.insertAdjacentElement('afterend', popup);
+  } else {
+    document.getElementById('cal').prepend(popup);
+  }
+  activePopupEl = popup;
+
+  // Attach click handlers
+  visible.forEach((ev, i) => {
+    popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
+  });
+
+  // Scroll: bring the popup fully into view just below the header
+  setTimeout(() => {
+    const headerH = document.querySelector('.header')?.offsetHeight || 120;
+    const popupTop = popup.getBoundingClientRect().top + window.pageYOffset;
+    const targetY = popupTop - headerH - 8;
+    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+  }, 30);
 }
 
 function closeDp() {
+  closeInlinePopup();
   document.getElementById('dp').classList.remove('on');
-  if(selectedCell) {
-    selectedCell.style.outline = '';
-    selectedCell.style.outlineOffset = '';
-    selectedCell = null;
-  }
 }
 
 function scrollToToday() {
-  // Clear any previously selected/highlighted cell
-  if(selectedCell) {
-    selectedCell.style.outline = '';
-    selectedCell.style.outlineOffset = '';
-    selectedCell = null;
+  closeInlinePopup();
+  viewOffset = 0;
+  renderView();
+  // After render, scroll to today cell if in monat view
+  if(currentView === 'monat' || currentView === 'woche') {
+    setTimeout(() => {
+      const cell = document.querySelector('.day.today');
+      if(cell) {
+        const headerH = document.querySelector('.header')?.offsetHeight || 120;
+        const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 20;
+        window.scrollTo({ top: Math.max(0,top), behavior: 'smooth' });
+        setTimeout(() => { cell.classList.add('wobble'); setTimeout(()=>cell.classList.remove('wobble'),600); }, 200);
+      }
+    }, 80);
   }
-  // Also clear any leftover outlines from filter clicks
-  document.querySelectorAll('.day').forEach(d => {
-    d.style.outline = '';
-    d.style.outlineOffset = '';
-  });
-
-  const cell = document.querySelector('.day.today');
-  if(!cell) return;
-
-  const header = document.querySelector('.header');
-  const headerH = header ? header.offsetHeight : 160;
-  const cellAbsTop = cell.getBoundingClientRect().top + window.pageYOffset;
-  // Account for sticky-bar (month+weekdays) height
-  const stickyBar = cell.closest('.mc')?.querySelector('.sticky-bar');
-  const stickyBarH = stickyBar ? stickyBar.offsetHeight : 0;
-  const isMobile = window.innerWidth <= 600;
-  const extraPad = isMobile ? 16 : 16;
-  window.scrollTo({ top: cellAbsTop - headerH - stickyBarH - extraPad, behavior: 'smooth' });
-
-  setTimeout(() => {
-    cell.classList.add('wobble');
-    setTimeout(() => cell.classList.remove('wobble'), 600);
-  }, 350);
 }
 
 // Render months from current week onwards
 function renderAll() {
-  // Set header date subtitle
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
   if(hdEl) hdEl.textContent = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
   initViewUI();
+  updateViewBtns();
   renderView();
-}
-
-// ── VIEW SWITCHER ────────────────────────────────────────────────────
-let currentView = 'woche'; // 'tag' | 'woche' | 'monat'
-
-function setView(v) {
-  currentView = v;
-  // Update all view buttons (desktop + mobile)
-  ['Tag','Woche','Monat'].forEach(n => {
-    const key = n.toLowerCase();
-    ['vb'+n, 'vb'+n+'M'].forEach(id => {
-      const btn = document.getElementById(id);
-      if(btn) btn.classList.toggle('active', key === v);
-    });
-  });
-  closeInlinePopup();
-  renderView();
-}
-
-function renderView() {
-  const cal = document.getElementById('cal');
-  cal.innerHTML = '';
-  const now = new Date();
-
-  if(currentView === 'monat') {
-    // Full month view: show current + remaining months
-    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
-    const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - dow);
-    weekStart.setHours(0,0,0,0);
-    let startMonth = weekStart.getMonth();
-    const startYear = weekStart.getFullYear();
-    const lastDayOfStartMonth = new Date(startYear, startMonth + 1, 0);
-    if(lastDayOfStartMonth < weekStart) startMonth++;
-    for(let m=startMonth; m<=11; m++) cal.appendChild(buildMonth(startYear, m));
-    setTimeout(() => {
-      const cell = document.querySelector('.day.today');
-      if(cell) {
-        const top = cell.getBoundingClientRect().top + window.scrollY - 220;
-        window.scrollTo({top, behavior:'instant'});
-      }
-    }, 50);
-
-  } else if(currentView === 'woche') {
-    // Week view: show only current week's month, scroll to it
-    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
-    const weekStart = new Date(now); weekStart.setDate(now.getDate() - dow); weekStart.setHours(0,0,0,0);
-    let sm = weekStart.getMonth(); const sy = weekStart.getFullYear();
-    const lastDay = new Date(sy, sm+1, 0);
-    if(lastDay < weekStart) sm++;
-    for(let m=sm; m<=11; m++) cal.appendChild(buildMonth(sy, m));
-    setTimeout(() => {
-      const cell = document.querySelector('.day.today');
-      if(cell) {
-        const headerH = document.querySelector('.header')?.offsetHeight || 120;
-        const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 60;
-        window.scrollTo({top: Math.max(0,top), behavior:'instant'});
-      }
-    }, 50);
-
-  } else if(currentView === 'tag') {
-    // Tag view: show today's month, scroll to today, open inline popup for today
-    const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
-    const weekStart = new Date(now); weekStart.setDate(now.getDate() - dow); weekStart.setHours(0,0,0,0);
-    let sm = weekStart.getMonth(); const sy = weekStart.getFullYear();
-    const lastDay = new Date(sy, sm+1, 0);
-    if(lastDay < weekStart) sm++;
-    for(let m=sm; m<=11; m++) cal.appendChild(buildMonth(sy, m));
-    setTimeout(() => {
-      const todayKey = dk(now.getFullYear(), now.getMonth(), now.getDate());
-      const cell = document.querySelector(`.day[data-key="${todayKey}"]`);
-      if(cell) {
-        const headerH = document.querySelector('.header')?.offsetHeight || 120;
-        const top = cell.getBoundingClientRect().top + window.scrollY - headerH - 20;
-        window.scrollTo({top: Math.max(0,top), behavior:'instant'});
-        setTimeout(() => {
-          const row = cell.closest('.wr');
-          if(row) openInlinePopup(todayKey, row);
-        }, 80);
-      }
-    }, 60);
-  }
 }
 
 // Init: show mobile btn row on small screens, desktop view switcher on large
@@ -1787,11 +1778,9 @@ function initViewUI() {
   const mobileRow = document.getElementById('mobileBtnRow');
   const desktopSwitcher = document.getElementById('viewSwitcher');
   const headerRight = document.querySelector('.header-right');
-  // On mobile: hide desktop today/add buttons and switcher, show mobile row
   if(isMobile) {
     if(mobileRow) mobileRow.style.display = 'flex';
     if(desktopSwitcher) desktopSwitcher.style.display = 'none';
-    // Hide desktop today + add btns (they're duplicated in mobile row)
     headerRight?.querySelectorAll('.today-btn, .add-event-btn').forEach(b => b.style.display = 'none');
   } else {
     if(mobileRow) mobileRow.style.display = 'none';
@@ -1800,6 +1789,274 @@ function initViewUI() {
   }
 }
 window.addEventListener('resize', initViewUI, {passive:true});
+
+// ── VIEW SWITCHER ────────────────────────────────────────────────────
+let currentView = 'monat';
+// Navigation offsets (days offset for tag, weeks for woche, months for monat)
+let viewOffset = 0;
+
+const colorMap = {
+  'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+  'e-maja':'#db2777','e-trip':'#059669',
+  'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
+  'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+};
+
+function setView(v) {
+  currentView = v;
+  viewOffset = 0;
+  updateViewBtns();
+  closeInlinePopup();
+  renderView();
+}
+
+function navView(dir) {
+  viewOffset += dir;
+  closeInlinePopup();
+  renderView();
+}
+
+function updateViewBtns() {
+  ['Tag','Woche','Monat'].forEach(n => {
+    ['vb'+n, 'vb'+n+'M'].forEach(id => {
+      const btn = document.getElementById(id);
+      if(btn) btn.classList.toggle('active', n.toLowerCase() === currentView);
+    });
+  });
+}
+
+function renderView() {
+  const cal = document.getElementById('cal');
+  cal.innerHTML = '';
+  const base = new Date();
+
+  if(currentView === 'tag') {
+    renderTagView(cal, base);
+  } else if(currentView === 'woche') {
+    renderWocheView(cal, base);
+  } else {
+    renderMonatView(cal, base);
+  }
+}
+
+// ── TAG-ANSICHT ──────────────────────────────────────────────────────
+function renderTagView(cal, base) {
+  const d = new Date(base);
+  d.setDate(d.getDate() + viewOffset);
+  const key = dk(d.getFullYear(), d.getMonth(), d.getDate());
+  const isToday = viewOffset === 0;
+
+  // Nav bar
+  const nav = document.createElement('div');
+  nav.className = 'view-nav';
+  nav.innerHTML = `
+    <button class="view-nav-btn" onclick="navView(-1)">‹</button>
+    <div>
+      <div class="view-nav-title">${isToday ? 'Heute · ' : ''}${DN[(d.getDay()||7)-1]}, ${d.getDate()}. ${MN[d.getMonth()]}</div>
+    </div>
+    <button class="view-nav-btn" onclick="navView(1)">›</button>`;
+  cal.appendChild(nav);
+
+  // Events
+  const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
+  const card = document.createElement('div');
+  card.className = 'tag-view';
+
+  if(!evs.length) {
+    const empty = document.createElement('div');
+    empty.className = 'tag-evt-card';
+    empty.innerHTML = '<div class="tag-empty">🗓 Keine Termine für diesen Tag.</div>';
+    card.appendChild(empty);
+  } else {
+    const evCard = document.createElement('div');
+    evCard.className = 'tag-evt-card';
+    evs.forEach(ev => {
+      const color = colorMap[ev.c] || '#aeaeb2';
+      const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      const item = document.createElement('div');
+      item.className = 'tag-evt-item';
+      item.innerHTML = `<div class="tag-evt-dot" style="background:${color}"></div>
+        <div><div class="tag-evt-title">${title}</div>
+        ${time ? `<div class="tag-evt-time">${time} Uhr${ev.location?' · '+ev.location:''}</div>` : (ev.location?`<div class="tag-evt-time">${ev.location}</div>`:'')}</div>`;
+      item.onclick = () => openEvtModal(ev, key);
+      evCard.appendChild(item);
+    });
+    card.appendChild(evCard);
+  }
+  cal.appendChild(card);
+}
+
+// ── WOCHE-ANSICHT ────────────────────────────────────────────────────
+function renderWocheView(cal, base) {
+  const now = new Date(base);
+  const dow = now.getDay() === 0 ? 6 : now.getDay() - 1;
+  const weekMon = new Date(now);
+  weekMon.setDate(now.getDate() - dow + viewOffset * 7);
+  weekMon.setHours(0,0,0,0);
+
+  const weekSun = new Date(weekMon); weekSun.setDate(weekMon.getDate() + 6);
+  const isCurrentWeek = viewOffset === 0;
+
+  // Nav bar
+  const nav = document.createElement('div');
+  nav.className = 'view-nav';
+  const monStr = `${weekMon.getDate()}. ${MN[weekMon.getMonth()]}`;
+  const sunStr = weekMon.getMonth() === weekSun.getMonth()
+    ? `${weekSun.getDate()}. ${MN[weekSun.getMonth()]}`
+    : `${weekSun.getDate()}. ${MN[weekSun.getMonth()]}`;
+  nav.innerHTML = `
+    <button class="view-nav-btn" onclick="navView(-1)">‹</button>
+    <div class="view-nav-title">${isCurrentWeek?'Diese Woche · ':''}KW ${kw(weekMon)} · ${monStr} – ${sunStr}</div>
+    <button class="view-nav-btn" onclick="navView(1)">›</button>`;
+  cal.appendChild(nav);
+
+  // Week grid
+  const grid = document.createElement('div');
+  grid.className = 'week-view';
+
+  // Header row
+  const header = document.createElement('div');
+  header.className = 'week-header';
+  for(let i=0; i<7; i++) {
+    const d = new Date(weekMon); d.setDate(weekMon.getDate() + i);
+    const isT = d.getDate()===base.getDate() && d.getMonth()===base.getMonth() && d.getFullYear()===base.getFullYear();
+    const isWE = i >= 5;
+    const div = document.createElement('div');
+    div.className = 'week-header-day' + (isWE?' we':'') + (isT?' today-col':'');
+    div.innerHTML = `<div>${WD[i]}</div><div class="wh-num">${d.getDate()}</div>`;
+    header.appendChild(div);
+  }
+  grid.appendChild(header);
+
+  // Columns with events
+  const cols = document.createElement('div');
+  cols.className = 'week-cols';
+  for(let i=0; i<7; i++) {
+    const d = new Date(weekMon); d.setDate(weekMon.getDate() + i);
+    const key = dk(d.getFullYear(), d.getMonth(), d.getDate());
+    const isT = d.getDate()===base.getDate() && d.getMonth()===base.getMonth() && d.getFullYear()===base.getFullYear();
+    const col = document.createElement('div');
+    col.className = 'week-col' + (isT?' today-col':'');
+    col.title = fmtDate(key);
+
+    const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
+    const show = evs.slice(0, 5);
+    show.forEach(ev => {
+      const span = document.createElement('div');
+      span.className = `week-evt ${ev.c}`;
+      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      span.textContent = (ev.startTime ? ev.startTime+' ' : '') + title;
+      span.onclick = (e) => { e.stopPropagation(); openEvtModal(ev, key); };
+      col.appendChild(span);
+    });
+    if(evs.length > 5) {
+      const more = document.createElement('div');
+      more.className = 'week-more';
+      more.textContent = `+${evs.length-5} mehr`;
+      col.appendChild(more);
+    }
+    col.onclick = () => openDp(key, null);
+    cols.appendChild(col);
+  }
+  grid.appendChild(cols);
+  cal.appendChild(grid);
+}
+
+// ── MONAT-ANSICHT ────────────────────────────────────────────────────
+function renderMonatView(cal, base) {
+  const targetMonth = base.getMonth() + viewOffset;
+  const year = base.getFullYear() + Math.floor(targetMonth / 12);
+  const month = ((targetMonth % 12) + 12) % 12;
+  const isCurrentMonth = viewOffset === 0;
+
+  // Nav bar
+  const nav = document.createElement('div');
+  nav.className = 'view-nav';
+  nav.innerHTML = `
+    <button class="view-nav-btn" onclick="navView(-1)">‹</button>
+    <div class="view-nav-title">${isCurrentMonth?'Aktueller Monat · ':''}${MN[month]} ${year}</div>
+    <button class="view-nav-btn" onclick="navView(1)">›</button>`;
+  cal.appendChild(nav);
+
+  // Build single month (all weeks, no skipping past)
+  cal.appendChild(buildMonthFull(year, month, base));
+}
+
+// buildMonth variant that shows ALL weeks (not just from current week)
+function buildMonthFull(year, month, baseDate) {
+  const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
+  let dow = fl.getDay(); if(dow===0) dow=7; dow--;
+
+  const card = document.createElement('div');
+  card.className = 'mc';
+
+  const stickyBar = document.createElement('div');
+  stickyBar.className = 'sticky-bar';
+  const stickyMonth = document.createElement('div');
+  stickyMonth.className = 'sticky-bar-month';
+  stickyMonth.textContent = `${MN[month]} ${year}`;
+  const stickyDays = document.createElement('div');
+  stickyDays.className = 'sticky-bar-days';
+  stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
+  stickyBar.appendChild(stickyMonth);
+  stickyBar.appendChild(stickyDays);
+  card.appendChild(stickyBar);
+
+  const grid = document.createElement('div');
+  grid.className = 'cg';
+
+  let day=1, wk=0;
+  while(day <= ll.getDate()) {
+    const row = document.createElement('div');
+    row.className = 'wr';
+    const cur = new Date(year, month, day);
+    const kwDiv = document.createElement('div');
+    kwDiv.className = 'kw';
+    kwDiv.textContent = kw(cur);
+    row.appendChild(kwDiv);
+
+    for(let col=0; col<7; col++) {
+      const cell = document.createElement('div');
+      if((wk===0 && col<dow) || day>ll.getDate()) {
+        cell.className = 'day empty'; row.appendChild(cell); continue;
+      }
+      const key = dk(year, month, day);
+      const cd = new Date(year, month, day);
+      const isToday = cd.toDateString() === baseDate.toDateString();
+      const isWE = col >= 5;
+      const isPast = cd < new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+
+      cell.className = 'day' + (isToday?' today':'') + (isWE?' weekend':'') + (isPast?' past':'');
+      cell.dataset.key = key;
+
+      const num = document.createElement('span');
+      num.className = 'dn'; num.textContent = day;
+      cell.appendChild(num);
+
+      sortEvents(SE[key]||[]).slice(0,3).forEach(ev => {
+        const e = document.createElement('span');
+        e.className = `evt ${ev.c}`;
+        e.textContent = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '');
+        e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
+        cell.appendChild(e);
+      });
+      if((SE[key]||[]).length > 3) {
+        const m = document.createElement('span');
+        m.className = 'evt e-bday';
+        m.textContent = `+${SE[key].length-3} mehr`;
+        cell.appendChild(m);
+      }
+      cell.onclick = (e) => { if(expandedDay) collapseDay(); openDp(key, cell); };
+      row.appendChild(cell);
+      day++;
+    }
+    grid.appendChild(row);
+    wk++;
+  }
+  card.appendChild(grid);
+  return card;
+}
 
 // ── EXPAND/COLLAPSE DAY ─────────────────────────────────────────────
 let expandedDay = null;
