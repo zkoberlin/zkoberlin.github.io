@@ -327,7 +327,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.2</div>
+      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.3</div>
     </div>
   </div>
 </header>
@@ -1132,35 +1132,25 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const PROXY='https://script.google.com/macros/s/AKfycbznvFGm95G3PiGivqnMakGwpeWLiw3_auRDj3UUoQjjuxDplG-VnTVKMU2jRE3sGdk9/exec';
-    
-    // Try JSONP first, then fall back to fetch with allorigins
-    let txt = null;
-    
-    // Method 1: JSONP
-    try {
-      txt = await new Promise((resolve,reject)=>{
-        const cb='ical_cb_'+Date.now();
-        const script=document.createElement('script');
-        const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},15000);
-        window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
-        script.src=PROXY+'?callback='+cb;
-        script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
-        document.head.appendChild(script);
-      });
-    } catch(e1) {
-      console.log('JSONP failed, trying fetch:', e1.message);
-    }
-    
-    // Method 2: allorigins fetch fallback
-    if(!txt || !txt.includes('BEGIN:VCALENDAR')){
+    const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
+    const PROXIES=[
+      'https://api.allorigins.win/get?url='+encodeURIComponent(ICAL_URL),
+      'https://corsproxy.io/?url='+encodeURIComponent(ICAL_URL),
+      'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(ICAL_URL),
+    ];
+    let txt=null;
+    for(const proxy of PROXIES){
       try{
-        const ICAL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
-        const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(ICAL),{signal:AbortSignal.timeout(10000)});
-        if(r.ok){const j=await r.json();txt=j.contents||'';}
-      }catch(e2){console.log('allorigins failed:', e2.message);}
+        const r=await fetch(proxy,{signal:AbortSignal.timeout(8000)});
+        if(!r.ok)continue;
+        const t=await r.text();
+        // allorigins returns JSON wrapper
+        if(t.startsWith('{')){try{const j=JSON.parse(t);txt=j.contents||j.body||t;}catch(e){txt=t;}}
+        else{txt=t;}
+        if(txt&&txt.includes('BEGIN:VCALENDAR'))break;
+        txt=null;
+      }catch(e){continue;}
     }
-    
     if(!txt||!txt.includes('BEGIN:VCALENDAR'))throw new Error('no ical data');
     const evs=parseICS(txt);
     const today=st(new Date());
