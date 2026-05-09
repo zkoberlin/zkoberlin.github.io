@@ -327,7 +327,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.4</div>
+      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.2.6</div>
     </div>
   </div>
 </header>
@@ -1132,17 +1132,36 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    const PROXY='https://script.google.com/macros/s/AKfycbx0LwUyvq6Y7F3V3aWPTfqZp77DnWqRR8y-WaJNt0sr3eBqAF1i5tZuun9u8ZejIIbR1w/exec';
+    const SCRIPT='https://script.google.com/macros/s/AKfycbx0LwUyvq6Y7F3V3aWPTfqZp77DnWqRR8y-WaJNt0sr3eBqAF1i5tZuun9u8ZejIIbR1w/exec';
     let txt=null;
-    txt=await new Promise((resolve,reject)=>{
-      const cb='ical_cb_'+Date.now();
-      const script=document.createElement('script');
-      const timeout=setTimeout(()=>{delete window[cb];script.remove();reject(new Error('timeout'));},12000);
-      window[cb]=(data)=>{clearTimeout(timeout);delete window[cb];script.remove();resolve(data);};
-      script.src=PROXY+'?callback='+cb;
-      script.onerror=()=>{clearTimeout(timeout);delete window[cb];script.remove();reject(new Error('error'));};
-      document.head.appendChild(script);
-    });
+
+    // Try allorigins proxy wrapping the Apps Script URL
+    const proxies=[
+      'https://api.allorigins.win/raw?url='+encodeURIComponent(SCRIPT),
+      'https://api.allorigins.win/get?url='+encodeURIComponent(SCRIPT),
+      'https://corsproxy.io/?url='+encodeURIComponent(SCRIPT),
+    ];
+
+    for(const p of proxies){
+      try{
+        const r=await fetch(p,{signal:AbortSignal.timeout(8000)});
+        if(!r.ok)continue;
+        const t=await r.text();
+        // allorigins /get returns JSON
+        let candidate=t;
+        if(t.startsWith('{')){
+          try{const j=JSON.parse(t);candidate=j.contents||j.body||t;}catch(e){}
+        }
+        // Strip JSONP wrapper: funcname("...")
+        if(!candidate.includes('BEGIN:VCALENDAR')&&candidate.includes('(')){
+          try{
+            const inner=candidate.slice(candidate.indexOf('(')+1).slice(0,-1);
+            candidate=JSON.parse(inner);
+          }catch(e){}
+        }
+        if(candidate&&candidate.includes('BEGIN:VCALENDAR')){txt=candidate;break;}
+      }catch(e){continue;}
+    }
     if(!txt||!txt.includes('BEGIN:VCALENDAR'))throw new Error('no ical data');
     const evs=parseICS(txt);
     const today=st(new Date());
