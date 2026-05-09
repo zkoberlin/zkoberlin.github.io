@@ -327,7 +327,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.0</div>
+      <div style="font-family:DM Mono,monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.1</div>
     </div>
   </div>
 </header>
@@ -701,22 +701,192 @@ function loadDayInfo(){
 
   // Right card: Feiertag + Special + Spruch (alle anzeigen!)
   const special={
-    '01-01':'🎆 Neujahr','01-11':'🙏 Weltdankestag','01-24':'🍕 Internationaler Pizzatag',
-    '02-02':'🦔 Murmeltiertag','02-14':'💝 Valentinstag',
-    '03-08':'♀️ Weltfrauentag','03-14':'🥧 Pi-Tag (3.14)','03-20':'☀️ Frühlingsanfang',
-    '04-01':'🃏 Aprilscherz-Tag','04-22':'🌍 Earth Day',
-    '05-04':'🚀 Star Wars Day – May the 4th','05-05':'🍣 Sushi-Tag',
-    '05-10':'👩 Muttertag',
-    '05-25':'🎭 Towel Day','05-28':'🍔 Hamburger-Tag',
-    '06-05':'🌿 Weltumwelttag','06-08':'🌊 Weltozean-Tag',
-    '06-21':'☀️ Sommersonnenwende','06-27':'🎣 Weltfischtag',
-    '07-07':'🍫 Schokoladentag','07-17':'😊 Welt-Emoji-Tag',
-    '08-08':'🐱 Internationaler Katzentag','08-12':'🎸 Weltjugendtag',
-    '09-13':'🍫 Schokoladentag','09-21':'☮️ Weltfriedenstag',
-    '10-01':'🎵 Weltmusiktag','10-04':'🐾 Welttierschutztag',
-    '10-10':'🧠 Weltmentalgesundheitstag','10-31':'🎃 Halloween',
-    '11-11':'🥐 St. Martin','11-17':'🎓 Welt-Studenten-Tag',
-    '12-01':'🎗️ Welt-Aids-Tag','12-21':'❄️ Wintersonnenwende'
+    '01-01':'🥂 Neujahr – frischer Start!','01-02':'😴 Erholungs-Tag (nach Silvester)',
+    '01-03':'🍫 Schokoladenfondue-Tag','01-04':'🍕 Nationaler Spaghetti-Tag',
+    '01-05':'🐦 Vogelbeobachtungs-Tag','01-06':'👑 Heilige Drei Könige',
+    '01-07':'☕ Altes Weihnachten (orthodox)','01-08':'🛁 Bubble Bath Day – Schaumbad!',
+    '01-09':'🎮 Play God Day','01-10':'🌿 Zimmerpflanzen-Tag',
+    '01-11':'🙏 Weltdankestag','01-12':'🔍 Agatha Christie Day',
+    '01-13':'💫 Make Your Dream Come True Day','01-14':'🥪 Pastrami Sandwich Day',
+    '01-15':'🤐 Sticker Day – kleb was drauf!','01-16':'🎩 Ditch Resolutions Day',
+    '01-17':'🐻 Winnie the Pooh Day','01-18':'🍿 Nationaler Popcorn-Tag',
+    '01-19':'🧀 Nationaler Camembert-Tag','01-20':'🤗 Nationaler Umarmungs-Tag',
+    '01-21':'🦁 Beantworte Katzen-Fragen-Tag','01-22':'🍰 Nationaler Kuchentag',
+    '01-23':'🥧 Nationaler Pie-Tag','01-24':'🍕 Internationaler Pizza-Tag! 🍕',
+    '01-25':'🥞 Nationaler Pfannkuchen-Tag','01-26':'😂 Ohne-Grund-Lachen-Tag',
+    '01-27':'🍫 Schokoladenkuchen-Tag','01-28':'🎱 Fun at Work Day',
+    '01-29':'🧁 Nationaler Cupcake-Tag','01-30':'🎤 Croissant-Tag',
+    '01-31':'🔄 Backward Day – alles rückwärts!',
+    '02-01':'🤡 Nationaler Clown-Tag','02-02':'🦔 Murmeltiertag – Groundhog Day!',
+    '02-03':'🎶 Goldene Schallplatten-Tag','02-04':'🌍 Weltkrebstag',
+    '02-05':'🍫 Welt-Nutella-Tag 🍫','02-06':'😊 Lame Duck Day',
+    '02-07':'🌹 Rose Day','02-08':'🛡️ Safer Internet Day',
+    '02-09':'🍕 Pizza Day (nochmal – verdient!)','02-10':'👟 Sneaker Day',
+    '02-11':'👔 Weißes-Hemd-Tag','02-12':'🌱 Darwin Day – Evolution!',
+    '02-13':'📻 Welt-Radio-Tag','02-14':'💝 Valentinstag – Liebe liegt in der Luft! 💕',
+    '02-15':'💔 Singles Awareness Day','02-16':'🐻 Tu-einem-Griesgram-einen-Gefallen-Tag',
+    '02-17':'🤗 Tag der zufälligen Freundlichkeit','02-18':'🔭 Pluto-Tag',
+    '02-19':'🍬 Schokoladen-Minze-Tag','02-20':'⚖️ Welt-Tag der sozialen Gerechtigkeit',
+    '02-21':'🌍 Internationaler Muttersprachentag','02-22':'🐱 Internationaler Katzen-Tag!',
+    '02-23':'🍌 Bananenbrot-Tag','02-24':'🍹 Nationaler Barkeeper-Tag',
+    '02-25':'🧘 No Brainer Day – abschalten!','02-26':'🌰 Pistazien-Tag',
+    '02-27':'🐻 Eisbären-Tag','02-28':'🎗️ Seltener Krankheiten-Tag',
+    '03-01':'🌸 Weltlob-Tag','03-02':'📚 Dr. Seuss Geburtstag',
+    '03-03':'🦁 Welt-Wildtier-Tag','03-04':'🤗 Hug a GI Day',
+    '03-05':'🎭 Vielfältigkeits-Tag','03-06':'🍪 Oreo-Keks-Tag',
+    '03-07':'🥣 Nationaler Müsli-Tag','03-08':'♀️ Internationaler Frauentag',
+    '03-09':'🎀 Barbies Geburtstag (1959)','03-10':'🎮 Mario Day – It's-a me!',
+    '03-11':'🥞 Nationaler Pancake-Tag','03-12':'🌸 Blumen-Pflanzen-Tag',
+    '03-13':'🍌 Nationaler Schmuck-Tag','03-14':'🥧 Pi-Tag: 3,14159… Kuchen!',
+    '03-15':'🏛️ Ides of March – Vorsicht Julius!','03-16':'🍺 Alles-richtig-machen-Tag',
+    '03-17':'☘️ St. Patrick's Day – alles wird grün!','03-18':'😳 Awkward Moments Day',
+    '03-19':'🌹 Tag des Heiligen Josef','03-20':'☀️ Frühlingsanfang – endlich warm!',
+    '03-21':'📝 Welt-Poesie-Tag','03-22':'💧 Welt-Wasser-Tag',
+    '03-23':'🌦️ Welt-Meteorologie-Tag','03-24':'🍫 Schokolade-mit-Rosinen-Tag',
+    '03-25':'🧇 Waffel-Tag – Waffeln backen!','03-26':'🎉 Erfinde-deinen-eigenen-Feiertag-Tag',
+    '03-27':'🎭 Welt-Theater-Tag','03-28':'🍓 Irgendetwas-am-Stiel-Tag',
+    '03-29':'🎮 Nationaler Spielzeug-Tag','03-30':'🦆 Spaziergang-im-Park-Tag',
+    '03-31':'🐣 Aprilscherz-Vorbereitung!',
+    '04-01':'🃏 April, April! Heute ist alles erlaubt 😄','04-02':'🌍 Welt-Autismus-Tag',
+    '04-03':'🍫 Schokoladenmousse-Tag','04-04':'🐔 Lauf-um-die-Dinge-herum-Tag',
+    '04-05':'🗺️ Lies-eine-Straßenkarte-Tag','04-06':'😢 Sorry-Charlie-Tag',
+    '04-07':'🌍 Welt-Gesundheits-Tag','04-08':'🐦 Zeichne-einen-Vogel-Tag',
+    '04-09':'🦄 Einhorn-Tag! 🦄','04-10':'👫 Geschwister-Tag – ruf an!',
+    '04-11':'🎵 Barbershop Quartet Day','04-12':'🚀 Juri Gagarin Tag – erster Mensch im All!',
+    '04-13':'🔤 Scrabble-Tag','04-14':'☁️ Schau-in-den-Himmel-Tag',
+    '04-15':'💰 Steuertag (USA) – zum Glück nicht hier','04-16':'🍳 Eggs Benedict Day',
+    '04-17':'✍️ Haiku-Poesie-Tag','04-18':'🏛️ Tag der Monumente',
+    '04-19':'🧄 Knoblauch-Tag – Vampirschutz inklusive!','04-20':'👀 Sieht-aus-wie-jemand-Tag',
+    '04-21':'🐎 Queen's Birthday (UK)','04-22':'🌍 Earth Day – die Erde braucht uns',
+    '04-23':'📚 Shakespeare Day & Welt-Buch-Tag','04-24':'🐧 Welt-Pinguin-Tag',
+    '04-25':'🦒 Welt-Malaria-Tag','04-26':'🥨 Nationaler Brezel-Tag',
+    '04-27':'📖 Erzähl-eine-Geschichte-Tag','04-28':'🌺 Große-Poesie-Lesung-Tag',
+    '04-29':'💃 Internationaler Tanztag','04-30':'💇 Frisur-Wertschätzungs-Tag',
+    '05-01':'✊ Tag der Arbeit – verdient frei!','05-02':'👶 Nationaler Babytag',
+    '05-03':'🌍 Weltpressefreiheitstag','05-04':'🚀 Star Wars Day – May the 4th be with you!',
+    '05-05':'🍣 Internationaler Sushi-Tag 🍣','05-06':'🍰 Kein-Diät-Tag – schlemmen erlaubt!',
+    '05-07':'🎵 Beethovens Tauftag','05-08':'🕊️ Tag der Befreiung · Rotes Kreuz Tag',
+    '05-09':'🧦 No Socks Day – Socken sind überbewertet! 🧦','05-10':'👩 Muttertag – ruf Mama an! 💐',
+    '05-11':'🍽️ Iss-was-du-willst-Tag','05-12':'🏥 Florence Nightingale Day',
+    '05-13':'🍀 Kleeblatt-Tag','05-14':'🚲 Fahrrad-Tag',
+    '05-15':'🌍 Internationaler Familientag','05-16':'📖 Nationaler Biografie-Tag',
+    '05-17':'🌈 Tag gegen Homophobie & Transphobie','05-18':'🏛️ Internationaler Museumstag',
+    '05-19':'☀️ May Ray Day – Sonne genießen!','05-20':'🐝 Weltbienentag – rettet die Bienen!',
+    '05-21':'🌍 Tag der kulturellen Vielfalt','05-22':'🌿 Welt-Biodiversitäts-Tag',
+    '05-23':'🐢 Welt-Schildkröten-Tag 🐢','05-24':'🔍 Schnitzeljagd-Tag',
+    '05-25':'🎭 Towel Day – Don't Panic! (Hitchhiker's Guide)','05-26':'🍔 Hamburger-Tag! 🍔',
+    '05-27':'🌍 Welt-Hunger-Tag','05-28':'🍔 Hamburger-Tag (er ist zu gut für einen Tag!)',
+    '05-29':'🛏️ Kopfkissen-auf-den-Kühlschrank-Tag','05-30':'🪣 My Bucket List Day',
+    '05-31':'🚭 Weltnichtrauchertag',
+    '06-01':'👶 Internationaler Kindertag','06-02':'🏃 Verlass-das-Büro-früher-Tag',
+    '06-03':'🍩 Nationaler Donut-Tag 🍩','06-04':'🧀 Nationaler Käse-Tag',
+    '06-05':'🌿 Weltumwelttag','06-06':'🎬 Drive-in-Kino-Tag',
+    '06-07':'🍫 Schokoladen-Eis-Tag','06-08':'🌊 Welt-Ozean-Tag',
+    '06-09':'🦆 Donald Duck Day','06-10':'🍹 Eistee-Tag',
+    '06-11':'🌽 Mais-am-Kolben-Tag','06-12':'🍷 Loving Day',
+    '06-13':'🦅 Welt-Albatros-Tag','06-14':'🚩 Flag Day (USA)',
+    '06-15':'👴 Welt-Tag gegen Älterdiskriminierung','06-16':'🥗 Frisches-Gemüse-Tag',
+    '06-17':'🥦 Iss-dein-Gemüse-Tag','06-18':'🧺 Internationaler Picknick-Tag',
+    '06-19':'🕊️ Juneteenth','06-20':'🌍 Weltflüchtlingstag',
+    '06-21':'☀️ Sommersonnenwende – längster Tag des Jahres!','06-22':'🌳 Welt-Regenwald-Tag',
+    '06-23':'🌍 Internationaler Witwen-Tag','06-24':'🧚 Internationaler Feen-Tag',
+    '06-25':'⚓ Tag der Seeleute','06-26':'☮️ Weltdrogenbekämpfungstag',
+    '06-27':'🎣 Internationaler Angeltag','06-28':'🏔️ Paul Bunyan Day',
+    '06-29':'🐦 Kolibri-Tag','06-30':'☄️ Asteroid Day – schau mal hoch!',
+    '07-01':'🍁 Canada Day','07-02':'🛸 Welt-UFO-Tag – Augen auf!',
+    '07-03':'🫘 Iss-Bohnen-Tag','07-04':'🎆 US Independence Day – Feuerwerk!',
+    '07-05':'🏃 Nationaler Workaholic-Tag','07-06':'💋 Internationaler Kuss-Tag',
+    '07-07':'🍫 Welt-Schokoladentag 🍫','07-08':'🎮 Videospiel-Tag',
+    '07-09':'🍪 Zucker-Keks-Tag','07-10':'🐻 Teddybär-Picknick-Tag',
+    '07-11':'🌍 Weltbevölkerungstag','07-12':'🌸 Einfachheits-Tag',
+    '07-13':'🍟 Pommes-Tag! 🍟','07-14':'🎭 Bastille-Tag – Vive la France!',
+    '07-15':'🐛 Gummiwurm-Tag','07-16':'🐍 Welt-Schlangen-Tag',
+    '07-17':'😊 Welt-Emoji-Tag 😊🎉','07-18':'🌍 Nelson Mandela International Day',
+    '07-19':'👅 Streck-deine-Zunge-raus-Tag','07-20':'🚀 Moon Day – Mondlandung 1969!',
+    '07-21':'🍟 Nationaler Junk Food Day','07-22':'🥧 Pi-Näherungs-Tag (22/7)',
+    '07-23':'👵 Wunderschöne-Oma-Tag','07-24':'🥃 Tequila-Tag – Prost!',
+    '07-25':'🧵 Faden-einfädeln-Tag','07-26':'🎤 One Voice Day',
+    '07-27':'👖 Hosen-spazieren-führen-Tag','07-28':'🌍 Welt-Hepatitis-Tag',
+    '07-29':'🐯 Internationaler Tiger-Tag','07-30':'🤝 Freundschaftstag – ruf an!',
+    '07-31':'🥑 Avocado-Tag',
+    '08-01':'🌿 Welt-Lungenkrebstag','08-02':'🍦 Eis-Sandwich-Tag',
+    '08-03':'🍉 Welt-Wassermelonen-Tag 🍉','08-04':'🍪 Chocolate Chip Cookie Day',
+    '08-05':'🐕 Arbeite-wie-ein-Hund-Tag','08-06':'🍺 Root Beer Float Day',
+    '08-07':'🏠 Leuchtturm-Tag','08-08':'🐱 Internationaler Katzentag! 🐱',
+    '08-09':'🌍 Tag der indigenen Völker','08-10':'😴 Faulheits-Tag – verdient!',
+    '08-11':'🃏 Präsidentenwitz-Tag','08-12':'🎸 Weltjugendtag',
+    '08-13':'✋ Linkshänder-Tag','08-14':'🕊️ VJ Day',
+    '08-15':'🧘 Entspannungs-Tag – einfach sein','08-16':'🎸 Elvis-Gedenktag',
+    '08-17':'🐈‍⬛ Schwarze-Katze-Wertschätzungs-Tag','08-18':'🎭 Bad Poetry Day',
+    '08-19':'📸 Welt-Fotografietag','08-20':'🍋 Limonade-Tag',
+    '08-21':'👴 Seniorentag','08-22':'😇 Sei-ein-Engel-Tag',
+    '08-23':'🌬️ Reite-den-Wind-Tag','08-24':'🧇 Waffel-Tag (nochmal!)',
+    '08-25':'🍌 Banana Split Day','08-26':'🐕 Internationaler Hunde-Tag 🐕',
+    '08-27':'❓ Just-Because-Day – einfach so!','08-28':'🖱️ Race-Your-Mouse-Tag',
+    '08-29':'☢️ Tag gegen Atomtests','08-30':'🍡 Toast-Marshmallow-Tag',
+    '08-31':'🌟 Draußen-essen-Tag',
+    '09-01':'🎒 Schulstart – viel Erfolg!','09-02':'🥥 Welt-Kokosnuss-Tag',
+    '09-03':'🏙️ Wolkenkratzer-Tag','09-04':'📰 Zeitungsträger-Tag',
+    '09-05':'💝 Welt-Wohltätigkeits-Tag','09-06':'⏰ Kämpfe-gegen-Prokrastination-Tag',
+    '09-07':'☀️ Egal-ob-Regen-Tag','09-08':'📖 Welt-Alphabetisierungs-Tag',
+    '09-09':'🐻 Teddybär-Tag','09-10':'🌊 Welt-Suizidprävention-Tag',
+    '09-11':'🕊️ Patriot Day','09-12':'🎮 Nationaler Videospiele-Tag',
+    '09-13':'🍫 Internationaler Schokoladentag 🍫','09-14':'🥖 Baguette-Tag',
+    '09-15':'🔵 Internationaler Punkt-Tag','09-16':'🥑 Guacamole-Tag – Avocados feiern!',
+    '09-17':'🎸 Internationaler Country-Musik-Tag','09-18':'📱 Welt-Wasserstoff-Tag',
+    '09-19':'🏴‍☠️ Sprich-wie-ein-Pirat-Tag – Arrr! ☠️','09-20':'🌍 Welt-Aufräum-Tag',
+    '09-21':'☮️ Internationaler Friedenstag','09-22':'🍂 Herbstanfang – bunte Blätter!',
+    '09-23':'☑️ Checklisten-Tag','09-24':'✍️ Interpunktions-Tag',
+    '09-25':'💭 Welt-Traum-Tag','09-26':'🌍 Welt-Kontrazeption-Tag',
+    '09-27':'✈️ Welt-Tourismus-Tag','09-28':'🐱 Welt-Tollwut-Tag',
+    '09-29':'❤️ Welt-Herztag','09-30':'🌍 Internationaler Übersetzungs-Tag',
+    '10-01':'🎵 Welt-Musik-Tag','10-02':'🌍 Welt-Habitat-Tag',
+    '10-03':'🇩🇪 Tag der Deutschen Einheit – frei!','10-04':'🐾 Welt-Tierschutztag',
+    '10-05':'👩‍🏫 Welt-Lehrer-Tag','10-06':'🇩🇪🇺🇸 Deutsch-Amerikanischer Tag',
+    '10-07':'🍭 Welt-Zuckerwatte-Tag','10-08':'🐙 Welt-Oktopus-Tag 🐙',
+    '10-09':'📮 Welt-Posttag','10-10':'🧠 Welt-Mental-Gesundheitstag',
+    '10-11':'👧 Internationaler Mädchen-Tag','10-12':'🥚 Welt-Ei-Tag',
+    '10-13':'🤨 Internationaler Skeptiker-Tag','10-14':'📏 Welt-Normen-Tag',
+    '10-15':'🧼 Welt-Händewaschen-Tag – bitte waschen!','10-16':'🍞 Welt-Brot-Tag',
+    '10-17':'🌍 Tag zur Beseitigung von Armut','10-18':'🍬 Welt-Menopause-Tag',
+    '10-19':'🤔 Bewerte-dein-Leben-Tag','10-20':'📊 Welt-Statistik-Tag',
+    '10-21':'🍎 Apple Day','10-22':'🎨 Nationaler Farben-Tag',
+    '10-23':'⚗️ Mole Day (6:02 Uhr!)','10-24':'🌍 UN-Tag',
+    '10-25':'🍝 Welt-Nudel-Tag 🍝','10-26':'🎃 Kürbis-Tag',
+    '10-27':'⚓ Navy Day','10-28':'🍫 Nochmal Schokolade – warum nicht?',
+    '10-29':'🌍 Welt-Psoriasis-Tag','10-30':'👻 Gruseliger-Kühlschrank-Abend',
+    '10-31':'🎃 Halloween – gruselige Nacht! 👻',
+    '11-01':'🌍 Allerheiligen','11-02':'🌍 Allerseelen',
+    '11-03':'🥪 Sandwich-Tag – sandwich time!','11-04':'🌍 Welt-Wissenschafts-Tag',
+    '11-05':'🎆 Guy Fawkes Night – Bonfire Night!','11-06':'🎵 Saxophon-Tag',
+    '11-07':'🌍 Welt-Krebsbewusstseins-Tag','11-08':'🍳 Koche-was-Gewagtes-Tag',
+    '11-09':'🌍 Welt-Freiheits-Tag','11-10':'🦋 Welt-Jugend-Wissenschafts-Tag',
+    '11-11':'🥐 St. Martin – Laternenumzug! 🏮','11-12':'🌍 Welt-Pneumonie-Tag',
+    '11-13':'🤝 Welt-Freundlichkeits-Tag – sei nett!','11-14':'🌍 Welt-Diabetes-Tag',
+    '11-15':'♻️ America Recycles Day','11-16':'🌍 Internationaler Toleranz-Tag',
+    '11-17':'🎓 Internationaler Studenten-Tag','11-18':'🐭 Mickey Mouse Geburtstag 1928!',
+    '11-19':'🚽 Welt-Toiletten-Tag – ja, wirklich! 🚽','11-20':'👶 Welt-Kindertag (UN)',
+    '11-21':'📺 Welt-Fernseh-Tag','11-22':'🚗 Fahr-eine-Runde-Tag',
+    '11-23':'🔢 Fibonacci-Tag (1,1,2,3)','11-24':'🦕 Evolutions-Tag',
+    '11-25':'🌍 Tag gegen Gewalt an Frauen','11-26':'🎂 Kuchen-Tag',
+    '11-27':'🪡 Pins and Needles Day','11-28':'🍞 French Toast Day',
+    '11-29':'🛒 Black Friday – Schnäppchen jagen!','11-30':'🏠 Bleib-zu-Hause-obwohl-du-gesund-bist-Tag',
+    '12-01':'🎗️ Welt-Aids-Tag','12-02':'💻 Welt-Computer-Alphabetisierungs-Tag',
+    '12-03':'🌍 Welt-Behinderter-Tag','12-04':'🍪 Nationaler Keks-Tag 🍪',
+    '12-05':'🌍 Welt-Boden-Tag','12-06':'🎅 Nikolaustag – Stiefel raus!',
+    '12-07':'🕍 Pearl Harbor Gedenktag','12-08':'⏰ Zeitreisender-Tag',
+    '12-09':'🌍 Anti-Korruptions-Tag','12-10':'🌍 Menschenrechts-Tag',
+    '12-11':'🏔️ Internationaler Bergtag','12-12':'🌺 Weihnachtsstern-Tag',
+    '12-13':'🍦 Eis-Tag im Winter (warum nicht?)','12-14':'🐒 Affen-Tag – Monkey Day! 🐒',
+    '12-15':'📜 Bill of Rights Day (USA)','12-16':'🍫 Schokolade-überzogene-alles-Tag 🍫',
+    '12-17':'🐕 Underdog Day','12-18':'📞 Nimm-das-Telefon-wie-Buddy-der-Elf-an-Tag',
+    '12-19':'🌲 Such-einen-Tannenbaum-Tag','12-20':'🎵 Weihnachtslieder-Tag',
+    '12-21':'❄️ Wintersonnenwende – kürzester Tag!','12-22':'🎭 Dattel-Nuss-Brot-Tag',
+    '12-23':'❄️ Schneeflocken-Ausschneiden-Tag','12-24':'🎅 Heiligabend – Vorfreude!',
+    '12-25':'🎄 Frohe Weihnachten! 🎁','12-26':'🎁 Boxing Day',
+    '12-27':'✂️ Schneeflocken-Basteln-Tag','12-28':'🃏 Karten-Spielen-Tag',
+    '12-29':'🫙 Pfeffersuppe-Tag','12-30':'🥓 Speck-Tag – Bacon!',
+    '12-31':'🥂 Silvester – auf ein neues Jahr! 🎆'
   };
 
   const sprueche=[
@@ -1038,18 +1208,29 @@ function loadAlma(evs){
     const wrap=document.getElementById('almaWrap');
 
     if(todayEv){
-      // Currently in Schwerin – show current + next
-      const next=future[0];
+      // Currently in Schwerin – find end of current trip (consecutive days)
+      let tripEnd = todayEv.date;
+      for(const e of all){
+        if(st(e.date) > today){
+          const dayDiff = diff(st(tripEnd), st(e.date));
+          if(dayDiff <= 1){ tripEnd = e.date; }
+          else break;
+        }
+      }
+      const daysLeft = diff(today, st(tripEnd));
+      const next = future.find(e => st(e.date) > st(tripEnd));
       let html=`
         <a class="alma-big hcard" href="/kalenderpaul/?filter=schwerin" target="_blank" style="border-color:var(--orange-b);">
-          <div class="alma-big-left">
-            <div class="alma-big-emoji">🎉</div>
-            <div class="alma-big-unit">Heute!</div>
+          <div class="alma-big-left" style="background:linear-gradient(135deg,#f97316,#fb923c);">
+            <div class="alma-big-emoji">🧡</div>
+            <div class="alma-big-n">${daysLeft}</div>
+            <div class="alma-big-unit">${daysLeft===1?'Tag noch':'Tage noch'}</div>
           </div>
           <div class="alma-big-right">
-            <div class="alma-big-lbl">Aktueller Besuch</div>
+            <div class="alma-big-lbl">Du bist gerade bei Alma ✨</div>
             <div class="alma-big-title">${todayEv.sum}</div>
-            <div class="alma-big-date">${fmtFull(todayEv.date)}</div>
+            <div class="alma-big-date">Noch bis ${fmtFull(st(tripEnd))}</div>
+            ${daysLeft===0?'<div class="alma-big-range" style="color:var(--orange);font-weight:600;">Letzter Tag heute 🥺</div>':''}
           </div>
         </a>`;
       if(next){
