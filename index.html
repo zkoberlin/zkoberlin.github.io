@@ -1111,7 +1111,18 @@ function parseICS(txt){
     else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
     else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁')||s.includes('geburts'))col='#af52de';
     else if(s.includes('schwerin')||s.includes('alma'))col='#f97316';
-    evs.push({date,sum,col,hasTime});
+    // Parse dtend
+    let dateEnd=null;
+    if(dtendraw){
+      if(/^\d{8}$/.test(dtendraw)){
+        dateEnd=new Date(`${dtendraw.slice(0,4)}-${dtendraw.slice(4,6)}-${dtendraw.slice(6,8)}T00:00:00`);
+        dateEnd.setDate(dateEnd.getDate()-1); // DTEND is exclusive, so subtract 1
+      } else {
+        const m2=dtendraw.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
+        if(m2) dateEnd=new Date(`${m2[1]}-${m2[2]}-${m2[3]}T${m2[4]}:${m2[5]}:${m2[6]}`);
+      }
+    }
+    evs.push({date,dateEnd,sum,col,hasTime});
   }
   return evs;
 }
@@ -1205,19 +1216,29 @@ function loadAlma(evs){
     const past=all.filter(e=>st(e.date)<today);
 
     // Check if currently in Schwerin (today's event OR consecutive from past)
-    const todayEv=all.find(e=>diff(today,st(e.date))===0);
+    // Check if today falls within a multi-day event (DTSTART <= today <= DTEND)
+    const todayEv=all.find(e=>{
+      const start=st(e.date);
+      const end=e.dateEnd?st(e.dateEnd):start;
+      return today>=start && today<=end;
+    });
 
-    // Find end of current trip (consecutive schwerin days)
+    // Find end of current trip
     let tripEnd=null;
     if(todayEv){
-      let checkDay=new Date(today);
-      tripEnd=new Date(today);
-      while(true){
-        const next=new Date(checkDay);
-        next.setDate(checkDay.getDate()+1);
-        const hasNext=all.find(e=>diff(next,st(e.date))===0);
-        if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}
-        else break;
+      if(todayEv.dateEnd){
+        tripEnd=new Date(todayEv.dateEnd);
+      } else {
+        // Fallback: find consecutive days
+        let checkDay=new Date(today);
+        tripEnd=new Date(today);
+        while(true){
+          const next=new Date(checkDay);
+          next.setDate(checkDay.getDate()+1);
+          const hasNext=all.find(e=>diff(next,st(e.date))===0);
+          if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}
+          else break;
+        }
       }
     }
 
