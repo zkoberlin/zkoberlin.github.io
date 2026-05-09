@@ -773,19 +773,35 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 }
 
 @media (max-width: 600px) {
-  .filter-toggle-row { display: block; }
+  /* Hide old toggle button – not needed with chip strip */
+  .filter-toggle-row { display: none !important; }
+
+  /* Legend becomes a horizontal scrollable chip strip */
   .legend {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    overflow: visible;
-    gap: 4px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px !important;
+    padding: 4px 0 8px !important;
+    max-height: none !important;
   }
-  .legend.collapsed {
-    max-height: 0 !important;
-    overflow: hidden !important;
-    padding: 0 !important;
+  .legend::-webkit-scrollbar { display: none; }
+  .legend.collapsed { max-height: none !important; overflow-x: auto !important; }
+
+  /* Compact pill chips */
+  .li {
+    flex-shrink: 0;
+    width: auto !important;
+    border-radius: 20px !important;
+    font-size: 11px;
+    padding: 5px 10px !important;
+    justify-content: flex-start !important;
+    white-space: nowrap;
   }
-  .li { flex-shrink: 0; justify-content: space-between; width: 100%; border-radius: 10px; font-size: 11px; padding: 8px 12px; }
 }
 
 .add-event-btn {
@@ -794,6 +810,24 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   color: #fff;
 }
 .add-event-btn:hover { background: #0062c3; }
+
+/* KW + Monat Badge neben Heute */
+.kw-month-badge {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 10px;
+  height: 32px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.kw-month-badge .kw-num { color: var(--blue); font-weight: 700; }
 
 /* Add Event Modal */
 .add-modal-overlay {
@@ -980,8 +1014,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   .header-icon { font-size: 18px; }
   .header-text h1 { font-size: 14px; }
   .header-text p { font-size: 10px; }
-  .today-btn { font-size: 10px; padding: 4px 10px; }
-
+  .today-btn { font-size: 13px; padding: 0 12px; font-weight: 700; }
+  .kw-month-badge { display: inline-flex; }
   /* Legend - scrollable horizontal strip */
   .legend {
     flex-wrap: nowrap;
@@ -1246,13 +1280,18 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v2.7.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v2.8.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
+      <div class="kw-month-badge" id="kwMonthBadge">
+        <span>KW <span class="kw-num" id="headerKW">—</span></span>
+        <span style="color:var(--border)">·</span>
+        <span id="headerMonth">—</span>
+      </div>
       <button class="today-btn" onclick="scrollToToday()">Heute</button>
       <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
     </div>
@@ -1476,15 +1515,20 @@ function buildMonth(year, month) {
       }
 
       cell.onclick = (e) => {
-        // Both desktop and mobile: open detail panel + scroll to top
         if(expandedDay) collapseDay();
+        // Remember the clicked cell position before opening panel
+        const cellRect = cell.getBoundingClientRect();
+        const cellScrollY = window.pageYOffset + cellRect.top;
         openDp(key);
-        // Scroll detail panel into view
-        const dp = document.getElementById('dp');
-        if(dp && dp.classList.contains('on')) {
+        // On mobile: scroll so the clicked day stays visible, dp appears just below header
+        if(window.innerWidth <= 600) {
           const header = document.querySelector('.header');
-          const headerH = header ? header.offsetHeight : 160;
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          const headerH = header ? header.offsetHeight : 120;
+          const dp = document.getElementById('dp');
+          const dpH = dp ? dp.offsetHeight : 0;
+          // Target: keep clicked cell visible, scroll just enough so dp fits above it
+          const targetScroll = Math.max(0, cellScrollY - headerH - dpH - 12);
+          setTimeout(() => window.scrollTo({ top: targetScroll, behavior: 'smooth' }), 30);
         }
       };
       row.appendChild(cell);
@@ -1564,10 +1608,7 @@ function openDp(key) {
     ec.appendChild(el);
   });
 
-  // Scroll to top so detail panel is visible
-  if(window.innerWidth <= 600) {
-    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
-  }
+  // Panel is now visible; scrolling handled by caller
 }
 
 function closeDp() {
@@ -1621,6 +1662,16 @@ function renderAll() {
   const weekStart = new Date(now);
   weekStart.setDate(now.getDate() - dow);
   weekStart.setHours(0,0,0,0);
+
+  // Fill KW + month badge
+  const kwNum = kw(now);
+  const kwEl = document.getElementById('headerKW');
+  const moEl = document.getElementById('headerMonth');
+  if(kwEl) kwEl.textContent = kwNum;
+  if(moEl) moEl.textContent = MN[now.getMonth()].substring(0,3);
+  // Also set headerDate subtitle
+  const hdEl = document.getElementById('headerDate');
+  if(hdEl) hdEl.textContent = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
 
   // Start from the month that contains the first VISIBLE week
   // If weekStart is in a previous month but all rows of that month are past, skip it
