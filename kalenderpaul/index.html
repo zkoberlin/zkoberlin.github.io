@@ -1469,7 +1469,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.4</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2411,36 +2411,6 @@ function closeFilter() {
   renderView();
 }
 
-
-function hideEmptyFilters() {
-  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
-  const futureDates = Object.keys(SE).filter(d => d >= todayKey);
-  
-  document.querySelectorAll('.li[data-cat]').forEach(chip => {
-    const cat = chip.dataset.cat;
-    if(cat === 'e-work') { chip.style.display = 'none'; return; } // always hide old work filter
-    
-    // Count all future dates that have at least one event of this category
-    const matchingDates = futureDates.filter(d => 
-      (SE[d] || []).some(ev => ev.c === cat || ev.c === cat + '-hidden')
-    );
-    const count = matchingDates.length;
-    
-    if(count === 0) {
-      chip.style.display = 'none';
-      return;
-    }
-    chip.style.display = '';
-    
-    let badge = chip.querySelector('.chip-count');
-    if(!badge) {
-      badge = document.createElement('span');
-      badge.className = 'chip-count';
-      chip.appendChild(badge);
-    }
-    badge.textContent = count;
-  });
-}
 
 function toggleFilterPanel() {} // legacy – nicht mehr verwendet
 
