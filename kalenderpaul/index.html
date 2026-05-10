@@ -1238,26 +1238,25 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   /* On mobile: hub + theme stay small icon buttons, today + add get a second row */
   .hub-btn, .theme-btn { width: 30px; height: 30px; flex: none; font-size: 14px; }
   .today-btn {
-    flex: 1; height: 34px; font-size: 13px; font-weight: 700; padding: 0;
+    flex: none; height: 32px; font-size: 12px; font-weight: 700; padding: 0 14px;
   }
   /* Second button row below header-top */
   .header-btn-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     padding: 6px 0 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .header-btn-row::-webkit-scrollbar { display: none; }
 
-  /* Load-status compacter on mobile */
-  .load-status { gap: 4px 8px; font-size: 9px; padding: 4px 0 2px; }
-  .load-item { font-size: 9px; }
-  .filter-toggle-row { padding: 2px 0 4px; }
-
-  /* View switcher full-width on mobile */
+  /* View switcher scrollable on mobile – don't force full width */
   .view-switcher {
-    width: 100%;
-    justify-content: stretch;
+    flex-shrink: 0;
+    justify-content: flex-start;
   }
-  .view-btn { flex: 1; font-size: 12px; }
+  .view-btn { flex: none; font-size: 12px; padding: 0 10px; }
   /* Legend - scrollable horizontal strip */
   .legend {
     flex-wrap: nowrap;
@@ -1532,7 +1531,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1590,6 +1589,19 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   </div>
 </div><!-- end header-inner -->
 </div><!-- end header -->
+
+<!-- Ladefortschritt-Balken -->
+<div id="loadProgressBar" style="
+  position:fixed; top:0; left:0; right:0; height:3px; z-index:9999;
+  background:transparent; pointer-events:none;
+">
+  <div id="loadProgressFill" style="
+    height:100%; width:0%; background:var(--blue);
+    transition:width .35s cubic-bezier(.4,0,.2,1), opacity .4s ease;
+    border-radius:0 2px 2px 0;
+    box-shadow:0 0 8px rgba(0,113,227,.6);
+  "></div>
+</div>
 
 
 <!-- Filter Bottom Sheet (Mobile) -->
@@ -2936,6 +2948,27 @@ async function loadICalEvents() {
 }
 
 // ── DYNAMIC DATA LOADERS ─────────────────────────────────────────────
+// ── LADEFORTSCHRITT ──────────────────────────────────────────────────
+let _loadTotal = 6;
+let _loadDone = 0;
+
+function progressStep() {
+  _loadDone++;
+  const pct = Math.round((_loadDone / _loadTotal) * 100);
+  const fill = document.getElementById('loadProgressFill');
+  if(!fill) return;
+  fill.style.width = pct + '%';
+  if(pct >= 100) {
+    setTimeout(() => {
+      fill.style.opacity = '0';
+      setTimeout(() => {
+        const bar = document.getElementById('loadProgressBar');
+        if(bar) bar.style.display = 'none';
+      }, 450);
+    }, 300);
+  }
+}
+
 function setLoadStatus(id, state, text) {
   const el = document.getElementById(id);
   if(!el) return;
@@ -2945,6 +2978,9 @@ function setLoadStatus(id, state, text) {
   el.textContent = '';
   el.appendChild(dot);
   el.appendChild(document.createTextNode(' ' + text));
+  if(state === 'ok' || state === 'err') {
+    progressStep();
+  }
   if(state === 'ok') {
     // Fade to 30% after 5s
     setTimeout(() => { el.style.transition = 'opacity 1s ease'; el.style.opacity = '0.3'; }, 5000);
