@@ -365,7 +365,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   display: flex; align-items: center; justify-content: center;
 }
 .dp-popup-close:hover { color: var(--text); }
-.dp-popup-body { padding: 0; display: flex; flex-direction: column; }
+.dp-popup-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 4px; }
 [data-theme="dark"] .dp-popup { background: #2c2c2e; }
 [data-theme="dark"] .dp-popup-head { border-color: rgba(255,255,255,.08); }
 [data-theme="dark"] .woche-day-card { background: #2c2c2e; }
@@ -373,7 +373,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 [data-theme="dark"] .woche-evt-item { border-bottom-color: rgba(255,255,255,.06); }
 [data-theme="dark"] .woche-day-card.woche-today { border-color: #0a84ff; box-shadow: 0 0 0 2px rgba(10,132,255,.15), 0 4px 16px rgba(0,0,0,.3); }
 
-.eli { display: flex; align-items: center; padding: 11px 14px; border-radius: 0; background: transparent; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
 .eli:last-child { border-bottom: none; }
 .eli .en { font-family: var(--font-head); font-size: 13px; font-weight: 500; color: var(--text); -webkit-font-smoothing: antialiased; }
 .eli .et { font-size: 11px; color: var(--text2); margin-top: 1px; }
@@ -912,17 +912,18 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .woche-day-card.woche-today .woche-day-title { color: var(--blue); }
 
-.woche-day-body { display: flex; flex-direction: column; }
+.woche-day-body { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px 10px; }
 .woche-day-body .eli {
-  padding: 11px 18px;
-  border-radius: 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface2);
   margin-bottom: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
 }
 .woche-day-body .eli:last-child { border-bottom: none; }
 .woche-empty {
   font-size: 13px; color: var(--text3);
-  padding: 14px 18px; font-style: italic;
+  padding: 6px 0; font-style: italic;
 }
 
 /* Hide the kw-month-badge completely */
@@ -1189,7 +1190,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   /* Detail panel */
   .dp { padding: 12px 14px; border-radius: 12px; }
   .dp h3 { font-size: 14px; }
-  .eli { padding: 10px 14px; }
+  .eli { padding: 8px 10px; }
   .eli .en { font-size: 12px; }
   .eli .et { font-size: 10px; }
 
@@ -1415,7 +1416,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.6</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
