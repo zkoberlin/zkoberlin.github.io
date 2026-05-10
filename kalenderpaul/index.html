@@ -231,10 +231,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   padding: 22px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
-  overflow: clip;
   color: var(--text);
 }
-.mt { font-size: 18px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
+.mt { font-size: 18px; font-weight: 600; letter-spacing: -.4px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
 
 .wh {
   display: grid;
@@ -351,13 +350,16 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.10);
   animation: fu .18s ease;
+  position: relative;
+  z-index: 5;
+  width: 100%;
 }
 .dp-popup-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 8px;
   border-bottom: 1px solid var(--border);
 }
-.dp-popup-title { font-family: var(--font-head); font-size: 15px; font-weight: 700; letter-spacing: -.3px; color: var(--text); -webkit-font-smoothing: antialiased; }
+.dp-popup-title { font-size: 18px; font-weight: 700; letter-spacing: -.4px; color: var(--text); }
 .dp-popup-close {
   width: 22px; height: 22px; border-radius: 50%;
   border: none; background: var(--surface2);
@@ -996,14 +998,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 /* ── DARK MODE TYPOGRAFIE ──
    Auf dunklem Grund wirken gleiche font-weights kantiger.
    Eine Stufe leichter = weicheres Rendering. */
-[data-theme="dark"] .mt                            { font-weight: 600; letter-spacing: -.5px; }
-[data-theme="dark"] .sticky-bar-month              { font-weight: 600; letter-spacing: -.4px; }
+[data-theme="dark"] .mt                            { font-weight: 500; letter-spacing: -.5px; }
+[data-theme="dark"] .sticky-bar-month              { font-weight: 500; letter-spacing: -.4px; }
 [data-theme="dark"] .sticky-bar-days span,
 [data-theme="dark"] .wh span                       { font-weight: 400; letter-spacing: 0; }
 [data-theme="dark"] .week-header-day               { font-weight: 400; letter-spacing: 0; }
 [data-theme="dark"] .dn                            { font-weight: 500; }
 [data-theme="dark"] .dp h3,
-[data-theme="dark"] .dp-popup-title                { font-weight: 600; letter-spacing: -.3px; color: #f5f5f7; }
+[data-theme="dark"] .dp-popup-title                { font-weight: 500; letter-spacing: -.3px; }
 [data-theme="dark"] .eli .en                       { font-weight: 300; }
 [data-theme="dark"] .evt                           { font-weight: 500; }
 [data-theme="dark"] .evt-modal-title               { font-weight: 500; letter-spacing: -.4px; }
@@ -1341,8 +1343,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 /* Month title */
 .sticky-bar-month {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -.4px;
+  font-weight: 600;
+  letter-spacing: -.35px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -1365,7 +1367,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1659,9 +1661,13 @@ function openDp(key, cellEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
     </div>`;
   });
 
@@ -1970,9 +1976,13 @@ function openDpBelowGrid(key, gridEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
     </div>`;
   });
 
@@ -2131,11 +2141,10 @@ function expandDay(cell, e) {
   expandedDay = cell;
 
   // Position expanded cell centered on screen
-  const vw = document.documentElement.clientWidth;
-  const vh = window.innerHeight;
-  const w = Math.min(300, vw - 32);
-  const left = Math.round((vw - w) / 2);
-  const top = Math.round(Math.max(80, (vh - 320) / 2));
+  const w = Math.min(280, window.innerWidth - 32);
+  const h = 'auto';
+  const left = Math.max(16, (window.innerWidth - w) / 2);
+  const top = Math.max(80, (window.innerHeight - 300) / 2);
 
   cell.style.width = w + 'px';
   cell.style.left = left + 'px';
