@@ -195,6 +195,22 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   transition: .15s;
 }
 .fp-close:hover { background: var(--border); }
+/* Filter Grid (Option B) */
+.fp-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 4px;
+}
+.fp-tile {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: 12px;
+  background: var(--surface2); border: 1.5px solid transparent;
+  cursor: pointer; transition: .15s;
+}
+.fp-tile:hover { border-color: rgba(0,0,0,.10); background: var(--surface); }
+.fp-tile.active { background: var(--surface); border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,113,227,.08); }
+.fp-tile-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.fp-tile-label { font-family: var(--font-head); font-size: 12px; font-weight: 500; color: var(--text); flex: 1; -webkit-font-smoothing: antialiased; }
+.fp-tile-count { font-size: 10px; color: var(--text3); font-variant-numeric: tabular-nums; background: var(--surface2); padding: 1px 5px; border-radius: 8px; }
+
 .fp-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -395,7 +411,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Scroll to today btn */
-.hub-btn, .theme-btn, .today-btn, .add-event-btn {
+.hub-btn, .theme-btn, .today-btn {
   display: inline-flex; align-items: center; justify-content: center;
   height: 32px;
   border-radius: 10px;
@@ -762,12 +778,17 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   }
 }
 
-.add-event-btn {
-  padding: 0 14px;
-  border: none; background: var(--blue);
-  color: #fff;
+.apple-cal-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text3);
+  font-size: 16px; font-weight: 300; line-height: 1;
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: .15s;
 }
-.add-event-btn:hover { background: #0062c3; }
+.apple-cal-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--surface); }
 
 /* View Switcher (Tag / Woche / Monat) */
 .view-switcher {
@@ -926,8 +947,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   padding: 6px 0; font-style: italic;
 }
 
-/* Hide the kw-month-badge completely */
-.kw-month-badge { display: none !important; }
+@media (max-width: 600px) {
+  .load-status { display: none; }
+  .filter-toggle-row { margin-top: 2px; }
+}
 
 /* Add Event Modal */
 .add-modal-overlay {
@@ -1111,12 +1134,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   body { font-size: 13px; }
 
   /* Header */
-  .header { padding: 8px 14px 0; }
+  .header { padding: 6px 12px 0; }
+  .header-inner { padding: 0; }
   .header-top {
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: nowrap;
+    margin-bottom: 4px;
   }
   .header-left { flex: 1; min-width: 0; }
   .header-text h1 { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1125,18 +1150,20 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
   /* On mobile: hub + theme stay small icon buttons, today + add get a second row */
   .hub-btn, .theme-btn { width: 30px; height: 30px; flex: none; font-size: 14px; }
-  .today-btn, .add-event-btn {
-    flex: 1; height: 34px; font-size: 13px; font-weight: 700;
+  .today-btn {
+    flex: 1; height: 34px; font-size: 13px; font-weight: 700; padding: 0;
   }
-  .today-btn { padding: 0; }
-  .add-event-btn { padding: 0; }
-
   /* Second button row below header-top */
   .header-btn-row {
     display: flex;
     gap: 8px;
     padding: 6px 0 4px;
   }
+
+  /* Load-status compacter on mobile */
+  .load-status { gap: 4px 8px; font-size: 9px; padding: 4px 0 2px; }
+  .load-item { font-size: 9px; }
+  .filter-toggle-row { padding: 2px 0 4px; }
 
   /* View switcher full-width on mobile */
   .view-switcher {
@@ -1416,14 +1443,13 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
-      <!-- View switcher – desktop only inline, mobile gets own row -->
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
         <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
@@ -1431,13 +1457,12 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
       <button class="today-btn" onclick="scrollToToday()">Heute</button>
-      <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
     </div>
   </div>
-  <!-- Mobile second row: Today + Add + View switcher -->
+  <!-- Mobile second row: Today + Apple Cal + View switcher -->
   <div class="header-btn-row" id="mobileBtnRow" style="display:none;">
     <button class="today-btn" style="flex:none;padding:0 14px;" onclick="scrollToToday()">Heute</button>
-    <button class="add-event-btn" style="flex:none;padding:0 14px;" onclick="openAddEvent()">+ Termin</button>
+    <button class="apple-cal-btn" onclick="openAppleCal()" title="In Apple Kalender öffnen">+</button>
     <div class="view-switcher" style="flex:1;">
       <button class="view-btn" id="vbTagM" onclick="setView('tag')">Tag</button>
       <button class="view-btn active" id="vbWocheM" onclick="setView('woche')">Woche</button>
@@ -1454,33 +1479,38 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
   </div>
   <div class="filter-toggle-row">
-    <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterDropdown()">
-      <span id="filterToggleLabel">🔽 Filter</span>
+    <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilterPanel()">
+      <span id="filterToggleLabel">⊞ Filter</span>
     </button>
   </div>
-  <div class="legend" id="legend">
-  <div class="li" onclick="filterBy('e-union')" data-cat="e-union"><div class="ld" style="background:#b91c1c"></div> 1. FC Union Berlin</div>
-  <div class="li" onclick="filterBy('e-trip')" data-cat="e-trip"><div class="ld" style="background:#059669"></div> Ausflug/Urlaub</div>
-  <div class="li" onclick="filterBy('e-haus')" data-cat="e-haus"><div class="ld" style="background:#00a0e3"></div> Besichtigungen</div>
-  <div class="li" onclick="filterBy('e-feier')" data-cat="e-feier"><div class="ld" style="background:#713f12"></div> Feiertage & Ferien</div>
-  <div class="li" onclick="filterBy('e-bday')" data-cat="e-bday"><div class="ld" style="background:#9ca3af"></div> Geburtstage</div>
-  <div class="li" onclick="filterBy('e-hellomed')" data-cat="e-hellomed"><div class="ld" style="background:#8099E8"></div> Hellomed</div>
-  <div class="li" onclick="filterBy('e-kids')" data-cat="e-kids"><div class="ld" style="background:#1a56db"></div> Kids bei Paul</div>
-  <div class="li" onclick="filterBy('e-dani')" data-cat="e-dani"><div class="ld" style="background:#9ca3af"></div> Kids bei Dani</div>
-  <div class="li" onclick="filterBy('e-konzert')" data-cat="e-konzert"><div class="ld" style="background:#16a34a"></div> Konzerte & Events</div>
-  <div class="li" onclick="filterBy('e-maja')" data-cat="e-maja"><div class="ld" style="background:#db2777"></div> Maja</div>
-  <div class="li" onclick="filterBy('e-schwerin')" data-cat="e-schwerin"><div class="ld" style="background:#f97316"></div> Schwerin</div>
-  <div class="li" onclick="filterBy('e-kidev')" data-cat="e-kidev"><div class="ld" style="background:#dc2626"></div> Schule/Kids-Event</div>
-</div><!-- end legend --></div><!-- end header-inner -->
+</div><!-- end header-inner -->
 </div><!-- end header -->
 
-<!-- Filter Panel -->
+<!-- Filter Bottom Sheet -->
+<div class="filter-backdrop" id="filterBackdrop" onclick="closeFilter()"></div>
 <div class="filter-panel" id="filterPanel">
   <div class="filter-panel-handle"></div>
   <div class="filter-panel-inner">
     <div class="fp-header">
-      <span class="fp-title" id="fpTitle">—</span>
+      <div class="fp-title">Kalender filtern</div>
       <button class="fp-close" onclick="closeFilter()">✕</button>
+    </div>
+    <div class="fp-grid" id="fpGrid">
+      <div class="fp-tile" data-cat="e-kids" onclick="filterBy('e-kids')"><div class="fp-tile-dot" style="background:#1a56db"></div><span class="fp-tile-label">Kids bei Paul</span><span class="fp-tile-count" id="fc-e-kids"></span></div>
+      <div class="fp-tile" data-cat="e-dani" onclick="filterBy('e-dani')"><div class="fp-tile-dot" style="background:#6b7280"></div><span class="fp-tile-label">Kids bei Dani</span><span class="fp-tile-count" id="fc-e-dani"></span></div>
+      <div class="fp-tile" data-cat="e-maja" onclick="filterBy('e-maja')"><div class="fp-tile-dot" style="background:#db2777"></div><span class="fp-tile-label">Maja</span><span class="fp-tile-count" id="fc-e-maja"></span></div>
+      <div class="fp-tile" data-cat="e-schwerin" onclick="filterBy('e-schwerin')"><div class="fp-tile-dot" style="background:#f97316"></div><span class="fp-tile-label">Schwerin</span><span class="fp-tile-count" id="fc-e-schwerin"></span></div>
+      <div class="fp-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fp-tile-dot" style="background:#b91c1c"></div><span class="fp-tile-label">Union Berlin</span><span class="fp-tile-count" id="fc-e-union"></span></div>
+      <div class="fp-tile" data-cat="e-trip" onclick="filterBy('e-trip')"><div class="fp-tile-dot" style="background:#059669"></div><span class="fp-tile-label">Ausflug/Urlaub</span><span class="fp-tile-count" id="fc-e-trip"></span></div>
+      <div class="fp-tile" data-cat="e-feier" onclick="filterBy('e-feier')"><div class="fp-tile-dot" style="background:#713f12"></div><span class="fp-tile-label">Feiertage & Ferien</span><span class="fp-tile-count" id="fc-e-feier"></span></div>
+      <div class="fp-tile" data-cat="e-kidev" onclick="filterBy('e-kidev')"><div class="fp-tile-dot" style="background:#dc2626"></div><span class="fp-tile-label">Schule/Kids-Event</span><span class="fp-tile-count" id="fc-e-kidev"></span></div>
+      <div class="fp-tile" data-cat="e-hellomed" onclick="filterBy('e-hellomed')"><div class="fp-tile-dot" style="background:#8099E8"></div><span class="fp-tile-label">Hellomed</span><span class="fp-tile-count" id="fc-e-hellomed"></span></div>
+      <div class="fp-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fp-tile-dot" style="background:#16a34a"></div><span class="fp-tile-label">Konzert/Event</span><span class="fp-tile-count" id="fc-e-konzert"></span></div>
+      <div class="fp-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fp-tile-dot" style="background:#00a0e3"></div><span class="fp-tile-label">Besichtigung</span><span class="fp-tile-count" id="fc-e-haus"></span></div>
+      <div class="fp-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fp-tile-dot" style="background:#9ca3af"></div><span class="fp-tile-label">Geburtstag</span><span class="fp-tile-count" id="fc-e-bday"></span></div>
+    </div>
+    <div id="fpListHeader" style="display:none;margin-top:14px;margin-bottom:6px">
+      <div class="fp-title" id="fpTitle" style="font-size:13px;color:var(--text2)"></div>
     </div>
     <div class="fp-list" id="fpList"></div>
   </div>
@@ -1494,24 +1524,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
       <button class="evt-modal-close" onclick="closeEvtModal()">✕</button>
     </div>
     <div class="evt-modal-content" id="evtModalContent"></div>
-    <div id="evtModalActions" style="display:none;padding:0 22px 20px;gap:10px;display:none">
-      <button id="evtEditBtn" onclick="editCurrentEvent()" style="flex:1;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">✏️ Bearbeiten</button>
-      <button id="evtDeleteBtn" onclick="deleteCurrentEvent()" style="flex:1;padding:10px;border:none;border-radius:10px;background:#fee2e2;color:#dc2626;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer">🗑️ Löschen</button>
-    </div>
   </div>
 </div>
-<div class="filter-backdrop" id="filterBackdrop" onclick="closeFilter()"></div>
 <div class="main" id="main">
-<div class="filter-panel" id="filterPanel">
-  <div class="filter-panel-handle"></div>
-  <div class="filter-panel-inner">
-    <div class="fp-header">
-      <span class="fp-title" id="fpTitle">—</span>
-      <button class="fp-close" onclick="closeFilter()">✕</button>
-    </div>
-    <div class="fp-list" id="fpList"></div>
-  </div>
-</div>
   <div class="dp" id="dp">
     <span class="close-dp" onclick="closeDp()">✕</span>
     <h3 id="dp-title">—</h3>
@@ -1645,15 +1660,6 @@ function buildMonth(year, month) {
         e.title = ev.t;
         e.onclick = (evt) => { evt.stopPropagation(); openEvtModal(ev, key); };
         e.style.cursor = 'pointer';
-        // Show pencil for own Gmail events (editable)
-        if(ev.fromIcal && !ev.fromHellomed) {
-          e.style.paddingRight = '14px';
-          e.style.position = 'relative';
-          const pencil = document.createElement('span');
-          pencil.textContent = '✏';
-          pencil.style.cssText = 'position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:7px;opacity:0.7;line-height:1';
-          e.appendChild(pencil);
-        }
         cell.appendChild(e);
       });
       if(evs.length > 3) {
@@ -1794,11 +1800,11 @@ function initViewUI() {
   if(isMobile) {
     if(mobileRow) mobileRow.style.display = 'flex';
     if(desktopSwitcher) desktopSwitcher.style.display = 'none';
-    headerRight?.querySelectorAll('.today-btn, .add-event-btn').forEach(b => b.style.display = 'none');
+    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = 'none');
   } else {
     if(mobileRow) mobileRow.style.display = 'none';
     if(desktopSwitcher) desktopSwitcher.style.display = 'inline-flex';
-    headerRight?.querySelectorAll('.today-btn, .add-event-btn').forEach(b => b.style.display = '');
+    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = '');
   }
 }
 window.addEventListener('resize', initViewUI, {passive:true});
@@ -1908,20 +1914,9 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
-        const pencil = document.createElement('span');
-        pencil.textContent = '✏️';
-        pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
-        el.appendChild(pencil);
-      }
       el.addEventListener('click', () => openEvtModal(ev, key));
       body.appendChild(el);
     });
-  }
-  popup.appendChild(body);
-  cal.appendChild(popup);
-}
-
 // ── WOCHE-ANSICHT ────────────────────────────────────────────────────
 function renderWocheView(cal, base) {
   const now = new Date(base);
@@ -2011,12 +2006,6 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
-          const pencil = document.createElement('span');
-          pencil.textContent = '✏️';
-          pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
-          item.appendChild(pencil);
-        }
         item.addEventListener('click', () => openEvtModal(ev, key));
         body.appendChild(item);
       });
@@ -2259,9 +2248,11 @@ function openEvtModal(ev, dateKey) {
   const catName = catNameMap[ev.c] || '';
   const dateStr = fmtDate(dateKey);
 
-  // Extract time from title if present
+  // Uhrzeit: erst startTime, dann aus Titel regex, dann aus ev.t, sonst Ganztägig
   const timeMatch = ev.t.match(/(\d{1,2}:\d{2})/);
-  const time = timeMatch ? timeMatch[1] + ' Uhr' : 'Ganztägig';
+  const rawTime = ev.startTime || (timeMatch ? timeMatch[1] : null);
+  const time = rawTime ? rawTime + ' Uhr' : (ev.allDay === false ? '' : 'Ganztägig');
+  const showTimeRow = rawTime || ev.allDay === false;
   const cleanTitle = ev.t.replace(/^\S+\s/, '').replace(/\s*\d{1,2}:\d{2}$/, '').trim();
 
   content.innerHTML = `
@@ -2275,7 +2266,7 @@ function openEvtModal(ev, dateKey) {
     </div>
     <div class="evt-modal-row">
       <span class="evt-modal-icon">🕐</span>
-      <span>${time}</span>
+      <span>${time || 'Ganztägig'}</span>
     </div>
     ${ev.location ? `<div class="evt-modal-row"><span class="evt-modal-icon">📍</span><span>${ev.location}</span></div>` : ''}
     ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
@@ -2474,17 +2465,30 @@ function hideEmptyFilters() {
   });
 }
 
-function toggleFilterDropdown() {
-  const legend = document.getElementById('legend');
-  const btn = document.getElementById('filterToggleLabel');
-  const isCollapsed = legend.classList.toggle('collapsed');
-  btn.textContent = isCollapsed ? '🔽 Filter anzeigen' : '🔼 Filter ausblenden';
+function toggleFilterPanel() {
+  const panel = document.getElementById('filterPanel');
+  const backdrop = document.getElementById('filterBackdrop');
+  if(panel.classList.contains('on')) { closeFilter(); return; }
+  // Populate counts
+  const cats = ['e-kids','e-dani','e-maja','e-schwerin','e-union','e-trip','e-feier','e-kidev','e-hellomed','e-konzert','e-haus','e-bday'];
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  cats.forEach(cat => {
+    const el = document.getElementById('fc-' + cat);
+    if(!el) return;
+    let count = 0;
+    Object.keys(SE).filter(d => d >= todayKey).forEach(d => {
+      count += (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length;
+    });
+    el.textContent = count > 0 ? count : '';
+  });
+  document.querySelectorAll('.fp-tile').forEach(t => {
+    t.classList.toggle('active', t.dataset.cat === activeFilter);
+  });
+  panel.classList.add('on');
+  backdrop.classList.add('on');
 }
 
-// Start collapsed on mobile
-if(window.innerWidth <= 600) {
-  document.getElementById('legend')?.classList.add('collapsed');
-}
+// Start collapsed on mobile (legacy legend removed)
 
 function searchCalendar(query) {
   document.querySelectorAll('.day.search-match').forEach(d => d.classList.remove('search-match'));
@@ -3012,116 +3016,14 @@ function requestToken(callback) {
   client.requestAccessToken({prompt: 'consent'});
 }
 
-function openAddEvent() {
-  const overlay = document.getElementById('addModalOverlay');
-  overlay.classList.add('on');
-  // Pre-fill today's date
-  const d = new Date();
-  const dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-  document.getElementById('addDate').value = dateStr;
-  document.getElementById('addStatus').textContent = '';
-  document.getElementById('addTitle').focus();
-}
-
-function closeAddEvent() {
-  document.getElementById('addModalOverlay').classList.remove('on');
-}
-
-function handleOverlayClick(e) {
-  if(e.target === document.getElementById('addModalOverlay')) closeAddEvent();
-}
-
-async function saveEvent() {
-  const title = document.getElementById('addTitle').value.trim();
-  const date = document.getElementById('addDate').value;
-  const time = document.getElementById('addTime').value;
-  const endTime = document.getElementById('addEndTime').value;
-  const cat = document.getElementById('addCat').value;
-  const location = document.getElementById('addLocation').value.trim();
-
-  if(!title) { document.getElementById('addStatus').textContent = '⚠️ Bitte Titel eingeben'; return; }
-  if(!date) { document.getElementById('addStatus').textContent = '⚠️ Bitte Datum wählen'; return; }
-
-  const doSave = async () => {
-    const btn = document.getElementById('addSaveBtn');
-    btn.disabled = true;
-    document.getElementById('addStatus').textContent = '⏳ Wird gespeichert…';
-
-    // Build event object
-    let event;
-    if(time) {
-      const startDT = `${date}T${time}:00`;
-      const endDT = endTime ? `${date}T${endTime}:00` : `${date}T${time.split(':')[0].padStart(2,'0')}:${String(parseInt(time.split(':')[1])+60).padStart(2,'0').slice(-2)}:00`;
-      event = {
-        summary: title,
-        start: { dateTime: startDT, timeZone: 'Europe/Berlin' },
-        end: { dateTime: endTime ? `${date}T${endTime}:00` : new Date(new Date(startDT).getTime() + 3600000).toISOString().replace('Z',''), timeZone: 'Europe/Berlin' },
-      };
-    } else {
-      // All-day
-      event = {
-        summary: title,
-        start: { date },
-        end: { date: new Date(new Date(date).getTime() + 86400000).toISOString().substring(0,10) },
-      };
-    }
-
-    if(location) event.location = location;
-    // Add category as description tag
-    if(cat) event.description = `#${cat}`;
-
-    try {
-      const res = await fetch('https://www.googleapis.com/calendar/v3/calendars/paul.bendzko%40gmail.com/events', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + gAccessToken,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(event),
-      });
-
-      if(!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-
-      // Add to local SE with googleId immediately
-      if(date >= dk(today.getFullYear(), today.getMonth(), today.getDate())) {
-        if(!SE[date]) SE[date] = [];
-        const timePrefix = time ? time + ' ' : '';
-        const newEntry = {
-          t: timePrefix + title,
-          c: cat || 'e-bday',
-          fromIcal: true,
-          googleId: data.id  // store immediately from API response
-        };
-        if(location) newEntry.location = location;
-        SE[date].push(newEntry);
-        renderAll();
-                hideEmptyFilters();
-      }
-      document.getElementById('addStatus').textContent = '✅ Termin gespeichert!';
-      document.getElementById('addTitle').value = '';
-      document.getElementById('addTime').value = '';
-      document.getElementById('addEndTime').value = '';
-      document.getElementById('addLocation').value = '';
-      setTimeout(closeAddEvent, 1200);
-    } catch(err) {
-      document.getElementById('addStatus').textContent = '❌ Fehler: ' + err.message;
-      console.error('Calendar API error:', err);
-      // Try to get more details from response
-      try {
-        const errData = await res.json();
-        console.error('API response:', errData);
-        document.getElementById('addStatus').textContent = '❌ ' + (errData.error?.message || err.message);
-      } catch(e) {}
-    } finally {
-      btn.disabled = false;
-    }
-  };
-
-  if(isTokenValid()) {
-    doSave();
+function openAppleCal() {
+  // calshow:// öffnet Apple Kalender auf iPhone/iPad direkt
+  // Fallback für Desktop: calendar.apple.com
+  const ua = navigator.userAgent;
+  if(/iPhone|iPad|iPod/.test(ua)) {
+    window.location.href = 'calshow://';
   } else {
-    requestToken(doSave);
+    window.open('https://calendar.apple.com', '_blank');
   }
 }
 
@@ -3173,66 +3075,6 @@ window.addEventListener('scroll', () => {
 
 </script>
 <!-- Add Event Modal -->
-<div class="add-modal-overlay" id="addModalOverlay" onclick="handleOverlayClick(event)">
-  <div class="add-modal" onclick="event.stopPropagation()">
-    <div class="add-modal-handle"></div>
-    <div class="add-modal-body">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-        <div class="add-modal-title" style="margin-bottom:0">Neuer Termin</div>
-        <button onclick="closeAddEvent()" style="width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
-      </div>
-      <div id="addAuthHint" class="auth-hint" style="display:none">
-        🔐 Bitte zuerst mit Google anmelden
-      </div>
-      <div id="addForm">
-        <div class="add-field">
-          <label>Titel</label>
-          <input type="text" id="addTitle" placeholder="z.B. Arzttermin" />
-        </div>
-        <div class="add-row">
-          <div class="add-field">
-            <label>Datum</label>
-            <input type="date" id="addDate" />
-          </div>
-          <div class="add-field">
-            <label>Uhrzeit (optional)</label>
-            <input type="time" id="addTime" />
-          </div>
-        </div>
-        <div class="add-row">
-          <div class="add-field">
-            <label>Bis (optional)</label>
-            <input type="time" id="addEndTime" />
-          </div>
-          <div class="add-field">
-            <label>Kategorie</label>
-            <select id="addCat">
-              <option value="">— keine —</option>
-              <option value="e-kids">👨‍👧‍👦 Kids bei Paul</option>
-              <option value="e-dani">Kids bei Dani</option>
-              <option value="e-schwerin">🏙️ Schwerin</option>
-              <option value="e-maja">💗 Maja</option>
-              <option value="e-trip">✈️ Ausflug/Urlaub</option>
-              <option value="e-konzert">🎵 Konzert/Event</option>
-              <option value="e-kidev">🏫 Schule/Kids-Event</option>
-              <option value="e-haus">🏠 Besichtigung</option>
-              <option value="e-bday">🎂 Geburtstag</option>
-            </select>
-          </div>
-        </div>
-        <div class="add-field">
-          <label>Ort (optional)</label>
-          <input type="text" id="addLocation" placeholder="z.B. Berlin Mitte" />
-        </div>
-        <div class="add-actions">
-          <button class="add-cancel-btn" onclick="closeAddEvent()">Abbrechen</button>
-          <button class="add-save-btn" id="addSaveBtn" onclick="saveEvent()">Speichern</button>
-        </div>
-        <div class="add-status" id="addStatus"></div>
-      </div>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
