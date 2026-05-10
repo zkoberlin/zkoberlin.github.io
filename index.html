@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul · Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
@@ -69,7 +68,7 @@ html[data-theme="light"]:root{
 
 /* Styleguide Fonts */
 :root{--font-head:'Montserrat',sans-serif;}
-.sec,.h-greet,.a-name,.fin-lbl,.fin-mini-lbl,.union-clubname,.union-stat-lbl,.union-rank-lbl,.er-num-lbl,.er-title,.weather-city,.weather-day-name,.alma-big-lbl,.alma-big-unit,.alma-small-lbl{font-family:var(--font-head);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+.sec,.h-greet,.a-name,.fin-lbl,.fin-mini-lbl,.union-clubname,.union-stat-lbl,.union-rank-lbl,.er-num-lbl,.er-title,.weather-city,.weather-day-name,.alma-big-lbl,.alma-big-unit,.alma-small-lbl{font-family:var(--font-head);}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
 
 /* ── HEADER ── */
@@ -108,12 +107,12 @@ a.mini.date:hover{border-color:rgba(175,82,222,.55);box-shadow:0 0 0 2px rgba(17
 /* Day info mini – blue border */
 div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-icon{font-size:22px;flex-shrink:0;}
-.mini-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
+.mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
 .mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
 .mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
 /* ── SECTION ── */
-.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
+.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
 
 /* Weather expanded */
 .weather-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,149,0,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
@@ -121,13 +120,13 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
 .weather-icon{font-size:32px;flex-shrink:0;}
 .weather-info{flex:1;}
-.weather-city{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
+.weather-city{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
 .weather-temp{font-size:28px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
 .weather-desc{font-size:11px;color:var(--t2);margin-top:2px;}
 .weather-feels{font-size:10px;color:var(--t3);margin-top:1px;}
 .weather-forecast{border-top:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .weather-day{text-align:center;padding:6px 4px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);}
-.weather-day-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
+.weather-day-name{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;}
 .weather-day-icon{font-size:18px;margin-bottom:3px;}
 .weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
 .weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
@@ -159,7 +158,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
 .er-num{padding:16px 20px;border-right:1px solid var(--border);}
 .er-num:last-child{border-right:none;}
-.er-num-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:7px;-webkit-font-smoothing:antialiased;}
+.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:7px;}
 .er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
 .er-n{font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1;font-variant-numeric:tabular-nums;}
 .er-n.g{color:var(--green);}
@@ -168,7 +167,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-unit{font-size:12px;color:var(--t2);margin-bottom:6px;}
 .er-sub{font-size:11px;color:var(--t2);}
 .er-timeline{padding:13px 20px 14px;border-top:1px solid var(--border);}
-.er-tl-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:8px;-webkit-font-smoothing:antialiased;}
+.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
 .er-track{display:flex;gap:3px;height:24px;}
 .er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;}
 .er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
@@ -200,7 +199,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-section-unit{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
 .alma-section-emoji{font-size:24px;}
 .alma-section-right{flex:1;padding:13px 15px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
-.alma-section-lbl{font-family:var(--font-head);font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);-webkit-font-smoothing:antialiased;}
+.alma-section-lbl{font-family:var(--font-head);font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
 .alma-section-title{font-size:13px;font-weight:700;letter-spacing:-.2px;}
 .alma-section-date{font-size:11px;color:var(--t2);}
 .alma-section-range{font-size:10px;color:var(--orange);margin-top:1px;font-variant-numeric:tabular-nums;}
@@ -208,7 +207,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-row{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--border);}
 .alma-row-icon{width:32px;height:32px;border-radius:9px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .alma-row-icon.pink{background:rgba(219,39,119,.10);border-color:rgba(219,39,119,.2);}
-.alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
+.alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
 .alma-row-title{font-size:12px;font-weight:600;letter-spacing:-.1px;}
 .alma-row-date{font-size:10px;color:var(--t2);margin-top:1px;}
 .alma-row-counter{font-family:var(--font-body);font-size:11px;font-weight:600;color:var(--orange);margin-left:auto;flex-shrink:0;font-variant-numeric:tabular-nums;}
@@ -244,7 +243,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 /* Finanzen */
 .fin-box{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.fin-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:5px;-webkit-font-smoothing:antialiased;}
+.fin-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
 .fin-val{font-size:22px;font-weight:700;letter-spacing:-.6px;margin-bottom:6px;font-variant-numeric:tabular-nums;}
 .fin-val.g{color:var(--green);}
 .fin-val.r{color:var(--red);}
@@ -254,10 +253,10 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:var(--t3);}
 .fin-row2{display:flex;gap:6px;margin:0 11px 9px;}
 .fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:7px 9px;}
-.fin-mini-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
+.fin-mini-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;}
 .fin-mini-val{font-size:12.5px;font-weight:600;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
 .fin-spar{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;justify-content:space-between;}
-.fin-spar-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
+.fin-spar-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
 .fin-spar-val{font-size:15px;font-weight:700;letter-spacing:-.4px;color:var(--blue);font-variant-numeric:tabular-nums;}
 .fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 .fin-spar-ring{width:40px;height:40px;flex-shrink:0;}
@@ -326,7 +325,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-body{padding:14px 18px;display:flex;flex-direction:column;gap:12px;}
 .union-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
+.union-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
 .union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;}
 .union-stat-sub{font-size:10px;color:var(--t2);margin-top:2px;}
 .union-form{display:flex;gap:4px;align-items:center;}
@@ -335,7 +334,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-form-dot.l{background:var(--red-l);color:var(--red);}
 .union-form-dot.d{background:var(--card2);color:var(--t2);}
 .union-next{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-next-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:6px;-webkit-font-smoothing:antialiased;}
+.union-next-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;}
 .union-next-game{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
 .union-next-game:last-child{margin-bottom:0;}
 .union-next-teams{font-size:12px;font-weight:600;}
@@ -361,7 +360,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.2</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.1</div>
     </div>
   </div>
 </header>
