@@ -374,7 +374,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 [data-theme="dark"] .woche-day-card.woche-today { border-color: #0a84ff; box-shadow: 0 0 0 2px rgba(10,132,255,.15), 0 4px 16px rgba(0,0,0,.3); }
 
 .eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
-.eli .en { font-size: 13px; font-weight: 500; color: var(--text); }
+.eli .en { font-family: var(--font-head); font-size: 13px; font-weight: 500; color: var(--text); -webkit-font-smoothing: antialiased; }
 .eli .et { font-size: 11px; color: var(--text2); margin-top: 1px; }
 .eli-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
 
@@ -837,7 +837,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .tag-evt-item:last-child { border-bottom: none; }
 .tag-evt-item:hover { background: var(--surface2); }
 .tag-evt-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
-.tag-evt-title { font-size: 14px; font-weight: 600; }
+.tag-evt-title { font-family: var(--font-head); font-size: 14px; font-weight: 600; -webkit-font-smoothing: antialiased; }
 .tag-evt-time { font-size: 12px; color: var(--text2); margin-top: 2px; }
 .tag-empty { font-size: 13px; color: var(--text3); padding: 20px 16px; text-align: center; }
 
@@ -928,8 +928,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .woche-evt-info { flex: 1; min-width: 0; }
 .woche-evt-title {
-  font-size: 14px; font-weight: 500;
+  font-family: var(--font-head);
+  font-size: 14px; font-weight: 600;
   color: var(--text); line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
 }
 .woche-evt-time {
   font-size: 12px; color: var(--text2); margin-top: 2px;
@@ -1346,10 +1348,12 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   -webkit-font-smoothing: antialiased;
 }
 .eli .en {
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: -.2px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -.1px;
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 .et {
   font-size: 13px;
@@ -1427,7 +1431,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1437,9 +1441,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
       <!-- View switcher – desktop only inline, mobile gets own row -->
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
-        <button class="view-btn" id="vbWoche" onclick="setView('woche')">Woche</button>
+        <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
-        <button class="view-btn active" id="vbAlle" onclick="setView('alle')">Alle</button>
+        <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
       <button class="today-btn" onclick="scrollToToday()">Heute</button>
       <button class="add-event-btn" onclick="openAddEvent()">+ Termin</button>
@@ -1451,9 +1455,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <button class="add-event-btn" style="flex:none;padding:0 14px;" onclick="openAddEvent()">+ Termin</button>
     <div class="view-switcher" style="flex:1;">
       <button class="view-btn" id="vbTagM" onclick="setView('tag')">Tag</button>
-      <button class="view-btn" id="vbWocheM" onclick="setView('woche')">Woche</button>
+      <button class="view-btn active" id="vbWocheM" onclick="setView('woche')">Woche</button>
       <button class="view-btn" id="vbMonatM" onclick="setView('monat')">Monat</button>
-      <button class="view-btn active" id="vbAlleM" onclick="setView('alle')">Alle</button>
+      <button class="view-btn" id="vbAlleM" onclick="setView('alle')">Alle</button>
     </div>
   </div>
   <div class="load-status" id="loadStatus">
@@ -1815,7 +1819,7 @@ function initViewUI() {
 window.addEventListener('resize', initViewUI, {passive:true});
 
 // ── VIEW SWITCHER ────────────────────────────────────────────────────
-let currentView = 'alle';
+let currentView = 'woche';
 // Navigation offsets (days offset for tag, weeks for woche, months for monat)
 let viewOffset = 0;
 
