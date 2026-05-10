@@ -912,30 +912,13 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .woche-day-card.woche-today .woche-day-title { color: var(--blue); }
 
 .woche-day-body { display: flex; flex-direction: column; }
-
-.woche-evt-item {
-  display: flex; align-items: flex-start; gap: 12px;
+.woche-day-body .eli {
   padding: 11px 18px;
+  border-radius: 0;
+  margin-bottom: 0;
   border-bottom: 1px solid var(--border);
-  cursor: pointer; transition: background .12s;
 }
-.woche-evt-item:last-child { border-bottom: none; }
-.woche-evt-item:hover { background: var(--surface2); }
-
-.woche-evt-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  flex-shrink: 0; margin-top: 4px;
-}
-.woche-evt-info { flex: 1; min-width: 0; }
-.woche-evt-title {
-  font-family: var(--font-head);
-  font-size: 14px; font-weight: 600;
-  color: var(--text); line-height: 1.4;
-  -webkit-font-smoothing: antialiased;
-}
-.woche-evt-time {
-  font-size: 12px; color: var(--text2); margin-top: 2px;
-}
+.woche-day-body .eli:last-child { border-bottom: none; }
 .woche-empty {
   font-size: 13px; color: var(--text3);
   padding: 14px 18px; font-style: italic;
@@ -1431,7 +1414,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.4</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1996,7 +1979,7 @@ function renderWocheView(cal, base) {
     head.innerHTML = `<span class="woche-day-title">${prefix}${dayName}, ${dateStr}</span>`;
     card.appendChild(head);
 
-    // Events
+    // Events — identisch zur Tag-Ansicht (eli/en/et/eli-dot)
     const body = document.createElement('div');
     body.className = 'woche-day-body';
 
@@ -2011,15 +1994,27 @@ function renderWocheView(cal, base) {
         if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
         if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
         if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+        const timeHtml = time
+          ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>`
+          : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
 
         const item = document.createElement('div');
-        item.className = 'woche-evt-item';
+        item.className = 'eli';
+        item.style.cursor = 'pointer';
+        item.style.marginBottom = '0';
+        item.style.borderRadius = '0';
         item.innerHTML = `
-          <div class="woche-evt-dot" style="background:${color}"></div>
-          <div class="woche-evt-info">
-            <div class="woche-evt-title">${title}${badges.join('')}</div>
-            ${time ? `<div class="woche-evt-time">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="woche-evt-time">${ev.location.replace(/\\/g,'')}</div>` : '')}
+          <div class="eli-dot" style="background:${color}"></div>
+          <div class="evt-info">
+            <div class="en">${title}${badges.join('')}</div>
+            ${timeHtml}
           </div>`;
+        if(ev.fromIcal && !ev.fromHellomed && ev.googleId) {
+          const pencil = document.createElement('span');
+          pencil.textContent = '✏️';
+          pencil.style.cssText = 'font-size:11px;margin-left:auto;opacity:0.5;flex-shrink:0';
+          item.appendChild(pencil);
+        }
         item.addEventListener('click', () => openEvtModal(ev, key));
         body.appendChild(item);
       });
@@ -2051,9 +2046,13 @@ function openDpBelowGrid(key, gridEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
     </div>`;
   });
 
