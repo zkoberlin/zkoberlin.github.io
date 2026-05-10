@@ -489,9 +489,11 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   display: inline-flex; align-items: center; justify-content: center;
   height: 32px;
   border-radius: 10px;
-  font-family: inherit; font-size: 12px; font-weight: 600;
+  font-family: var(--font-head);
+  font-size: 12px; font-weight: 600;
   cursor: pointer; transition: .15s; flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
 }
 .hub-btn {
   width: 32px;
@@ -883,12 +885,13 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   border-radius: 8px;
   background: transparent;
   color: var(--text2);
-  font-family: inherit;
+  font-family: var(--font-head);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: .15s;
   white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
 }
 .view-btn.active {
   background: var(--surface);
@@ -1521,7 +1524,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.7</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2450,47 +2453,141 @@ const catColors = {
 let activeFilter = null;
 
 function filterBy(cat) {
+  // Toggle off
   if(activeFilter === cat) {
     activeFilter = null;
     document.querySelectorAll('.fgi-tile').forEach(t => t.classList.remove('active'));
     document.getElementById('filterSheetBtn')?.classList.remove('filter-active');
-    Object.keys(SE).forEach(key => {
-      SE[key].forEach(ev => {
-        if(ev.c && ev.c.endsWith('-hidden')) ev.c = ev.c.replace('-hidden','');
-      });
-    });
     closeFilterSheet();
+    clearFilterResults();
     renderView();
     return;
   }
   activeFilter = cat;
-
   document.querySelectorAll('.fgi-tile').forEach(t => {
     t.classList.toggle('active', t.dataset.cat === cat);
   });
   document.getElementById('filterSheetBtn')?.classList.add('filter-active');
+  closeFilterSheet();
 
-  Object.keys(SE).forEach(key => {
-    SE[key].forEach(ev => {
-      if(ev.c && ev.c.endsWith('-hidden')) ev.c = ev.c.replace('-hidden','');
-    });
-    SE[key].forEach(ev => {
-      if(ev.c !== cat) ev.c = (ev.c || '') + '-hidden';
-    });
+  // Collect matches
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  const matches = [];
+  Object.keys(SE).sort().filter(d => d >= todayKey).forEach(d => {
+    const evs = (SE[d] || []).filter(ev => ev.c === cat);
+    if(evs.length) matches.push({key: d, evs});
   });
 
-  closeFilterSheet();
+  showFilterResults(cat, matches);
+}
+
+function clearFilterResults() {
+  const el = document.getElementById('filterResults');
+  if(el) el.remove();
+}
+
+function showFilterResults(cat, matches) {
+  clearFilterResults();
+
+  const color = (typeof catColors !== 'undefined' && catColors[cat]) || '#0071E3';
+  const label = (typeof catLabels !== 'undefined' && catLabels[cat]) || cat;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'filterResults';
+  wrap.style.cssText = 'padding:0 0 16px;';
+
+  // Header row
+  const hd = document.createElement('div');
+  hd.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;';
+  hd.innerHTML = `
+    <span style="font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);-webkit-font-smoothing:antialiased">
+      <span style="color:${color}">●</span> ${label}
+      <span style="font-size:11px;font-weight:500;color:var(--text3);margin-left:4px">${matches.reduce((n,m)=>n+m.evs.length,0)} Treffer</span>
+    </span>
+    <button onclick="closeFilter()" style="font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:var(--font-head);font-weight:500;padding:4px 8px;border-radius:6px;border:1px solid var(--border)">✕ Filter</button>
+  `;
+  wrap.appendChild(hd);
+
+  if(!matches.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'font-size:13px;color:var(--text3);padding:12px 0;font-style:italic;';
+    empty.textContent = 'Keine Treffer gefunden.';
+    wrap.appendChild(empty);
+  } else {
+    matches.forEach(({key, evs}) => {
+      evs.forEach(ev => {
+        const item = document.createElement('div');
+        item.className = 'eli';
+        item.style.cursor = 'pointer';
+        const c = colorMap[ev.c] || '#aeaeb2';
+        const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+        const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+        const badges = [];
+        if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+        if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+        if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+        item.innerHTML = `
+          <div class="eli-dot" style="background:${c}"></div>
+          <div class="evt-info" style="flex:1;min-width:0">
+            <div class="en">${title}${badges.join('')}</div>
+            <div class="et">${fmtDate(key)}${time ? ' · '+time+' Uhr' : ''}</div>
+          </div>
+          <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;margin-left:6px;opacity:.35">
+            <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`;
+        item.addEventListener('click', () => jumpToEvent(key, ev));
+        wrap.appendChild(item);
+      });
+    });
+  }
+
+  // Insert before main, styled responsively
+  const main = document.getElementById('main');
+  main.insertAdjacentElement('beforebegin', wrap);
+  const isMobile = window.innerWidth <= 600;
+  wrap.style.cssText = `padding:0 ${isMobile?'10':'32'}px 16px;max-width:1100px;margin:0 auto;`;
+}
+
+function jumpToEvent(key, ev) {
+  // Switch to tag view on that date
+  const d = new Date(key + 'T12:00:00');
+  const base = new Date();
+  base.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  const diff = Math.round((d - base) / 86400000);
+  currentView = 'tag';
+  viewOffset = diff;
+  updateViewBtns();
   renderView();
+
+  // Scroll to top
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // Highlight matching event item after render
+  setTimeout(() => {
+    const items = document.querySelectorAll('#cal .eli');
+    items.forEach(el => {
+      if(el.querySelector('.en')?.textContent.includes(
+        ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20)
+      )) {
+        el.style.transition = 'box-shadow .2s, border-color .2s';
+        el.style.outline = '2px solid var(--blue)';
+        el.style.outlineOffset = '1px';
+        el.style.borderRadius = '8px';
+        setTimeout(() => {
+          el.style.outline = '';
+          el.style.outlineOffset = '';
+        }, 2500);
+      }
+    });
+  }, 120);
 }
 
 function closeFilter() {
   activeFilter = null;
   document.querySelectorAll('.fgi-tile').forEach(t => t.classList.remove('active'));
-  Object.keys(SE).forEach(dk => {
-    SE[dk].forEach(ev => {
-      if(ev.c && ev.c.endsWith('-hidden')) ev.c = ev.c.replace('-hidden','');
-    });
-  });
+  document.getElementById('filterSheetBtn')?.classList.remove('filter-active');
+  clearFilterResults();
   renderView();
 }
 
