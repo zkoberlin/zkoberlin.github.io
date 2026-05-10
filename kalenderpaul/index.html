@@ -40,7 +40,7 @@ body {
 
 /* Styleguide Fonts – Montserrat für Headlines */
 :root { --font-head: 'Montserrat', sans-serif; }
-h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-family: var(--font-head); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popup-title { font-family: var(--font-head); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 
 /* HEADER */
 .header {
@@ -370,7 +370,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 [data-theme="dark"] .dp-popup-head { border-color: rgba(255,255,255,.08); }
 
 .eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
-.eli .en { font-size: 13px; font-weight: 500; }
+.eli .en { font-size: 13px; font-weight: 500; color: var(--text); }
 .eli .et { font-size: 11px; color: var(--text2); margin-top: 1px; }
 .eli-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
 
@@ -1287,6 +1287,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   font-size: 15px;
   font-weight: 400;
   letter-spacing: -.2px;
+  color: var(--text);
 }
 .et {
   font-size: 13px;
@@ -1364,7 +1365,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.7</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
