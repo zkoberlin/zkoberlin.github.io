@@ -247,6 +247,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   color: var(--blue);
   background: var(--surface);
 }
+/* Filter results list */
+#filterResults {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  #filterResults .eli { padding: 10px 12px; }
+}
 .filter-grid-inline {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1524,7 +1532,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.4.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2541,11 +2549,10 @@ function showFilterResults(cat, matches) {
     });
   }
 
-  // Insert before main, styled responsively
+  // Insert als erstes Element in #main – erbt Padding des Containers
   const main = document.getElementById('main');
-  main.insertAdjacentElement('beforebegin', wrap);
-  const isMobile = window.innerWidth <= 600;
-  wrap.style.cssText = `padding:0 ${isMobile?'10':'32'}px 16px;max-width:1100px;margin:0 auto;`;
+  main.insertAdjacentElement('afterbegin', wrap);
+  wrap.style.cssText = 'width:100%;box-sizing:border-box;padding-bottom:16px;';
 }
 
 function jumpToEvent(key, ev) {
