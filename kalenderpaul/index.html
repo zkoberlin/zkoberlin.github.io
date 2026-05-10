@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -115,7 +115,7 @@ body {
 
 /* Styleguide Fonts – Montserrat für Headlines */
 :root { --font-head: 'Montserrat', sans-serif; }
-h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-family: var(--font-head); }
+h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-family: var(--font-head); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 
 /* HEADER */
 .header {
@@ -309,7 +309,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   overflow: clip;
   color: var(--text);
 }
-.mt { font-size: 18px; font-weight: 700; letter-spacing: -.3px; margin-bottom: 14px; }
+.mt { font-size: 18px; font-weight: 600; letter-spacing: -.4px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
 
 .wh {
   display: grid;
@@ -317,8 +317,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   gap: 2px; margin-bottom: 3px;
 }
 .wh span {
-  text-align: center; font-size: 10px; font-weight: 600;
-  color: var(--text3); text-transform: uppercase; letter-spacing: .3px; padding: 3px 0;
+  text-align: center; font-size: 10px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .15px; padding: 3px 0;
+  -webkit-font-smoothing: antialiased;
 }
 .wh .we { color: var(--red); opacity: .7; }
 
@@ -535,8 +536,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   border-radius: 14px 14px 0 0;
 }
 .sticky-bar-month {
-  font-size: 13px; font-weight: 700; color: var(--text);
-  letter-spacing: -.2px; margin-bottom: 4px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  letter-spacing: -.3px; margin-bottom: 4px; -webkit-font-smoothing: antialiased;
 }
 .sticky-bar-days {
   display: grid;
@@ -544,9 +545,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
   gap: 2px;
 }
 .sticky-bar-days span {
-  text-align: center; font-size: 10px; font-weight: 600;
-  color: var(--text3); text-transform: uppercase; letter-spacing: .3px;
-  padding: 2px 0;
+  text-align: center; font-size: 10px; font-weight: 500;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .15px;
+  padding: 2px 0; -webkit-font-smoothing: antialiased;
 }
 .sticky-bar-days span.we { color: var(--red); opacity: .7; }
 
@@ -1414,7 +1415,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
