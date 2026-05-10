@@ -29,81 +29,6 @@
 
 
 
-  /* Event colors dark */
-  .e-kids     { background: #0a3d8f; color: #a8c8ff; font-weight: 700; }
-  .e-dani     { background: #3a3a3c; color: #98989d; }
-  .e-schwerin { background: #6b3a00; color: #ffd580; font-weight: 700; }
-  .e-maja     { background: #7b1050; color: #ffb0d0; font-weight: 700; }
-  .e-trip     { background: #0a4a30; color: #80e8c0; font-weight: 700; }
-  .e-work     { background: #0a2a6b; color: #80b0ff; font-weight: 600; }
-  .e-kidev    { background: #7b0a0a; color: #ffa0a0; font-weight: 600; }
-  .e-feier    { background: #4a3800; color: #ffd580; font-weight: 600; }
-  .e-union    { background: #7b0a0a; color: #ffa0a0; font-weight: 700; }
-  .e-hellomed { background: #8099E8; color: #ffffff; font-weight: 600; }
-  .e-konzert  { background: #0a4a20; color: #80e0a0; font-weight: 700; }
-  .e-haus     { background: #004a6b; color: #80d0f0; font-weight: 600; }
-  .e-bday     { background: #3a3a3c; color: #636366; font-style: italic; }
-
-  /* Header */
-  .header { background: rgba(28,28,30,0.95); }
-  .header-text h1 { color: #f5f5f7; }
-  .header-text p  { color: #98989d; }
-
-  /* Sticky bar + weekdays */
-  .sticky-bar { background: rgba(44,44,46,0.97); border-bottom-color: rgba(255,255,255,.08); }
-
-  /* Month card */
-  .mc { background: #2c2c2e; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
-  .mt { color: #f5f5f7; }
-
-  /* Day cells */
-  .day { background: #3a3a3c; }
-  .day.today { background: #0a2a4a; box-shadow: inset 0 0 0 1.5px #0a84ff; }
-  .day.empty { background: transparent; }
-  .day.past  { opacity: .25; }
-  .dn { color: #f5f5f7; }
-  .day.weekend .dn { color: #ff453a; }
-  .day.today .dn { background: #0a84ff; color: #fff; }
-
-  /* Detail panel */
-  .dp { background: #2c2c2e; }
-  .dp h3 { color: #f5f5f7; }
-  .eli { background: #3a3a3c; }
-  .eli .en { color: #f5f5f7; }
-
-  /* Filter sheet */
-  .filter-panel { background: #2c2c2e; }
-  .filter-panel-handle { background: #636366; }
-  .fp-title { color: #f5f5f7; }
-  .fp-close { background: #3a3a3c; color: #98989d; border-color: rgba(255,255,255,.1); }
-  .fp-item { background: #3a3a3c; border-color: rgba(255,255,255,.08); color: #f5f5f7; }
-  .fp-item:hover { background: #48484a; border-color: #0a84ff; }
-  .fp-date { color: #98989d; }
-  .filter-backdrop { background: rgba(0,0,0,0.65); }
-
-  /* Legend chips */
-  .li { background: #3a3a3c; border-color: rgba(255,255,255,.1); color: #98989d; }
-  .li:hover { background: #48484a; color: #0a84ff; border-color: #0a84ff; }
-
-  
-  
-  
-  
-
-  /* Buttons */
-  .today-btn { background: #3a3a3c; border-color: #0a84ff; color: #0a84ff; }
-
-  /* Day overlay */
-  .day-overlay { background: rgba(0,0,0,0.55); }
-  .day.expanded { background: #2c2c2e !important; }
-
-  /* Weekday labels */
-  .wh span { color: #636366; }
-  .wh span.we { color: #ff453a; opacity: .8; }
-  .sticky-bar-days span { color: #636366; }
-  .sticky-bar-days span.we { color: #ff453a; }
-  .sticky-bar-month { color: #f5f5f7; }
-  .kw { color: #636366; }
 }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -917,9 +842,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 .week-header { display: grid; grid-template-columns: repeat(7,1fr); border-bottom: 1.5px solid var(--border); background: var(--surface2); }
 .week-header-day {
   text-align: center; padding: 10px 4px 8px;
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .5px; color: var(--text3);
+  font-size: 10px; font-weight: 500; text-transform: uppercase;
+  letter-spacing: .15px; color: var(--text3);
   border-right: 1px solid var(--border);
+  -webkit-font-smoothing: antialiased;
 }
 .week-header-day:last-child { border-right: none; }
 .week-header-day.we { color: var(--red); }
@@ -1066,6 +992,24 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 [data-theme="dark"] .dn         { color: #f5f5f7; }
 [data-theme="dark"] .mt         { color: #f5f5f7; }
 [data-theme="dark"] .kw         { color: #636366; }
+
+/* ── DARK MODE TYPOGRAFIE ──
+   Auf dunklem Grund wirken gleiche font-weights kantiger.
+   Eine Stufe leichter = weicheres Rendering. */
+[data-theme="dark"] .mt                            { font-weight: 500; letter-spacing: -.5px; }
+[data-theme="dark"] .sticky-bar-month              { font-weight: 500; letter-spacing: -.4px; }
+[data-theme="dark"] .sticky-bar-days span,
+[data-theme="dark"] .wh span                       { font-weight: 400; letter-spacing: 0; }
+[data-theme="dark"] .week-header-day               { font-weight: 400; letter-spacing: 0; }
+[data-theme="dark"] .dn                            { font-weight: 500; }
+[data-theme="dark"] .dp h3,
+[data-theme="dark"] .dp-popup-title                { font-weight: 500; letter-spacing: -.3px; }
+[data-theme="dark"] .eli .en                       { font-weight: 300; }
+[data-theme="dark"] .evt                           { font-weight: 500; }
+[data-theme="dark"] .evt-modal-title               { font-weight: 500; letter-spacing: -.4px; }
+[data-theme="dark"] .header-text h1                { font-weight: 500; }
+[data-theme="dark"] .fp-title                      { font-weight: 500; }
+[data-theme="dark"] .li                            { font-weight: 400; }
 
 :root[data-theme="light"] {
   --bg: #f5f5f7 !important;
@@ -1289,9 +1233,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 /* Tighter, more Apple-like spacing */
 .header-text h1 {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -.4px;
   line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
 }
 .header-text p {
   font-size: 11px;
@@ -1334,8 +1279,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 }
 .dp h3 {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -.3px;
+  -webkit-font-smoothing: antialiased;
 }
 .eli .en {
   font-size: 15px;
@@ -1358,8 +1304,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 }
 .evt-modal-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -.4px;
+  -webkit-font-smoothing: antialiased;
 }
 .evt-modal-row {
   font-size: 15px;
@@ -1393,16 +1340,18 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
 /* Month title */
 .sticky-bar-month {
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -.3px;
+  font-weight: 600;
+  letter-spacing: -.35px;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Weekday labels */
 .sticky-bar-days span, .wh span {
   font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: .2px;
+  font-weight: 500;
+  letter-spacing: .1px;
   text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
 }
 </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1415,7 +1364,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3 { font-fa
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.6</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
