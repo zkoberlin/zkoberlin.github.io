@@ -231,6 +231,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   padding: 22px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  overflow: clip;
   color: var(--text);
 }
 .mt { font-size: 18px; font-weight: 600; letter-spacing: -.4px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
@@ -350,16 +351,13 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,.10);
   animation: fu .18s ease;
-  position: relative;
-  z-index: 5;
-  width: 100%;
 }
 .dp-popup-head {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 14px 8px;
   border-bottom: 1px solid var(--border);
 }
-.dp-popup-title { font-size: 18px; font-weight: 700; letter-spacing: -.4px; color: var(--text); }
+.dp-popup-title { font-size: 13px; font-weight: 700; letter-spacing: -.2px; }
 .dp-popup-close {
   width: 22px; height: 22px; border-radius: 50%;
   border: none; background: var(--surface2);
@@ -370,6 +368,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .dp-popup-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 4px; }
 [data-theme="dark"] .dp-popup { background: #2c2c2e; }
 [data-theme="dark"] .dp-popup-head { border-color: rgba(255,255,255,.08); }
+[data-theme="dark"] .woche-day-card { background: #2c2c2e; }
+[data-theme="dark"] .woche-day-head { border-bottom-color: rgba(255,255,255,.08); }
+[data-theme="dark"] .woche-evt-item { border-bottom-color: rgba(255,255,255,.06); }
+[data-theme="dark"] .woche-day-card.woche-today { border-color: #0a84ff; box-shadow: 0 0 0 2px rgba(10,132,255,.15), 0 4px 16px rgba(0,0,0,.3); }
 
 .eli { display: flex; align-items: center; padding: 8px 10px; border-radius: 8px; background: var(--surface2); margin-bottom: 4px; }
 .eli .en { font-size: 13px; font-weight: 500; color: var(--text); }
@@ -879,6 +881,64 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .week-more { font-size: 9px; color: var(--text3); padding: 1px 5px; }
 
+/* ── WOCHE-ANSICHT: Vertikale Tageskarten ── */
+.woche-list { display: flex; flex-direction: column; gap: 8px; }
+
+.woche-day-card {
+  background: var(--surface);
+  border-radius: var(--r, 18px);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  overflow: hidden;
+}
+.woche-day-card.woche-today {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(0,113,227,.10), 0 4px 12px rgba(0,0,0,.05);
+}
+.woche-day-card.woche-weekend .woche-day-title { color: var(--red); }
+
+.woche-day-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.woche-day-title {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+.woche-day-card.woche-today .woche-day-title { color: var(--blue); }
+
+.woche-day-body { display: flex; flex-direction: column; }
+
+.woche-evt-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background .12s;
+}
+.woche-evt-item:last-child { border-bottom: none; }
+.woche-evt-item:hover { background: var(--surface2); }
+
+.woche-evt-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 4px;
+}
+.woche-evt-info { flex: 1; min-width: 0; }
+.woche-evt-title {
+  font-size: 14px; font-weight: 500;
+  color: var(--text); line-height: 1.4;
+}
+.woche-evt-time {
+  font-size: 12px; color: var(--text2); margin-top: 2px;
+}
+.woche-empty {
+  font-size: 13px; color: var(--text3);
+  padding: 14px 18px; font-style: italic;
+}
+
 /* Hide the kw-month-badge completely */
 .kw-month-badge { display: none !important; }
 
@@ -1367,7 +1427,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.2.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1661,13 +1721,9 @@ function openDp(key, cellEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
-    const badges = [];
-    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
     </div>`;
   });
 
@@ -1895,65 +1951,71 @@ function renderWocheView(cal, base) {
     <button class="view-nav-btn" onclick="navView(1)">›</button>`;
   cal.appendChild(nav);
 
-  // Week grid
-  const grid = document.createElement('div');
-  grid.className = 'week-view';
+  const colorMapW = {
+    'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+    'e-kidev':'#dc2626','e-bday':'#9ca3af','e-feier':'#713f12',
+    'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+  };
 
-  // Header row
-  const header = document.createElement('div');
-  header.className = 'week-header';
-  for(let i=0; i<7; i++) {
-    const d = new Date(weekMon); d.setDate(weekMon.getDate() + i);
-    const isT = d.getDate()===base.getDate() && d.getMonth()===base.getMonth() && d.getFullYear()===base.getFullYear();
-    const isWE = i >= 5;
-    const div = document.createElement('div');
-    div.className = 'week-header-day' + (isWE?' we':'') + (isT?' today-col':'');
-    div.innerHTML = `<div>${WD[i]}</div><div class="wh-num">${d.getDate()}</div>`;
-    header.appendChild(div);
-  }
-  grid.appendChild(header);
+  // Vertical list of day cards
+  const list = document.createElement('div');
+  list.className = 'woche-list';
 
-  // Columns with events
-  const cols = document.createElement('div');
-  cols.className = 'week-cols';
-  for(let i=0; i<7; i++) {
+  for(let i = 0; i < 7; i++) {
     const d = new Date(weekMon); d.setDate(weekMon.getDate() + i);
     const key = dk(d.getFullYear(), d.getMonth(), d.getDate());
-    const isT = d.getDate()===base.getDate() && d.getMonth()===base.getMonth() && d.getFullYear()===base.getFullYear();
-    const col = document.createElement('div');
-    col.className = 'week-col' + (isT?' today-col':'');
-    // No title tooltip – click opens popup below grid
-
+    const isToday = d.toDateString() === base.toDateString();
+    const isWE = i >= 5;
     const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
-    evs.slice(0, 6).forEach(ev => {
-      const span = document.createElement('div');
-      span.className = `week-evt ${ev.c}`;
-      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      span.textContent = (ev.startTime ? ev.startTime+' ' : '') + title;
-      span.onclick = (e) => { e.stopPropagation(); openEvtModal(ev, key); };
-      col.appendChild(span);
-    });
-    if(evs.length > 6) {
-      const more = document.createElement('div');
-      more.className = 'week-more';
-      more.textContent = `+${evs.length-6} weitere`;
-      col.appendChild(more);
-    }
-    // Click on empty column area: open day popup below the grid
-    col.addEventListener('click', () => {
-      // Remove previous popup if from week view
-      if(activePopupEl) { activePopupEl.remove(); activePopupEl = null; }
-      if(selectedCell) { selectedCell.style.outline = ''; selectedCell.style.outlineOffset = ''; selectedCell = null; }
-      // Highlight header day
-      document.querySelectorAll('.week-header-day').forEach((h,idx) => {
-        h.style.background = idx===i ? 'var(--blue-l)' : '';
+
+    // Day card
+    const card = document.createElement('div');
+    card.className = 'woche-day-card' + (isToday ? ' woche-today' : '') + (isWE ? ' woche-weekend' : '');
+
+    // Header: "Heute · Sonntag, 10. Mai 2026"
+    const dayName = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'][i];
+    const dateStr = `${d.getDate()}. ${MN[d.getMonth()]} ${d.getFullYear()}`;
+    const prefix = isToday ? 'Heute · ' : '';
+
+    const head = document.createElement('div');
+    head.className = 'woche-day-head';
+    head.innerHTML = `<span class="woche-day-title">${prefix}${dayName}, ${dateStr}</span>`;
+    card.appendChild(head);
+
+    // Events
+    const body = document.createElement('div');
+    body.className = 'woche-day-body';
+
+    if(!evs.length) {
+      body.innerHTML = '<div class="woche-empty">Keine Termine.</div>';
+    } else {
+      evs.forEach(ev => {
+        const color = colorMapW[ev.c] || '#aeaeb2';
+        const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+        const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+        const badges = [];
+        if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+        if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+        if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+
+        const item = document.createElement('div');
+        item.className = 'woche-evt-item';
+        item.innerHTML = `
+          <div class="woche-evt-dot" style="background:${color}"></div>
+          <div class="woche-evt-info">
+            <div class="woche-evt-title">${title}${badges.join('')}</div>
+            ${time ? `<div class="woche-evt-time">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="woche-evt-time">${ev.location.replace(/\\/g,'')}</div>` : '')}
+          </div>`;
+        item.addEventListener('click', () => openEvtModal(ev, key));
+        body.appendChild(item);
       });
-      openDpBelowGrid(key, grid);
-    });
-    cols.appendChild(col);
+    }
+    card.appendChild(body);
+    list.appendChild(card);
   }
-  grid.appendChild(cols);
-  cal.appendChild(grid);
+
+  cal.appendChild(list);
 }
 
 // Opens the day popup after the week grid element
@@ -1976,13 +2038,9 @@ function openDpBelowGrid(key, gridEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
-    const badges = [];
-    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
     </div>`;
   });
 
