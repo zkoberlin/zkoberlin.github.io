@@ -1427,7 +1427,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.1</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.3.2</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1721,9 +1721,13 @@ function openDp(key, cellEl) {
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
     const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
     evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
       <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}</div>${timeHtml}</div>
+      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
     </div>`;
   });
 
@@ -1967,6 +1971,11 @@ function renderWocheView(cal, base) {
     const key = dk(d.getFullYear(), d.getMonth(), d.getDate());
     const isToday = d.toDateString() === base.toDateString();
     const isWE = i >= 5;
+    const today0 = new Date(base); today0.setHours(0,0,0,0);
+    const isPast = d < today0;
+
+    // In der aktuellen Woche: vergangene Tage ohne Termine ausblenden
+    if(isPast && isCurrentWeek) continue;
     const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
 
     // Day card
