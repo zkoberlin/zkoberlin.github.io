@@ -569,6 +569,20 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   position: relative;
 }
 
+/* Hervorhebung des gewählten Events in der Tag-Ansicht */
+@keyframes eliFlash {
+  0%   { outline-color: transparent; background: var(--surface2); }
+  15%  { outline-color: var(--red); background: rgba(255,59,48,0.08); }
+  70%  { outline-color: var(--red); background: rgba(255,59,48,0.05); }
+  100% { outline-color: transparent; background: var(--surface2); }
+}
+.eli.filter-jump-eli {
+  outline: 2px solid var(--red) !important;
+  outline-offset: 0px !important;
+  border-radius: 8px !important;
+  animation: eliFlash 2.8s ease forwards !important;
+}
+
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
@@ -1560,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2626,30 +2640,32 @@ function showFilterResults(cat, matches) {
 }
 
 function jumpToEvent(key, ev) {
-  // Switch to "Alle" view – zeigt den vollen Kalender-Kontext
-  currentView = 'alle';
-  viewOffset = 0;
+  // Tage-Offset vom heutigen Tag berechnen
+  const base = new Date(); base.setHours(0,0,0,0);
+  const target = new Date(key + 'T00:00:00'); target.setHours(0,0,0,0);
+  const diff = Math.round((target - base) / 86400000);
+
+  // In Tag-Ansicht wechseln, direkt zu diesem Tag
+  currentView = 'tag';
+  viewOffset = diff;
   updateViewBtns();
   closeInlinePopup();
   renderView();
+  window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // Nach DOM-Settle: zur Zielzelle scrollen, flashen, Popup öffnen
+  // Nach Render: das spezifische Event-Element in der Liste hervorheben
   setTimeout(() => {
-    const cell = document.querySelector(`.day[data-key="${key}"]`);
-    if(!cell) return;
-
-    // Zur Zelle scrollen (unterhalb sticky Header)
-    const headerH = document.querySelector('.header')?.offsetHeight || 120;
-    const cellTop = cell.getBoundingClientRect().top + window.pageYOffset;
-    window.scrollTo({ top: Math.max(0, cellTop - headerH - 32), behavior: 'smooth' });
-
-    // Dezenter Flash-Effekt auf der Tageszelle
-    cell.classList.add('filter-jump');
-    setTimeout(() => cell.classList.remove('filter-jump'), 2000);
-
-    // Inline-Popup für diesen Tag öffnen (zeigt alle Termine des Tages)
-    setTimeout(() => openDp(key, cell), 120);
-  }, 80);
+    const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 30);
+    let highlighted = false;
+    document.querySelectorAll('#cal .eli').forEach(el => {
+      const enText = el.querySelector('.en')?.textContent || '';
+      if(!highlighted && enText.includes(titleSnippet)) {
+        el.classList.add('filter-jump-eli');
+        highlighted = true;
+        setTimeout(() => el.classList.remove('filter-jump-eli'), 2800);
+      }
+    });
+  }, 120);
 }
 
 function closeFilter() {
