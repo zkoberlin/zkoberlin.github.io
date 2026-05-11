@@ -555,7 +555,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .sticky-bar {
   position: sticky;
   top: var(--header-h, 160px);
-  z-index: 9;
+  z-index: 20;
   background: var(--surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1574,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.7</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1909,14 +1909,7 @@ function openDp(key, cellEl) {
   visible.forEach((ev, i) => {
     popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
   });
-
-  // Scroll: bring the popup fully into view just below the header
-  setTimeout(() => {
-    const headerH = document.querySelector('.header')?.offsetHeight || 120;
-    const popupTop = popup.getBoundingClientRect().top + window.pageYOffset;
-    const targetY = popupTop - headerH - 8;
-    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-  }, 30);
+  // Kein scrollTo — das Modal ist position:fixed und zentriert sich selbst
 }
 
 function closeDp() {
@@ -2238,12 +2231,7 @@ function openDpBelowGrid(key, gridEl) {
   evs.forEach((ev, i) => {
     popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
   });
-
-  setTimeout(() => {
-    const headerH = document.querySelector('.header')?.offsetHeight || 120;
-    const top = popup.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
-    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-  }, 30);
+  // Kein scrollTo — das Modal ist position:fixed und zentriert sich selbst
 }
 
 // ── MONAT-ANSICHT ────────────────────────────────────────────────────
@@ -2276,15 +2264,12 @@ function buildMonthFull(year, month, baseDate) {
   wrapper.style.cssText = 'position:relative;margin-bottom:20px;';
 
   // Sticky-bar OUTSIDE .mc so position:sticky isn't blocked by overflow:clip
+  // In Monat-Ansicht: kein Monatsname, nur Wochentage (Monat steht schon im Nav-Titel)
   const stickyBar = document.createElement('div');
   stickyBar.className = 'sticky-bar';
-  const stickyMonth = document.createElement('div');
-  stickyMonth.className = 'sticky-bar-month';
-  stickyMonth.textContent = `${MN[month]} ${year}`;
   const stickyDays = document.createElement('div');
   stickyDays.className = 'sticky-bar-days';
   stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
-  stickyBar.appendChild(stickyMonth);
   stickyBar.appendChild(stickyDays);
   wrapper.appendChild(stickyBar);
 
