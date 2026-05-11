@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.14</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.15</div>
     </div>
   </div>
 </header>
@@ -728,17 +728,22 @@ function diff(a,b){return Math.round((b-a)/86400000);}
 function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
 function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
-// ── THEME ──
+// ── THEME (3-state: light → dark → auto) ──
 const THEME_KEY='hub_theme';
+const THEME_ICONS={light:'☀️',dark:'🌙',auto:'🌓'};
 function applyTheme(t){
-  const isDark=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  const stored=t||localStorage.getItem(THEME_KEY)||'auto';
+  const isDark=stored==='dark'||(stored==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
   document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
-  document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
-  if(t==='dark'||t==='light')localStorage.setItem(THEME_KEY,t);
+  document.getElementById('themeBtn').textContent=THEME_ICONS[stored]||'🌓';
+  document.getElementById('themeBtn').title=stored==='light'?'Manuell Hell':stored==='dark'?'Manuell Dunkel':'Auto (System)';
+  if(stored!=='auto')localStorage.setItem(THEME_KEY,stored);
+  else localStorage.removeItem(THEME_KEY);
 }
 function toggleTheme(){
-  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  applyTheme(isDark?'light':'dark');
+  const cur=localStorage.getItem(THEME_KEY)||'auto';
+  const next=cur==='light'?'dark':cur==='dark'?'auto':'light';
+  applyTheme(next);
 }
 applyTheme(localStorage.getItem(THEME_KEY)||'auto');
 window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
