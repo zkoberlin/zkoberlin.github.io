@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul · Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
@@ -68,7 +69,7 @@ html[data-theme="light"]:root{
 
 /* Styleguide Fonts */
 :root{--font-head:'Montserrat',sans-serif;}
-.sec,.h-greet,.a-name,.fin-lbl,.fin-mini-lbl,.union-clubname,.union-stat-lbl,.union-rank-lbl,.er-num-lbl,.er-title,.weather-city,.weather-day-name,.alma-big-lbl,.alma-big-unit,.alma-small-lbl{font-family:var(--font-head);}
+.sec,.h-greet,.a-name,.fin-lbl,.fin-mini-lbl,.union-clubname,.union-stat-lbl,.union-rank-lbl,.er-num-lbl,.er-title,.weather-city,.weather-day-name,.alma-big-lbl,.alma-big-unit,.alma-small-lbl{font-family:var(--font-head);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
 
 /* ── HEADER ── */
@@ -107,12 +108,12 @@ a.mini.date:hover{border-color:rgba(175,82,222,.55);box-shadow:0 0 0 2px rgba(17
 /* Day info mini – blue border */
 div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-icon{font-size:22px;flex-shrink:0;}
-.mini-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
+.mini-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
 .mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
 /* ── SECTION ── */
-.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--t3);padding-left:2px;margin-top:6px;}
+.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
 
 /* Weather expanded */
 .weather-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,149,0,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
@@ -120,13 +121,13 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
 .weather-icon{font-size:32px;flex-shrink:0;}
 .weather-info{flex:1;}
-.weather-city{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px;}
+.weather-city{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .weather-temp{font-size:28px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
 .weather-desc{font-size:11px;color:var(--t2);margin-top:2px;}
 .weather-feels{font-size:10px;color:var(--t3);margin-top:1px;}
 .weather-forecast{border-top:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .weather-day{text-align:center;padding:6px 4px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);}
-.weather-day-name{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;}
+.weather-day-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
 .weather-day-icon{font-size:18px;margin-bottom:3px;}
 .weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
 .weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
@@ -158,7 +159,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
 .er-num{padding:16px 20px;border-right:1px solid var(--border);}
 .er-num:last-child{border-right:none;}
-.er-num-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:7px;}
+.er-num-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:7px;-webkit-font-smoothing:antialiased;}
 .er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
 .er-n{font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1;font-variant-numeric:tabular-nums;}
 .er-n.g{color:var(--green);}
@@ -167,7 +168,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-unit{font-size:12px;color:var(--t2);margin-bottom:6px;}
 .er-sub{font-size:11px;color:var(--t2);}
 .er-timeline{padding:13px 20px 14px;border-top:1px solid var(--border);}
-.er-tl-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:8px;}
+.er-tl-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:8px;-webkit-font-smoothing:antialiased;}
 .er-track{display:flex;gap:3px;height:24px;}
 .er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;}
 .er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
@@ -199,7 +200,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-section-unit{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
 .alma-section-emoji{font-size:24px;}
 .alma-section-right{flex:1;padding:13px 15px;display:flex;flex-direction:column;justify-content:center;gap:4px;}
-.alma-section-lbl{font-family:var(--font-head);font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);}
+.alma-section-lbl{font-family:var(--font-head);font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);-webkit-font-smoothing:antialiased;}
 .alma-section-title{font-size:13px;font-weight:700;letter-spacing:-.2px;}
 .alma-section-date{font-size:11px;color:var(--t2);}
 .alma-section-range{font-size:10px;color:var(--orange);margin-top:1px;font-variant-numeric:tabular-nums;}
@@ -207,7 +208,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-row{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--border);}
 .alma-row-icon{width:32px;height:32px;border-radius:9px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .alma-row-icon.pink{background:rgba(219,39,119,.10);border-color:rgba(219,39,119,.2);}
-.alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .alma-row-title{font-size:12px;font-weight:600;letter-spacing:-.1px;}
 .alma-row-date{font-size:10px;color:var(--t2);margin-top:1px;}
 .alma-row-counter{font-family:var(--font-body);font-size:11px;font-weight:600;color:var(--orange);margin-left:auto;flex-shrink:0;font-variant-numeric:tabular-nums;}
@@ -243,7 +244,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 /* Finanzen */
 .fin-box{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.fin-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;}
+.fin-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:5px;-webkit-font-smoothing:antialiased;}
 .fin-val{font-size:22px;font-weight:700;letter-spacing:-.6px;margin-bottom:6px;font-variant-numeric:tabular-nums;}
 .fin-val.g{color:var(--green);}
 .fin-val.r{color:var(--red);}
@@ -253,10 +254,10 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .fin-bar-foot{display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:var(--t3);}
 .fin-row2{display:flex;gap:6px;margin:0 11px 9px;}
 .fin-mini{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:7px 9px;}
-.fin-mini-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;}
+.fin-mini-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .fin-mini-val{font-size:12.5px;font-weight:600;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
 .fin-spar{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 11px;display:flex;align-items:center;justify-content:space-between;}
-.fin-spar-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:2px;}
+.fin-spar-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .fin-spar-val{font-size:15px;font-weight:700;letter-spacing:-.4px;color:var(--blue);font-variant-numeric:tabular-nums;}
 .fin-spar-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 .fin-spar-ring{width:40px;height:40px;flex-shrink:0;}
@@ -325,7 +326,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-body{padding:14px 18px;display:flex;flex-direction:column;gap:12px;}
 .union-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-stat-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
+.union-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
 .union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;}
 .union-stat-sub{font-size:10px;color:var(--t2);margin-top:2px;}
 .union-form{display:flex;gap:4px;align-items:center;}
@@ -334,7 +335,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-form-dot.l{background:var(--red-l);color:var(--red);}
 .union-form-dot.d{background:var(--card2);color:var(--t2);}
 .union-next{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-next-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:6px;}
+.union-next-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:6px;-webkit-font-smoothing:antialiased;}
 .union-next-game{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
 .union-next-game:last-child{margin-bottom:0;}
 .union-next-teams{font-size:12px;font-weight:600;}
@@ -360,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.3</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.2</div>
     </div>
   </div>
 </header>
@@ -581,7 +582,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union Berlin" style="width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3));">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league" id="unionLeague">Bundesliga · wird geladen…</div>
+        <div class="union-league" id="unionLeague">Bundesliga · lädt…</div>
       </div>
     </div>
     <div class="union-rank">
@@ -590,10 +591,9 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     </div>
   </div>
   <div class="union-body" id="unionBody">
-    <div style="padding:24px;text-align:center;color:rgba(255,255,255,.5);font-size:12px;">Lade Daten…</div>
+    <div style="padding:28px;text-align:center;font-size:12px;color:var(--t3);">Lade Daten…</div>
   </div>
 </div>
-
 
 </main>
 
@@ -614,194 +614,185 @@ function diff(a,b){return Math.round((b-a)/86400000);}
 function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
 function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
-// ── UNION BERLIN DYNAMISCH ──────────────────────────────────────────
-const UNION_CACHE_KEY = 'union_data_v3';
-const UNION_ID = 7;
+// ── THEME ──
+const THEME_KEY='hub_theme';
+function applyTheme(t){
+  const html=document.documentElement;
+  const isDark=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  html.setAttribute('data-theme',isDark?'dark':'light');
+  document.getElementById('themeBtn').textContent=isDark?'☀️':'🌙';
+  if(t==='dark'||t==='light') localStorage.setItem(THEME_KEY,t);
+}
+function toggleTheme(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const next=isDark?'light':'dark';
+  localStorage.setItem(THEME_KEY,next);
+  applyTheme(next);
+}
+// Init
+applyTheme(localStorage.getItem(THEME_KEY)||'auto');
+// Live-Listener: wechselt automatisch wenn System sich ändert (ohne manuelles Override)
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
+  if(!localStorage.getItem(THEME_KEY)) applyTheme('auto');
+});
 
-async function loadUnionData() {
-  // Cache: einmal pro Kalendertag refreshen
-  const today = new Date().toISOString().slice(0,10);
-  try {
-    const cached = localStorage.getItem(UNION_CACHE_KEY);
-    if(cached) {
-      const {data, date} = JSON.parse(cached);
-      if(date === today) { renderUnionCard(data); return; }
-    }
-  } catch(e) {}
-  try {
-    const season = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear()-1;
-    const [matchRes, tableRes] = await Promise.all([
-      fetch(`https://api.openligadb.de/getmatchdata/bl1/${season}`),
-      fetch(`https://api.openligadb.de/getbltable/bl1/${season}`)
+// ── UNION BERLIN DYNAMISCH ──────────────────────────────────────────
+const UNION_CACHE_KEY='union_data_v3';
+const UNION_ID=7;
+
+async function loadUnionData(){
+  const today=new Date().toISOString().slice(0,10);
+  try{
+    const cached=localStorage.getItem(UNION_CACHE_KEY);
+    if(cached){const{data,date}=JSON.parse(cached);if(date===today){renderUnionCard(data);return;}}
+  }catch(e){}
+  try{
+    const s=new Date().getMonth()>=6?new Date().getFullYear():new Date().getFullYear()-1;
+    const[mr,tr]=await Promise.all([
+      fetch(`https://api.openligadb.de/getmatchdata/bl1/${s}`),
+      fetch(`https://api.openligadb.de/getbltable/bl1/${s}`)
     ]);
-    if(!matchRes.ok || !tableRes.ok) throw new Error('API error');
-    const matches = await matchRes.json();
-    const table = await tableRes.json();
-    const data = {matches, table};
-    localStorage.setItem(UNION_CACHE_KEY, JSON.stringify({data, date: today}));
+    if(!mr.ok||!tr.ok)throw new Error('API');
+    const data={matches:await mr.json(),table:await tr.json()};
+    localStorage.setItem(UNION_CACHE_KEY,JSON.stringify({data,date:today}));
     renderUnionCard(data);
-  } catch(e) {
-    console.warn('Union Daten Fehler:', e);
-    // Versuche Cache trotzdem zu nutzen
-    try {
-      const cached = localStorage.getItem(UNION_CACHE_KEY);
-      if(cached) { renderUnionCard(JSON.parse(cached).data); return; }
-    } catch(e2) {}
-    document.getElementById('unionBody').innerHTML =
-      '<div style="padding:24px;text-align:center;font-size:12px;color:var(--t2);">Daten konnten nicht geladen werden</div>';
+  }catch(e){
+    // Fallback: alter Cache
+    try{const c=localStorage.getItem(UNION_CACHE_KEY);if(c){renderUnionCard(JSON.parse(c).data);return;}}catch(e2){}
+    document.getElementById('unionBody').innerHTML='<div style="padding:24px;text-align:center;font-size:12px;color:var(--t3);">Keine Verbindung</div>';
   }
 }
 
-function renderUnionCard({matches, table}) {
-  const WK2 = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const MK2 = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-  const UID = UNION_ID;
+function renderUnionCard({matches,table}){
+  const WD2=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const MO2=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const UID=UNION_ID;
+  const s=new Date().getMonth()>=6?new Date().getFullYear():new Date().getFullYear()-1;
 
-  // ── Tabelle ──
-  const row = table.find(r => r.teamInfoId === UID || r.teamName?.includes('Union Berlin'));
-  const rank   = row?.rank ?? '–';
-  const pts    = row?.points ?? 0;
-  const wins   = row?.won ?? 0;
-  const draws  = row?.draw ?? 0;
-  const losses = row?.lost ?? 0;
-  const gf     = row?.goals ?? 0;
-  const ga     = row?.opponentGoals ?? 0;
-  const played = wins + draws + losses;
-  const gDiff  = gf - ga;
-  const season = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear()-1;
-  const seasonLabel = `Bundesliga ${season}/${String(season+1).slice(2)}`;
+  // Tabelle
+  const row=table.find(r=>r.teamInfoId===UID||r.teamName?.includes('Union Berlin'));
+  const rank=row?.rank??'–';
+  const pts=row?.points??0;
+  const wins=row?.won??0;
+  const draws=row?.draw??0;
+  const losses=row?.lost??0;
+  const gf=row?.goals??0;
+  const ga=row?.opponentGoals??0;
+  const played=wins+draws+losses;
+  const gDiff=gf-ga;
 
-  document.getElementById('unionRank').textContent = rank + '.';
-  document.getElementById('unionLeague').textContent = seasonLabel + (played > 0 ? ` · ${played}/${(table[0]?.matches||34)} Spiele` : '');
+  document.getElementById('unionRank').textContent=rank+'.';
+  document.getElementById('unionLeague').textContent=`Bundesliga ${s}/${String(s+1).slice(2)} · Platz ${rank}`;
 
-  // ── Spiele ──
-  const all = matches
-    .filter(m => m.team1?.teamId === UID || m.team2?.teamId === UID)
-    .sort((a,b) => new Date(a.matchDateTime) - new Date(b.matchDateTime));
-  const past   = all.filter(m => m.matchIsFinished);
-  const future = all.filter(m => !m.matchIsFinished);
-  const last   = past[past.length-1];
-  const totalGames = all.length;
-  const remaining = future.length;
-  const maxPts = pts + remaining * 3;
+  // Spiele
+  const all=matches
+    .filter(m=>m.team1?.teamId===UID||m.team2?.teamId===UID)
+    .sort((a,b)=>new Date(a.matchDateTime)-new Date(b.matchDateTime));
+  const past=all.filter(m=>m.matchIsFinished);
+  const future=all.filter(m=>!m.matchIsFinished);
+  const last=past[past.length-1];
+  const remaining=future.length;
+  const totalGames=all.length;
+  const maxPts=pts+remaining*3;
 
-  // ── Form letzte 5 ──
-  const last5 = past.slice(-5).map(m => {
-    const h = m.team1?.teamId === UID;
-    const r = m.matchResults?.find(x => x.resultTypeID === 2) || m.matchResults?.[0];
-    const gf2 = h ? r?.pointsTeam1 : r?.pointsTeam2;
-    const ga2 = h ? r?.pointsTeam2 : r?.pointsTeam1;
-    if(gf2 == null) return null;
-    return gf2 > ga2 ? 'w' : gf2 === ga2 ? 'd' : 'l';
+  // Form letzte 5
+  const last5=past.slice(-5).map(m=>{
+    const h=m.team1?.teamId===UID;
+    const r=m.matchResults?.find(x=>x.resultTypeID===2)||m.matchResults?.[0];
+    const gf2=h?r?.pointsTeam1:r?.pointsTeam2;
+    const ga2=h?r?.pointsTeam2:r?.pointsTeam1;
+    if(gf2==null)return null;
+    return gf2>ga2?'w':gf2===ga2?'d':'l';
   }).filter(Boolean);
-  const formPts = last5.reduce((n,r) => n+(r==='w'?3:r==='d'?1:0), 0);
+  const formPts=last5.reduce((n,r)=>n+(r==='w'?3:r==='d'?1:0),0);
 
-  // ── Tabellenumfeld ──
-  const nb = table.filter(r => r.rank >= rank-1 && r.rank <= rank+1).sort((a,b) => a.rank-b.rank);
-  const nbAbove = table.find(r => r.rank === rank-1);
-  const abstandOben = nbAbove ? nbAbove.points - pts : null;
+  // Tabellenumfeld
+  const nb=table.filter(r=>r.rank>=rank-1&&r.rank<=rank+1).sort((a,b)=>a.rank-b.rank);
+  const above=table.find(r=>r.rank===rank-1);
 
-  // ── Helpers ──
-  function fmtDt(dt, short=false) {
-    const d = new Date(dt);
-    if(short) return `${WK2[d.getDay()]}. ${d.getDate()}. ${MK2[d.getMonth()]}`;
-    return `${WK2[d.getDay()]}. ${d.getDate()}. ${MK2[d.getMonth()]} · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`;
+  function fmtDt(dt){
+    const d=new Date(dt);
+    return `${WD2[d.getDay()]}. ${d.getDate()}. ${MO2[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
   }
-  function logo(teamId, size=22) {
-    return `<img src="https://tmssl.akamaized.net/images/wappen/head/${teamId||0}.png"
-      style="width:${size}px;height:${size}px;object-fit:contain;flex-shrink:0;"
-      onerror="this.style.opacity='.12'">`;
+  function logo(id,sz=24){
+    return `<img src="https://tmssl.akamaized.net/images/wappen/head/${id||0}.png" style="width:${sz}px;height:${sz}px;object-fit:contain;flex-shrink:0;" onerror="this.style.opacity='.12'">`;
   }
 
-  // ── Form Dots ──
-  const formHTML = last5.map(r =>
-    `<div class="union-form-dot ${r}">${r==='w'?'S':r==='d'?'U':'N'}</div>`
-  ).join('');
+  // Form dots
+  const formHTML=last5.map(r=>`<div class="union-form-dot ${r}">${r==='w'?'S':r==='d'?'U':'N'}</div>`).join('');
 
-  // ── Tabellenumfeld ──
-  const nbHTML = nb.map(r =>
-    `<div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;
-      ${r.rank===rank?'background:var(--union-l);padding:3px 7px;border-radius:5px;margin:0 -7px;':''}">
-      <span style="${r.rank===rank?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
+  // Tabellenumfeld HTML
+  const nbHTML=nb.map(r=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;${r.rank===rank?'background:var(--union-l);padding:2px 5px;border-radius:4px;':''}">
+      <span style="${r.rank===rank?'color:var(--union);font-weight:600;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
       <span style="font-weight:700;${r.rank===rank?'color:var(--union);':''}font-variant-numeric:tabular-nums;">${r.points} Pkt.</span>
-    </div>`
-  ).join('');
+    </div>`).join('');
 
-  // ── Letztes Spiel ──
-  let lastHTML = '';
-  if(last) {
-    const h = last.team1?.teamId === UID;
-    const r = last.matchResults?.find(x => x.resultTypeID === 2) || last.matchResults?.[0];
-    const g1 = r?.pointsTeam1 ?? '–', g2 = r?.pointsTeam2 ?? '–';
-    const gFor = h?g1:g2, gAga = h?g2:g1;
-    const opp = h ? last.team2 : last.team1;
-    const resLabel = +gFor > +gAga ? 'Sieg' : +gFor === +gAga ? 'Unentschieden' : 'Niederlage';
-    lastHTML = `
+  // Letztes Spiel
+  let lastHTML='';
+  if(last){
+    const h=last.team1?.teamId===UID;
+    const r=last.matchResults?.find(x=>x.resultTypeID===2)||last.matchResults?.[0];
+    const g1=r?.pointsTeam1??'–',g2=r?.pointsTeam2??'–';
+    const gFor=h?g1:g2,gAga=h?g2:g1;
+    const opp=h?last.team2:last.team1;
+    const resLbl=+gFor>+gAga?'Sieg':+gFor===+gAga?'Unentschieden':'Niederlage';
+    lastHTML=`
     <div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · ${h?'Sa':'Auswärts'} · ${fmtDt(last.matchDateTime)}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;">
-        <div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0;">
-          ${logo(h?UID:opp?.teamId, 26)}
-          <span style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h?'Union Berlin':opp?.teamName}</span>
+      <div class="union-stat-lbl">Letztes Spiel · ${h?'Heimspiel':'Auswärts'} · ${fmtDt(last.matchDateTime)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;flex:1;">
+          ${logo(h?UID:opp?.teamId)}
+          <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h?'Union Berlin':opp?.teamName}</span>
         </div>
-        <div style="font-size:22px;font-weight:300;letter-spacing:-1.5px;flex-shrink:0;padding:0 8px;font-variant-numeric:tabular-nums;">${gFor} : ${gAga}</div>
-        <div style="display:flex;align-items:center;gap:7px;flex:1;justify-content:flex-end;min-width:0;">
-          <span style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">${h?opp?.teamName:'Union Berlin'}</span>
-          ${logo(h?opp?.teamId:UID, 26)}
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;">${gFor} : ${gAga}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
+          <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">${h?opp?.teamName:'Union Berlin'}</span>
+          ${logo(h?opp?.teamId:UID)}
         </div>
       </div>
-      <div class="union-stat-sub" style="text-align:center;margin-top:6px;">${resLabel} · Bundesliga</div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:4px;">${resLbl} · Bundesliga</div>
     </div>`;
   }
 
-  // ── Nächste Spiele ──
-  let nextHTML = '';
-  if(future.length === 0) {
-    nextHTML = `<div class="union-stat" style="text-align:center;padding:14px;font-size:12px;color:var(--t2);">Saison beendet 🏁</div>`;
-  } else {
-    const items = future.slice(0,3).map((m,i) => {
-      const h = m.team1?.teamId === UID;
-      const opp = h ? m.team2 : m.team1;
-      const isLast = i === future.length-1 || i === 2;
-      return `<div class="union-next-game"${i>0?' style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"':''}>
+  // Nächste Spiele
+  let nextHTML='';
+  if(!future.length){
+    nextHTML=`<div class="union-stat" style="text-align:center;font-size:12px;color:var(--t2);padding:14px;">Saison beendet 🏁</div>`;
+  }else{
+    const items=future.slice(0,3).map((m,i)=>{
+      const h=m.team1?.teamId===UID;
+      const opp=h?m.team2:m.team1;
+      const isLast=i===future.length-1;
+      return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
         <div style="flex:1;min-width:0;">
           <div class="match-row">
-            ${logo(h?UID:opp?.teamId)}
-            <span class="match-vs">vs</span>
-            ${logo(h?opp?.teamId:UID)}
-            <span class="match-team">${h?opp?.teamName:opp?.teamName}</span>
+            ${logo(h?UID:opp?.teamId,22)}<span class="match-vs">vs</span>${logo(h?opp?.teamId:UID,22)}
+            <span class="match-team" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h?opp?.teamName:opp?.teamName}</span>
           </div>
           <div class="union-next-date">${fmtDt(m.matchDateTime)} · ${h?'Heimspiel':'Auswärts'}</div>
         </div>
-        ${isLast && i===future.length-1?`<div style="text-align:right;flex-shrink:0;"><div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div><div style="font-size:10px;color:var(--t3);">Letztes Spiel</div></div>`:''}
+        ${isLast?`<div style="text-align:right;flex-shrink:0;"><div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div><div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div></div>`:''}
       </div>`;
     }).join('');
-    nextHTML = `<div class="union-next"><div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>${items}</div>`;
+    nextHTML=`<div class="union-next"><div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>${items}</div>`;
   }
 
-  // ── Saisonbilanz & Ausblick (dynamisch) ──
-  const klassErhalt = pts >= 34 || (remaining === 0 && rank <= 16);
-  const abstandStr = abstandOben != null && abstandOben > 0
-    ? `Abstand zu Platz ${rank-1}: <strong style="color:var(--t);">${abstandOben} Punkt${abstandOben!==1?'e':''}</strong>`
-    : abstandOben === 0 ? `Punktgleich mit Platz ${rank-1}` : '';
-  const saisonText = [
-    klassErhalt ? '🔴 Klassenerhalt gesichert' : `⚠️ Noch ${remaining} Spiele bis Saisonende`,
-    remaining > 0 ? `Noch <strong style="color:var(--t);">${remaining} Spiel${remaining!==1?'e':''}</strong> verbleibend` : 'Saison beendet',
-    remaining > 0 ? `Max. <strong style="color:var(--t);">${maxPts} Punkte</strong> möglich` : '',
-    abstandStr
+  // Saisonbilanz dynamisch
+  const klassErhalt=remaining===0||pts>=34;
+  const aboveStr=above&&above.points>pts?`Abstand zu Platz ${rank-1}: <strong style="color:var(--t);">${above.points-pts} Punkt${above.points-pts!==1?'e':''}</strong>`:'';
+  const saisonParts=[
+    klassErhalt?'Klassenerhalt gesichert 🔴':`⚠️ Abstiegsgefahr`,
+    remaining>0?`Noch <strong style="color:var(--t);">${remaining} Spiel${remaining!==1?'e':''}</strong> verbleibend`:'Saison beendet',
+    remaining>0?`Max. <strong style="color:var(--t);">${maxPts} Punkte</strong> möglich`:'',
+    aboveStr
   ].filter(Boolean).join(' · ');
 
-  const saisonHTML = `
-    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
-      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:5px;">${saisonText}</div>
-    </div>`;
-
-  document.getElementById('unionBody').innerHTML = `
+  document.getElementById('unionBody').innerHTML=`
     <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
       <div class="union-stat" style="text-align:center;">
         <div class="union-stat-lbl">Punkte</div>
-        <div class="union-stat-val" style="font-size:26px;font-weight:300;letter-spacing:-1.5px;font-variant-numeric:tabular-nums;">${pts}</div>
+        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;font-variant-numeric:tabular-nums;">${pts}</div>
         <div class="union-stat-sub">von ${totalGames*3} mögl.</div>
       </div>
       <div class="union-stat" style="text-align:center;">
@@ -818,46 +809,23 @@ function renderUnionCard({matches, table}) {
     <div class="union-row">
       <div class="union-stat">
         <div class="union-stat-lbl">Letzte 5 Spiele</div>
-        <div class="union-form" style="margin-top:7px;">${formHTML}</div>
+        <div class="union-form" style="margin-top:6px;">${formHTML}</div>
         <div class="union-stat-sub" style="margin-top:6px;">${formPts} Pkt. aus ${last5.length} Spielen</div>
       </div>
       <div class="union-stat">
         <div class="union-stat-lbl">Tabellenumfeld</div>
-        <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">${nbHTML}</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">${nbHTML}</div>
       </div>
     </div>
     ${lastHTML}
     ${nextHTML}
-    ${saisonHTML}
-  `;
+    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
+      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">${saisonParts}</div>
+    </div>`;
 }
 
 loadUnionData();
-
-loadUnionData();
-
-// ── THEME ──
-const THEME_KEY='hub_theme';
-function applyTheme(t){
-  const html=document.documentElement;
-  const isDark=t==='dark'||(t==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
-  html.setAttribute('data-theme',isDark?'dark':'light');
-  document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';
-  if(t!=='auto') localStorage.setItem(THEME_KEY,t);
-}
-function toggleTheme(){
-  const cur=document.documentElement.getAttribute('data-theme');
-  const isDark=cur==='dark';
-  localStorage.setItem(THEME_KEY,isDark?'light':'dark');
-  applyTheme(isDark?'light':'dark');
-}
-// Init theme
-const saved=localStorage.getItem(THEME_KEY);
-applyTheme(saved||'auto');
-// Live-Listener für System-Theme-Wechsel
-window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
-  if(!localStorage.getItem(THEME_KEY)) applyTheme('auto');
-});
 
 // ── CLOCK ──
 const now=new Date();
