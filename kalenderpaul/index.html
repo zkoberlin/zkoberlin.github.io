@@ -1341,6 +1341,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
   /* Load bar on mobile: full width, no inner padding */
   #loadProgressBar > div { padding: 0; max-width: 100%; }
+  #loadProgressInner { padding: 0 !important; max-width: 100% !important; }
 }
 
 /* ── DARK MODE ── */
@@ -1574,7 +1575,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1630,7 +1631,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 <!-- Ladefortschritt-Balken – unter dem Header -->
 <div id="loadProgressBar" style="position:sticky;top:var(--header-h,60px);left:0;right:0;height:3px;z-index:9;background:transparent;pointer-events:none;margin-bottom:-3px;">
-  <div style="max-width:1100px;margin:0 auto;padding:0 32px;height:100%;box-sizing:border-box;">
+  <div id="loadProgressInner" style="max-width:1100px;margin:0 auto;padding:0 32px;height:100%;box-sizing:border-box;">
     <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:2px;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
   </div>
 </div>
@@ -3250,27 +3251,56 @@ async function loadAllDynamicData() {
 renderAll();
 hideEmptyFilters();
 
-// ── DARK/LIGHT THEME TOGGLE ──────────────────────────────────────────
-// ── THEME ────────────────────────────────────────────────────────────
+// ── THEME (3-State: auto → dark → light → auto) ──────────────────────
+// 'auto'  = kein localStorage-Eintrag  → folgt Systemeinstellung
+// 'dark'  = manuell dunkel
+// 'light' = manuell hell
 function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme:dark)').matches);
-  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+  const sysDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const isDark = theme === 'dark' || (theme === 'auto' && sysDark);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  // Button-Icon zeigt aktuellen Zustand + ob manuell gesetzt
+  const btn = document.getElementById('themeBtn');
+  if(theme === 'auto') {
+    btn.textContent = isDark ? '🌙' : '☀️';
+    btn.title = 'Automatisch (System)';
+  } else if(theme === 'dark') {
+    btn.textContent = '🌙';
+    btn.title = 'Dunkel – klicken für Hell';
+  } else {
+    btn.textContent = '☀️';
+    btn.title = 'Hell – klicken für Automatisch';
+  }
+  // Speichere aktuellen State-Slot für Toggle
+  window.__themeState = theme;
 }
 function toggleTheme() {
-  const cur = document.documentElement.getAttribute('data-theme');
-  const isDark = cur === 'dark' || (cur === 'auto' && window.matchMedia('(prefers-color-scheme:dark)').matches);
-  const next = isDark ? 'light' : 'dark';
-  localStorage.setItem('theme', next);
+  const cur = window.__themeState || 'auto';
+  const sysDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  let next;
+  if(cur === 'auto') {
+    // auto → manuell in die entgegengesetzte Richtung kippen
+    next = sysDark ? 'light' : 'dark';
+  } else if(cur === 'dark') {
+    next = 'light';
+  } else {
+    // light → zurück zu auto (= System folgen)
+    next = 'auto';
+  }
+  if(next === 'auto') {
+    localStorage.removeItem('theme');
+  } else {
+    localStorage.setItem('theme', next);
+  }
   applyTheme(next);
 }
 // Init
 (function() {
-  const saved = localStorage.getItem('theme');
+  const saved = localStorage.getItem('theme'); // 'dark' | 'light' | null
   const theme = saved || 'auto';
   applyTheme(theme);
-  // Live-Listener: wechselt automatisch wenn System sich ändert
-  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', e => {
+  // Live-Listener: reagiert auf Systemwechsel wenn im Auto-Modus
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', () => {
     if(!localStorage.getItem('theme')) applyTheme('auto');
   });
 })();
