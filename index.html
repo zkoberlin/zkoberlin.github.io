@@ -364,7 +364,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.16</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.18</div>
     </div>
   </div>
 </header>
@@ -393,30 +393,51 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       </div>
     </a>
     <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;">
-      <!-- Date -->
-      <div style="text-align:center;width:100%;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:10px;">
-        <div style="font-size:32px;line-height:1.1;font-weight:300;letter-spacing:-1.5px;" id="todayStr">--</div>
-        <div style="font-size:10px;color:var(--t2);margin-top:3px;" id="kwStr">--</div>
+      <!-- Apple Calendar Icon -->
+      <div style="width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+        <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" style="border-radius:12px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);">
+          <!-- Background white -->
+          <rect width="52" height="52" fill="white"/>
+          <!-- Red header bar -->
+          <rect y="0" width="52" height="18" fill="#e8001c" rx="0"/>
+          <!-- Rounded top corners only via clip path trick -->
+          <rect y="0" width="52" height="9" fill="#e8001c"/>
+          <!-- Calendar grid lines -->
+          <line x1="0" y1="18" x2="52" y2="18" stroke="#e0e0e5" stroke-width=".8"/>
+          <!-- Month label in red bar -->
+          <text x="26" y="13" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7.5" font-weight="700" fill="white" letter-spacing=".3" id="calIconMonth">MAI</text>
+          <!-- Day number - big -->
+          <text x="26" y="40" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="22" font-weight="300" fill="#1D1D1F" id="calIconDay">11</text>
+        </svg>
+        <div style="margin-left:10px;">
+          <div style="font-size:28px;line-height:1;font-weight:300;letter-spacing:-1.5px;" id="todayStr">--</div>
+          <div style="font-size:10px;color:var(--t2);margin-top:3px;" id="kwStr">--</div>
+        </div>
       </div>
-      <!-- Birthdays -->
+      <!-- Birthdays – always shown -->
       <div style="width:100%;display:flex;flex-direction:column;gap:5px;" id="bdaySection">
-        <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">🎂 Geburtstage heute</div>
-        <div style="font-size:11.5px;font-weight:600;color:var(--t);line-height:1.4;" id="bdayVal">–</div>
+        <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">🎂 Heute Geburtstag</div>
+        <div style="font-size:11px;font-weight:600;color:var(--t);line-height:1.5;" id="bdayVal">–</div>
       </div>
     </a>
-    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:flex-start;padding:14px 14px;" id="dayInfoCard">
-      <div style="display:flex;flex-direction:column;gap:8px;width:100%;">
-        <div id="feiertagSection" style="display:none;">
+    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;" id="dayInfoCard">
+      <div style="display:flex;flex-direction:column;gap:0;width:100%;height:100%;">
+        <!-- Feiertag (only when applicable) -->
+        <div id="feiertagSection" style="display:none;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">
           <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);">🎉 Feiertag</div>
           <div style="font-size:12px;font-weight:700;color:var(--t);margin-top:2px;line-height:1.3;" id="feiertagVal">–</div>
         </div>
-        <div id="specialSection" style="border-top:0px solid var(--border);padding-top:0px;">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">📅 Heute ist</div>
-          <div style="font-size:12px;font-weight:700;color:var(--t);margin-top:2px;line-height:1.3;" id="specialVal">–</div>
+        <!-- Special day (always shown) -->
+        <div id="specialSection">
+          <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">📅 Heute ist</div>
+          <div style="font-size:12px;font-weight:700;color:var(--t);margin-top:3px;line-height:1.35;" id="specialVal">–</div>
         </div>
-        <div style="border-top:1px solid var(--border);padding-top:8px;" id="spruchSection">
-          <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">💡 Heute</div>
-          <div style="font-size:11px;font-weight:600;color:var(--t2);margin-top:2px;line-height:1.4;" id="spruchVal">–</div>
+        <!-- Divider -->
+        <div style="border-top:1px solid var(--border);margin:9px 0;"></div>
+        <!-- Wochentags-Spruch (always shown) -->
+        <div id="spruchSection">
+          <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">💡 Heute</div>
+          <div style="font-size:11px;font-weight:600;color:var(--t2);margin-top:3px;line-height:1.4;" id="spruchVal">–</div>
         </div>
       </div>
     </div>
@@ -770,6 +791,11 @@ document.getElementById('kw').textContent=kw;
 document.getElementById('finMonth').textContent=`${MON[now.getMonth()]} ${now.getFullYear()}`;
 function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
 document.getElementById('kwR').textContent=kwRange(now);
+// Calendar SVG icon
+const MON_SHORT=['JAN','FEB','MÄR','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ'];
+const calDay=document.getElementById('calIconDay');const calMon=document.getElementById('calIconMonth');
+if(calDay)calDay.textContent=now.getDate();
+if(calMon)calMon.textContent=MON_SHORT[now.getMonth()];
 
 // ── QUOTE ──
 const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
@@ -807,30 +833,375 @@ function loadDayInfo(){
 
   const feiertagHeute = feiertage[key] || null;
 
-  // Multiple bdays for same day
+  // Multiple bdays for same day – full 365-day coverage
   const allBdays={
-    '01-08':['David Bowie'],'01-17':['Michelle Obama'],'01-26':['Ellen DeGeneres'],
-    '02-06':['Bob Marley'],'02-11':['Sheryl Crow'],'02-14':['Valentinstag 💝'],
-    '03-14':['Albert Einstein'],'03-31':['Ewan McGregor'],
-    '04-04':['Heath Ledger'],'04-14':['Adrien Brody'],
-    '05-02':['David Beckham'],'05-05':['Adele','Karl Marx'],'05-08':['Roberto Cavalli','Peter Ustinov'],
-    '05-09':['Rosario Dawson'],'05-10':['Bono (U2)'],'05-19':['Malcolm X'],'05-25':['Mike Myers'],
-    '06-01':['Marilyn Monroe'],'06-12':['Anne Frank'],'06-25':['Michael Jackson'],
-    '07-04':['Post Malone'],'07-23':['Daniel Radcliffe'],
-    '08-04':['Barack Obama'],'08-09':['Whitney Houston'],
-    '09-07':['Evan Rachel Wood'],'09-15':['Tom Hardy'],
-    '10-02':['Sting'],'10-04':['Alicia Silverstone'],'10-26':['Hillary Clinton'],
-    '11-01':['Aishwarya Rai'],'11-18':['Owen Wilson'],
-    '12-05':['Walt Disney'],'12-18':['Brad Pitt'],'12-25':['Humphrey Bogart']
+    '01-01':['J.D. Salinger','Frank Langella'],
+    '01-02':['Cuba Gooding Jr.','Christy Turlington'],
+    '01-03':['Mel Gibson','Michael Schumacher'],
+    '01-04':['Isaac Newton','Michael Stipe'],
+    '01-05':['Diane Keaton','Bradley Cooper'],
+    '01-06':['Joan of Arc','Rowan Atkinson'],
+    '01-07':['Nicolas Cage','Jeremy Renner'],
+    '01-08':['David Bowie','Elvis Presley'],
+    '01-09':['Kate Middleton','Jimmy Page'],
+    '01-10':['Rod Stewart','George Foreman'],
+    '01-11':['Mary J. Blige','Jason Bateman'],
+    '01-12':['Jeff Bezos','Zayn Malik'],
+    '01-13':['Orlando Bloom','Liam Hemsworth'],
+    '01-14':['Jason Bateman','LL Cool J'],
+    '01-15':['Martin Luther King Jr.','Pitbull'],
+    '01-16':['Aaliyah','Kate Moss'],
+    '01-17':['Michelle Obama','Jim Carrey'],
+    '01-18':['Kevin Costner','Dave Bautista'],
+    '01-19':['Dolly Parton','Jodie Sweetin'],
+    '01-20':['Rainn Wilson','Bill Maher'],
+    '01-21':['Geena Davis','Hakeem Olajuwon'],
+    '01-22':['Diane Lane','Steve Perry'],
+    '01-23':['Tiffani Thiessen','Mariska Hargitay'],
+    '01-24':['Neil Diamond','Mischa Barton'],
+    '01-25':['Alicia Keys','Etta James'],
+    '01-26':['Ellen DeGeneres','Wayne Gretzky'],
+    '01-27':['Mimi Rogers','Patton Oswalt'],
+    '01-28':['Elijah Wood','Nick Carter'],
+    '01-29':['Oprah Winfrey','Adam Lambert'],
+    '01-30':['Christian Bale','Phil Collins'],
+    '01-31':['Justin Timberlake','Kerry Washington'],
+    '02-01':['Harry Styles','Lisa Marie Presley'],
+    '02-02':['Shakira','Christie Brinkley'],
+    '02-03':['Warrick Thompson','Nathan Lane'],
+    '02-04':['Rosa Parks','Alice Cooper'],
+    '02-05':['Jennifer Jason Leigh','Michael Sheen'],
+    '02-06':['Bob Marley','Axl Rose'],
+    '02-07':['Chris Rock','Garth Brooks'],
+    '02-08':['John Williams','Seth Green'],
+    '02-09':['Mia Farrow','Charlie Day'],
+    '02-10':['Emma Roberts','Chloë Grace Moretz'],
+    '02-11':['Taylor Lautner','Sheryl Crow'],
+    '02-12':['Abraham Lincoln','Josh Brolin'],
+    '02-13':['Robbie Williams','Randy Moss'],
+    '02-14':['Drew Barrymore','Michael Bloomberg'],
+    '02-15':['Galileo Galilei','Amber Valletta'],
+    '02-16':['Kim Jong-un','Ice-T'],
+    '02-17':['Michael Jordan','Ed Sheeran'],
+    '02-18':['Yoko Ono','John Travolta'],
+    '02-19':['Seal','Victoria Justice'],
+    '02-20':['Kurt Cobain','Rihanna'],
+    '02-21':['Ellen Page','Mélanie Laurent'],
+    '02-22':['Drew Barrymore','Steve Irwin'],
+    '02-23':['Dakota Fanning','Emily Blunt'],
+    '02-24':['Steve Jobs','Billy Zane'],
+    '02-25':['George Harrison','Rashida Jones'],
+    '02-26':['Johnny Cash','Erykah Badu'],
+    '02-27':['Chelsea Handler','Josh Groban'],
+    '02-28':['Bernadette Peters','Eric Lindros'],
+    '02-29':['Tony Robbins','Simon Lebon'],
+    '03-01':['Justin Bieber','Javier Bardem'],
+    '03-02':['Jon Bon Jovi','Daniel Craig'],
+    '03-03':['Jessica Biel','Camila Cabello'],
+    '03-04':['Channing Tatum','Khloé Kardashian'],
+    '03-05':['Eva Mendes','Penn Badgley'],
+    '03-06':['Shaquille O\'Neal','Rob Reiner'],
+    '03-07':['Laura Prepon','Bryan Cranston'],
+    '03-08':['James Van Der Beek','Freddie Prinze Jr.'],
+    '03-09':['Robin Thicke','Juliette Binoche'],
+    '03-10':['Sharon Stone','Chuck Norris'],
+    '03-11':['Thora Birch','Johnny Knoxville'],
+    '03-12':['James Taylor','Liza Minnelli'],
+    '03-13':['Common','William H. Macy'],
+    '03-14':['Albert Einstein','Pi Day · Stephen Hawking'],
+    '03-15':['Eva Longoria','Fabio Lanzoni'],
+    '03-16':['Lauren Graham','Jerry Lewis'],
+    '03-17':['Rob Lowe','Hozier'],
+    '03-18':['Queen Latifah','Adam Levine'],
+    '03-19':['Bruce Willis','Glenn Close'],
+    '03-20':['Chester Bennington','Spike Lee'],
+    '03-21':['Matthew Broderick','Rosie O\'Donnell'],
+    '03-22':['Reese Witherspoon','William Shatner'],
+    '03-23':['Chaka Khan','Jason Kidd'],
+    '03-24':['Jim Parsons','Peyton Manning'],
+    '03-25':['Elton John','Sarah Jessica Parker'],
+    '03-26':['Keira Knightley','Diana Ross'],
+    '03-27':['Mariah Carey','Quentin Tarantino'],
+    '03-28':['Vince Vaughn','Lady Gaga'],
+    '03-29':['Sam Walton','Brendan Gleeson'],
+    '03-30':['Celine Dion','Norah Jones'],
+    '03-31':['Ewan McGregor','Christopher Walken'],
+    '04-01':['Asa Butterfield','Annette Bening'],
+    '04-02':['Michael Fassbender','Penélope Cruz'],
+    '04-03':['Alec Baldwin','Eddie Murphy'],
+    '04-04':['Heath Ledger','Robert Downey Jr.'],
+    '04-05':['Pharrell Williams','Colin Powell'],
+    '04-06':['Paul Rudd','Zach Braff'],
+    '04-07':['Russell Crowe','Jackie Chan'],
+    '04-08':['Kourtney Kardashian','Patricia Arquette'],
+    '04-09':['Cynthia Nixon','Kristen Stewart'],
+    '04-10':['Steven Seagal','Haley Joel Osment'],
+    '04-11':['Joel Grey','Jeremy Clarkson'],
+    '04-12':['Claire Danes','Andy Garcia'],
+    '04-13':['Samuel Beckett','Ron Perlman'],
+    '04-14':['Adrien Brody','Sarah Michelle Gellar'],
+    '04-15':['Leonardo da Vinci','Emma Thompson'],
+    '04-16':['Charlie Chaplin','Jon Cryer'],
+    '04-17':['Jennifer Garner','Victoria Beckham'],
+    '04-18':['Conan O\'Brien','James Woods'],
+    '04-19':['Kate Hudson','James Franco'],
+    '04-20':['Adolf Hitler (†)','Miranda Kerr'],
+    '04-21':['Andie MacDowell','Tony Danza'],
+    '04-22':['Jack Nicholson','Peter Frampton'],
+    '04-23':['John Cena','Jaime King'],
+    '04-24':['Barbra Streisand','Kelly Clarkson'],
+    '04-25':['Renée Zellweger','Tim Duncan'],
+    '04-26':['Melania Trump','Channing Tatum'],
+    '04-27':['Sheena Easton','Ulrich Mühe'],
+    '04-28':['Penélope Cruz','Jay Leno'],
+    '04-29':['Daniel Day-Lewis','Uma Thurman'],
+    '04-30':['Gal Gadot','Travis Scott'],
+    '05-01':['Tim McGraw','Jamie Dornan'],
+    '05-02':['David Beckham','Dwayne "The Rock" Johnson'],
+    '05-03':['Bing Crosby','James Brown'],
+    '05-04':['Audrey Hepburn','Lance Bass'],
+    '05-05':['Adele','Karl Marx'],
+    '05-06':['George Clooney','Orson Welles'],
+    '05-07':['Naomi Campbell','Eva Perón'],
+    '05-08':['Enrique Iglesias','Melissa Gilbert'],
+    '05-09':['Rosario Dawson','Billy Joel'],
+    '05-10':['Bono (U2)','Kenan Thompson'],
+    '05-11':['Salvador Dalí','Cate Blanchett'],
+    '05-12':['Emilio Estevez','Ving Rhames'],
+    '05-13':['Stevie Wonder','Robert Pattinson'],
+    '05-14':['Cate Blanchett','David Byrne'],
+    '05-15':['L.L. Cool J','Andy Murray'],
+    '05-16':['Pierce Brosnan','Megan Fox'],
+    '05-17':['Trent Reznor','Sugar Ray Leonard'],
+    '05-18':['Pope John Paul II','Tina Fey'],
+    '05-19':['Malcolm X','Sam Smith'],
+    '05-20':['Cher','Mike Tyson'],
+    '05-21':['Mr. T','Notorious B.I.G.'],
+    '05-22':['Naomi Campbell','Laurence Olivier'],
+    '05-23':['Drew Carey','Joan Collins'],
+    '05-24':['Bob Dylan','Queen Victoria'],
+    '05-25':['Mike Myers','Ian McKellen'],
+    '05-26':['Helena Bonham Carter','John Wayne'],
+    '05-27':['Jamie Oliver','Vincent Price'],
+    '05-28':['Kylie Minogue','Carey Mulligan'],
+    '05-29':['John F. Kennedy','Mel B (Spice Girls)'],
+    '05-30':['Cee Lo Green','Idina Menzel'],
+    '05-31':['Clint Eastwood','Colin Farrell'],
+    '06-01':['Marilyn Monroe','Tom Holland'],
+    '06-02':['Zachary Quinto','Wentworth Miller'],
+    '06-03':['Rafael Nadal','Josephine Baker'],
+    '06-04':['Russell Brand','Angelina Jolie'],
+    '06-05':['Mark Wahlberg','Zara Phillips'],
+    '06-06':['Björn Borg','Sandra Bullock'],
+    '06-07':['Prince','Anna Kournikova'],
+    '06-08':['Kanye West','Tim Berners-Lee'],
+    '06-09':['Johnny Depp','Michael J. Fox'],
+    '06-10':['Judy Garland','Elizabeth Hurley'],
+    '06-11':['Shia LaBeouf','Peter Dinklage'],
+    '06-12':['Anne Frank','Adriana Lima'],
+    '06-13':['Mary-Kate & Ashley Olsen','Tim Allen'],
+    '06-14':['Boy George','Donald Trump'],
+    '06-15':['Neil Patrick Harris','Ice Cube'],
+    '06-16':['Tupac Shakur','Laurie Metcalf'],
+    '06-17':['Barry Manilow','Venus Williams'],
+    '06-18':['Paul McCartney','Blake Shelton'],
+    '06-19':['Paula Abdul','Kathleen Turner'],
+    '06-20':['Nicole Kidman','Lionel Richie'],
+    '06-21':['Prince William','Lana Del Rey'],
+    '06-22':['Meryl Streep','Cyndi Lauper'],
+    '06-23':['Selma Blair','Joss Whedon'],
+    '06-24':['Lionel Messi','Mindy Kaling'],
+    '06-25':['Michael Jackson','George Orwell'],
+    '06-26':['Ariana Grande','Derek Jeter'],
+    '06-27':['J.J. Abrams','Tobey Maguire'],
+    '06-28':['Mel Brooks','John Cusack'],
+    '06-29':['Gary Busey','Nicole Scherzinger'],
+    '06-30':['Mike Tyson','Fantasia Barrino'],
+    '07-01':['Princess Diana','Pamela Anderson'],
+    '07-02':['Lindsay Lohan','Margot Robbie'],
+    '07-03':['Tom Cruise','Franz Kafka'],
+    '07-04':['Post Malone','Calvin Coolidge'],
+    '07-05':['Edie Falco','Eva Green'],
+    '07-06':['Kevin Hart','Frida Kahlo'],
+    '07-07':['Ringo Starr','Sela Ward'],
+    '07-08':['Jaden Smith','Kevin Bacon'],
+    '07-09':['Tom Hanks','Kelly McGillis'],
+    '07-10':['Sofia Vergara','Jessica Simpson'],
+    '07-11':['Yul Brynner','Sela Ward'],
+    '07-12':['Malala Yousafzai','Kirsten Dunst'],
+    '07-13':['Harrison Ford','Patrick Stewart'],
+    '07-14':['Phoebe Cates','Matthew Fox'],
+    '07-15':['Diane Kruger','Forest Whitaker'],
+    '07-16':['Will Ferrell','M.I.A.'],
+    '07-17':['Luke Bryan','Billie Lourd'],
+    '07-18':['Nelson Mandela','Vin Diesel'],
+    '07-19':['Brian May','Benedict Cumberbatch'],
+    '07-20':['Carlos Santana','Kim Kardashian'],
+    '07-21':['Josh Hartnett','Maggie McCain'],
+    '07-22':['Selena Gomez','David Spade'],
+    '07-23':['Daniel Radcliffe','Philip Seymour Hoffman'],
+    '07-24':['Jennifer Lopez','Kristin Chenoweth'],
+    '07-25':['Matt LeBlanc','Slash'],
+    '07-26':['Mick Jagger','Sandra Bullock'],
+    '07-27':['Maya Rudolph','Taylor Schilling'],
+    '07-28':['Jacqueline Kennedy','Soulja Boy'],
+    '07-29':['Wil Wheaton','Josh Radnor'],
+    '07-30':['Hilary Swank','Arnold Schwarzenegger'],
+    '07-31':['J.K. Rowling','Zac Brown'],
+    '08-01':['Jason Momoa','Coolio'],
+    '08-02':['Edward Furlong','Sam Worthington'],
+    '08-03':['Martha Stewart','James Hetfield'],
+    '08-04':['Barack Obama','Meghan Markle'],
+    '08-05':['Neil Armstrong','Patrick Ewing'],
+    '08-06':['M. Night Shyamalan','Geri Halliwell'],
+    '08-07':['Charlize Theron','Greg Sheryl Crow'],
+    '08-08':['Roger Federer','Dustin Hoffman'],
+    '08-09':['Whitney Houston','Gillian Anderson'],
+    '08-10':['Antonio Banderas','Kylie Jenner'],
+    '08-11':['Chris Hemsworth','Anna Massey'],
+    '08-12':['Casey Affleck','Mark Knopfler'],
+    '08-13':['Fidel Castro','Sebastián Vettel'],
+    '08-14':['Steve Martin','Halle Berry'],
+    '08-15':['Ben Affleck','Jennifer Lawrence'],
+    '08-16':['Madonna','Steve Carell'],
+    '08-17':['Robert De Niro','Donnie Wahlberg'],
+    '08-18':['Edward Norton','Christian Slater'],
+    '08-19':['Matthew Perry','Bill Clinton'],
+    '08-20':['Amy Adams','Demi Lovato'],
+    '08-21':['Kim Cattrall','Carrie-Anne Moss'],
+    '08-22':['Tori Amos','Kristen Wiig'],
+    '08-23':['Kobe Bryant','River Phoenix'],
+    '08-24':['Chad Michael Murray','Cal Ripken Jr.'],
+    '08-25':['Tim Burton','Elvis Costello'],
+    '08-26':['Macaulay Culkin','Thalia'],
+    '08-27':['Aaron Paul','Chandra Wilson'],
+    '08-28':['Jack Black','Shania Twain'],
+    '08-29':['Michael Jackson','Lea Michele'],
+    '08-30':['Cameron Diaz','Warren Buffett'],
+    '08-31':['Chris Tucker','Van Morrison'],
+    '09-01':['Zendaya','Barry Gibb'],
+    '09-02':['Keanu Reeves','Salma Hayek'],
+    '09-03':['Charlie Sheen','Shaun White'],
+    '09-04':['Beyoncé','Demi Moore'],
+    '09-05':['Freddie Mercury','Michael Keaton'],
+    '09-06':['Idris Elba','Naomi Watts'],
+    '09-07':['Evan Rachel Wood','Buddy Holly'],
+    '09-08':['Avicii','Pink'],
+    '09-09':['Adam Sandler','Hugh Grant'],
+    '09-10':['Colin Firth','Guy Ritchie'],
+    '09-11':['Moby','Ludacris'],
+    '09-12':['Jennifer Hudson','Paul Walker'],
+    '09-13':['Niall Horan','Stella McCartney'],
+    '09-14':['Amy Winehouse','Andrew Lincoln'],
+    '09-15':['Tom Hardy','Prince Harry'],
+    '09-16':['Marc Anthony','Amy Poehler'],
+    '09-17':['Baz Luhrmann','Anastacia'],
+    '09-18':['Jada Pinkett Smith','Jodie Foster'],
+    '09-19':['Jimmy Fallon','Lita Ford'],
+    '09-20':['Sophia Loren','Jon Hamm'],
+    '09-21':['Bill Murray','Luke Wilson'],
+    '09-22':['Tom Felton','Andrea Bocelli'],
+    '09-23':['Bruce Springsteen','Ray Charles'],
+    '09-24':['Jim Henson','F. Scott Fitzgerald'],
+    '09-25':['Will Smith','Heather Locklear'],
+    '09-26':['Olivia Newton-John','T.S. Eliot'],
+    '09-27':['Lil Wayne','Gwyneth Paltrow'],
+    '09-28':['Mira Sorvino','Hilary Duff'],
+    '09-29':['Jerry Lee Lewis','Kevin Durant'],
+    '09-30':['Kristin Chenoweth','Flea (RHCP)'],
+    '10-01':['Jimmy Carter','Zach Galifianakis'],
+    '10-02':['Sting','Mahatma Gandhi'],
+    '10-03':['Gwen Stefani','Clive Owen'],
+    '10-04':['Alicia Silverstone','Christoph Waltz'],
+    '10-05':['Kate Winslet','Jesse Eisenberg'],
+    '10-06':['Britt Robertson','Ioan Gruffudd'],
+    '10-07':['Thom Yorke','Simon Cowell'],
+    '10-08':['Matt Damon','Bella Thorne'],
+    '10-09':['John Lennon','Guillermo del Toro'],
+    '10-10':['Mario Lopez','Brett Favre'],
+    '10-11':['Luke Perry','Emily Deschanel'],
+    '10-12':['Hugh Jackman','Kirk Cameron'],
+    '10-13':['Sacha Baron Cohen','Paul Simon'],
+    '10-14':['Roger Moore','Usher'],
+    '10-15':['Emeril Lagasse','Sarah Ferguson'],
+    '10-16':['John Mayer','Tim Robbins'],
+    '10-17':['Eminem','Felicity Jones'],
+    '10-18':['Freida Pinto','Jean-Claude Van Damme'],
+    '10-19':['Ty Pennington','John Lithgow'],
+    '10-20':['Snoop Dogg','Tom Petty'],
+    '10-21':['Kim Kardashian','Carrie Fisher'],
+    '10-22':['Jeff Goldblum','Deepika Padukone'],
+    '10-23':['"Weird Al" Yankovic','Ryan Reynolds'],
+    '10-24':['Drake','Kevin Kline'],
+    '10-25':['Katy Perry','Pablo Picasso'],
+    '10-26':['Hillary Clinton','Dylan McDermott'],
+    '10-27':['Kelly Osbourne','Simon Le Bon'],
+    '10-28':['Joaquin Phoenix','Bill Gates'],
+    '10-29':['Winona Ryder','Richard Dreyfuss'],
+    '10-30':['Ivanka Trump','Diego Maradona'],
+    '10-31':['Vanilla Ice','Piper Perabo'],
+    '11-01':['Aishwarya Rai','Penn Badgley'],
+    '11-02':['k.d. lang','Nelly'],
+    '11-03':['Dolph Lundgren','Kendall Jenner'],
+    '11-04':['Matthew McConaughey','Kathy Griffin'],
+    '11-05':['Ryan Adams','Sam Rockwell'],
+    '11-06':['Emma Stone','Ethan Hawke'],
+    '11-07':['Marie Curie','David Guetta'],
+    '11-08':['Gordon Ramsay','Tara Reid'],
+    '11-09':['Carl Sagan','Nick Lachey'],
+    '11-10':['Ellen Pompeo','Josh Peck'],
+    '11-11':['Leonardo DiCaprio','Demi Moore'],
+    '11-12':['Ryan Gosling','Anne Hathaway'],
+    '11-13':['Gerard Butler','Whoopi Goldberg'],
+    '11-14':['Prince Charles','Josh Duhamel'],
+    '11-15':['Chad Kroeger','Shailene Woodley'],
+    '11-16':['Maggie Gyllenhaal','Martha Plimpton'],
+    '11-17':['RuPaul','Rachel McAdams'],
+    '11-18':['Owen Wilson','Mickey Mouse'],
+    '11-19':['Meg Ryan','Calvin Klein'],
+    '11-20':['Jodie Foster','Bo Derek'],
+    '11-21':['Björk','Goldie Hawn'],
+    '11-22':['Scarlett Johansson','Mark Ruffalo'],
+    '11-23':['Miley Cyrus','Cedric the Entertainer'],
+    '11-24':['Katherine Heigl','Colin Hanks'],
+    '11-25':['Christina Applegate','John F. Kennedy Jr.'],
+    '11-26':['Tina Turner','DJ Jazzy Jeff'],
+    '11-27':['Jimi Hendrix','Robin Givens'],
+    '11-28':['Ed Harris','Anna Nicole Smith'],
+    '11-29':['Chadwick Boseman','Joel Coen'],
+    '11-30':['Ben Stiller','Mark Twain'],
+    '12-01':['Sarah Silverman','Bette Midler'],
+    '12-02':['Nelly Furtado','Lucy Liu'],
+    '12-03':['Ozzy Osbourne','Brendan Fraser'],
+    '12-04':['Jay-Z','Jeff Bridges'],
+    '12-05':['Walt Disney','Frankie Muniz'],
+    '12-06':['Nick Park','Judd Apatow'],
+    '12-07':['Aaron Carter','Tom Waits'],
+    '12-08':['Nicki Minaj','Sinéad O\'Connor'],
+    '12-09':['John Malkovich','Judi Dench'],
+    '12-10':['Emily Dickinson','Raven-Symoné'],
+    '12-11':['Rider Strong','Nikki Sixx'],
+    '12-12':['Frank Sinatra','Jennifer Connelly'],
+    '12-13':['Taylor Swift','Jamie Foxx'],
+    '12-14':['Vanessa Hudgens','Nostradamus'],
+    '12-15':['Don Johnson','Michelle Dockery'],
+    '12-16':['Benjamin Bratt','Beethoven'],
+    '12-17':['Milla Jovovich','Pope Francis'],
+    '12-18':['Brad Pitt','Steven Spielberg'],
+    '12-19':['Jake Gyllenhaal','Alyssa Milano'],
+    '12-20':['Uri Geller','Jenny McCarthy'],
+    '12-21':['Kiefer Sutherland','Samuel L. Jackson'],
+    '12-22':['Ralph Fiennes','Steve Guttenberg'],
+    '12-23':['Carla Bruni','Eddie Vedder'],
+    '12-24':['Ava Gardner','Louis Tomlinson'],
+    '12-25':['Humphrey Bogart','Sissy Spacek'],
+    '12-26':['Jared Leto','Lars Ulrich'],
+    '12-27':['Marlene Dietrich','Gérard Depardieu'],
+    '12-28':['John Legend','Maggie Smith'],
+    '12-29':['Jude Law','Mary Tyler Moore'],
+    '12-30':['Tiger Woods','LeBron James'],
+    '12-31':['Anthony Hopkins','Val Kilmer']
   };
-
-  const todayBdays = allBdays[key] || [];
-  if(todayBdays.length > 0){
-    document.getElementById('bdaySection').style.display='block';
-    document.getElementById('bdayVal').textContent = todayBdays.join(' · ');
-  } else {
-    document.getElementById('bdaySection').style.display='none';
-  }
 
   // Right card: Feiertag + Special + Spruch (alle anzeigen!)
   const special={
@@ -1045,6 +1416,31 @@ function loadDayInfo(){
 
   // Always show spruch
   document.getElementById('spruchVal').textContent = sprueche[now.getDay()][1];
+
+  // ── Birthdays in the date card ──
+  const todayBdays = allBdays[key];
+  const bdayEl = document.getElementById('bdayVal');
+  if(todayBdays && todayBdays.length > 0){
+    bdayEl.innerHTML = todayBdays.map(name=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;"><span style="font-size:11px;opacity:.7;">🎂</span><span style="font-size:11px;">${name}</span></div>`).join('');
+  } else {
+    // Fallback: find closest birthday within next 7 days
+    let nearestKey=null,nearestDays=999;
+    for(const k of Object.keys(allBdays)){
+      const [bm,bd]=k.split('-').map(Number);
+      const thisYear=new Date(now.getFullYear(),bm-1,bd);
+      const nextYear=new Date(now.getFullYear()+1,bm-1,bd);
+      const dThis=Math.round((thisYear-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
+      const dNext=Math.round((nextYear-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
+      const diff_days=dThis>0?dThis:(dNext>0?dNext:999);
+      if(diff_days>0&&diff_days<nearestDays){nearestDays=diff_days;nearestKey=k;}
+    }
+    if(nearestKey){
+      const names=allBdays[nearestKey];
+      bdayEl.innerHTML=`<div style="color:var(--t3);font-size:9.5px;margin-bottom:3px;">In ${nearestDays} ${nearestDays===1?'Tag':'Tagen'}:</div>`+names.map(name=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;"><span style="font-size:11px;opacity:.7;">🎂</span><span style="font-size:11px;">${name}</span></div>`).join('');
+    } else {
+      bdayEl.textContent='–';
+    }
+  }
 }
 loadDayInfo();
 
