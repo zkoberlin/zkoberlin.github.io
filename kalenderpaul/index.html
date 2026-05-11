@@ -682,8 +682,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   border-radius: 20px 20px 0 0;
   padding: 0 0 env(safe-area-inset-bottom, 20px);
   width: 100%;
-  max-width: 480px;
-  max-height: 70vh;
+  max-width: 100%;
+  max-height: 80vh;
   overflow-y: auto;
   animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
 }
@@ -735,7 +735,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     width: 90%;
     margin: 0;
     animation: pop .2s ease;
-    position: relative;
   }
 }
 
@@ -1498,6 +1497,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 
 /* Aktuell laufender Termin */
+.eli.evt-past { opacity: 0.35; }
+.eli.evt-past .eli-dot { filter: grayscale(.4); }
 .eli.evt-now-active {
   background: rgba(0,113,227,.07);
   border-radius: 8px;
@@ -1574,7 +1575,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.10</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.11</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1947,11 +1948,11 @@ function initViewUI() {
   if(isMobile) {
     if(mobileRow) mobileRow.style.display = 'flex';
     if(desktopSwitcher) desktopSwitcher.style.display = 'none';
-    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = 'none');
+    if(headerRight) headerRight.querySelectorAll('button:not(.hub-btn):not(.theme-btn)').forEach(b=>b.style.display='none');
   } else {
     if(mobileRow) mobileRow.style.display = 'none';
     if(desktopSwitcher) desktopSwitcher.style.display = 'inline-flex';
-    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = '');
+    if(headerRight) headerRight.querySelectorAll('button:not(.hub-btn):not(.theme-btn)').forEach(b=>b.style.display='');
   }
 }
 window.addEventListener('resize', initViewUI, {passive:true});
@@ -2068,7 +2069,7 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      el.addEventListener('click', () => openEvtModal(ev, key));
+      el.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); openEvtModal(ev, key); });
       body.appendChild(el);
     });
   }
@@ -2166,7 +2167,7 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        item.addEventListener('click', () => openEvtModal(ev, key));
+        item.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); openEvtModal(ev, key); });
         body.appendChild(item);
       });
     }
@@ -2391,6 +2392,7 @@ let currentEvtId = null;
 let currentEvtData = null;
 
 function openEvtModal(ev, dateKey) {
+  const _sy = window.scrollY;
   const overlay = document.getElementById('evtModalOverlay');
   const content = document.getElementById('evtModalContent');
   currentEvtId = ev.googleId || null;
@@ -2431,6 +2433,7 @@ function openEvtModal(ev, dateKey) {
     ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
   `;
   overlay.classList.add('on');
+  requestAnimationFrame(() => window.scrollTo(0, _sy));
 }
 
 function closeEvtModal() {
@@ -3332,6 +3335,7 @@ function markActiveEvent() {
 
   document.querySelectorAll('#cal .eli').forEach(el => {
     el.classList.remove('evt-now-active');
+    el.classList.remove('evt-past');
   });
 
   const evs = SE[todayKey] || [];
@@ -3346,15 +3350,15 @@ function markActiveEvent() {
       ? (parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]))
       : startMin + 60;
 
-    if(nowMin >= startMin && nowMin < endMin) {
-      // Passendes .eli Element im DOM finden
-      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
-      document.querySelectorAll('#cal .eli').forEach(el => {
-        if(el.querySelector('.en')?.textContent.includes(title)) {
-          el.classList.add('evt-now-active');
-        }
-      });
-    }
+    const _etitle = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
+    document.querySelectorAll('#cal .eli').forEach(el => {
+      if(!el.querySelector('.en')?.textContent.includes(_etitle)) return;
+      if(nowMin >= startMin && nowMin < endMin) {
+        el.classList.add('evt-now-active');
+      } else if(nowMin > endMin) {
+        el.classList.add('evt-past');
+      }
+    });
   });
 }
 
