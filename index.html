@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.5</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.6</div>
     </div>
   </div>
 </header>
@@ -585,9 +585,16 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
         <div class="union-league" id="unionLeague">Bundesliga 2025/26</div>
       </div>
     </div>
-    <div class="union-rank">
-      <div class="union-rank-num" id="unionRank">–</div>
-      <div class="union-rank-lbl">Platz</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button id="unionRefreshBtn" onclick="unionRefresh()" title="Daten aktualisieren" style="
+        width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+        background:rgba(255,255,255,.12);color:#fff;font-size:13px;cursor:pointer;
+        display:flex;align-items:center;justify-content:center;flex-shrink:0;
+        transition:.15s;-webkit-tap-highlight-color:transparent;">↺</button>
+      <div class="union-rank">
+        <div class="union-rank-num" id="unionRank">–</div>
+        <div class="union-rank-lbl">Platz</div>
+      </div>
     </div>
   </div>
   <div class="union-body" id="unionBody">
@@ -1405,7 +1412,7 @@ function loadAlma(evs){
 loadICAL();
 
 // ── 1. FC UNION BERLIN – Live-Daten von openligadb.de ──────────────
-(async()=>{
+async function loadUnionData(){
   const CACHE='ub_bl1_2025_v2';
   const UNAME='Union Berlin'; // Suche per Name — teamId ändert sich je Saison!
   const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -1633,7 +1640,22 @@ loadICAL();
       <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
       <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">${saisonParts}</div>
     </div>`;
-})();
+}
+
+function unionRefresh(){
+  const btn=document.getElementById('unionRefreshBtn');
+  if(btn){
+    btn.style.transition='transform .6s ease';
+    btn.style.transform='rotate(360deg)';
+    setTimeout(()=>{btn.style.transform='';btn.style.transition='';},650);
+  }
+  localStorage.removeItem('ub_bl1_2025_v2');
+  document.getElementById('unionBody').innerHTML=
+    '<div style="padding:28px;text-align:center;font-size:12px;color:var(--t3);">Lade…</div>';
+  loadUnionData();
+}
+
+loadUnionData();
 </script>
 </body>
 </html>
