@@ -1575,27 +1575,26 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.11</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.12</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
+      <button class="view-btn" id="heuteBtn" style="border:1.5px solid var(--blue);color:var(--blue);" onclick="scrollToToday()">Heute</button>
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
         <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
-      <button class="view-btn" style="border:1.5px solid var(--blue);color:var(--blue);margin-left:4px;" onclick="scrollToToday()">Heute</button>
-      <button title="Neu laden" onclick="location.reload(true)" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;margin-left:4px;font-family:var(--font-head);" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">↺</button>
+      <button title="Neu laden" ↺</button>
     </div>
   </div>
   <!-- Mobile second row: Today + Apple Cal + Filter + View switcher -->
   <div class="header-btn-row" id="mobileBtnRow" style="display:none;">
-    <button class="view-btn" style="border:1.5px solid var(--blue);color:var(--blue);flex:none;padding:0 12px;" onclick="scrollToToday()">Heute</button>
-    <button title="Neu laden" onclick="location.reload(true)" class="apple-cal-btn">↺</button>
+    <button title="Neu laden" onclick="location.reload(true)" class="apple-cal-btn">&#8635;</button>
     <button class="apple-cal-btn" onclick="openAppleCal()" title="In Apple Kalender öffnen">+</button>
     <button class="apple-cal-btn" onclick="openFilterSheet()" title="Filter" id="filterSheetBtn">
       <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1948,11 +1947,12 @@ function initViewUI() {
   if(isMobile) {
     if(mobileRow) mobileRow.style.display = 'flex';
     if(desktopSwitcher) desktopSwitcher.style.display = 'none';
-    if(headerRight) headerRight.querySelectorAll('button:not(.hub-btn):not(.theme-btn)').forEach(b=>b.style.display='none');
+    // Auf Mobile: viewSwitcher und Post-Switcher Buttons ausblenden
+    if(headerRight) headerRight.querySelectorAll('.view-switcher ~ button, .view-switcher ~ a').forEach(b=>b.style.display='none');
   } else {
     if(mobileRow) mobileRow.style.display = 'none';
     if(desktopSwitcher) desktopSwitcher.style.display = 'inline-flex';
-    if(headerRight) headerRight.querySelectorAll('button:not(.hub-btn):not(.theme-btn)').forEach(b=>b.style.display='');
+    if(headerRight) headerRight.querySelectorAll('.view-switcher ~ button, .view-switcher ~ a').forEach(b=>b.style.display='');
   }
 }
 window.addEventListener('resize', initViewUI, {passive:true});
@@ -2069,7 +2069,7 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      el.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); openEvtModal(ev, key); });
+      el.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
       body.appendChild(el);
     });
   }
@@ -2167,7 +2167,7 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        item.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); openEvtModal(ev, key); });
+        item.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
         body.appendChild(item);
       });
     }
@@ -3036,10 +3036,24 @@ function progressStep() {
       setTimeout(() => {
         const bar = document.getElementById('loadProgressBar');
         if(bar) bar.style.display = 'none';
-      }, 450);
-    }, 300);
+      }, 500);
+    }, 600); // länger sichtbar
   }
 }
+// Ladebalken sofort auf 8% setzen damit er sichtbar ist
+(function initProgressBar() {
+  const fill = document.getElementById('loadProgressFill');
+  if(fill) fill.style.width = '8%';
+  // top via JS setzen sobald Header gemessen
+  const setBarTop = () => {
+    const h = document.querySelector('.header');
+    const bar = document.getElementById('loadProgressBar');
+    if(h && bar) bar.style.top = Math.round(h.getBoundingClientRect().height) + 'px';
+  };
+  setBarTop();
+  setTimeout(setBarTop, 100);
+  setTimeout(setBarTop, 500);
+})();
 
 function setLoadStatus(id, state, text) {
   const el = document.getElementById(id);
@@ -3350,14 +3364,11 @@ function markActiveEvent() {
       ? (parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]))
       : startMin + 60;
 
-    const _etitle = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
+    const _et = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
     document.querySelectorAll('#cal .eli').forEach(el => {
-      if(!el.querySelector('.en')?.textContent.includes(_etitle)) return;
-      if(nowMin >= startMin && nowMin < endMin) {
-        el.classList.add('evt-now-active');
-      } else if(nowMin > endMin) {
-        el.classList.add('evt-past');
-      }
+      if(!el.querySelector('.en')?.textContent.includes(_et)) return;
+      if(nowMin >= startMin && nowMin < endMin) { el.classList.add('evt-now-active'); }
+      else if(nowMin > endMin) { el.classList.add('evt-past'); }
     });
   });
 }
