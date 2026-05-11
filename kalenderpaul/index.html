@@ -1538,7 +1538,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.6</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1592,8 +1592,12 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 </div><!-- end header-inner -->
 </div><!-- end header -->
 
-
-
+<!-- Ladefortschritt-Balken – unter dem Header -->
+<div id="loadProgressBar" style="position:sticky;top:var(--header-h,60px);left:0;right:0;height:3px;z-index:9;background:transparent;pointer-events:none;margin-bottom:-3px;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 28px;height:100%;box-sizing:border-box;">
+    <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
+  </div>
+</div>
 
 <!-- Filter Bottom Sheet (Mobile) -->
 <div class="filter-backdrop" id="filterBackdrop" onclick="closeFilterSheet()"></div>
