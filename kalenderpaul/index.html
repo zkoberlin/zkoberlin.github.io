@@ -1574,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2644,6 +2644,9 @@ function jumpToEvent(key, ev) {
   const base = new Date(); base.setHours(0,0,0,0);
   const target = new Date(key + 'T00:00:00'); target.setHours(0,0,0,0);
   const diff = Math.round((target - base) / 86400000);
+
+  // Filter-Liste ausblenden (desktop + mobile)
+  clearFilterResults();
 
   // In Tag-Ansicht wechseln, direkt zu diesem Tag
   currentView = 'tag';
