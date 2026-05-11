@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.13</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.14</div>
     </div>
   </div>
 </header>
@@ -1349,23 +1349,34 @@ async function loadICAL(){
     loadAlma(evs);
 
     // ── Kalender Kachel ──
+    const now3 = new Date();
+    const nowMin = now3.getHours() * 60 + now3.getMinutes();
+    const isOverToday = (e) => {
+      const eDay = st(e.date);
+      if(eDay > today) return false;   // Zukunft → nicht vorbei
+      if(eDay < today) return true;    // Vergangenheit → vorbei
+      // Heute: Ganztags-Events nie ausblenden
+      if(!e.startTime) return false;
+      const [h, m] = e.startTime.split(':').map(Number);
+      return nowMin > h * 60 + m + 30; // 30 Min Puffer nach Startzeit
+    };
     const isFiltered=s=>{
       const l=s.toLowerCase();
       return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma')||l.includes('geburts')||l.includes('birthday')||l.includes('bday');
     };
-    const maja=evs.filter(e=>st(e.date)>=today&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
-    const union2=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    const bday=evs.filter(e=>st(e.date)>=today&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
-    const others2=evs.filter(e=>st(e.date)>=today&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)&&e.col!=='#af52de').sort((a,b)=>a.date-b.date);
+    const maja=evs.filter(e=>!isOverToday(e)&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
+    const union2=evs.filter(e=>!isOverToday(e)&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
+    const bday=evs.filter(e=>!isOverToday(e)&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
+    const others2=evs.filter(e=>!isOverToday(e)&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)&&e.col!=='#af52de').sort((a,b)=>a.date-b.date);
 
     // 1. Maja always first
-    // 2-5. Next 4 events (no maja, no union, no bday, no filtered)
-    // 6. Next bday if NOT this month
+    // 2-6. Next 5 events (no maja, no union, no bday, no filtered)
+    // 7. Next bday if NOT this month
     const displayEvs=[];
     if(maja)displayEvs.push({...maja,_type:'maja'});
     const reserved=new Set([maja?.sum].filter(Boolean));
     const fillOthers=others2.filter(e=>!reserved.has(e.sum)&&e.col!=='#af52de');
-    fillOthers.slice(0,4).forEach(e=>displayEvs.push({...e,_type:'other'}));
+    fillOthers.slice(0,5).forEach(e=>displayEvs.push({...e,_type:'other'}));
     // Bday: only if not this month
     if(bday){
       const bdayMonth=st(bday.date).getMonth();
