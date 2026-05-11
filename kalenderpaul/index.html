@@ -1574,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1632,10 +1632,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
 </div><!-- end header -->
 
-<!-- Ladefortschritt-Balken – unter dem Header -->
+<!-- Ladefortschritt-Balken – unter dem Header, immer sichtbar -->
 <div id="loadProgressBar" style="
-  position:sticky; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:25;
-  background:transparent; pointer-events:none; margin-bottom:-3px;
+  position:fixed; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:500;
+  background:transparent; pointer-events:none;
 ">
   <div id="loadProgressFill" style="
     height:100%; width:0%; background:var(--blue);
@@ -1862,15 +1862,22 @@ function openDp(key, cellEl) {
     selectedCell = clickedCell;
   }
 
+  const evs = sortEvents(SE[key] || []);
+  const visible = evs.filter(ev => !ev.c.includes('hidden'));
+
+  // Wenn nur 1 Termin → direkt als Modal öffnen
+  if(visible.length === 1) {
+    openEvtModal(visible[0], key);
+    return;
+  }
+
+  // Mehrere Termine → Inline-Popup nach der Zeile (wie bisher)
   const colorMap = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
     'e-maja':'#db2777','e-trip':'#059669',
     'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
-  const evs = sortEvents(SE[key] || []);
-  const visible = evs.filter(ev => !ev.c.includes('hidden'));
-
   let evHtml = visible.length ? '' : '<div style="font-size:12px;color:var(--text3);padding:4px 0">Keine Termine.</div>';
   visible.forEach((ev, i) => {
     const color = colorMap[ev.c] || '#aeaeb2';
@@ -1896,7 +1903,6 @@ function openDp(key, cellEl) {
     </div>
     <div class="dp-popup-body">${evHtml}</div>`;
 
-  // Insert after the clicked cell's row
   const row = clickedCell?.closest('.wr');
   if(row) {
     row.insertAdjacentElement('afterend', popup);
@@ -1905,11 +1911,9 @@ function openDp(key, cellEl) {
   }
   activePopupEl = popup;
 
-  // Attach click handlers
   visible.forEach((ev, i) => {
     popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
   });
-  // Kein scrollTo — das Modal ist position:fixed und zentriert sich selbst
 }
 
 function closeDp() {
@@ -2944,15 +2948,15 @@ function injectICalEvents(events, url='') {
 
     // For multi-day events, add to each day
     if(ev.end && ev.end > ev.start) {
-      let cur = new Date(ev.start + 'T12:00:00'); // noon to avoid DST issues
-      // iCal DTEND is exclusive for all-day events
+      let cur = new Date(ev.start + 'T12:00:00');
       const endD = new Date(ev.end + 'T12:00:00');
       while(cur < endD) {
         const key = cur.getFullYear() + '-' + 
                     String(cur.getMonth()+1).padStart(2,'0') + '-' + 
                     String(cur.getDate()).padStart(2,'0');
         if(!SE[key]) SE[key] = [];
-        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
+        // Nur gegen andere iCal-Events prüfen, nicht gegen hardcodierte
+        if(!SE[key].some(e => e.fromIcal && e.t === title)) {
           const entry = {t: display, c: cat, fromIcal: true};
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.location) entry.location = ev.location;
@@ -2963,7 +2967,8 @@ function injectICalEvents(events, url='') {
       }
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
-      if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
+      // Nur gegen andere iCal-Events prüfen, nicht gegen hardcodierte
+      if(!SE[ev.start].some(e => e.fromIcal && e.t === title)) {
         const entry = {t: display, c: cat, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.location) entry.location = ev.location;
