@@ -1647,6 +1647,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fsfc-e-haus"></span></div>
     <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fsfc-e-bday"></span></div>
     <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fsfc-e-sport"></span></div>
+  </div><!-- end filter-sheet-grid -->
+</div><!-- end filter-sheet -->
 
 <div class="day-overlay" id="dayOverlay" onclick="collapseDay()"></div>
 <div class="evt-modal-overlay" id="evtModalOverlay" onclick="closeEvtModal()">
@@ -1897,7 +1899,7 @@ function closeDp() {
 
 function scrollToToday() {
   closeInlinePopup();
-  if(typeof closeFilter === 'function') closeFilter();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   viewOffset = 0;
   renderView();
   // After render, scroll to today cell if in monat view
@@ -1960,14 +1962,14 @@ function setView(v) {
   viewOffset = 0;
   updateViewBtns();
   closeInlinePopup();
-  if(typeof closeFilter === 'function') closeFilter();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
 function navView(dir) {
   viewOffset += dir;
   closeInlinePopup();
-  if(typeof closeFilter === 'function') closeFilter();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
