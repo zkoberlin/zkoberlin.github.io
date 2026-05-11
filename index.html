@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.3</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.4</div>
     </div>
   </div>
 </header>
@@ -1406,11 +1406,15 @@ loadICAL();
 
 // ── 1. FC UNION BERLIN – Live-Daten von openligadb.de ──────────────
 (async()=>{
-  const CACHE='ub_bl1_2025';
-  const UID=7;          // Union Berlin teamId in openligadb
+  const CACHE='ub_bl1_2025_v2';
+  const UNAME='Union Berlin'; // Suche per Name — teamId ändert sich je Saison!
   const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MO=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
   function p2(n){return String(n).padStart(2,'0');}
+
+  function isUnion(team){
+    return team?.teamName?.includes(UNAME)||team?.shortName?.includes(UNAME)||team?.teamName?.includes('1. FC Union');
+  }
   function logo(id,sz=22){
     return `<img src="https://tmssl.akamaized.net/images/wappen/head/${id||0}.png"
       style="width:${sz}px;height:${sz}px;object-fit:contain;flex-shrink:0;"
@@ -1435,39 +1439,44 @@ loadICAL();
         fetch('https://api.openligadb.de/getmatchdata/bl1/2025'),
         fetch('https://api.openligadb.de/getbltable/bl1/2025')
       ]);
-      if(!mr.ok||!tr.ok)throw new Error('API-Fehler');
+      if(!mr.ok||!tr.ok)throw new Error('API');
       data={matches:await mr.json(),table:await tr.json()};
       localStorage.setItem(CACHE,JSON.stringify({data,date:today}));
     }catch(e){
-      // Fallback: alter Cache egal welches Datum
       try{const c=JSON.parse(localStorage.getItem(CACHE)||'null');if(c)data=c.data;}catch(e2){}
     }
   }
 
   if(!data){
     document.getElementById('unionBody').innerHTML=
-      '<div style="padding:24px;text-align:center;font-size:12px;color:var(--t3);">Keine Verbindung zur API</div>';
+      '<div style="padding:24px;text-align:center;font-size:12px;color:var(--t3);">Keine Verbindung</div>';
     return;
   }
 
   const{matches,table}=data;
 
-  // Tabellendaten Union Berlin
-  const row=table.find(r=>r.teamInfoId===UID||r.teamName?.includes('Union Berlin'));
-  const rank=row?.rank??'–';
-  const pts=row?.points??0;
-  const wins=row?.won??0,draws=row?.draw??0,losses=row?.lost??0;
-  const gf=row?.goals??0,ga=row?.opponentGoals??0;
+  // Union-Zeile in Tabelle – per Name
+  const row=table.find(r=>isUnion(r));
+  if(!row){
+    document.getElementById('unionBody').innerHTML=
+      '<div style="padding:24px;text-align:center;font-size:12px;color:var(--t3);">Union Berlin nicht in Tabelle gefunden</div>';
+    return;
+  }
+
+  const unionTeamId=row.teamInfoId; // ID dynamisch aus der Tabelle lesen!
+  const rank=row.rank;
+  const pts=row.points??0;
+  const wins=row.won??0,draws=row.draw??0,losses=row.lost??0;
+  const gf=row.goals??0,ga=row.opponentGoals??0;
   const played=wins+draws+losses;
   const gDiff=gf-ga;
 
   document.getElementById('unionRank').textContent=rank+'.';
-  document.getElementById('unionLeague').textContent=
-    `Bundesliga 2025/26 · Platz ${rank}`;
+  document.getElementById('unionLeague').textContent=`Bundesliga 2025/26 · Platz ${rank}`;
 
-  // Alle Union-Spiele dieser Saison
+  // Spiele per dynamischer teamId
   const all=matches
-    .filter(m=>m.team1?.teamId===UID||m.team2?.teamId===UID)
+    .filter(m=>m.team1?.teamId===unionTeamId||m.team2?.teamId===unionTeamId)
     .sort((a,b)=>new Date(a.matchDateTime)-new Date(b.matchDateTime));
   const past=all.filter(m=>m.matchIsFinished);
   const future=all.filter(m=>!m.matchIsFinished);
@@ -1475,9 +1484,9 @@ loadICAL();
   const remaining=future.length;
   const maxPts=pts+remaining*3;
 
-  // Form letzte 5 Spiele
+  // Form letzte 5
   const last5=past.slice(-5).map(m=>{
-    const h=m.team1?.teamId===UID;
+    const h=m.team1?.teamId===unionTeamId;
     const r=m.matchResults?.find(x=>x.resultTypeID===2)||m.matchResults?.[0];
     const f=h?r?.pointsTeam1:r?.pointsTeam2;
     const g=h?r?.pointsTeam2:r?.pointsTeam1;
@@ -1486,16 +1495,16 @@ loadICAL();
   }).filter(Boolean);
   const formPts=last5.reduce((n,r)=>n+(r==='w'?3:r==='d'?1:0),0);
 
-  // Tabellenumfeld ±1 Platz
+  // Tabellenumfeld ±1
   const nb=table.filter(r=>r.rank>=rank-1&&r.rank<=rank+1).sort((a,b)=>a.rank-b.rank);
   const above=table.find(r=>r.rank===rank-1);
 
-  // Form-Dots HTML
+  // Form dots
   const formHTML=last5.map(r=>
     `<div class="union-form-dot ${r}">${r==='w'?'S':r==='d'?'U':'N'}</div>`
   ).join('');
 
-  // Tabellenumfeld HTML
+  // Tabellenumfeld
   const nbHTML=nb.map(r=>
     `<div style="display:flex;justify-content:space-between;font-size:10.5px;
       ${r.rank===rank?'background:var(--union-l);padding:2px 5px;border-radius:4px;':''}">
@@ -1504,53 +1513,49 @@ loadICAL();
     </div>`
   ).join('');
 
-  // Letztes Spiel HTML
+  // Letztes Spiel
   let lastHTML='';
   if(last){
-    const h=last.team1?.teamId===UID;
+    const h=last.team1?.teamId===unionTeamId;
     const r=last.matchResults?.find(x=>x.resultTypeID===2)||last.matchResults?.[0];
     const g1=r?.pointsTeam1??'–',g2=r?.pointsTeam2??'–';
     const gFor=h?g1:g2,gAga=h?g2:g1;
     const opp=h?last.team2:last.team1;
     const resLbl=+gFor>+gAga?'Sieg':+gFor===+gAga?'Unentschieden':'Niederlage';
-    const heimAusw=h?'Heimspiel':'Auswärts';
     lastHTML=`
     <div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · ${heimAusw} · ${fmtDt(last.matchDateTime)}</div>
+      <div class="union-stat-lbl">Letztes Spiel · ${h?'Heimspiel':'Auswärts'} · ${fmtDt(last.matchDateTime)}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
         <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:0;">
-          ${logo(h?UID:opp?.teamId,24)}
+          ${logo(h?unionTeamId:opp?.teamId,24)}
           <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h?'Union Berlin':opp?.teamName}</span>
         </div>
         <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;">${gFor} : ${gAga}</div>
         <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;min-width:0;">
           <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">${h?opp?.teamName:'Union Berlin'}</span>
-          ${logo(h?opp?.teamId:UID,24)}
+          ${logo(h?opp?.teamId:unionTeamId,24)}
         </div>
       </div>
       <div class="union-stat-sub" style="text-align:center;margin-top:4px;">${resLbl} · Bundesliga</div>
     </div>`;
   }
 
-  // Nächste Spiele HTML
+  // Nächste Spiele
   let nextHTML='';
   if(!future.length){
     nextHTML=`<div class="union-stat" style="text-align:center;font-size:12px;color:var(--t2);padding:12px;">Saison beendet 🏁</div>`;
   }else{
     const items=future.slice(0,3).map((m,i)=>{
-      const h=m.team1?.teamId===UID;
+      const h=m.team1?.teamId===unionTeamId;
       const opp=h?m.team2:m.team1;
       const isLast=i===future.length-1;
-      const sep=i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':'';
-      return `<div class="union-next-game"${sep}>
+      return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
         <div style="flex:1;min-width:0;">
           <div class="match-row">
-            ${logo(h?UID:opp?.teamId)}
+            ${logo(h?unionTeamId:opp?.teamId)}
             <span class="match-vs">vs</span>
-            ${logo(h?opp?.teamId:UID)}
-            <span class="match-team" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-              ${h?opp?.teamName:opp?.teamName}
-            </span>
+            ${logo(h?opp?.teamId:unionTeamId)}
+            <span class="match-team" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${opp?.teamName}</span>
           </div>
           <div class="union-next-date">${fmtDt(m.matchDateTime)} · ${h?'Heimspiel':'Auswärts'}</div>
         </div>
@@ -1560,24 +1565,20 @@ loadICAL();
         </div>`:''}
       </div>`;
     }).join('');
-    nextHTML=`<div class="union-next">
-      <div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>
-      ${items}
-    </div>`;
+    nextHTML=`<div class="union-next"><div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>${items}</div>`;
   }
 
-  // Saisonbilanz dynamisch berechnen
+  // Saisonbilanz
   const klassErhalt=rank<=16&&(remaining===0||pts>=34);
   const abstandStr=above&&above.points>pts
     ?`Abstand zu Platz ${rank-1}: <strong style="color:var(--t);">${above.points-pts} Punkt${above.points-pts!==1?'e':''}</strong>`:'';
-  const saisonTeile=[
+  const saisonParts=[
     klassErhalt?'Klassenerhalt gesichert 🔴':'⚠️ Abstiegskampf',
     remaining>0?`Noch <strong style="color:var(--t);">${remaining} Spiel${remaining!==1?'e':''}</strong> verbleibend`:'Saison beendet',
     remaining>0?`Max. <strong style="color:var(--t);">${maxPts} Punkte</strong> möglich`:'',
     abstandStr
   ].filter(Boolean).join(' · ');
 
-  // Alles in #unionBody rendern
   document.getElementById('unionBody').innerHTML=`
     <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
       <div class="union-stat" style="text-align:center;">
@@ -1611,7 +1612,7 @@ loadICAL();
     ${nextHTML}
     <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
       <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">${saisonTeile}</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">${saisonParts}</div>
     </div>`;
 })();
 </script>
