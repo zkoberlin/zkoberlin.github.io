@@ -360,7 +360,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.2</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.3</div>
     </div>
   </div>
 </header>
@@ -644,116 +644,120 @@ async function loadUnionData() {
 }
 
 function renderUnionCard({matches, table}) {
-  const today = new Date(); today.setHours(0,0,0,0);
   const WK2 = ['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MK2 = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const UNION_TEAM_ID = 7;
 
-  // Tabelle: Union finden
-  const unionRow = table.find(r => r.teamInfoId === UNION_ID || r.shortName?.includes('Union'));
-  const rank = unionRow?.rank || '–';
-  const pts = unionRow?.points || 0;
-  const wins = unionRow?.won || 0;
-  const draws = unionRow?.draw || 0;
-  const losses = unionRow?.lost || 0;
-  const gf = unionRow?.goals || 0;
-  const ga = unionRow?.opponentGoals || 0;
+  // Tabelle
+  const unionRow = table.find(r => r.teamInfoId === UNION_TEAM_ID || r.teamName?.includes('Union Berlin'));
+  const rank = unionRow?.rank ?? '–';
+  const pts  = unionRow?.points ?? 0;
+  const wins = unionRow?.won ?? 0;
+  const draws= unionRow?.draw ?? 0;
+  const losses=unionRow?.lost ?? 0;
+  const gf   = unionRow?.goals ?? 0;
+  const ga   = unionRow?.opponentGoals ?? 0;
   const played = wins + draws + losses;
+  const season = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear()-1;
 
   document.getElementById('unionRank').textContent = rank + '.';
-  document.getElementById('unionLeague').textContent = `Bundesliga 2024/25 · Platz ${rank}`;
+  document.getElementById('unionLeague').textContent = `Bundesliga ${season}/${String(season+1).slice(2)}`;
 
-  // Tabelle Umfeld (rank-1, rank, rank+1)
-  const neighbors = table.filter(r => r.rank >= rank-1 && r.rank <= rank+1);
-
-  // Spiele: Union matches
+  // Alle Union-Spiele sortiert
   const unionMatches = matches
-    .filter(m => m.team1?.teamId === UNION_ID || m.team2?.teamId === UNION_ID)
+    .filter(m => m.team1?.teamId === UNION_TEAM_ID || m.team2?.teamId === UNION_TEAM_ID)
     .sort((a,b) => new Date(a.matchDateTime) - new Date(b.matchDateTime));
 
-  // Letztes abgeschlossenes Spiel
-  const past = unionMatches.filter(m => m.matchIsFinished);
+  const past   = unionMatches.filter(m => m.matchIsFinished);
+  const future = unionMatches.filter(m => !m.matchIsFinished);
   const lastMatch = past[past.length-1];
 
-  // Nächste Spiele
-  const future = unionMatches.filter(m => !m.matchIsFinished);
-
-  // Letzte 5 Ergebnisse für Form
+  // Form letzte 5
   const last5 = past.slice(-5).map(m => {
-    const isHome = m.team1?.teamId === UNION_ID;
-    const gFor = isHome ? m.matchResults?.[0]?.pointsTeam1 : m.matchResults?.[0]?.pointsTeam2;
-    const gAga = isHome ? m.matchResults?.[0]?.pointsTeam2 : m.matchResults?.[0]?.pointsTeam1;
+    const isHome = m.team1?.teamId === UNION_TEAM_ID;
+    const r = m.matchResults?.find(x => x.resultTypeID === 2) || m.matchResults?.[0];
+    const gFor = isHome ? r?.pointsTeam1 : r?.pointsTeam2;
+    const gAga = isHome ? r?.pointsTeam2 : r?.pointsTeam1;
     if(gFor == null) return null;
-    return gFor > gAga ? 'W' : gFor === gAga ? 'D' : 'L';
+    return gFor > gAga ? 'w' : gFor === gAga ? 'd' : 'l';
   }).filter(Boolean);
 
-  function fmtMatchDate(dt) {
-    const d = new Date(dt);
-    return `${WK2[d.getDay()]}. ${d.getDate()}. ${MK2[d.getMonth()]} · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`;
-  }
-
-  function matchLogoHTML(team, side) {
-    const name = team?.teamName || '';
-    return `<img src="https://tmssl.akamaized.net/images/wappen/head/${team?.teamId || 0}.png"
-      style="width:22px;height:22px;object-fit:contain;" onerror="this.style.opacity='.2'">`;
-  }
-
-  function lastMatchHTML() {
-    if(!lastMatch) return '';
-    const isHome = lastMatch.team1?.teamId === UNION_ID;
-    const res = lastMatch.matchResults?.[0];
-    const g1 = res?.pointsTeam1 ?? '–';
-    const g2 = res?.pointsTeam2 ?? '–';
-    const gFor = isHome ? g1 : g2;
-    const gAga = isHome ? g2 : g1;
-    const resultLabel = gFor > gAga ? 'Sieg' : gFor === gAga ? 'Unentschieden' : 'Niederlage';
-    const opponent = isHome ? lastMatch.team2 : lastMatch.team1;
-    return `<div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · ${isHome?'Heim':'Auswärts'} · ${fmtMatchDate(lastMatch.matchDateTime)}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
-        <div style="display:flex;align-items:center;gap:6px;flex:1;">
-          ${matchLogoHTML(isHome?lastMatch.team1:lastMatch.team2)}
-          <span style="font-size:12px;font-weight:700;">${isHome?'Union Berlin':opponent?.teamName}</span>
-        </div>
-        <div style="font-size:18px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;">${isHome?g1:g2} : ${isHome?g2:g1}</div>
-        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
-          <span style="font-size:12px;font-weight:700;">${isHome?opponent?.teamName:'Union Berlin'}</span>
-          ${matchLogoHTML(isHome?lastMatch.team2:lastMatch.team1)}
-        </div>
-      </div>
-      <div class="union-stat-sub" style="text-align:center;margin-top:4px;">${resultLabel} · Bundesliga</div>
-    </div>`;
-  }
-
-  function nextMatchesHTML() {
-    if(!future.length) return '<div class="union-stat" style="font-size:12px;color:var(--t2);padding:10px 12px;">Saison beendet 🏁</div>';
-    return `<div class="union-next">
-      <div class="union-next-lbl">Nächste Spiele</div>
-      ${future.slice(0,3).map((m,i) => {
-        const isHome = m.team1?.teamId === UNION_ID;
-        const opp = isHome ? m.team2 : m.team1;
-        return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
-          <div style="flex:1;">
-            <div class="match-row">
-              ${matchLogoHTML(isHome?m.team1:opp)} <span class="match-vs">vs</span> ${matchLogoHTML(isHome?opp:m.team2)}
-              <span class="match-team">${isHome?'Union Berlin':opp?.teamName} vs ${isHome?opp?.teamName:'Union Berlin'}</span>
-            </div>
-            <div class="union-next-date">${fmtMatchDate(m.matchDateTime)} · ${isHome?'Heimspiel':'Auswärts'}</div>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  }
-
-  const formHTML = last5.map(r =>
-    `<div class="union-form-dot ${r==='W'?'w':r==='D'?'d':'l'}">${r==='W'?'S':r==='D'?'U':'N'}</div>`
+  const formDots = last5.map(r =>
+    `<div class="union-form-dot ${r}">${r==='w'?'S':r==='d'?'U':'N'}</div>`
   ).join('');
+  const formPts = last5.reduce((n,r) => n + (r==='w'?3:r==='d'?1:0), 0);
 
-  const tableHTML = neighbors.map(r =>
-    `<div style="display:flex;justify-content:space-between;font-size:10.5px;${r.rank===rank?'background:var(--union-l);padding:2px 5px;border-radius:4px;':''}">
-      <span style="${r.rank===rank?'color:var(--union);font-weight:600;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
+  // Tabellenumfeld
+  const neighbors = table
+    .filter(r => r.rank >= rank-1 && r.rank <= rank+1)
+    .sort((a,b) => a.rank - b.rank);
+  const neighborHTML = neighbors.map(r =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;
+      ${r.rank===rank?'background:var(--union-l);padding:3px 6px;border-radius:5px;margin:0 -6px;':'padding:0 0;'}">
+      <span style="${r.rank===rank?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
       <span style="font-weight:700;${r.rank===rank?'color:var(--union);':''}">${r.points} Pkt.</span>
     </div>`
   ).join('');
+
+  function fmtDt(dt) {
+    const d = new Date(dt);
+    return `${WK2[d.getDay()]}. ${d.getDate()}. ${MK2[d.getMonth()]} · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`;
+  }
+  function logo(teamId, size=22) {
+    return `<img src="https://tmssl.akamaized.net/images/wappen/head/${teamId||0}.png"
+      style="width:${size}px;height:${size}px;object-fit:contain;flex-shrink:0;"
+      onerror="this.style.opacity='.15'">`;
+  }
+
+  // Letztes Spiel
+  let lastMatchHTML = '';
+  if(lastMatch) {
+    const isHome = lastMatch.team1?.teamId === UNION_TEAM_ID;
+    const r = lastMatch.matchResults?.find(x => x.resultTypeID === 2) || lastMatch.matchResults?.[0];
+    const g1 = r?.pointsTeam1 ?? '–', g2 = r?.pointsTeam2 ?? '–';
+    const gFor = isHome ? g1 : g2, gAga = isHome ? g2 : g1;
+    const resultLabel = gFor > gAga ? '✅ Sieg' : gFor === gAga ? '🟡 Unentschieden' : '❌ Niederlage';
+    const opp = isHome ? lastMatch.team2 : lastMatch.team1;
+    const home = isHome ? lastMatch.team1 : opp;
+    lastMatchHTML = `
+    <div class="union-stat">
+      <div class="union-stat-lbl">Letztes Spiel · ${isHome?'Heim':'Auswärts'} · ${fmtDt(lastMatch.matchDateTime)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:0;">
+          ${logo(isHome?lastMatch.team1?.teamId:opp?.teamId,24)}
+          <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${isHome?'Union Berlin':opp?.teamName}</span>
+        </div>
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;flex-shrink:0;padding:0 6px;">${isHome?g1:g2} : ${isHome?g2:g1}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;min-width:0;">
+          <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;">${isHome?opp?.teamName:'Union Berlin'}</span>
+          ${logo(isHome?opp?.teamId:lastMatch.team1?.teamId,24)}
+        </div>
+      </div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:6px;">${resultLabel} · Bundesliga</div>
+    </div>`;
+  }
+
+  // Nächste Spiele
+  let nextHTML = future.length === 0
+    ? `<div class="union-stat" style="text-align:center;font-size:12px;color:var(--t2);padding:14px;">Saison beendet 🏁</div>`
+    : `<div class="union-next">
+        <div class="union-next-lbl">Nächste Spiele</div>
+        ${future.slice(0,3).map((m,i) => {
+          const isHome = m.team1?.teamId === UNION_TEAM_ID;
+          const opp = isHome ? m.team2 : m.team1;
+          return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
+            <div style="flex:1;min-width:0;">
+              <div class="match-row">
+                ${logo(isHome?UNION_TEAM_ID:opp?.teamId)}
+                <span class="match-vs">vs</span>
+                ${logo(isHome?opp?.teamId:UNION_TEAM_ID)}
+                <span class="match-team" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${isHome?opp?.teamName:opp?.teamName}</span>
+              </div>
+              <div class="union-next-date">${fmtDt(m.matchDateTime)} · ${isHome?'Heimspiel':'Auswärts'}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
 
   document.getElementById('unionBody').innerHTML = `
     <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
@@ -769,22 +773,23 @@ function renderUnionCard({matches, table}) {
       </div>
       <div class="union-stat" style="text-align:center;">
         <div class="union-stat-lbl">Tore</div>
-        <div class="union-stat-val" style="font-size:14px;">${gf} : ${ga}</div>
-        <div class="union-stat-sub">${gf-ga > 0?'+':''}${gf-ga} Diff.</div>
+        <div class="union-stat-val" style="font-size:14px;">${gf}:${ga}</div>
+        <div class="union-stat-sub">${gf-ga>=0?'+':''}${gf-ga} Diff.</div>
       </div>
     </div>
     <div class="union-row">
       <div class="union-stat">
         <div class="union-stat-lbl">Letzte ${last5.length} Spiele</div>
-        <div class="union-form" style="margin-top:6px;">${formHTML}</div>
+        <div class="union-form" style="margin-top:6px;">${formDots}</div>
+        <div class="union-stat-sub" style="margin-top:5px;">${formPts} Pkt. aus ${last5.length} Spielen</div>
       </div>
       <div class="union-stat">
         <div class="union-stat-lbl">Tabellenumfeld</div>
-        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">${tableHTML}</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">${neighborHTML}</div>
       </div>
     </div>
-    ${lastMatchHTML()}
-    ${nextMatchesHTML()}
+    ${lastMatchHTML}
+    ${nextHTML}
   `;
 }
 
