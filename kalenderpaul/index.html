@@ -1574,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.10</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1587,12 +1587,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
-      <button class="today-btn" onclick="scrollToToday()">Heute</button>
+      <button class="view-btn" style="border:1.5px solid var(--blue);color:var(--blue);margin-left:4px;" onclick="scrollToToday()">Heute</button>
+      <button title="Neu laden" onclick="location.reload(true)" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;margin-left:4px;font-family:var(--font-head);" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">↺</button>
     </div>
   </div>
   <!-- Mobile second row: Today + Apple Cal + Filter + View switcher -->
   <div class="header-btn-row" id="mobileBtnRow" style="display:none;">
-    <button class="today-btn" style="flex:none;padding:0 14px;" onclick="scrollToToday()">Heute</button>
+    <button class="view-btn" style="border:1.5px solid var(--blue);color:var(--blue);flex:none;padding:0 12px;" onclick="scrollToToday()">Heute</button>
+    <button title="Neu laden" onclick="location.reload(true)" class="apple-cal-btn">↺</button>
     <button class="apple-cal-btn" onclick="openAppleCal()" title="In Apple Kalender öffnen">+</button>
     <button class="apple-cal-btn" onclick="openFilterSheet()" title="Filter" id="filterSheetBtn">
       <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1632,17 +1634,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
 </div><!-- end header -->
 
-<!-- Ladefortschritt-Balken – unter dem Header, immer sichtbar -->
-<div id="loadProgressBar" style="
-  position:fixed; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:500;
-  background:transparent; pointer-events:none;
-">
-  <div id="loadProgressFill" style="
-    height:100%; width:0%; background:var(--blue);
-    transition:width .35s cubic-bezier(.4,0,.2,1), opacity .4s ease;
-    border-radius:0 2px 2px 0;
-    box-shadow:0 0 8px rgba(0,113,227,.5);
-  "></div>
+<!-- Ladefortschritt-Balken – direkt unter Header, top per JS gesetzt -->
+<div id="loadProgressBar" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:500;background:transparent;pointer-events:none;">
+  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
 </div>
 
 
@@ -1865,55 +1859,49 @@ function openDp(key, cellEl) {
   const evs = sortEvents(SE[key] || []);
   const visible = evs.filter(ev => !ev.c.includes('hidden'));
 
-  // Wenn nur 1 Termin → direkt als Modal öffnen
+  if(visible.length === 0) return;
+
+  // 1 Termin → direkt Modal
   if(visible.length === 1) {
     openEvtModal(visible[0], key);
     return;
   }
 
-  // Mehrere Termine → Inline-Popup nach der Zeile (wie bisher)
+  // Mehrere → Liste im Modal anzeigen
   const colorMap = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669',
-    'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
-    'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+    'e-kidev':'#dc2626','e-bday':'#9ca3af','e-feier':'#713f12',
+    'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3','e-sport':'#0ea5e9'
   };
-  let evHtml = visible.length ? '' : '<div style="font-size:12px;color:var(--text3);padding:4px 0">Keine Termine.</div>';
+
+  const overlay = document.getElementById('evtModalOverlay');
+  const content = document.getElementById('evtModalContent');
+  const actions = document.getElementById('evtModalActions');
+  if(actions) actions.style.display = 'none';
+
+  content.innerHTML = `
+    <div style="font-size:13px;font-weight:700;color:var(--text3);margin-bottom:12px;letter-spacing:-.2px;">${fmtDate(key)}</div>
+    ${visible.map((ev, i) => {
+      const color = colorMap[ev.c] || '#aeaeb2';
+      const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      return `<div class="eli" data-dp-i="${i}" style="cursor:pointer;margin-bottom:0;border-radius:8px;margin-bottom:4px;">
+        <div class="eli-dot" style="background:${color}"></div>
+        <div class="evt-info">
+          <div class="en">${title}</div>
+          ${time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : ''}
+        </div>
+        <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;margin-left:6px;opacity:.35"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>`;
+    }).join('')}`;
+
+  // Klick auf einzelnen Termin in der Liste
   visible.forEach((ev, i) => {
-    const color = colorMap[ev.c] || '#aeaeb2';
-    const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-    const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
-    const badges = [];
-    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-    evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
-      <div class="eli-dot" style="background:${color}"></div>
-      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
-    </div>`;
+    content.querySelector(`[data-dp-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
   });
 
-  const popup = document.createElement('div');
-  popup.className = 'dp-popup';
-  popup.innerHTML = `
-    <div class="dp-popup-head">
-      <span class="dp-popup-title">${fmtDate(key)}</span>
-      <button class="dp-popup-close" onclick="closeInlinePopup()">✕</button>
-    </div>
-    <div class="dp-popup-body">${evHtml}</div>`;
-
-  const row = clickedCell?.closest('.wr');
-  if(row) {
-    row.insertAdjacentElement('afterend', popup);
-  } else {
-    document.getElementById('cal').prepend(popup);
-  }
-  activePopupEl = popup;
-
-  visible.forEach((ev, i) => {
-    popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
-  });
+  overlay.classList.add('on');
 }
 
 function closeDp() {
@@ -2919,6 +2907,8 @@ function parseICSDate(val) {
 function catFromTitle(title) {
   const t = (title||'').toLowerCase();
   if(t.includes('schwerin'))                          return 'e-schwerin';
+  // Reise/Urlaub vor Maja prüfen damit "Urlaub Alpakas mit Maja" → e-trip
+  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
   if(t.includes('maja') || t.includes('kawi') || t.includes('sing dela') || t.includes('finch') || t.includes('olivia') || t.includes('geburtstagsdrinks')) return 'e-maja';
   if(t.includes('konzert') || t.includes('bierwalker') || t.includes('markus krebs') || t.includes('6k united')) return 'e-konzert';
   if(t.includes('kids bei dani'))                     return 'e-dani';
@@ -2926,7 +2916,6 @@ function catFromTitle(title) {
   if(t.includes('alma'))                              return 'e-kidev';
   if(t.includes('spendenlauf') || t.includes('schule') || t.includes('rosa') || t.includes('emil') || t.includes('kiefer') || t.includes('prophylaxe') || t.includes('eltern')) return 'e-kidev';
   if(t.includes('besichtigung') || t.includes('berlinovo')) return 'e-haus';
-  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
   if(t.includes('hellomed') || t.includes('paul & sina') || t.includes('paul und sina') || t.includes('hel') || t.includes('firmenlauf') || t.includes('etiketten') || t.includes('klientenliste') || t.includes('prolog') || t.includes('polog') || t.includes('pharma')) return 'e-hellomed';
   return 'e-event-ical';
 }
@@ -3381,6 +3370,9 @@ function updateHeaderVar() {
     if(hh > 0) {
       document.documentElement.style.setProperty('--header-h', Math.round(hh) + 'px');
       document.documentElement.style.setProperty('--header-h-min', Math.round(hh) + 'px');
+      // Ladebalken direkt unter Header positionieren
+      const bar = document.getElementById('loadProgressBar');
+      if(bar) bar.style.top = Math.round(hh) + 'px';
     }
   }
 }
