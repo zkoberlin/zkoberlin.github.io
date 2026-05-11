@@ -52,6 +52,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   position: sticky;
   top: 0;
   z-index: 10;
+  overflow: visible;
   padding: 8px 0 0;
   transform: translateZ(0);
 }
@@ -1575,7 +1576,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.12</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.13</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1632,12 +1633,12 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-schwerin" onclick="filterBy('e-schwerin')"><div class="fgi-dot" style="background:#f97316"></div><span class="fgi-label">Schwerin</span><span class="fgi-count" id="fc-e-schwerin"></span></div>
     <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fc-e-sport"></span></div>
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
+  <!-- Ladebalken – innerhalb header, immer sichtbar unter header-content -->
+  <div id="loadProgressBar" style="position:absolute;bottom:-3px;left:0;right:0;height:3px;z-index:11;pointer-events:none;background:transparent;">
+    <div id="loadProgressFill" style="height:100%;width:0%;background:#0071e3;transition:width .4s ease,opacity .5s ease;border-radius:0 2px 2px 0;box-shadow:0 0 6px rgba(0,113,227,.6);"></div>
+  </div>
 </div><!-- end header -->
 
-<!-- Ladefortschritt-Balken – direkt unter Header, top per JS gesetzt -->
-<div id="loadProgressBar" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:500;background:transparent;pointer-events:none;">
-  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
-</div>
 
 
 <!-- Filter Bottom Sheet (Mobile) -->
@@ -1847,6 +1848,7 @@ function closeInlinePopup() {
 }
 
 function openDp(key, cellEl) {
+  const _dpSy = window.scrollY;
   closeInlinePopup();
   const clickedCell = cellEl || document.querySelector(`.day[data-key="${key}"]`);
   if(clickedCell) {
@@ -1902,6 +1904,7 @@ function openDp(key, cellEl) {
   });
 
   overlay.classList.add('on');
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, _dpSy)));
 }
 
 function closeDp() {
@@ -2069,7 +2072,7 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      el.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
+      el.addEventListener('click',(e)=>{ e.preventDefault(); e.stopPropagation(); openDp(key, null); });
       body.appendChild(el);
     });
   }
@@ -2167,7 +2170,7 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        item.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
+        item.addEventListener('click',(e)=>{ e.preventDefault(); e.stopPropagation(); openDp(key, null); });
         body.appendChild(item);
       });
     }
@@ -2433,7 +2436,8 @@ function openEvtModal(ev, dateKey) {
     ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
   `;
   overlay.classList.add('on');
-  requestAnimationFrame(() => window.scrollTo(0, _sy));
+  // Doppeltes rAF stellt sicher dass Scroll NACH Browser-Reflow wiederhergestellt wird
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, _sy)));
 }
 
 function closeEvtModal() {
