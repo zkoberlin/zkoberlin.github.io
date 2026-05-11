@@ -773,11 +773,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 .load-status {
-  display: flex;
+  display: none; /* Nur auf Mobile sichtbar */
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
   padding-bottom: 6px;
+}
+@media (max-width: 600px) {
+  .load-status { display: flex; }
 }
 .load-item {
   display: inline-flex;
@@ -1554,7 +1557,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.1</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.2</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2597,21 +2600,27 @@ function jumpToEvent(key, ev) {
   currentView = 'tag';
   viewOffset = diff;
   updateViewBtns();
+  clearFilterResults();
   renderView();
-  // Sofort nach ganz oben
-  window.scrollTo({top: 0, behavior: 'smooth'});
-  // Dann Termin hervorheben
-  setTimeout(() => {
-    const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
-    document.querySelectorAll('#cal .eli').forEach(el => {
-      if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
-        el.style.outline = '2.5px solid var(--blue)';
-        el.style.outlineOffset = '2px';
-        el.style.borderRadius = '8px';
-        setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
-      }
+  // Immer ganz oben – Desktop und Mobile
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo({top: 0, behavior: 'instant'});
+  // Termin hervorheben nach Render
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
+      document.querySelectorAll('#cal .eli').forEach(el => {
+        if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
+          el.style.outline = '2.5px solid var(--blue)';
+          el.style.outlineOffset = '2px';
+          el.style.borderRadius = '8px';
+          el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+          setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
+        }
+      });
     });
-  }, 200);
+  });
 }
 
 function closeFilter() {
