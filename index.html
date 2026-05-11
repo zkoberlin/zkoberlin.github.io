@@ -1472,7 +1472,7 @@ function loadDayInfo(){
   };
 
   // ── HISTORISCHE EREIGNISSE ──
-  const history={
+  const historyData={
     '01-01':['1801','Ceres entdeckt – erster Asteroid des Sonnensystems'],
     '01-02':['1492','Reconquista endet – Granada kapituliert vor Ferdinand & Isabella'],
     '01-03':['1888','Lick-Observatorium eröffnet – damals größtes Teleskop der Welt'],
@@ -1850,7 +1850,7 @@ function loadDayInfo(){
   }
 
   // Historisches Ereignis anzeigen
-  const histEvent = history[key];
+  const histEvent = historyData[key];
   if(histEvent){
     const [year, desc] = histEvent;
     document.getElementById('histVal').innerHTML = `<span style="font-weight:700;color:var(--t);">${year}:</span> ${desc}`;
