@@ -1406,7 +1406,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 .kw, .dn, .version-badge, .tp-title, .tp-date, .chip-count, .load-item, .sticky-bar-days span {
-  font-family: 'Inter', monospace;
+  font-family: 'Montserrat', sans-serif;
 }
 .version-badge {
   font-size: 9px;
@@ -1465,7 +1465,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 /* Apple-like detail panel */
 .dp {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 .dp h3 {
   font-size: 17px;
@@ -1493,7 +1493,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 /* Apple modal style */
 .evt-modal {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 .evt-modal-title {
   font-size: 20px;
@@ -1557,7 +1557,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1612,8 +1612,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fc-e-konzert"></span></div>
     <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fc-e-haus"></span></div>
     <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fc-e-bday"></span></div>
-  </div>
-</div><!-- end header-inner -->
+    <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fc-e-sport"></span></div>
 </div><!-- end header -->
 
 <!-- Ladefortschritt-Balken – unter dem Header -->
@@ -1651,8 +1650,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fsfc-e-konzert"></span></div>
     <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fsfc-e-haus"></span></div>
     <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fsfc-e-bday"></span></div>
-  </div>
-</div>
+    <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fsfc-e-sport"></span></div>
 
 <div class="day-overlay" id="dayOverlay" onclick="collapseDay()"></div>
 <div class="evt-modal-overlay" id="evtModalOverlay" onclick="closeEvtModal()">
@@ -1903,6 +1901,7 @@ function closeDp() {
 
 function scrollToToday() {
   closeInlinePopup();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   viewOffset = 0;
   renderView();
   // After render, scroll to today cell if in monat view
@@ -1964,12 +1963,14 @@ function setView(v) {
   viewOffset = 0;
   updateViewBtns();
   closeInlinePopup();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
 function navView(dir) {
   viewOffset += dir;
   closeInlinePopup();
+  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
@@ -2516,11 +2517,20 @@ function filterBy(cat) {
   document.getElementById('filterSheetBtn')?.classList.add('filter-active');
   closeFilterSheet();
 
-  // Collect matches
+  // Collect matches — Sport filtert per Titeltext statt Kategorie
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const matches = [];
+  const sportKeywords = ['sport','radtour','tour','beat81'];
   Object.keys(SE).sort().filter(d => d >= todayKey).forEach(d => {
-    const evs = (SE[d] || []).filter(ev => ev.c === cat);
+    let evs;
+    if(cat === 'e-sport') {
+      evs = (SE[d] || []).filter(ev => {
+        const t = (ev.t || '').toLowerCase();
+        return sportKeywords.some(kw => t.includes(kw));
+      });
+    } else {
+      evs = (SE[d] || []).filter(ev => ev.c === cat);
+    }
     if(evs.length) matches.push({key: d, evs});
   });
 
@@ -2684,12 +2694,21 @@ function closeFilterSheet() {
 function hideEmptyFilters() {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const futureDates = Object.keys(SE).filter(d => d >= todayKey);
+  const sportKeywords = ['sport','radtour','tour','beat81'];
 
-  // Counts in inline grid aktualisieren + leere ausblenden
   document.querySelectorAll('.fgi-tile[data-cat]').forEach(tile => {
     const cat = tile.dataset.cat;
-    const count = futureDates.reduce((n, d) =>
-      n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
+    let count;
+    if(cat === 'e-sport') {
+      count = futureDates.reduce((n, d) =>
+        n + (SE[d]||[]).filter(ev => {
+          const t = (ev.t||'').toLowerCase();
+          return sportKeywords.some(kw => t.includes(kw));
+        }).length, 0);
+    } else {
+      count = futureDates.reduce((n, d) =>
+        n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
+    }
     const countEl = tile.querySelector('.fgi-count');
     if(countEl) countEl.textContent = count > 0 ? count : '';
     tile.style.display = count > 0 ? '' : 'none';
