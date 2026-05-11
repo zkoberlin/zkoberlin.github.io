@@ -31,10 +31,11 @@
 
 }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
 }
 
@@ -1106,6 +1107,28 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .add-status { font-size: 12px; color: var(--text2); text-align: center; margin-top: 8px; min-height: 18px; }
 .auth-hint { font-size: 12px; color: var(--text3); text-align: center; padding: 8px 0; }
 
+/* Auto dark mode – folgt System wenn kein manuelles Theme gesetzt */
+@media(prefers-color-scheme:dark){
+  html:not([data-theme="light"]) {
+    --bg:#1c1c1e;--surface:#2c2c2e;--surface2:#3a3a3c;
+    --border:rgba(255,255,255,.12);--text:#f5f5f7;--text2:#98989d;--text3:#636366;
+    --blue:#0a84ff;--blue-l:#0a2a4a;--red:#ff453a;
+  }
+  html:not([data-theme="light"]) body { background:#1c1c1e;color:#f5f5f7; }
+  html:not([data-theme="light"]) .e-kids{background:#0a3d8f;color:#a8c8ff;}
+  html:not([data-theme="light"]) .e-dani{background:#3a3a3c;color:#98989d;}
+  html:not([data-theme="light"]) .e-schwerin{background:#6b3a00;color:#ffd580;}
+  html:not([data-theme="light"]) .e-maja{background:#7b1050;color:#ffb0d0;}
+  html:not([data-theme="light"]) .e-trip{background:#0a4a30;color:#80e8c0;}
+  html:not([data-theme="light"]) .e-hellomed{background:#8099E8;color:#fff;}
+  html:not([data-theme="light"]) .e-kidev{background:#7b0a0a;color:#ffa0a0;}
+  html:not([data-theme="light"]) .e-feier{background:#4a3800;color:#ffd580;}
+  html:not([data-theme="light"]) .e-union{background:#7b0a0a;color:#ffa0a0;}
+  html:not([data-theme="light"]) .e-konzert{background:#0a4a20;color:#80e0a0;}
+  html:not([data-theme="light"]) .e-haus{background:#004a6b;color:#80d0f0;}
+  html:not([data-theme="light"]) .e-bday{background:#3a3a3c;color:#636366;font-style:italic;}
+}
+
 /* Manual dark theme override */
 [data-theme="dark"] {
   --bg: #1c1c1e;
@@ -1531,7 +1554,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1590,16 +1613,16 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 </div><!-- end header-inner -->
 </div><!-- end header -->
 
-<!-- Ladefortschritt-Balken -->
+<!-- Ladefortschritt-Balken – unter dem Header -->
 <div id="loadProgressBar" style="
-  position:fixed; top:0; left:0; right:0; height:3px; z-index:9999;
-  background:transparent; pointer-events:none;
+  position:sticky; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:9;
+  background:transparent; pointer-events:none; margin-bottom:-3px;
 ">
   <div id="loadProgressFill" style="
     height:100%; width:0%; background:var(--blue);
     transition:width .35s cubic-bezier(.4,0,.2,1), opacity .4s ease;
     border-radius:0 2px 2px 0;
-    box-shadow:0 0 8px rgba(0,113,227,.6);
+    box-shadow:0 0 8px rgba(0,113,227,.5);
   "></div>
 </div>
 
@@ -2568,38 +2591,27 @@ function showFilterResults(cat, matches) {
 }
 
 function jumpToEvent(key, ev) {
-  // Switch to tag view on that date
   const d = new Date(key + 'T12:00:00');
-  const base = new Date();
-  base.setHours(0,0,0,0);
-  d.setHours(0,0,0,0);
+  const base = new Date(); base.setHours(0,0,0,0); d.setHours(0,0,0,0);
   const diff = Math.round((d - base) / 86400000);
   currentView = 'tag';
   viewOffset = diff;
   updateViewBtns();
   renderView();
-
-  // Scroll to top
+  // Sofort nach ganz oben
   window.scrollTo({top: 0, behavior: 'smooth'});
-
-  // Highlight matching event item after render
+  // Dann Termin hervorheben
   setTimeout(() => {
-    const items = document.querySelectorAll('#cal .eli');
-    items.forEach(el => {
-      if(el.querySelector('.en')?.textContent.includes(
-        ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20)
-      )) {
-        el.style.transition = 'box-shadow .2s, border-color .2s';
-        el.style.outline = '2px solid var(--blue)';
-        el.style.outlineOffset = '1px';
+    const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
+    document.querySelectorAll('#cal .eli').forEach(el => {
+      if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
+        el.style.outline = '2.5px solid var(--blue)';
+        el.style.outlineOffset = '2px';
         el.style.borderRadius = '8px';
-        setTimeout(() => {
-          el.style.outline = '';
-          el.style.outlineOffset = '';
-        }, 2500);
+        setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
       }
     });
-  }, 120);
+  }, 200);
 }
 
 function closeFilter() {
@@ -3179,20 +3191,28 @@ renderAll();
 hideEmptyFilters();
 
 // ── DARK/LIGHT THEME TOGGLE ──────────────────────────────────────────
-function toggleTheme() {
-  const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-  localStorage.setItem('theme', isDark ? 'light' : 'dark');
+// ── THEME ────────────────────────────────────────────────────────────
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme:dark)').matches);
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
 }
-// Init theme from system or saved preference
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const isDark = cur === 'dark' || (cur === 'auto' && window.matchMedia('(prefers-color-scheme:dark)').matches);
+  const next = isDark ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+}
+// Init
 (function() {
   const saved = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = saved || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('themeBtn').textContent = theme === 'dark' ? '🌙' : '☀️';
+  const theme = saved || 'auto';
+  applyTheme(theme);
+  // Live-Listener: wechselt automatisch wenn System sich ändert
+  window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', e => {
+    if(!localStorage.getItem('theme')) applyTheme('auto');
+  });
 })();
 
 // ── GOOGLE OAUTH + EVENT CREATION ─────────────────────────────────────
