@@ -54,7 +54,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   z-index: 10;
   padding: 8px 0 0;
   transform: translateZ(0);
-  overflow: visible;
 }
 .header-inner {
   max-width: 1100px;
@@ -1576,7 +1575,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.14</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.15</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1633,9 +1632,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fc-e-sport"></span></div>
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
 
-  <!-- Ladebalken: physisch im Header, absolut unten positioniert -->
-  <div id="loadProgressBar" style="position:absolute;bottom:0;left:0;right:0;height:3px;pointer-events:none;background:transparent;">
-    <div id="loadProgressFill" style="height:100%;width:0%;background:#34d399;transition:width .4s cubic-bezier(.4,0,.2,1),opacity .5s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(52,211,153,.6);"></div>
+  <div id="loadProgressBar" style="position:absolute;bottom:0;left:0;width:100%;height:3px;pointer-events:none;">
+    <div id="loadProgressFill" style="height:100%;width:0%;background:#34d399;border-radius:0 2px 2px 0;box-shadow:0 0 6px rgba(52,211,153,.5);transition:width .4s ease,opacity .5s ease;"></div>
   </div>
 </div><!-- end header -->
 
