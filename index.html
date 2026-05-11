@@ -70,7 +70,7 @@ html[data-theme="light"]:root{
 /* Styleguide Fonts */
 :root{--font-head:'Montserrat',sans-serif;}
 .sec,.h-greet,.a-name,.fin-lbl,.fin-mini-lbl,.union-clubname,.union-stat-lbl,.union-rank-lbl,.er-num-lbl,.er-title,.weather-city,.weather-day-name,.alma-big-lbl,.alma-big-unit,.alma-small-lbl{font-family:var(--font-head);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
+body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
 
 /* ── HEADER ── */
 header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
@@ -176,7 +176,10 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-day.today{outline:2px solid var(--blue);outline-offset:1px;}
 .er-dl{font-size:7px;font-weight:700;color:var(--t3);}
 .er-day.paul .er-dl{color:var(--green);}
-.er-leg{display:flex;gap:12px;margin-top:7px;}
+.er-dates{display:flex;gap:3px;margin-top:4px;}
+.er-date-slot{flex:1;text-align:center;font-size:6.5px;color:transparent;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;}
+.er-date-slot.show{color:var(--t2);}
+.er-leg{display:flex;gap:12px;margin-top:5px;}
 .er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
 .er-ld{width:7px;height:7px;border-radius:2px;}
 .er-next{padding:9px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
@@ -361,7 +364,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.15</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.16</div>
     </div>
   </div>
 </header>
@@ -442,6 +445,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   <div class="er-timeline">
     <div class="er-tl-lbl">Nächste 14 Tage</div>
     <div class="er-track" id="erTrack"></div>
+    <div class="er-dates" id="erDates"></div>
     <div class="er-leg">
       <div class="er-li"><div class="er-ld" style="background:var(--green-l);border:1px solid var(--green-b)"></div>Bei Paul</div>
       <div class="er-li"><div class="er-ld" style="background:var(--card2);border:1px solid var(--border)"></div>Bei Dani</div>
@@ -1197,15 +1201,30 @@ async function loadKids(){
 
     // Build 14-day timeline
     const track=document.getElementById('erTrack');track.innerHTML='';
+    const datesRow=document.getElementById('erDates');datesRow.innerHTML='';
+    // Collect who each day + detect block transitions for date labels
+    const dayData=[];
     for(let i=0;i<14;i++){
       const d=new Date(today);d.setDate(today.getDate()+i);
       const e=entries.find(e=>diff(d,e.date)===0);
       const isPaul=e?.who==='Paul';
+      dayData.push({d,isPaul});
       const div=document.createElement('div');
       div.className='er-day '+(isPaul?'paul':'dani')+(i===0?' today':'');
       div.title=`${WK[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${isPaul?'Bei Paul':'Bei Dani'}`;
       div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
       track.appendChild(div);
+    }
+    // Date labels: show dd.M. at start of each block (transition or index 0)
+    for(let i=0;i<14;i++){
+      const isStart=i===0||(dayData[i].isPaul!==dayData[i-1].isPaul);
+      const isEnd=i===13||(dayData[i].isPaul!==dayData[i+1].isPaul);
+      const slot=document.createElement('div');
+      const d=dayData[i].d;
+      const lbl=(isStart||isEnd)?`${d.getDate()}.${d.getMonth()+1}`:'';
+      slot.className='er-date-slot'+(lbl?' show':'');
+      slot.textContent=lbl;
+      datesRow.appendChild(slot);
     }
 
     const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
@@ -1361,9 +1380,9 @@ async function loadICAL(){
       if(eDay > today) return false;   // Zukunft → nicht vorbei
       if(eDay < today) return true;    // Vergangenheit → vorbei
       // Heute: Ganztags-Events nie ausblenden
-      if(!e.startTime) return false;
-      const [h, m] = e.startTime.split(':').map(Number);
-      return nowMin > h * 60 + m + 30; // 30 Min Puffer nach Startzeit
+      if(!e.hasTime) return false;
+      const evMin = e.date.getHours() * 60 + e.date.getMinutes();
+      return nowMin > evMin + 30; // 30 Min Puffer nach Startzeit
     };
     const isFiltered=s=>{
       const l=s.toLowerCase();
