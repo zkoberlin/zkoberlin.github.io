@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -1372,7 +1372,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 .kw, .dn, .version-badge, .tp-title, .tp-date, .chip-count, .load-item, .sticky-bar-days span {
-  font-family: 'Inter', monospace;
+  font-family: 'Montserrat', sans-serif;
 }
 .version-badge {
   font-size: 9px;
@@ -1431,7 +1431,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 /* Apple-like detail panel */
 .dp {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 .dp h3 {
   font-size: 17px;
@@ -1459,7 +1459,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 /* Apple modal style */
 .evt-modal {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 .evt-modal-title {
   font-size: 20px;
@@ -1538,7 +1538,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.7</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1594,9 +1594,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 <!-- Ladefortschritt-Balken – unter dem Header -->
 <div id="loadProgressBar" style="position:sticky;top:var(--header-h,60px);left:0;right:0;height:3px;z-index:9;background:transparent;pointer-events:none;margin-bottom:-3px;">
-  <div style="max-width:1100px;margin:0 auto;padding:0 28px;height:100%;box-sizing:border-box;">
-    <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
-  </div>
+  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
 </div>
 
 <!-- Filter Bottom Sheet (Mobile) -->
