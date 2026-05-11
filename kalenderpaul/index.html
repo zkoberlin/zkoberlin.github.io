@@ -91,11 +91,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .header-text p {
   font-size: 10.5px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
   color: var(--text2);
   margin-top: 1px;
-  -webkit-font-smoothing: antialiased;
 }
 /* Legend inside header */
 .legend {
@@ -143,6 +140,15 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 /* Filter Bottom Sheet */
+.filter-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+  -webkit-tap-highlight-color: transparent;
+}
+.filter-backdrop.on { display: block; }
 .filter-panel {
   position: fixed;
   left: 0; right: 0; bottom: 0;
@@ -194,11 +200,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .fp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 4px; }
 
 /* ── FILTER BOTTOM SHEET (Mobile) ── */
-/* Filter-Sheet nur auf Mobile — Desktop nutzt inline Grid */
-@media (min-width: 601px) {
-  .filter-sheet { display: none !important; }
-  .filter-backdrop { display: none !important; }
-}
 .filter-backdrop {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,.45); z-index: 300;
@@ -278,8 +279,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 [data-theme="dark"] .fgi-tile.active { box-shadow: 0 0 0 3px rgba(10,132,255,.15); }
 .fgi-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .fgi-label { font-family: var(--font-head); font-size: 11.5px; font-weight: 500; color: var(--text); flex: 1; -webkit-font-smoothing: antialiased; }
-.fgi-count { font-family: var(--font-head); font-size: 10.5px; font-weight: 700; color: var(--text2); font-variant-numeric: tabular-nums; background: rgba(0,0,0,.08); padding: 1px 6px; border-radius: 8px; flex-shrink: 0; -webkit-font-smoothing: antialiased; }
-[data-theme="dark"] .fgi-count { background: rgba(255,255,255,.13); color: var(--text2); }
+.fgi-count { font-size: 10px; color: var(--text3); font-variant-numeric: tabular-nums; background: rgba(0,0,0,.05); padding: 1px 5px; border-radius: 8px; flex-shrink: 0; }
+[data-theme="dark"] .fgi-count { background: rgba(255,255,255,.07); }
 
 .fp-tile {
   display: flex; align-items: center; gap: 10px;
@@ -329,6 +330,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   padding: 22px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  overflow: clip;
   color: var(--text);
 }
 .mt { font-size: 15px; font-weight: 600; letter-spacing: -.3px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
@@ -555,14 +557,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .sticky-bar {
   position: sticky;
   top: var(--header-h, 160px);
-  z-index: 20;
+  z-index: 9;
   background: var(--surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 6px 22px 4px;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+  margin: -22px -22px 8px -22px;
+  border-radius: 14px 14px 0 0;
 }
 .sticky-bar-month {
   font-size: 13px; font-weight: 600; color: var(--text);
@@ -581,7 +583,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .sticky-bar-days span.we { color: var(--red); opacity: .7; }
 
 @media (max-width: 600px) {
-  .sticky-bar { padding: 6px 12px 3px; border-radius: 12px 12px 0 0; }
+  .sticky-bar { padding: 6px 8px 3px; margin: -12px -8px 8px -8px; }
   .sticky-bar-month { font-size: 12px; }
   .sticky-bar-days { grid-template-columns: 18px repeat(7, 1fr); gap: 1px; }
   .sticky-bar-days span { font-size: 9px; }
@@ -682,8 +684,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   border-radius: 20px 20px 0 0;
   padding: 0 0 env(safe-area-inset-bottom, 20px);
   width: 100%;
-  max-width: 100%;
-  max-height: 80vh;
+  max-width: 480px;
+  max-height: 70vh;
   overflow-y: auto;
   animation: slideUp .25s cubic-bezier(0.32,0.72,0,1);
 }
@@ -725,15 +727,11 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .evt-modal-header { position: relative; }
 
 @media (min-width: 601px) {
-  .evt-modal-overlay {
-    align-items: center;
-    justify-content: center;
-  }
+  .evt-modal-overlay { align-items: center; }
   .evt-modal {
     border-radius: 20px;
     max-width: 420px;
-    width: 90%;
-    margin: 0;
+    margin: 0 auto;
     animation: pop .2s ease;
   }
 }
@@ -775,14 +773,11 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 .load-status {
-  display: none; /* Nur auf Mobile sichtbar */
+  display: flex;
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
   padding-bottom: 6px;
-}
-@media (max-width: 600px) {
-  .load-status { display: flex; }
 }
 .load-item {
   display: inline-flex;
@@ -1408,7 +1403,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 
 .kw, .dn, .version-badge, .tp-title, .tp-date, .chip-count, .load-item, .sticky-bar-days span {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', monospace;
 }
 .version-badge {
   font-size: 9px;
@@ -1467,7 +1462,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 /* Apple-like detail panel */
 .dp {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 .dp h3 {
   font-size: 17px;
@@ -1485,10 +1480,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .et {
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
   letter-spacing: -.1px;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* Smoother shadows */
@@ -1496,22 +1488,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   box-shadow: var(--sh, 0 4px 12px rgba(0,0,0,.05));
 }
 
-/* Aktuell laufender Termin */
-.eli.evt-past { opacity: 0.35; }
-.eli.evt-past .eli-dot { filter: grayscale(.4); }
-.eli.evt-now-active {
-  background: rgba(0,113,227,.07);
-  border-radius: 8px;
-  box-shadow: inset 2px 0 0 var(--blue);
-}
-[data-theme="dark"] .eli.evt-now-active {
-  background: rgba(64,156,255,.10);
-  box-shadow: inset 2px 0 0 #409cff;
-}
-
 /* Apple modal style */
 .evt-modal {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 .evt-modal-title {
   font-size: 20px;
@@ -1575,25 +1554,25 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.15</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.1</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
-      <button class="view-btn" id="heuteBtn" style="border:1.5px solid var(--blue);color:var(--blue);" onclick="scrollToToday()">Heute</button>
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
         <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
+      <button class="today-btn" onclick="scrollToToday()">Heute</button>
     </div>
   </div>
   <!-- Mobile second row: Today + Apple Cal + Filter + View switcher -->
   <div class="header-btn-row" id="mobileBtnRow" style="display:none;">
-    <button title="Neu laden" onclick="location.reload(true)" class="apple-cal-btn">&#8635;</button>
+    <button class="today-btn" style="flex:none;padding:0 14px;" onclick="scrollToToday()">Heute</button>
     <button class="apple-cal-btn" onclick="openAppleCal()" title="In Apple Kalender öffnen">+</button>
     <button class="apple-cal-btn" onclick="openFilterSheet()" title="Filter" id="filterSheetBtn">
       <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1618,24 +1597,34 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="load-item" id="ls-sheet"><span class="load-dot"></span> Kids Sheet</div>
   </div>
   <div class="filter-grid-inline" id="filterGridInline">
-    <div class="fgi-tile" data-cat="e-trip" onclick="filterBy('e-trip')"><div class="fgi-dot" style="background:#059669"></div><span class="fgi-label">Ausflug/Urlaub</span><span class="fgi-count" id="fc-e-trip"></span></div>
-    <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fc-e-haus"></span></div>
-    <div class="fgi-tile" data-cat="e-feier" onclick="filterBy('e-feier')"><div class="fgi-dot" style="background:#713f12"></div><span class="fgi-label">Feiertage</span><span class="fgi-count" id="fc-e-feier"></span></div>
-    <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fc-e-bday"></span></div>
-    <div class="fgi-tile" data-cat="e-hellomed" onclick="filterBy('e-hellomed')"><div class="fgi-dot" style="background:#8099E8"></div><span class="fgi-label">Hellomed</span><span class="fgi-count" id="fc-e-hellomed"></span></div>
-    <div class="fgi-tile" data-cat="e-dani" onclick="filterBy('e-dani')"><div class="fgi-dot" style="background:#6b7280"></div><span class="fgi-label">Kids Dani</span><span class="fgi-count" id="fc-e-dani"></span></div>
     <div class="fgi-tile" data-cat="e-kids" onclick="filterBy('e-kids')"><div class="fgi-dot" style="background:#1a56db"></div><span class="fgi-label">Kids Paul</span><span class="fgi-count" id="fc-e-kids"></span></div>
-    <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fc-e-konzert"></span></div>
+    <div class="fgi-tile" data-cat="e-dani" onclick="filterBy('e-dani')"><div class="fgi-dot" style="background:#6b7280"></div><span class="fgi-label">Kids Dani</span><span class="fgi-count" id="fc-e-dani"></span></div>
     <div class="fgi-tile" data-cat="e-maja" onclick="filterBy('e-maja')"><div class="fgi-dot" style="background:#db2777"></div><span class="fgi-label">Maja</span><span class="fgi-count" id="fc-e-maja"></span></div>
-    <div class="fgi-tile" data-cat="e-kidev" onclick="filterBy('e-kidev')"><div class="fgi-dot" style="background:#dc2626"></div><span class="fgi-label">Schule/Kids</span><span class="fgi-count" id="fc-e-kidev"></span></div>
     <div class="fgi-tile" data-cat="e-schwerin" onclick="filterBy('e-schwerin')"><div class="fgi-dot" style="background:#f97316"></div><span class="fgi-label">Schwerin</span><span class="fgi-count" id="fc-e-schwerin"></span></div>
-    <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fc-e-sport"></span></div>
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
-
-  <div id="loadProgressBar" style="position:absolute;bottom:0;left:0;width:100%;height:3px;pointer-events:none;">
-    <div id="loadProgressFill" style="height:100%;width:0%;background:#34d399;border-radius:0 2px 2px 0;box-shadow:0 0 6px rgba(52,211,153,.5);transition:width .4s ease,opacity .5s ease;"></div>
+    <div class="fgi-tile" data-cat="e-trip" onclick="filterBy('e-trip')"><div class="fgi-dot" style="background:#059669"></div><span class="fgi-label">Ausflug/Urlaub</span><span class="fgi-count" id="fc-e-trip"></span></div>
+    <div class="fgi-tile" data-cat="e-feier" onclick="filterBy('e-feier')"><div class="fgi-dot" style="background:#713f12"></div><span class="fgi-label">Feiertage</span><span class="fgi-count" id="fc-e-feier"></span></div>
+    <div class="fgi-tile" data-cat="e-kidev" onclick="filterBy('e-kidev')"><div class="fgi-dot" style="background:#dc2626"></div><span class="fgi-label">Schule/Kids</span><span class="fgi-count" id="fc-e-kidev"></span></div>
+    <div class="fgi-tile" data-cat="e-hellomed" onclick="filterBy('e-hellomed')"><div class="fgi-dot" style="background:#8099E8"></div><span class="fgi-label">Hellomed</span><span class="fgi-count" id="fc-e-hellomed"></span></div>
+    <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fc-e-konzert"></span></div>
+    <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fc-e-haus"></span></div>
+    <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fc-e-bday"></span></div>
   </div>
+</div><!-- end header-inner -->
 </div><!-- end header -->
+
+<!-- Ladefortschritt-Balken – unter dem Header -->
+<div id="loadProgressBar" style="
+  position:sticky; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:9;
+  background:transparent; pointer-events:none; margin-bottom:-3px;
+">
+  <div id="loadProgressFill" style="
+    height:100%; width:0%; background:var(--blue);
+    transition:width .35s cubic-bezier(.4,0,.2,1), opacity .4s ease;
+    border-radius:0 2px 2px 0;
+    box-shadow:0 0 8px rgba(0,113,227,.5);
+  "></div>
+</div>
 
 
 <!-- Filter Bottom Sheet (Mobile) -->
@@ -1647,21 +1636,20 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <button class="filter-sheet-close" onclick="closeFilterSheet()">✕</button>
   </div>
   <div class="filter-sheet-grid">
-    <div class="fgi-tile" data-cat="e-trip" onclick="filterBy('e-trip')"><div class="fgi-dot" style="background:#059669"></div><span class="fgi-label">Ausflug/Urlaub</span><span class="fgi-count" id="fsfc-e-trip"></span></div>
-    <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fsfc-e-haus"></span></div>
-    <div class="fgi-tile" data-cat="e-feier" onclick="filterBy('e-feier')"><div class="fgi-dot" style="background:#713f12"></div><span class="fgi-label">Feiertage</span><span class="fgi-count" id="fsfc-e-feier"></span></div>
-    <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fsfc-e-bday"></span></div>
-    <div class="fgi-tile" data-cat="e-hellomed" onclick="filterBy('e-hellomed')"><div class="fgi-dot" style="background:#8099E8"></div><span class="fgi-label">Hellomed</span><span class="fgi-count" id="fsfc-e-hellomed"></span></div>
-    <div class="fgi-tile" data-cat="e-dani" onclick="filterBy('e-dani')"><div class="fgi-dot" style="background:#6b7280"></div><span class="fgi-label">Kids Dani</span><span class="fgi-count" id="fsfc-e-dani"></span></div>
     <div class="fgi-tile" data-cat="e-kids" onclick="filterBy('e-kids')"><div class="fgi-dot" style="background:#1a56db"></div><span class="fgi-label">Kids Paul</span><span class="fgi-count" id="fsfc-e-kids"></span></div>
-    <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fsfc-e-konzert"></span></div>
+    <div class="fgi-tile" data-cat="e-dani" onclick="filterBy('e-dani')"><div class="fgi-dot" style="background:#6b7280"></div><span class="fgi-label">Kids Dani</span><span class="fgi-count" id="fsfc-e-dani"></span></div>
     <div class="fgi-tile" data-cat="e-maja" onclick="filterBy('e-maja')"><div class="fgi-dot" style="background:#db2777"></div><span class="fgi-label">Maja</span><span class="fgi-count" id="fsfc-e-maja"></span></div>
-    <div class="fgi-tile" data-cat="e-kidev" onclick="filterBy('e-kidev')"><div class="fgi-dot" style="background:#dc2626"></div><span class="fgi-label">Schule/Kids</span><span class="fgi-count" id="fsfc-e-kidev"></span></div>
     <div class="fgi-tile" data-cat="e-schwerin" onclick="filterBy('e-schwerin')"><div class="fgi-dot" style="background:#f97316"></div><span class="fgi-label">Schwerin</span><span class="fgi-count" id="fsfc-e-schwerin"></span></div>
-    <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fsfc-e-sport"></span></div>
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fsfc-e-union"></span></div>
-  </div><!-- end filter-sheet-grid -->
-</div><!-- end filter-sheet -->
+    <div class="fgi-tile" data-cat="e-trip" onclick="filterBy('e-trip')"><div class="fgi-dot" style="background:#059669"></div><span class="fgi-label">Ausflug/Urlaub</span><span class="fgi-count" id="fsfc-e-trip"></span></div>
+    <div class="fgi-tile" data-cat="e-feier" onclick="filterBy('e-feier')"><div class="fgi-dot" style="background:#713f12"></div><span class="fgi-label">Feiertage</span><span class="fgi-count" id="fsfc-e-feier"></span></div>
+    <div class="fgi-tile" data-cat="e-kidev" onclick="filterBy('e-kidev')"><div class="fgi-dot" style="background:#dc2626"></div><span class="fgi-label">Schule/Kids</span><span class="fgi-count" id="fsfc-e-kidev"></span></div>
+    <div class="fgi-tile" data-cat="e-hellomed" onclick="filterBy('e-hellomed')"><div class="fgi-dot" style="background:#8099E8"></div><span class="fgi-label">Hellomed</span><span class="fgi-count" id="fsfc-e-hellomed"></span></div>
+    <div class="fgi-tile" data-cat="e-konzert" onclick="filterBy('e-konzert')"><div class="fgi-dot" style="background:#16a34a"></div><span class="fgi-label">Konzert/Event</span><span class="fgi-count" id="fsfc-e-konzert"></span></div>
+    <div class="fgi-tile" data-cat="e-haus" onclick="filterBy('e-haus')"><div class="fgi-dot" style="background:#00a0e3"></div><span class="fgi-label">Besichtigung</span><span class="fgi-count" id="fsfc-e-haus"></span></div>
+    <div class="fgi-tile" data-cat="e-bday" onclick="filterBy('e-bday')"><div class="fgi-dot" style="background:#9ca3af"></div><span class="fgi-label">Geburtstag</span><span class="fgi-count" id="fsfc-e-bday"></span></div>
+  </div>
+</div>
 
 <div class="day-overlay" id="dayOverlay" onclick="collapseDay()"></div>
 <div class="evt-modal-overlay" id="evtModalOverlay" onclick="closeEvtModal()">
@@ -1718,16 +1706,11 @@ function buildMonth(year, month) {
   const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
   let dow = fl.getDay(); if(dow===0) dow=7; dow--;
 
-  // Wrapper without overflow so sticky works
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position:relative;margin-bottom:20px;';
-
   const card = document.createElement('div');
   card.className = 'mc';
   card.id = `m-${year}-${month}`;
-  card.style.cssText = 'margin-bottom:0;border-radius:0 0 16px 16px;padding-top:8px;';
 
-  // Sticky bar OUTSIDE .mc
+  // Sticky bar with month name + weekdays
   const stickyBar = document.createElement('div');
   stickyBar.className = 'sticky-bar';
   const stickyMonth = document.createElement('div');
@@ -1738,7 +1721,7 @@ function buildMonth(year, month) {
   stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
   stickyBar.appendChild(stickyMonth);
   stickyBar.appendChild(stickyDays);
-  wrapper.appendChild(stickyBar);
+  card.appendChild(stickyBar);
 
   const grid = document.createElement('div');
   grid.className = 'cg';
@@ -1832,8 +1815,7 @@ function buildMonth(year, month) {
     wk++;
   }
   card.appendChild(grid);
-  wrapper.appendChild(card);
-  return wrapper;
+  return card;
 }
 
 let selectedCell = null;
@@ -1854,52 +1836,61 @@ function openDp(key, cellEl) {
     selectedCell = clickedCell;
   }
 
+  const colorMap = {
+    'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+    'e-maja':'#db2777','e-trip':'#059669',
+    'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
+    'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+  };
   const evs = sortEvents(SE[key] || []);
   const visible = evs.filter(ev => !ev.c.includes('hidden'));
 
-  if(visible.length === 0) return;
-
-  // 1 Termin → direkt Modal
-  if(visible.length === 1) {
-    openEvtModal(visible[0], key);
-    return;
-  }
-
-  // Mehrere → Liste im Modal anzeigen
-  const colorMap = {
-    'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
-    'e-kidev':'#dc2626','e-bday':'#9ca3af','e-feier':'#713f12',
-    'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3','e-sport':'#0ea5e9'
-  };
-
-  const overlay = document.getElementById('evtModalOverlay');
-  const content = document.getElementById('evtModalContent');
-  const actions = document.getElementById('evtModalActions');
-  if(actions) actions.style.display = 'none';
-
-  content.innerHTML = `
-    <div style="font-size:13px;font-weight:700;color:var(--text3);margin-bottom:12px;letter-spacing:-.2px;">${fmtDate(key)}</div>
-    ${visible.map((ev, i) => {
-      const color = colorMap[ev.c] || '#aeaeb2';
-      const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      return `<div class="eli" data-dp-i="${i}" style="cursor:pointer;margin-bottom:0;border-radius:8px;margin-bottom:4px;">
-        <div class="eli-dot" style="background:${color}"></div>
-        <div class="evt-info">
-          <div class="en">${title}</div>
-          ${time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : ''}
-        </div>
-        <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;margin-left:6px;opacity:.35"><path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>`;
-    }).join('')}`;
-
-  // Klick auf einzelnen Termin in der Liste
+  let evHtml = visible.length ? '' : '<div style="font-size:12px;color:var(--text3);padding:4px 0">Keine Termine.</div>';
   visible.forEach((ev, i) => {
-    content.querySelector(`[data-dp-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
+    const color = colorMap[ev.c] || '#aeaeb2';
+    const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+    const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    const badges = [];
+    if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+    evHtml += `<div class="eli dp-eli" data-i="${i}" style="cursor:pointer">
+      <div class="eli-dot" style="background:${color}"></div>
+      <div class="evt-info"><div class="en">${title}${badges.join('')}</div>${timeHtml}</div>
+    </div>`;
   });
 
-  overlay.classList.add('on');
+  const popup = document.createElement('div');
+  popup.className = 'dp-popup';
+  popup.innerHTML = `
+    <div class="dp-popup-head">
+      <span class="dp-popup-title">${fmtDate(key)}</span>
+      <button class="dp-popup-close" onclick="closeInlinePopup()">✕</button>
+    </div>
+    <div class="dp-popup-body">${evHtml}</div>`;
+
+  // Insert after the clicked cell's row
+  const row = clickedCell?.closest('.wr');
+  if(row) {
+    row.insertAdjacentElement('afterend', popup);
+  } else {
+    document.getElementById('cal').prepend(popup);
+  }
+  activePopupEl = popup;
+
+  // Attach click handlers
+  visible.forEach((ev, i) => {
+    popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
+  });
+
+  // Scroll: bring the popup fully into view just below the header
+  setTimeout(() => {
+    const headerH = document.querySelector('.header')?.offsetHeight || 120;
+    const popupTop = popup.getBoundingClientRect().top + window.pageYOffset;
+    const targetY = popupTop - headerH - 8;
+    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+  }, 30);
 }
 
 function closeDp() {
@@ -1909,7 +1900,6 @@ function closeDp() {
 
 function scrollToToday() {
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
   viewOffset = 0;
   renderView();
   // After render, scroll to today cell if in monat view
@@ -1945,12 +1935,11 @@ function initViewUI() {
   if(isMobile) {
     if(mobileRow) mobileRow.style.display = 'flex';
     if(desktopSwitcher) desktopSwitcher.style.display = 'none';
-    // Auf Mobile: viewSwitcher und Post-Switcher Buttons ausblenden
-    if(headerRight) headerRight.querySelectorAll('.view-switcher ~ button, .view-switcher ~ a').forEach(b=>b.style.display='none');
+    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = 'none');
   } else {
     if(mobileRow) mobileRow.style.display = 'none';
     if(desktopSwitcher) desktopSwitcher.style.display = 'inline-flex';
-    if(headerRight) headerRight.querySelectorAll('.view-switcher ~ button, .view-switcher ~ a').forEach(b=>b.style.display='');
+    headerRight?.querySelectorAll('.today-btn').forEach(b => b.style.display = '');
   }
 }
 window.addEventListener('resize', initViewUI, {passive:true});
@@ -1964,8 +1953,7 @@ const colorMap = {
   'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
   'e-maja':'#db2777','e-trip':'#059669',
   'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af',
-  'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3',
-  'e-sport':'#0ea5e9'
+  'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
 };
 
 function setView(v) {
@@ -1973,14 +1961,12 @@ function setView(v) {
   viewOffset = 0;
   updateViewBtns();
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
 function navView(dir) {
   viewOffset += dir;
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
   renderView();
 }
 
@@ -2007,12 +1993,8 @@ function renderView() {
   } else {
     renderAlleView(cal, base);
   }
-  // Re-measure header after render
+  // Re-measure header after render (mobile btn-row may change height)
   setTimeout(updateHeaderVar, 0);
-  // Highlight currently running event (Tag + Woche only)
-  if(currentView === 'tag' || currentView === 'woche') {
-    requestAnimationFrame(markActiveEvent);
-  }
 }
 
 // ── TAG-ANSICHT ──────────────────────────────────────────────────────
@@ -2067,7 +2049,7 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      el.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
+      el.addEventListener('click', () => openEvtModal(ev, key));
       body.appendChild(el);
     });
   }
@@ -2165,7 +2147,7 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        item.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
+        item.addEventListener('click', () => openEvtModal(ev, key));
         body.appendChild(item);
       });
     }
@@ -2222,7 +2204,12 @@ function openDpBelowGrid(key, gridEl) {
   evs.forEach((ev, i) => {
     popup.querySelector(`.dp-eli[data-i="${i}"]`)?.addEventListener('click', () => openEvtModal(ev, key));
   });
-  // Kein scrollTo — das Modal ist position:fixed und zentriert sich selbst
+
+  setTimeout(() => {
+    const headerH = document.querySelector('.header')?.offsetHeight || 120;
+    const top = popup.getBoundingClientRect().top + window.pageYOffset - headerH - 8;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }, 30);
 }
 
 // ── MONAT-ANSICHT ────────────────────────────────────────────────────
@@ -2250,23 +2237,20 @@ function buildMonthFull(year, month, baseDate) {
   const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
   let dow = fl.getDay(); if(dow===0) dow=7; dow--;
 
-  // Wrapper without overflow so sticky works
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position:relative;margin-bottom:20px;';
+  const card = document.createElement('div');
+  card.className = 'mc';
 
-  // Sticky-bar OUTSIDE .mc so position:sticky isn't blocked by overflow:clip
-  // In Monat-Ansicht: kein Monatsname, nur Wochentage (Monat steht schon im Nav-Titel)
   const stickyBar = document.createElement('div');
   stickyBar.className = 'sticky-bar';
+  const stickyMonth = document.createElement('div');
+  stickyMonth.className = 'sticky-bar-month';
+  stickyMonth.textContent = `${MN[month]} ${year}`;
   const stickyDays = document.createElement('div');
   stickyDays.className = 'sticky-bar-days';
   stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
+  stickyBar.appendChild(stickyMonth);
   stickyBar.appendChild(stickyDays);
-  wrapper.appendChild(stickyBar);
-
-  const card = document.createElement('div');
-  card.className = 'mc';
-  card.style.cssText = 'margin-bottom:0;border-radius:0 0 16px 16px;padding-top:8px;';
+  card.appendChild(stickyBar);
 
   const grid = document.createElement('div');
   grid.className = 'cg';
@@ -2320,8 +2304,7 @@ function buildMonthFull(year, month, baseDate) {
     wk++;
   }
   card.appendChild(grid);
-  wrapper.appendChild(card);
-  return wrapper;
+  return card;
 }
 
 // ── ALLE-ANSICHT (original: alle Monate ab heute) ────────────────────
@@ -2390,7 +2373,6 @@ let currentEvtId = null;
 let currentEvtData = null;
 
 function openEvtModal(ev, dateKey) {
-  const _sy = window.scrollY;
   const overlay = document.getElementById('evtModalOverlay');
   const content = document.getElementById('evtModalContent');
   currentEvtId = ev.googleId || null;
@@ -2431,7 +2413,6 @@ function openEvtModal(ev, dateKey) {
     ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
   `;
   overlay.classList.add('on');
-  requestAnimationFrame(() => window.scrollTo(0, _sy));
 }
 
 function closeEvtModal() {
@@ -2502,14 +2483,14 @@ const catLabels = {
   'e-maja':'Maja','e-trip':'Ausflug/Urlaub',
   'e-hellomed':'Hellomed','e-kidev':'Schule/Kids-Event','e-haus':'Besichtigungen',
   'e-feier':'Feiertage & Schulferien Berlin','e-union':'1. FC Union Berlin',
-  'e-konzert':'Konzerte & Events','e-bday':'Geburtstage','e-sport':'Sport'
+  'e-konzert':'Konzerte & Events','e-bday':'Geburtstage'
 };
 const catColors = {
   'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
   'e-maja':'#db2777','e-trip':'#059669',
   'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-haus':'#00a0e3',
   'e-feier':'#713f12','e-union':'#b91c1c',
-  'e-konzert':'#16a34a','e-bday':'#9ca3af','e-sport':'#0ea5e9'
+  'e-konzert':'#16a34a','e-bday':'#9ca3af'
 };
 
 let activeFilter = null;
@@ -2532,20 +2513,11 @@ function filterBy(cat) {
   document.getElementById('filterSheetBtn')?.classList.add('filter-active');
   closeFilterSheet();
 
-  // Collect matches — Sport filtert per Titeltext statt Kategorie
+  // Collect matches
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const matches = [];
-  const sportKeywords = ['sport','radtour','tour','beat81'];
   Object.keys(SE).sort().filter(d => d >= todayKey).forEach(d => {
-    let evs;
-    if(cat === 'e-sport') {
-      evs = (SE[d] || []).filter(ev => {
-        const t = (ev.t || '').toLowerCase();
-        return sportKeywords.some(kw => t.includes(kw));
-      });
-    } else {
-      evs = (SE[d] || []).filter(ev => ev.c === cat);
-    }
+    const evs = (SE[d] || []).filter(ev => ev.c === cat);
     if(evs.length) matches.push({key: d, evs});
   });
 
@@ -2625,27 +2597,21 @@ function jumpToEvent(key, ev) {
   currentView = 'tag';
   viewOffset = diff;
   updateViewBtns();
-  clearFilterResults();
   renderView();
-  // Immer ganz oben – Desktop und Mobile
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
-  window.scrollTo({top: 0, behavior: 'instant'});
-  // Termin hervorheben nach Render
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
-      document.querySelectorAll('#cal .eli').forEach(el => {
-        if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
-          el.style.outline = '2.5px solid var(--blue)';
-          el.style.outlineOffset = '2px';
-          el.style.borderRadius = '8px';
-          el.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-          setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
-        }
-      });
+  // Sofort nach ganz oben
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  // Dann Termin hervorheben
+  setTimeout(() => {
+    const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
+    document.querySelectorAll('#cal .eli').forEach(el => {
+      if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
+        el.style.outline = '2.5px solid var(--blue)';
+        el.style.outlineOffset = '2px';
+        el.style.borderRadius = '8px';
+        setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
+      }
     });
-  });
+  }, 200);
 }
 
 function closeFilter() {
@@ -2660,29 +2626,16 @@ function closeFilter() {
 function toggleFilterPanel() {} // legacy
 
 function openFilterSheet() {
-  // Auf Desktop: kein Sheet — das inline Grid ist sichtbar
-  if(window.innerWidth > 600) return;
-
   const sheet = document.getElementById('filterSheet');
   const backdrop = document.getElementById('filterBackdrop');
   // Sync counts and active state
-  const cats = ['e-kids','e-dani','e-maja','e-schwerin','e-union','e-trip','e-feier','e-kidev','e-hellomed','e-konzert','e-haus','e-bday','e-sport'];
-  const sportKeywords = ['sport','radtour','tour','beat81'];
+  const cats = ['e-kids','e-dani','e-maja','e-schwerin','e-union','e-trip','e-feier','e-kidev','e-hellomed','e-konzert','e-haus','e-bday'];
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   cats.forEach(cat => {
     const el = document.getElementById('fsfc-' + cat);
     if(!el) return;
-    let count;
-    if(cat === 'e-sport') {
-      count = Object.keys(SE).filter(d => d >= todayKey)
-        .reduce((n,d) => n + (SE[d]||[]).filter(ev => {
-          const t=(ev.t||'').toLowerCase();
-          return sportKeywords.some(kw=>t.includes(kw));
-        }).length, 0);
-    } else {
-      count = Object.keys(SE).filter(d => d >= todayKey)
-        .reduce((n,d) => n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
-    }
+    const count = Object.keys(SE).filter(d => d >= todayKey)
+      .reduce((n,d) => n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
     el.textContent = count > 0 ? count : '';
   });
   // Sync active tiles in sheet
@@ -2722,21 +2675,12 @@ function closeFilterSheet() {
 function hideEmptyFilters() {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const futureDates = Object.keys(SE).filter(d => d >= todayKey);
-  const sportKeywords = ['sport','radtour','tour','beat81'];
 
+  // Counts in inline grid aktualisieren + leere ausblenden
   document.querySelectorAll('.fgi-tile[data-cat]').forEach(tile => {
     const cat = tile.dataset.cat;
-    let count;
-    if(cat === 'e-sport') {
-      count = futureDates.reduce((n, d) =>
-        n + (SE[d]||[]).filter(ev => {
-          const t = (ev.t||'').toLowerCase();
-          return sportKeywords.some(kw => t.includes(kw));
-        }).length, 0);
-    } else {
-      count = futureDates.reduce((n, d) =>
-        n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
-    }
+    const count = futureDates.reduce((n, d) =>
+      n + (SE[d]||[]).filter(ev => ev.c === cat || ev.c === cat+'-hidden').length, 0);
     const countEl = tile.querySelector('.fgi-count');
     if(countEl) countEl.textContent = count > 0 ? count : '';
     tile.style.display = count > 0 ? '' : 'none';
@@ -2908,8 +2852,6 @@ function parseICSDate(val) {
 function catFromTitle(title) {
   const t = (title||'').toLowerCase();
   if(t.includes('schwerin'))                          return 'e-schwerin';
-  // Reise/Urlaub vor Maja prüfen damit "Urlaub Alpakas mit Maja" → e-trip
-  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
   if(t.includes('maja') || t.includes('kawi') || t.includes('sing dela') || t.includes('finch') || t.includes('olivia') || t.includes('geburtstagsdrinks')) return 'e-maja';
   if(t.includes('konzert') || t.includes('bierwalker') || t.includes('markus krebs') || t.includes('6k united')) return 'e-konzert';
   if(t.includes('kids bei dani'))                     return 'e-dani';
@@ -2917,6 +2859,7 @@ function catFromTitle(title) {
   if(t.includes('alma'))                              return 'e-kidev';
   if(t.includes('spendenlauf') || t.includes('schule') || t.includes('rosa') || t.includes('emil') || t.includes('kiefer') || t.includes('prophylaxe') || t.includes('eltern')) return 'e-kidev';
   if(t.includes('besichtigung') || t.includes('berlinovo')) return 'e-haus';
+  if(t.includes('bodensee') || t.includes('łeba') || t.includes('leba') || t.includes('urlaub') || t.includes('parchim')) return 'e-trip';
   if(t.includes('hellomed') || t.includes('paul & sina') || t.includes('paul und sina') || t.includes('hel') || t.includes('firmenlauf') || t.includes('etiketten') || t.includes('klientenliste') || t.includes('prolog') || t.includes('polog') || t.includes('pharma')) return 'e-hellomed';
   return 'e-event-ical';
 }
@@ -2938,15 +2881,15 @@ function injectICalEvents(events, url='') {
 
     // For multi-day events, add to each day
     if(ev.end && ev.end > ev.start) {
-      let cur = new Date(ev.start + 'T12:00:00');
+      let cur = new Date(ev.start + 'T12:00:00'); // noon to avoid DST issues
+      // iCal DTEND is exclusive for all-day events
       const endD = new Date(ev.end + 'T12:00:00');
       while(cur < endD) {
         const key = cur.getFullYear() + '-' + 
                     String(cur.getMonth()+1).padStart(2,'0') + '-' + 
                     String(cur.getDate()).padStart(2,'0');
         if(!SE[key]) SE[key] = [];
-        // Nur gegen andere iCal-Events prüfen, nicht gegen hardcodierte
-        if(!SE[key].some(e => e.fromIcal && e.t === title)) {
+        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
           const entry = {t: display, c: cat, fromIcal: true};
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.location) entry.location = ev.location;
@@ -2957,8 +2900,7 @@ function injectICalEvents(events, url='') {
       }
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
-      // Nur gegen andere iCal-Events prüfen, nicht gegen hardcodierte
-      if(!SE[ev.start].some(e => e.fromIcal && e.t === title)) {
+      if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
         const entry = {t: display, c: cat, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.location) entry.location = ev.location;
@@ -3034,24 +2976,10 @@ function progressStep() {
       setTimeout(() => {
         const bar = document.getElementById('loadProgressBar');
         if(bar) bar.style.display = 'none';
-      }, 500);
-    }, 600); // länger sichtbar
+      }, 450);
+    }, 300);
   }
 }
-// Ladebalken sofort auf 8% setzen damit er sichtbar ist
-(function initProgressBar() {
-  const fill = document.getElementById('loadProgressFill');
-  if(fill) fill.style.width = '8%';
-  // top via JS setzen sobald Header gemessen
-  const setBarTop = () => {
-    const h = document.querySelector('.header');
-    const bar = document.getElementById('loadProgressBar');
-    if(h && bar) bar.style.top = Math.round(h.getBoundingClientRect().height) + 'px';
-  };
-  setBarTop();
-  setTimeout(setBarTop, 100);
-  setTimeout(setBarTop, 500);
-})();
 
 function setLoadStatus(id, state, text) {
   const el = document.getElementById(id);
@@ -3339,43 +3267,6 @@ loadAllDynamicData().then(() => {
 loadICalEvents();
 
 // Set header height – called immediately and after every render
-function markActiveEvent() {
-  // Nur für heute — prüft welcher Termin gerade zeitlich aktiv ist
-  const now = new Date();
-  const todayKey = dk(now.getFullYear(), now.getMonth(), now.getDate());
-  const nowMin = now.getHours() * 60 + now.getMinutes();
-
-  document.querySelectorAll('#cal .eli').forEach(el => {
-    el.classList.remove('evt-now-active');
-    el.classList.remove('evt-past');
-  });
-
-  const evs = SE[todayKey] || [];
-  evs.forEach(ev => {
-    // Startzeit aus ev.startTime oder Titel parsen
-    const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-    if(!timeStr) return;
-    const [h, m] = timeStr.split(':').map(Number);
-    const startMin = h * 60 + m;
-    // Standard-Dauer: 60 min wenn kein Ende bekannt
-    const endMin = ev.endTime
-      ? (parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]))
-      : startMin + 60;
-
-    const _et = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
-    document.querySelectorAll('#cal .eli').forEach(el => {
-      if(!el.querySelector('.en')?.textContent.includes(_et)) return;
-      if(nowMin >= startMin && nowMin < endMin) { el.classList.add('evt-now-active'); }
-      else if(nowMin > endMin) { el.classList.add('evt-past'); }
-    });
-  });
-}
-
-// Alle 60 Sekunden aktualisieren
-setInterval(() => {
-  if(currentView === 'tag' || currentView === 'woche') markActiveEvent();
-}, 60000);
-
 function updateHeaderVar() {
   const h = document.querySelector('.header');
   if(h) {
