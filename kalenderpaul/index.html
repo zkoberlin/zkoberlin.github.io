@@ -1553,7 +1553,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.4</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.5</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1897,7 +1897,7 @@ function closeDp() {
 
 function scrollToToday() {
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
+  if(typeof closeFilter === 'function') closeFilter();
   viewOffset = 0;
   renderView();
   // After render, scroll to today cell if in monat view
@@ -1960,14 +1960,14 @@ function setView(v) {
   viewOffset = 0;
   updateViewBtns();
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
+  if(typeof closeFilter === 'function') closeFilter();
   renderView();
 }
 
 function navView(dir) {
   viewOffset += dir;
   closeInlinePopup();
-  closeFilter(); // Filter-Umrahmung zurücksetzen
+  if(typeof closeFilter === 'function') closeFilter();
   renderView();
 }
 
