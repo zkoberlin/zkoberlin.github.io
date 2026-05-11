@@ -315,6 +315,29 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .kal-loading-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;}
 .kal-loading-lines{flex:1;display:flex;flex-direction:column;gap:5px;}
 
+/* ── LOAD BAR ── */
+#loadBar{
+  position:sticky;top:53px;z-index:99;
+  max-width:860px;margin:0 auto;
+  height:3px;
+  background:transparent;
+  overflow:hidden;
+  transition:opacity .4s ease;
+}
+#loadBar.done{opacity:0;pointer-events:none;}
+#loadBarFill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,#30d158,#34c759,#30d158);
+  background-size:200% 100%;
+  border-radius:0 2px 2px 0;
+  animation:loadShimmer 1.4s linear infinite;
+  transition:width .4s cubic-bezier(.4,0,.2,1);
+}
+@keyframes loadShimmer{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+
 /* Union Card */
 .union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
 .union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.55);box-shadow:0 0 0 2px rgba(232,0,28,.10),var(--sh-h);}
@@ -364,10 +387,11 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.21</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.22</div>
     </div>
   </div>
 </header>
+<div id="loadBar"><div id="loadBarFill"></div></div>
 
 <main>
 
@@ -1950,6 +1974,7 @@ async function fetchWetter(lat,lon,city){
       </div>`;
     }).join('');
   }catch(e){document.getElementById('wTemp').textContent='--°';}
+  if(window._lbTick)window._lbTick();
 }
 
 async function loadW(){
@@ -2020,6 +2045,7 @@ async function loadFin(){
       catEl.innerHTML+=`<div class="fin-cat-row"><div class="fin-cat-lbl">${name}</div><div class="fin-cat-bw"><div class="fin-cat-b" style="width:${pct2}%;background:${col}"></div></div><div class="fin-cat-val">${pct2}%</div></div>`;
     });
   }catch(e){}
+  if(window._lbTick)window._lbTick();
 }
 loadFin();
 
@@ -2279,6 +2305,7 @@ async function loadICAL(){
     document.getElementById('almaTitle').textContent='⚠️ iCal nicht erreichbar';
     document.getElementById('almaDate').textContent='Kalender prüfen';
   }
+  if(window._lbTick)window._lbTick();
 }
 
 // ── ALMA ──
@@ -2388,6 +2415,20 @@ function loadAlma(evs){
     }
   }catch(e){console.log('Alma error:',e);}
 }
+
+// ── LOAD BAR ──
+(function(){
+  const bar=document.getElementById('loadBarFill');
+  const wrap=document.getElementById('loadBar');
+  let done=0,total=3;
+  bar.style.width='8%';
+  window._lbTick=function(){
+    done++;
+    const pct=8+Math.round((done/total)*92);
+    bar.style.width=pct+'%';
+    if(done>=total)setTimeout(()=>wrap.classList.add('done'),380);
+  };
+})();
 
 loadICAL();
 
