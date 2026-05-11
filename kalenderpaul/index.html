@@ -54,6 +54,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   z-index: 10;
   padding: 8px 0 0;
   transform: translateZ(0);
+  overflow: visible;
 }
 .header-inner {
   max-width: 1100px;
@@ -1631,12 +1632,12 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="fgi-tile" data-cat="e-schwerin" onclick="filterBy('e-schwerin')"><div class="fgi-dot" style="background:#f97316"></div><span class="fgi-label">Schwerin</span><span class="fgi-count" id="fc-e-schwerin"></span></div>
     <div class="fgi-tile" data-cat="e-sport" onclick="filterBy('e-sport')"><div class="fgi-dot" style="background:#0ea5e9"></div><span class="fgi-label">Sport</span><span class="fgi-count" id="fc-e-sport"></span></div>
     <div class="fgi-tile" data-cat="e-union" onclick="filterBy('e-union')"><div class="fgi-dot" style="background:#b91c1c"></div><span class="fgi-label">Union Berlin</span><span class="fgi-count" id="fc-e-union"></span></div>
-</div><!-- end header -->
 
-<!-- Ladefortschritt-Balken – direkt unter Header, top per JS gesetzt -->
-<div id="loadProgressBar" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:500;background:transparent;pointer-events:none;">
-  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
-</div>
+  <!-- Ladebalken: physisch im Header, absolut unten positioniert -->
+  <div id="loadProgressBar" style="position:absolute;bottom:0;left:0;right:0;height:3px;pointer-events:none;background:transparent;">
+    <div id="loadProgressFill" style="height:100%;width:0%;background:#34d399;transition:width .4s cubic-bezier(.4,0,.2,1),opacity .5s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(52,211,153,.6);"></div>
+  </div>
+</div><!-- end header -->
 
 
 <!-- Filter Bottom Sheet (Mobile) -->
@@ -3384,9 +3385,6 @@ function updateHeaderVar() {
     if(hh > 0) {
       document.documentElement.style.setProperty('--header-h', Math.round(hh) + 'px');
       document.documentElement.style.setProperty('--header-h-min', Math.round(hh) + 'px');
-      // Ladebalken direkt unter Header positionieren
-      const bar = document.getElementById('loadProgressBar');
-      if(bar) bar.style.top = Math.round(hh) + 'px';
     }
   }
 }
