@@ -1575,7 +1575,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.4</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -3251,55 +3251,31 @@ async function loadAllDynamicData() {
 renderAll();
 hideEmptyFilters();
 
-// ── THEME (3-State: auto → dark → light → auto) ──────────────────────
-// 'auto'  = kein localStorage-Eintrag  → folgt Systemeinstellung
-// 'dark'  = manuell dunkel
-// 'light' = manuell hell
+// ── THEME (3-State: light → dark → auto → light) ──────────────────────
+// '☀️' light  = manuell hell
+// '🌙' dark   = manuell dunkel
+// '🌓' auto   = folgt Systemeinstellung (kein localStorage-Eintrag)
 function applyTheme(theme) {
   const sysDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
   const isDark = theme === 'dark' || (theme === 'auto' && sysDark);
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  // Button-Icon zeigt aktuellen Zustand + ob manuell gesetzt
   const btn = document.getElementById('themeBtn');
-  if(theme === 'auto') {
-    btn.textContent = isDark ? '🌙' : '☀️';
-    btn.title = 'Automatisch (System)';
-  } else if(theme === 'dark') {
-    btn.textContent = '🌙';
-    btn.title = 'Dunkel – klicken für Hell';
-  } else {
-    btn.textContent = '☀️';
-    btn.title = 'Hell – klicken für Automatisch';
-  }
-  // Speichere aktuellen State-Slot für Toggle
+  if(theme === 'auto')       { btn.textContent = '🌓'; btn.title = 'Auto (System) – klicken für Hell'; }
+  else if(theme === 'light') { btn.textContent = '☀️'; btn.title = 'Hell – klicken für Dunkel'; }
+  else                       { btn.textContent = '🌙'; btn.title = 'Dunkel – klicken für Auto'; }
   window.__themeState = theme;
 }
 function toggleTheme() {
   const cur = window.__themeState || 'auto';
-  const sysDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
-  let next;
-  if(cur === 'auto') {
-    // auto → manuell in die entgegengesetzte Richtung kippen
-    next = sysDark ? 'light' : 'dark';
-  } else if(cur === 'dark') {
-    next = 'light';
-  } else {
-    // light → zurück zu auto (= System folgen)
-    next = 'auto';
-  }
-  if(next === 'auto') {
-    localStorage.removeItem('theme');
-  } else {
-    localStorage.setItem('theme', next);
-  }
+  // Zyklus: light → dark → auto → light
+  const next = cur === 'light' ? 'dark' : cur === 'dark' ? 'auto' : 'light';
+  if(next === 'auto') localStorage.removeItem('theme');
+  else localStorage.setItem('theme', next);
   applyTheme(next);
 }
-// Init
 (function() {
   const saved = localStorage.getItem('theme'); // 'dark' | 'light' | null
-  const theme = saved || 'auto';
-  applyTheme(theme);
-  // Live-Listener: reagiert auf Systemwechsel wenn im Auto-Modus
+  applyTheme(saved || 'auto');
   window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change', () => {
     if(!localStorage.getItem('theme')) applyTheme('auto');
   });
