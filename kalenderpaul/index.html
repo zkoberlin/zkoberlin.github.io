@@ -1309,6 +1309,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
   /* Today button highlight on mobile */
   .today-btn { border-color: var(--blue); color: var(--blue); }
+
+  /* Load bar on mobile: full width, no inner padding */
+  #loadProgressBar > div { padding: 0; max-width: 100%; }
 }
 
 /* ── DARK MODE ── */
@@ -1450,6 +1453,10 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .et {
   font-size: 13px;
   letter-spacing: -.1px;
+  font-family: 'Montserrat', sans-serif;
+}
+#headerDate {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Smoother shadows */
@@ -1538,14 +1545,14 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.7</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
     <div class="header-right">
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
-      <button class="theme-btn" onclick="location.reload(true)" title="Neu laden" style="font-size:15px;">↺</button>
+      <button class="hub-btn" onclick="location.reload(true)" title="Neu laden" style="font-size:16px;line-height:1;">↺</button>
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
         <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
@@ -1594,7 +1601,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 <!-- Ladefortschritt-Balken – unter dem Header -->
 <div id="loadProgressBar" style="position:sticky;top:var(--header-h,60px);left:0;right:0;height:3px;z-index:9;background:transparent;pointer-events:none;margin-bottom:-3px;">
-  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
+  <div style="max-width:1100px;margin:0 auto;padding:0 32px;height:100%;box-sizing:border-box;">
+    <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:2px;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
+  </div>
 </div>
 
 <!-- Filter Bottom Sheet (Mobile) -->
