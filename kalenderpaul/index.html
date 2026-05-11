@@ -1574,7 +1574,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.7</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1634,7 +1634,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 <!-- Ladefortschritt-Balken – unter dem Header -->
 <div id="loadProgressBar" style="
-  position:sticky; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:9;
+  position:sticky; top:var(--header-h,60px); left:0; right:0; height:3px; z-index:25;
   background:transparent; pointer-events:none; margin-bottom:-3px;
 ">
   <div id="loadProgressFill" style="
@@ -2509,14 +2509,14 @@ const catLabels = {
   'e-maja':'Maja','e-trip':'Ausflug/Urlaub',
   'e-hellomed':'Hellomed','e-kidev':'Schule/Kids-Event','e-haus':'Besichtigungen',
   'e-feier':'Feiertage & Schulferien Berlin','e-union':'1. FC Union Berlin',
-  'e-konzert':'Konzerte & Events','e-bday':'Geburtstage'
+  'e-konzert':'Konzerte & Events','e-bday':'Geburtstage','e-sport':'Sport'
 };
 const catColors = {
   'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
   'e-maja':'#db2777','e-trip':'#059669',
   'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-haus':'#00a0e3',
   'e-feier':'#713f12','e-union':'#b91c1c',
-  'e-konzert':'#16a34a','e-bday':'#9ca3af'
+  'e-konzert':'#16a34a','e-bday':'#9ca3af','e-sport':'#0ea5e9'
 };
 
 let activeFilter = null;
