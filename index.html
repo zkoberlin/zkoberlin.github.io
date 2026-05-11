@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.4</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.5</div>
     </div>
   </div>
 </header>
@@ -1463,15 +1463,23 @@ loadICAL();
     return;
   }
 
-  const unionTeamId=row.teamInfoId; // ID dynamisch aus der Tabelle lesen!
-  const rank=row.rank;
+  const unionTeamId=row.teamInfoId;
+  const rank=row.rank??'–';
   const pts=row.points??0;
   const wins=row.won??0,draws=row.draw??0,losses=row.lost??0;
   const gf=row.goals??0,ga=row.opponentGoals??0;
   const played=wins+draws+losses;
   const gDiff=gf-ga;
 
-  document.getElementById('unionRank').textContent=rank+'.';
+  // Transfermarkt Logo-ID aus Teamname ableiten (openligadb teamId ≠ Transfermarkt ID)
+  // Wir nutzen den teamIconUrl aus den Match-Daten wenn vorhanden, sonst Fallback auf Union-Logo
+  function logoFromMatch(team, sz=22){
+    // openligadb liefert teamIconUrl – nutze das direkt
+    const src=team?.teamIconUrl||`https://tmssl.akamaized.net/images/wappen/head/${team?.teamId||0}.png`;
+    return `<img src="${src}" style="width:${sz}px;height:${sz}px;object-fit:contain;flex-shrink:0;" onerror="this.style.opacity='.12'">`;
+  }
+
+  document.getElementById('unionRank').textContent=rank!=='–'?rank+'.':'–';
   document.getElementById('unionLeague').textContent=`Bundesliga 2025/26 · Platz ${rank}`;
 
   // Spiele per dynamischer teamId
@@ -1495,8 +1503,10 @@ loadICAL();
   }).filter(Boolean);
   const formPts=last5.reduce((n,r)=>n+(r==='w'?3:r==='d'?1:0),0);
 
-  // Tabellenumfeld ±1
-  const nb=table.filter(r=>r.rank>=rank-1&&r.rank<=rank+1).sort((a,b)=>a.rank-b.rank);
+  // Tabellenumfeld: 2 über, Union, 2 unter
+  const nbRankMin=Math.max(1,rank-2);
+  const nbRankMax=rank+2;
+  const nb=table.filter(r=>r.rank>=nbRankMin&&r.rank<=nbRankMax).sort((a,b)=>a.rank-b.rank);
   const above=table.find(r=>r.rank===rank-1);
 
   // Form dots
@@ -1504,14 +1514,16 @@ loadICAL();
     `<div class="union-form-dot ${r}">${r==='w'?'S':r==='d'?'U':'N'}</div>`
   ).join('');
 
-  // Tabellenumfeld
-  const nbHTML=nb.map(r=>
-    `<div style="display:flex;justify-content:space-between;font-size:10.5px;
-      ${r.rank===rank?'background:var(--union-l);padding:2px 5px;border-radius:4px;':''}">
-      <span style="${r.rank===rank?'color:var(--union);font-weight:600;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
-      <span style="font-weight:700;${r.rank===rank?'color:var(--union);':''}font-variant-numeric:tabular-nums;">${r.points} Pkt.</span>
-    </div>`
-  ).join('');
+  // Tabellenumfeld HTML mit Zonenhinweisen
+  const nbHTML=nb.map(r=>{
+    const isUnionRow=r.rank===rank;
+    const zoneLabel=r.rank<=4?'🏆':r.rank<=6?'🟡':r.rank===16?'↓':r.rank>=17?'⬇️':'';
+    return`<div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;
+      ${isUnionRow?'background:var(--union-l);padding:2px 6px;border-radius:4px;margin:0 -2px;':'padding:0 4px;'}">
+      <span style="${isUnionRow?'color:var(--union);font-weight:600;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName} ${zoneLabel}</span>
+      <span style="font-weight:700;${isUnionRow?'color:var(--union);':''}font-variant-numeric:tabular-nums;">${r.points} Pkt.</span>
+    </div>`;
+  }).join('');
 
   // Letztes Spiel
   let lastHTML='';
@@ -1519,21 +1531,24 @@ loadICAL();
     const h=last.team1?.teamId===unionTeamId;
     const r=last.matchResults?.find(x=>x.resultTypeID===2)||last.matchResults?.[0];
     const g1=r?.pointsTeam1??'–',g2=r?.pointsTeam2??'–';
-    const gFor=h?g1:g2,gAga=h?g2:g1;
+    // h=true: Union ist team1 (Heim), g1=Union-Tore, g2=Gegner-Tore
+    // h=false: Union ist team2 (Auswärts), g2=Union-Tore, g1=Gegner-Tore
+    const unionGoals=h?g1:g2;
+    const oppGoals=h?g2:g1;
     const opp=h?last.team2:last.team1;
-    const resLbl=+gFor>+gAga?'Sieg':+gFor===+gAga?'Unentschieden':'Niederlage';
+    const resLbl=+unionGoals>+oppGoals?'Sieg':+unionGoals===+oppGoals?'Unentschieden':'Niederlage';
     lastHTML=`
     <div class="union-stat">
       <div class="union-stat-lbl">Letztes Spiel · ${h?'Heimspiel':'Auswärts'} · ${fmtDt(last.matchDateTime)}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
         <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:0;">
-          ${logo(h?unionTeamId:opp?.teamId,24)}
+          ${logoFromMatch(h?last.team1:last.team2,24)}
           <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${h?'Union Berlin':opp?.teamName}</span>
         </div>
-        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;">${gFor} : ${gAga}</div>
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;">${h?g1:g2} : ${h?g2:g1}</div>
         <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;min-width:0;">
           <span style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;">${h?opp?.teamName:'Union Berlin'}</span>
-          ${logo(h?opp?.teamId:unionTeamId,24)}
+          ${logoFromMatch(h?last.team2:last.team1,24)}
         </div>
       </div>
       <div class="union-stat-sub" style="text-align:center;margin-top:4px;">${resLbl} · Bundesliga</div>
@@ -1552,9 +1567,9 @@ loadICAL();
       return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
         <div style="flex:1;min-width:0;">
           <div class="match-row">
-            ${logo(h?unionTeamId:opp?.teamId)}
+            ${logoFromMatch(h?last?.team1||m.team1:opp)}
             <span class="match-vs">vs</span>
-            ${logo(h?opp?.teamId:unionTeamId)}
+            ${logoFromMatch(h?opp:last?.team2||m.team2)}
             <span class="match-team" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${opp?.teamName}</span>
           </div>
           <div class="union-next-date">${fmtDt(m.matchDateTime)} · ${h?'Heimspiel':'Auswärts'}</div>
@@ -1568,12 +1583,16 @@ loadICAL();
     nextHTML=`<div class="union-next"><div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>${items}</div>`;
   }
 
-  // Saisonbilanz
-  const klassErhalt=rank<=16&&(remaining===0||pts>=34);
+  // Saisonbilanz – Klassenerhalt ab ~34 Pkt realistisch, mit 36 Pkt gesichert
+  const abstiegsplatz=table.find(r=>r.rank===16);
+  const klassErhalt=abstiegsplatz?pts>abstiegsplatz.points+3:pts>=34;
   const abstandStr=above&&above.points>pts
     ?`Abstand zu Platz ${rank-1}: <strong style="color:var(--t);">${above.points-pts} Punkt${above.points-pts!==1?'e':''}</strong>`:'';
+  const saisonStatus=klassErhalt
+    ?'Klassenerhalt gesichert 🔴'
+    :pts>=30?'Klassenerhalt sehr wahrscheinlich 🟡':'⚠️ Abstiegskampf';
   const saisonParts=[
-    klassErhalt?'Klassenerhalt gesichert 🔴':'⚠️ Abstiegskampf',
+    saisonStatus,
     remaining>0?`Noch <strong style="color:var(--t);">${remaining} Spiel${remaining!==1?'e':''}</strong> verbleibend`:'Saison beendet',
     remaining>0?`Max. <strong style="color:var(--t);">${maxPts} Punkte</strong> möglich`:'',
     abstandStr
