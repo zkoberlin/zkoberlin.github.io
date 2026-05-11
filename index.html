@@ -361,7 +361,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.8</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.9</div>
     </div>
   </div>
 </header>
@@ -579,26 +579,133 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="union-card">
   <div class="union-header">
     <div class="union-club">
-      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union Berlin" style="width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3));">
+      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="🔴" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3));">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league" id="unionLeague">Bundesliga 2025/26</div>
+        <div class="union-league">Bundesliga 2025/26 · 33. Spieltag</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <button id="unionRefreshBtn" onclick="unionRefresh()" title="Daten aktualisieren" style="
-        width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
-        background:rgba(255,255,255,.12);color:#fff;font-size:13px;cursor:pointer;
-        display:flex;align-items:center;justify-content:center;flex-shrink:0;
-        transition:.15s;-webkit-tap-highlight-color:transparent;">↺</button>
-      <div class="union-rank">
-        <div class="union-rank-num" id="unionRank">–</div>
-        <div class="union-rank-lbl">Platz</div>
-      </div>
+    <div class="union-rank">
+      <div class="union-rank-num">12.</div>
+      <div class="union-rank-lbl">Platz</div>
     </div>
   </div>
-  <div class="union-body" id="unionBody">
-    <div style="padding:28px;text-align:center;font-size:12px;color:var(--t3);">Lade…</div>
+  <div class="union-body">
+
+    <!-- Stats -->
+    <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Punkte</div>
+        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;font-variant-numeric:tabular-nums;">36</div>
+        <div class="union-stat-sub">von 102 mögl.</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Bilanz</div>
+        <div class="union-stat-val" style="font-size:14px;">9S · 9U · 15N</div>
+        <div class="union-stat-sub">33 Spiele</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Tore</div>
+        <div class="union-stat-val" style="font-size:14px;font-variant-numeric:tabular-nums;">41 : 58</div>
+        <div class="union-stat-sub">-17 Differenz</div>
+      </div>
+    </div>
+
+    <!-- Form + Tabellenumfeld -->
+    <div class="union-row">
+      <div class="union-stat">
+        <div class="union-stat-lbl">Letzte 5 Spiele</div>
+        <div class="union-form" style="margin-top:6px;">
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot d">U</div>
+          <div class="union-form-dot l">N</div>
+          <div class="union-form-dot w">S</div>
+        </div>
+        <div class="union-stat-sub" style="margin-top:6px;">4 Pkt. aus 5 Spielen</div>
+      </div>
+      <div class="union-stat">
+        <div class="union-stat-lbl">Tabellenumfeld</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;">
+            <span style="display:flex;align-items:center;gap:5px;color:var(--t2);">
+              <img src="https://tmssl.akamaized.net/images/wappen/head/86.png" width="14" height="14" style="object-fit:contain;" alt="W">
+              11. Werder Bremen
+            </span>
+            <span style="font-weight:700;font-variant-numeric:tabular-nums;">37 Pkt.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;background:var(--union-l);padding:3px 5px;border-radius:4px;">
+            <span style="display:flex;align-items:center;gap:5px;color:var(--union);font-weight:600;">
+              <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="14" height="14" style="object-fit:contain;" alt="U">
+              12. Union Berlin
+            </span>
+            <span style="font-weight:700;color:var(--union);font-variant-numeric:tabular-nums;">36 Pkt.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;">
+            <span style="display:flex;align-items:center;gap:5px;color:var(--t2);">
+              <img src="https://tmssl.akamaized.net/images/wappen/head/45.png" width="14" height="14" style="object-fit:contain;" alt="P">
+              13. FC St. Pauli
+            </span>
+            <span style="font-weight:700;font-variant-numeric:tabular-nums;">33 Pkt.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;">
+            <span style="display:flex;align-items:center;gap:5px;color:var(--t2);">
+              <img src="https://tmssl.akamaized.net/images/wappen/head/80.png" width="14" height="14" style="object-fit:contain;" alt="B">
+              14. VfL Bochum ⬇️
+            </span>
+            <span style="font-weight:700;font-variant-numeric:tabular-nums;">29 Pkt.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Letztes Spiel -->
+    <div class="union-stat">
+      <div class="union-stat-lbl">Letztes Spiel · Auswärts · So. 10. Mai · 19:30 Uhr</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;">
+        <div style="display:flex;align-items:center;gap:7px;flex:1;min-width:0;">
+          <img src="https://tmssl.akamaized.net/images/wappen/head/39.png" width="26" height="26" style="object-fit:contain;flex-shrink:0;" alt="M05">
+          <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">1. FSV Mainz 05</span>
+        </div>
+        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;padding:0 6px;">1 : 3</div>
+        <div style="display:flex;align-items:center;gap:7px;flex:1;justify-content:flex-end;min-width:0;">
+          <span style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;">Union Berlin</span>
+          <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="26" height="26" style="object-fit:contain;flex-shrink:0;" alt="FCU">
+        </div>
+      </div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:6px;">Sieg · Ilić 38' · Burke 83' · Juranović 90'</div>
+    </div>
+
+    <!-- Nächstes Spiel -->
+    <div class="union-next">
+      <div class="union-next-lbl">Nächstes & letztes Spiel der Saison</div>
+      <div class="union-next-game">
+        <div style="flex:1;min-width:0;">
+          <div class="match-row">
+            <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="22" height="22" style="object-fit:contain;flex-shrink:0;" alt="FCU">
+            <span class="match-vs">vs</span>
+            <img src="https://tmssl.akamaized.net/images/wappen/head/167.png" width="22" height="22" style="object-fit:contain;flex-shrink:0;" alt="FCA">
+            <span class="match-team">Union Berlin vs FC Augsburg</span>
+          </div>
+          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;margin-left:8px;">
+          <div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div>
+          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saisonbilanz -->
+    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
+      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">
+        Klassenerhalt gesichert 🔴 · Noch <strong style="color:var(--t);">1 Spiel</strong> verbleibend ·
+        Max. <strong style="color:var(--t);">39 Punkte</strong> möglich ·
+        Abstand zu Platz 11: <strong style="color:var(--t);">1 Punkt</strong>
+      </div>
+    </div>
+
   </div>
 </div>
 
