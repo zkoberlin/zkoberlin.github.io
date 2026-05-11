@@ -387,7 +387,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.24</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.25</div>
     </div>
   </div>
 </header>
@@ -1445,8 +1445,7 @@ function loadDayInfo(){
   // Always show special if exists
   document.getElementById('specialVal').textContent = special[key] || sprueche[now.getDay()][0];
 
-  // Always show spruch
-  document.getElementById('spruchVal').textContent = sprueche[now.getDay()][1];
+
 
   // ── NAMENSTAGE (DE, katholisch-evangelisch) ──
   const namenstage={
