@@ -554,6 +554,21 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   to   { opacity: 1;   transform: scale(1); }
 }
 
+/* Filter-Jump: dezente Hervorhebung der Zielzelle */
+@keyframes filterFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(0,113,227,0); outline-color: var(--blue); }
+  20%  { box-shadow: 0 0 0 5px rgba(0,113,227,0.22); }
+  60%  { box-shadow: 0 0 0 4px rgba(0,113,227,0.14); }
+  100% { box-shadow: 0 0 0 0 rgba(0,113,227,0); }
+}
+.day.filter-jump {
+  outline: 2.5px solid var(--blue) !important;
+  outline-offset: 2px !important;
+  animation: filterFlash 1.8s ease forwards !important;
+  z-index: 3;
+  position: relative;
+}
+
 /* Sticky month + weekday bar */
 .sticky-bar {
   position: sticky;
@@ -1545,7 +1560,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2611,27 +2626,30 @@ function showFilterResults(cat, matches) {
 }
 
 function jumpToEvent(key, ev) {
-  const d = new Date(key + 'T12:00:00');
-  const base = new Date(); base.setHours(0,0,0,0); d.setHours(0,0,0,0);
-  const diff = Math.round((d - base) / 86400000);
-  currentView = 'tag';
-  viewOffset = diff;
+  // Switch to "Alle" view – zeigt den vollen Kalender-Kontext
+  currentView = 'alle';
+  viewOffset = 0;
   updateViewBtns();
+  closeInlinePopup();
   renderView();
-  // Sofort nach ganz oben
-  window.scrollTo({top: 0, behavior: 'smooth'});
-  // Dann Termin hervorheben
+
+  // Nach DOM-Settle: zur Zielzelle scrollen, flashen, Popup öffnen
   setTimeout(() => {
-    const titleSnippet = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 25);
-    document.querySelectorAll('#cal .eli').forEach(el => {
-      if(el.querySelector('.en')?.textContent.includes(titleSnippet)) {
-        el.style.outline = '2.5px solid var(--blue)';
-        el.style.outlineOffset = '2px';
-        el.style.borderRadius = '8px';
-        setTimeout(() => { el.style.outline = ''; el.style.outlineOffset = ''; }, 2500);
-      }
-    });
-  }, 200);
+    const cell = document.querySelector(`.day[data-key="${key}"]`);
+    if(!cell) return;
+
+    // Zur Zelle scrollen (unterhalb sticky Header)
+    const headerH = document.querySelector('.header')?.offsetHeight || 120;
+    const cellTop = cell.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top: Math.max(0, cellTop - headerH - 32), behavior: 'smooth' });
+
+    // Dezenter Flash-Effekt auf der Tageszelle
+    cell.classList.add('filter-jump');
+    setTimeout(() => cell.classList.remove('filter-jump'), 2000);
+
+    // Inline-Popup für diesen Tag öffnen (zeigt alle Termine des Tages)
+    setTimeout(() => openDp(key, cell), 120);
+  }, 80);
 }
 
 function closeFilter() {
