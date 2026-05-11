@@ -1575,7 +1575,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.13</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.5.14</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1589,7 +1589,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
-      <button title="Neu laden" ↺</button>
     </div>
   </div>
   <!-- Mobile second row: Today + Apple Cal + Filter + View switcher -->
@@ -1636,30 +1635,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 
 <!-- Ladefortschritt-Balken – direkt unter Header, top per JS gesetzt -->
 <div id="loadProgressBar" style="position:fixed;top:0;left:0;right:0;height:3px;z-index:500;background:transparent;pointer-events:none;">
-  <div id="loadProgressFill" style="height:100%;width:5%;background:#0071e3;transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
+  <div id="loadProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width .35s cubic-bezier(.4,0,.2,1),opacity .4s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,113,227,.5);"></div>
 </div>
-<script>
-(function() {
-  // Sofort nach Header-Render top setzen (sync)
-  function setBarPos() {
-    var h = document.querySelector('.header');
-    var bar = document.getElementById('loadProgressBar');
-    if (h && bar) {
-      bar.style.top = h.getBoundingClientRect().height + 'px';
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setBarPos);
-  } else {
-    setBarPos();
-  }
-  setTimeout(setBarPos, 0);
-  setTimeout(setBarPos, 100);
-  window.addEventListener('load', setBarPos);
-  // Beim Resize auch
-  window.addEventListener('resize', setBarPos, {passive:true});
-})();
-</script>
 
 
 <!-- Filter Bottom Sheet (Mobile) -->
@@ -1924,10 +1901,6 @@ function openDp(key, cellEl) {
   });
 
   overlay.classList.add('on');
-  document.body.style.top = `-${window.scrollY}px`;
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-  document.body.style.overflowY = 'scroll';
 }
 
 function closeDp() {
@@ -2095,7 +2068,7 @@ function renderTagView(cal, base) {
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
         </div>`;
-      el.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openDp(key,null);});
+      el.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
       body.appendChild(el);
     });
   }
@@ -2193,7 +2166,7 @@ function renderWocheView(cal, base) {
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
           </div>`;
-        item.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openDp(key,null);});
+        item.addEventListener('click',(e)=>{e.preventDefault();e.stopPropagation();openEvtModal(ev,key);});
         body.appendChild(item);
       });
     }
@@ -2418,6 +2391,7 @@ let currentEvtId = null;
 let currentEvtData = null;
 
 function openEvtModal(ev, dateKey) {
+  const _sy = window.scrollY;
   const overlay = document.getElementById('evtModalOverlay');
   const content = document.getElementById('evtModalContent');
   currentEvtId = ev.googleId || null;
@@ -2458,23 +2432,13 @@ function openEvtModal(ev, dateKey) {
     ${ev.description ? `<div class="evt-modal-row"><span class="evt-modal-icon">📝</span><span>${ev.description.substring(0,200)}</span></div>` : ''}
   `;
   overlay.classList.add('on');
-  document.body.style.top = `-${window.scrollY}px`;
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-  document.body.style.overflowY = 'scroll';
+  requestAnimationFrame(() => window.scrollTo(0, _sy));
 }
 
 function closeEvtModal() {
   document.getElementById('evtModalOverlay').classList.remove('on');
   currentEvtId = null;
   currentEvtData = null;
-  // Body scroll unlock
-  const scrollY = parseInt(document.body.style.top || '0') * -1;
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  document.body.style.overflowY = '';
-  window.scrollTo(0, scrollY);
 }
 
 async function deleteCurrentEvent() {
