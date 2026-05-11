@@ -360,7 +360,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.1</div>
+      <div style="font-family:'Inter',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.2</div>
     </div>
   </div>
 </header>
@@ -581,124 +581,19 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union Berlin" style="width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3));">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league">Bundesliga 2025/26 · Saisonende</div>
+        <div class="union-league" id="unionLeague">Bundesliga · wird geladen…</div>
       </div>
     </div>
     <div class="union-rank">
-      <div class="union-rank-num">13.</div>
+      <div class="union-rank-num" id="unionRank">–</div>
       <div class="union-rank-lbl">Platz</div>
     </div>
   </div>
-  <div class="union-body">
-
-    <!-- Top stats row -->
-    <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Punkte</div>
-        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;">33</div>
-        <div class="union-stat-sub">von 102 mögl.</div>
-      </div>
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Bilanz</div>
-        <div class="union-stat-val" style="font-size:14px;">8S · 9U · 15N</div>
-        <div class="union-stat-sub">32 Spiele</div>
-      </div>
-      <div class="union-stat" style="text-align:center;">
-        <div class="union-stat-lbl">Tore</div>
-        <div class="union-stat-val" style="font-size:14px;">38 : 54</div>
-        <div class="union-stat-sub">-16 Differenz</div>
-      </div>
-    </div>
-
-    <!-- Form + Abstand -->
-    <div class="union-row">
-      <div class="union-stat">
-        <div class="union-stat-lbl">Letzte 5 Spiele</div>
-        <div class="union-form" style="margin-top:6px;">
-          <div class="union-form-dot d">U</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot l">N</div>
-          <div class="union-form-dot d">U</div>
-        </div>
-        <div class="union-stat-sub" style="margin-top:6px;">2 Pkt. aus 5 Spielen</div>
-      </div>
-      <div class="union-stat">
-        <div class="union-stat-lbl">Tabellenumfeld</div>
-        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">12. Hamburger SV</span><span style="font-weight:700;">34 Pkt.</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;background:var(--union-l);padding:2px 5px;border-radius:4px;"><span style="color:var(--union);font-weight:600;">13. Union Berlin</span><span style="font-weight:700;color:var(--union);">33 Pkt.</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;"><span style="color:var(--t2);">14. 1. FC Köln</span><span style="font-weight:700;">32 Pkt.</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Letztes Spiel -->
-    <div class="union-stat">
-      <div class="union-stat-lbl">Letztes Spiel · Sa. 2. Mai · Heimspiel</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
-        <div style="display:flex;align-items:center;gap:6px;flex:1;">
-          <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" style="width:24px;height:24px;object-fit:contain;" onerror="this.style.display='none'">
-          <span style="font-size:12px;font-weight:700;">Union Berlin</span>
-        </div>
-        <div style="font-size:20px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;">2 : 2</div>
-        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
-          <span style="font-size:12px;font-weight:700;">1. FC Köln</span>
-          <img src="https://tmssl.akamaized.net/images/wappen/head/3.png" style="width:24px;height:24px;object-fit:contain;" onerror="this.style.display='none'">
-        </div>
-      </div>
-      <div class="union-stat-sub" style="text-align:center;margin-top:4px;">Unentschieden · Bundesliga</div>
-    </div>
-
-    <!-- Nächste Spiele -->
-    <div class="union-next">
-      <div class="union-next-lbl">Nächste & letzte Spiele der Saison</div>
-      <!-- Mainz vs Union -->
-      <div class="union-next-game">
-        <div style="flex:1;">
-          <div class="match-row">
-            <img src="https://tmssl.akamaized.net/images/wappen/head/39.png" class="match-logo" alt="Mainz" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>⚽</span>'">
-            <span class="match-vs">vs</span>
-            <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" class="match-logo" alt="Union" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>🔴</span>'">
-            <span class="match-team">FSV Mainz vs Union Berlin</span>
-          </div>
-          <div class="union-next-date">So. 10. Mai · 19:30 Uhr · Auswärts</div>
-        </div>
-        <div style="text-align:right;flex-shrink:0;">
-          <div class="union-prob">Siegchance 22%</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Unentschieden 24%</div>
-        </div>
-      </div>
-      <!-- Union vs Augsburg -->
-      <div class="union-next-game" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
-        <div style="flex:1;">
-          <div class="match-row">
-            <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" class="match-logo" alt="Union" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>🔴</span>'">
-            <span class="match-vs">vs</span>
-            <img src="https://tmssl.akamaized.net/images/wappen/head/167.png" class="match-logo" alt="Augsburg" onerror="this.outerHTML='<span class=\'match-logo-emoji\'>⚽</span>'">
-            <span class="match-team">Union Berlin vs FC Augsburg</span>
-          </div>
-          <div class="union-next-date">Sa. 16. Mai · 15:30 Uhr · Heimspiel</div>
-        </div>
-        <div style="text-align:right;flex-shrink:0;">
-          <div style="font-size:10px;font-weight:700;color:var(--green);">Saisonfinale 🏁</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:1px;">Letztes Spiel</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Saisonziel -->
-    <div class="union-stat" style="background:var(--union-l);border-color:rgba(232,0,28,.15);">
-      <div class="union-stat-lbl" style="color:var(--union);">Saisonbilanz & Ausblick</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-top:4px;">
-        Klassenerhalt gesichert 🔴 · Noch <strong style="color:var(--t);">2 Spiele</strong> verbleibend · 
-        Max. <strong style="color:var(--t);">39 Punkte</strong> möglich · 
-        Abstand zu Platz 12: <strong style="color:var(--t);">1 Punkt</strong>
-      </div>
-    </div>
-
+  <div class="union-body" id="unionBody">
+    <div style="padding:24px;text-align:center;color:rgba(255,255,255,.5);font-size:12px;">Lade Daten…</div>
   </div>
 </div>
+
 
 </main>
 
@@ -719,23 +614,204 @@ function diff(a,b){return Math.round((b-a)/86400000);}
 function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
 function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
+// ── UNION BERLIN DYNAMISCH ──────────────────────────────────────────
+const UNION_CACHE_KEY = 'union_data_v2';
+const UNION_ID = 7; // openligadb Team-ID für 1. FC Union Berlin
+
+async function loadUnionData() {
+  // Cache: einmal pro Tag laden
+  const cached = localStorage.getItem(UNION_CACHE_KEY);
+  if(cached) {
+    const {data, ts} = JSON.parse(cached);
+    if(Date.now() - ts < 6*60*60*1000) { renderUnionCard(data); return; } // 6h Cache
+  }
+  try {
+    const season = new Date().getMonth() >= 6 ? new Date().getFullYear() : new Date().getFullYear()-1;
+    const [matchRes, tableRes] = await Promise.all([
+      fetch(`https://api.openligadb.de/getmatchdata/bl1/${season}`),
+      fetch(`https://api.openligadb.de/getbltable/bl1/${season}`)
+    ]);
+    const matches = await matchRes.json();
+    const table = await tableRes.json();
+    const data = { matches, table, fetchedAt: Date.now() };
+    localStorage.setItem(UNION_CACHE_KEY, JSON.stringify({data, ts: Date.now()}));
+    renderUnionCard(data);
+  } catch(e) {
+    console.warn('Union Daten Fehler:', e);
+    document.getElementById('unionBody').innerHTML =
+      '<div style="padding:16px;text-align:center;font-size:12px;color:rgba(255,255,255,.4);">Keine Verbindung</div>';
+  }
+}
+
+function renderUnionCard({matches, table}) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const WK2 = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const MK2 = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+
+  // Tabelle: Union finden
+  const unionRow = table.find(r => r.teamInfoId === UNION_ID || r.shortName?.includes('Union'));
+  const rank = unionRow?.rank || '–';
+  const pts = unionRow?.points || 0;
+  const wins = unionRow?.won || 0;
+  const draws = unionRow?.draw || 0;
+  const losses = unionRow?.lost || 0;
+  const gf = unionRow?.goals || 0;
+  const ga = unionRow?.opponentGoals || 0;
+  const played = wins + draws + losses;
+
+  document.getElementById('unionRank').textContent = rank + '.';
+  document.getElementById('unionLeague').textContent = `Bundesliga 2024/25 · Platz ${rank}`;
+
+  // Tabelle Umfeld (rank-1, rank, rank+1)
+  const neighbors = table.filter(r => r.rank >= rank-1 && r.rank <= rank+1);
+
+  // Spiele: Union matches
+  const unionMatches = matches
+    .filter(m => m.team1?.teamId === UNION_ID || m.team2?.teamId === UNION_ID)
+    .sort((a,b) => new Date(a.matchDateTime) - new Date(b.matchDateTime));
+
+  // Letztes abgeschlossenes Spiel
+  const past = unionMatches.filter(m => m.matchIsFinished);
+  const lastMatch = past[past.length-1];
+
+  // Nächste Spiele
+  const future = unionMatches.filter(m => !m.matchIsFinished);
+
+  // Letzte 5 Ergebnisse für Form
+  const last5 = past.slice(-5).map(m => {
+    const isHome = m.team1?.teamId === UNION_ID;
+    const gFor = isHome ? m.matchResults?.[0]?.pointsTeam1 : m.matchResults?.[0]?.pointsTeam2;
+    const gAga = isHome ? m.matchResults?.[0]?.pointsTeam2 : m.matchResults?.[0]?.pointsTeam1;
+    if(gFor == null) return null;
+    return gFor > gAga ? 'W' : gFor === gAga ? 'D' : 'L';
+  }).filter(Boolean);
+
+  function fmtMatchDate(dt) {
+    const d = new Date(dt);
+    return `${WK2[d.getDay()]}. ${d.getDate()}. ${MK2[d.getMonth()]} · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`;
+  }
+
+  function matchLogoHTML(team, side) {
+    const name = team?.teamName || '';
+    return `<img src="https://tmssl.akamaized.net/images/wappen/head/${team?.teamId || 0}.png"
+      style="width:22px;height:22px;object-fit:contain;" onerror="this.style.opacity='.2'">`;
+  }
+
+  function lastMatchHTML() {
+    if(!lastMatch) return '';
+    const isHome = lastMatch.team1?.teamId === UNION_ID;
+    const res = lastMatch.matchResults?.[0];
+    const g1 = res?.pointsTeam1 ?? '–';
+    const g2 = res?.pointsTeam2 ?? '–';
+    const gFor = isHome ? g1 : g2;
+    const gAga = isHome ? g2 : g1;
+    const resultLabel = gFor > gAga ? 'Sieg' : gFor === gAga ? 'Unentschieden' : 'Niederlage';
+    const opponent = isHome ? lastMatch.team2 : lastMatch.team1;
+    return `<div class="union-stat">
+      <div class="union-stat-lbl">Letztes Spiel · ${isHome?'Heim':'Auswärts'} · ${fmtMatchDate(lastMatch.matchDateTime)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;flex:1;">
+          ${matchLogoHTML(isHome?lastMatch.team1:lastMatch.team2)}
+          <span style="font-size:12px;font-weight:700;">${isHome?'Union Berlin':opponent?.teamName}</span>
+        </div>
+        <div style="font-size:18px;font-weight:300;letter-spacing:-1px;color:var(--t2);flex-shrink:0;">${isHome?g1:g2} : ${isHome?g2:g1}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end;">
+          <span style="font-size:12px;font-weight:700;">${isHome?opponent?.teamName:'Union Berlin'}</span>
+          ${matchLogoHTML(isHome?lastMatch.team2:lastMatch.team1)}
+        </div>
+      </div>
+      <div class="union-stat-sub" style="text-align:center;margin-top:4px;">${resultLabel} · Bundesliga</div>
+    </div>`;
+  }
+
+  function nextMatchesHTML() {
+    if(!future.length) return '<div class="union-stat" style="font-size:12px;color:var(--t2);padding:10px 12px;">Saison beendet 🏁</div>';
+    return `<div class="union-next">
+      <div class="union-next-lbl">Nächste Spiele</div>
+      ${future.slice(0,3).map((m,i) => {
+        const isHome = m.team1?.teamId === UNION_ID;
+        const opp = isHome ? m.team2 : m.team1;
+        return `<div class="union-next-game"${i>0?' style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"':''}>
+          <div style="flex:1;">
+            <div class="match-row">
+              ${matchLogoHTML(isHome?m.team1:opp)} <span class="match-vs">vs</span> ${matchLogoHTML(isHome?opp:m.team2)}
+              <span class="match-team">${isHome?'Union Berlin':opp?.teamName} vs ${isHome?opp?.teamName:'Union Berlin'}</span>
+            </div>
+            <div class="union-next-date">${fmtMatchDate(m.matchDateTime)} · ${isHome?'Heimspiel':'Auswärts'}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  const formHTML = last5.map(r =>
+    `<div class="union-form-dot ${r==='W'?'w':r==='D'?'d':'l'}">${r==='W'?'S':r==='D'?'U':'N'}</div>`
+  ).join('');
+
+  const tableHTML = neighbors.map(r =>
+    `<div style="display:flex;justify-content:space-between;font-size:10.5px;${r.rank===rank?'background:var(--union-l);padding:2px 5px;border-radius:4px;':''}">
+      <span style="${r.rank===rank?'color:var(--union);font-weight:600;':'color:var(--t2);'}">${r.rank}. ${r.shortName||r.teamName}</span>
+      <span style="font-weight:700;${r.rank===rank?'color:var(--union);':''}">${r.points} Pkt.</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('unionBody').innerHTML = `
+    <div class="union-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Punkte</div>
+        <div class="union-stat-val" style="font-size:22px;font-weight:300;letter-spacing:-1px;">${pts}</div>
+        <div class="union-stat-sub">aus ${played} Spielen</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Bilanz</div>
+        <div class="union-stat-val" style="font-size:14px;">${wins}S · ${draws}U · ${losses}N</div>
+        <div class="union-stat-sub">${played} Spiele</div>
+      </div>
+      <div class="union-stat" style="text-align:center;">
+        <div class="union-stat-lbl">Tore</div>
+        <div class="union-stat-val" style="font-size:14px;">${gf} : ${ga}</div>
+        <div class="union-stat-sub">${gf-ga > 0?'+':''}${gf-ga} Diff.</div>
+      </div>
+    </div>
+    <div class="union-row">
+      <div class="union-stat">
+        <div class="union-stat-lbl">Letzte ${last5.length} Spiele</div>
+        <div class="union-form" style="margin-top:6px;">${formHTML}</div>
+      </div>
+      <div class="union-stat">
+        <div class="union-stat-lbl">Tabellenumfeld</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">${tableHTML}</div>
+      </div>
+    </div>
+    ${lastMatchHTML()}
+    ${nextMatchesHTML()}
+  `;
+}
+
+loadUnionData();
+
 // ── THEME ──
 const THEME_KEY='hub_theme';
 function applyTheme(t){
   const html=document.documentElement;
-  html.setAttribute('data-theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'☀️':'🌙';
-  localStorage.setItem(THEME_KEY,t);
+  const isDark=t==='dark'||(t==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  html.setAttribute('data-theme',isDark?'dark':'light');
+  document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';
+  if(t!=='auto') localStorage.setItem(THEME_KEY,t);
 }
 function toggleTheme(){
   const cur=document.documentElement.getAttribute('data-theme');
-  const isDark=cur==='dark'||(cur==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
+  const isDark=cur==='dark';
+  localStorage.setItem(THEME_KEY,isDark?'light':'dark');
   applyTheme(isDark?'light':'dark');
 }
 // Init theme
 const saved=localStorage.getItem(THEME_KEY);
-if(saved){applyTheme(saved);}
-else{document.getElementById('themeBtn').textContent=window.matchMedia('(prefers-color-scheme:dark)').matches?'☀️':'🌙';}
+applyTheme(saved||'auto');
+// Live-Listener für System-Theme-Wechsel
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
+  if(!localStorage.getItem(THEME_KEY)) applyTheme('auto');
+});
 
 // ── CLOCK ──
 const now=new Date();
