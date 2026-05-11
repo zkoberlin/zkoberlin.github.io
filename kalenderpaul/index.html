@@ -329,7 +329,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   padding: 22px;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,.05);
-  overflow: clip;
   color: var(--text);
 }
 .mt { font-size: 15px; font-weight: 600; letter-spacing: -.3px; margin-bottom: 14px; -webkit-font-smoothing: antialiased; }
@@ -562,8 +561,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 6px 22px 4px;
-  margin: -22px -22px 8px -22px;
-  border-radius: 14px 14px 0 0;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
 }
 .sticky-bar-month {
   font-size: 13px; font-weight: 600; color: var(--text);
@@ -582,7 +581,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .sticky-bar-days span.we { color: var(--red); opacity: .7; }
 
 @media (max-width: 600px) {
-  .sticky-bar { padding: 6px 8px 3px; margin: -12px -8px 8px -8px; }
+  .sticky-bar { padding: 6px 12px 3px; border-radius: 12px 12px 0 0; }
   .sticky-bar-month { font-size: 12px; }
   .sticky-bar-days { grid-template-columns: 18px repeat(7, 1fr); gap: 1px; }
   .sticky-bar-days span { font-size: 9px; }
@@ -726,12 +725,17 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .evt-modal-header { position: relative; }
 
 @media (min-width: 601px) {
-  .evt-modal-overlay { align-items: center; }
+  .evt-modal-overlay {
+    align-items: center;
+    justify-content: center;
+  }
   .evt-modal {
     border-radius: 20px;
     max-width: 420px;
-    margin: 0 auto;
+    width: 90%;
+    margin: 0;
     animation: pop .2s ease;
+    position: relative;
   }
 }
 
@@ -1722,11 +1726,16 @@ function buildMonth(year, month) {
   const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
   let dow = fl.getDay(); if(dow===0) dow=7; dow--;
 
+  // Wrapper without overflow so sticky works
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:relative;margin-bottom:20px;';
+
   const card = document.createElement('div');
   card.className = 'mc';
   card.id = `m-${year}-${month}`;
+  card.style.cssText = 'margin-bottom:0;border-radius:0 0 16px 16px;padding-top:8px;';
 
-  // Sticky bar with month name + weekdays
+  // Sticky bar OUTSIDE .mc
   const stickyBar = document.createElement('div');
   stickyBar.className = 'sticky-bar';
   const stickyMonth = document.createElement('div');
@@ -1737,7 +1746,7 @@ function buildMonth(year, month) {
   stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
   stickyBar.appendChild(stickyMonth);
   stickyBar.appendChild(stickyDays);
-  card.appendChild(stickyBar);
+  wrapper.appendChild(stickyBar);
 
   const grid = document.createElement('div');
   grid.className = 'cg';
@@ -1831,7 +1840,8 @@ function buildMonth(year, month) {
     wk++;
   }
   card.appendChild(grid);
-  return card;
+  wrapper.appendChild(card);
+  return wrapper;
 }
 
 let selectedCell = null;
@@ -2261,9 +2271,11 @@ function buildMonthFull(year, month, baseDate) {
   const fl = new Date(year,month,1), ll = new Date(year,month+1,0);
   let dow = fl.getDay(); if(dow===0) dow=7; dow--;
 
-  const card = document.createElement('div');
-  card.className = 'mc';
+  // Wrapper without overflow so sticky works
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:relative;margin-bottom:20px;';
 
+  // Sticky-bar OUTSIDE .mc so position:sticky isn't blocked by overflow:clip
   const stickyBar = document.createElement('div');
   stickyBar.className = 'sticky-bar';
   const stickyMonth = document.createElement('div');
@@ -2274,7 +2286,11 @@ function buildMonthFull(year, month, baseDate) {
   stickyDays.innerHTML = '<span></span>' + WD.map((d,i)=>`<span class="${i>=5?'we':''}">${d}</span>`).join('');
   stickyBar.appendChild(stickyMonth);
   stickyBar.appendChild(stickyDays);
-  card.appendChild(stickyBar);
+  wrapper.appendChild(stickyBar);
+
+  const card = document.createElement('div');
+  card.className = 'mc';
+  card.style.cssText = 'margin-bottom:0;border-radius:0 0 16px 16px;padding-top:8px;';
 
   const grid = document.createElement('div');
   grid.className = 'cg';
@@ -2328,7 +2344,8 @@ function buildMonthFull(year, month, baseDate) {
     wk++;
   }
   card.appendChild(grid);
-  return card;
+  wrapper.appendChild(card);
+  return wrapper;
 }
 
 // ── ALLE-ANSICHT (original: alle Monate ab heute) ────────────────────
