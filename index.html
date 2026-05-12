@@ -1934,64 +1934,71 @@ loadDayInfo();
 })();
 
 // ── SCHULFERIEN BERLIN ──
+// Hardcodierte Berliner Schulferien 2025/26 als primäre Quelle (API als optionaler Bonus)
+const BERLIN_FERIEN=[
+  {name:'Sommerferien',    start:new Date(2025,5,24), end:new Date(2025,7,2)},
+  {name:'Herbstferien',   start:new Date(2025,9,6),  end:new Date(2025,9,17)},
+  {name:'Weihnachtsferien',start:new Date(2025,11,22),end:new Date(2026,0,2)},
+  {name:'Winterferien',   start:new Date(2026,1,2),  end:new Date(2026,1,7)},
+  {name:'Osterferien',    start:new Date(2026,3,2),  end:new Date(2026,3,17)},
+  {name:'Pfingstferien',  start:new Date(2026,4,19), end:new Date(2026,4,22)},
+  {name:'Sommerferien',   start:new Date(2026,5,25), end:new Date(2026,7,7)},
+  {name:'Herbstferien',   start:new Date(2026,9,12), end:new Date(2026,9,23)},
+  {name:'Weihnachtsferien',start:new Date(2026,11,23),end:new Date(2027,0,2)},
+];
+
 async function loadSchulferien(){
+  const now2=new Date();
+  const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
+  const iconEl=document.getElementById('ferienIcon');
+
+  // Versuche API – wenn erfolgreich, merge mit hardcodierten Daten
+  let ferien=[...BERLIN_FERIEN];
   try{
-    // ferien-api.de – kostenlos, kein API-Key
-    const year=new Date().getFullYear();
-    // Fetch current + next year in parallel for edge cases near year end
+    const year=now2.getFullYear();
     const [r1,r2]=await Promise.all([
-      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year}`),
-      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year+1}`)
+      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year}`,{signal:AbortSignal.timeout(4000)}),
+      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year+1}`,{signal:AbortSignal.timeout(4000)})
     ]);
     const [d1,d2]=await Promise.all([r1.ok?r1.json():[], r2.ok?r2.json():[]]);
-    const all=[...d1,...d2];
-    const now2=new Date();
-    const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
-
-    // Normalize each entry to start/end Date objects
-    const ferien=all.map(f=>{
-      const s=new Date(f.start);
-      // DTEND-style: end is exclusive in some APIs → test and correct
-      let e=new Date(f.end);
-      // ferien-api.de end is inclusive already
-      return {name:f.name,start:new Date(s.getFullYear(),s.getMonth(),s.getDate()),end:new Date(e.getFullYear(),e.getMonth(),e.getDate())};
-    }).sort((a,b)=>a.start-b.start);
-
-    // Check if currently IN Ferien
-    const current=ferien.find(f=>today>=f.start&&today<=f.end);
-    const iconEl=document.getElementById('ferienIcon');
-
-    if(current){
-      // In den Ferien!
-      const daysLeft=Math.round((current.end-today)/86400000);
-      document.getElementById('ferienCountdown').textContent=
-        daysLeft===0?'🎉 Letzter Ferientag!':daysLeft===1?'noch 1 Tag':'noch '+daysLeft+' Tage';
-      document.getElementById('ferienCountdown').style.color='var(--green)';
-      document.getElementById('ferienName').textContent='🎉 '+fmtFerienName(current.name)+' – laufen gerade!';
-      document.getElementById('ferienDates').textContent=fmtFerienRange(current.start,current.end);
-      iconEl.innerHTML='<span style="font-size:20px;">🎉</span>';
-      iconEl.style.background='var(--green-l)';
-      iconEl.style.borderColor='var(--green-b)';
-    } else {
-      // Nächste Ferien
-      const next=ferien.find(f=>f.start>today);
-      if(!next){
-        document.getElementById('ferienName').textContent='Keine weiteren Ferien gefunden';
-        document.getElementById('ferienCountdown').textContent='–';
-        document.getElementById('ferienDates').textContent='–';
-        return;
-      }
-      const daysUntil=Math.round((next.start-today)/86400000);
-      document.getElementById('ferienCountdown').textContent=
-        daysUntil===1?'Morgen gehts los!':'in '+daysUntil+' Tagen';
-      document.getElementById('ferienCountdown').style.color='var(--blue)';
-      document.getElementById('ferienName').textContent=fmtFerienName(next.name);
-      document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
+    const apiData=[...d1,...d2];
+    if(apiData.length>0){
+      ferien=apiData.map(f=>{
+        const s=new Date(f.start);const e=new Date(f.end);
+        return {name:f.name,start:new Date(s.getFullYear(),s.getMonth(),s.getDate()),end:new Date(e.getFullYear(),e.getMonth(),e.getDate())};
+      });
     }
-  }catch(e){
-    document.getElementById('ferienName').textContent='Ferien-API nicht erreichbar';
-    document.getElementById('ferienCountdown').textContent='–';
-    document.getElementById('ferienDates').textContent='–';
+  }catch(e){/* API nicht erreichbar – nutze hardcodierte Daten */}
+
+  ferien.sort((a,b)=>a.start-b.start);
+
+  // Check if currently IN Ferien
+  const current=ferien.find(f=>today>=f.start&&today<=f.end);
+
+  if(current){
+    const daysLeft=Math.round((current.end-today)/86400000);
+    document.getElementById('ferienCountdown').textContent=
+      daysLeft===0?'🎉 Letzter Ferientag!':daysLeft===1?'noch 1 Tag':'noch '+daysLeft+' Tage';
+    document.getElementById('ferienCountdown').style.color='var(--green)';
+    document.getElementById('ferienName').textContent='🎉 '+fmtFerienName(current.name)+' – laufen gerade!';
+    document.getElementById('ferienDates').textContent=fmtFerienRange(current.start,current.end);
+    iconEl.innerHTML='<span style="font-size:20px;">🎉</span>';
+    iconEl.style.background='var(--green-l)';
+    iconEl.style.borderColor='var(--green-b)';
+  } else {
+    const next=ferien.find(f=>f.start>today);
+    if(!next){
+      document.getElementById('ferienName').textContent='Keine weiteren Ferien gefunden';
+      document.getElementById('ferienCountdown').textContent='–';
+      document.getElementById('ferienDates').textContent='–';
+      return;
+    }
+    const daysUntilF=Math.round((next.start-today)/86400000);
+    document.getElementById('ferienCountdown').textContent=
+      daysUntilF===1?'Morgen gehts los!':'in '+daysUntilF+' Tagen';
+    document.getElementById('ferienCountdown').style.color='var(--blue)';
+    document.getElementById('ferienName').textContent=fmtFerienName(next.name);
+    document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
   }
 }
 function fmtFerienName(n){
@@ -2074,7 +2081,13 @@ async function loadFin(){
       try{const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
       if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}}catch(e){}
     }
-    if(!S){const raw=localStorage.getItem('fp3');if(!raw){return;}S=JSON.parse(raw);}
+    if(!S){const raw=localStorage.getItem('fp3');if(!raw){
+      document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';
+      document.getElementById('sparQuote').textContent='–';
+      document.getElementById('sparAbs').textContent='Noch keine Daten';
+      if(window._lbTick)window._lbTick();
+      return;
+    }S=JSON.parse(raw);}
     const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
     let total=0;
     ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
