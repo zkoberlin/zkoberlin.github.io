@@ -1579,7 +1579,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1864,7 +1864,8 @@ function openDp(key, cellEl) {
     const color = colorMap[ev.c] || '#aeaeb2';
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
+    const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
+    const timeHtml = timeRange ? `<div class="et">${timeRange}${ev.location ? ' · '+ev.location : ''}</div>` : (ev.location ? `<div class="et">${ev.location}</div>` : '');
     const badges = [];
     if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
     if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
@@ -2112,8 +2113,8 @@ function renderTagView(cal, base) {
       const color = colorMap[ev.c] || '#aeaeb2';
       const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
       const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      const timeHtml = time
-        ? `<div class="et">${time} Uhr${ev.location ? ' · ' + ev.location.replace(/\\/g,'') : ''}</div>`
+      const timeHtml = timeRange
+        ? `<div class="et">${timeRange}${ev.location ? ' · ' + ev.location.replace(/\\/g,'') : ''}</div>`
         : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
       const badges = [];
       if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
@@ -2210,8 +2211,9 @@ function renderWocheView(cal, base) {
         if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
         if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
         if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-        const timeHtml = time
-          ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>`
+        const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
+        const timeHtml = timeRange
+          ? `<div class="et">${timeRange}${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>`
           : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
 
         const item = document.createElement('div');
@@ -2254,8 +2256,9 @@ function openDpBelowGrid(key, gridEl) {
   evs.forEach((ev, i) => {
     const color = colorMap2[ev.c] || '#aeaeb2';
     const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+      const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
     const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-    const timeHtml = time ? `<div class="et">${time} Uhr${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
+    const timeHtml = timeRange ? `<div class="et">${timeRange}${ev.location ? ' · '+ev.location.replace(/\\/g,'') : ''}</div>` : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
     const badges = [];
     if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
     if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
@@ -2470,7 +2473,8 @@ function openEvtModal(ev, dateKey) {
   // Uhrzeit: erst startTime, dann aus Titel regex, dann aus ev.t, sonst Ganztägig
   const timeMatch = ev.t.match(/(\d{1,2}:\d{2})/);
   const rawTime = ev.startTime || (timeMatch ? timeMatch[1] : null);
-  const time = rawTime ? rawTime + ' Uhr' : (ev.allDay === false ? '' : 'Ganztägig');
+  const timeEnd = ev.endTime && ev.endTime !== rawTime ? ev.endTime : null;
+  const time = rawTime ? (timeEnd ? rawTime + ' – ' + timeEnd + ' Uhr' : rawTime + ' Uhr') : (ev.allDay === false ? '' : 'Ganztägig');
   const showTimeRow = rawTime || ev.allDay === false;
   const cleanTitle = ev.t.replace(/^\S+\s/, '').replace(/\s*\d{1,2}:\d{2}$/, '').trim();
 
@@ -2913,6 +2917,17 @@ function parseICS(text) {
       if(key === 'DTEND') {
         current.endRaw = val;
         current.end = parseICSDate(val);
+        if(val.includes('T')) {
+          const clean = val.replace('Z','').replace(/TZID=[^:]+:/,'');
+          const h = clean.substring(9,11);
+          const m2 = clean.substring(11,13);
+          if(val.endsWith('Z')) {
+            const d = new Date(Date.UTC(+clean.substring(0,4),+clean.substring(4,6)-1,+clean.substring(6,8),+h,+m2));
+            current.endTime = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+          } else {
+            current.endTime = h + ':' + m2;
+          }
+        }
       }
     }
   }
@@ -2995,6 +3010,7 @@ function injectICalEvents(events, url='') {
         if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
           const entry = {t: display, c: cat, fromIcal: true};
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
+          if(ev.endTime && key === ev.start) entry.endTime = ev.endTime;
           if(ev.location) entry.location = ev.location;
           if(ev.description) entry.description = ev.description;
           SE[key].push(entry);
@@ -3006,6 +3022,7 @@ function injectICalEvents(events, url='') {
       if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
         const entry = {t: display, c: cat, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
+        if(ev.endTime) entry.endTime = ev.endTime;
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
         if(ev.uid) {
