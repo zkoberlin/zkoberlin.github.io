@@ -2595,7 +2595,7 @@ function filterBy(cat) {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const matches = [];
   Object.keys(SE).sort().filter(d => d >= todayKey).forEach(d => {
-    const _sk=['sport','beat81','radtour','tour'];
+    const _sk=['sport','beat81','radtour','tour','lauf','rennen','wettkampf'];
     const evs=(SE[d]||[]).filter(ev=>cat==='e-sport'?(ev.c==='e-sport'||_sk.some(kw=>(ev.t||'').toLowerCase().includes(kw))):ev.c===cat);
     if(evs.length) matches.push({key:d,evs});
   });
@@ -2721,14 +2721,14 @@ function openFilterSheet() {
   // Sync counts and active state
   const cats = ['e-kids','e-dani','e-maja','e-schwerin','e-union','e-trip','e-feier','e-kidev','e-hellomed','e-konzert','e-haus','e-bday','e-sport'];
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
-  const _sk2 = ['sport','beat81','radtour','tour'];
+
   cats.forEach(cat => {
     const el = document.getElementById('fsfc-' + cat);
     if(!el) return;
     const count = Object.keys(SE).filter(d => d >= todayKey).reduce((n,d) => {
       const evs = SE[d] || [];
       if(cat === 'e-sport') {
-        return n + evs.filter(ev => ev.c === 'e-sport' || _sk2.some(kw => (ev.t||'').toLowerCase().includes(kw))).length;
+        return n + evs.filter(ev => { const tt=(ev.t||'').toLowerCase(); return ev.c==='e-sport'||tt.includes('sport')||tt.includes('beat81')||tt.includes('radtour')||/\btour\b/.test(tt)||/lauf/.test(tt)||/rennen/.test(tt)||/wettkampf/.test(tt); }).length;
       }
       return n + evs.filter(ev => ev.c === cat || ev.c === cat+'-hidden').length;
     }, 0);
@@ -2771,7 +2771,7 @@ function closeFilterSheet() {
 function hideEmptyFilters() {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const futureDates = Object.keys(SE).filter(d => d >= todayKey);
-  const _sk = ['sport','beat81','radtour','tour'];
+  const _sk = ['sport','beat81','radtour','tour','lauf','rennen','wettkampf'];
 
   // Counts in inline grid aktualisieren + leere ausblenden
   document.querySelectorAll('.fgi-tile[data-cat]').forEach(tile => {
@@ -2957,7 +2957,7 @@ function catFromTitle(title) {
   if(t.includes('kids bei dani'))      return 'e-dani';
   if(t.includes('kids'))               return 'e-kids';
   if(t.includes('bodensee')||t.includes('leba')||t.includes('łeba')||t.includes('urlaub')||t.includes('parchim')) return 'e-trip';
-  if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)) return 'e-sport';
+  if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)||/lauf/.test(t)||/rennen/.test(t)||/wettkampf/.test(t)) return 'e-sport';
   if(t.includes('maja')||t.includes('kawi')||t.includes('sing dela')||t.includes('finch')||t.includes('olivia')||t.includes('geburtstagsdrinks')) return 'e-maja';
   if(t.includes('konzert')||t.includes('bierwalker')||t.includes('markus krebs')||t.includes('6k united')) return 'e-konzert';
   if(t.includes('alma'))               return 'e-kidev';
