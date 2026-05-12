@@ -377,7 +377,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.27</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.28</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -505,6 +505,20 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:3px;">🎂 Rosa · 29. April</div>
       <div style="font-size:15px;font-weight:700;color:var(--pink);font-variant-numeric:tabular-nums;" id="rosaBday">–</div>
       <div style="font-size:10px;color:var(--t2);margin-top:1px;" id="rosaAge">–</div>
+    </div>
+  </div>
+  <!-- Schulferien Berlin -->
+  <div style="border-top:1px solid var(--border);padding:10px 20px 13px;" id="erFerien">
+    <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:7px;">🏫 Berliner Schulferien</div>
+    <div id="ferienContent" style="display:flex;align-items:center;gap:10px;">
+      <div style="width:44px;height:44px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;" id="ferienIcon">
+        <span style="font-size:20px;">📅</span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:700;letter-spacing:-.2px;font-variant-numeric:tabular-nums;" id="ferienCountdown">–</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:1px;" id="ferienName">Lädt…</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:1px;" id="ferienDates">–</div>
+      </div>
     </div>
   </div>
 </div>
@@ -1919,7 +1933,85 @@ loadDayInfo();
   document.getElementById('rosaAge').textContent='wird '+rosaNextAge+' Jahre alt';
 })();
 
-// ── WETTER ──
+// ── SCHULFERIEN BERLIN ──
+async function loadSchulferien(){
+  try{
+    // ferien-api.de – kostenlos, kein API-Key
+    const year=new Date().getFullYear();
+    // Fetch current + next year in parallel for edge cases near year end
+    const [r1,r2]=await Promise.all([
+      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year}`),
+      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year+1}`)
+    ]);
+    const [d1,d2]=await Promise.all([r1.ok?r1.json():[], r2.ok?r2.json():[]]);
+    const all=[...d1,...d2];
+    const now2=new Date();
+    const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
+
+    // Normalize each entry to start/end Date objects
+    const ferien=all.map(f=>{
+      const s=new Date(f.start);
+      // DTEND-style: end is exclusive in some APIs → test and correct
+      let e=new Date(f.end);
+      // ferien-api.de end is inclusive already
+      return {name:f.name,start:new Date(s.getFullYear(),s.getMonth(),s.getDate()),end:new Date(e.getFullYear(),e.getMonth(),e.getDate())};
+    }).sort((a,b)=>a.start-b.start);
+
+    // Check if currently IN Ferien
+    const current=ferien.find(f=>today>=f.start&&today<=f.end);
+    const iconEl=document.getElementById('ferienIcon');
+
+    if(current){
+      // In den Ferien!
+      const daysLeft=Math.round((current.end-today)/86400000);
+      document.getElementById('ferienCountdown').textContent=
+        daysLeft===0?'🎉 Letzter Ferientag!':daysLeft===1?'noch 1 Tag':'noch '+daysLeft+' Tage';
+      document.getElementById('ferienCountdown').style.color='var(--green)';
+      document.getElementById('ferienName').textContent='🎉 '+fmtFerienName(current.name)+' – laufen gerade!';
+      document.getElementById('ferienDates').textContent=fmtFerienRange(current.start,current.end);
+      iconEl.innerHTML='<span style="font-size:20px;">🎉</span>';
+      iconEl.style.background='var(--green-l)';
+      iconEl.style.borderColor='var(--green-b)';
+    } else {
+      // Nächste Ferien
+      const next=ferien.find(f=>f.start>today);
+      if(!next){
+        document.getElementById('ferienName').textContent='Keine weiteren Ferien gefunden';
+        document.getElementById('ferienCountdown').textContent='–';
+        document.getElementById('ferienDates').textContent='–';
+        return;
+      }
+      const daysUntil=Math.round((next.start-today)/86400000);
+      document.getElementById('ferienCountdown').textContent=
+        daysUntil===1?'Morgen gehts los!':'in '+daysUntil+' Tagen';
+      document.getElementById('ferienCountdown').style.color='var(--blue)';
+      document.getElementById('ferienName').textContent=fmtFerienName(next.name);
+      document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
+    }
+  }catch(e){
+    document.getElementById('ferienName').textContent='Ferien-API nicht erreichbar';
+    document.getElementById('ferienCountdown').textContent='–';
+    document.getElementById('ferienDates').textContent='–';
+  }
+}
+function fmtFerienName(n){
+  // Normalize German holiday names from API slug-style
+  const map={
+    'winterferien':'Winterferien','osterferien':'Osterferien','pfingstferien':'Pfingstferien',
+    'sommerferien':'Sommerferien','herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien'
+  };
+  const low=n.toLowerCase();
+  for(const k of Object.keys(map)){if(low.includes(k))return map[k];}
+  return n.charAt(0).toUpperCase()+n.slice(1);
+}
+function fmtFerienRange(start,end){
+  const opts={day:'numeric',month:'numeric'};
+  const s=start.toLocaleDateString('de-DE',opts);
+  const e=end.toLocaleDateString('de-DE',opts);
+  const dur=Math.round((end-start)/86400000)+1;
+  return`${s} – ${e} · ${dur} Tage`;
+}
+loadSchulferien();
 const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
 const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
 
