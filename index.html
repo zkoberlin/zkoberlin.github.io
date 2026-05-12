@@ -1935,16 +1935,16 @@ loadDayInfo();
 
 // ── SCHULFERIEN BERLIN ──
 // Hardcodierte Berliner Schulferien 2025/26 als primäre Quelle (API als optionaler Bonus)
+// Offizielle Berliner Schulferien (Quelle: berlin.de) – KEINE Pfingstferien in Berlin!
 const BERLIN_FERIEN=[
-  {name:'Sommerferien',    start:new Date(2025,5,24), end:new Date(2025,7,2)},
-  {name:'Herbstferien',   start:new Date(2025,9,6),  end:new Date(2025,9,17)},
-  {name:'Weihnachtsferien',start:new Date(2025,11,22),end:new Date(2026,0,2)},
-  {name:'Winterferien',   start:new Date(2026,1,2),  end:new Date(2026,1,7)},
-  {name:'Osterferien',    start:new Date(2026,3,2),  end:new Date(2026,3,17)},
-  {name:'Pfingstferien',  start:new Date(2026,4,19), end:new Date(2026,4,22)},
-  {name:'Sommerferien',   start:new Date(2026,5,25), end:new Date(2026,7,7)},
-  {name:'Herbstferien',   start:new Date(2026,9,12), end:new Date(2026,9,23)},
-  {name:'Weihnachtsferien',start:new Date(2026,11,23),end:new Date(2027,0,2)},
+  {name:'Sommerferien',    start:new Date(2025,5,19), end:new Date(2025,7,1)},   // 19.06.–01.08.2025
+  {name:'Herbstferien',   start:new Date(2025,9,6),  end:new Date(2025,9,17)},  // 06.10.–17.10.2025
+  {name:'Weihnachtsferien',start:new Date(2025,11,22),end:new Date(2026,0,2)},  // 22.12.2025–02.01.2026
+  {name:'Winterferien',   start:new Date(2026,0,29), end:new Date(2026,1,1)},   // 29.01.–01.02.2026
+  {name:'Osterferien',    start:new Date(2026,3,2),  end:new Date(2026,3,17)},  // 02.04.–17.04.2026
+  {name:'Sommerferien',   start:new Date(2026,5,25), end:new Date(2026,7,7)},   // 25.06.–07.08.2026
+  {name:'Herbstferien',   start:new Date(2026,9,12), end:new Date(2026,9,23)},  // 12.10.–23.10.2026
+  {name:'Weihnachtsferien',start:new Date(2026,11,23),end:new Date(2027,0,2)},  // 23.12.2026–02.01.2027
 ];
 
 async function loadSchulferien(){
@@ -2290,18 +2290,20 @@ async function loadICAL(){
 
     // Try multiple CORS proxies in order
     const PROXIES=[
+      u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
       u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-      u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,
       u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+      u=>`https://thingproxy.freeboard.io/fetch/${u}`,
     ];
 
     let txt='';
     for(const makeUrl of PROXIES){
       try{
-        const r=await fetch(makeUrl(ICAL_URL),{signal:AbortSignal.timeout(8000)});
+        const proxyUrl=makeUrl(ICAL_URL);
+        const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(10000)});
         if(!r.ok)continue;
         const t=await r.text();
-        if(t.includes('BEGIN:VCALENDAR')){txt=t;break;}
+        if(t.includes('BEGIN:VCALENDAR')){txt=t;console.log('iCal geladen via:',proxyUrl.split('?')[0]);break;}
       }catch(e){continue;}
     }
 
