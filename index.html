@@ -73,7 +73,7 @@ html[data-theme="light"]:root{
 body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
 
 /* ── HEADER ── */
-header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+header{position:sticky;top:0;z-index:100;background:rgba(242,242,247,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;transition:background .3s;overflow:visible;}
 html[data-theme="dark"] header{background:rgba(14,14,16,.90);}
 @media(prefers-color-scheme:dark){html:not([data-theme="light"]) header{background:rgba(14,14,16,.90);}}
 
@@ -317,8 +317,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 /* ── LOAD BAR ── */
 #loadBar{
-  position:sticky;top:53px;z-index:99;
-  max-width:860px;margin:0 auto;
+  position:absolute;bottom:0;left:0;right:0;
   height:3px;
   background:transparent;
   overflow:hidden;
@@ -387,11 +386,11 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.25</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.26</div>
     </div>
   </div>
+  <div id="loadBar"><div id="loadBarFill"></div></div>
 </header>
-<div id="loadBar"><div id="loadBarFill"></div></div>
 
 <main>
 
