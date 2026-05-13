@@ -3,13 +3,13 @@
 fetch_union.py
 Holt 1. FC Union Berlin Daten von OpenLiga DB API (kostenlos, keine Auth)
 und schreibt das Ergebnis nach data/union.json
-
-API Docs: https://www.openligadb.de
+ 
+API: https://api.openligadb.de
 Union Berlin Team-ID: 89 (OpenLiga)
 Bundesliga ShortName: "bl1"
 Aktuelle Saison: "2024" (= Saison 2024/25)
 """
-
+ 
 import json
 import os
 import sys
@@ -17,41 +17,21 @@ import time
 import urllib.request
 import urllib.error
 from datetime import datetime, timezone
-
+ 
 BASE = "https://api.openligadb.de"
 LEAGUE = "bl1"
-SEASON = "2024"   # OpenLiga nutzt Startjahr der Saison
-UNION_TEAM_ID = 89  # Union Berlin OpenLiga-ID
-UNION_LOGO_ID = 89  # Transfermarkt-ID für Logo (tmssl.akamaized.net)
+SEASON = "2024"
+UNION_TEAM_ID = 89
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "union.json")
-
-# Transfermarkt Logo-IDs für Bundesliga-Teams (OpenLiga team_id → tmsl ID)
+ 
 LOGO_MAP = {
-    9:   16,    # Bayern München
-    7:   27,    # Dortmund
-    14:  15,    # Leverkusen
-    16:  31,    # Stuttart VfB
-    22:  11,    # RB Leipzig
-    13:  18,    # Mönchengladbach
-    6:   40,    # Frankfurt
-    131: 33,    # Freiburg
-    100: 23,    # Hamburger SV
-    85:  134,   # Heidenheim
-    54:  533,   # Hoffenheim
-    65:  36,    # Werder Bremen
-    91:  50,    # Wolfsburg
-    40:  26,    # Augsburg
-    1:   3,     # Köln
-    39:  39,    # Mainz
-    55:  44,    # Bochum
-    43:  52,    # St. Pauli
-    167: 167,   # Augsburg (alt)
-    89:  89,    # Union Berlin
+    9: 16, 7: 27, 14: 15, 16: 31, 22: 11, 13: 18, 6: 40, 131: 33,
+    100: 23, 85: 134, 54: 533, 65: 36, 91: 50, 40: 26, 1: 3,
+    39: 39, 55: 44, 43: 52, 89: 89,
 }
-
-
+ 
+ 
 def fetch(url, retries=3):
-    """HTTP GET mit Retry-Logik bei 429."""
     delays = [20, 40, 60]
     for attempt in range(retries):
         try:
@@ -60,127 +40,137 @@ def fetch(url, retries=3):
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             if e.code == 429 and attempt < retries - 1:
-                wait = delays[attempt]
-                print(f"  429 Rate limit – warte {wait}s …", file=sys.stderr)
-                time.sleep(wait)
+                print(f"  429 – warte {delays[attempt]}s …", file=sys.stderr)
+                time.sleep(delays[attempt])
             else:
                 raise
     return None
-
-
+ 
+ 
+def gk(obj, *keys):
+    """Holt Wert robust über camelCase und PascalCase."""
+    for k in keys:
+        if k in obj:
+            return obj[k]
+    return None
+ 
+ 
+def team_id(t):
+    return gk(t, "teamInfoId", "TeamInfoId", "teamId", "TeamId") or 0
+ 
+ 
+def team_name(t):
+    return gk(t, "teamName", "TeamName") or gk(t, "shortName", "ShortName") or "?"
+ 
+ 
 def main():
     print("Hole Tabelle …")
     table = fetch(f"{BASE}/getbltable/{LEAGUE}/{SEASON}")
-
-    union_row = next((t for t in table if t["TeamInfoId"] == UNION_TEAM_ID), None)
+    if not table:
+        print("ERROR: Keine Tabellendaten", file=sys.stderr); sys.exit(1)
+ 
+    print(f"  Keys: {list(table[0].keys())}")
+ 
+    union_row = next((t for t in table if team_id(t) == UNION_TEAM_ID), None)
+    if not union_row:
+        union_row = next((t for t in table if "union" in team_name(t).lower()), None)
     if not union_row:
         print("ERROR: Union Berlin nicht in Tabelle gefunden", file=sys.stderr)
+        for t in table: print(f"  id={team_id(t)} name={team_name(t)}", file=sys.stderr)
         sys.exit(1)
-
-    rank = next((i + 1 for i, t in enumerate(table) if t["TeamInfoId"] == UNION_TEAM_ID), None)
-
-    # Tabellenumfeld: 2 Teams above + Union + 2 below (max)
+ 
+    rank = next((i + 1 for i, t in enumerate(table) if team_id(t) == team_id(union_row)), None)
+ 
     context = []
     for i, t in enumerate(table):
         pos = i + 1
         if abs(pos - rank) <= 2:
-            tid = t["TeamInfoId"]
+            tid = team_id(t)
             context.append({
                 "rank": pos,
-                "name": t["TeamName"],
-                "shortname": t.get("ShortName", ""),
-                "points": t["Points"],
+                "name": team_name(t),
+                "shortname": gk(t, "shortName", "ShortName") or "",
+                "points": gk(t, "points", "Points") or 0,
                 "team_id": tid,
                 "logo_id": LOGO_MAP.get(tid, tid),
             })
-
+ 
     print("Hole Spielplan …")
     matches = fetch(f"{BASE}/getmatchdata/{LEAGUE}/{SEASON}")
-
-    now = datetime.now(timezone.utc)
-    finished = [m for m in matches if m.get("MatchIsFinished")]
-    upcoming = [m for m in matches if not m.get("MatchIsFinished")]
-
-    # Last match involving Union
-    union_finished = [
-        m for m in finished
-        if m["Team1"]["TeamId"] == UNION_TEAM_ID or m["Team2"]["TeamId"] == UNION_TEAM_ID
-    ]
-    union_finished.sort(key=lambda m: m.get("MatchDateTimeUTC", ""), reverse=True)
-    last = union_finished[0] if union_finished else None
-
-    # Next match involving Union
-    union_upcoming = [
-        m for m in upcoming
-        if m["Team1"]["TeamId"] == UNION_TEAM_ID or m["Team2"]["TeamId"] == UNION_TEAM_ID
-    ]
-    union_upcoming.sort(key=lambda m: m.get("MatchDateTimeUTC", ""))
-    nxt = union_upcoming[0] if union_upcoming else None
-
+    if not matches:
+        print("ERROR: Keine Spieldaten", file=sys.stderr); sys.exit(1)
+ 
+    print(f"  Match-Keys: {list(matches[0].keys())}")
+ 
+    def finished(m): return gk(m, "matchIsFinished", "MatchIsFinished") or False
+    def t1id(m): return team_id(gk(m, "team1", "Team1") or {})
+    def t2id(m): return team_id(gk(m, "team2", "Team2") or {})
+    def t1name(m): return team_name(gk(m, "team1", "Team1") or {})
+    def t2name(m): return team_name(gk(m, "team2", "Team2") or {})
+    def mdate(m): return gk(m, "matchDateTimeUTC", "MatchDateTimeUTC", "matchDateTime", "MatchDateTime") or ""
+    def mday(m):
+        g = gk(m, "group", "Group") or {}
+        return gk(g, "groupOrderID", "GroupOrderID") or 0
+    def involves_u(m): return t1id(m) == UNION_TEAM_ID or t2id(m) == UNION_TEAM_ID
+ 
+    fin = sorted([m for m in matches if finished(m) and involves_u(m)], key=mdate)
+    upc = sorted([m for m in matches if not finished(m) and involves_u(m)], key=mdate)
+ 
     def parse_match(m):
-        if not m:
-            return None
-        t1id = m["Team1"]["TeamId"]
-        t2id = m["Team2"]["TeamId"]
-        g = m.get("Goals", [])
-        score = m.get("MatchResults", [])
-        # Use final result if available
-        final = next((r for r in score if r.get("ResultTypeID") == 2), None)
-        g_home = final["PointsTeam1"] if final else None
-        g_away = final["PointsTeam2"] if final else None
+        if not m: return None
+        results = gk(m, "matchResults", "MatchResults") or []
+        final = next((r for r in results if gk(r, "resultTypeID", "ResultTypeID") == 2), None)
         return {
-            "home_id": t1id,
-            "away_id": t2id,
-            "home_name": m["Team1"]["TeamName"],
-            "away_name": m["Team2"]["TeamName"],
-            "home_logo_id": LOGO_MAP.get(t1id, t1id),
-            "away_logo_id": LOGO_MAP.get(t2id, t2id),
-            "goals_home": g_home,
-            "goals_away": g_away,
-            "date": m.get("MatchDateTimeUTC"),
-            "matchday": m.get("Group", {}).get("GroupOrderID"),
+            "home_id": t1id(m), "away_id": t2id(m),
+            "home_name": t1name(m), "away_name": t2name(m),
+            "home_logo_id": LOGO_MAP.get(t1id(m), t1id(m)),
+            "away_logo_id": LOGO_MAP.get(t2id(m), t2id(m)),
+            "goals_home": gk(final, "pointsTeam1", "PointsTeam1") if final else None,
+            "goals_away": gk(final, "pointsTeam2", "PointsTeam2") if final else None,
+            "date": mdate(m),
+            "matchday": mday(m),
         }
-
-    # Form: last 5 Union matches (W/D/L)
+ 
     form = []
-    for m in union_finished[-5:]:
-        t1 = m["Team1"]["TeamId"] == UNION_TEAM_ID
-        score = m.get("MatchResults", [])
-        final = next((r for r in score if r.get("ResultTypeID") == 2), None)
+    for m in fin[-5:]:
+        is_t1 = t1id(m) == UNION_TEAM_ID
+        results = gk(m, "matchResults", "MatchResults") or []
+        final = next((r for r in results if gk(r, "resultTypeID", "ResultTypeID") == 2), None)
         if final:
-            gh = final["PointsTeam1"]
-            ga = final["PointsTeam2"]
-            union_goals = gh if t1 else ga
-            opp_goals = ga if t1 else gh
-            form.append("W" if union_goals > opp_goals else "D" if union_goals == opp_goals else "L")
-
-    matchday = union_row.get("Won", 0) + union_row.get("Draw", 0) + union_row.get("Lost", 0)
-
+            gh = gk(final, "pointsTeam1", "PointsTeam1") or 0
+            ga = gk(final, "pointsTeam2", "PointsTeam2") or 0
+            ug, og = (gh, ga) if is_t1 else (ga, gh)
+            form.append("W" if ug > og else "D" if ug == og else "L")
+ 
+    wins   = gk(union_row, "won", "Won") or 0
+    draws  = gk(union_row, "draw", "Draw") or 0
+    losses = gk(union_row, "lost", "Lost") or 0
+    played = wins + draws + losses
+ 
     result = {
-        "updated_at": now.isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat(),
         "league": "Bundesliga",
         "season": "2024/25",
-        "matchday": matchday,
+        "matchday": played,
         "rank": rank,
-        "points": union_row["Points"],
-        "matches_played": matchday,
-        "wins": union_row.get("Won", 0),
-        "draws": union_row.get("Draw", 0),
-        "losses": union_row.get("Lost", 0),
-        "goals_for": union_row.get("Goals", 0),
-        "goals_against": union_row.get("OpponentGoals", 0),
+        "points": gk(union_row, "points", "Points") or 0,
+        "matches_played": played,
+        "wins": wins, "draws": draws, "losses": losses,
+        "goals_for": gk(union_row, "goals", "Goals") or 0,
+        "goals_against": gk(union_row, "opponentGoals", "OpponentGoals") or 0,
         "form": form,
         "table_context": context,
-        "last_match": parse_match(last),
-        "next_match": parse_match(nxt),
+        "last_match": parse_match(fin[-1] if fin else None),
+        "next_match": parse_match(upc[0] if upc else None),
     }
-
+ 
     os.makedirs(os.path.dirname(os.path.abspath(OUTPUT_PATH)), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-
-    print(f"✅  data/union.json geschrieben · Platz {rank} · {union_row['Points']} Punkte")
-
-
+ 
+    print(f"✅  Platz {rank} · {result['points']} Punkte · Form: {form}")
+ 
+ 
 if __name__ == "__main__":
     main()
+ 
