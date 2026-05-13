@@ -20,7 +20,7 @@ from datetime import datetime, timezone
  
 BASE = "https://api.openligadb.de"
 LEAGUE = "bl1"
-SEASON = "2024"
+SEASON = "2025"
 UNION_TEAM_ID = 89
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "union.json")
  
@@ -150,7 +150,7 @@ def main():
     result = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "league": "Bundesliga",
-        "season": "2024/25",
+        "season": "2025/26",
         "matchday": played,
         "rank": rank,
         "points": gk(union_row, "points", "Points") or 0,
@@ -173,4 +173,3 @@ def main():
  
 if __name__ == "__main__":
     main()
- 
