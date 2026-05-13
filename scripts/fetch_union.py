@@ -232,7 +232,8 @@ def main():
                 })
         with_goals.sort(key=lambda x: (-x["goals"], -x["assists"]))
         union_scorers=with_goals[:6]
-        print(f"   {len(union_scorers)} Scorer: {[f'{p[\"name\"]} ({p[\"goals\"]}G)' for p in union_scorers]}")
+        names=[p["name"]+" ("+str(p["goals"])+"G)" for p in union_scorers]
+        print(f"   {len(union_scorers)} Scorer: {names}")
     except Exception as e:
         print(f"   WARN Squad: {e}",file=sys.stderr)
  
