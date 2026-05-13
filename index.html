@@ -337,49 +337,46 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 }
 
 /* Union Card */
-/* ── UNION CARD ── */
 .union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.22);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
 .union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.45);box-shadow:0 0 0 2px rgba(232,0,28,.08),var(--sh-h);}
-.union-header{background:linear-gradient(135deg,#c8001a,#e8001c 60%,#a8001a);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
+.union-header{background:linear-gradient(135deg,#b8001a 0%,#e8001c 55%,#c0001e 100%);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
 .union-club{display:flex;align-items:center;gap:12px;}
 .union-clubname{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
 .union-league{font-size:10px;color:rgba(255,255,255,.65);margin-top:2px;}
-.union-rank{text-align:right;display:flex;flex-direction:column;align-items:flex-end;}
+.union-rank{text-align:right;}
 .union-rank-num{font-size:32px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1;}
-.union-rank-lbl{font-size:8.5px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px;margin-top:1px;}
-/* Stats grid */
+.union-rank-lbl{font-size:8.5px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
 .union-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
 .union-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
 .union-stat-lbl{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:5px;-webkit-font-smoothing:antialiased;}
 .union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;font-variant-numeric:tabular-nums;}
 .union-stat-sub{font-size:9.5px;color:var(--t2);margin-top:3px;}
-/* Form dots */
-.union-form{display:flex;gap:5px;align-items:center;margin-top:5px;}
-.union-form-dot{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;letter-spacing:0;}
+.union-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.union-form{display:flex;gap:5px;align-items:center;margin-top:6px;}
+.union-form-dot{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
 .union-form-dot.w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
 .union-form-dot.l{background:var(--red-l);color:var(--red);border:1px solid rgba(255,59,48,.2);}
 .union-form-dot.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
-/* Match display */
-.union-match{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 13px;}
-.union-match-lbl{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:8px;-webkit-font-smoothing:antialiased;}
-.union-match-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.union-match-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
-.union-match-team.right{flex-direction:row-reverse;}
-.union-match-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.union-match-score{font-size:22px;font-weight:200;letter-spacing:-1px;color:var(--t2);flex-shrink:0;font-variant-numeric:tabular-nums;padding:0 8px;text-align:center;min-width:52px;}
-.union-match-score.win{color:var(--green);}
-.union-match-score.loss{color:var(--red);}
-.union-match-meta{font-size:10px;color:var(--t3);margin-top:5px;text-align:center;}
-/* Two-column row */
-.union-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-/* Table context rows */
-.union-table-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;padding:3px 0;}
-.union-table-row+.union-table-row{border-top:1px solid var(--border);}
-.union-table-row.highlight{background:var(--union-l);margin:0 -4px;padding:4px 4px;border-radius:5px;border-top:none;}
-.union-table-row.highlight+.union-table-row{border-top:none;}
-.union-table-team{display:flex;align-items:center;gap:5px;}
-/* Footer strip */
+.union-tbl-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;padding:4px 2px;}
+.union-tbl-row+.union-tbl-row{border-top:1px solid var(--border);}
+.union-tbl-row.me{background:var(--union-l);margin:0 -4px;padding:4px 6px;border-radius:5px;}
+.union-tbl-row.me+.union-tbl-row{border-top:none;}
+.union-tbl-team{display:flex;align-items:center;gap:6px;}
+.union-tbl-logo{width:14px;height:14px;object-fit:contain;flex-shrink:0;}
+.union-match-box{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 14px;}
+.union-match-lbl{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:10px;}
+.union-match-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.union-match-team{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.union-match-team.r{flex-direction:row-reverse;}
+.union-match-logo{width:26px;height:26px;object-fit:contain;flex-shrink:0;}
+.union-match-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.union-match-score{font-size:22px;font-weight:200;letter-spacing:-1px;font-variant-numeric:tabular-nums;padding:0 10px;flex-shrink:0;text-align:center;min-width:58px;}
+.union-match-score.w{color:var(--green);}
+.union-match-score.l{color:var(--red);}
+.union-match-score.d{color:var(--t2);}
+.union-match-meta{font-size:10px;color:var(--t3);margin-top:7px;text-align:center;}
+.union-next-vs{font-size:16px;font-weight:200;color:var(--blue);padding:0 10px;flex-shrink:0;text-align:center;min-width:58px;}
 .union-footer{border-top:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:9.5px;color:var(--t3);}
 </style>
 </head>
@@ -395,7 +392,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.7.2</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.7.3</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -654,7 +651,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="union-card" id="unionCard">
   <div class="union-header">
     <div class="union-club">
-      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union" width="42" height="42" style="object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));flex-shrink:0;">
+      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));flex-shrink:0;">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
         <div class="union-league" id="unionLeague">Bundesliga · lädt…</div>
@@ -666,22 +663,20 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     </div>
   </div>
   <div class="union-body" id="unionBody">
-    <!-- Skeleton -->
     <div class="union-stats-row">
-      <div class="union-stat"><div class="skeleton" style="height:9px;margin-bottom:7px;width:60%;"></div><div class="skeleton" style="height:20px;width:50%;margin-bottom:4px;"></div><div class="skeleton skeleton-sm" style="height:9px;"></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;margin-bottom:7px;width:60%;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton skeleton-sm" style="height:9px;"></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;margin-bottom:7px;width:60%;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton skeleton-sm" style="height:9px;"></div></div>
+      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:22px;width:45%;margin-bottom:5px;"></div><div class="skeleton skeleton-sm" style="height:9px;width:65%;"></div></div>
+      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton skeleton-sm" style="height:9px;width:65%;"></div></div>
+      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton skeleton-sm" style="height:9px;width:65%;"></div></div>
     </div>
     <div class="union-2col">
-      <div class="union-stat"><div class="skeleton" style="height:9px;margin-bottom:8px;width:70%;"></div><div style="display:flex;gap:5px;margin-top:5px;"><div class="skeleton" style="height:24px;width:24px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:24px;width:24px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:24px;width:24px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:24px;width:24px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:24px;width:24px;border-radius:7px;flex-shrink:0;"></div></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;margin-bottom:8px;width:80%;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;"></div></div>
+      <div class="union-stat"><div class="skeleton" style="height:9px;width:70%;margin-bottom:9px;"></div><div style="display:flex;gap:5px;">${'<div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div></div></div>
+      <div class="union-stat"><div class="skeleton" style="height:9px;width:70%;margin-bottom:9px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;"></div></div>
     </div>
-    <div class="union-match"><div class="skeleton" style="height:9px;margin-bottom:10px;width:70%;"></div><div class="skeleton" style="height:28px;"></div></div>
-    <div class="union-match"><div class="skeleton" style="height:9px;margin-bottom:10px;width:70%;"></div><div class="skeleton" style="height:28px;"></div></div>
+    <div class="union-match-box"><div class="skeleton" style="height:9px;width:60%;margin-bottom:12px;"></div><div class="skeleton" style="height:30px;"></div></div>
+    <div class="union-match-box"><div class="skeleton" style="height:9px;width:60%;margin-bottom:12px;"></div><div class="skeleton" style="height:30px;"></div></div>
   </div>
   <div class="union-footer"><span id="unionUpdated">–</span><span>openligadb.de</span></div>
 </div>
-
 
 </main>
 
@@ -1449,174 +1444,184 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN ──
+// ── UNION BERLIN (live via openligadb.de) ──
 async function loadUnion(){
   const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-  const LOGO={9:16,7:27,14:15,16:31,22:11,13:18,6:40,131:33,100:23,85:134,54:533,65:36,91:50,40:26,1:3,39:39,55:44,43:52,89:89};
-  const UNION_ID=89;
-  const SEASON='2025';
+  const UNION_ID = 89; // OpenLiga team ID
+  const SEASON   = '2025'; // Saison 2025/26
 
-  function gk(o,...keys){for(const k of keys)if(o&&k in o)return o[k];return null;}
-  function tid(t){return gk(t,'teamId','TeamId','teamInfoId','TeamInfoId')||0;}
-  function tname(t){return gk(t,'teamName','TeamName')||gk(t,'shortName','ShortName')||'?';}
-  function logo(id,w=22){
-    const tmId=LOGO[id]||id;
-    return`<img src="https://tmssl.akamaized.net/images/wappen/head/${tmId}.png" width="${w}" height="${w}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
+  // Helper: robust key access (API liefert camelCase)
+  function gk(o,...kk){for(const k of kk)if(o&&k in o)return o[k];return null;}
+  function teamId(t){  return gk(t,'teamId','TeamId') || 0;}
+  function teamName(t){return gk(t,'teamName','TeamName') || '?';}
+  function teamLogo(t, sz=14){
+    const url = gk(t,'teamIconUrl','TeamIconUrl') || '';
+    if(!url) return '<span style="display:inline-block;width:'+sz+'px;"></span>';
+    // Use wikipedia URL directly - reliable
+    return `<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
   }
-  function fmtMatchDate(iso){
-    if(!iso)return'–';
-    const d=new Date(iso);
-    return`${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
+  function fmtDate(iso){
+    if(!iso) return '–';
+    const d = new Date(iso);
+    return `${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
   }
 
   try{
-    // ── Tabelle ──
-    const tRes=await fetch(`https://api.openligadb.de/getbltable/bl1/${SEASON}`,{signal:AbortSignal.timeout(8000)});
-    if(!tRes.ok)throw new Error('Tabelle: '+tRes.status);
-    const table=await tRes.json();
+    // ── 1. Tabelle ──
+    const tRes = await fetch(`https://api.openligadb.de/getbltable/bl1/${SEASON}`,
+      {signal: AbortSignal.timeout(10000)});
+    if(!tRes.ok) throw new Error('Tabelle HTTP ' + tRes.status);
+    const table = await tRes.json();
 
-    const unionIdx=table.findIndex(t=>tid(t)===UNION_ID||tname(t).toLowerCase().includes('union'));
-    if(unionIdx===-1)throw new Error('Union nicht in Tabelle');
-    const ur=table[unionIdx];
-    const rank=unionIdx+1;
+    const unionIdx = table.findIndex(t => teamId(t) === UNION_ID);
+    if(unionIdx === -1) throw new Error('Union nicht in Tabelle (ID ' + UNION_ID + ')');
+    const ur = table[unionIdx];
+    const rank = unionIdx + 1;
 
-    document.getElementById('unionLeague').textContent=`Bundesliga 2025/26 · ${gk(ur,'won','Won',0)+gk(ur,'draw','Draw',0)+gk(ur,'lost','Lost',0)}. Spieltag`;
-    document.getElementById('unionRankNum').textContent=rank+'.';
+    const wins   = gk(ur,'won','Won')           || 0;
+    const draws  = gk(ur,'draw','Draw')          || 0;
+    const losses = gk(ur,'lost','Lost')          || 0;
+    const pts    = gk(ur,'points','Points')      || 0;
+    const gf     = gk(ur,'goals','Goals')        || 0;
+    const ga     = gk(ur,'opponentGoals','OpponentGoals') || 0;
+    const played = wins + draws + losses;
+    const gdStr  = (gf - ga >= 0 ? '+' : '') + (gf - ga);
 
-    const wins=gk(ur,'won','Won')||0, draws=gk(ur,'draw','Draw')||0, losses=gk(ur,'lost','Lost')||0;
-    const pts=gk(ur,'points','Points')||0, gf=gk(ur,'goals','Goals')||0, ga=gk(ur,'opponentGoals','OpponentGoals')||0;
-    const played=wins+draws+losses;
-    const gdiff=(gf-ga);
-    const gdiffStr=(gdiff>0?'+':'')+gdiff;
+    document.getElementById('unionLeague').textContent =
+      `Bundesliga 2025/26 · ${played}. Spieltag`;
+    document.getElementById('unionRankNum').textContent = rank + '.';
 
     // Tabellenumfeld ±2
-    const neighbors=[];
-    for(let i=Math.max(0,unionIdx-2);i<=Math.min(table.length-1,unionIdx+2);i++){
-      const t=table[i]; const isU=(i===unionIdx);
-      neighbors.push(`<div class="union-table-row${isU?' highlight':''}">
-        <div class="union-table-team">
-          <span style="font-size:10px;color:${isU?'var(--union)':'var(--t3)'};min-width:14px;">${i+1}.</span>
-          ${logo(tid(t),13)}
-          <span style="${isU?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${tname(t).replace('1. FC ','').replace('Borussia ','B. ')}</span>
-        </div>
-        <span style="font-weight:700;font-variant-numeric:tabular-nums;${isU?'color:var(--union);':''}">${gk(t,'points','Points')} Pkt.</span>
-      </div>`);
+    const neighborsHtml = [];
+    for(let i = Math.max(0, unionIdx-2); i <= Math.min(table.length-1, unionIdx+2); i++){
+      const t = table[i];
+      const isMe = i === unionIdx;
+      neighborsHtml.push(
+        `<div class="union-tbl-row${isMe ? ' me' : ''}">
+          <div class="union-tbl-team">
+            <span style="font-size:9.5px;color:${isMe?'var(--union)':'var(--t3)'};min-width:16px;font-weight:${isMe?'700':'400'}">${i+1}.</span>
+            <img class="union-tbl-logo" src="${gk(t,'teamIconUrl','TeamIconUrl')||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span style="${isMe?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${teamName(t).replace(/^1\. FC /,'').replace(/^Borussia /,'B. ').replace(/^FC /,'')}</span>
+          </div>
+          <span style="font-weight:700;font-variant-numeric:tabular-nums;${isMe?'color:var(--union);':''}">${gk(t,'points','Points')} Pkt.</span>
+        </div>`
+      );
     }
 
-    // ── Spiele: letzter + vorletzter Spieltag für letztes Spiel, aktueller für nächstes ──
-    // Hol alle Spiele des letzten gespielten Spieltages (played)
-    const [m1Res, m2Res] = await Promise.allSettled([
-      fetch(`https://api.openligadb.de/getmatchdata/bl1/${SEASON}/${played}`,{signal:AbortSignal.timeout(8000)}),
-      fetch(`https://api.openligadb.de/getmatchdata/bl1/${SEASON}/${played+1}`,{signal:AbortSignal.timeout(8000)})
-    ]);
+    // ── 2. Alle Spiele der Saison ──
+    const mRes = await fetch(`https://api.openligadb.de/getmatchdata/bl1/${SEASON}`,
+      {signal: AbortSignal.timeout(12000)});
+    if(!mRes.ok) throw new Error('Matches HTTP ' + mRes.status);
+    const allMatches = await mRes.json();
 
-    let lastMatch=null, nextMatch=null;
+    // Filter Union-Spiele
+    const unionMatches = allMatches.filter(m => {
+      const t1 = gk(m,'team1','Team1') || {};
+      const t2 = gk(m,'team2','Team2') || {};
+      return teamId(t1) === UNION_ID || teamId(t2) === UNION_ID;
+    });
 
-    if(m1Res.status==='fulfilled'&&m1Res.value.ok){
-      const matches=await m1Res.value.json();
-      const um=matches.filter(m=>tid(gk(m,'team1','Team1')||{})==UNION_ID||tid(gk(m,'team2','Team2')||{})==UNION_ID);
-      if(um.length){
-        const m=um[0];
-        const isH=tid(gk(m,'team1','Team1')||{})==UNION_ID;
-        const results=gk(m,'matchResults','MatchResults')||[];
-        const final=results.find(r=>gk(r,'resultTypeID','ResultTypeID')==2);
-        const gh=gk(final,'pointsTeam1','PointsTeam1'), ga2=gk(final,'pointsTeam2','PointsTeam2');
-        const ug=isH?gh:ga2, og=isH?ga2:gh;
-        const outcome=ug>og?'win':ug<og?'loss':'draw';
-        const t1=gk(m,'team1','Team1')||{}, t2=gk(m,'team2','Team2')||{};
-        lastMatch={
-          homeName:tname(t1),homeId:tid(t1),awayName:tname(t2),awayId:tid(t2),
-          gh,ga:ga2,outcome,isHome:isH,
-          date:gk(m,'matchDateTimeUTC','MatchDateTimeUTC','matchDateTime'),
-          matchday:played
-        };
-      }
-    }
+    // Fertige + Zukünftige trennen
+    const done   = unionMatches.filter(m => gk(m,'matchIsFinished','MatchIsFinished'));
+    const future = unionMatches.filter(m => !gk(m,'matchIsFinished','MatchIsFinished'));
 
-    if(m2Res.status==='fulfilled'&&m2Res.value.ok){
-      const matches=await m2Res.value.json();
-      const um=matches.filter(m=>tid(gk(m,'team1','Team1')||{})==UNION_ID||tid(gk(m,'team2','Team2')||{})==UNION_ID);
-      if(um.length){
-        const m=um[0];
-        const isH=tid(gk(m,'team1','Team1')||{})==UNION_ID;
-        const isFinished=gk(m,'matchIsFinished','MatchIsFinished');
-        if(!isFinished){
-          const t1=gk(m,'team1','Team1')||{}, t2=gk(m,'team2','Team2')||{};
-          const daysUntil=Math.round((new Date(gk(m,'matchDateTimeUTC','MatchDateTimeUTC','matchDateTime'))-new Date())/86400000);
-          nextMatch={
-            homeName:tname(t1),homeId:tid(t1),awayName:tname(t2),awayId:tid(t2),
-            isHome:isH,date:gk(m,'matchDateTimeUTC','MatchDateTimeUTC','matchDateTime'),
-            matchday:played+1,daysUntil
-          };
-        }
-      }
-    }
+    // Nach Datum sortieren
+    const byDate = (a,b) => new Date(gk(a,'matchDateTimeUTC','MatchDateTimeUTC')||0) - new Date(gk(b,'matchDateTimeUTC','MatchDateTimeUTC')||0);
+    done.sort(byDate);
+    future.sort(byDate);
 
-    // Form: rekonstruiere aus Tabelle-Werten für letzten Spieltag nicht möglich direkt,
-    // daher hole Spieltage played-4 bis played
-    const formDays=[];
-    for(let d=Math.max(1,played-4);d<=played;d++) formDays.push(d);
-    const formResults=await Promise.allSettled(
-      formDays.map(d=>fetch(`https://api.openligadb.de/getmatchdata/bl1/${SEASON}/${d}`,{signal:AbortSignal.timeout(6000)}))
-    );
-    const form=[];
-    for(let i=0;i<formResults.length;i++){
-      const r=formResults[i];
-      if(r.status!=='fulfilled'||!r.value.ok)continue;
-      const matches=await r.value.json();
-      const um=matches.find(m=>tid(gk(m,'team1','Team1')||{})==UNION_ID||tid(gk(m,'team2','Team2')||{})==UNION_ID);
-      if(!um)continue;
-      const isH=tid(gk(m2Res,'team1')||{})==UNION_ID; // recheck
-      const isHere=tid(gk(um,'team1','Team1')||{})==UNION_ID;
-      const results=gk(um,'matchResults','MatchResults')||[];
-      const final=results.find(r2=>gk(r2,'resultTypeID','ResultTypeID')==2);
-      if(!final)continue;
-      const gh2=gk(final,'pointsTeam1','PointsTeam1')||0, ga3=gk(final,'pointsTeam2','PointsTeam2')||0;
-      const ug=isHere?gh2:ga3, og=isHere?ga3:gh2;
-      form.push(ug>og?'W':ug===og?'D':'L');
-    }
-    const formPts=form.reduce((s,r)=>s+(r==='W'?3:r==='D'?1:0),0);
-    const formDots=form.map(r=>{
-      const cls=r==='W'?'w':r==='D'?'d':'l';
-      return`<div class="union-form-dot ${cls}">${r==='W'?'S':r==='D'?'U':'N'}</div>`;
+    // Form: letzte 5 abgeschlossene Spiele
+    const form5 = done.slice(-5);
+    const formDots = form5.map(m => {
+      const t1   = gk(m,'team1','Team1') || {};
+      const isH  = teamId(t1) === UNION_ID;
+      const res  = (gk(m,'matchResults','MatchResults') || []).find(r => gk(r,'resultTypeID','ResultTypeID') === 2);
+      if(!res) return '<div class="union-form-dot d">–</div>';
+      const gh   = gk(res,'pointsTeam1','PointsTeam1') || 0;
+      const ga2  = gk(res,'pointsTeam2','PointsTeam2') || 0;
+      const ug   = isH ? gh : ga2;
+      const og   = isH ? ga2 : gh;
+      const cls  = ug > og ? 'w' : ug < og ? 'l' : 'd';
+      const lbl  = ug > og ? 'S' : ug < og ? 'N' : 'U';
+      return `<div class="union-form-dot ${cls}">${lbl}</div>`;
     }).join('');
+    const formPts = form5.reduce((s, m) => {
+      const t1  = gk(m,'team1','Team1') || {};
+      const isH = teamId(t1) === UNION_ID;
+      const res = (gk(m,'matchResults','MatchResults')||[]).find(r => gk(r,'resultTypeID','ResultTypeID') === 2);
+      if(!res) return s;
+      const gh  = gk(res,'pointsTeam1','PointsTeam1') || 0;
+      const ga2 = gk(res,'pointsTeam2','PointsTeam2') || 0;
+      const ug  = isH ? gh : ga2, og = isH ? ga2 : gh;
+      return s + (ug > og ? 3 : ug === og ? 1 : 0);
+    }, 0);
+
+    // Letztes Spiel
+    const last = done[done.length - 1];
+    let lastHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein abgeschlossenes Spiel</div>';
+    if(last){
+      const t1   = gk(last,'team1','Team1') || {};
+      const t2   = gk(last,'team2','Team2') || {};
+      const isH  = teamId(t1) === UNION_ID;
+      const res  = (gk(last,'matchResults','MatchResults')||[]).find(r => gk(r,'resultTypeID','ResultTypeID') === 2);
+      const gh   = res ? (gk(res,'pointsTeam1','PointsTeam1') || 0) : '?';
+      const ga2  = res ? (gk(res,'pointsTeam2','PointsTeam2') || 0) : '?';
+      const ug   = isH ? gh : ga2, og = isH ? ga2 : gh;
+      const cls  = typeof ug==='number'&&ug > og ? 'w' : typeof ug==='number'&&ug < og ? 'l' : 'd';
+      const outc = cls==='w' ? 'Sieg ✅' : cls==='l' ? 'Niederlage ❌' : 'Unentschieden 🟡';
+      const hA   = isH ? 'Heimspiel' : 'Auswärtsspiel';
+      const mday = gk(last,'group','Group') ? gk(gk(last,'group','Group'),'groupOrderID','GroupOrderID') : '';
+      lastHtml = `
+        <div class="union-match-lbl">Letztes Spiel · ${hA}${mday?' · '+mday+'. Spieltag':''}</div>
+        <div class="union-match-row">
+          <div class="union-match-team">
+            <img class="union-match-logo" src="${gk(t1,'teamIconUrl','TeamIconUrl')||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="union-match-name">${teamName(t1)}</span>
+          </div>
+          <div class="union-match-score ${cls}">${gh} : ${ga2}</div>
+          <div class="union-match-team r">
+            <img class="union-match-logo" src="${gk(t2,'teamIconUrl','TeamIconUrl')||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="union-match-name" style="text-align:right;">${teamName(t2)}</span>
+          </div>
+        </div>
+        <div class="union-match-meta">${outc} · ${fmtDate(gk(last,'matchDateTimeUTC','MatchDateTimeUTC'))}</div>`;
+    }
+
+    // Nächstes Spiel
+    const next = future[0] || null;
+    let nextHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein nächstes Spiel – Saisonende</div>';
+    if(next){
+      const t1   = gk(next,'team1','Team1') || {};
+      const t2   = gk(next,'team2','Team2') || {};
+      const isH  = teamId(t1) === UNION_ID;
+      const hA   = isH ? 'Heimspiel 🏠' : 'Auswärtsspiel ✈️';
+      const dtStr= gk(next,'matchDateTimeUTC','MatchDateTimeUTC');
+      const days = Math.round((new Date(dtStr) - new Date()) / 86400000);
+      const dStr = days <= 0 ? 'Heute ⚡' : days === 1 ? 'Morgen' : 'in ' + days + ' Tagen';
+      const mday = gk(next,'group','Group') ? gk(gk(next,'group','Group'),'groupOrderID','GroupOrderID') : '';
+      nextHtml = `
+        <div class="union-match-lbl">Nächstes Spiel · ${hA}${mday?' · '+mday+'. Spieltag':''}</div>
+        <div class="union-match-row">
+          <div class="union-match-team">
+            <img class="union-match-logo" src="${gk(t1,'teamIconUrl','TeamIconUrl')||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="union-match-name">${teamName(t1)}</span>
+          </div>
+          <div class="union-next-vs">${dStr}</div>
+          <div class="union-match-team r">
+            <img class="union-match-logo" src="${gk(t2,'teamIconUrl','TeamIconUrl')||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="union-match-name" style="text-align:right;">${teamName(t2)}</span>
+          </div>
+        </div>
+        <div class="union-match-meta">${fmtDate(dtStr)}</div>`;
+    }
 
     // ── Render ──
-    let lastHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:4px 0;">Kein abgeschlossenes Spiel gefunden</div>';
-    if(lastMatch){
-      const scoreClass=lastMatch.outcome==='win'?'win':lastMatch.outcome==='loss'?'loss':'';
-      const outcomeLbl=lastMatch.outcome==='win'?'Sieg ✅':lastMatch.outcome==='loss'?'Niederlage ❌':'Unentschieden 🟡';
-      const hAw=lastMatch.isHome?'Heimspiel':'Auswärtsspiel';
-      lastHtml=`
-        <div class="union-match-lbl">Letztes Spiel · ${hAw} · ${fmtMatchDate(lastMatch.date)}</div>
-        <div class="union-match-teams">
-          <div class="union-match-team">${logo(lastMatch.homeId,24)}<span class="union-match-name">${lastMatch.homeName}</span></div>
-          <div class="union-match-score ${scoreClass}">${lastMatch.gh} : ${lastMatch.ga}</div>
-          <div class="union-match-team right">${logo(lastMatch.awayId,24)}<span class="union-match-name" style="text-align:right;">${lastMatch.awayName}</span></div>
-        </div>
-        <div class="union-match-meta">${outcomeLbl} · ${played}. Spieltag</div>`;
-    }
-
-    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:4px 0;">Kein nächstes Spiel verfügbar</div>';
-    if(nextMatch){
-      const hAw=nextMatch.isHome?'Heimspiel 🏠':'Auswärtsspiel ✈️';
-      const dStr=nextMatch.daysUntil<=0?'Heute!':nextMatch.daysUntil===1?'Morgen ⚡':'in '+nextMatch.daysUntil+' Tagen';
-      nextHtml=`
-        <div class="union-match-lbl">Nächstes Spiel · ${hAw} · ${nextMatch.matchday}. Spieltag</div>
-        <div class="union-match-teams">
-          <div class="union-match-team">${logo(nextMatch.homeId,24)}<span class="union-match-name">${nextMatch.homeName}</span></div>
-          <div class="union-match-score" style="font-size:16px;color:var(--blue);">${dStr}</div>
-          <div class="union-match-team right">${logo(nextMatch.awayId,24)}<span class="union-match-name" style="text-align:right;">${nextMatch.awayName}</span></div>
-        </div>
-        <div class="union-match-meta">${fmtMatchDate(nextMatch.date)}</div>`;
-    }
-
-    document.getElementById('unionBody').innerHTML=`
+    document.getElementById('unionBody').innerHTML = `
       <div class="union-stats-row">
         <div class="union-stat" style="text-align:center;">
           <div class="union-stat-lbl">Punkte</div>
-          <div class="union-stat-val" style="font-size:24px;font-weight:200;letter-spacing:-1px;">${pts}</div>
+          <div class="union-stat-val" style="font-size:26px;font-weight:200;letter-spacing:-1.5px;">${pts}</div>
           <div class="union-stat-sub">von ${played*3} mögl.</div>
         </div>
         <div class="union-stat" style="text-align:center;">
@@ -1627,32 +1632,34 @@ async function loadUnion(){
         <div class="union-stat" style="text-align:center;">
           <div class="union-stat-lbl">Tore</div>
           <div class="union-stat-val" style="font-size:12.5px;">${gf} : ${ga}</div>
-          <div class="union-stat-sub">${gdiffStr} Differenz</div>
+          <div class="union-stat-sub">${gdStr} Differenz</div>
         </div>
       </div>
       <div class="union-2col">
         <div class="union-stat">
           <div class="union-stat-lbl">Letzte 5 Spiele</div>
-          <div class="union-form">${formDots||'<span style="color:var(--t3);font-size:10px;">lädt…</span>'}</div>
-          <div class="union-stat-sub" style="margin-top:6px;">${formPts} Pkt. aus ${form.length} Spielen</div>
+          <div class="union-form">${formDots || '<span style="color:var(--t3);font-size:10px;">–</span>'}</div>
+          <div class="union-stat-sub" style="margin-top:8px;">${formPts} Pkt. aus ${form5.length} Spielen</div>
         </div>
         <div class="union-stat">
           <div class="union-stat-lbl">Tabellenumfeld</div>
-          <div style="margin-top:4px;">${neighbors.join('')}</div>
+          <div style="margin-top:2px;">${neighborsHtml.join('')}</div>
         </div>
       </div>
-      <div class="union-match">${lastHtml}</div>
-      <div class="union-match">${nextHtml}</div>`;
+      <div class="union-match-box">${lastHtml}</div>
+      <div class="union-match-box">${nextHtml}</div>`;
 
-    const now=new Date();
-    document.getElementById('unionUpdated').textContent=`Stand: ${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}. · ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} Uhr`;
+    const now = new Date();
+    document.getElementById('unionUpdated').textContent =
+      `Stand: ${now.getDate()}.${now.getMonth()+1}. · ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} Uhr`;
 
-  }catch(e){
-    console.warn('Union error:',e);
-    document.getElementById('unionBody').innerHTML=`<div style="padding:14px;font-size:12px;color:var(--t3);text-align:center;">⚠️ Daten nicht verfügbar<br><span style="font-size:10px;">${e.message}</span></div>`;
-    document.getElementById('unionUpdated').textContent='Fehler beim Laden';
+  } catch(e){
+    console.warn('Union error:', e);
+    document.getElementById('unionBody').innerHTML =
+      `<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3);">⚠️ Fehler: ${e.message}</div>`;
+    document.getElementById('unionUpdated').textContent = 'Fehler';
   }
-  if(window._lbTick)window._lbTick();
+  if(window._lbTick) window._lbTick();
 }
 loadUnion();
 
