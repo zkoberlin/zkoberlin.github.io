@@ -385,7 +385,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.29</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.6.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -878,9 +878,10 @@ async function loadDayInfo(){
 
   // ── Namenstag – nameday.abalin.net ──
   try {
-    const res = await fetch(`https://nameday.abalin.net/getdate?date=${d}-${m}&country=de`);
+    const res = await fetch(`https://nameday.abalin.net/api/V2/getdate?day=${d}&month=${m}&country_code=de`, {signal: AbortSignal.timeout(4000)});
     const json = await res.json();
-    const names = json?.data?.de;
+    // API returns: { namedays: { de: ["Name1","Name2"] } }
+    const names = json?.namedays?.de;
     if(names && names.length){
       document.getElementById('namenstagVal').textContent = names.join(', ');
     } else {
@@ -888,8 +889,18 @@ async function loadDayInfo(){
       document.getElementById('namenstagSection').previousElementSibling.style.display='none';
     }
   } catch(e) {
-    document.getElementById('namenstagSection').style.display='none';
-    document.getElementById('namenstagSection').previousElementSibling.style.display='none';
+    // Fallback: data/namenstage.json (optional lokale Datei)
+    try {
+      const res2 = await fetch('data/namenstage.json');
+      const map = await res2.json();
+      const key2=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const name = map[key2];
+      if(name){ document.getElementById('namenstagVal').textContent = name; }
+      else { throw new Error('no entry'); }
+    } catch {
+      document.getElementById('namenstagSection').style.display='none';
+      document.getElementById('namenstagSection').previousElementSibling.style.display='none';
+    }
   }
 
   // ── Heute in der Geschichte – Wikipedia On This Day API ──
