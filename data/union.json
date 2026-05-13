@@ -1,18 +1,59 @@
 {
-  "updated_at": null,
+  "updated_at": "2026-05-13T11:58:49.952637+00:00",
   "league": "Bundesliga",
   "season": "2024/25",
-  "matchday": null,
-  "rank": null,
-  "points": null,
-  "matches_played": null,
-  "wins": null,
-  "draws": null,
-  "losses": null,
-  "goals_for": null,
-  "goals_against": null,
+  "matchday": 34,
+  "rank": 13,
+  "points": 40,
+  "matches_played": 34,
+  "wins": 10,
+  "draws": 10,
+  "losses": 14,
+  "goals_for": 35,
+  "goals_against": 51,
   "form": [],
-  "table_context": [],
+  "table_context": [
+    {
+      "rank": 11,
+      "name": "VfL Wolfsburg",
+      "shortname": "Wolfsburg",
+      "points": 43,
+      "team_id": 131,
+      "logo_id": 33
+    },
+    {
+      "rank": 12,
+      "name": "FC Augsburg",
+      "shortname": "Augsburg",
+      "points": 43,
+      "team_id": 95,
+      "logo_id": 95
+    },
+    {
+      "rank": 13,
+      "name": "1. FC Union Berlin",
+      "shortname": "Union Berlin",
+      "points": 40,
+      "team_id": 80,
+      "logo_id": 80
+    },
+    {
+      "rank": 14,
+      "name": "FC St. Pauli",
+      "shortname": "St. Pauli",
+      "points": 32,
+      "team_id": 98,
+      "logo_id": 98
+    },
+    {
+      "rank": 15,
+      "name": "TSG Hoffenheim",
+      "shortname": "Hoffenheim",
+      "points": 32,
+      "team_id": 175,
+      "logo_id": 175
+    }
+  ],
   "last_match": null,
   "next_match": null
 }
