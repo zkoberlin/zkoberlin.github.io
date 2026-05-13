@@ -546,8 +546,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .uc-fd.d{background:var(--card2);color:var(--t2);border:1.5px solid var(--border);}
 
 /* Tabelle */
-.uc-tbl-row{display:flex;align-items:center;gap:6px;padding:4px 2px;font-size:10.5px;}
+.uc-tbl-row{display:flex;align-items:center;gap:5px;padding:4px 2px;font-size:10px;min-width:0;}
 .uc-tbl-row+.uc-tbl-row{border-top:1px solid var(--border);}
+.uc-tbl-row .tbl-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-tbl-row .tbl-pts{flex-shrink:0;font-weight:700;font-variant-numeric:tabular-nums;}
 .uc-tbl-row.me{
   background:linear-gradient(90deg,rgba(232,0,28,.10),rgba(232,0,28,.05));
   margin:2px -5px;padding:5px 7px;border-radius:6px;
@@ -577,7 +579,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .uc-match-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;}
 .uc-match-team{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
 .uc-match-team.r{flex-direction:row-reverse;}
-.uc-match-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px;}
+.uc-match-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px;max-width:90px;}
+@media(max-width:430px){.uc-match-name{font-size:10.5px;max-width:72px;}}
 /* Score Badge */
 .uc-score{
   font-size:22px;font-weight:200;letter-spacing:-1px;
@@ -726,16 +729,22 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .uc-stat-pills{
   border-top:1px solid var(--border);
   padding:8px 4px 2px;
-  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;
+  display:flex;flex-wrap:wrap;gap:4px;justify-content:center;
 }
 .uc-stat-pill{
   display:flex;flex-direction:column;align-items:center;
   background:var(--card2);border:1px solid var(--border);
-  border-radius:8px;padding:5px 9px;min-width:50px;
+  border-radius:8px;padding:4px 7px;min-width:44px;flex:1 1 auto;max-width:80px;
 }
-.uc-stat-pill-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.35px;color:var(--t3);margin-bottom:2px;}
-.uc-stat-pill-val{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);}
+.uc-stat-pill-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.35px;color:var(--t3);margin-bottom:2px;white-space:nowrap;}
+.uc-stat-pill-val{font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);}
 .uc-stat-pill-val.union{color:var(--union);}
+/* Mobile: pills dürfen etwas kleiner werden */
+@media(max-width:430px){
+  .uc-stat-pill{padding:3px 5px;min-width:38px;}
+  .uc-stat-pill-lbl{font-size:6.5px;}
+  .uc-stat-pill-val{font-size:9.5px;}
+}
 
 </style>
 </head>
@@ -751,7 +760,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.1</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.2</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1896,10 +1905,10 @@ async function loadUnion(){
     const tbl=(d.table_context||[]);
     const tblHtml=tbl.map(t=>`
       <div class="uc-tbl-row${t.is_union?' me':''}">
-        <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:16px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
-        ${img(t.logo,16)}
-        <span style="flex:1;${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
-        <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points}</span>
+        <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:14px;flex-shrink:0;font-weight:${t.is_union?700:400}">${t.rank}.</span>
+        ${t.logo?`<img src="${t.logo}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`:'<span style="width:14px;flex-shrink:0;display:inline-block;"></span>'}
+        <span class="tbl-name" style="${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
+        <span class="tbl-pts" style="${t.is_union?'color:var(--union);':''}">${t.points}</span>
       </div>`).join('');
 
     // ── Letztes Spiel — minimalistisch ──
@@ -1964,8 +1973,8 @@ async function loadUnion(){
 
     // ── Nächstes Spiel ──
     const next=d.next_match;
-    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:3px 0;">Saison beendet 🏁</div>';
-    if(next){
+    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:6px 0;">Kein nächstes Spiel in den Daten — GitHub Action prüfen 🔄</div>';
+    if(next && next.date){
       const days=Math.round((new Date(next.date)-new Date())/86400000);
       const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
       const opp=next.is_home?next.away_name:next.home_name;
