@@ -1,6 +1,6 @@
 {
   "datum": "13.05.2026",
-  "generiert": "2026-05-13T10:11:38Z",
+  "generiert": "2026-05-13T10:40:09Z",
   "geburtstage": [
     {
       "name": "Romain Esse",
@@ -11,20 +11,20 @@
       "wikidata": "https://en.wikipedia.org/wiki/Romain_Esse"
     },
     {
-      "name": "Jaxson Dart",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "American Football Player (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Jaxson_Dart_2025.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Jaxson_Dart"
-    },
-    {
       "name": "Javi Guerra (footballer, born 2003)",
       "alter": 23,
       "geburtsjahr": 2003,
       "beruf": "Spanish Footballer",
       "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Javi_Guerra_Moreno_2023.png/330px-Javi_Guerra_Moreno_2023.png",
       "wikidata": "https://en.wikipedia.org/wiki/Javi_Guerra_(footballer%2C_born_2003)"
+    },
+    {
+      "name": "Jabari Smith Jr.",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "American Basketball Player (Born 2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1_jabari_smith_jr.jpg/330px-1_jabari_smith_jr.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Jabari_Smith_Jr."
     }
   ]
 }
