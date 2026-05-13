@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-13T17:29:58.809800+00:00",
+  "updated_at": "2026-05-13T18:38:32.323070+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -68,7 +68,18 @@
     "is_home": false,
     "result": "W"
   },
-  "next_match": null,
+  "next_match": {
+    "event_id": "4829619",
+    "matchday": 34,
+    "date": "2026-05-16T13:30:00Z",
+    "home_name": "Union Berlin",
+    "away_name": "Augsburg",
+    "home_logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+    "away_logo": "https://tmssl.akamaized.net/images/wappen/head/167.png",
+    "goals_home": 0,
+    "goals_away": 0,
+    "is_home": true
+  },
   "last_match_stats": {
     "possession": {
       "union": 47,
