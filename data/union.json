@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-13T15:42:58.821909+00:00",
+  "updated_at": "2026-05-13T15:55:01.187218+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -50,6 +50,7 @@
       "is_union": false
     }
   ],
+  "recent_matches": [],
   "last_match": null,
   "next_match": null,
   "last_match_stats": {},
@@ -92,5 +93,6 @@
       "teamName": "Bayern München",
       "assists": 13
     }
-  ]
+  ],
+  "union_scorers": []
 }
