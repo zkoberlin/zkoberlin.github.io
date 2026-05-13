@@ -346,7 +346,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .uc-header{padding:16px 15px 13px;}
   .uc-rank{font-size:40px;}
   .uc-clubname{font-size:14px;}
-  .uc-logo-wrap{width:44px;height:44px;}
+  .uc-logo-wrap{width:52px;height:52px;}
   .uc-pts-strip{padding:9px 15px;gap:0;flex-wrap:nowrap;overflow-x:auto;}
   .uc-pts-sep{margin:0 7px;}
   .uc-pts-num{font-size:18px;}
@@ -435,13 +435,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 }
 .uc-club{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
 .uc-logo-wrap{
-  width:52px;height:52px;
-  border-radius:12px;
+  width:66px;height:66px;
+  border-radius:14px;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.10);
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
-  box-shadow:0 4px 16px rgba(0,0,0,.4);
+  box-shadow:0 4px 20px rgba(0,0,0,.5);
 }
 .uc-clubname{
   font-size:16px;font-weight:700;color:#fff;letter-spacing:-.4px;
@@ -642,6 +642,101 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   font-size:9px;color:var(--t3);
   background:linear-gradient(90deg,rgba(232,0,28,.04),transparent);
 }
+
+/* ── Top 3 Torschützen Grid ── */
+.uc-top3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;}
+.uc-top3-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);padding:10px 8px;
+  text-align:center;position:relative;
+  transition:border-color .15s,transform .15s;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.uc-top3-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.2);}
+.uc-top3-card.first{border-color:rgba(232,0,28,.25);background:var(--union-l);}
+.uc-top3-rank{
+  position:absolute;top:6px;left:8px;
+  font-size:8px;font-weight:800;color:var(--t3);
+}
+.uc-top3-card.first .uc-top3-rank{color:var(--union);}
+.uc-top3-photo{
+  width:46px;height:46px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
+  background:var(--card2);border:2px solid var(--border);
+}
+.uc-top3-card.first .uc-top3-photo{border-color:rgba(232,0,28,.3);}
+.uc-top3-name{font-size:9.5px;font-weight:700;line-height:1.2;letter-spacing:-.1px;color:var(--t);}
+.uc-top3-val{
+  font-size:15px;font-weight:800;color:var(--union);
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.uc-top3-sub{font-size:8px;color:var(--t3);}
+
+/* ── Scorer Tabelle ── */
+.uc-scorer-row{display:flex;align-items:center;gap:9px;padding:7px 0;}
+.uc-scorer-row+.uc-scorer-row{border-top:1px solid var(--border);}
+.uc-scorer-rank{font-size:9px;font-weight:800;color:var(--t3);min-width:14px;text-align:center;}
+.uc-scorer-row:first-child .uc-scorer-rank{color:var(--union);}
+.uc-scorer-photo{
+  width:30px;height:30px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
+  background:var(--card2);border:1.5px solid var(--border);
+}
+.uc-scorer-name{flex:1;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;}
+.uc-scorer-stats{display:flex;gap:4px;flex-shrink:0;}
+.uc-scorer-chip{
+  font-size:9.5px;font-weight:700;
+  padding:2px 6px;border-radius:5px;
+  font-variant-numeric:tabular-nums;
+}
+.uc-scorer-chip.goals{background:var(--union-l);color:var(--union);border:1px solid rgba(232,0,28,.15);}
+.uc-scorer-chip.assists{background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-b);}
+.uc-scorer-chip.total{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
+
+/* ── Letztes Spiel Minimal ── */
+.uc-last-minimal{display:flex;flex-direction:column;gap:0;}
+.uc-last-scoreline{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  padding:12px 0 8px;
+}
+.uc-last-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.uc-last-team-logo{width:34px;height:34px;object-fit:contain;}
+.uc-last-team-name{font-size:9px;font-weight:600;color:var(--t2);text-align:center;line-height:1.2;max-width:70px;}
+.uc-last-score-box{
+  padding:6px 14px;border-radius:10px;
+  font-size:26px;font-weight:200;letter-spacing:-1.5px;
+  font-variant-numeric:tabular-nums;
+  margin:0 10px;line-height:1;
+}
+.uc-last-score-box.w{color:var(--green);background:var(--green-l);border:1.5px solid var(--green-b);}
+.uc-last-score-box.l{color:var(--red);background:rgba(255,59,48,.07);border:1.5px solid rgba(255,59,48,.2);}
+.uc-last-score-box.d{color:var(--t2);background:var(--card2);border:1.5px solid var(--border);}
+.uc-last-meta{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:9px;color:var(--t3);padding-bottom:10px;
+}
+.uc-last-result-badge{
+  padding:2px 8px;border-radius:20px;font-size:8.5px;font-weight:700;
+}
+.uc-last-result-badge.w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
+.uc-last-result-badge.l{background:rgba(255,59,48,.09);color:var(--red);border:1px solid rgba(255,59,48,.2);}
+.uc-last-result-badge.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
+
+/* Stat pills row */
+.uc-stat-pills{
+  border-top:1px solid var(--border);
+  padding:8px 4px 2px;
+  display:flex;flex-wrap:wrap;gap:5px;justify-content:center;
+}
+.uc-stat-pill{
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:8px;padding:5px 9px;min-width:50px;
+}
+.uc-stat-pill-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.35px;color:var(--t3);margin-bottom:2px;}
+.uc-stat-pill-val{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);}
+.uc-stat-pill-val.union{color:var(--union);}
+
 </style>
 </head>
 <body>
@@ -656,7 +751,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -916,7 +1011,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   <div class="uc-header">
     <div class="uc-club">
       <div class="uc-logo-wrap">
-        <img id="ucLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="38" height="38" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));" alt="Union">
+        <img id="ucLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="52" height="52" style="object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));" alt="Union">
       </div>
       <div>
         <div class="uc-clubname">1. FC Union Berlin</div>
@@ -1730,7 +1825,7 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN v5.0.0 — via data/union.json ──
+// ── UNION BERLIN v5.1.0 — via data/union.json ──
 async function loadUnion(){
   const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
@@ -1802,53 +1897,69 @@ async function loadUnion(){
     const tblHtml=tbl.map(t=>`
       <div class="uc-tbl-row${t.is_union?' me':''}">
         <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:16px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
-        ${img(t.logo,14)}
+        ${img(t.logo,16)}
         <span style="flex:1;${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
         <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points}</span>
       </div>`).join('');
 
-    // ── Letztes Spiel ──
+    // ── Letztes Spiel — minimalistisch ──
     const last=d.last_match;
     let lastHtml='<div style="color:var(--t3);font-size:11px;text-align:center;">–</div>';
     if(last){
       const cls=last.result==='W'?'w':last.result==='L'?'l':'d';
-      const outc=last.result==='W'?'Sieg ✅':last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
-      const hA=last.is_home?'Heimspiel':'Auswärtsspiel';
-      // Match stats bars
+      const outc=last.result==='W'?'Sieg':last.result==='L'?'Niederlage':'Unentschieden';
+      const hA=last.is_home?'Heim':'Auswärts';
       const ms=d.last_match_stats||{};
-      const oppShort=(last.is_home?last.away_name:last.home_name).split(' ').pop();
-      let barsHtml='';
-      if(Object.keys(ms).length){
-        const rows=[
-          ms.possession     &&['Ballbesitz', ms.possession.union+'%',    ms.possession.opp+'%'],
-          ms.xg             &&['xG',         ms.xg.union,                ms.xg.opp],
-          ms.shots          &&['Schüsse',    ms.shots.union,             ms.shots.opp],
-          ms.shots_on_target&&['aufs Tor',   ms.shots_on_target.union,   ms.shots_on_target.opp],
-          ms.corners        &&['Ecken',      ms.corners.union,           ms.corners.opp],
-          ms.big_chance     &&['Chancen',    ms.big_chance.union,        ms.big_chance.opp],
-        ].filter(Boolean);
-        barsHtml=`<div class="uc-bars">
-          <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">
-            <span style="color:var(--union);min-width:36px;text-align:right;">Union</span>
-            <span style="flex:1;text-align:center;">Spielstatistik</span>
-            <span style="min-width:36px;">${oppShort}</span>
-          </div>
-          ${rows.map(([lbl,uv,ov])=>`
-            <div style="margin-bottom:1px;">
-              <div style="font-size:8px;color:var(--t3);text-align:center;margin-bottom:2px;">${lbl}</div>
-              ${bar(uv,ov,uv,ov)}
+      // Stat pills aus den vorhandenen Daten
+      const pills=[];
+      if(ms.possession)    pills.push(['Ballbesitz',ms.possession.union+'%','union'],['',ms.possession.opp+'%','']);
+      if(ms.shots)         pills.push(['Schüsse',ms.shots.union,'union'],['',ms.shots.opp,'']);
+      if(ms.shots_on_target) pills.push(['aufs Tor',ms.shots_on_target.union,'union'],['',ms.shots_on_target.opp,'']);
+      if(ms.xg)            pills.push(['xG',ms.xg.union,'union'],['',ms.xg.opp,'']);
+      if(ms.corners)       pills.push(['Ecken',ms.corners.union,'union'],['',ms.corners.opp,'']);
+
+      // Kompakte Stat-Zeilen: nur Union vs Opp als klare Zahlen-Paare
+      const statRows=[];
+      if(ms.possession)    statRows.push(['Ballbesitz',ms.possession.union+'%',ms.possession.opp+'%']);
+      if(ms.shots)         statRows.push(['Schüsse',ms.shots.union,ms.shots.opp]);
+      if(ms.shots_on_target) statRows.push(['aufs Tor',ms.shots_on_target.union,ms.shots_on_target.opp]);
+      if(ms.xg)            statRows.push(['xG',ms.xg.union,ms.xg.opp]);
+      if(ms.corners)       statRows.push(['Ecken',ms.corners.union,ms.corners.opp]);
+
+      const pillsHtml=statRows.length?`
+        <div class="uc-stat-pills">
+          ${statRows.map(([lbl,uv,ov])=>`
+            <div class="uc-stat-pill">
+              <div class="uc-stat-pill-lbl">${lbl}</div>
+              <div style="display:flex;gap:3px;align-items:center;">
+                <span class="uc-stat-pill-val union">${uv}</span>
+                <span style="font-size:7px;color:var(--t3);">|</span>
+                <span class="uc-stat-pill-val">${ov}</span>
+              </div>
             </div>`).join('')}
-        </div>`;
-      }
+        </div>`:'';
+
       lastHtml=`
         <div class="uc-match-lbl">Letztes Spiel · ${hA} · Spieltag ${last.matchday}</div>
-        <div class="uc-match-teams">
-          <div class="uc-match-team">${img(last.home_logo,26,'4px')}<span class="uc-match-name">${last.home_name}</span></div>
-          <div class="uc-score ${cls}">${last.goals_home}:${last.goals_away}</div>
-          <div class="uc-match-team r">${img(last.away_logo,26,'4px')}<span class="uc-match-name" style="text-align:right;">${last.away_name}</span></div>
-        </div>
-        <div class="uc-match-meta">${outc} · ${fmtDt(last.date)}</div>
-        ${barsHtml}`;
+        <div class="uc-last-minimal">
+          <div class="uc-last-scoreline">
+            <div class="uc-last-team">
+              <img class="uc-last-team-logo" src="${last.home_logo||''}" onerror="this.style.visibility='hidden'" alt="">
+              <div class="uc-last-team-name">${last.home_name}</div>
+            </div>
+            <div class="uc-last-score-box ${cls}">${last.goals_home}:${last.goals_away}</div>
+            <div class="uc-last-team">
+              <img class="uc-last-team-logo" src="${last.away_logo||''}" onerror="this.style.visibility='hidden'" alt="">
+              <div class="uc-last-team-name">${last.away_name}</div>
+            </div>
+          </div>
+          <div class="uc-last-meta">
+            <span class="uc-last-result-badge ${cls}">${outc}</span>
+            <span>·</span>
+            <span>${fmtDt(last.date)}</span>
+          </div>
+          ${pillsHtml}
+        </div>`;
     }
 
     // ── Nächstes Spiel ──
@@ -1860,28 +1971,48 @@ async function loadUnion(){
       const opp=next.is_home?next.away_name:next.home_name;
       const oppLogo=next.is_home?next.away_logo:next.home_logo;
       const hA=next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️';
+      const unionLogo=d.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
       nextHtml=`
         <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}</div>
         <div class="uc-match-teams">
-          <div class="uc-match-team">${img('https://tmssl.akamaized.net/images/wappen/head/89.png',26,'4px')}<span class="uc-match-name">Union Berlin</span></div>
+          <div class="uc-match-team">${img(unionLogo,26,'4px')}<span class="uc-match-name">Union Berlin</span></div>
           <div class="uc-next-vs">${dStr}</div>
           <div class="uc-match-team r">${img(oppLogo,26,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
         </div>
         <div class="uc-match-meta">${fmtDt(next.date)}</div>`;
     }
 
-    // ── Union Scorer ──
-    const scorers=(d.union_scorers||[]).slice(0,5);
-    const scorersHtml=scorers.map((p,i)=>`
-      <div class="uc-player">
-        <div class="uc-player-rank">${i+1}.</div>
-        <img class="uc-player-photo" src="${playerImg(p.id)}" onerror="this.style.display='none'" alt="">
-        <div class="uc-player-info">
-          <div class="uc-player-name">${p.name}${p.injured?' 🤕':''}</div>
-          <div class="uc-player-sub">${p.pos||'–'} · ${p.assists||0} Vorlagen</div>
-        </div>
-        <div class="uc-player-val">${p.goals}⚽</div>
-      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:3px 0;">Keine Daten</div>';
+    // ── Top 3 Torschützen (Karten-Grid) ──
+    const allScorers=(d.union_scorers||[]);
+    const top3Goals=allScorers.slice(0,3);
+    const top3GoalsHtml=top3Goals.length?`
+      <div class="uc-top3">
+        ${top3Goals.map((p,i)=>`
+          <div class="uc-top3-card${i===0?' first':''}">
+            <div class="uc-top3-rank">${i+1}.</div>
+            <img class="uc-top3-photo" src="${playerImg(p.id)}" onerror="this.src=''" alt="">
+            <div class="uc-top3-name">${p.name.split(' ').pop()}</div>
+            <div class="uc-top3-val">${p.goals}<span style="font-size:10px;font-weight:600;color:var(--t3);margin-left:2px;">⚽</span></div>
+          </div>`).join('')}
+      </div>`:'<div style="color:var(--t3);font-size:10px;">Keine Daten</div>';
+
+    // ── Top 3 Scorer (Tore + Assists + Gesamt) ──
+    const top3Scorer=allScorers
+      .map(p=>({...p,total:(p.goals||0)+(p.assists||0)}))
+      .sort((a,b)=>b.total-a.total)
+      .slice(0,3);
+    const top3ScorerHtml=top3Scorer.length?
+      top3Scorer.map((p,i)=>`
+        <div class="uc-scorer-row">
+          <div class="uc-scorer-rank">${i+1}.</div>
+          <img class="uc-scorer-photo" src="${playerImg(p.id)}" onerror="this.src=''" alt="">
+          <div class="uc-scorer-name">${p.name}${p.injured?' 🤕':''}</div>
+          <div class="uc-scorer-stats">
+            <div class="uc-scorer-chip goals">${p.goals}⚽</div>
+            <div class="uc-scorer-chip assists">${p.assists||0}🎯</div>
+            <div class="uc-scorer-chip total">Σ ${p.total}</div>
+          </div>
+        </div>`).join(''):'<div style="color:var(--t3);font-size:10px;">Keine Daten</div>';
 
     // ── Render ──
     document.getElementById('ucBody').innerHTML=`
@@ -1900,8 +2031,12 @@ async function loadUnion(){
       <div class="uc-match">${lastHtml}</div>
       <div class="uc-match">${nextHtml}</div>
       <div class="uc-box">
-        <div class="uc-box-lbl">⚽ Saisontorschützen · Union Berlin</div>
-        ${scorersHtml}
+        <div class="uc-box-lbl">⚽ Top 3 Torschützen</div>
+        ${top3GoalsHtml}
+      </div>
+      <div class="uc-box">
+        <div class="uc-box-lbl">🎯 Top 3 Scorer (Tore + Assists)</div>
+        ${top3ScorerHtml}
       </div>`;
 
     const upd=d.updated_at?new Date(d.updated_at):new Date();
