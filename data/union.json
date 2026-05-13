@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-13T15:55:01.187218+00:00",
+  "updated_at": "2026-05-13T16:08:19.035278+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -94,5 +94,60 @@
       "assists": 13
     }
   ],
-  "union_scorers": []
+  "union_scorers": [
+    {
+      "id": 609504,
+      "name": "Oliver Burke",
+      "shirt": 7,
+      "pos": "ST,CAM,RW",
+      "goals": 6,
+      "assists": 1,
+      "injured": false
+    },
+    {
+      "id": 304348,
+      "name": "Rani Khedira",
+      "shirt": 8,
+      "pos": "CDM,CM",
+      "goals": 5,
+      "assists": 1,
+      "injured": false
+    },
+    {
+      "id": 1515977,
+      "name": "Ilyas Ansah",
+      "shirt": 10,
+      "pos": "CAM,ST,LW",
+      "goals": 5,
+      "assists": 1,
+      "injured": false
+    },
+    {
+      "id": 724196,
+      "name": "Danilho Doekhi",
+      "shirt": 5,
+      "pos": "CB",
+      "goals": 5,
+      "assists": 0,
+      "injured": false
+    },
+    {
+      "id": 1047670,
+      "name": "Andrej Ilic",
+      "shirt": 23,
+      "pos": "ST",
+      "goals": 3,
+      "assists": 9,
+      "injured": false
+    },
+    {
+      "id": 949673,
+      "name": "Woo-Yeong Jeong",
+      "shirt": 11,
+      "pos": "CAM,ST",
+      "goals": 3,
+      "assists": 1,
+      "injured": true
+    }
+  ]
 }
