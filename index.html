@@ -305,6 +305,60 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 @media(max-width:600px){.weather-grid{grid-template-columns:1fr 1fr!important;} .weather-card{grid-column:1/-1;}}
 
+/* ── MOBILE OPTIMIERUNG (iPhone 16 Pro & kleiner) ── */
+@media(max-width:430px){
+  /* Safe area für Dynamic Island / Notch */
+  header{padding:10px 16px 10px;padding-top:max(10px,env(safe-area-inset-top));}
+  main{padding:12px 12px max(90px,calc(70px + env(safe-area-inset-bottom)));gap:10px;}
+  .bnav{padding-bottom:max(20px,env(safe-area-inset-bottom));}
+
+  /* Header kompakter */
+  .h-greet{font-size:13px;}
+  .h-clock{font-size:14px;}
+  .h-date{font-size:9px;}
+
+  /* Weather Grid: Wetter voll-breit, dann zwei Mini nebeneinander */
+  .weather-grid{grid-template-columns:1fr 1fr!important;}
+  .weather-card{grid-column:1/-1;}
+  /* Date + DayInfo Minis nebeneinander */
+  a.mini.date,div.mini#dayInfoCard{
+    flex-direction:column;align-items:flex-start;
+    padding:12px 12px;
+  }
+
+  /* Wetter-Karte kompakter */
+  .weather-main{padding:11px 13px;gap:10px;}
+  .weather-icon{font-size:26px;}
+  .weather-temp{font-size:22px;}
+  .weather-forecast{padding:8px 13px;gap:5px;}
+
+  /* Emil & Rosa – Zahlen kleiner auf Mobile */
+  .er-n{font-size:36px!important;}
+  .er-num{padding:12px 14px;}
+
+  /* Alma Section */
+  .alma-section-n{font-size:32px;}
+
+  /* Apps Grid: 1 Spalte auf Mobile */
+  .app-row{grid-template-columns:1fr;}
+
+  /* Union Card Mobile */
+  .uc-header{padding:16px 15px 13px;}
+  .uc-rank{font-size:40px;}
+  .uc-clubname{font-size:14px;}
+  .uc-logo-wrap{width:44px;height:44px;}
+  .uc-pts-strip{padding:9px 15px;gap:0;flex-wrap:nowrap;overflow-x:auto;}
+  .uc-pts-sep{margin:0 7px;}
+  .uc-pts-num{font-size:18px;}
+  .uc-body{padding:11px 12px;gap:8px;}
+  .uc-2col{grid-template-columns:1fr 1fr;gap:6px;}
+  .uc-match{padding:10px 12px;}
+  .uc-match-name{font-size:10.5px;}
+  .uc-score,.uc-next-vs{min-width:48px;padding:3px 7px;font-size:19px;}
+  .uc-next-vs{font-size:10px;}
+  .uc-player-photo{width:28px;height:28px;}
+}
+
 /* Loading skeleton */
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 .skeleton{background:linear-gradient(90deg,var(--card2) 25%,var(--border) 50%,var(--card2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;height:12px;margin-bottom:6px;}
@@ -336,74 +390,258 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   100%{background-position:-200% 0}
 }
 
-/* Union Card */
-.union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.22);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s;}
-.union-card:hover{border-color:rgba(232,0,28,.45);box-shadow:0 0 0 2px rgba(232,0,28,.08),var(--sh-h);transform:translateY(-2px);}
-/* Header */
-.uc-header{background:linear-gradient(135deg,#b8001a,#e8001c 55%,#c0001e);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-.uc-club{display:flex;align-items:center;gap:11px;}
-.uc-clubname{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
-.uc-league{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px;}
-.uc-rank-wrap{text-align:right;}
-.uc-rank{font-size:34px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1;}
-.uc-rank-lbl{font-size:8px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.6px;margin-top:1px;}
-/* Body */
-.uc-body{padding:13px 15px;display:flex;flex-direction:column;gap:9px;}
-/* Stats row */
-.uc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
-.uc-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 10px;text-align:center;}
-.uc-stat-lbl{font-size:7.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
-.uc-stat-val{font-size:15px;font-weight:300;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.1;}
-.uc-stat-sub{font-size:8.5px;color:var(--t2);margin-top:2px;}
-/* 2-col */
+/* ══ UNION CARD — v5.1 Modern Redesign ══ */
+.union-card{
+  background:var(--card);
+  border-radius:var(--r);
+  border:1px solid rgba(232,0,28,.18);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+}
+.union-card:hover{
+  border-color:rgba(232,0,28,.40);
+  box-shadow:0 0 0 3px rgba(232,0,28,.07),var(--sh-h);
+  transform:translateY(-2px);
+}
+
+/* ── Header: Dunkles Stadion-Banner ── */
+.uc-header{
+  position:relative;
+  background:linear-gradient(160deg,#1a0004 0%,#2d0007 40%,#1a0004 100%);
+  padding:20px 20px 16px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  overflow:hidden;
+}
+/* Subtiles Gitter-Muster im Header */
+.uc-header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(232,0,28,.04) 28px,rgba(232,0,28,.04) 29px),
+                   repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(232,0,28,.04) 28px,rgba(232,0,28,.04) 29px);
+  pointer-events:none;
+}
+/* Roter Glow-Akzent oben rechts */
+.uc-header::after{
+  content:'';
+  position:absolute;
+  top:-30px;right:-30px;
+  width:120px;height:120px;
+  background:radial-gradient(circle,rgba(232,0,28,.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.uc-club{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+.uc-logo-wrap{
+  width:52px;height:52px;
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
+}
+.uc-clubname{
+  font-size:16px;font-weight:700;color:#fff;letter-spacing:-.4px;
+  text-shadow:0 1px 4px rgba(0,0,0,.3);
+}
+.uc-league{
+  font-size:10px;color:rgba(255,255,255,.5);
+  margin-top:3px;letter-spacing:.2px;
+}
+/* Saisonbadge im Header */
+.uc-season-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:6px;
+  padding:3px 8px;
+  border-radius:20px;
+  background:rgba(232,0,28,.25);
+  border:1px solid rgba(232,0,28,.35);
+  font-size:9px;font-weight:700;color:rgba(255,255,255,.8);
+  letter-spacing:.3px;text-transform:uppercase;
+}
+.uc-rank-wrap{
+  text-align:right;
+  position:relative;z-index:1;
+}
+.uc-rank{
+  font-size:52px;font-weight:200;color:#fff;
+  letter-spacing:-3px;line-height:1;
+  text-shadow:0 2px 12px rgba(232,0,28,.4);
+  font-variant-numeric:tabular-nums;
+}
+.uc-rank-lbl{
+  font-size:8.5px;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:.7px;
+  margin-top:2px;font-weight:600;
+}
+
+/* ── Punkte-Strip unter dem Header ── */
+.uc-pts-strip{
+  background:linear-gradient(90deg,rgba(232,0,28,.12),rgba(232,0,28,.05) 60%,transparent);
+  border-bottom:1px solid var(--border);
+  padding:10px 20px;
+  display:flex;align-items:center;gap:6px;
+}
+.uc-pts-num{
+  font-size:22px;font-weight:700;color:var(--union);
+  letter-spacing:-1px;font-variant-numeric:tabular-nums;
+}
+.uc-pts-lbl{font-size:10px;color:var(--t2);margin-top:2px;}
+.uc-pts-sep{width:1px;height:28px;background:var(--border);margin:0 10px;}
+.uc-pts-stat{text-align:center;}
+.uc-pts-stat-val{font-size:14px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
+.uc-pts-stat-lbl{font-size:8.5px;color:var(--t3);margin-top:1px;text-transform:uppercase;letter-spacing:.3px;}
+
+/* ── Body ── */
+.uc-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+
+/* ── Stats Grid (4 Kacheln) ── */
+.uc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.uc-stat{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:10px 8px;text-align:center;
+  transition:border-color .15s;
+}
+.uc-stat:hover{border-color:rgba(232,0,28,.2);}
+.uc-stat-lbl{
+  font-size:7.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--t3);margin-bottom:5px;
+  -webkit-font-smoothing:antialiased;
+}
+.uc-stat-val{
+  font-size:18px;font-weight:300;letter-spacing:-1px;
+  font-variant-numeric:tabular-nums;line-height:1.05;color:var(--t);
+}
+.uc-stat-val.accent{color:var(--union);}
+.uc-stat-sub{font-size:8.5px;color:var(--t2);margin-top:3px;}
+
+/* ── 2-Col ── */
 .uc-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-/* Box */
-.uc-box{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.uc-box-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:8px;-webkit-font-smoothing:antialiased;}
-/* Serie / Form */
-.uc-form{display:flex;gap:4px;flex-wrap:wrap;}
-.uc-fd{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
-.uc-fd.w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
-.uc-fd.l{background:var(--red-l);color:var(--red);border:1px solid rgba(255,59,48,.2);}
-.uc-fd.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
+
+/* ── Box ── */
+.uc-box{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:11px 13px;
+}
+.uc-box-lbl{
+  font-size:8px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);margin-bottom:9px;
+  -webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;gap:5px;
+}
+/* Form-Dots */
+.uc-form{display:flex;gap:5px;flex-wrap:wrap;}
+.uc-fd{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10.5px;font-weight:800;
+  transition:transform .15s;
+}
+.uc-fd:hover{transform:scale(1.12);}
+.uc-fd.w{background:rgba(52,199,89,.15);color:var(--green);border:1.5px solid var(--green-b);box-shadow:0 2px 6px rgba(52,199,89,.12);}
+.uc-fd.l{background:rgba(255,59,48,.13);color:var(--red);border:1.5px solid rgba(255,59,48,.22);box-shadow:0 2px 6px rgba(255,59,48,.10);}
+.uc-fd.d{background:var(--card2);color:var(--t2);border:1.5px solid var(--border);}
+
 /* Tabelle */
 .uc-tbl-row{display:flex;align-items:center;gap:6px;padding:4px 2px;font-size:10.5px;}
 .uc-tbl-row+.uc-tbl-row{border-top:1px solid var(--border);}
-.uc-tbl-row.me{background:var(--union-l);margin:2px -4px;padding:4px 6px;border-radius:5px;border-top:none!important;}
+.uc-tbl-row.me{
+  background:linear-gradient(90deg,rgba(232,0,28,.10),rgba(232,0,28,.05));
+  margin:2px -5px;padding:5px 7px;border-radius:6px;
+  border-top:none!important;
+  border:1px solid rgba(232,0,28,.15);
+}
 .uc-tbl-row.me+.uc-tbl-row{border-top:none;}
-/* Match */
-.uc-match{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 13px;}
-.uc-match-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:9px;-webkit-font-smoothing:antialiased;}
+
+/* ── Match Cards ── */
+.uc-match{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:12px 14px;
+  transition:border-color .15s;
+}
+.uc-match:hover{border-color:rgba(232,0,28,.18);}
+.uc-match-lbl{
+  font-size:7.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.55px;color:var(--t3);margin-bottom:10px;
+  -webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;gap:6px;
+}
+.uc-match-lbl::before{
+  content:'';display:inline-block;
+  width:3px;height:3px;border-radius:50%;
+  background:var(--t3);flex-shrink:0;
+}
 .uc-match-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.uc-match-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+.uc-match-team{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
 .uc-match-team.r{flex-direction:row-reverse;}
-.uc-match-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.uc-score{font-size:24px;font-weight:200;letter-spacing:-1px;padding:0 8px;flex-shrink:0;text-align:center;min-width:56px;font-variant-numeric:tabular-nums;}
-.uc-score.w{color:var(--green);}
-.uc-score.l{color:var(--red);}
+.uc-match-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px;}
+/* Score Badge */
+.uc-score{
+  font-size:22px;font-weight:200;letter-spacing:-1px;
+  padding:4px 10px;flex-shrink:0;text-align:center;
+  min-width:58px;font-variant-numeric:tabular-nums;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;line-height:1.1;
+}
+.uc-score.w{color:var(--green);border-color:var(--green-b);background:var(--green-l);}
+.uc-score.l{color:var(--red);border-color:rgba(255,59,48,.2);background:rgba(255,59,48,.07);}
 .uc-score.d{color:var(--t2);}
-.uc-next-vs{font-size:12px;font-weight:600;color:var(--blue);padding:0 8px;flex-shrink:0;text-align:center;min-width:56px;line-height:1.3;}
-.uc-match-meta{font-size:9.5px;color:var(--t3);margin-top:6px;text-align:center;}
+/* Next match VS */
+.uc-next-vs{
+  font-size:11px;font-weight:700;color:var(--blue);
+  padding:4px 10px;flex-shrink:0;text-align:center;min-width:58px;
+  line-height:1.3;background:var(--blue-l);
+  border:1px solid var(--blue-b);border-radius:8px;
+}
+.uc-match-meta{
+  font-size:9.5px;color:var(--t3);
+  margin-top:8px;text-align:center;letter-spacing:.1px;
+}
+
 /* Stat bars */
-.uc-bars{margin-top:9px;border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:5px;}
-.uc-bar-row{display:grid;grid-template-columns:36px 1fr 36px;align-items:center;gap:5px;}
-.uc-bar-lbl{font-size:8px;color:var(--t3);text-align:center;margin-bottom:2px;}
+.uc-bars{margin-top:10px;border-top:1px solid var(--border);padding-top:9px;display:flex;flex-direction:column;gap:6px;}
+.uc-bar-row{display:grid;grid-template-columns:38px 1fr 38px;align-items:center;gap:6px;}
+.uc-bar-lbl{font-size:8px;color:var(--t3);text-align:center;margin-bottom:3px;}
 .uc-bar-val{font-size:10.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;}
 .uc-bar-val.r{text-align:left;}
-.uc-bar-track{height:5px;border-radius:3px;background:var(--border);overflow:hidden;display:flex;}
+.uc-bar-track{height:5px;border-radius:4px;background:var(--border);overflow:hidden;display:flex;}
 .uc-bar-fill{background:var(--union);height:100%;}
-.uc-bar-fill2{background:var(--t3);height:100%;}
+.uc-bar-fill2{background:var(--t3);height:100%;opacity:.5;}
+
 /* Players */
-.uc-player{display:flex;align-items:center;gap:8px;padding:5px 0;}
+.uc-player{display:flex;align-items:center;gap:9px;padding:6px 0;}
 .uc-player+.uc-player{border-top:1px solid var(--border);}
-.uc-player-rank{font-size:10.5px;font-weight:700;color:var(--t3);min-width:14px;text-align:center;}
-.uc-player-photo{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
+.uc-player-rank{
+  font-size:10px;font-weight:800;color:var(--t3);
+  min-width:16px;text-align:center;
+}
+.uc-player:first-child .uc-player-rank{color:var(--union);}
+.uc-player-photo{
+  width:32px;height:32px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
+  background:var(--card2);border:1.5px solid var(--border);
+}
 .uc-player-info{flex:1;min-width:0;}
-.uc-player-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-player-name{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;}
 .uc-player-sub{font-size:9px;color:var(--t2);margin-top:1px;}
-.uc-player-val{font-size:13px;font-weight:700;color:var(--union);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.uc-player-val{
+  font-size:13px;font-weight:800;color:var(--union);
+  flex-shrink:0;font-variant-numeric:tabular-nums;
+  background:var(--union-l);border:1px solid rgba(232,0,28,.15);
+  border-radius:6px;padding:2px 7px;
+}
+
 /* Footer */
-.uc-footer{border-top:1px solid var(--border);padding:7px 15px;display:flex;align-items:center;justify-content:space-between;font-size:9px;color:var(--t3);}
+.uc-footer{
+  border-top:1px solid var(--border);
+  padding:8px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:9px;color:var(--t3);
+  background:linear-gradient(90deg,rgba(232,0,28,.04),transparent);
+}
 </style>
 </head>
 <body>
@@ -418,7 +656,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.0.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -677,10 +915,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="union-card" id="unionCard">
   <div class="uc-header">
     <div class="uc-club">
-      <img id="ucLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,.5));flex-shrink:0;border-radius:6px;" alt="Union">
+      <div class="uc-logo-wrap">
+        <img id="ucLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="38" height="38" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));" alt="Union">
+      </div>
       <div>
         <div class="uc-clubname">1. FC Union Berlin</div>
         <div class="uc-league" id="ucLeague">Bundesliga · lädt…</div>
+        <div class="uc-season-badge">🏆 Saison 25/26</div>
       </div>
     </div>
     <div class="uc-rank-wrap">
@@ -688,23 +929,39 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="uc-rank-lbl">Platz</div>
     </div>
   </div>
+  <!-- Punkte-Strip -->
+  <div class="uc-pts-strip" id="ucPtsStrip" style="display:none;">
+    <div>
+      <div class="uc-pts-num" id="ucPtsNum">–</div>
+      <div class="uc-pts-lbl">Punkte</div>
+    </div>
+    <div class="uc-pts-sep"></div>
+    <div class="uc-pts-stat">
+      <div class="uc-pts-stat-val" id="ucBilanz">–</div>
+      <div class="uc-pts-stat-lbl">Bilanz S/U/N</div>
+    </div>
+    <div class="uc-pts-sep"></div>
+    <div class="uc-pts-stat">
+      <div class="uc-pts-stat-val" id="ucTore">–</div>
+      <div class="uc-pts-stat-lbl">Tore</div>
+    </div>
+    <div class="uc-pts-sep"></div>
+    <div class="uc-pts-stat">
+      <div class="uc-pts-stat-val" id="ucQuote">–</div>
+      <div class="uc-pts-stat-lbl">Quote</div>
+    </div>
+  </div>
   <div class="uc-body" id="ucBody">
     <!-- Skeleton -->
-    <div class="uc-stats">
-      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:18px;width:50%;margin:0 auto 4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
-      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
-      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
-      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
-    </div>
     <div class="uc-2col">
-      <div class="uc-box"><div class="skeleton" style="height:8px;width:60%;margin-bottom:9px;"></div><div style="display:flex;gap:4px;"><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div></div></div>
+      <div class="uc-box"><div class="skeleton" style="height:8px;width:60%;margin-bottom:9px;"></div><div style="display:flex;gap:4px;"><div class="skeleton" style="height:28px;width:28px;border-radius:8px;flex-shrink:0;"></div><div class="skeleton" style="height:28px;width:28px;border-radius:8px;flex-shrink:0;"></div><div class="skeleton" style="height:28px;width:28px;border-radius:8px;flex-shrink:0;"></div><div class="skeleton" style="height:28px;width:28px;border-radius:8px;flex-shrink:0;"></div><div class="skeleton" style="height:28px;width:28px;border-radius:8px;flex-shrink:0;"></div></div></div>
       <div class="uc-box"><div class="skeleton" style="height:8px;width:60%;margin-bottom:9px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;"></div></div>
     </div>
-    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:30px;"></div></div>
-    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:30px;"></div></div>
-    <div class="uc-box"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:28px;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;"></div></div>
+    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:36px;"></div></div>
+    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:36px;"></div></div>
+    <div class="uc-box"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:30px;margin-bottom:6px;"></div><div class="skeleton" style="height:30px;margin-bottom:6px;"></div><div class="skeleton" style="height:30px;"></div></div>
   </div>
-  <div class="uc-footer"><span id="ucUpdated">–</span><span>free-api-live-football-data</span></div>
+  <div class="uc-footer"><span id="ucUpdated">–</span><span style="color:rgba(232,0,28,.5);font-weight:600;">⚽ EISERN UNION</span></div>
 </div>
 
 </main>
@@ -1520,32 +1777,20 @@ async function loadUnion(){
     document.getElementById('ucLeague').textContent=`Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
     document.getElementById('ucRank').textContent=d.rank+'.';
 
-    // ── Stats row (Punkte, Bilanz, Tore, max. Punkte) ──
+    // ── Punkte-Strip ──
     const gdiff=(d.goals_for||0)-(d.goals_against||0);
     const maxPts=(d.matches_played||0)*3;
-    const statsHtml=`
-      <div class="uc-stats">
-        <div class="uc-stat">
-          <div class="uc-stat-lbl">Punkte</div>
-          <div class="uc-stat-val" style="font-size:28px;font-weight:200;letter-spacing:-1.5px;">${d.points}</div>
-          <div class="uc-stat-sub">von ${maxPts} mögl.</div>
-        </div>
-        <div class="uc-stat">
-          <div class="uc-stat-lbl">Bilanz</div>
-          <div class="uc-stat-val" style="font-size:12px;">${d.wins}S ${d.draws}U ${d.losses}N</div>
-          <div class="uc-stat-sub">${d.matches_played} Spiele</div>
-        </div>
-        <div class="uc-stat">
-          <div class="uc-stat-lbl">Tore</div>
-          <div class="uc-stat-val" style="font-size:13px;">${d.goals_for}:${d.goals_against}</div>
-          <div class="uc-stat-sub">${gdiff>=0?'+':''}${gdiff} Diff.</div>
-        </div>
-        <div class="uc-stat">
-          <div class="uc-stat-lbl">Quote</div>
-          <div class="uc-stat-val" style="font-size:13px;">${maxPts>0?Math.round((d.points/maxPts)*100):0}%</div>
-          <div class="uc-stat-sub">Punkte geholt</div>
-        </div>
-      </div>`;
+    const strip=document.getElementById('ucPtsStrip');
+    if(strip){
+      document.getElementById('ucPtsNum').textContent=d.points;
+      document.getElementById('ucBilanz').textContent=`${d.wins}/${d.draws}/${d.losses}`;
+      document.getElementById('ucTore').textContent=`${d.goals_for}:${d.goals_against}`;
+      document.getElementById('ucQuote').textContent=`${maxPts>0?Math.round((d.points/maxPts)*100):0}%`;
+      strip.style.display='flex';
+    }
+
+    // ── Stats row — leer, da Punkte-Strip übernimmt ──
+    const statsHtml=``;
 
     // ── Form / Serie ──
     const formStr=(d.form||'').slice(-5);
