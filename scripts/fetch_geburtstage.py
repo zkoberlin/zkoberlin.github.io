@@ -9,136 +9,104 @@ import urllib.request
 import urllib.parse
 from datetime import datetime
 import re
+import hashlib
 
 # ── Hilfsfunktion: HTTP-Request mit Headers ────────────────────────────────
-def get_json(url, headers=None):
+def get_json(url, headers=None, timeout=30):
     req = urllib.request.Request(url, headers=headers or {})
-    with urllib.request.urlopen(req, timeout=15) as response:
+    with urllib.request.urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode())
 
 # ── 1. WIKIDATA SPARQL ABFRAGE ─────────────────────────────────────────────
-# Wir fragen: Personen mit Geburtstag heute + kein Sterbedatum + Beruf bekannt
-# Sortiert nach Anzahl der Sitelinks (= Wikipedia-Artikel in vielen Sprachen)
-# → ein guter Proxy für "Bekanntheit"
+# Schlanke Query: nur die nötigsten Properties, kein SERVICE-Block für Labels
+# Labels kommen separat über die Wikidata API (schneller als SPARQL-Labels)
 
 def build_query(month, day):
     return f"""
-    SELECT DISTINCT ?person ?personLabel ?birth_year ?occupationLabel ?sitelinks WHERE {{
-      ?person wdt:P569 ?dob .
+    SELECT DISTINCT ?person ?birth_year ?sitelinks WHERE {{
+      ?person wdt:P569 ?dob ;
+              wdt:P31  wd:Q5 ;
+              wdt:P106 [] ;
+              wikibase:sitelinks ?sitelinks .
       FILTER(MONTH(?dob) = {month} && DAY(?dob) = {day})
-      
-      # Nur lebende Personen (kein Sterbedatum)
-      FILTER NOT EXISTS {{ ?person wdt:P570 ?dod }}
-      
-      # Muss ein Mensch sein (kein Tier, keine fiktive Figur)
-      ?person wdt:P31 wd:Q5 .
-      
-      # Muss einen Beruf haben
-      ?person wdt:P106 ?occupation .
-      
-      # Anzahl Sitelinks als Bekanntheits-Proxy
-      ?person wikibase:sitelinks ?sitelinks .
-      
-      # Labels auf Deutsch holen, Fallback Englisch
-      SERVICE wikibase:label {{
-        bd:serviceParam wikibase:language "de,en" .
-      }}
+      FILTER NOT EXISTS {{ ?person wdt:P570 [] }}
+      FILTER(?sitelinks > 20)
     }}
     ORDER BY DESC(?sitelinks)
-    LIMIT 30
+    LIMIT 15
     """
 
-# ── 2. BERUF AUF DEUTSCH FORMATIEREN ──────────────────────────────────────
-# Wikidata gibt manchmal englische Begriffe zurück, wir übersetzen die gängigsten
-
-BERUF_MAP = {
-    "association football player": "Fußballer",
-    "footballer": "Fußballer",
-    "soccer player": "Fußballer",
-    "actor": "Schauspieler",
-    "actress": "Schauspielerin",
-    "film actor": "Schauspieler",
-    "television actor": "Schauspieler",
-    "politician": "Politiker",
-    "singer": "Sänger/in",
-    "singer-songwriter": "Sänger/in",
-    "musician": "Musiker/in",
-    "rapper": "Rapper/in",
-    "basketball player": "Basketballer",
-    "tennis player": "Tennisspieler/in",
-    "athlete": "Sportler/in",
-    "writer": "Autor/in",
-    "author": "Autor/in",
-    "director": "Regisseur/in",
-    "film director": "Regisseur/in",
-    "model": "Model",
-    "comedian": "Comedian",
-    "television presenter": "Moderator/in",
-    "journalist": "Journalist/in",
-    "businessperson": "Unternehmer/in",
-    "entrepreneur": "Unternehmer/in",
-    "scientist": "Wissenschaftler/in",
-    "researcher": "Forscher/in",
-    "racing driver": "Rennfahrer/in",
-    "boxer": "Boxer/in",
-    "swimmer": "Schwimmer/in",
-    "gymnast": "Sportler/in",
-    "golfer": "Golfer/in",
-    "baseball player": "Baseballspieler",
-    "american football player": "Footballspieler",
-    "ice hockey player": "Eishockeyspieler",
-}
-
-def format_beruf(beruf_raw):
-    if not beruf_raw:
-        return "Persönlichkeit"
-    b = beruf_raw.lower().strip()
-    return BERUF_MAP.get(b, beruf_raw.title())
-
-# ── 3. FOTO VON WIKIMEDIA HOLEN ────────────────────────────────────────────
-def get_foto(wikidata_id):
-    """Holt das Hauptfoto einer Person von Wikimedia Commons."""
+# ── 2. LABELS + BERUF VIA WIKIDATA API HOLEN ──────────────────────────────
+def get_entity_data(qid):
+    """Holt Label (DE/EN) und ersten Beruf für eine Wikidata-Entity."""
     try:
         url = (
             f"https://www.wikidata.org/w/api.php"
-            f"?action=wbgetentities&ids={wikidata_id}"
-            f"&props=claims&format=json"
+            f"?action=wbgetentities&ids={qid}"
+            f"&props=labels|claims"
+            f"&languages=de|en"
+            f"&format=json"
         )
-        data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"})
-        claims = data["entities"][wikidata_id]["claims"]
-        
-        # P18 = Bild-Property in Wikidata
-        if "P18" not in claims:
-            return None
-        
-        filename = claims["P18"][0]["mainsnak"]["datavalue"]["value"]
-        # Wikimedia Commons URL berechnen (MD5-basiertes Verzeichnisschema)
-        filename_encoded = filename.replace(" ", "_")
-        import hashlib
-        md5 = hashlib.md5(filename_encoded.encode()).hexdigest()
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=20)
+        entity = data["entities"][qid]
+
+        # Name: Deutsch bevorzugt, Fallback Englisch
+        labels = entity.get("labels", {})
+        name = (
+            labels.get("de", {}).get("value")
+            or labels.get("en", {}).get("value")
+            or qid
+        )
+
+        claims = entity.get("claims", {})
+
+        # Beruf (P106) → erstes Ergebnis → Label holen
+        beruf = "Persönlichkeit"
+        if "P106" in claims:
+            beruf_qid = claims["P106"][0]["mainsnak"]["datavalue"]["value"]["id"]
+            beruf = get_label(beruf_qid)
+
+        # Foto (P18)
+        foto = None
+        if "P18" in claims:
+            filename = claims["P18"][0]["mainsnak"]["datavalue"]["value"]
+            foto = build_wikimedia_url(filename)
+
+        return name, beruf, foto
+
+    except Exception as e:
+        print(f"   ⚠ Entity-Fetch fehlgeschlagen für {qid}: {e}")
+        return None, None, None
+
+def get_label(qid):
+    """Holt das deutsche Label einer Wikidata-Entity (z.B. Beruf-QID)."""
+    try:
+        url = (
+            f"https://www.wikidata.org/w/api.php"
+            f"?action=wbgetentities&ids={qid}"
+            f"&props=labels&languages=de|en&format=json"
+        )
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=10)
+        labels = data["entities"][qid].get("labels", {})
         return (
-            f"https://upload.wikimedia.org/wikipedia/commons/thumb/"
-            f"{md5[0]}/{md5[0:2]}/{urllib.parse.quote(filename_encoded)}"
-            f"/120px-{urllib.parse.quote(filename_encoded)}"
+            labels.get("de", {}).get("value")
+            or labels.get("en", {}).get("value")
+            or "Persönlichkeit"
         )
     except Exception:
-        return None
+        return "Persönlichkeit"
 
-# ── 4. DUPLIKATE FILTERN ───────────────────────────────────────────────────
-# Wikidata gibt pro Person mehrere Zeilen zurück (ein Eintrag pro Beruf)
-# Wir nehmen pro Person nur den ersten (prominentesten) Beruf
+# ── 3. WIKIMEDIA FOTO-URL BERECHNEN ───────────────────────────────────────
+def build_wikimedia_url(filename):
+    filename_encoded = filename.replace(" ", "_")
+    md5 = hashlib.md5(filename_encoded.encode()).hexdigest()
+    return (
+        f"https://upload.wikimedia.org/wikipedia/commons/thumb/"
+        f"{md5[0]}/{md5[0:2]}/{urllib.parse.quote(filename_encoded)}"
+        f"/120px-{urllib.parse.quote(filename_encoded)}"
+    )
 
-def deduplicate(results):
-    seen = set()
-    unique = []
-    for row in results:
-        person_id = row["person"]["value"].split("/")[-1]  # z.B. "Q12345"
-        if person_id not in seen:
-            seen.add(person_id)
-            unique.append((person_id, row))
-    return unique
-
-# ── 5. HAUPTFUNKTION ───────────────────────────────────────────────────────
+# ── 4. HAUPTFUNKTION ───────────────────────────────────────────────────────
 def main():
     today = datetime.utcnow()
     month = today.month
@@ -154,46 +122,50 @@ def main():
         + urllib.parse.quote(query)
         + "&format=json"
     )
-    
+
     raw = get_json(sparql_url, headers={
         "User-Agent": "PaulDashboard/1.0 (github.com/zkoberlin)",
         "Accept": "application/sparql-results+json"
-    })
-    
-    results = raw.get("results", {}).get("bindings", [])
-    print(f"   → {len(results)} Rohergebnisse von Wikidata")
+    }, timeout=45)
 
-    # Deduplizieren
-    unique = deduplicate(results)
+    results = raw.get("results", {}).get("bindings", [])
+    print(f"   → {len(results)} Ergebnisse von Wikidata")
+
+    # Duplikate entfernen (eine Zeile pro Person)
+    seen = set()
+    unique = []
+    for row in results:
+        qid = row["person"]["value"].split("/")[-1]
+        if qid not in seen:
+            seen.add(qid)
+            unique.append((qid, row))
+
     print(f"   → {len(unique)} eindeutige Personen")
 
     # Top 3 aufbereiten
     output = []
-    for person_id, row in unique[:10]:  # max 10 versuchen um auf 3 zu kommen
+    for qid, row in unique:
         if len(output) >= 3:
             break
-        
-        name      = row.get("personLabel", {}).get("value", "Unbekannt")
-        birth_yr  = row.get("birth_year",  {}).get("value", "")[:4]  # nur Jahr
-        beruf_raw = row.get("occupationLabel", {}).get("value", "")
-        
-        # Wikidata-interne IDs überspringen (kein deutsches Label vorhanden)
-        if re.match(r"^Q\d+$", name):
+
+        birth_yr = row.get("birth_year", {}).get("value", "")[:4]
+        name, beruf, foto = get_entity_data(qid)
+
+        if not name or re.match(r"^Q\d+$", name):
             continue
-        
+
         alter = year - int(birth_yr) if birth_yr.isdigit() else None
-        foto  = get_foto(person_id)
-        
+
         entry = {
-            "name":      name,
-            "alter":     alter,
+            "name":        name,
+            "alter":       alter,
             "geburtsjahr": int(birth_yr) if birth_yr.isdigit() else None,
-            "beruf":     format_beruf(beruf_raw),
-            "foto":      foto,
-            "wikidata":  f"https://www.wikidata.org/wiki/{person_id}"
+            "beruf":       beruf,
+            "foto":        foto,
+            "wikidata":    f"https://www.wikidata.org/wiki/{qid}"
         }
         output.append(entry)
-        print(f"   ✓ {name} ({alter}) – {format_beruf(beruf_raw)}")
+        print(f"   ✓ {name} ({alter}) – {beruf}")
 
     # JSON schreiben
     result = {
@@ -201,10 +173,10 @@ def main():
         "generiert":   today.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "geburtstage": output
     }
-    
+
     with open("data/geburtstage.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-    
+
     print(f"\n✅ data/geburtstage.json geschrieben ({len(output)} Einträge)")
 
 if __name__ == "__main__":
