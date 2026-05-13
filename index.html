@@ -385,7 +385,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.6.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.6.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -994,41 +994,28 @@ loadPromiGeburtstage();
 })();
 
 // ── SCHULFERIEN BERLIN ──
-// Hardcodierte Berliner Schulferien 2025/26 als primäre Quelle (API als optionaler Bonus)
-// Offizielle Berliner Schulferien (Quelle: berlin.de) – KEINE Pfingstferien in Berlin!
-const BERLIN_FERIEN=[
-  {name:'Sommerferien',    start:new Date(2025,5,19), end:new Date(2025,7,1)},   // 19.06.–01.08.2025
-  {name:'Herbstferien',   start:new Date(2025,9,6),  end:new Date(2025,9,17)},  // 06.10.–17.10.2025
-  {name:'Weihnachtsferien',start:new Date(2025,11,22),end:new Date(2026,0,2)},  // 22.12.2025–02.01.2026
-  {name:'Winterferien',   start:new Date(2026,0,29), end:new Date(2026,1,1)},   // 29.01.–01.02.2026
-  {name:'Osterferien',    start:new Date(2026,3,2),  end:new Date(2026,3,17)},  // 02.04.–17.04.2026
-  {name:'Sommerferien',   start:new Date(2026,5,25), end:new Date(2026,7,7)},   // 25.06.–07.08.2026
-  {name:'Herbstferien',   start:new Date(2026,9,12), end:new Date(2026,9,23)},  // 12.10.–23.10.2026
-  {name:'Weihnachtsferien',start:new Date(2026,11,23),end:new Date(2027,0,2)},  // 23.12.2026–02.01.2027
-];
-
+// Daten kommen aus /data/schulferien_berlin.json (täglich via GitHub Actions aktualisiert)
 async function loadSchulferien(){
   const now2=new Date();
   const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
   const iconEl=document.getElementById('ferienIcon');
 
-  // Versuche API – wenn erfolgreich, merge mit hardcodierten Daten
-  let ferien=[...BERLIN_FERIEN];
+  let ferien=[];
   try{
-    const year=now2.getFullYear();
-    const [r1,r2]=await Promise.all([
-      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year}`,{signal:AbortSignal.timeout(4000)}),
-      fetch(`https://ferien-api.de/api/v1/holidays/BE/${year+1}`,{signal:AbortSignal.timeout(4000)})
-    ]);
-    const [d1,d2]=await Promise.all([r1.ok?r1.json():[], r2.ok?r2.json():[]]);
-    const apiData=[...d1,...d2];
-    if(apiData.length>0){
-      ferien=apiData.map(f=>{
-        const s=new Date(f.start);const e=new Date(f.end);
-        return {name:f.name,start:new Date(s.getFullYear(),s.getMonth(),s.getDate()),end:new Date(e.getFullYear(),e.getMonth(),e.getDate())};
-      });
-    }
-  }catch(e){/* API nicht erreichbar – nutze hardcodierte Daten */}
+    const r=await fetch('/data/schulferien_berlin.json',{signal:AbortSignal.timeout(5000)});
+    if(!r.ok) throw new Error('JSON nicht erreichbar');
+    const raw=await r.json();
+    ferien=raw.map(f=>({
+      name:f.name,
+      start:new Date(f.start),
+      end:new Date(f.end)
+    }));
+  }catch(e){
+    document.getElementById('ferienName').textContent='Daten nicht verfügbar';
+    document.getElementById('ferienCountdown').textContent='–';
+    document.getElementById('ferienDates').textContent='–';
+    return;
+  }
 
   ferien.sort((a,b)=>a.start-b.start);
 
