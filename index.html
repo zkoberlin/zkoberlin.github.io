@@ -398,7 +398,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.8.1</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.8.3</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1444,60 +1444,53 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN v4.8.1 — via data/union.json ──
+// ── UNION BERLIN v4.8.3 — via data/union.json ──
 async function loadUnion(){
-  const WDU = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const MNU = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
   function fmtDate(iso){
-    if(!iso) return '–';
-    const d = new Date(iso);
-    return `${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
+    if(!iso)return'–';
+    const d=new Date(iso);
+    return`${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
   }
-  function logo(url, sz=14){
-    if(!url) return `<span style="display:inline-block;width:${sz}px;"></span>`;
-    return `<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
+  function logo(url,sz=14){
+    if(!url)return`<span style="display:inline-block;width:${sz}px;"></span>`;
+    return`<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
   }
   function playerPhoto(id){
-    return `https://images.fotmob.com/image_resources/playerimages/${id}.png`;
+    return`https://images.fotmob.com/image_resources/playerimages/${id}.png`;
   }
-  function statBar(unionVal, oppVal, format){
-    // Returns a small inline comparison bar
-    if(unionVal==null||oppVal==null) return '';
-    const uv = parseFloat(String(unionVal).replace(/[^0-9.]/g,'')) || 0;
-    const ov = parseFloat(String(oppVal).replace(/[^0-9.]/g,'')) || 0;
-    const total = uv + ov || 1;
-    const uPct  = Math.round((uv/total)*100);
-    const oPct  = 100 - uPct;
-    const uWin  = uv >= ov;
-    return `<div style="display:flex;align-items:center;gap:5px;margin-top:3px;">
-      <span style="font-size:10px;font-weight:700;color:${uWin?'var(--union)':'var(--t2)'};min-width:28px;text-align:right;font-variant-numeric:tabular-nums;">${unionVal}</span>
-      <div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:var(--border);display:flex;">
-        <div style="width:${uPct}%;background:var(--union);border-radius:3px 0 0 3px;"></div>
-        <div style="width:${oPct}%;background:var(--t3);border-radius:0 3px 3px 0;"></div>
+  function statBar(uRaw,oRaw){
+    if(uRaw==null||oRaw==null)return'';
+    const uv=parseFloat(String(uRaw).replace(/[^0-9.]/g,''))||0;
+    const ov=parseFloat(String(oRaw).replace(/[^0-9.]/g,''))||0;
+    const tot=uv+ov||1;
+    const uPct=Math.round((uv/tot)*100);
+    const uWin=uv>=ov;
+    return`<div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
+      <span style="font-size:10.5px;font-weight:700;color:${uWin?'var(--union)':'var(--t2)'};min-width:30px;text-align:right;font-variant-numeric:tabular-nums;">${uRaw}</span>
+      <div style="flex:1;height:5px;border-radius:3px;background:var(--border);overflow:hidden;display:flex;">
+        <div style="width:${uPct}%;background:var(--union);"></div>
+        <div style="width:${100-uPct}%;background:var(--t3);"></div>
       </div>
-      <span style="font-size:10px;font-weight:700;color:${!uWin?'var(--t)':'var(--t2)'};min-width:28px;font-variant-numeric:tabular-nums;">${oppVal}</span>
+      <span style="font-size:10.5px;font-weight:700;color:${!uWin?'var(--t)':'var(--t2)'};min-width:30px;font-variant-numeric:tabular-nums;">${oRaw}</span>
     </div>`;
   }
 
   try{
-    const r = await fetch('data/union.json', {signal: AbortSignal.timeout(6000)});
-    if(!r.ok) throw new Error('JSON nicht erreichbar (HTTP ' + r.status + ')');
-    const d = await r.json();
-    if(!d.rank) throw new Error('Keine Daten — GitHub Action noch nicht gelaufen?');
+    const r=await fetch('data/union.json',{signal:AbortSignal.timeout(6000)});
+    if(!r.ok)throw new Error('JSON nicht erreichbar (HTTP '+r.status+')');
+    const d=await r.json();
+    if(!d.rank)throw new Error('Keine Daten — GitHub Action noch nicht gelaufen?');
 
-    // Header Logo
-    if(d.team_logo){ const el=document.getElementById('unionLogo'); if(el) el.src=d.team_logo; }
-    document.getElementById('unionLeague').textContent = `Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
-    document.getElementById('unionRankNum').textContent = d.rank + '.';
-
-    // Form
-    const formStr  = (d.form||'').slice(-5);
-    const formDots = [...formStr].map(c=>`<div class="union-form-dot ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
-    const formPts  = [...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
+    // Header
+    if(d.team_logo){const el=document.getElementById('unionLogo');if(el)el.src=d.team_logo;}
+    document.getElementById('unionLeague').textContent=`Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
+    document.getElementById('unionRankNum').textContent=d.rank+'.';
 
     // Tabellenumfeld
-    const nbHtml = (d.table_context||[]).map(t=>`
+    const nbHtml=(d.table_context||[]).map(t=>`
       <div class="union-tbl-row${t.is_union?' me':''}">
         <div class="union-tbl-team">
           <span style="font-size:9.5px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:18px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
@@ -1507,36 +1500,62 @@ async function loadUnion(){
         <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points} Pkt.</span>
       </div>`).join('');
 
-    // Letztes Spiel
-    const last = d.last_match;
-    let lastHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein Spiel gefunden</div>';
-    if(last){
-      const cls  = last.result==='W'?'w':last.result==='L'?'l':'d';
-      const outc = last.result==='W'?'Sieg ✅':last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
-      // Match stats
-      const ms   = d.last_match_stats || {};
-      const oppName = last.is_home ? last.away_name : last.home_name;
-      let statsHtml = '';
-      if(Object.keys(ms).length){
-        const rows = [
-          ms.possession    && {lbl:'Ballbesitz',     uv:ms.possession.union+'%',   ov:ms.possession.opp+'%',   raw:ms.possession},
-          ms.xg            && {lbl:'xG',             uv:ms.xg.union,               ov:ms.xg.opp,               raw:ms.xg},
-          ms.shots         && {lbl:'Schüsse',        uv:ms.shots.union,            ov:ms.shots.opp,            raw:ms.shots},
-          ms.shots_on_target && {lbl:'aufs Tor',     uv:ms.shots_on_target.union,  ov:ms.shots_on_target.opp,  raw:ms.shots_on_target},
-        ].filter(Boolean);
-        statsHtml = `
-          <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
-            <div style="display:flex;justify-content:space-between;font-size:8.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">
-              <span style="color:var(--union);">Union</span><span>Spielstatistik</span><span>${oppName.split(' ').pop()}</span>
-            </div>
-            ${rows.map(row=>`
-              <div style="margin-bottom:4px;">
-                <div style="font-size:9px;color:var(--t3);text-align:center;margin-bottom:1px;">${row.lbl}</div>
-                ${statBar(row.uv, row.ov)}
-              </div>`).join('')}
+    // Letzte 5 Spiele als kompakte Liste
+    const recent=(d.recent_matches||[]);
+    const formStr=(d.form||'').slice(-5);
+    const formPts=[...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
+    let last5Html='';
+    if(recent.length){
+      last5Html=`<div style="margin-top:6px;display:flex;flex-direction:column;gap:0;">`+
+        recent.map((m,i)=>{
+          const cls=m.result==='W'?'w':m.result==='L'?'l':'d';
+          const opp=m.is_home?m.away_name:m.home_name;
+          const oppLogo=m.is_home?m.away_logo:m.home_logo;
+          const uGoals=m.is_home?m.goals_home:m.goals_away;
+          const oGoals=m.is_home?m.goals_away:m.goals_home;
+          return`<div style="display:flex;align-items:center;gap:7px;padding:5px 0;${i>0?'border-top:1px solid var(--border);':''}">
+            <div class="union-form-dot ${cls}" style="width:20px;height:20px;border-radius:5px;font-size:9px;flex-shrink:0;">${m.result==='W'?'S':m.result==='L'?'N':'U'}</div>
+            ${logo(oppLogo,16)}
+            <span style="flex:1;font-size:10.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${opp}</span>
+            <span style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);flex-shrink:0;">${uGoals}:${oGoals}</span>
           </div>`;
+        }).join('')+`</div>
+        <div class="union-stat-sub" style="margin-top:6px;">${formPts} Pkt. aus ${recent.length} Spielen</div>`;
+    } else {
+      // Fallback: nur Form-Dots
+      const formDots=[...formStr].map(c=>`<div class="union-form-dot ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
+      last5Html=`<div class="union-form" style="margin-top:6px;">${formDots||'–'}</div>
+        <div class="union-stat-sub" style="margin-top:8px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>`;
+    }
+
+    // Letztes Spiel (detailliert)
+    const last=d.last_match;
+    let lastHtml='<div style="color:var(--t3);font-size:11px;text-align:center;">Kein Spiel gefunden</div>';
+    if(last){
+      const cls=last.result==='W'?'w':last.result==='L'?'l':'d';
+      const outc=last.result==='W'?'Sieg ✅':last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
+      const ms=d.last_match_stats||{};
+      const oppName=last.is_home?last.away_name:last.home_name;
+      let statsHtml='';
+      if(ms.possession||ms.xg||ms.shots){
+        const rows=[
+          ms.possession     &&['Ballbesitz', ms.possession.union+'%', ms.possession.opp+'%'],
+          ms.xg             &&['xG',         ms.xg.union,             ms.xg.opp],
+          ms.shots          &&['Schüsse',    ms.shots.union,          ms.shots.opp],
+          ms.shots_on_target&&['aufs Tor',   ms.shots_on_target.union,ms.shots_on_target.opp],
+        ].filter(Boolean);
+        statsHtml=`<div style="margin-top:9px;border-top:1px solid var(--border);padding-top:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">
+            <span style="color:var(--union);min-width:32px;text-align:right;">Union</span>
+            <span style="flex:1;text-align:center;">Spielstatistik</span>
+            <span style="min-width:32px;">${oppName.split(' ').slice(-1)[0]}</span>
+          </div>
+          ${rows.map(([lbl,uv,ov])=>`<div style="margin-bottom:5px;">
+            <div style="font-size:9px;color:var(--t3);text-align:center;margin-bottom:1px;">${lbl}</div>
+            ${statBar(uv,ov)}</div>`).join('')}
+        </div>`;
       }
-      lastHtml = `
+      lastHtml=`
         <div class="union-match-lbl">Letztes Spiel · ${last.is_home?'Heimspiel':'Auswärtsspiel'} · ${last.matchday}. Spieltag</div>
         <div class="union-match-row">
           <div class="union-match-team">${logo(last.home_logo,26)}<span class="union-match-name">${last.home_name}</span></div>
@@ -1548,14 +1567,14 @@ async function loadUnion(){
     }
 
     // Nächstes Spiel
-    const next = d.next_match;
-    let nextHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein nächstes Spiel – Saisonende</div>';
+    const next=d.next_match;
+    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:4px 0;">Saison beendet 🏁</div>';
     if(next){
-      const days = Math.round((new Date(next.date)-new Date())/86400000);
-      const dStr = days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
-      const opp  = next.is_home ? next.away_name : next.home_name;
-      const oppLogo = next.is_home ? next.away_logo : next.home_logo;
-      nextHtml = `
+      const days=Math.round((new Date(next.date)-new Date())/86400000);
+      const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
+      const opp=next.is_home?next.away_name:next.home_name;
+      const oppLogo=next.is_home?next.away_logo:next.home_logo;
+      nextHtml=`
         <div class="union-match-lbl">Nächstes Spiel · ${next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️'} · ${next.matchday}. Spieltag</div>
         <div class="union-match-row">
           <div class="union-match-team">${logo('https://tmssl.akamaized.net/images/wappen/head/89.png',26)}<span class="union-match-name">Union Berlin</span></div>
@@ -1565,8 +1584,25 @@ async function loadUnion(){
         <div class="union-match-meta">${fmtDate(next.date)}</div>`;
     }
 
-    // Top Torschützen
-    const topGoalsHtml = (d.top_scorers||[]).slice(0,3).map((p,i)=>`
+    // Union Scorer (gefiltert aus Squad)
+    const unionScorers=(d.union_scorers||[]).slice(0,5);
+    const unionScorersHtml=unionScorers.length?`
+      <div class="union-stat">
+        <div class="union-stat-lbl">⚽ Union Berlin · Saisontorschützen</div>
+        ${unionScorers.map((p,i)=>`
+          <div class="union-player-row">
+            <div class="union-player-rank">${i+1}.</div>
+            <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
+            <div class="union-player-info">
+              <div class="union-player-name">${p.name}</div>
+              <div class="union-player-team">${p.assists?p.assists+' Vorlagen':'Stürmer'}</div>
+            </div>
+            <div class="union-player-val">${p.goals} ⚽</div>
+          </div>`).join('')}
+      </div>`:''  ;
+
+    // Liga Top Scorer
+    const topGoalsHtml=(d.top_scorers||[]).slice(0,3).map((p,i)=>`
       <div class="union-player-row">
         <div class="union-player-rank">${i+1}.</div>
         <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
@@ -1575,10 +1611,10 @@ async function loadUnion(){
           <div class="union-player-team">${p.teamName}</div>
         </div>
         <div class="union-player-val">${p.goals} ⚽</div>
-      </div>`).join('') || '<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
+      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
 
-    // Top Vorlagen
-    const topAssHtml = (d.top_assisters||[]).slice(0,3).map((p,i)=>`
+    // Liga Top Assists
+    const topAssHtml=(d.top_assisters||[]).slice(0,3).map((p,i)=>`
       <div class="union-player-row">
         <div class="union-player-rank">${i+1}.</div>
         <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
@@ -1587,11 +1623,11 @@ async function loadUnion(){
           <div class="union-player-team">${p.teamName}</div>
         </div>
         <div class="union-player-val">${p.assists} 🎯</div>
-      </div>`).join('') || '<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
+      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
 
     // Render
-    const gdiff = (d.goals_for||0)-(d.goals_against||0);
-    document.getElementById('unionBody').innerHTML = `
+    const gdiff=(d.goals_for||0)-(d.goals_against||0);
+    document.getElementById('unionBody').innerHTML=`
       <div class="union-stats-row">
         <div class="union-stat" style="text-align:center;">
           <div class="union-stat-lbl">Punkte</div>
@@ -1612,8 +1648,7 @@ async function loadUnion(){
       <div class="union-2col">
         <div class="union-stat">
           <div class="union-stat-lbl">Letzte 5 Spiele</div>
-          <div class="union-form">${formDots||'<span style="color:var(--t3);font-size:10px;">–</span>'}</div>
-          <div class="union-stat-sub" style="margin-top:8px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>
+          ${last5Html}
         </div>
         <div class="union-stat">
           <div class="union-stat-lbl">Tabellenumfeld</div>
@@ -1622,27 +1657,28 @@ async function loadUnion(){
       </div>
       <div class="union-match-box">${lastHtml}</div>
       <div class="union-match-box">${nextHtml}</div>
+      ${unionScorersHtml}
       <div class="union-2col">
         <div class="union-stat">
-          <div class="union-stat-lbl">🏆 Top Torschützen · Bundesliga</div>
+          <div class="union-stat-lbl">🏆 Top Torschützen · BL</div>
           ${topGoalsHtml}
         </div>
         <div class="union-stat">
-          <div class="union-stat-lbl">🎯 Top Vorlagen · Bundesliga</div>
+          <div class="union-stat-lbl">🎯 Top Vorlagen · BL</div>
           ${topAssHtml}
         </div>
       </div>`;
 
-    const upd = d.updated_at ? new Date(d.updated_at) : new Date();
-    document.getElementById('unionUpdated').textContent =
+    const upd=d.updated_at?new Date(d.updated_at):new Date();
+    document.getElementById('unionUpdated').textContent=
       `Stand: ${upd.getDate()}.${upd.getMonth()+1}. · ${String(upd.getHours()).padStart(2,'0')}:${String(upd.getMinutes()).padStart(2,'0')} Uhr`;
 
   }catch(e){
-    console.warn('Union error:', e);
-    document.getElementById('unionBody').innerHTML =
+    console.warn('Union error:',e);
+    document.getElementById('unionBody').innerHTML=
       `<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3);">⚠️ ${e.message}</div>`;
   }
-  if(window._lbTick) window._lbTick();
+  if(window._lbTick)window._lbTick();
 }
 loadUnion();
 
