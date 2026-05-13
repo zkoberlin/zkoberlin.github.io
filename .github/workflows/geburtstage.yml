@@ -3,24 +3,24 @@ fetch_geburtstage.py
 Holt täglich 3 bekannte lebende Geburtstagskinder via Wikidata SPARQL.
 Wird von GitHub Actions automatisch ausgeführt.
 """
-
+ 
 import json
 import urllib.request
 import urllib.parse
 from datetime import datetime
 import re
 import hashlib
-
+ 
 # ── Hilfsfunktion: HTTP-Request mit Headers ────────────────────────────────
 def get_json(url, headers=None, timeout=30):
     req = urllib.request.Request(url, headers=headers or {})
     with urllib.request.urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode())
-
+ 
 # ── 1. WIKIDATA SPARQL ABFRAGE ─────────────────────────────────────────────
 # Schlanke Query: nur die nötigsten Properties, kein SERVICE-Block für Labels
 # Labels kommen separat über die Wikidata API (schneller als SPARQL-Labels)
-
+ 
 def build_query(month, day):
     return f"""
     SELECT DISTINCT ?person ?birth_year ?sitelinks WHERE {{
@@ -35,7 +35,7 @@ def build_query(month, day):
     ORDER BY DESC(?sitelinks)
     LIMIT 15
     """
-
+ 
 # ── 2. LABELS + BERUF VIA WIKIDATA API HOLEN ──────────────────────────────
 def get_entity_data(qid):
     """Holt Label (DE/EN) und ersten Beruf für eine Wikidata-Entity."""
@@ -49,7 +49,7 @@ def get_entity_data(qid):
         )
         data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=20)
         entity = data["entities"][qid]
-
+ 
         # Name: Deutsch bevorzugt, Fallback Englisch
         labels = entity.get("labels", {})
         name = (
@@ -57,27 +57,27 @@ def get_entity_data(qid):
             or labels.get("en", {}).get("value")
             or qid
         )
-
+ 
         claims = entity.get("claims", {})
-
+ 
         # Beruf (P106) → erstes Ergebnis → Label holen
         beruf = "Persönlichkeit"
         if "P106" in claims:
             beruf_qid = claims["P106"][0]["mainsnak"]["datavalue"]["value"]["id"]
             beruf = get_label(beruf_qid)
-
+ 
         # Foto (P18)
         foto = None
         if "P18" in claims:
             filename = claims["P18"][0]["mainsnak"]["datavalue"]["value"]
             foto = build_wikimedia_url(filename)
-
+ 
         return name, beruf, foto
-
+ 
     except Exception as e:
         print(f"   ⚠ Entity-Fetch fehlgeschlagen für {qid}: {e}")
         return None, None, None
-
+ 
 def get_label(qid):
     """Holt das deutsche Label einer Wikidata-Entity (z.B. Beruf-QID)."""
     try:
@@ -95,7 +95,7 @@ def get_label(qid):
         )
     except Exception:
         return "Persönlichkeit"
-
+ 
 # ── 3. WIKIMEDIA FOTO-URL BERECHNEN ───────────────────────────────────────
 def build_wikimedia_url(filename):
     filename_encoded = filename.replace(" ", "_")
@@ -105,16 +105,16 @@ def build_wikimedia_url(filename):
         f"{md5[0]}/{md5[0:2]}/{urllib.parse.quote(filename_encoded)}"
         f"/120px-{urllib.parse.quote(filename_encoded)}"
     )
-
+ 
 # ── 4. HAUPTFUNKTION ───────────────────────────────────────────────────────
 def main():
     today = datetime.utcnow()
     month = today.month
     day   = today.day
     year  = today.year
-
+ 
     print(f"📅 Suche Geburtstagskinder für {day}.{month}.{year} ...")
-
+ 
     # SPARQL-Abfrage senden
     query = build_query(month, day)
     sparql_url = (
@@ -122,15 +122,15 @@ def main():
         + urllib.parse.quote(query)
         + "&format=json"
     )
-
+ 
     raw = get_json(sparql_url, headers={
         "User-Agent": "PaulDashboard/1.0 (github.com/zkoberlin)",
         "Accept": "application/sparql-results+json"
     }, timeout=45)
-
+ 
     results = raw.get("results", {}).get("bindings", [])
     print(f"   → {len(results)} Ergebnisse von Wikidata")
-
+ 
     # Duplikate entfernen (eine Zeile pro Person)
     seen = set()
     unique = []
@@ -139,23 +139,23 @@ def main():
         if qid not in seen:
             seen.add(qid)
             unique.append((qid, row))
-
+ 
     print(f"   → {len(unique)} eindeutige Personen")
-
+ 
     # Top 3 aufbereiten
     output = []
     for qid, row in unique:
         if len(output) >= 3:
             break
-
+ 
         birth_yr = row.get("birth_year", {}).get("value", "")[:4]
         name, beruf, foto = get_entity_data(qid)
-
+ 
         if not name or re.match(r"^Q\d+$", name):
             continue
-
+ 
         alter = year - int(birth_yr) if birth_yr.isdigit() else None
-
+ 
         entry = {
             "name":        name,
             "alter":       alter,
@@ -166,18 +166,18 @@ def main():
         }
         output.append(entry)
         print(f"   ✓ {name} ({alter}) – {beruf}")
-
+ 
     # JSON schreiben
     result = {
         "datum":       f"{day:02d}.{month:02d}.{year}",
         "generiert":   today.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "geburtstage": output
     }
-
+ 
     with open("data/geburtstage.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-
+ 
     print(f"\n✅ data/geburtstage.json geschrieben ({len(output)} Einträge)")
-
+ 
 if __name__ == "__main__":
     main()
