@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-13T15:16:58.669193+00:00",
+  "updated_at": "2026-05-13T15:42:58.821909+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -11,7 +11,8 @@
   "losses": 15,
   "goals_for": 40,
   "goals_against": 58,
-  "form": "LLLDW",
+  "form": "",
+  "team_logo": "",
   "table_context": [
     {
       "rank": 10,
@@ -49,17 +50,47 @@
       "is_union": false
     }
   ],
-  "last_match": {
-    "matchday": "",
-    "date": "2026-05-10T17:30:00Z",
-    "home_name": "Mainz",
-    "away_name": "Union Berlin",
-    "home_logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
-    "away_logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
-    "goals_home": 1,
-    "goals_away": 3,
-    "is_home": false,
-    "result": "W"
-  },
-  "next_match": null
+  "last_match": null,
+  "next_match": null,
+  "last_match_stats": {},
+  "top_scorers": [
+    {
+      "id": 194165,
+      "name": "Harry Kane",
+      "teamName": "Bayern München",
+      "goals": 33
+    },
+    {
+      "id": 661519,
+      "name": "Deniz Undav",
+      "teamName": "VfB Stuttgart",
+      "goals": 19
+    },
+    {
+      "id": 448540,
+      "name": "Serhou Guirassy",
+      "teamName": "Borussia Dortmund",
+      "goals": 16
+    }
+  ],
+  "top_assisters": [
+    {
+      "id": 1029063,
+      "name": "Michael Olise",
+      "teamName": "Bayern München",
+      "assists": 19
+    },
+    {
+      "id": 659272,
+      "name": "Julian Ryerson",
+      "teamName": "Borussia Dortmund",
+      "assists": 14
+    },
+    {
+      "id": 860914,
+      "name": "Luis Díaz",
+      "teamName": "Bayern München",
+      "assists": 13
+    }
+  ]
 }
