@@ -1,0 +1,34 @@
+name: Fetch Union Berlin Data
+
+on:
+  schedule:
+    # Täglich um 06:00 UTC (= 07:00 / 08:00 CEST)
+    - cron: "0 6 * * *"
+  workflow_dispatch: # Manueller Trigger jederzeit möglich
+
+jobs:
+  fetch-union:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Repo "Read and write permissions" muss aktiviert sein
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch Union Berlin data
+        run: python scripts/fetch_union.py
+
+      - name: Commit & push data/union.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/union.json
+          # Nur committen wenn Änderungen vorhanden
+          git diff --cached --quiet || git commit -m "chore: update union.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
