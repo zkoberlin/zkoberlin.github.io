@@ -199,41 +199,40 @@ def main():
         print(f"   WARN: {e}",file=sys.stderr)
  
     # 7. Union Squad → Scorer filtern
+    # Struktur: response.list.squad[].members[] mit goals/assists direkt
     print("7. Union Squad …")
     union_scorers=[]
     try:
         qr=fetch(f"/football-get-list-player?teamid={UID}")
-        # API kann Liste oder Dict zurückgeben — robust abfangen
-        if isinstance(qr,list):
-            players=qr
-        elif isinstance(qr,dict):
-            players=qr.get("players",qr.get("squad",qr.get("members",[])))
-        else:
-            players=[]
-        print(f"   {len(players)} Spieler im Kader")
-        # Debug: erste Keys zeigen
-        if players:
-            print(f"   Beispiel-Keys: {list(players[0].keys())[:10]}")
+        # Echte Struktur: response = { list: { squad: [ {title, members:[]}, ... ] } }
+        squad_groups=qr.get("list",{}).get("squad",[])
+        print(f"   {len(squad_groups)} Positionsgruppen")
+ 
+        all_members=[]
+        for group in squad_groups:
+            if group.get("title")=="coach":
+                continue  # Trainer überspringen
+            for m in group.get("members",[]):
+                all_members.append(m)
+        print(f"   {len(all_members)} Spieler gesamt")
  
         with_goals=[]
-        for p in players:
-            # Verschiedene mögliche Key-Strukturen abfangen
-            goals=(p.get("goals") or p.get("goal") or
-                   p.get("statistics",{}).get("goals") or
-                   p.get("stat",{}).get("goals") or 0)
-            assists=(p.get("assists") or p.get("assist") or
-                     p.get("statistics",{}).get("assists") or
-                     p.get("stat",{}).get("assists") or 0)
-            if goals and int(goals)>0:
+        for p in all_members:
+            goals   = p.get("goals",0) or 0
+            assists = p.get("assists",0) or 0
+            if goals > 0:
                 with_goals.append({
-                    "id":   p.get("id") or p.get("playerId"),
-                    "name": p.get("name") or p.get("playerName","?"),
-                    "goals":  int(goals),
-                    "assists":int(assists) if assists else 0,
+                    "id":      p.get("id"),
+                    "name":    p.get("name","?"),
+                    "shirt":   p.get("shirtNumber"),
+                    "pos":     p.get("positionIdsDesc",""),
+                    "goals":   int(goals),
+                    "assists": int(assists),
+                    "injured": p.get("injured",False),
                 })
-        with_goals.sort(key=lambda x:-x["goals"])
-        union_scorers=with_goals[:5]
-        print(f"   {len(union_scorers)} Union-Scorer: {[p['name'] for p in union_scorers]}")
+        with_goals.sort(key=lambda x: (-x["goals"], -x["assists"]))
+        union_scorers=with_goals[:6]
+        print(f"   {len(union_scorers)} Scorer: {[f'{p[\"name\"]} ({p[\"goals\"]}G)' for p in union_scorers]}")
     except Exception as e:
         print(f"   WARN Squad: {e}",file=sys.stderr)
  
