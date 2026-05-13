@@ -1,59 +1,18 @@
 {
-  "updated_at": "2026-05-13T12:08:32.049422+00:00",
+  "updated_at": null,
   "league": "Bundesliga",
   "season": "2025/26",
-  "matchday": 33,
-  "rank": 12,
-  "points": 36,
-  "matches_played": 33,
-  "wins": 9,
-  "draws": 9,
-  "losses": 15,
-  "goals_for": 40,
-  "goals_against": 58,
-  "form": [],
-  "table_context": [
-    {
-      "rank": 10,
-      "name": "1. FSV Mainz 05",
-      "shortname": "Mainz",
-      "points": 37,
-      "team_id": 81,
-      "logo_id": 81
-    },
-    {
-      "rank": 11,
-      "name": "Hamburger SV",
-      "shortname": "HSV",
-      "points": 37,
-      "team_id": 100,
-      "logo_id": 23
-    },
-    {
-      "rank": 12,
-      "name": "1. FC Union Berlin",
-      "shortname": "Union Berlin",
-      "points": 36,
-      "team_id": 80,
-      "logo_id": 80
-    },
-    {
-      "rank": 13,
-      "name": "Borussia Mönchengladbach",
-      "shortname": "Gladbach",
-      "points": 35,
-      "team_id": 87,
-      "logo_id": 87
-    },
-    {
-      "rank": 14,
-      "name": "1. FC Köln",
-      "shortname": "Köln",
-      "points": 32,
-      "team_id": 65,
-      "logo_id": 36
-    }
-  ],
+  "matchday": null,
+  "rank": null,
+  "points": null,
+  "matches_played": null,
+  "wins": null,
+  "draws": null,
+  "losses": null,
+  "goals_for": null,
+  "goals_against": null,
+  "form": "",
+  "table_context": [],
   "last_match": null,
   "next_match": null
 }
