@@ -1,0 +1,38 @@
+name: Update Schulferien Berlin
+ 
+on:
+  schedule:
+    # Täglich um 03:00 UTC
+    - cron: "0 3 * * *"
+  workflow_dispatch:   # auch manuell auslösbar
+ 
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Repo Read & Write muss in Settings aktiviert sein
+ 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+ 
+      - name: Fetch Schulferien
+        run: python scripts/fetch_schulferien.py
+ 
+      - name: Commit & Push (nur wenn Änderungen)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/schulferien_berlin.json
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen – nichts zu committen."
+          else
+            git commit -m "chore: schulferien_berlin.json aktualisiert [bot]"
+            git push
+          fi
+ 
