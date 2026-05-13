@@ -337,53 +337,73 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 }
 
 /* Union Card */
-.union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.22);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.union-card:hover{transform:translateY(-2px);border-color:rgba(232,0,28,.45);box-shadow:0 0 0 2px rgba(232,0,28,.08),var(--sh-h);}
-.union-header{background:linear-gradient(135deg,#b8001a 0%,#e8001c 55%,#c0001e 100%);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
-.union-club{display:flex;align-items:center;gap:12px;}
-.union-clubname{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
-.union-league{font-size:10px;color:rgba(255,255,255,.65);margin-top:2px;}
-.union-rank{text-align:right;}
-.union-rank-num{font-size:32px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1;}
-.union-rank-lbl{font-size:8.5px;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
-.union-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
-.union-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-.union-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
-.union-stat-lbl{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:5px;-webkit-font-smoothing:antialiased;}
-.union-stat-val{font-size:13px;font-weight:700;letter-spacing:-.2px;font-variant-numeric:tabular-nums;}
-.union-stat-sub{font-size:9.5px;color:var(--t2);margin-top:3px;}
-.union-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.union-form{display:flex;gap:5px;align-items:center;margin-top:6px;}
-.union-form-dot{width:25px;height:25px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
-.union-form-dot.w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
-.union-form-dot.l{background:var(--red-l);color:var(--red);border:1px solid rgba(255,59,48,.2);}
-.union-form-dot.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
-.union-tbl-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;padding:4px 2px;}
-.union-tbl-row+.union-tbl-row{border-top:1px solid var(--border);}
-.union-tbl-row.me{background:var(--union-l);margin:2px -4px;padding:4px 6px;border-radius:5px;border-top:none!important;}
-.union-tbl-row.me+.union-tbl-row{border-top:none;}
-.union-tbl-team{display:flex;align-items:center;gap:6px;}
-.union-match-box{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 14px;}
-.union-match-lbl{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:10px;-webkit-font-smoothing:antialiased;}
-.union-match-row{display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.union-match-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
-.union-match-team.r{flex-direction:row-reverse;}
-.union-match-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.union-match-score{font-size:22px;font-weight:200;letter-spacing:-1px;font-variant-numeric:tabular-nums;padding:0 8px;flex-shrink:0;text-align:center;min-width:54px;}
-.union-match-score.w{color:var(--green);}
-.union-match-score.l{color:var(--red);}
-.union-match-score.d{color:var(--t2);}
-.union-match-meta{font-size:10px;color:var(--t3);margin-top:7px;text-align:center;}
-.union-next-vs{font-size:13px;font-weight:600;color:var(--blue);padding:0 8px;flex-shrink:0;text-align:center;min-width:54px;line-height:1.3;}
-.union-player-row{display:flex;align-items:center;gap:8px;padding:5px 0;}
-.union-player-row+.union-player-row{border-top:1px solid var(--border);}
-.union-player-rank{font-size:11px;font-weight:700;color:var(--t3);min-width:16px;text-align:center;}
-.union-player-photo{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
-.union-player-info{flex:1;min-width:0;}
-.union-player-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.union-player-team{font-size:9.5px;color:var(--t2);}
-.union-player-val{font-size:13px;font-weight:700;color:var(--union);font-variant-numeric:tabular-nums;flex-shrink:0;}
-.union-footer{border-top:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:9.5px;color:var(--t3);}
+.union-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,0,28,.22);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s;}
+.union-card:hover{border-color:rgba(232,0,28,.45);box-shadow:0 0 0 2px rgba(232,0,28,.08),var(--sh-h);transform:translateY(-2px);}
+/* Header */
+.uc-header{background:linear-gradient(135deg,#b8001a,#e8001c 55%,#c0001e);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.uc-club{display:flex;align-items:center;gap:11px;}
+.uc-clubname{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.uc-league{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px;}
+.uc-rank-wrap{text-align:right;}
+.uc-rank{font-size:34px;font-weight:200;color:#fff;letter-spacing:-2px;line-height:1;}
+.uc-rank-lbl{font-size:8px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.6px;margin-top:1px;}
+/* Body */
+.uc-body{padding:13px 15px;display:flex;flex-direction:column;gap:9px;}
+/* Stats row */
+.uc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.uc-stat{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 10px;text-align:center;}
+.uc-stat-lbl{font-size:7.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
+.uc-stat-val{font-size:15px;font-weight:300;letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1.1;}
+.uc-stat-sub{font-size:8.5px;color:var(--t2);margin-top:2px;}
+/* 2-col */
+.uc-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+/* Box */
+.uc-box{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 12px;}
+.uc-box-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:8px;-webkit-font-smoothing:antialiased;}
+/* Serie / Form */
+.uc-form{display:flex;gap:4px;flex-wrap:wrap;}
+.uc-fd{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
+.uc-fd.w{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
+.uc-fd.l{background:var(--red-l);color:var(--red);border:1px solid rgba(255,59,48,.2);}
+.uc-fd.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
+/* Tabelle */
+.uc-tbl-row{display:flex;align-items:center;gap:6px;padding:4px 2px;font-size:10.5px;}
+.uc-tbl-row+.uc-tbl-row{border-top:1px solid var(--border);}
+.uc-tbl-row.me{background:var(--union-l);margin:2px -4px;padding:4px 6px;border-radius:5px;border-top:none!important;}
+.uc-tbl-row.me+.uc-tbl-row{border-top:none;}
+/* Match */
+.uc-match{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 13px;}
+.uc-match-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);margin-bottom:9px;-webkit-font-smoothing:antialiased;}
+.uc-match-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.uc-match-team{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+.uc-match-team.r{flex-direction:row-reverse;}
+.uc-match-name{font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-score{font-size:24px;font-weight:200;letter-spacing:-1px;padding:0 8px;flex-shrink:0;text-align:center;min-width:56px;font-variant-numeric:tabular-nums;}
+.uc-score.w{color:var(--green);}
+.uc-score.l{color:var(--red);}
+.uc-score.d{color:var(--t2);}
+.uc-next-vs{font-size:12px;font-weight:600;color:var(--blue);padding:0 8px;flex-shrink:0;text-align:center;min-width:56px;line-height:1.3;}
+.uc-match-meta{font-size:9.5px;color:var(--t3);margin-top:6px;text-align:center;}
+/* Stat bars */
+.uc-bars{margin-top:9px;border-top:1px solid var(--border);padding-top:8px;display:flex;flex-direction:column;gap:5px;}
+.uc-bar-row{display:grid;grid-template-columns:36px 1fr 36px;align-items:center;gap:5px;}
+.uc-bar-lbl{font-size:8px;color:var(--t3);text-align:center;margin-bottom:2px;}
+.uc-bar-val{font-size:10.5px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;}
+.uc-bar-val.r{text-align:left;}
+.uc-bar-track{height:5px;border-radius:3px;background:var(--border);overflow:hidden;display:flex;}
+.uc-bar-fill{background:var(--union);height:100%;}
+.uc-bar-fill2{background:var(--t3);height:100%;}
+/* Players */
+.uc-player{display:flex;align-items:center;gap:8px;padding:5px 0;}
+.uc-player+.uc-player{border-top:1px solid var(--border);}
+.uc-player-rank{font-size:10.5px;font-weight:700;color:var(--t3);min-width:14px;text-align:center;}
+.uc-player-photo{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
+.uc-player-info{flex:1;min-width:0;}
+.uc-player-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-player-sub{font-size:9px;color:var(--t2);margin-top:1px;}
+.uc-player-val{font-size:13px;font-weight:700;color:var(--union);flex-shrink:0;font-variant-numeric:tabular-nums;}
+/* Footer */
+.uc-footer{border-top:1px solid var(--border);padding:7px 15px;display:flex;align-items:center;justify-content:space-between;font-size:9px;color:var(--t3);}
 </style>
 </head>
 <body>
@@ -398,7 +418,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.8.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.0.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -655,27 +675,36 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <!-- Union Berlin Card -->
 <div class="sec">⚽ 1. FC Union Berlin</div>
 <div class="union-card" id="unionCard">
-  <div class="union-header">
-    <div class="union-club">
-      <img id="unionLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));flex-shrink:0;border-radius:6px;">
+  <div class="uc-header">
+    <div class="uc-club">
+      <img id="ucLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,.5));flex-shrink:0;border-radius:6px;" alt="Union">
       <div>
-        <div class="union-clubname">1. FC Union Berlin</div>
-        <div class="union-league" id="unionLeague">Bundesliga · lädt…</div>
+        <div class="uc-clubname">1. FC Union Berlin</div>
+        <div class="uc-league" id="ucLeague">Bundesliga · lädt…</div>
       </div>
     </div>
-    <div class="union-rank">
-      <div class="union-rank-num" id="unionRankNum">–</div>
-      <div class="union-rank-lbl">Platz</div>
+    <div class="uc-rank-wrap">
+      <div class="uc-rank" id="ucRank">–</div>
+      <div class="uc-rank-lbl">Platz</div>
     </div>
   </div>
-  <div class="union-body" id="unionBody">
-    <div class="union-stats-row">
-      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:22px;width:40%;margin-bottom:5px;"></div><div class="skeleton" style="height:9px;width:60%;"></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton" style="height:9px;width:60%;"></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton" style="height:9px;width:60%;"></div></div>
+  <div class="uc-body" id="ucBody">
+    <!-- Skeleton -->
+    <div class="uc-stats">
+      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:18px;width:50%;margin:0 auto 4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
+      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
+      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
+      <div class="uc-stat"><div class="skeleton" style="height:8px;width:60%;margin:0 auto 6px;"></div><div class="skeleton" style="height:14px;margin-bottom:4px;"></div><div class="skeleton" style="height:8px;width:70%;margin:0 auto;"></div></div>
     </div>
+    <div class="uc-2col">
+      <div class="uc-box"><div class="skeleton" style="height:8px;width:60%;margin-bottom:9px;"></div><div style="display:flex;gap:4px;"><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:26px;width:26px;border-radius:7px;flex-shrink:0;"></div></div></div>
+      <div class="uc-box"><div class="skeleton" style="height:8px;width:60%;margin-bottom:9px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;"></div></div>
+    </div>
+    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:30px;"></div></div>
+    <div class="uc-match"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:30px;"></div></div>
+    <div class="uc-box"><div class="skeleton" style="height:8px;width:55%;margin-bottom:11px;"></div><div class="skeleton" style="height:28px;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;margin-bottom:6px;"></div><div class="skeleton" style="height:28px;"></div></div>
   </div>
-  <div class="union-footer"><span id="unionUpdated">–</span><span>free-api-live-football-data</span></div>
+  <div class="uc-footer"><span id="ucUpdated">–</span><span>free-api-live-football-data</span></div>
 </div>
 
 </main>
@@ -1444,238 +1473,199 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN v4.8.3 — via data/union.json ──
+// ── UNION BERLIN v5.0.0 — via data/union.json ──
 async function loadUnion(){
   const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
-  function fmtDate(iso){
+  function fmtDt(iso){
     if(!iso)return'–';
     const d=new Date(iso);
     return`${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
   }
-  function logo(url,sz=14){
+  function img(url,sz,rd=''){
     if(!url)return`<span style="display:inline-block;width:${sz}px;"></span>`;
-    return`<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
+    return`<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;${rd?'border-radius:'+rd+';':''}" alt="" onerror="this.style.visibility='hidden'">`;
   }
-  function playerPhoto(id){
+  function playerImg(id){
     return`https://images.fotmob.com/image_resources/playerimages/${id}.png`;
   }
-  function statBar(uRaw,oRaw){
-    if(uRaw==null||oRaw==null)return'';
+  function bar(uRaw,oRaw,uLabel,oLabel){
+    // Comparison bar: Union (red) vs opponent (grey)
     const uv=parseFloat(String(uRaw).replace(/[^0-9.]/g,''))||0;
     const ov=parseFloat(String(oRaw).replace(/[^0-9.]/g,''))||0;
     const tot=uv+ov||1;
     const uPct=Math.round((uv/tot)*100);
     const uWin=uv>=ov;
-    return`<div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
-      <span style="font-size:10.5px;font-weight:700;color:${uWin?'var(--union)':'var(--t2)'};min-width:30px;text-align:right;font-variant-numeric:tabular-nums;">${uRaw}</span>
-      <div style="flex:1;height:5px;border-radius:3px;background:var(--border);overflow:hidden;display:flex;">
-        <div style="width:${uPct}%;background:var(--union);"></div>
-        <div style="width:${100-uPct}%;background:var(--t3);"></div>
+    return`<div class="uc-bar-row">
+      <span class="uc-bar-val" style="color:${uWin?'var(--union)':'var(--t2)'};">${uLabel||uRaw}</span>
+      <div>
+        <div class="uc-bar-track">
+          <div class="uc-bar-fill" style="width:${uPct}%;"></div>
+          <div class="uc-bar-fill2" style="width:${100-uPct}%;"></div>
+        </div>
       </div>
-      <span style="font-size:10.5px;font-weight:700;color:${!uWin?'var(--t)':'var(--t2)'};min-width:30px;font-variant-numeric:tabular-nums;">${oRaw}</span>
+      <span class="uc-bar-val r" style="color:${!uWin?'var(--t)':'var(--t2)'};">${oLabel||oRaw}</span>
     </div>`;
   }
 
   try{
     const r=await fetch('data/union.json',{signal:AbortSignal.timeout(6000)});
-    if(!r.ok)throw new Error('JSON nicht erreichbar (HTTP '+r.status+')');
+    if(!r.ok)throw new Error('JSON nicht erreichbar');
     const d=await r.json();
     if(!d.rank)throw new Error('Keine Daten — GitHub Action noch nicht gelaufen?');
 
     // Header
-    if(d.team_logo){const el=document.getElementById('unionLogo');if(el)el.src=d.team_logo;}
-    document.getElementById('unionLeague').textContent=`Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
-    document.getElementById('unionRankNum').textContent=d.rank+'.';
+    if(d.team_logo){const el=document.getElementById('ucLogo');if(el)el.src=d.team_logo;}
+    document.getElementById('ucLeague').textContent=`Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
+    document.getElementById('ucRank').textContent=d.rank+'.';
 
-    // Tabellenumfeld
-    const nbHtml=(d.table_context||[]).map(t=>`
-      <div class="union-tbl-row${t.is_union?' me':''}">
-        <div class="union-tbl-team">
-          <span style="font-size:9.5px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:18px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
-          ${logo(t.logo,14)}
-          <span style="${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
+    // ── Stats row (Punkte, Bilanz, Tore, max. Punkte) ──
+    const gdiff=(d.goals_for||0)-(d.goals_against||0);
+    const maxPts=(d.matches_played||0)*3;
+    const statsHtml=`
+      <div class="uc-stats">
+        <div class="uc-stat">
+          <div class="uc-stat-lbl">Punkte</div>
+          <div class="uc-stat-val" style="font-size:28px;font-weight:200;letter-spacing:-1.5px;">${d.points}</div>
+          <div class="uc-stat-sub">von ${maxPts} mögl.</div>
         </div>
-        <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points} Pkt.</span>
-      </div>`).join('');
+        <div class="uc-stat">
+          <div class="uc-stat-lbl">Bilanz</div>
+          <div class="uc-stat-val" style="font-size:12px;">${d.wins}S ${d.draws}U ${d.losses}N</div>
+          <div class="uc-stat-sub">${d.matches_played} Spiele</div>
+        </div>
+        <div class="uc-stat">
+          <div class="uc-stat-lbl">Tore</div>
+          <div class="uc-stat-val" style="font-size:13px;">${d.goals_for}:${d.goals_against}</div>
+          <div class="uc-stat-sub">${gdiff>=0?'+':''}${gdiff} Diff.</div>
+        </div>
+        <div class="uc-stat">
+          <div class="uc-stat-lbl">Quote</div>
+          <div class="uc-stat-val" style="font-size:13px;">${maxPts>0?Math.round((d.points/maxPts)*100):0}%</div>
+          <div class="uc-stat-sub">Punkte geholt</div>
+        </div>
+      </div>`;
 
-    // Letzte 5 Spiele als kompakte Liste
-    const recent=(d.recent_matches||[]);
+    // ── Form / Serie ──
     const formStr=(d.form||'').slice(-5);
     const formPts=[...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
-    let last5Html='';
-    if(recent.length){
-      last5Html=`<div style="margin-top:6px;display:flex;flex-direction:column;gap:0;">`+
-        recent.map((m,i)=>{
-          const cls=m.result==='W'?'w':m.result==='L'?'l':'d';
-          const opp=m.is_home?m.away_name:m.home_name;
-          const oppLogo=m.is_home?m.away_logo:m.home_logo;
-          const uGoals=m.is_home?m.goals_home:m.goals_away;
-          const oGoals=m.is_home?m.goals_away:m.goals_home;
-          return`<div style="display:flex;align-items:center;gap:7px;padding:5px 0;${i>0?'border-top:1px solid var(--border);':''}">
-            <div class="union-form-dot ${cls}" style="width:20px;height:20px;border-radius:5px;font-size:9px;flex-shrink:0;">${m.result==='W'?'S':m.result==='L'?'N':'U'}</div>
-            ${logo(oppLogo,16)}
-            <span style="flex:1;font-size:10.5px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${opp}</span>
-            <span style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);flex-shrink:0;">${uGoals}:${oGoals}</span>
-          </div>`;
-        }).join('')+`</div>
-        <div class="union-stat-sub" style="margin-top:6px;">${formPts} Pkt. aus ${recent.length} Spielen</div>`;
-    } else {
-      // Fallback: nur Form-Dots
-      const formDots=[...formStr].map(c=>`<div class="union-form-dot ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
-      last5Html=`<div class="union-form" style="margin-top:6px;">${formDots||'–'}</div>
-        <div class="union-stat-sub" style="margin-top:8px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>`;
-    }
+    const formDots=[...formStr].map(c=>`<div class="uc-fd ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
 
-    // Letztes Spiel (detailliert)
+    // ── Tabelle ──
+    const tbl=(d.table_context||[]);
+    const tblHtml=tbl.map(t=>`
+      <div class="uc-tbl-row${t.is_union?' me':''}">
+        <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:16px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
+        ${img(t.logo,14)}
+        <span style="flex:1;${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
+        <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points}</span>
+      </div>`).join('');
+
+    // ── Letztes Spiel ──
     const last=d.last_match;
-    let lastHtml='<div style="color:var(--t3);font-size:11px;text-align:center;">Kein Spiel gefunden</div>';
+    let lastHtml='<div style="color:var(--t3);font-size:11px;text-align:center;">–</div>';
     if(last){
       const cls=last.result==='W'?'w':last.result==='L'?'l':'d';
       const outc=last.result==='W'?'Sieg ✅':last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
+      const hA=last.is_home?'Heimspiel':'Auswärtsspiel';
+      // Match stats bars
       const ms=d.last_match_stats||{};
-      const oppName=last.is_home?last.away_name:last.home_name;
-      let statsHtml='';
-      if(ms.possession||ms.xg||ms.shots){
+      const oppShort=(last.is_home?last.away_name:last.home_name).split(' ').pop();
+      let barsHtml='';
+      if(Object.keys(ms).length){
         const rows=[
-          ms.possession     &&['Ballbesitz', ms.possession.union+'%', ms.possession.opp+'%'],
-          ms.xg             &&['xG',         ms.xg.union,             ms.xg.opp],
-          ms.shots          &&['Schüsse',    ms.shots.union,          ms.shots.opp],
-          ms.shots_on_target&&['aufs Tor',   ms.shots_on_target.union,ms.shots_on_target.opp],
+          ms.possession     &&['Ballbesitz', ms.possession.union+'%',    ms.possession.opp+'%'],
+          ms.xg             &&['xG',         ms.xg.union,                ms.xg.opp],
+          ms.shots          &&['Schüsse',    ms.shots.union,             ms.shots.opp],
+          ms.shots_on_target&&['aufs Tor',   ms.shots_on_target.union,   ms.shots_on_target.opp],
+          ms.corners        &&['Ecken',      ms.corners.union,           ms.corners.opp],
+          ms.big_chance     &&['Chancen',    ms.big_chance.union,        ms.big_chance.opp],
         ].filter(Boolean);
-        statsHtml=`<div style="margin-top:9px;border-top:1px solid var(--border);padding-top:8px;">
-          <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">
-            <span style="color:var(--union);min-width:32px;text-align:right;">Union</span>
+        barsHtml=`<div class="uc-bars">
+          <div style="display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">
+            <span style="color:var(--union);min-width:36px;text-align:right;">Union</span>
             <span style="flex:1;text-align:center;">Spielstatistik</span>
-            <span style="min-width:32px;">${oppName.split(' ').slice(-1)[0]}</span>
+            <span style="min-width:36px;">${oppShort}</span>
           </div>
-          ${rows.map(([lbl,uv,ov])=>`<div style="margin-bottom:5px;">
-            <div style="font-size:9px;color:var(--t3);text-align:center;margin-bottom:1px;">${lbl}</div>
-            ${statBar(uv,ov)}</div>`).join('')}
+          ${rows.map(([lbl,uv,ov])=>`
+            <div style="margin-bottom:1px;">
+              <div style="font-size:8px;color:var(--t3);text-align:center;margin-bottom:2px;">${lbl}</div>
+              ${bar(uv,ov,uv,ov)}
+            </div>`).join('')}
         </div>`;
       }
       lastHtml=`
-        <div class="union-match-lbl">Letztes Spiel · ${last.is_home?'Heimspiel':'Auswärtsspiel'} · ${last.matchday}. Spieltag</div>
-        <div class="union-match-row">
-          <div class="union-match-team">${logo(last.home_logo,26)}<span class="union-match-name">${last.home_name}</span></div>
-          <div class="union-match-score ${cls}">${last.goals_home} : ${last.goals_away}</div>
-          <div class="union-match-team r">${logo(last.away_logo,26)}<span class="union-match-name" style="text-align:right;">${last.away_name}</span></div>
+        <div class="uc-match-lbl">Letztes Spiel · ${hA} · Spieltag ${last.matchday}</div>
+        <div class="uc-match-teams">
+          <div class="uc-match-team">${img(last.home_logo,26,'4px')}<span class="uc-match-name">${last.home_name}</span></div>
+          <div class="uc-score ${cls}">${last.goals_home}:${last.goals_away}</div>
+          <div class="uc-match-team r">${img(last.away_logo,26,'4px')}<span class="uc-match-name" style="text-align:right;">${last.away_name}</span></div>
         </div>
-        <div class="union-match-meta">${outc} · ${fmtDate(last.date)}</div>
-        ${statsHtml}`;
+        <div class="uc-match-meta">${outc} · ${fmtDt(last.date)}</div>
+        ${barsHtml}`;
     }
 
-    // Nächstes Spiel
+    // ── Nächstes Spiel ──
     const next=d.next_match;
-    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:4px 0;">Saison beendet 🏁</div>';
+    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:3px 0;">Saison beendet 🏁</div>';
     if(next){
       const days=Math.round((new Date(next.date)-new Date())/86400000);
       const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
       const opp=next.is_home?next.away_name:next.home_name;
       const oppLogo=next.is_home?next.away_logo:next.home_logo;
+      const hA=next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️';
       nextHtml=`
-        <div class="union-match-lbl">Nächstes Spiel · ${next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️'} · ${next.matchday}. Spieltag</div>
-        <div class="union-match-row">
-          <div class="union-match-team">${logo('https://tmssl.akamaized.net/images/wappen/head/89.png',26)}<span class="union-match-name">Union Berlin</span></div>
-          <div class="union-next-vs">${dStr}</div>
-          <div class="union-match-team r">${logo(oppLogo,26)}<span class="union-match-name" style="text-align:right;">${opp}</span></div>
+        <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}</div>
+        <div class="uc-match-teams">
+          <div class="uc-match-team">${img('https://tmssl.akamaized.net/images/wappen/head/89.png',26,'4px')}<span class="uc-match-name">Union Berlin</span></div>
+          <div class="uc-next-vs">${dStr}</div>
+          <div class="uc-match-team r">${img(oppLogo,26,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
         </div>
-        <div class="union-match-meta">${fmtDate(next.date)}</div>`;
+        <div class="uc-match-meta">${fmtDt(next.date)}</div>`;
     }
 
-    // Union Scorer (gefiltert aus Squad)
-    const unionScorers=(d.union_scorers||[]).slice(0,5);
-    const unionScorersHtml=unionScorers.length?`
-      <div class="union-stat">
-        <div class="union-stat-lbl">⚽ Union Berlin · Saisontorschützen</div>
-        ${unionScorers.map((p,i)=>`
-          <div class="union-player-row">
-            <div class="union-player-rank">${i+1}.</div>
-            <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
-            <div class="union-player-info">
-              <div class="union-player-name">${p.name}</div>
-              <div class="union-player-team">${p.assists?p.assists+' Vorlagen':'Stürmer'}</div>
-            </div>
-            <div class="union-player-val">${p.goals} ⚽</div>
-          </div>`).join('')}
-      </div>`:''  ;
+    // ── Union Scorer ──
+    const scorers=(d.union_scorers||[]).slice(0,5);
+    const scorersHtml=scorers.map((p,i)=>`
+      <div class="uc-player">
+        <div class="uc-player-rank">${i+1}.</div>
+        <img class="uc-player-photo" src="${playerImg(p.id)}" onerror="this.style.display='none'" alt="">
+        <div class="uc-player-info">
+          <div class="uc-player-name">${p.name}${p.injured?' 🤕':''}</div>
+          <div class="uc-player-sub">${p.pos||'–'} · ${p.assists||0} Vorlagen</div>
+        </div>
+        <div class="uc-player-val">${p.goals}⚽</div>
+      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:3px 0;">Keine Daten</div>';
 
-    // Liga Top Scorer
-    const topGoalsHtml=(d.top_scorers||[]).slice(0,3).map((p,i)=>`
-      <div class="union-player-row">
-        <div class="union-player-rank">${i+1}.</div>
-        <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
-        <div class="union-player-info">
-          <div class="union-player-name">${p.name}</div>
-          <div class="union-player-team">${p.teamName}</div>
+    // ── Render ──
+    document.getElementById('ucBody').innerHTML=`
+      ${statsHtml}
+      <div class="uc-2col">
+        <div class="uc-box">
+          <div class="uc-box-lbl">Letzte 5 Spiele</div>
+          <div class="uc-form">${formDots||'–'}</div>
+          <div style="font-size:9px;color:var(--t2);margin-top:7px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>
         </div>
-        <div class="union-player-val">${p.goals} ⚽</div>
-      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
-
-    // Liga Top Assists
-    const topAssHtml=(d.top_assisters||[]).slice(0,3).map((p,i)=>`
-      <div class="union-player-row">
-        <div class="union-player-rank">${i+1}.</div>
-        <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
-        <div class="union-player-info">
-          <div class="union-player-name">${p.name}</div>
-          <div class="union-player-team">${p.teamName}</div>
-        </div>
-        <div class="union-player-val">${p.assists} 🎯</div>
-      </div>`).join('')||'<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
-
-    // Render
-    const gdiff=(d.goals_for||0)-(d.goals_against||0);
-    document.getElementById('unionBody').innerHTML=`
-      <div class="union-stats-row">
-        <div class="union-stat" style="text-align:center;">
-          <div class="union-stat-lbl">Punkte</div>
-          <div class="union-stat-val" style="font-size:26px;font-weight:200;letter-spacing:-1.5px;">${d.points}</div>
-          <div class="union-stat-sub">von ${(d.matches_played||0)*3} mögl.</div>
-        </div>
-        <div class="union-stat" style="text-align:center;">
-          <div class="union-stat-lbl">Bilanz</div>
-          <div class="union-stat-val" style="font-size:12.5px;">${d.wins}S · ${d.draws}U · ${d.losses}N</div>
-          <div class="union-stat-sub">${d.matches_played} Spiele</div>
-        </div>
-        <div class="union-stat" style="text-align:center;">
-          <div class="union-stat-lbl">Tore</div>
-          <div class="union-stat-val" style="font-size:12.5px;">${d.goals_for} : ${d.goals_against}</div>
-          <div class="union-stat-sub">${gdiff>=0?'+':''}${gdiff} Differenz</div>
+        <div class="uc-box">
+          <div class="uc-box-lbl">Tabelle</div>
+          ${tblHtml}
         </div>
       </div>
-      <div class="union-2col">
-        <div class="union-stat">
-          <div class="union-stat-lbl">Letzte 5 Spiele</div>
-          ${last5Html}
-        </div>
-        <div class="union-stat">
-          <div class="union-stat-lbl">Tabellenumfeld</div>
-          <div style="margin-top:2px;">${nbHtml||'–'}</div>
-        </div>
-      </div>
-      <div class="union-match-box">${lastHtml}</div>
-      <div class="union-match-box">${nextHtml}</div>
-      ${unionScorersHtml}
-      <div class="union-2col">
-        <div class="union-stat">
-          <div class="union-stat-lbl">🏆 Top Torschützen · BL</div>
-          ${topGoalsHtml}
-        </div>
-        <div class="union-stat">
-          <div class="union-stat-lbl">🎯 Top Vorlagen · BL</div>
-          ${topAssHtml}
-        </div>
+      <div class="uc-match">${lastHtml}</div>
+      <div class="uc-match">${nextHtml}</div>
+      <div class="uc-box">
+        <div class="uc-box-lbl">⚽ Saisontorschützen · Union Berlin</div>
+        ${scorersHtml}
       </div>`;
 
     const upd=d.updated_at?new Date(d.updated_at):new Date();
-    document.getElementById('unionUpdated').textContent=
+    document.getElementById('ucUpdated').textContent=
       `Stand: ${upd.getDate()}.${upd.getMonth()+1}. · ${String(upd.getHours()).padStart(2,'0')}:${String(upd.getMinutes()).padStart(2,'0')} Uhr`;
 
   }catch(e){
-    console.warn('Union error:',e);
-    document.getElementById('unionBody').innerHTML=
+    console.warn('Union v5 error:',e);
+    document.getElementById('ucBody').innerHTML=
       `<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3);">⚠️ ${e.message}</div>`;
   }
   if(window._lbTick)window._lbTick();
