@@ -1,30 +1,30 @@
 name: Fetch Union Berlin Data
-
+ 
 on:
   schedule:
-    - cron: "30 6 * * *"
-  workflow_dispatch:
-
+    - cron: "30 6 * * *"   # täglich 08:30 CEST
+  workflow_dispatch:        # manuell triggerbar
+ 
 jobs:
   fetch-union:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
+ 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+ 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
+ 
       - name: Fetch Union Berlin data
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: python scripts/fetch_union.py
-
+ 
       - name: Commit & push data/union.json
         run: |
           git config user.name  "github-actions[bot]"
@@ -32,3 +32,4 @@ jobs:
           git add data/union.json
           git diff --cached --quiet || git commit -m "chore: update union.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git push
+ 
