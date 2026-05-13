@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Sommerferien",
+    "start": "2025-06-19",
+    "end": "2025-08-01"
+  },
+  {
+    "name": "Herbstferien",
+    "start": "2025-10-06",
+    "end": "2025-10-17"
+  },
+  {
+    "name": "Weihnachtsferien",
+    "start": "2025-12-22",
+    "end": "2026-01-02"
+  },
+  {
+    "name": "Winterferien",
+    "start": "2026-01-29",
+    "end": "2026-02-01"
+  },
+  {
+    "name": "Osterferien",
+    "start": "2026-04-02",
+    "end": "2026-04-17"
+  },
+  {
+    "name": "Sommerferien",
+    "start": "2026-06-25",
+    "end": "2026-08-07"
+  },
+  {
+    "name": "Herbstferien",
+    "start": "2026-10-12",
+    "end": "2026-10-23"
+  },
+  {
+    "name": "Weihnachtsferien",
+    "start": "2026-12-23",
+    "end": "2027-01-02"
+  }
+]
