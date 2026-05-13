@@ -284,7 +284,15 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 .a-footer{border-top:1px solid var(--border);padding:9px 15px;display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:auto;}
 
-/* ── BOTTOM NAV ── */
+/* ── PROMI GEBURTSTAG CHIPS ── */
+.promi-chip{display:flex;align-items:center;gap:6px;padding:4px 0;}
+.promi-foto{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
+.promi-foto-placeholder{width:28px;height:28px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.promi-info{flex:1;min-width:0;}
+.promi-name{font-size:11px;font-weight:600;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.promi-meta{font-size:9.5px;color:var(--t2);margin-top:0px;}
+
+
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
 html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 @media(prefers-color-scheme:dark){html:not([data-theme="light"]) .bnav{background:rgba(14,14,16,.92);}}
@@ -377,7 +385,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.28</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.5.29</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -428,10 +436,12 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
           <div style="font-size:10px;color:var(--t2);margin-top:3px;" id="kwStr">--</div>
         </div>
       </div>
-      <!-- Birthdays – always shown -->
+      <!-- Promis Geburtstage – geladen aus data/geburtstage.json -->
       <div style="width:100%;display:flex;flex-direction:column;gap:5px;" id="bdaySection">
         <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);">🎂 Heute Geburtstag</div>
-        <div style="font-size:11px;font-weight:600;color:var(--t);line-height:1.5;" id="bdayVal">–</div>
+        <div id="bdayVal" style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:10px;color:var(--t3);">Lädt…</div>
+        </div>
       </div>
     </a>
     <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;" id="dayInfoCard">
@@ -863,8 +873,8 @@ function loadDayInfo(){
 
   const feiertagHeute = feiertage[key] || null;
 
-  // Multiple bdays for same day – full 365-day coverage
-  const allBdays={
+  // allBdays entfernt – Promi-Geburtstage kommen aus data/geburtstage.json (loadPromiGeburtstage)
+  if(false){const allBdays={
     '01-01':['J.D. Salinger','Frank Langella'],
     '01-02':['Cuba Gooding Jr.','Christy Turlington'],
     '01-03':['Mel Gibson','Michael Schumacher'],
@@ -1231,7 +1241,7 @@ function loadDayInfo(){
     '12-29':['Jude Law','Mary Tyler Moore'],
     '12-30':['Tiger Woods','LeBron James'],
     '12-31':['Anthony Hopkins','Val Kilmer']
-  };
+  };}
 
   // Right card: Feiertag + Special + Spruch (alle anzeigen!)
   const special={
@@ -1874,34 +1884,46 @@ function loadDayInfo(){
     document.getElementById('histSection').previousElementSibling.style.display='none';
   }
 
-  // ── Birthdays in the date card ──
-  const todayBdays = allBdays[key];
-  const bdayEl = document.getElementById('bdayVal');
-  if(todayBdays && todayBdays.length > 0){
-    bdayEl.innerHTML = todayBdays.map(name=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;"><span style="font-size:11px;opacity:.7;">🎂</span><span style="font-size:11px;">${name}</span></div>`).join('');
-  } else {
-    // Fallback: find closest birthday within next 7 days
-    let nearestKey=null,nearestDays=999;
-    for(const k of Object.keys(allBdays)){
-      const [bm,bd]=k.split('-').map(Number);
-      const thisYear=new Date(now.getFullYear(),bm-1,bd);
-      const nextYear=new Date(now.getFullYear()+1,bm-1,bd);
-      const dThis=Math.round((thisYear-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
-      const dNext=Math.round((nextYear-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/86400000);
-      const diff_days=dThis>0?dThis:(dNext>0?dNext:999);
-      if(diff_days>0&&diff_days<nearestDays){nearestDays=diff_days;nearestKey=k;}
-    }
-    if(nearestKey){
-      const names=allBdays[nearestKey];
-      bdayEl.innerHTML=`<div style="color:var(--t3);font-size:9.5px;margin-bottom:3px;">In ${nearestDays} ${nearestDays===1?'Tag':'Tagen'}:</div>`+names.map(name=>`<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;"><span style="font-size:11px;opacity:.7;">🎂</span><span style="font-size:11px;">${name}</span></div>`).join('');
-    } else {
-      bdayEl.textContent='–';
-    }
-  }
 }
+
 loadDayInfo();
 
-// ── GEBURTSTAGE EMIL & ROSA ──
+// ── PROMI GEBURTSTAGE ──
+async function loadPromiGeburtstage(){
+  const el = document.getElementById('bdayVal');
+  try {
+    const res = await fetch('data/geburtstage.json');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const list = data.geburtstage || [];
+
+    if(!list.length){
+      el.innerHTML = '<div style="font-size:10px;color:var(--t3);">Heute keine Daten</div>';
+      return;
+    }
+
+    el.innerHTML = list.map(p => {
+      const fotoHtml = p.foto
+        ? `<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
+        : `<div class="promi-foto-placeholder">🎂</div>`;
+      const alter = p.alter ? `· ${p.alter} Jahre` : '';
+      return `<div class="promi-chip">
+        ${fotoHtml}
+        <div class="promi-info">
+          <div class="promi-name">${p.name}</div>
+          <div class="promi-meta">${p.beruf} ${alter}</div>
+        </div>
+      </div>`;
+    }).join('<div style="height:1px;background:var(--border);margin:1px 0;"></div>');
+
+  } catch(e) {
+    console.warn('Promi-Geburtstage Fehler:', e);
+    el.innerHTML = '<div style="font-size:10px;color:var(--t3);">–</div>';
+  }
+}
+loadPromiGeburtstage();
+
+
 (function(){
   const now2=new Date();
   const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
