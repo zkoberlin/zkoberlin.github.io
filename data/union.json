@@ -1,18 +1,65 @@
 {
-  "updated_at": null,
+  "updated_at": "2026-05-13T15:16:58.669193+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
-  "matchday": null,
-  "rank": null,
-  "points": null,
-  "matches_played": null,
-  "wins": null,
-  "draws": null,
-  "losses": null,
-  "goals_for": null,
-  "goals_against": null,
-  "form": "",
-  "table_context": [],
-  "last_match": null,
+  "matchday": 33,
+  "rank": 12,
+  "points": 36,
+  "matches_played": 33,
+  "wins": 9,
+  "draws": 9,
+  "losses": 15,
+  "goals_for": 40,
+  "goals_against": 58,
+  "form": "LLLDW",
+  "table_context": [
+    {
+      "rank": 10,
+      "name": "Mainz 05",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
+      "points": 37,
+      "is_union": false
+    },
+    {
+      "rank": 11,
+      "name": "Hamburger SV",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/23.png",
+      "points": 37,
+      "is_union": false
+    },
+    {
+      "rank": 12,
+      "name": "Union Berlin",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+      "points": 36,
+      "is_union": true
+    },
+    {
+      "rank": 13,
+      "name": "B. Mönchengladbach",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/18.png",
+      "points": 35,
+      "is_union": false
+    },
+    {
+      "rank": 14,
+      "name": "Köln",
+      "logo": "https://tmssl.akamaized.net/images/wappen/head/3.png",
+      "points": 32,
+      "is_union": false
+    }
+  ],
+  "last_match": {
+    "matchday": "",
+    "date": "2026-05-10T17:30:00Z",
+    "home_name": "Mainz",
+    "away_name": "Union Berlin",
+    "home_logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
+    "away_logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+    "goals_home": 1,
+    "goals_away": 3,
+    "is_home": false,
+    "result": "W"
+  },
   "next_match": null
 }
