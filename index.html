@@ -360,7 +360,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-form-dot.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
 .union-tbl-row{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;padding:4px 2px;}
 .union-tbl-row+.union-tbl-row{border-top:1px solid var(--border);}
-.union-tbl-row.me{background:var(--union-l);margin:2px -4px;padding:4px 6px;border-radius:5px;border-top:none !important;}
+.union-tbl-row.me{background:var(--union-l);margin:2px -4px;padding:4px 6px;border-radius:5px;border-top:none!important;}
 .union-tbl-row.me+.union-tbl-row{border-top:none;}
 .union-tbl-team{display:flex;align-items:center;gap:6px;}
 .union-match-box{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 14px;}
@@ -374,7 +374,15 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .union-match-score.l{color:var(--red);}
 .union-match-score.d{color:var(--t2);}
 .union-match-meta{font-size:10px;color:var(--t3);margin-top:7px;text-align:center;}
-.union-next-vs{font-size:13px;font-weight:600;color:var(--blue);padding:0 8px;flex-shrink:0;text-align:center;min-width:54px;line-height:1.2;}
+.union-next-vs{font-size:13px;font-weight:600;color:var(--blue);padding:0 8px;flex-shrink:0;text-align:center;min-width:54px;line-height:1.3;}
+.union-player-row{display:flex;align-items:center;gap:8px;padding:5px 0;}
+.union-player-row+.union-player-row{border-top:1px solid var(--border);}
+.union-player-rank{font-size:11px;font-weight:700;color:var(--t3);min-width:16px;text-align:center;}
+.union-player-photo{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
+.union-player-info{flex:1;min-width:0;}
+.union-player-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.union-player-team{font-size:9.5px;color:var(--t2);}
+.union-player-val{font-size:13px;font-weight:700;color:var(--union);font-variant-numeric:tabular-nums;flex-shrink:0;}
 .union-footer{border-top:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;font-size:9.5px;color:var(--t3);}
 </style>
 </head>
@@ -390,7 +398,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.7.4</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v4.8.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -649,7 +657,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="union-card" id="unionCard">
   <div class="union-header">
     <div class="union-club">
-      <img src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));flex-shrink:0;">
+      <img id="unionLogo" src="https://tmssl.akamaized.net/images/wappen/head/89.png" alt="Union" width="40" height="40" style="object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));flex-shrink:0;border-radius:6px;">
       <div>
         <div class="union-clubname">1. FC Union Berlin</div>
         <div class="union-league" id="unionLeague">Bundesliga · lädt…</div>
@@ -666,14 +674,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton" style="height:9px;width:60%;"></div></div>
       <div class="union-stat"><div class="skeleton" style="height:9px;width:55%;margin-bottom:7px;"></div><div class="skeleton" style="height:13px;margin-bottom:5px;"></div><div class="skeleton" style="height:9px;width:60%;"></div></div>
     </div>
-    <div class="union-2col">
-      <div class="union-stat"><div class="skeleton" style="height:9px;width:70%;margin-bottom:9px;"></div><div style="display:flex;gap:5px;"><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div><div class="skeleton" style="height:25px;width:25px;border-radius:7px;flex-shrink:0;"></div></div></div>
-      <div class="union-stat"><div class="skeleton" style="height:9px;width:70%;margin-bottom:9px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;"></div></div>
-    </div>
-    <div class="union-match-box"><div class="skeleton" style="height:9px;width:60%;margin-bottom:12px;"></div><div class="skeleton" style="height:28px;"></div></div>
-    <div class="union-match-box"><div class="skeleton" style="height:9px;width:60%;margin-bottom:12px;"></div><div class="skeleton" style="height:28px;"></div></div>
   </div>
-  <div class="union-footer"><span id="unionUpdated">–</span><span>api-football.com</span></div>
+  <div class="union-footer"><span id="unionUpdated">–</span><span>free-api-live-football-data</span></div>
 </div>
 
 </main>
@@ -1442,7 +1444,7 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN via data/union.json (GitHub Actions + API-Football) ──
+// ── UNION BERLIN v4.8.1 — via data/union.json ──
 async function loadUnion(){
   const WDU = ['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
@@ -1452,94 +1454,143 @@ async function loadUnion(){
     const d = new Date(iso);
     return `${WDU[d.getDay()]}. ${d.getDate()}. ${MNU[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} Uhr`;
   }
-  function teamLogo(url, sz=14){
+  function logo(url, sz=14){
     if(!url) return `<span style="display:inline-block;width:${sz}px;"></span>`;
     return `<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;" alt="" onerror="this.style.visibility='hidden'">`;
+  }
+  function playerPhoto(id){
+    return `https://images.fotmob.com/image_resources/playerimages/${id}.png`;
+  }
+  function statBar(unionVal, oppVal, format){
+    // Returns a small inline comparison bar
+    if(unionVal==null||oppVal==null) return '';
+    const uv = parseFloat(String(unionVal).replace(/[^0-9.]/g,'')) || 0;
+    const ov = parseFloat(String(oppVal).replace(/[^0-9.]/g,'')) || 0;
+    const total = uv + ov || 1;
+    const uPct  = Math.round((uv/total)*100);
+    const oPct  = 100 - uPct;
+    const uWin  = uv >= ov;
+    return `<div style="display:flex;align-items:center;gap:5px;margin-top:3px;">
+      <span style="font-size:10px;font-weight:700;color:${uWin?'var(--union)':'var(--t2)'};min-width:28px;text-align:right;font-variant-numeric:tabular-nums;">${unionVal}</span>
+      <div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:var(--border);display:flex;">
+        <div style="width:${uPct}%;background:var(--union);border-radius:3px 0 0 3px;"></div>
+        <div style="width:${oPct}%;background:var(--t3);border-radius:0 3px 3px 0;"></div>
+      </div>
+      <span style="font-size:10px;font-weight:700;color:${!uWin?'var(--t)':'var(--t2)'};min-width:28px;font-variant-numeric:tabular-nums;">${oppVal}</span>
+    </div>`;
   }
 
   try{
     const r = await fetch('data/union.json', {signal: AbortSignal.timeout(6000)});
     if(!r.ok) throw new Error('JSON nicht erreichbar (HTTP ' + r.status + ')');
     const d = await r.json();
+    if(!d.rank) throw new Error('Keine Daten — GitHub Action noch nicht gelaufen?');
 
-    if(!d.rank) throw new Error('Keine Daten – GitHub Action noch nicht gelaufen?');
-
-    // ── Header ──
-    document.getElementById('unionLeague').textContent =
-      `Bundesliga 2025/26 · ${d.matchday || '?'}. Spieltag`;
+    // Header Logo
+    if(d.team_logo){ const el=document.getElementById('unionLogo'); if(el) el.src=d.team_logo; }
+    document.getElementById('unionLeague').textContent = `Bundesliga 2025/26 · ${d.matchday||'?'}. Spieltag`;
     document.getElementById('unionRankNum').textContent = d.rank + '.';
 
-    // ── Form (letzten 5 aus String "WWDLL") ──
-    const formStr = (d.form || '').slice(-5);
-    const formDots = [...formStr].map(c => {
-      const cls = c==='W'?'w': c==='D'?'d':'l';
-      const lbl = c==='W'?'S': c==='D'?'U':'N';
-      return `<div class="union-form-dot ${cls}">${lbl}</div>`;
-    }).join('');
-    const formPts = [...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
+    // Form
+    const formStr  = (d.form||'').slice(-5);
+    const formDots = [...formStr].map(c=>`<div class="union-form-dot ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
+    const formPts  = [...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
 
-    // ── Tabellenumfeld ──
-    const nb = (d.table_context || []);
-    const nbHtml = nb.map(t => {
-      const isMe = t.is_union;
-      return `<div class="union-tbl-row${isMe?' me':''}">
+    // Tabellenumfeld
+    const nbHtml = (d.table_context||[]).map(t=>`
+      <div class="union-tbl-row${t.is_union?' me':''}">
         <div class="union-tbl-team">
-          <span style="font-size:9.5px;color:${isMe?'var(--union)':'var(--t3)'};min-width:18px;font-weight:${isMe?'700':'400'}">${t.rank}.</span>
-          ${teamLogo(t.logo, 14)}
-          <span style="${isMe?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
+          <span style="font-size:9.5px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:18px;font-weight:${t.is_union?700:400}">${t.rank}.</span>
+          ${logo(t.logo,14)}
+          <span style="${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
         </div>
-        <span style="font-weight:700;font-variant-numeric:tabular-nums;${isMe?'color:var(--union);':''}">${t.points} Pkt.</span>
-      </div>`;
-    }).join('');
+        <span style="font-weight:700;font-variant-numeric:tabular-nums;${t.is_union?'color:var(--union);':''}">${t.points} Pkt.</span>
+      </div>`).join('');
 
-    // ── Letztes Spiel ──
+    // Letztes Spiel
     const last = d.last_match;
     let lastHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein Spiel gefunden</div>';
     if(last){
-      const cls = last.result==='W'?'w': last.result==='L'?'l':'d';
-      const outc = last.result==='W'?'Sieg ✅': last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
-      const hA = last.is_home ? 'Heimspiel' : 'Auswärtsspiel';
+      const cls  = last.result==='W'?'w':last.result==='L'?'l':'d';
+      const outc = last.result==='W'?'Sieg ✅':last.result==='L'?'Niederlage ❌':'Unentschieden 🟡';
+      // Match stats
+      const ms   = d.last_match_stats || {};
+      const oppName = last.is_home ? last.away_name : last.home_name;
+      let statsHtml = '';
+      if(Object.keys(ms).length){
+        const rows = [
+          ms.possession    && {lbl:'Ballbesitz',     uv:ms.possession.union+'%',   ov:ms.possession.opp+'%',   raw:ms.possession},
+          ms.xg            && {lbl:'xG',             uv:ms.xg.union,               ov:ms.xg.opp,               raw:ms.xg},
+          ms.shots         && {lbl:'Schüsse',        uv:ms.shots.union,            ov:ms.shots.opp,            raw:ms.shots},
+          ms.shots_on_target && {lbl:'aufs Tor',     uv:ms.shots_on_target.union,  ov:ms.shots_on_target.opp,  raw:ms.shots_on_target},
+        ].filter(Boolean);
+        statsHtml = `
+          <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:8.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">
+              <span style="color:var(--union);">Union</span><span>Spielstatistik</span><span>${oppName.split(' ').pop()}</span>
+            </div>
+            ${rows.map(row=>`
+              <div style="margin-bottom:4px;">
+                <div style="font-size:9px;color:var(--t3);text-align:center;margin-bottom:1px;">${row.lbl}</div>
+                ${statBar(row.uv, row.ov)}
+              </div>`).join('')}
+          </div>`;
+      }
       lastHtml = `
-        <div class="union-match-lbl">Letztes Spiel · ${hA} · ${last.matchday}. Spieltag</div>
+        <div class="union-match-lbl">Letztes Spiel · ${last.is_home?'Heimspiel':'Auswärtsspiel'} · ${last.matchday}. Spieltag</div>
         <div class="union-match-row">
-          <div class="union-match-team">
-            ${teamLogo(last.home_logo, 26)}
-            <span class="union-match-name">${last.home_name}</span>
-          </div>
+          <div class="union-match-team">${logo(last.home_logo,26)}<span class="union-match-name">${last.home_name}</span></div>
           <div class="union-match-score ${cls}">${last.goals_home} : ${last.goals_away}</div>
-          <div class="union-match-team r">
-            ${teamLogo(last.away_logo, 26)}
-            <span class="union-match-name" style="text-align:right;">${last.away_name}</span>
-          </div>
+          <div class="union-match-team r">${logo(last.away_logo,26)}<span class="union-match-name" style="text-align:right;">${last.away_name}</span></div>
         </div>
-        <div class="union-match-meta">${outc} · ${fmtDate(last.date)}</div>`;
+        <div class="union-match-meta">${outc} · ${fmtDate(last.date)}</div>
+        ${statsHtml}`;
     }
 
-    // ── Nächstes Spiel ──
+    // Nächstes Spiel
     const next = d.next_match;
     let nextHtml = '<div style="color:var(--t3);font-size:11px;text-align:center;">Kein nächstes Spiel – Saisonende</div>';
     if(next){
-      const hA = next.is_home ? 'Heimspiel 🏠' : 'Auswärtsspiel ✈️';
-      const days = Math.round((new Date(next.date) - new Date()) / 86400000);
-      const dStr = days <= 0 ? 'Heute ⚡' : days === 1 ? 'Morgen' : `in ${days} Tagen`;
+      const days = Math.round((new Date(next.date)-new Date())/86400000);
+      const dStr = days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
+      const opp  = next.is_home ? next.away_name : next.home_name;
+      const oppLogo = next.is_home ? next.away_logo : next.home_logo;
       nextHtml = `
-        <div class="union-match-lbl">Nächstes Spiel · ${hA} · ${next.matchday}. Spieltag</div>
+        <div class="union-match-lbl">Nächstes Spiel · ${next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️'} · ${next.matchday}. Spieltag</div>
         <div class="union-match-row">
-          <div class="union-match-team">
-            ${teamLogo(next.home_logo, 26)}
-            <span class="union-match-name">${next.home_name}</span>
-          </div>
+          <div class="union-match-team">${logo('https://tmssl.akamaized.net/images/wappen/head/89.png',26)}<span class="union-match-name">Union Berlin</span></div>
           <div class="union-next-vs">${dStr}</div>
-          <div class="union-match-team r">
-            ${teamLogo(next.away_logo, 26)}
-            <span class="union-match-name" style="text-align:right;">${next.away_name}</span>
-          </div>
+          <div class="union-match-team r">${logo(oppLogo,26)}<span class="union-match-name" style="text-align:right;">${opp}</span></div>
         </div>
         <div class="union-match-meta">${fmtDate(next.date)}</div>`;
     }
 
-    // ── Render ──
-    const gdiff = (d.goals_for||0) - (d.goals_against||0);
+    // Top Torschützen
+    const topGoalsHtml = (d.top_scorers||[]).slice(0,3).map((p,i)=>`
+      <div class="union-player-row">
+        <div class="union-player-rank">${i+1}.</div>
+        <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
+        <div class="union-player-info">
+          <div class="union-player-name">${p.name}</div>
+          <div class="union-player-team">${p.teamName}</div>
+        </div>
+        <div class="union-player-val">${p.goals} ⚽</div>
+      </div>`).join('') || '<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
+
+    // Top Vorlagen
+    const topAssHtml = (d.top_assisters||[]).slice(0,3).map((p,i)=>`
+      <div class="union-player-row">
+        <div class="union-player-rank">${i+1}.</div>
+        <img class="union-player-photo" src="${playerPhoto(p.id)}" onerror="this.style.display='none'" alt="">
+        <div class="union-player-info">
+          <div class="union-player-name">${p.name}</div>
+          <div class="union-player-team">${p.teamName}</div>
+        </div>
+        <div class="union-player-val">${p.assists} 🎯</div>
+      </div>`).join('') || '<div style="color:var(--t3);font-size:10px;padding:4px 0;">–</div>';
+
+    // Render
+    const gdiff = (d.goals_for||0)-(d.goals_against||0);
     document.getElementById('unionBody').innerHTML = `
       <div class="union-stats-row">
         <div class="union-stat" style="text-align:center;">
@@ -1570,7 +1621,17 @@ async function loadUnion(){
         </div>
       </div>
       <div class="union-match-box">${lastHtml}</div>
-      <div class="union-match-box">${nextHtml}</div>`;
+      <div class="union-match-box">${nextHtml}</div>
+      <div class="union-2col">
+        <div class="union-stat">
+          <div class="union-stat-lbl">🏆 Top Torschützen · Bundesliga</div>
+          ${topGoalsHtml}
+        </div>
+        <div class="union-stat">
+          <div class="union-stat-lbl">🎯 Top Vorlagen · Bundesliga</div>
+          ${topAssHtml}
+        </div>
+      </div>`;
 
     const upd = d.updated_at ? new Date(d.updated_at) : new Date();
     document.getElementById('unionUpdated').textContent =
@@ -1580,11 +1641,11 @@ async function loadUnion(){
     console.warn('Union error:', e);
     document.getElementById('unionBody').innerHTML =
       `<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3);">⚠️ ${e.message}</div>`;
-    document.getElementById('unionUpdated').textContent = 'Fehler beim Laden';
   }
   if(window._lbTick) window._lbTick();
 }
 loadUnion();
+
 
 // ── LOAD BAR ──
 (function(){
