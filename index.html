@@ -773,7 +773,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.1.4</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -785,7 +785,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 <div class="quote"><span class="q-icon">💬</span><div class="q-text" id="quote">…</div></div>
 
 <!-- Weather + Date -->
-<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;" class="weather-grid">
+<div style="display:grid;grid-template-columns:2fr 1.1fr 1.1fr;gap:10px;min-width:0;" class="weather-grid">
     <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
       <div class="weather-main">
         <div class="weather-icon" id="wIcon">⏳</div>
@@ -832,8 +832,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
         </div>
       </div>
     </a>
-    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;" id="dayInfoCard">
-      <div style="display:flex;flex-direction:column;gap:0;width:100%;height:100%;">
+    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;min-width:0;overflow:hidden;" id="dayInfoCard">
+      <div style="display:flex;flex-direction:column;gap:0;width:100%;height:100%;min-width:0;overflow:hidden;word-break:break-word;">
         <!-- Feiertag (only when applicable) -->
         <div id="feiertagSection" style="display:none;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">
           <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);">🎉 Feiertag</div>
@@ -1183,31 +1183,47 @@ async function loadDayInfo(){
     document.getElementById('specialVal').textContent = sprueche[now.getDay()][0];
   }
 
-  // ── Namenstag – nameday.abalin.net ──
+  // ── Namenstag – lokale JSON (via GitHub Actions) + API-Fallbacks ──
   try {
-    const res = await fetch(`https://nameday.abalin.net/api/V2/getdate?day=${d}&month=${m}&country_code=de`, {signal: AbortSignal.timeout(4000)});
-    const json = await res.json();
-    // API returns: { namedays: { de: ["Name1","Name2"] } }
-    const names = json?.namedays?.de;
-    if(names && names.length){
-      document.getElementById('namenstagVal').textContent = names.join(', ');
-    } else {
+    // 1. Primär: lokale JSON (täglich via GitHub Actions aus katolisch.de o.ä.)
+    const key2=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    let found = false;
+    try {
+      const res2 = await fetch('data/namenstage.json', {signal: AbortSignal.timeout(3000)});
+      if(res2.ok){
+        const map = await res2.json();
+        const name = map[key2];
+        if(name){ document.getElementById('namenstagVal').textContent = name; found = true; }
+      }
+    } catch(e2) {}
+
+    // 2. Fallback A: nameday.abalin.net V1
+    if(!found){
+      try {
+        const res = await fetch(`https://nameday.abalin.net/api/V1/today?country=de`, {signal: AbortSignal.timeout(4000)});
+        const json = await res.json();
+        const names = json?.data?.de;
+        if(names){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+      } catch(e3) {}
+    }
+
+    // 3. Fallback B: api.nameday.info
+    if(!found){
+      try {
+        const res = await fetch(`https://api.nameday.info/nameday/DE/${m}/${d}`, {signal: AbortSignal.timeout(4000)});
+        const json = await res.json();
+        const names = json?.data || json?.namedays || [];
+        if(names && names.length){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+      } catch(e4) {}
+    }
+
+    if(!found){
       document.getElementById('namenstagSection').style.display='none';
       document.getElementById('namenstagSection').previousElementSibling.style.display='none';
     }
   } catch(e) {
-    // Fallback: data/namenstage.json (optional lokale Datei)
-    try {
-      const res2 = await fetch('data/namenstage.json');
-      const map = await res2.json();
-      const key2=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const name = map[key2];
-      if(name){ document.getElementById('namenstagVal').textContent = name; }
-      else { throw new Error('no entry'); }
-    } catch {
-      document.getElementById('namenstagSection').style.display='none';
-      document.getElementById('namenstagSection').previousElementSibling.style.display='none';
-    }
+    document.getElementById('namenstagSection').style.display='none';
+    document.getElementById('namenstagSection').previousElementSibling.style.display='none';
   }
 
   // ── Heute in der Geschichte – Wikipedia On This Day API ──
