@@ -1257,7 +1257,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   .header-icon { font-size: 16px; }
 
   /* On mobile: hub + theme stay small icon buttons, today + add get a second row */
-  .hub-btn, .theme-btn { width: 30px; height: 30px; flex: none; font-size: 14px; }
+  .hub-btn { min-width: 44px; height: 30px; flex: none; font-size: 14px; padding: 0 8px; }
+  .theme-btn { width: 30px; height: 30px; flex: none; font-size: 14px; }
   .today-btn {
     flex: none; height: 32px; font-size: 12px; font-weight: 700; padding: 0 14px;
   }
@@ -1579,7 +1580,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2621,15 +2622,35 @@ function showFilterResults(cat, matches) {
 
   const wrap = document.createElement('div');
   wrap.id = 'filterResults';
-  wrap.style.cssText = 'padding:0 0 16px;';
 
-  // Header row
+  // ── Mehrtägige Termine zusammenfassen ────────────────────────────────
+  // Gruppiere aufeinanderfolgende Tage mit identischem Terminname zu einem Eintrag
+  const groups = []; // [{title, cat, startKey, endKey, ev, allDay}]
+  matches.forEach(({key, evs}) => {
+    evs.forEach(ev => {
+      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      const isAllDay = !ev.startTime && !(ev.t.match(/\d{1,2}:\d{2}/));
+      const last = groups[groups.length - 1];
+      const prevDay = last ? new Date(new Date(last.endKey+'T12:00:00').getTime() + 86400000).toISOString().substring(0,10) : null;
+      if(last && last.title === title && last.cat === ev.c && prevDay === key) {
+        last.endKey = key; // Zeitraum verlängern
+      } else {
+        groups.push({title, cat: ev.c, startKey: key, endKey: key, ev, allDay: isAllDay});
+      }
+    });
+  });
+
+  // Header (nach Gruppen-Berechnung, damit Zahl korrekt ist)
   const hd = document.createElement('div');
   hd.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;';
+  const totalRaw = matches.reduce((n,m)=>n+m.evs.length,0);
+  const countLabel = groups.length < totalRaw
+    ? `${groups.length} Termine` // komprimiert
+    : `${totalRaw} Treffer`;
   hd.innerHTML = `
     <span style="font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text);-webkit-font-smoothing:antialiased">
       <span style="color:${color}">●</span> ${label}
-      <span style="font-size:11px;font-weight:500;color:var(--text3);margin-left:4px">${matches.reduce((n,m)=>n+m.evs.length,0)} Treffer</span>
+      <span style="font-size:11px;font-weight:500;color:var(--text3);margin-left:4px">${countLabel}</span>
     </span>
     <button onclick="closeFilter()" style="font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:var(--font-head);font-weight:500;padding:4px 8px;border-radius:6px;border:1px solid var(--border)">✕ Filter</button>
   `;
@@ -2641,34 +2662,46 @@ function showFilterResults(cat, matches) {
     empty.textContent = 'Keine Treffer gefunden.';
     wrap.appendChild(empty);
   } else {
-    matches.forEach(({key, evs}) => {
-      evs.forEach(ev => {
-        const item = document.createElement('div');
-        item.className = 'eli';
-        item.style.cursor = 'pointer';
-        const c = colorMap[ev.c] || '#aeaeb2';
+    groups.forEach(({title, cat, startKey, endKey, ev, allDay}) => {
+      const item = document.createElement('div');
+      item.className = 'eli';
+      item.style.cursor = 'pointer';
+      const c = colorMap[cat] || '#aeaeb2';
+      const badges = [];
+      if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+      if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+      if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+
+      // Datumsanzeige
+      let dateStr;
+      if(startKey === endKey) {
+        // Eintägig: Datum + Uhrzeit
         const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-        const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-        const badges = [];
-        if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-        if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-        if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-        item.innerHTML = `
-          <div class="eli-dot" style="background:${c}"></div>
-          <div class="evt-info" style="flex:1;min-width:0">
-            <div class="en">${title}${badges.join('')}</div>
-            <div class="et">${fmtDate(key)}${time ? ' · '+time+' Uhr' : ''}</div>
-          </div>
-          <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;margin-left:6px;opacity:.35">
-            <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>`;
-        item.addEventListener('click', () => jumpToEvent(key, ev));
-        wrap.appendChild(item);
-      });
+        dateStr = fmtDate(startKey) + (time ? ' · ' + time + ' Uhr' : '');
+      } else {
+        // Mehrtägig: komprimierte Datumsspanne  z.B. "13. Jul – 19. Jul. 2026 · Ganztägig"
+        const [sy,sm,sd] = startKey.split('-').map(Number);
+        const [ey,em,ed] = endKey.split('-').map(Number);
+        const startFmt = `${sd}. ${MN[sm-1].substring(0,3)}.${sy !== ey ? ' '+sy : ''}`;
+        const endFmt   = `${ed}. ${MN[em-1].substring(0,3)}. ${ey}`;
+        dateStr = `${startFmt} – ${endFmt}` + (allDay ? ' · Ganztägig' : '');
+      }
+
+      item.innerHTML = `
+        <div class="eli-dot" style="background:${c}"></div>
+        <div class="evt-info" style="flex:1;min-width:0">
+          <div class="en">${title}${badges.join('')}</div>
+          <div class="et">${dateStr}</div>
+        </div>
+        <svg width="6" height="10" viewBox="0 0 6 10" fill="none" style="flex-shrink:0;margin-left:6px;opacity:.35">
+          <path d="M1 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+      item.addEventListener('click', () => jumpToEvent(startKey, ev));
+      wrap.appendChild(item);
     });
   }
 
-  // Insert als erstes Element in #main – erbt Padding des Containers
+  // Insert als erstes Element in #main
   const main = document.getElementById('main');
   main.insertAdjacentElement('afterbegin', wrap);
   wrap.style.cssText = 'width:100%;box-sizing:border-box;padding-bottom:16px;';
@@ -2971,7 +3004,7 @@ function catFromTitle(title) {
   if(t.includes('schwerin'))           return 'e-schwerin';
   if(t.includes('kids bei dani'))      return 'e-dani';
   if(t.includes('kids'))               return 'e-kids';
-  if(t.includes('bodensee')||t.includes('leba')||t.includes('łeba')||t.includes('urlaub')||t.includes('parchim')) return 'e-trip';
+  if(t.includes('bodensee')||t.includes('leba')||t.includes('łeba')||t.includes('urlaub')||t.includes('parchim')||t.includes('reise')||t.includes('ferien')||t.includes('trip')||t.includes('ausflug')||t.includes('wochenende')) return 'e-trip';
   if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)||/lauf/.test(t)||/rennen/.test(t)||/wettkampf/.test(t)) return 'e-sport';
   if(t.includes('maja')||t.includes('kawi')||t.includes('sing dela')||t.includes('finch')||t.includes('olivia')||t.includes('geburtstagsdrinks')) return 'e-maja';
   if(t.includes('konzert')||t.includes('bierwalker')||t.includes('markus krebs')||t.includes('6k united')) return 'e-konzert';
