@@ -1,13 +1,13 @@
 {
   "datum": "14.05.2026",
-  "generiert": "2026-05-14T09:40:05Z",
+  "generiert": "2026-05-14T18:20:26Z",
   "geburtstage": [
     {
       "name": "Zach Edey",
       "alter": 24,
       "geburtsjahr": 2002,
       "beruf": "Canadian Basketball Player (Born 2002)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Zach_Edey_2_%28cropped%29.jpg/330px-Zach_Edey_2_%28cropped%29.jpg",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Zach_Edey_2_%28cropped%29.jpg/330px-Zach_Edey_2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "wikidata": "https://en.wikipedia.org/wiki/Zach_Edey"
     },
     {
@@ -15,7 +15,7 @@
       "alter": 29,
       "geburtsjahr": 1997,
       "beruf": "Portuguese Footballer (Born 1997)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Portugal_national_football_team_0866_%28R%C3%BAben_Dias%29.jpg",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Portugal_national_football_team_0866_%28R%C3%BAben_Dias%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
       "wikidata": "https://en.wikipedia.org/wiki/R%C3%BAben_Dias"
     },
     {
@@ -23,7 +23,7 @@
       "alter": 31,
       "geburtsjahr": 1995,
       "beruf": "American Soccer Player (Born 1995)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg/330px-Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg/330px-Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "wikidata": "https://en.wikipedia.org/wiki/Rose_Lavelle"
     }
   ]
