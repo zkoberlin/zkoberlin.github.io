@@ -801,6 +801,22 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   background: rgba(0,0,0,0.06);
 }
 
+/* Kategorie-Label rechts in Tag/Woche (dezent) */
+.eli-cat-label {
+  font-family: var(--font-head);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  margin-left: auto;
+  opacity: 0.72;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+}
+[data-theme="dark"] .eli-cat-label { opacity: 0.55; }
+
 
 
 
@@ -1580,7 +1596,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.2</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1858,7 +1874,7 @@ function openDp(key, cellEl) {
     'e-feier':'#713f12','e-union':'#b91c1c','e-sport':'#0ea5e9','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
   const evs = sortEvents(SE[key] || []);
-  const visible = evs.filter(ev => !ev.c.includes('hidden'));
+  const visible = evs.filter(ev => !ev.c?.includes('hidden'));
 
   let evHtml = visible.length ? '' : '<div style="font-size:12px;color:var(--text3);padding:4px 0">Keine Termine.</div>';
   visible.forEach((ev, i) => {
@@ -2128,7 +2144,8 @@ function renderTagView(cal, base) {
         <div class="evt-info">
           <div class="en">${title}${badges.join('')}</div>
           ${timeHtml}
-        </div>`;
+        </div>
+        ${makeCatLabel(ev.c)}`;
       el.addEventListener('click', () => openEvtModal(ev, key));
       body.appendChild(el);
     });
@@ -2227,7 +2244,8 @@ function renderWocheView(cal, base) {
           <div class="evt-info">
             <div class="en">${title}${badges.join('')}</div>
             ${timeHtml}
-          </div>`;
+          </div>
+          ${makeCatLabel(ev.c)}`;
         item.addEventListener('click', () => openEvtModal(ev, key));
         body.appendChild(item);
       });
@@ -2601,7 +2619,11 @@ function filterBy(cat) {
   const matches = [];
   Object.keys(SE).sort().filter(d => d >= todayKey).forEach(d => {
     const _sk=['sport','beat81','radtour','tour','lauf','rennen','wettkampf'];
-    const evs=(SE[d]||[]).filter(ev=>cat==='e-sport'?(ev.c==='e-sport'||_sk.some(kw=>(ev.t||'').toLowerCase().includes(kw))):ev.c===cat);
+    const evs=(SE[d]||[]).filter(ev => {
+      const evCats = ev.cats || [ev.c]; // Fallback für ältere Einträge (API, Sheet)
+      if(cat === 'e-sport') return evCats.includes('e-sport') || _sk.some(kw=>(ev.t||'').toLowerCase().includes(kw));
+      return evCats.some(c => c === cat || c === cat+'-hidden');
+    });
     if(evs.length) matches.push({key:d,evs});
   });
 
@@ -2800,7 +2822,6 @@ function closeFilterSheet() {
 }
 
 function countUniqueEvents(cat) {
-  // Count unique event titles (= events) not days, for a given category
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
   const futureDates = Object.keys(SE).filter(d => d >= todayKey).sort();
   const _sk = ['sport','beat81','radtour','tour','lauf','rennen','wettkampf'];
@@ -2808,17 +2829,15 @@ function countUniqueEvents(cat) {
   for(const d of futureDates) {
     const evs = SE[d] || [];
     for(const ev of evs) {
+      const evCats = ev.cats || [ev.c]; // Fallback für API/Sheet-Einträge ohne cats-Array
       let matches = false;
       if(cat === 'e-sport') {
         const tt = (ev.t||'').toLowerCase();
-        matches = ev.c === 'e-sport' || _sk.some(kw => tt.includes(kw));
+        matches = evCats.includes('e-sport') || _sk.some(kw => tt.includes(kw));
       } else {
-        matches = ev.c === cat || ev.c === cat+'-hidden';
+        matches = evCats.some(c => c === cat || c === cat+'-hidden');
       }
-      if(matches) {
-        // Use title as unique key – same title on different days = 1 event
-        seen.add(ev.t || d);
-      }
+      if(matches) seen.add(ev.t || d);
     }
   }
   return seen.size;
@@ -2898,6 +2917,28 @@ function extractTime(title) {
   // Extract HH:MM from title like "Meeting 09:30" or "09:30 Meeting"
   const m = title.match(/(\d{1,2}:\d{2})/);
   return m ? m[1] : null;
+}
+
+// ── KATEGORIE-LABEL HELPER ───────────────────────────────────────────
+const _catLabelShort = {
+  'e-kids':'Kids Paul','e-dani':'Kids Dani','e-schwerin':'Schwerin',
+  'e-maja':'Maja','e-trip':'Urlaub','e-hellomed':'Hellomed',
+  'e-kidev':'Schule','e-sport':'Sport','e-haus':'Haus',
+  'e-feier':'Feiertag','e-union':'Union','e-konzert':'Konzert',
+  'e-bday':'Bday'
+};
+const _catLabelColor = {
+  'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+  'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+  'e-kidev':'#dc2626','e-sport':'#0ea5e9','e-haus':'#00a0e3',
+  'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a',
+  'e-bday':'#9ca3af'
+};
+function makeCatLabel(cat) {
+  const label = _catLabelShort[cat];
+  if(!label) return '';
+  const color = _catLabelColor[cat] || '#aeaeb2';
+  return `<span class="eli-cat-label" style="background:${color}1a;color:${color}">${label}</span>`;
 }
 
 function sortEvents(evs) {
@@ -3008,20 +3049,29 @@ function parseICSDate(val) {
   return `${y}-${mo}-${d}`;
 }
 
-function catFromTitle(title) {
+// Gibt ALLE passenden Kategorien zurück (Multi-Tag-System)
+// Reihenfolge = Priorität für die primäre Farbe (ev.c)
+function catsFromTitle(title) {
   const t = (title||'').toLowerCase();
-  if(t.includes('schwerin'))           return 'e-schwerin';
-  if(t.includes('kids bei dani'))      return 'e-dani';
-  if(t.includes('kids'))               return 'e-kids';
-  if(t.includes('bodensee')||t.includes('leba')||t.includes('łeba')||t.includes('urlaub')||t.includes('parchim')||t.includes('reise')||t.includes('ferien')||t.includes('trip')||t.includes('ausflug')||t.includes('wochenende')) return 'e-trip';
-  if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)||/lauf/.test(t)||/rennen/.test(t)||/wettkampf/.test(t)) return 'e-sport';
-  if(t.includes('maja')||t.includes('kawi')||t.includes('sing dela')||t.includes('finch')||t.includes('olivia')||t.includes('geburtstagsdrinks')) return 'e-maja';
-  if(t.includes('konzert')||t.includes('bierwalker')||t.includes('markus krebs')||t.includes('6k united')) return 'e-konzert';
-  if(t.includes('alma'))               return 'e-kidev';
-  if(t.includes('spendenlauf')||t.includes('schule')||t.includes('rosa')||t.includes('emil')||t.includes('kiefer')||t.includes('prophylaxe')||t.includes('eltern')) return 'e-kidev';
-  if(t.includes('besichtigung')||t.includes('berlinovo')) return 'e-haus';
-  if(t.includes('hellomed')||t.includes('paul & sina')||t.includes('paul und sina')||t.includes('hel')||t.includes('firmenlauf')||t.includes('etiketten')||t.includes('klientenliste')||t.includes('prolog')||t.includes('polog')||t.includes('pharma')) return 'e-hellomed';
-  return 'e-event-ical';
+  const cats = [];
+
+  if(t.includes('schwerin'))           cats.push('e-schwerin');
+  if(t.includes('bodensee')||t.includes('leba')||t.includes('łeba')||t.includes('urlaub')||t.includes('parchim')||t.includes('reise')||t.includes('ferien')||t.includes('trip')||t.includes('ausflug')||t.includes('wochenende')||t.includes('ostsee')||t.includes('nordsee')||t.includes('strand')) cats.push('e-trip');
+  if(t.includes('kids bei dani'))      cats.push('e-dani');
+  else if(t.includes('kids'))          cats.push('e-kids');
+  if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)||/lauf/.test(t)||/rennen/.test(t)||/wettkampf/.test(t)) cats.push('e-sport');
+  if(t.includes('maja')||t.includes('kawi')||t.includes('sing dela')||t.includes('finch')||t.includes('olivia')||t.includes('geburtstagsdrinks')) cats.push('e-maja');
+  if(t.includes('konzert')||t.includes('bierwalker')||t.includes('markus krebs')||t.includes('6k united')) cats.push('e-konzert');
+  if(t.includes('alma')||t.includes('spendenlauf')||t.includes('schule')||t.includes('rosa')||t.includes('emil')||t.includes('kiefer')||t.includes('prophylaxe')||t.includes('eltern')) cats.push('e-kidev');
+  if(t.includes('besichtigung')||t.includes('berlinovo')) cats.push('e-haus');
+  if(t.includes('hellomed')||t.includes('paul & sina')||t.includes('paul und sina')||t.includes('firmenlauf')||t.includes('etiketten')||t.includes('klientenliste')||t.includes('prolog')||t.includes('polog')||t.includes('pharma')) cats.push('e-hellomed');
+
+  return cats.length > 0 ? cats : ['e-event-ical'];
+}
+
+// Kompatibilitäts-Wrapper (gibt primäre Kategorie zurück)
+function catFromTitle(title) {
+  return catsFromTitle(title)[0];
 }
 
 // Inject iCal events into SE object
@@ -3036,7 +3086,8 @@ function injectICalEvents(events, url='') {
     const title = ev.title.trim();
 
     const isHellomed = url.includes('hellomed');
-    const cat = isHellomed ? 'e-hellomed' : catFromTitle(title);
+    const allCats = isHellomed ? ['e-hellomed'] : catsFromTitle(title);
+    const cat = allCats[0]; // primäre Kategorie → Farbe
     const display = title;
 
     // For multi-day events, add to each day
@@ -3051,7 +3102,7 @@ function injectICalEvents(events, url='') {
         if(!SE[key]) SE[key] = [];
         // Duplicate check: exact title match on same day (not prefix, to allow same-named events on different days)
         if(!SE[key].some(e => e.t === display && e.fromIcal)) {
-          const entry = {t: display, c: cat, fromIcal: true};
+          const entry = {t: display, c: cat, cats: allCats, fromIcal: true};
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.endTime && key === ev.start) entry.endTime = ev.endTime;
           if(ev.location) entry.location = ev.location;
@@ -3063,17 +3114,14 @@ function injectICalEvents(events, url='') {
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
       if(!SE[ev.start].some(e => e.t === display && e.fromIcal)) {
-        const entry = {t: display, c: cat, fromIcal: true};
+        const entry = {t: display, c: cat, cats: allCats, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.endTime) entry.endTime = ev.endTime;
         if(ev.location) entry.location = ev.location;
         if(ev.description) entry.description = ev.description;
         if(ev.uid) {
           const uid = ev.uid.trim();
-          // Google Calendar API event IDs are base64url encoded
-          // UID format: <id>@google.com → extract <id>
           entry.googleId = uid.includes('@') ? uid.split('@')[0] : uid;
-          // UID logged above
         }
         if(url.includes('hellomed')) entry.fromHellomed = true;
         SE[ev.start].push(entry);
