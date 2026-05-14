@@ -1,30 +1,30 @@
 {
-  "datum": "13.05.2026",
-  "generiert": "2026-05-13T10:40:09Z",
+  "datum": "14.05.2026",
+  "generiert": "2026-05-14T09:40:05Z",
   "geburtstage": [
     {
-      "name": "Romain Esse",
-      "alter": 21,
-      "geburtsjahr": 2005,
-      "beruf": "English Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Romain_Esse"
+      "name": "Zach Edey",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Canadian Basketball Player (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Zach_Edey_2_%28cropped%29.jpg/330px-Zach_Edey_2_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Zach_Edey"
     },
     {
-      "name": "Javi Guerra (footballer, born 2003)",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Spanish Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Javi_Guerra_Moreno_2023.png/330px-Javi_Guerra_Moreno_2023.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Javi_Guerra_(footballer%2C_born_2003)"
+      "name": "Rúben Dias",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Portuguese Footballer (Born 1997)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Portugal_national_football_team_0866_%28R%C3%BAben_Dias%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/R%C3%BAben_Dias"
     },
     {
-      "name": "Jabari Smith Jr.",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "American Basketball Player (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/1_jabari_smith_jr.jpg/330px-1_jabari_smith_jr.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Jabari_Smith_Jr."
+      "name": "Rose Lavelle",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "American Soccer Player (Born 1995)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg/330px-Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Rose_Lavelle"
     }
   ]
 }
