@@ -1,35 +1,39 @@
-name: Fetch Union Berlin Data
+name: Union Berlin Daten aktualisieren
  
 on:
   schedule:
-    - cron: "30 6 * * *"   # täglich 08:30 CEST
-  workflow_dispatch:        # manuell triggerbar
+    - cron: '0 7 * * *'   # täglich 07:00 UTC
+  workflow_dispatch:        # manueller Trigger
  
 jobs:
-  fetch-union:
+  update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
  
     steps:
-      - name: Checkout
+      - name: Repository auschecken
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # vollständige History für rebase
  
-      - name: Set up Python
+      - name: Python einrichten
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.11'
  
-      - name: Fetch Union Berlin data
+      - name: Union-Daten fetchen
         env:
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
         run: python scripts/fetch_union.py
  
-      - name: Commit & push data/union.json
+      - name: JSON committen und pushen
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/union.json
-          git diff --cached --quiet || git commit -m "chore: update union.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git push
- 
+          git diff --cached --quiet && echo "Keine Änderungen" && exit 0
+          git commit -m "chore: union daten aktualisiert $(date -u +'%Y-%m-%d')"
+          # Pull --rebase vor dem Push, um Konflikte mit parallelen Commits zu vermeiden
+          git pull --rebase origin main
+          git push origin main
