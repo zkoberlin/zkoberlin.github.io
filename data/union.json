@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-14T18:07:25.840897+00:00",
+  "updated_at": "2026-05-14T18:19:31.862422+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -20,7 +20,8 @@
       "logo": "",
       "points": 37,
       "is_union": false,
-      "qual_color": null
+      "qual_color": null,
+      "rank_change": 0
     },
     {
       "rank": 11,
@@ -28,7 +29,8 @@
       "logo": "",
       "points": 37,
       "is_union": false,
-      "qual_color": null
+      "qual_color": null,
+      "rank_change": 0
     },
     {
       "rank": 12,
@@ -36,7 +38,8 @@
       "logo": "",
       "points": 36,
       "is_union": true,
-      "qual_color": null
+      "qual_color": null,
+      "rank_change": 0
     },
     {
       "rank": 13,
@@ -44,7 +47,8 @@
       "logo": "",
       "points": 35,
       "is_union": false,
-      "qual_color": null
+      "qual_color": null,
+      "rank_change": 0
     },
     {
       "rank": 14,
@@ -52,7 +56,8 @@
       "logo": "",
       "points": 32,
       "is_union": false,
-      "qual_color": null
+      "qual_color": null,
+      "rank_change": 0
     }
   ],
   "last_match": {
