@@ -20,33 +20,23 @@ ERLAUBTE_BERUFE_QID = {
     # Schauspieler
     "Q33999",    # Schauspieler
     "Q10798782", # Filmschauspieler
-    "Q2259451",  # Theaterschauspieler
     "Q3282637",  # Fernsehschauspieler
     # Musiker / Sänger
     "Q177220",   # Sänger
     "Q639669",   # Musiker
     "Q753110",   # Songwriter
     "Q488205",   # Singer-Songwriter
-    "Q36834",    # Komponist
     "Q183945",   # Rapper
     "Q855091",   # DJ
     # Sportler
     "Q2066131",  # Sportler (allgemein)
     "Q937857",   # Fußballspieler
-    "Q3665646",  # Basketballspieler
     "Q10873124", # Tennisspieler
     "Q10843402", # Schwimmer
     "Q11338576", # Leichtathlet
     "Q628099",   # Rennfahrer
-    "Q13141064", # Boxer
-    "Q10873124", # Tennisspieler
-    "Q19204627", # Golfer
-    "Q10871364", # Eishockeyspieler
-    "Q10871364", # Eishockeyspieler
-    "Q4009406",  # American-Football-Spieler
     "Q10833314", # Skisportler
     "Q10843263", # Radfahrer
-    "Q11774891", # Ringer
     # Politiker
     "Q82955",    # Politiker
     "Q48352",    # Staatsoberhaupt
