@@ -469,7 +469,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 }
 .uc-club{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
 .uc-logo-wrap{
-  width:66px;height:66px;
+  width:72px;height:72px;
   border-radius:14px;
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.10);
@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.6</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.7</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1080,7 +1080,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   <div class="uc-header">
     <div class="uc-club">
       <div class="uc-logo-wrap">
-        <img id="ucLogo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1_FC_Union_Berlin_Logo.svg/180px-1_FC_Union_Berlin_Logo.svg.png" width="52" height="52" style="object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));" alt="Union">
+        <img id="ucLogo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/1_FC_Union_Berlin_Logo.svg/180px-1_FC_Union_Berlin_Logo.svg.png" width="58" height="58" style="object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));" alt="Union">
       </div>
       <div>
         <div class="uc-clubname">1. FC Union Berlin</div>
@@ -2072,10 +2072,10 @@ async function loadUnion(){
         ?`<img src="${src}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`
         :'<span style="width:14px;flex-shrink:0;display:inline-block;"></span>';
       // Rang-Pfeil: rank_change > 0 = besser (grün ▲), < 0 = schlechter (rot ▼), 0/null = gleich (grau –)
-      const rc = t.rank_change ?? 0;
+      const rc = Number(t.rank_change ?? 0);
       const arrowHtml =
-        rc > 0 ? `<span style="font-size:8px;color:var(--green);flex-shrink:0;line-height:1;">▲</span>` :
-        rc < 0 ? `<span style="font-size:8px;color:var(--red);flex-shrink:0;line-height:1;">▼</span>` :
+        rc > 0 ? `<span style="font-size:8px;color:var(--green);flex-shrink:0;line-height:1;" title="▲${rc}">▲</span>` :
+        rc < 0 ? `<span style="font-size:8px;color:var(--red);flex-shrink:0;line-height:1;" title="▼${Math.abs(rc)}">▼</span>` :
                  `<span style="font-size:8px;color:var(--t3);flex-shrink:0;line-height:1;">–</span>`;
       return`
       <div class="uc-tbl-row${t.is_union?' me':''}">
@@ -2131,12 +2131,12 @@ async function loadUnion(){
         <div class="uc-last-minimal">
           <div class="uc-last-scoreline">
             <div class="uc-last-team">
-              <img class="uc-last-team-logo" src="${last.home_logo||''}" onerror="this.style.visibility='hidden'" alt="">
+              <img class="uc-last-team-logo" src="${last.home_logo||LOGOS[last.home_name]||''}" onerror="this.style.visibility='hidden'" alt="">
               <div class="uc-last-team-name">${last.home_name}</div>
             </div>
             <div class="uc-last-score-box ${cls}">${last.goals_home}:${last.goals_away}</div>
             <div class="uc-last-team">
-              <img class="uc-last-team-logo" src="${last.away_logo||''}" onerror="this.style.visibility='hidden'" alt="">
+              <img class="uc-last-team-logo" src="${last.away_logo||LOGOS[last.away_name]||''}" onerror="this.style.visibility='hidden'" alt="">
               <div class="uc-last-team-name">${last.away_name}</div>
             </div>
           </div>
@@ -2162,9 +2162,9 @@ async function loadUnion(){
       nextHtml=`
         <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}</div>
         <div class="uc-match-teams">
-          <div class="uc-match-team">${img(unionLogo,26,'4px')}<span class="uc-match-name">Union Berlin</span></div>
+          <div class="uc-match-team">${img(unionLogo,34,'4px')}<span class="uc-match-name">Union Berlin</span></div>
           <div class="uc-next-vs">${dStr}</div>
-          <div class="uc-match-team r">${img(oppLogo,26,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
+          <div class="uc-match-team r">${img(oppLogo||LOGOS[opp]||'',34,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
         </div>
         <div class="uc-match-meta">${fmtDt(next.date)}</div>`;
     }
@@ -2212,8 +2212,8 @@ async function loadUnion(){
       <div class="uc-2col">
         <div class="uc-box" style="grid-column:1/-1;">
           <div class="uc-box-lbl">Letzte 9 Spiele</div>
-          <div class="uc-form" style="flex-wrap:wrap;">${formDots||'–'}</div>
-          <div style="font-size:9px;color:var(--t2);margin-top:7px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>
+          <div class="uc-form" style="flex-wrap:wrap;">${formDots||'<span style="font-size:10px;color:var(--t3);">Keine Daten (field: form)</span>'}</div>
+          ${formStr.length?`<div style="font-size:9px;color:var(--t2);margin-top:7px;">${formPts} Pkt. aus ${formStr.length} Spielen · Ø ${(formPts/formStr.length).toFixed(1)} Pkt./Spiel</div>`:''}
         </div>
       </div>
       <div class="uc-box">
