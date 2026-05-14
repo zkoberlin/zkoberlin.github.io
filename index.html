@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.4</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.5</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1107,7 +1107,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="uc-pts-sep"></div>
     <div class="uc-pts-stat">
       <div class="uc-pts-stat-val" id="ucTore">–</div>
-      <div class="uc-pts-stat-lbl">Tore</div>
+      <div class="uc-pts-stat-lbl">Tore <span id="ucToreDiff" style="font-weight:700;"></span></div>
     </div>
     <div class="uc-pts-sep"></div>
     <div class="uc-pts-stat">
@@ -1995,6 +1995,12 @@ async function loadUnion(){
       document.getElementById('ucPtsNum').textContent=d.points;
       document.getElementById('ucBilanz').textContent=`${d.wins}/${d.draws}/${d.losses}`;
       document.getElementById('ucTore').textContent=`${d.goals_for}:${d.goals_against}`;
+      const gdiffVal=(d.goals_for||0)-(d.goals_against||0);
+      const gdiffEl=document.getElementById('ucToreDiff');
+      if(gdiffEl){
+        gdiffEl.textContent=(gdiffVal>0?'+':'')+gdiffVal;
+        gdiffEl.style.color=gdiffVal>0?'var(--green)':gdiffVal<0?'var(--red)':'var(--t3)';
+      }
       document.getElementById('ucQuote').textContent=`${maxPts>0?Math.round((d.points/maxPts)*100):0}%`;
       strip.style.display='flex';
     }
@@ -2003,7 +2009,7 @@ async function loadUnion(){
     const statsHtml=``;
 
     // ── Form / Serie ──
-    const formStr=(d.form||'').slice(-5);
+    const formStr=(d.form||'').slice(-9);
     const formPts=[...formStr].reduce((s,c)=>s+(c==='W'?3:c==='D'?1:0),0);
     const formDots=[...formStr].map(c=>`<div class="uc-fd ${c==='W'?'w':c==='D'?'d':'l'}">${c==='W'?'S':c==='D'?'U':'N'}</div>`).join('');
 
@@ -2015,10 +2021,14 @@ async function loadUnion(){
       'RB Leipzig':23826,'Eintracht Frankfurt':24,'VfB Stuttgart':79,'SC Freiburg':60,
       'Werder Bremen':86,'Borussia Mönchengladbach':23,'TSG Hoffenheim':533,'FC Augsburg':167,
       'VfL Wolfsburg':82,'1. FC Heidenheim':1095,'SV Darmstadt 98':105,'VfL Bochum':148,
-      '1. FC Köln':3,'Hamburger SV':41,'Fortuna Düsseldorf':69,'Hannover 96':69,'Karlsruher SC':3365,
-      '1. FC Nürnberg':4,'Schalke 04':33,'Hertha BSC':86,'Mainz 05':39,'Greuther Fürth':478,
-      'SpVgg Greuther Fürth':478,'1. FC Kaiserslautern':583,'Elversberg':3208,'Magdeburg':535,
-      'B. Mönchengladbach':23,'FC St. Pauli':35,'Holstein Kiel':35,'SSV Ulm 1846':1597
+      '1. FC Köln':3,'Hamburger SV':41,'Fortuna Düsseldorf':102,'Hannover 96':13,
+      'Karlsruher SC':3365,'1. FC Nürnberg':4,'Schalke 04':33,'Hertha BSC':31,
+      'Mainz 05':39,'Greuther Fürth':478,'SpVgg Greuther Fürth':478,
+      '1. FC Kaiserslautern':583,'Elversberg':3208,'Magdeburg':535,'SV 07 Elversberg':3208,
+      'B. Mönchengladbach':23,'FC St. Pauli':35,'Holstein Kiel':238,'SSV Ulm 1846':1597,
+      'Preußen Münster':831,'1. FC Köln':3,'MSV Duisburg':434,'1. FC Nürnberg':4,
+      'SV Wehen Wiesbaden':2524,'FC Erzgebirge Aue':336,'Braunschweig':1163,'Eintracht Braunschweig':1163,
+      'Paderborn':674,'SC Paderborn 07':674,'FC Schalke 04':33
     };
     const getLogoSrc=t=>{
       if(t.logo)return t.logo;
@@ -2031,12 +2041,12 @@ async function loadUnion(){
       const logoHtml=src
         ?`<img src="${src}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`
         :'<span style="width:14px;flex-shrink:0;display:inline-block;"></span>';
-      // Rang-Pfeil: rank_change > 0 = besser (grün ▲), < 0 = schlechter (rot ▼), 0 = gleich (orange –)
-      const rc = t.rank_change ?? null;
-      const arrowHtml = rc === null ? '' :
-        rc > 0 ? `<span style="font-size:8px;color:var(--green);flex-shrink:0;">▲</span>` :
-        rc < 0 ? `<span style="font-size:8px;color:var(--red);flex-shrink:0;">▼</span>` :
-                 `<span style="font-size:8px;color:var(--orange);flex-shrink:0;">–</span>`;
+      // Rang-Pfeil: rank_change > 0 = besser (grün ▲), < 0 = schlechter (rot ▼), 0/null = gleich (grau –)
+      const rc = t.rank_change ?? 0;
+      const arrowHtml =
+        rc > 0 ? `<span style="font-size:8px;color:var(--green);flex-shrink:0;line-height:1;">▲</span>` :
+        rc < 0 ? `<span style="font-size:8px;color:var(--red);flex-shrink:0;line-height:1;">▼</span>` :
+                 `<span style="font-size:8px;color:var(--t3);flex-shrink:0;line-height:1;">–</span>`;
       return`
       <div class="uc-tbl-row${t.is_union?' me':''}">
         <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:14px;flex-shrink:0;font-weight:${t.is_union?700:400}">${t.rank}.</span>
@@ -2171,7 +2181,7 @@ async function loadUnion(){
       ${statsHtml}
       <div class="uc-2col">
         <div class="uc-box">
-          <div class="uc-box-lbl">Letzte 5 Spiele</div>
+          <div class="uc-box-lbl">Letzte 9 Spiele</div>
           <div class="uc-form">${formDots||'–'}</div>
           <div style="font-size:9px;color:var(--t2);margin-top:7px;">${formPts} Pkt. aus ${formStr.length} Spielen</div>
         </div>
