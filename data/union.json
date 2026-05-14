@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-14T12:19:14.057953+00:00",
+  "updated_at": "2026-05-14T18:07:25.840897+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -17,7 +17,7 @@
     {
       "rank": 10,
       "name": "Mainz 05",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
+      "logo": "",
       "points": 37,
       "is_union": false,
       "qual_color": null
@@ -25,7 +25,7 @@
     {
       "rank": 11,
       "name": "Hamburger SV",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/23.png",
+      "logo": "",
       "points": 37,
       "is_union": false,
       "qual_color": null
@@ -33,7 +33,7 @@
     {
       "rank": 12,
       "name": "Union Berlin",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+      "logo": "",
       "points": 36,
       "is_union": true,
       "qual_color": null
@@ -41,7 +41,7 @@
     {
       "rank": 13,
       "name": "B. Mönchengladbach",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/18.png",
+      "logo": "",
       "points": 35,
       "is_union": false,
       "qual_color": null
@@ -49,7 +49,7 @@
     {
       "rank": 14,
       "name": "Köln",
-      "logo": "https://tmssl.akamaized.net/images/wappen/head/3.png",
+      "logo": "",
       "points": 32,
       "is_union": false,
       "qual_color": null
@@ -61,8 +61,8 @@
     "date": "2026-05-10T17:30:00Z",
     "home_name": "Mainz",
     "away_name": "Union Berlin",
-    "home_logo": "https://tmssl.akamaized.net/images/wappen/head/39.png",
-    "away_logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
+    "home_logo": "",
+    "away_logo": "",
     "goals_home": 1,
     "goals_away": 3,
     "is_home": false,
@@ -74,13 +74,54 @@
     "date": "2026-05-16T13:30:00Z",
     "home_name": "Union Berlin",
     "away_name": "Augsburg",
-    "home_logo": "https://tmssl.akamaized.net/images/wappen/head/89.png",
-    "away_logo": "https://tmssl.akamaized.net/images/wappen/head/167.png",
+    "home_logo": "",
+    "away_logo": "",
     "goals_home": 0,
     "goals_away": 0,
     "is_home": true
   },
-  "last_match_stats": {},
+  "last_match_stats": {
+    "possession": {
+      "union": 47,
+      "opp": 53
+    },
+    "xg": {
+      "union": "2.68",
+      "opp": "1.61"
+    },
+    "shots": {
+      "union": 16,
+      "opp": 15
+    },
+    "shots_on_target": {
+      "union": 9,
+      "opp": 4
+    },
+    "touches_box": {
+      "union": 20,
+      "opp": 33
+    },
+    "big_chance": {
+      "union": 6,
+      "opp": 4
+    },
+    "yellow_cards": {
+      "union": 1,
+      "opp": 2
+    },
+    "corners": {
+      "union": 8,
+      "opp": 7
+    },
+    "saves": {
+      "union": 3,
+      "opp": 6
+    },
+    "fouls": {
+      "union": 10,
+      "opp": 11
+    }
+  },
   "union_scorers": [
     {
       "id": 609504,
