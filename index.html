@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.1</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.3</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1508,7 +1508,7 @@ async function loadW(){
 loadW();
 
 // ── FINANZEN BLUR ──
-let _finBlurred=true; // default: ausgeblendet
+let _finBlurred=false;
 function toggleFinBlur(e){
   if(e)e.preventDefault();
   _finBlurred=!_finBlurred;
@@ -1517,13 +1517,6 @@ function toggleFinBlur(e){
   if(wrap)wrap.classList.toggle('fin-blurred',_finBlurred);
   if(btn)btn.textContent=_finBlurred?'👁 Zeigen':'👁 Blenden';
 }
-// Beim Laden direkt blurren
-document.addEventListener('DOMContentLoaded',()=>{
-  const wrap=document.getElementById('finRowWrap');
-  const btn=document.getElementById('finBlurBtn');
-  if(wrap)wrap.classList.add('fin-blurred');
-  if(btn)btn.textContent='👁 Zeigen';
-});
 
 // ── FINANZEN ──
 async function loadFin(){
@@ -2017,15 +2010,21 @@ async function loadUnion(){
     // ── Tabelle ──
     const tbl=(d.table_context||[]);
     const tblHtml=tbl.map(t=>{
-      // Fallback-Logo: wenn tmssl fehlschlägt → openligadb
       const logoHtml=t.logo
-        ?`<img src="${t.logo}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.onerror=null;this.src='https://www.openligadb.de/images/teamicons/${encodeURIComponent((t.name||'').toLowerCase().replace(/\s+/g,'-'))}.png';this.onerror=function(){this.style.visibility='hidden';}">`
+        ?`<img src="${t.logo}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`
         :'<span style="width:14px;flex-shrink:0;display:inline-block;"></span>';
+      // Rang-Pfeil: rank_change > 0 = besser (grün ▲), < 0 = schlechter (rot ▼), 0 = gleich (orange –)
+      const rc = t.rank_change ?? null;
+      const arrowHtml = rc === null ? '' :
+        rc > 0 ? `<span style="font-size:8px;color:var(--green);flex-shrink:0;">▲</span>` :
+        rc < 0 ? `<span style="font-size:8px;color:var(--red);flex-shrink:0;">▼</span>` :
+                 `<span style="font-size:8px;color:var(--orange);flex-shrink:0;">–</span>`;
       return`
       <div class="uc-tbl-row${t.is_union?' me':''}">
         <span style="font-size:9px;color:${t.is_union?'var(--union)':'var(--t3)'};min-width:14px;flex-shrink:0;font-weight:${t.is_union?700:400}">${t.rank}.</span>
         ${logoHtml}
         <span class="tbl-name" style="${t.is_union?'color:var(--union);font-weight:700;':'color:var(--t2);'}">${t.name}</span>
+        ${arrowHtml}
         <span class="tbl-pts" style="${t.is_union?'color:var(--union);':''}">${t.points}</span>
       </div>`;}).join('');
 
@@ -2045,25 +2044,26 @@ async function loadUnion(){
       if(ms.xg)            pills.push(['xG',ms.xg.union,'union'],['',ms.xg.opp,'']);
       if(ms.corners)       pills.push(['Ecken',ms.corners.union,'union'],['',ms.corners.opp,'']);
 
-      // Kompakte Stat-Zeilen: nur Union vs Opp als klare Zahlen-Paare
+      // Kompakte Stat-Zeilen: höherer Wert wird hervorgehoben
       const statRows=[];
-      if(ms.possession)    statRows.push(['Ballbesitz',ms.possession.union+'%',ms.possession.opp+'%']);
-      if(ms.shots)         statRows.push(['Schüsse',ms.shots.union,ms.shots.opp]);
-      if(ms.shots_on_target) statRows.push(['aufs Tor',ms.shots_on_target.union,ms.shots_on_target.opp]);
-      if(ms.xg)            statRows.push(['xG',ms.xg.union,ms.xg.opp]);
-      if(ms.corners)       statRows.push(['Ecken',ms.corners.union,ms.corners.opp]);
+      if(ms.possession)      statRows.push(['Ballbesitz',ms.possession.union+'%',ms.possession.opp+'%',parseFloat(ms.possession.union),parseFloat(ms.possession.opp)]);
+      if(ms.shots)           statRows.push(['Schüsse',ms.shots.union,ms.shots.opp,Number(ms.shots.union),Number(ms.shots.opp)]);
+      if(ms.shots_on_target) statRows.push(['aufs Tor',ms.shots_on_target.union,ms.shots_on_target.opp,Number(ms.shots_on_target.union),Number(ms.shots_on_target.opp)]);
+      if(ms.xg)              statRows.push(['xG',ms.xg.union,ms.xg.opp,parseFloat(ms.xg.union),parseFloat(ms.xg.opp)]);
+      if(ms.corners)         statRows.push(['Ecken',ms.corners.union,ms.corners.opp,Number(ms.corners.union),Number(ms.corners.opp)]);
 
       const pillsHtml=statRows.length?`
         <div class="uc-stat-pills">
-          ${statRows.map(([lbl,uv,ov])=>`
-            <div class="uc-stat-pill">
+          ${statRows.map(([lbl,uv,ov,un,on])=>{
+            const uWins=un>on,oWins=on>un;
+            return`<div class="uc-stat-pill">
               <div class="uc-stat-pill-lbl">${lbl}</div>
               <div style="display:flex;gap:3px;align-items:center;">
-                <span class="uc-stat-pill-val union">${uv}</span>
+                <span class="uc-stat-pill-val${uWins?' union':''}" style="${uWins?'':'color:var(--t2);font-weight:500;'}">${uv}</span>
                 <span style="font-size:7px;color:var(--t3);">|</span>
-                <span class="uc-stat-pill-val">${ov}</span>
+                <span class="uc-stat-pill-val" style="${oWins?'color:var(--t);font-weight:800;':'color:var(--t2);font-weight:500;'}">${ov}</span>
               </div>
-            </div>`).join('')}
+            </div>`;}).join('')}
         </div>`:'';
 
       lastHtml=`
