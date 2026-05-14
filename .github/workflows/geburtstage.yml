@@ -1,30 +1,38 @@
 name: Geburtstage aktualisieren
-
+ 
 on:
   schedule:
-    - cron: '5 0 * * *'
+    - cron: '0 4 * * *'   # täglich 04:00 UTC (morgens 06:00 Berlin)
   workflow_dispatch:
-
+ 
 jobs:
-  fetch-geburtstage:
+  update:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+ 
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
+ 
       - name: Python einrichten
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
+ 
       - name: Geburtstage fetchen
         run: python scripts/fetch_geburtstage.py
-
+ 
       - name: JSON committen und pushen
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/geburtstage.json
-          git diff --cached --quiet || git commit -m "chore: geburtstage aktualisiert $(date -u +'%Y-%m-%d')"
-          git push
+          git diff --cached --quiet && echo "Keine Aenderungen" && exit 0
+          git commit -m "chore: geburtstage aktualisiert $(date -u +'%Y-%m-%d')"
+          # Pull --rebase verhindert "fetch first" Fehler bei parallelen Commits
+          git pull --rebase origin main
+          git push origin main
+ 
