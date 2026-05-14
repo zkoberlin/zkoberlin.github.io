@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.4</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2009,9 +2009,27 @@ async function loadUnion(){
 
     // ── Tabelle ──
     const tbl=(d.table_context||[]);
+    // Transfermarkt-IDs als Logo-Fallback für Bundesliga/2.Liga
+    const TM_IDS={
+      'Union Berlin':89,'Bayern München':27,'Borussia Dortmund':16,'Bayer 04 Leverkusen':15,
+      'RB Leipzig':23826,'Eintracht Frankfurt':24,'VfB Stuttgart':79,'SC Freiburg':60,
+      'Werder Bremen':86,'Borussia Mönchengladbach':23,'TSG Hoffenheim':533,'FC Augsburg':167,
+      'VfL Wolfsburg':82,'1. FC Heidenheim':1095,'SV Darmstadt 98':105,'VfL Bochum':148,
+      '1. FC Köln':3,'Hamburger SV':41,'Fortuna Düsseldorf':69,'Hannover 96':69,'Karlsruher SC':3365,
+      '1. FC Nürnberg':4,'Schalke 04':33,'Hertha BSC':86,'Mainz 05':39,'Greuther Fürth':478,
+      'SpVgg Greuther Fürth':478,'1. FC Kaiserslautern':583,'Elversberg':3208,'Magdeburg':535,
+      'B. Mönchengladbach':23,'FC St. Pauli':35,'Holstein Kiel':35,'SSV Ulm 1846':1597
+    };
+    const getLogoSrc=t=>{
+      if(t.logo)return t.logo;
+      const id=TM_IDS[t.name]||TM_IDS[t.short_name];
+      if(id)return`https://tmssl.akamaized.net/images/wappen/head/${id}.png`;
+      return null;
+    };
     const tblHtml=tbl.map(t=>{
-      const logoHtml=t.logo
-        ?`<img src="${t.logo}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`
+      const src=getLogoSrc(t);
+      const logoHtml=src
+        ?`<img src="${src}" width="14" height="14" style="object-fit:contain;flex-shrink:0;border-radius:2px;" alt="" onerror="this.style.visibility='hidden'">`
         :'<span style="width:14px;flex-shrink:0;display:inline-block;"></span>';
       // Rang-Pfeil: rank_change > 0 = besser (grün ▲), < 0 = schlechter (rot ▼), 0 = gleich (orange –)
       const rc = t.rank_change ?? null;
@@ -2056,12 +2074,14 @@ async function loadUnion(){
         <div class="uc-stat-pills">
           ${statRows.map(([lbl,uv,ov,un,on])=>{
             const uWins=un>on,oWins=on>un;
+            const uStyle=uWins?'font-weight:700;color:var(--union);':'color:var(--t2);font-weight:500;';
+            const oStyle=oWins?'font-weight:700;color:var(--t);':'color:var(--t2);font-weight:500;';
             return`<div class="uc-stat-pill">
               <div class="uc-stat-pill-lbl">${lbl}</div>
               <div style="display:flex;gap:3px;align-items:center;">
-                <span class="uc-stat-pill-val${uWins?' union':''}" style="${uWins?'':'color:var(--t2);font-weight:500;'}">${uv}</span>
+                <span class="uc-stat-pill-val" style="${uStyle}">${uv}</span>
                 <span style="font-size:7px;color:var(--t3);">|</span>
-                <span class="uc-stat-pill-val" style="${oWins?'color:var(--t);font-weight:800;':'color:var(--t2);font-weight:500;'}">${ov}</span>
+                <span class="uc-stat-pill-val" style="${oStyle}">${ov}</span>
               </div>
             </div>`;}).join('')}
         </div>`:'';
