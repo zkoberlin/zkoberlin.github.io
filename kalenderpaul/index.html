@@ -1580,7 +1580,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.6.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2762,13 +2762,7 @@ function openFilterSheet() {
   cats.forEach(cat => {
     const el = document.getElementById('fsfc-' + cat);
     if(!el) return;
-    const count = Object.keys(SE).filter(d => d >= todayKey).reduce((n,d) => {
-      const evs = SE[d] || [];
-      if(cat === 'e-sport') {
-        return n + evs.filter(ev => { const tt=(ev.t||'').toLowerCase(); return ev.c==='e-sport'||tt.includes('sport')||tt.includes('beat81')||tt.includes('radtour')||/\btour\b/.test(tt)||/lauf/.test(tt)||/rennen/.test(tt)||/wettkampf/.test(tt); }).length;
-      }
-      return n + evs.filter(ev => ev.c === cat || ev.c === cat+'-hidden').length;
-    }, 0);
+    const count = countUniqueEvents(cat);
     el.textContent = count > 0 ? count : '';
   });
   // Sync active tiles in sheet
@@ -2805,21 +2799,36 @@ function closeFilterSheet() {
   document.body.style.overflow = '';
 }
 
-function hideEmptyFilters() {
+function countUniqueEvents(cat) {
+  // Count unique event titles (= events) not days, for a given category
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
-  const futureDates = Object.keys(SE).filter(d => d >= todayKey);
+  const futureDates = Object.keys(SE).filter(d => d >= todayKey).sort();
   const _sk = ['sport','beat81','radtour','tour','lauf','rennen','wettkampf'];
+  const seen = new Set();
+  for(const d of futureDates) {
+    const evs = SE[d] || [];
+    for(const ev of evs) {
+      let matches = false;
+      if(cat === 'e-sport') {
+        const tt = (ev.t||'').toLowerCase();
+        matches = ev.c === 'e-sport' || _sk.some(kw => tt.includes(kw));
+      } else {
+        matches = ev.c === cat || ev.c === cat+'-hidden';
+      }
+      if(matches) {
+        // Use title as unique key – same title on different days = 1 event
+        seen.add(ev.t || d);
+      }
+    }
+  }
+  return seen.size;
+}
 
+function hideEmptyFilters() {
   // Counts in inline grid aktualisieren + leere ausblenden
   document.querySelectorAll('.fgi-tile[data-cat]').forEach(tile => {
     const cat = tile.dataset.cat;
-    const count = futureDates.reduce((n, d) => {
-      const evs = SE[d] || [];
-      if(cat === 'e-sport') {
-        return n + evs.filter(ev => ev.c === 'e-sport' || _sk.some(kw => (ev.t||'').toLowerCase().includes(kw))).length;
-      }
-      return n + evs.filter(ev => ev.c === cat || ev.c === cat+'-hidden').length;
-    }, 0);
+    const count = countUniqueEvents(cat);
     const countEl = tile.querySelector('.fgi-count');
     if(countEl) countEl.textContent = count > 0 ? count : '';
     tile.style.display = count > 0 ? '' : 'none';
@@ -3040,7 +3049,8 @@ function injectICalEvents(events, url='') {
                     String(cur.getMonth()+1).padStart(2,'0') + '-' + 
                     String(cur.getDate()).padStart(2,'0');
         if(!SE[key]) SE[key] = [];
-        if(!SE[key].some(e => e.t.includes(title.substring(0,15)))) {
+        // Duplicate check: exact title match on same day (not prefix, to allow same-named events on different days)
+        if(!SE[key].some(e => e.t === display && e.fromIcal)) {
           const entry = {t: display, c: cat, fromIcal: true};
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.endTime && key === ev.start) entry.endTime = ev.endTime;
@@ -3052,7 +3062,7 @@ function injectICalEvents(events, url='') {
       }
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
-      if(!SE[ev.start].some(e => e.t.includes(title.substring(0,15)))) {
+      if(!SE[ev.start].some(e => e.t === display && e.fromIcal)) {
         const entry = {t: display, c: cat, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.endTime) entry.endTime = ev.endTime;
