@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1508,7 +1508,7 @@ async function loadW(){
 loadW();
 
 // ── FINANZEN BLUR ──
-let _finBlurred=false;
+let _finBlurred=true; // default: ausgeblendet
 function toggleFinBlur(e){
   if(e)e.preventDefault();
   _finBlurred=!_finBlurred;
@@ -1517,6 +1517,13 @@ function toggleFinBlur(e){
   if(wrap)wrap.classList.toggle('fin-blurred',_finBlurred);
   if(btn)btn.textContent=_finBlurred?'👁 Zeigen':'👁 Blenden';
 }
+// Beim Laden direkt blurren
+document.addEventListener('DOMContentLoaded',()=>{
+  const wrap=document.getElementById('finRowWrap');
+  const btn=document.getElementById('finBlurBtn');
+  if(wrap)wrap.classList.add('fin-blurred');
+  if(btn)btn.textContent='👁 Zeigen';
+});
 
 // ── FINANZEN ──
 async function loadFin(){
