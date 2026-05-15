@@ -1,30 +1,30 @@
 {
-  "datum": "14.05.2026",
-  "generiert": "2026-05-14T18:54:37Z",
+  "datum": "15.05.2026",
+  "generiert": "2026-05-15T05:32:56Z",
   "geburtstage": [
     {
-      "name": "Zach Edey",
+      "name": "Haerin",
+      "alter": 20,
+      "geburtsjahr": 2006,
+      "beruf": "South Korean Singer (Born 2006)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Haerin_Seoul_Fashion_Week_3.jpg/330px-Haerin_Seoul_Fashion_Week_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Haerin"
+    },
+    {
+      "name": "Huddy (musician)",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "Canadian Basketball Player (Born 2002)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Zach_Edey_2_%28cropped%29.jpg/330px-Zach_Edey_2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Zach_Edey"
+      "beruf": "American Internet Celebrity (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Lil_Huddy_%28cropped%29.jpg/330px-Lil_Huddy_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Huddy_(musician)"
     },
     {
-      "name": "Rúben Dias",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Portuguese Footballer (Born 1997)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Portugal_national_football_team_0866_%28R%C3%BAben_Dias%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/R%C3%BAben_Dias"
-    },
-    {
-      "name": "Rose Lavelle",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "American Soccer Player (Born 1995)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg/330px-Rose_Lavelle_USWNT_vs_Italy_Nov_28_2025-186_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rose_Lavelle"
+      "name": "Dayana Yastremska",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Ukrainian Tennis Player (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Yastremska_RGQ23.jpg/330px-Yastremska_RGQ23.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Dayana_Yastremska"
     }
   ]
 }
