@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-15T13:15:48.975500+00:00",
+  "updated_at": "2026-05-15T17:48:32.054325+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -85,7 +85,48 @@
     "goals_away": 0,
     "is_home": true
   },
-  "last_match_stats": {},
+  "last_match_stats": {
+    "possession": {
+      "union": 47,
+      "opp": 53
+    },
+    "xg": {
+      "union": "2.68",
+      "opp": "1.61"
+    },
+    "shots": {
+      "union": 16,
+      "opp": 15
+    },
+    "shots_on_target": {
+      "union": 9,
+      "opp": 4
+    },
+    "touches_box": {
+      "union": 20,
+      "opp": 33
+    },
+    "big_chance": {
+      "union": 6,
+      "opp": 4
+    },
+    "yellow_cards": {
+      "union": 1,
+      "opp": 2
+    },
+    "corners": {
+      "union": 8,
+      "opp": 7
+    },
+    "saves": {
+      "union": 3,
+      "opp": 6
+    },
+    "fouls": {
+      "union": 10,
+      "opp": 11
+    }
+  },
   "union_scorers": [
     {
       "id": 609504,
@@ -181,5 +222,31 @@
       "teamName": "Bayern München",
       "assists": 13
     }
-  ]
+  ],
+  "h2h": {
+    "opponent": "Augsburg",
+    "wins": 0,
+    "draws": 2,
+    "losses": 0,
+    "goals_for": 1,
+    "goals_against": 1,
+    "matches": [
+      {
+        "date": "2026-05-16T13:30:00Z",
+        "home_name": "Union Berlin",
+        "away_name": "Augsburg",
+        "home_goals": 0,
+        "away_goals": 0,
+        "union_result": "D"
+      },
+      {
+        "date": "2026-01-15T19:30:00Z",
+        "home_name": "Augsburg",
+        "away_name": "Union Berlin",
+        "home_goals": 1,
+        "away_goals": 1,
+        "union_result": "D"
+      }
+    ]
+  }
 }
