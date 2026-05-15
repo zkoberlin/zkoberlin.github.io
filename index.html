@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.25 -->
+<title>Paul · Hub</title><!-- v5.3.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -465,6 +465,43 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .btc-change.r{color:#ff3b30;}
 .btc-time{font-size:9px;color:var(--t3);}
 
+/* ── AKTIEN-BEREICH ── */
+.stocks-wrap{margin:0 11px 0;padding-bottom:2px;}
+.stocks-top3{display:flex;flex-direction:column;gap:5px;margin-bottom:6px;}
+.stock-chip{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:7px 10px;transition:background .15s;}
+.stock-chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.stock-chip-dot.g{background:var(--green);}
+.stock-chip-dot.r{background:var(--red);}
+.stock-chip-name{font-size:11px;font-weight:600;color:var(--t);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stock-chip-val{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);margin-left:auto;white-space:nowrap;}
+.stock-chip-pct{font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;padding:2px 6px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.stock-chip-pct.g{color:var(--green);background:var(--green-l);}
+.stock-chip-pct.r{color:var(--red);background:var(--red-l);}
+
+/* Akkordeon für alle Aktien */
+.stocks-toggle{display:flex;align-items:center;justify-content:space-between;padding:5px 2px 7px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.stocks-toggle-lbl{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);}
+.stocks-toggle-arrow{font-size:9px;color:var(--t3);transition:transform .25s;display:inline-block;}
+.stocks-toggle-arrow.open{transform:rotate(180deg);}
+.stocks-all{display:none;flex-direction:column;gap:4px;margin-bottom:4px;}
+.stocks-all.open{display:flex;}
+@media(min-width:601px){
+  .stocks-all{display:flex!important;}
+  .stocks-toggle{display:none;}
+}
+.stock-row{display:flex;align-items:center;gap:7px;padding:5px 2px;}
+.stock-row+.stock-row{border-top:1px solid var(--border);}
+.stock-row-name{font-size:10.5px;font-weight:500;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stock-row-price{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--t);white-space:nowrap;}
+.stock-row-pct{font-size:9.5px;font-weight:700;font-variant-numeric:tabular-nums;min-width:46px;text-align:right;white-space:nowrap;}
+.stock-row-pct.g{color:var(--green);}
+.stock-row-pct.r{color:var(--red);}
+.stocks-meta{font-size:8.5px;color:var(--t3);padding:4px 2px 6px;display:flex;align-items:center;gap:4px;}
+.stocks-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;}
+/* Blur gilt auch für Aktien-Werte */
+.fin-blurred .stock-chip-val,
+.fin-blurred .stock-row-price{filter:blur(5px);user-select:none;transition:filter .25s;}
+
 /* ── PROMI GEBURTSTAG CHIPS ── */
 .promi-chip{display:flex;align-items:center;gap:6px;padding:4px 0;}
 .promi-foto{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
@@ -495,6 +532,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 @media(max-width:430px){
   /* Safe area für Dynamic Island / Notch */
   header{padding:10px 16px 10px;padding-top:max(10px,env(safe-area-inset-top));}
+  #stockTicker{top:max(48px,calc(48px + env(safe-area-inset-top)));}
   main{padding:12px 12px max(90px,calc(70px + env(safe-area-inset-bottom)));gap:10px;}
   .bnav{padding-bottom:max(20px,env(safe-area-inset-bottom));}
 
@@ -552,6 +590,44 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 .kal-loading-item{display:flex;align-items:center;gap:8px;padding:8px 11px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);}
 .kal-loading-dot{width:7px;height:7px;border-radius:50%;background:var(--border);flex-shrink:0;}
 .kal-loading-lines{flex:1;display:flex;flex-direction:column;gap:5px;}
+
+/* ── STOCK TICKER STRIP ── */
+#stockTicker{
+  position:sticky;top:57px;z-index:99;
+  background:rgba(242,242,247,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  height:28px;overflow:hidden;
+  transition:background .3s;
+}
+html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) #stockTicker{background:rgba(14,14,16,.92);}}
+#stockTicker.loading{opacity:.4;}
+.ticker-track{
+  display:flex;align-items:center;
+  white-space:nowrap;height:28px;
+  animation:tickerScroll 55s linear infinite;
+  will-change:transform;
+}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes tickerScroll{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:0 16px;
+  font-family:'Montserrat',sans-serif;
+  font-size:10px;font-weight:600;
+  color:var(--t);
+  border-right:1px solid var(--border);
+  height:28px;flex-shrink:0;
+}
+.ticker-item-name{color:var(--t3);font-weight:500;}
+.ticker-item-price{font-variant-numeric:tabular-nums;}
+.ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9.5px;padding:1px 5px;border-radius:4px;}
+.ticker-item-pct.g{color:var(--green);background:var(--green-l);}
+.ticker-item-pct.r{color:var(--red);background:var(--red-l);}
 
 /* ── LOAD BAR ── */
 #loadBar{
@@ -1057,6 +1133,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   <div id="loadBar"><div id="loadBarFill"></div></div>
 </header>
 
+<!-- ── STOCK TICKER STRIP ── -->
+<div id="stockTicker" class="loading">
+  <div class="ticker-track" id="tickerTrack">
+    <!-- wird per JS befüllt -->
+  </div>
+</div>
+
 <main>
 
 <!-- Quote -->
@@ -1369,6 +1452,27 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       </div>
     </div>
     <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
+
+    <!-- Aktien Live-Kurse -->
+    <div class="stocks-wrap" id="stocksWrap" style="display:none;">
+      <!-- Top 3 immer sichtbar -->
+      <div class="stocks-top3" id="stocksTop3">
+        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:60%;border-radius:4px;"></div></div>
+        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:55%;border-radius:4px;"></div></div>
+        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:50%;border-radius:4px;"></div></div>
+      </div>
+      <!-- Toggle für alle (nur Mobile) -->
+      <div class="stocks-toggle" id="stocksToggle" onclick="toggleStocksAll()">
+        <span class="stocks-toggle-lbl">Alle Positionen</span>
+        <span class="stocks-toggle-arrow" id="stocksArrow">▼</span>
+      </div>
+      <!-- Alle Positionen -->
+      <div class="stocks-all" id="stocksAll"></div>
+      <div class="stocks-meta" id="stocksMeta" style="display:none;">
+        <div class="stocks-meta-dot"></div><span id="stocksMetaTxt">–</span>
+      </div>
+    </div>
+
     <!-- Bitcoin Live-Kurs -->
     <div class="btc-footer" id="btcFooter">
       <div class="btc-left">
@@ -1994,7 +2098,150 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── KIDS ──
+// ── AKTIEN LIVE ──
+const STOCKS=[
+  {name:'Lotus Bakeries',     sym:'LOTB.BR'},
+  {name:'BKW',                sym:'BKW.SW'},
+  {name:'Deutsche Börse',     sym:'DB1.DE'},
+  {name:'Siemens',            sym:'SIE.DE'},
+  {name:'Hannover Rück',      sym:'HNR1.DE'},
+  {name:'Novo Nordisk',       sym:'NOVO-B.CO'},
+  {name:'Hermès',             sym:'RMS.PA'},
+  {name:'Nubank',             sym:'NU'},
+  {name:'Wolters Kluwer',     sym:'WKL.AS'},
+  {name:'ASML',               sym:'ASML.AS'},
+  {name:'Ferrari',            sym:'RACE.MI'},
+  {name:'Alphabet A',         sym:'GOOGL'},
+  {name:'American Express',   sym:'AXP'},
+  {name:'Cintas',             sym:'CTAS'},
+  {name:'Mercado Libre',      sym:'MELI'},
+  {name:'Microsoft',          sym:'MSFT'},
+  {name:'Netflix',            sym:'NFLX'},
+  {name:'Procter & Gamble',   sym:'PG'},
+  {name:'Zoetis',             sym:'ZTS'},
+  {name:'Clover Health',      sym:'CLOV'},
+  {name:'Richtech Robotics',  sym:'RR'},
+  {name:'Tesla',              sym:'TSLA'},
+];
+
+function toggleStocksAll(){
+  const el=document.getElementById('stocksAll');
+  const arr=document.getElementById('stocksArrow');
+  const open=el.classList.toggle('open');
+  if(arr)arr.classList.toggle('open',open);
+}
+
+async function fetchYahooQuotes(symbols){
+  const joined=symbols.join('%2C');
+  const base=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChangePercent,currency`;
+  const proxies=[
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(base)}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(base)}`,
+  ];
+  for(const url of proxies){
+    try{
+      const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+      if(!r.ok)continue;
+      const j=await r.json();
+      const result=j?.quoteResponse?.result;
+      if(Array.isArray(result)&&result.length)return result;
+    }catch(e){}
+  }
+  return null;
+}
+
+async function loadStocks(){
+  try{
+    const wrap=document.getElementById('stocksWrap');
+    const top3El=document.getElementById('stocksTop3');
+    const allEl=document.getElementById('stocksAll');
+    const metaEl=document.getElementById('stocksMeta');
+    const metaTxt=document.getElementById('stocksMetaTxt');
+
+    const symbols=STOCKS.map(s=>s.sym);
+    const quotes=await fetchYahooQuotes(symbols);
+    if(!quotes)throw new Error('Keine Daten');
+
+    // Map symbol → quote
+    const qMap={};
+    quotes.forEach(q=>{ qMap[q.symbol]=q; });
+
+    // Merge mit Namen, sortiert nach Tagesperformance
+    const rows=STOCKS.map(s=>{
+      const q=qMap[s.sym];
+      const pct=q?.regularMarketChangePercent??null;
+      const price=q?.regularMarketPrice??null;
+      const cur=q?.currency||'EUR';
+      return{name:s.name,sym:s.sym,pct,price,cur};
+    }).filter(r=>r.pct!==null);
+
+    rows.sort((a,b)=>b.pct-a.pct);
+
+    const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
+    const fmtPrice=(v,cur)=>{
+      if(cur==='USD')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';
+      if(cur==='GBP')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' £';
+      return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+    };
+
+    // Top 3
+    const top3=rows.slice(0,3);
+    top3El.innerHTML=top3.map(r=>`
+      <div class="stock-chip">
+        <div class="stock-chip-dot ${r.pct>=0?'g':'r'}"></div>
+        <div class="stock-chip-name">${r.name}</div>
+        <div class="stock-chip-val">${fmtPrice(r.price,r.cur)}</div>
+        <div class="stock-chip-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
+      </div>`).join('');
+
+    // Alle Positionen
+    allEl.innerHTML=rows.map(r=>`
+      <div class="stock-row">
+        <div class="stock-row-name">${r.name}</div>
+        <div class="stock-row-price">${fmtPrice(r.price,r.cur)}</div>
+        <div class="stock-row-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
+      </div>`).join('');
+
+    // Meta-Zeile
+    const now2=new Date();
+    const ts=now2.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
+    if(metaTxt)metaTxt.textContent=`Yahoo Finance · ~15 Min Verzögerung · Stand ${ts}`;
+    if(metaEl)metaEl.style.display='flex';
+
+    if(wrap)wrap.style.display='block';
+
+    // Ticker befüllen
+    renderTicker(rows);
+  }catch(e){
+    // Fehler still – Abschnitt bleibt versteckt
+  }
+  if(window._lbTick)window._lbTick();
+}
+loadStocks();
+
+// ── TICKER STRIP (recycelt loadStocks-Daten) ──
+function renderTicker(rows){
+  const track=document.getElementById('tickerTrack');
+  const strip=document.getElementById('stockTicker');
+  if(!track||!rows||!rows.length)return;
+
+  const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
+  const fmtPrice=(v,cur)=>{
+    if(cur==='USD')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';
+    if(cur==='GBP')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' £';
+    return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+  };
+
+  // Doppelt für nahtlose Loop-Animation
+  const html=rows.map(r=>`
+    <div class="ticker-item">
+      <span class="ticker-item-name">${r.name}</span>
+      <span class="ticker-item-price">${fmtPrice(r.price,r.cur)}</span>
+      <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</span>
+    </div>`).join('');
+  track.innerHTML=html+html; // doppelt für Loop
+  if(strip)strip.classList.remove('loading');
+}
 async function loadKids(){
   try{
     const ID='1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
@@ -2762,7 +3009,7 @@ loadUnion();
 (function(){
   const bar=document.getElementById('loadBarFill');
   const wrap=document.getElementById('loadBar');
-  let done=0,total=4;
+  let done=0,total=5;
   bar.style.width='8%';
   window._lbTick=function(){
     done++;
