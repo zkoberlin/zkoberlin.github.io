@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v4.5.30 -->
+<title>Paul · Hub</title><!-- v5.2.8 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1336,7 +1336,7 @@ async function loadPromiGeburtstage(){
       const fotoHtml = p.foto
         ? `<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
         : `<div class="promi-foto-placeholder">🎂</div>`;
-      const alter = p.alter ? `· ${p.alter} Jahre` : '';
+      const alter = p.alter ? `· ${p.alter}` : '';
       return `<div class="promi-chip">
         ${fotoHtml}
         <div class="promi-info">
@@ -1444,13 +1444,27 @@ async function loadSchulferien(){
     document.getElementById('ferienCountdown').style.color='var(--blue)';
     document.getElementById('ferienName').textContent=fmtFerienName(next.name);
     document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
+    // Mini calendar SVG showing start date of next Ferien
+    const MKF=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    const fDay=next.start.getDate();
+    const fMon=MKF[next.start.getMonth()].toUpperCase();
+    iconEl.innerHTML=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;border-radius:var(--r3);overflow:hidden;">
+      <rect width="44" height="44" fill="white"/>
+      <rect y="0" width="44" height="15" fill="#e8001c"/>
+      <text x="22" y="11" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" font-weight="700" fill="white" letter-spacing=".3">${fMon}</text>
+      <text x="22" y="34" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="19" font-weight="300" fill="#1D1D1F">${fDay}</text>
+    </svg>`;
+    iconEl.style.background='transparent';
+    iconEl.style.border='none';
+    iconEl.style.padding='0';
   }
 }
 function fmtFerienName(n){
-  // Normalize German holiday names from API slug-style
   const map={
     'winterferien':'Winterferien','osterferien':'Osterferien','pfingstferien':'Pfingstferien',
-    'sommerferien':'Sommerferien','herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien'
+    'sommerferien':'Sommerferien','herbstferien':'Herbstferien','weihnachtsferien':'Weihnachtsferien',
+    'unterrichtsfreier':'Schulfreier Tag','schulfreier':'Schulfreier Tag',
+    'beweglicher ferientag':'Beweglicher Ferientag','ferientag':'Ferientag'
   };
   const low=n.toLowerCase();
   for(const k of Object.keys(map)){if(low.includes(k))return map[k];}
