@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.12 -->
+<title>Paul · Hub</title><!-- v5.2.13 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -131,6 +131,9 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .weather-day-icon{font-size:18px;margin-bottom:3px;}
 .weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
 .weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
+.weather-today-extra{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);}
+.wte-chip{display:flex;align-items:center;gap:3px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;font-weight:500;color:var(--t2);white-space:nowrap;}
+.wte-chip .wte-val{font-weight:700;color:var(--t);}
 
 /* ── HOVER CARD ── */
 .hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
@@ -828,6 +831,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
           <div class="weather-temp" id="wTemp">--°</div>
           <div class="weather-desc" id="wDesc">Lädt…</div>
           <div class="weather-feels" id="wFeels"></div>
+          <div class="weather-today-extra" id="wTodayExtra" style="display:none;"></div>
         </div>
       </div>
       <div class="weather-forecast" id="wForecast">
@@ -1476,7 +1480,7 @@ const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebe
 
 async function fetchWetter(lat,lon,city){
   try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min&forecast_days=4&timezone=auto`);
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,wind_speed_10m,precipitation&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&forecast_days=4&timezone=auto`);
     const d=await r.json();
     // Current
     document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
@@ -1484,6 +1488,21 @@ async function fetchWetter(lat,lon,city){
     document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
     document.getElementById('wCity').textContent=city;
     document.getElementById('wFeels').textContent=`Gefühlt ${Math.round(d.current.apparent_temperature)}°C`;
+    // Today-extra: max/min, wind, precipitation (desktop only)
+    const todayMax=Math.round(d.daily.temperature_2m_max[0]);
+    const todayMin=Math.round(d.daily.temperature_2m_min[0]);
+    const wind=Math.round(d.current.wind_speed_10m||0);
+    const precip=(d.daily.precipitation_sum?.[0]||0).toFixed(1);
+    const extraEl=document.getElementById('wTodayExtra');
+    if(extraEl){
+      extraEl.innerHTML=`
+        <div class="wte-chip">↑ <span class="wte-val">${todayMax}°</span></div>
+        <div class="wte-chip">↓ <span class="wte-val">${todayMin}°</span></div>
+        <div class="wte-chip">💨 <span class="wte-val">${wind} km/h</span></div>
+        ${parseFloat(precip)>0?`<div class="wte-chip">🌧 <span class="wte-val">${precip} mm</span></div>`:''}
+      `;
+      extraEl.style.display='flex';
+    }
     // Forecast: next 3 days (skip today = index 0)
     const days=d.daily;
     const fEl=document.getElementById('wForecast');
@@ -2236,15 +2255,15 @@ async function loadUnion(){
     document.getElementById('ucBody').innerHTML=`
       ${statsHtml}
       <div class="uc-2col">
-        <div class="uc-box" style="grid-column:1/-1;">
+        <div class="uc-box">
           <div class="uc-box-lbl">Letzte 9 Spiele</div>
           <div class="uc-form" style="flex-wrap:wrap;">${formDots||'<span style="font-size:10px;color:var(--t3);">Keine Daten (field: form)</span>'}</div>
           ${formStr.length?`<div style="font-size:9px;color:var(--t2);margin-top:7px;">${formPts} Pkt. aus ${formStr.length} Spielen · Ø ${(formPts/formStr.length).toFixed(1)} Pkt./Spiel</div>`:''}
         </div>
-      </div>
-      <div class="uc-box">
-        <div class="uc-box-lbl">Tabelle</div>
-        ${tblHtml}
+        <div class="uc-box">
+          <div class="uc-box-lbl">Tabelle</div>
+          ${tblHtml}
+        </div>
       </div>
       <div class="uc-match">${lastHtml}</div>
       <div class="uc-match">${nextHtml}</div>
