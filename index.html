@@ -2,8 +2,9 @@
 <html lang="de" data-theme="auto">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.17 -->
+<title>Paul · Hub</title><!-- v5.2.18 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -78,7 +79,8 @@ html[data-theme="dark"] header{background:rgba(14,14,16,.90);}
 @media(prefers-color-scheme:dark){html:not([data-theme="light"]) header{background:rgba(14,14,16,.90);}}
 
 .h-left{display:flex;align-items:center;gap:10px;}
-.h-logo{width:30px;height:30px;background:var(--t);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:background .3s;}
+.h-logo{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:transparent;}
+.h-logo img{width:30px;height:30px;object-fit:cover;border-radius:8px;display:block;}
 .h-greet{font-size:15px;font-weight:600;letter-spacing:-.3px;}
 .h-center{flex:1;text-align:center;}
 .h-right{display:flex;align-items:center;gap:8px;}
@@ -190,6 +192,51 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
   white-space:nowrap;
 }
 .wte-chip .wte-val{font-weight:700;color:#fff;}
+/* Weather detail grid (UV, Luftqualität, Niederschlag, Sonne) */
+.weather-details{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+  padding:10px 18px 13px;
+  position:relative;z-index:1;
+}
+.wdetail{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;padding:8px 7px 7px;
+  text-align:center;
+  transition:background .15s;
+}
+.wdetail:hover{background:rgba(255,255,255,.12);}
+.wdetail-icon{font-size:14px;line-height:1;margin-bottom:3px;}
+.wdetail-val{
+  font-size:13px;font-weight:700;color:#fff;
+  letter-spacing:-.5px;line-height:1;font-variant-numeric:tabular-nums;
+}
+.wdetail-lbl{
+  font-size:7.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.4px;color:rgba(255,255,255,.38);
+  margin-top:3px;-webkit-font-smoothing:antialiased;
+}
+.wdetail-bar{
+  height:3px;border-radius:2px;
+  background:rgba(255,255,255,.12);
+  margin-top:5px;overflow:hidden;
+}
+.wdetail-bar-fill{height:100%;border-radius:2px;transition:width .5s ease;}
+/* Sun row */
+.weather-sun-row{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  padding:8px 18px 12px;
+  position:relative;z-index:1;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.wsun-side{display:flex;align-items:center;gap:7px;flex:1;}
+.wsun-side.set{justify-content:flex-end;}
+.wsun-icon{font-size:16px;line-height:1;}
+.wsun-info{}
+.wsun-lbl{font-size:7.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.35);}
+.wsun-time{font-size:13px;font-weight:700;color:#FFD95A;letter-spacing:-.4px;font-variant-numeric:tabular-nums;}
+.wsun-arc{flex:1;display:flex;align-items:center;justify-content:center;}
+.wsun-arc svg{opacity:.35;}
 /* Forecast strip */
 .weather-forecast{
   border-top:1px solid rgba(255,255,255,.08);
@@ -955,7 +1002,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 <header>
   <div class="h-left">
-    <div class="h-logo">🌐</div>
+    <div class="h-logo"><img src="logo_dark.PNG" alt="Hub Logo"></div>
     <div class="h-greet" id="greet">Hallo, Paul 👋</div>
   </div>
   <div class="h-right">
@@ -963,7 +1010,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.17</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.18</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -991,6 +1038,56 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+      </div>
+      <!-- Detail grid: UV · Luftq. · Niederschlag · Temp-Range -->
+      <div class="weather-details" id="wDetails" style="display:none;">
+        <div class="wdetail" id="wdUV">
+          <div class="wdetail-icon">🕶️</div>
+          <div class="wdetail-val" id="wdUVVal">–</div>
+          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdUVBar" style="background:linear-gradient(90deg,#84cc16,#facc15,#ef4444);width:0%"></div></div>
+          <div class="wdetail-lbl">UV-Index</div>
+        </div>
+        <div class="wdetail" id="wdPrec">
+          <div class="wdetail-icon">🌧️</div>
+          <div class="wdetail-val" id="wdPrecVal">–</div>
+          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdPrecBar" style="background:#60a5fa;width:0%"></div></div>
+          <div class="wdetail-lbl">Niederschlag</div>
+        </div>
+        <div class="wdetail">
+          <div class="wdetail-icon">🌡️</div>
+          <div class="wdetail-val" id="wdTRange">–</div>
+          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdTBar" style="background:linear-gradient(90deg,#38bdf8,#fb923c);width:60%"></div></div>
+          <div class="wdetail-lbl">Min · Max</div>
+        </div>
+        <div class="wdetail">
+          <div class="wdetail-icon">💨</div>
+          <div class="wdetail-val" id="wdWind">–</div>
+          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdWindBar" style="background:#a78bfa;width:0%"></div></div>
+          <div class="wdetail-lbl">Wind km/h</div>
+        </div>
+      </div>
+      <!-- Sonnenaufgang / -untergang -->
+      <div class="weather-sun-row" id="wSunRow" style="display:none;">
+        <div class="wsun-side rise">
+          <div class="wsun-icon">🌅</div>
+          <div class="wsun-info">
+            <div class="wsun-lbl">Aufgang</div>
+            <div class="wsun-time" id="wSunrise">–</div>
+          </div>
+        </div>
+        <div class="wsun-arc">
+          <svg width="60" height="24" viewBox="0 0 60 24">
+            <path d="M4 22 Q30 2 56 22" stroke="rgba(255,220,80,.7)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+            <circle cx="30" cy="22" r="3" fill="#FFD95A"/>
+          </svg>
+        </div>
+        <div class="wsun-side set">
+          <div class="wsun-info" style="text-align:right;">
+            <div class="wsun-lbl">Untergang</div>
+            <div class="wsun-time" id="wSunset">–</div>
+          </div>
+          <div class="wsun-icon">🌇</div>
+        </div>
       </div>
     </a>
     <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
@@ -1659,7 +1756,7 @@ const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebe
 
 async function fetchWetter(lat,lon,city){
   try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,wind_speed_10m,precipitation&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&forecast_days=4&timezone=auto`);
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,wind_speed_10m,precipitation&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,uv_index_max,precipitation_probability_max,sunrise,sunset&forecast_days=4&timezone=auto`);
     const d=await r.json();
     // Current
     document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
@@ -1681,6 +1778,38 @@ async function fetchWetter(lat,lon,city){
         ${parseFloat(precip)>0?`<div class="wte-chip">🌧 <span class="wte-val">${precip} mm</span></div>`:''}
       `;
       extraEl.style.display='flex';
+    }
+    // ── Detail Grid ──
+    const uvIdx=d.daily.uv_index_max?.[0]??null;
+    const precipProb=d.daily.precipitation_probability_max?.[0]??null;
+    const detailEl=document.getElementById('wDetails');
+    if(detailEl){
+      // UV
+      if(uvIdx!==null){
+        document.getElementById('wdUVVal').textContent=uvIdx.toFixed(1);
+        document.getElementById('wdUVBar').style.width=Math.min(100,uvIdx/11*100)+'%';
+      }
+      // Niederschlagswahrscheinlichkeit
+      if(precipProb!==null){
+        document.getElementById('wdPrecVal').textContent=precipProb+'%';
+        document.getElementById('wdPrecBar').style.width=precipProb+'%';
+      }
+      // Temp range
+      document.getElementById('wdTRange').textContent=`${todayMin}°–${todayMax}°`;
+      // Wind
+      document.getElementById('wdWind').textContent=wind;
+      document.getElementById('wdWindBar').style.width=Math.min(100,wind/100*100)+'%';
+      detailEl.style.display='grid';
+    }
+    // ── Sonnenauf-/untergang ──
+    const sunriseStr=d.daily.sunrise?.[0]||null;
+    const sunsetStr=d.daily.sunset?.[0]||null;
+    const sunRowEl=document.getElementById('wSunRow');
+    if(sunRowEl&&sunriseStr&&sunsetStr){
+      const fmtSun=s=>{const dt=new Date(s);return`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;};
+      document.getElementById('wSunrise').textContent=fmtSun(sunriseStr);
+      document.getElementById('wSunset').textContent=fmtSun(sunsetStr);
+      sunRowEl.style.display='flex';
     }
     // Forecast: next 3 days (skip today = index 0)
     const days=d.daily;
