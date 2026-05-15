@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.3.3 -->
+<title>Paul · Hub</title><!-- v5.3.4 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1127,7 +1127,7 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.4</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1484,6 +1484,20 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
     </div>
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
+
+  <!-- Finnhub Key-Eingabe (außerhalb der <a>-Karte!) -->
+  <div id="fhKeyBox" style="display:none;margin:6px 0 0;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 13px;">
+    <div style="font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.5;">
+      Für Live-Aktienkurse einmalig einen kostenlosen
+      <a href="https://finnhub.io" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;">Finnhub API-Key</a>
+      eintragen — wird im Browser gespeichert, nie wieder nötig:
+    </div>
+    <div style="display:flex;gap:6px;">
+      <input id="fhKeyInput" type="text" placeholder="API Key von finnhub.io..." autocomplete="off"
+        style="flex:1;font-family:'Montserrat',sans-serif;font-size:11px;padding:7px 10px;border-radius:var(--r3);border:1px solid var(--border);background:var(--card);color:var(--t);outline:none;min-width:0;">
+      <button id="fhKeySaveBtn" style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;padding:7px 14px;border-radius:var(--r3);border:none;background:var(--blue);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;">Speichern</button>
+    </div>
+  </div>
 
 </div>
 
@@ -2135,24 +2149,8 @@ function toggleStocksAll(){
 }
 
 function showFinnhubKeyPrompt(){
-  const wrap=document.getElementById('stocksWrap');
-  if(!wrap)return;
-  wrap.style.display='block';
-  const top3El=document.getElementById('stocksTop3');
-  if(top3El)top3El.innerHTML=`
-    <div style="padding:8px 2px 4px;">
-      <div style="font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.5;">
-        Für Live-Kurse einmalig einen kostenlosen
-        <a href="https://finnhub.io" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;">Finnhub API-Key</a>
-        eintragen (30 Sek. Registrierung, kein Abo):
-      </div>
-      <div style="display:flex;gap:6px;">
-        <input id="fhKeyInput" type="text" placeholder="z.B. cq1abc23def456..." autocomplete="off"
-          onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.stopPropagation();saveFinnhubKey();}"
-          style="flex:1;font-family:'Montserrat',sans-serif;font-size:11px;padding:7px 10px;border-radius:var(--r3);border:1px solid var(--border);background:var(--card);color:var(--t);outline:none;">
-        <button onclick="event.stopPropagation();saveFinnhubKey()" style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;padding:7px 12px;border-radius:var(--r3);border:none;background:var(--blue);color:#fff;cursor:pointer;">Speichern</button>
-      </div>
-    </div>`;
+  const box=document.getElementById('fhKeyBox');
+  if(box)box.style.display='block';
 }
 
 function saveFinnhubKey(e){
@@ -2161,6 +2159,8 @@ function saveFinnhubKey(e){
   const key=inp?.value?.trim();
   if(!key||key.length<10)return;
   localStorage.setItem(FH_KEY_LS,key);
+  const box=document.getElementById('fhKeyBox');
+  if(box)box.style.display='none';
   loadStocks();
 }
 
@@ -2245,10 +2245,20 @@ async function loadStocks(){
 
 function resetFinnhubKey(){
   localStorage.removeItem(FH_KEY_LS);
+  const wrap=document.getElementById('stocksWrap');
+  if(wrap)wrap.style.display='none';
   showFinnhubKeyPrompt();
 }
 
 loadStocks();
+
+// Finnhub Key-Box Events (außerhalb <a>, kein stopPropagation nötig)
+(function(){
+  const btn=document.getElementById('fhKeySaveBtn');
+  const inp=document.getElementById('fhKeyInput');
+  if(btn)btn.addEventListener('click',saveFinnhubKey);
+  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveFinnhubKey();});
+})();
 
 // ── TICKER STRIP (recycelt loadStocks-Daten) ──
 function renderTicker(rows){
