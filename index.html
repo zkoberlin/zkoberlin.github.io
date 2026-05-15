@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.11 -->
+<title>Paul · Hub</title><!-- v5.2.12 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -2085,8 +2085,11 @@ async function loadUnion(){
       'SV Darmstadt 98':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/SV_Darmstadt_98_logo.svg/180px-SV_Darmstadt_98_logo.svg.png',
       'Eintracht Braunschweig':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Eintracht_Braunschweig_Logo.svg/180px-Eintracht_Braunschweig_Logo.svg.png',
     };
+    const FOTMOB_IDS={'Köln':9787,'1. FC Köln':9787,'FC Köln':9787};
     const getLogoSrc=t=>{
-      if(t.logo)return t.logo;
+      const fid=FOTMOB_IDS[t.name]||FOTMOB_IDS[t.short_name];
+      if(fid)return`https://images.fotmob.com/image_resources/logo/teamlogo/${fid}.png`;
+      if(t.logo&&!t.logo.includes('wikipedia'))return t.logo;
       return LOGOS[t.name]||LOGOS[t.short_name]||null;
     };
     const tblHtml=tbl.map(t=>{
