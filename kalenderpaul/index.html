@@ -1596,7 +1596,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.4</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2109,7 +2109,7 @@ function renderTagView(cal, base) {
     <button class="view-nav-btn" onclick="navView(1)">›</button>`;
   cal.appendChild(nav);
 
-  // Events container – reuses dp-popup style for consistency with the popup look
+  // Events container
   const popup = document.createElement('div');
   popup.className = 'dp-popup';
   popup.style.margin = '0 0 6px';
@@ -2122,39 +2122,47 @@ function renderTagView(cal, base) {
   const body = document.createElement('div');
   body.className = 'dp-popup-body';
 
-  const evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden'));
+  let evs = [];
+  try { evs = sortEvents(SE[key] || []).filter(ev => !ev.c?.includes('hidden')); } catch(e) { evs = []; }
+
   if(!evs.length) {
     body.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:6px 0">Keine Termine für diesen Tag.</div>';
   } else {
-    evs.forEach((ev, i) => {
-      const color = colorMap[ev.c] || '#aeaeb2';
-      const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-      const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
-      const timeHtml = timeRange
-        ? `<div class="et">${timeRange}${ev.location ? ' · ' + ev.location.replace(/\\/g,'') : ''}</div>`
-        : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
-      const badges = [];
-      if(ev.fromIcal) badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-      if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-      if(ev.fromApi) badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-      const el = document.createElement('div');
-      el.className = 'eli';
-      el.style.cursor = 'pointer';
-      el.innerHTML = `<div class="eli-dot" style="background:${color}"></div>
-        <div class="evt-info">
-          <div class="en">${title}${badges.join('')}</div>
-          ${timeHtml}
-        </div>
-        ${makeCatLabel(ev.c)}`;
-      el.addEventListener('click', () => openEvtModal(ev, key));
-      body.appendChild(el);
+    evs.forEach(ev => {
+      try {
+        const color = colorMap[ev.c] || '#aeaeb2';
+        const time = ev.startTime || (ev.t && ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+        const title = ev.t ? ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim() : '—';
+        const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
+        const locStr = ev.location ? ev.location.replace(/\\/g,'') : '';
+        const timeHtml = timeRange
+          ? `<div class="et">${timeRange}${locStr ? ' · ' + locStr : ''}</div>`
+          : (locStr ? `<div class="et">${locStr}</div>` : '');
+        const badges = [];
+        if(ev.fromIcal)  badges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+        if(ev.fromSheet) badges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+        if(ev.fromApi)   badges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+        const el = document.createElement('div');
+        el.className = 'eli';
+        el.style.cursor = 'pointer';
+        el.innerHTML = `<div class="eli-dot" style="background:${color}"></div>
+          <div class="evt-info">
+            <div class="en">${title}${badges.join('')}</div>
+            ${timeHtml}
+          </div>
+          ${makeCatLabel(ev.c)}`;
+        el.addEventListener('click', () => openEvtModal(ev, key));
+        body.appendChild(el);
+      } catch(err) {
+        console.warn('renderTagView event error:', err, ev);
+      }
     });
   }
 
   popup.appendChild(body);
   cal.appendChild(popup);
 }
+
 
 // ── WOCHE-ANSICHT ────────────────────────────────────────────────────
 function renderWocheView(cal, base) {
