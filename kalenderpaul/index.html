@@ -1596,7 +1596,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2130,6 +2130,7 @@ function renderTagView(cal, base) {
       const color = colorMap[ev.c] || '#aeaeb2';
       const time = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
       const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      const timeRange = time ? (ev.endTime && ev.endTime !== time ? time + ' – ' + ev.endTime + ' Uhr' : time + ' Uhr') : null;
       const timeHtml = timeRange
         ? `<div class="et">${timeRange}${ev.location ? ' · ' + ev.location.replace(/\\/g,'') : ''}</div>`
         : (ev.location ? `<div class="et">${ev.location.replace(/\\/g,'')}</div>` : '');
@@ -3452,14 +3453,18 @@ function openAppleCal() {
 }
 
 // Load dynamic data and re-render
-loadAllDynamicData().then(() => {
+const _dynPromise = loadAllDynamicData().then(() => {
   renderAll();
-  hideEmptyFilters();
   setTimeout(updateHeaderVar, 0);
 });
 
 // Load iCal events after initial render
-loadICalEvents();
+const _icalPromise = loadICalEvents();
+
+// Nach BEIDEN Ladevorgängen: finaler Filter-Count-Refresh
+Promise.allSettled([_dynPromise, _icalPromise]).then(() => {
+  hideEmptyFilters();
+});
 
 // Set header height – called immediately and after every render
 function updateHeaderVar() {
