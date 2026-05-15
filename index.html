@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.22 -->
+<title>Paul · Hub</title><!-- v5.2.24 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -429,6 +429,11 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 .fin-sync{font-size:9px;color:var(--t3);padding:0 15px 10px;display:flex;align-items:center;gap:4px;}
 .fin-sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);}
+
+/* Kalender KW-Bar oben */
+.kal-kw-bar{display:flex;align-items:center;justify-content:space-between;margin:6px 11px 8px;background:var(--blue-l);border:1px solid var(--blue-b);border-radius:var(--r3);padding:6px 10px;}
+.kal-kw-num{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:-.1px;}
+.kal-kw-range{font-size:10px;color:var(--t2);font-weight:500;}
 
 /* Kalender events */
 .kal-ev{margin:0 11px 6px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 11px;display:flex;align-items:center;gap:8px;transition:background .15s;}
@@ -1300,6 +1305,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     </div>
     <div class="a-name">Kalender</div>
     <div class="a-desc">Termine & Events</div>
+    <div class="kal-kw-bar">
+      <span class="kal-kw-num">KW <span id="kw">--</span></span>
+      <span class="kal-kw-range" id="kwR">--</span>
+    </div>
     <div id="kalEvList">
   <div class="kal-loading">
     <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
@@ -1307,7 +1316,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="kal-loading-item"><div class="kal-loading-dot"></div><div class="kal-loading-lines"><div class="skeleton"></div><div class="skeleton skeleton-sm"></div></div></div>
   </div>
 </div>
-    <div class="a-footer"><span>KW <span id="kw">--</span> · <span id="kwR">--</span></span><span>→</span></div>
+    <div class="a-footer"><span>Kalender öffnen</span><span>→</span></div>
   </a>
 
   <!-- FINANZEN -->
@@ -2492,8 +2501,8 @@ async function loadUnion(){
         <div class="uc-stat-pills">
           ${statRows.map(([lbl,uv,ov,un,on])=>{
             const uWins=un>on,oWins=on>un;
-            const uStyle=uWins?'font-weight:700;color:var(--union);':'color:var(--t2);font-weight:500;';
-            const oStyle=oWins?'font-weight:700;color:var(--t);':'color:var(--t2);font-weight:500;';
+            const uStyle=uWins?'font-weight:700;color:var(--union);':'color:var(--t3);font-weight:400;';
+            const oStyle=oWins?'font-weight:700;color:var(--t);':'color:var(--t3);font-weight:400;';
             return`<div class="uc-stat-pill">
               <div class="uc-stat-pill-lbl">${lbl}</div>
               <div style="display:flex;gap:3px;align-items:center;">
