@@ -2144,33 +2144,34 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── AKTIEN LIVE (Finnhub) ──
+// ── AKTIEN LIVE (Finnhub US + Yahoo Finance EU) ──
 const FH_KEY='d83ncvhr01qkm5c8rrjgd83ncvhr01qkm5c8rrk0';
 
-// Vollständiges Parqet-Portfolio (22 Aktien, aus Parqet abgeglichen, kein Krypto)
+// Vollständiges Parqet-Portfolio – 22 Positionen
+// api: 'fh' = Finnhub (US-Listings), 'yf' = Yahoo Finance (EU/CH/DK-Listings)
 const STOCKS=[
-  {name:'Microsoft',          sym:'MSFT',         logo:'microsoft.com',        cur:'USD'},
-  {name:'Alphabet',           sym:'GOOGL',         logo:'abc.xyz',              cur:'USD'},
-  {name:'ASML',               sym:'ASML',          logo:'asml.com',             cur:'USD'},
-  {name:'Novo Nordisk',       sym:'NVO',           logo:'novonordisk.com',      cur:'USD'},
-  {name:'Deutsche Börse',     sym:'XETR:DB1',      logo:'deutsche-boerse.com',  cur:'EUR'},
-  {name:'Procter & Gamble',   sym:'PG',            logo:'pg.com',               cur:'USD'},
-  {name:'Lotus Bakeries',     sym:'XBRU:LOTB',     logo:'lotusbakeries.com',    cur:'EUR'},
-  {name:'Wolters Kluwer',     sym:'XAMS:WKL',      logo:'wolterskluwer.com',    cur:'EUR'},
-  {name:'Mercado Libre',      sym:'MELI',          logo:'mercadolibre.com',     cur:'USD'},
-  {name:'Siemens',            sym:'XETR:SIE',      logo:'siemens.com',          cur:'EUR'},
-  {name:'Hannover Rück',      sym:'XETR:HNR1',     logo:'hannover-re.com',      cur:'EUR'},
-  {name:'Ferrari',            sym:'RACE',          logo:'ferrari.com',          cur:'USD'},
-  {name:'Tesla',              sym:'TSLA',          logo:'tesla.com',            cur:'USD'},
-  {name:'Nubank',             sym:'NU',            logo:'nubank.com.br',        cur:'USD'},
-  {name:'Cintas',             sym:'CTAS',          logo:'cintas.com',           cur:'USD'},
-  {name:'American Express',   sym:'AXP',           logo:'americanexpress.com',  cur:'USD'},
-  {name:'Hermès',             sym:'XPAR:RMS',      logo:'hermes.com',           cur:'EUR'},
-  {name:'Netflix',            sym:'NFLX',          logo:'netflix.com',          cur:'USD'},
-  {name:'BKW',                sym:'XSWX:BKW',      logo:'bkw.ch',               cur:'CHF'},
-  {name:'Zoetis',             sym:'ZTS',           logo:'zoetis.com',           cur:'USD'},
-  {name:'Richtech Robotics',  sym:'RR',            logo:'richtechrobotics.com', cur:'USD'},
-  {name:'Clover Health',      sym:'CLOV',          logo:'cloverhealth.com',     cur:'USD'},
+  {name:'Microsoft',         fhSym:'MSFT',      yfSym:null,        logo:'microsoft.com',        api:'fh', cur:'USD'},
+  {name:'Alphabet',          fhSym:'GOOGL',     yfSym:null,        logo:'google.com',            api:'fh', cur:'USD'},
+  {name:'ASML',              fhSym:'ASML',      yfSym:null,        logo:'asml.com',              api:'fh', cur:'USD'},
+  {name:'Novo Nordisk',      fhSym:'NVO',       yfSym:null,        logo:'novonordisk.com',       api:'fh', cur:'USD'},
+  {name:'Deutsche Börse',    fhSym:null,        yfSym:'DB1.DE',    logo:'deutsche-boerse.com',   api:'yf', cur:'EUR'},
+  {name:'Procter & Gamble',  fhSym:'PG',        yfSym:null,        logo:'pg.com',                api:'fh', cur:'USD'},
+  {name:'Lotus Bakeries',    fhSym:null,        yfSym:'LOTB.BR',   logo:'lotusbakeries.com',     api:'yf', cur:'EUR'},
+  {name:'Wolters Kluwer',    fhSym:null,        yfSym:'WKL.AS',    logo:'wolterskluwer.com',     api:'yf', cur:'EUR'},
+  {name:'Mercado Libre',     fhSym:'MELI',      yfSym:null,        logo:'mercadolibre.com',      api:'fh', cur:'USD'},
+  {name:'Siemens',           fhSym:null,        yfSym:'SIE.DE',    logo:'siemens.com',           api:'yf', cur:'EUR'},
+  {name:'Hannover Rück',     fhSym:null,        yfSym:'HNR1.DE',   logo:'hannover-re.com',       api:'yf', cur:'EUR'},
+  {name:'Ferrari',           fhSym:'RACE',      yfSym:null,        logo:'ferrari.com',           api:'fh', cur:'USD'},
+  {name:'Tesla',             fhSym:'TSLA',      yfSym:null,        logo:'tesla.com',             api:'fh', cur:'USD'},
+  {name:'Nubank',            fhSym:'NU',        yfSym:null,        logo:'nu.com.br',             api:'fh', cur:'USD'},
+  {name:'Cintas',            fhSym:'CTAS',      yfSym:null,        logo:'cintas.com',            api:'fh', cur:'USD'},
+  {name:'American Express',  fhSym:'AXP',       yfSym:null,        logo:'americanexpress.com',   api:'fh', cur:'USD'},
+  {name:'Hermès',            fhSym:null,        yfSym:'RMS.PA',    logo:'hermes.com',            api:'yf', cur:'EUR'},
+  {name:'Netflix',           fhSym:'NFLX',      yfSym:null,        logo:'netflix.com',           api:'fh', cur:'USD'},
+  {name:'BKW',               fhSym:null,        yfSym:'BKW.SW',    logo:'bkw.ch',               api:'yf', cur:'CHF'},
+  {name:'Zoetis',            fhSym:'ZTS',       yfSym:null,        logo:'zoetis.com',            api:'fh', cur:'USD'},
+  {name:'Richtech Robotics', fhSym:'RR',        yfSym:null,        logo:'richtechrobotics.com',  api:'fh', cur:'USD'},
+  {name:'Clover Health',     fhSym:'CLOV',      yfSym:null,        logo:'cloverhealth.com',      api:'fh', cur:'USD'},
 ];
 
 function toggleStocksAll(){
@@ -2180,17 +2181,61 @@ function toggleStocksAll(){
   if(arr)arr.classList.toggle('open',open);
 }
 
+// Logos: Google Favicons (kostenlos, kein Auth, zuverlässig)
 function logoUrl(domain){
-  return `https://logo.clearbit.com/${domain}?size=40`;
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 }
 
+// Finnhub Quote (US-Aktien)
 async function fetchFinnhubQuote(sym){
   const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${FH_KEY}`;
-  const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
+  const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
   if(!r.ok)throw new Error('HTTP '+r.status);
   const d=await r.json();
-  if(!d||(!d.c&&!d.pc))return null;
-  return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100),high52:d.h??null,low52:d.l??null};
+  if(!d||!d.c||d.c===0)return null;
+  // d.h/d.l = heutiges High/Low, nicht 52W. Für 52W bräuchte man /stock/metric (Premium).
+  // Wir nutzen die Metric-API mit Basic-Plan-Fallback:
+  return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100),high52:null,low52:null};
+}
+
+// Finnhub 52W Metric (kostenlos, separater Call)
+async function fetchFinnhub52W(sym){
+  try{
+    const url=`https://finnhub.io/api/v1/stock/metric?symbol=${encodeURIComponent(sym)}&metric=all&token=${FH_KEY}`;
+    const r=await fetch(url,{signal:AbortSignal.timeout(6000)});
+    if(!r.ok)return null;
+    const d=await r.json();
+    const m=d?.metric;
+    if(!m)return null;
+    return{high52:m['52WeekHigh']??null,low52:m['52WeekLow']??null};
+  }catch(e){return null;}
+}
+
+// Yahoo Finance via allorigins Proxy (EU/CH-Aktien)
+async function fetchYahooQuote(yfSym){
+  const proxies=[
+    `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=2d`,
+    `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=2d`,
+  ];
+  for(const base of proxies){
+    try{
+      // allorigins als CORS-Proxy
+      const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(base)}`;
+      const r=await fetch(url,{signal:AbortSignal.timeout(10000)});
+      if(!r.ok)continue;
+      const d=await r.json();
+      const meta=d?.chart?.result?.[0]?.meta;
+      if(!meta||!meta.regularMarketPrice)continue;
+      const price=meta.regularMarketPrice;
+      const prev=meta.chartPreviousClose??meta.previousClose??price;
+      const pct=((price-prev)/prev)*100;
+      const high52=meta.fiftyTwoWeekHigh??null;
+      const low52=meta.fiftyTwoWeekLow??null;
+      const currency=meta.currency??'EUR';
+      return{price,pct,high52,low52,currency};
+    }catch(e){continue;}
+  }
+  return null;
 }
 
 async function getEurRates(){
@@ -2213,95 +2258,134 @@ async function loadStocks(){
 
   try{
     const ratesPromise=getEurRates();
-
-    // Alle Quotes sequenziell (120ms Pause → unter 60/min)
     const rawRows=[];
-    for(const s of STOCKS){
+
+    // Parallel batches: alle Quotes gleichzeitig, dann 52W nach
+    const quotePromises=STOCKS.map(async(s)=>{
       try{
-        const q=await fetchFinnhubQuote(s.sym);
-        if(q&&q.price>0)rawRows.push({...s,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52});
+        if(s.api==='fh'){
+          const q=await fetchFinnhubQuote(s.fhSym);
+          if(q&&q.price>0)return{...s,sym:s.fhSym,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52};
+        }else{
+          const q=await fetchYahooQuote(s.yfSym);
+          if(q&&q.price>0){
+            // Yahoo gibt Preis in lokaler Währung (EUR für .DE/.AS/.PA, CHF für .SW)
+            return{...s,sym:s.yfSym.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,
+              // Yahoo-Preise für EUR-Aktien sind bereits in EUR → kein Umrechnen
+              cur:q.currency==='CHF'?'CHF':'EUR'};
+          }
+        }
       }catch(e){}
-      await new Promise(r=>setTimeout(r,120));
-    }
+      return null;
+    });
+
+    const results=await Promise.all(quotePromises);
+    results.forEach(r=>{if(r)rawRows.push(r);});
 
     if(!rawRows.length)throw new Error('Keine Daten');
 
     const rates=await ratesPromise;
-
     const toEur=(v,cur)=>{
       if(cur==='EUR')return v;
       const rate=rates[cur];
-      if(!rate)return v;
+      if(!rate||rate===0)return v;
       return v/rate;
     };
 
     const rows=rawRows.map(s=>({...s,priceEur:toEur(s.price,s.cur)}));
     rows.sort((a,b)=>b.pct-a.pct);
 
-    const fmtEur=v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
-    const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
-    const shortSym=sym=>sym.includes(':')?sym.split(':')[1]:sym;
-
-    // 52W-Bar HTML (nur wenn Daten vorhanden)
-    const w52Html=(r)=>{
-      if(!r.high52||!r.low52||r.high52<=r.low52)return '';
-      const pct=Math.max(0,Math.min(100,((r.price-r.low52)/(r.high52-r.low52))*100));
-      const fmtN=v=>v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0});
-      return `<div class="stock-52w">
-        <span class="stock-52w-lbl">${fmtN(r.low52)}</span>
-        <div class="stock-52w-bar">
-          <div class="stock-52w-dot" style="left:${pct}%"></div>
-        </div>
-        <span class="stock-52w-lbl">${fmtN(r.high52)}</span>
-      </div>`;
+    // Jetzt 52W für Finnhub-Aktien nachladen (parallel, non-blocking)
+    const fill52W=async()=>{
+      const fhRows=rows.filter(r=>r.api==='fh'&&(!r.high52||!r.low52));
+      await Promise.all(fhRows.map(async r=>{
+        const m=await fetchFinnhub52W(r.fhSym);
+        if(m){r.high52=m.high52;r.low52=m.low52;}
+      }));
+      // Re-render nach 52W-Daten
+      renderStocksRows(rows,fmtEur,fmtPct,shortSym);
     };
 
-    // ── Top 3 Highlights (hervorgehoben) ──
-    const top3=rows.slice(0,3);
-    if(hlEl)hlEl.innerHTML=top3.map((r,i)=>`
-      <div class="stock-highlight${i===0?' top1':''}">
-        <div class="stock-highlight-rank">${i+1}</div>
-        <img class="stock-highlight-logo" src="${logoUrl(r.logo)}" alt="${r.name}" onerror="this.style.display='none'">
-        <div class="stock-highlight-name" style="min-width:0;flex:1;">
-          <span style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.name}<span class="stock-highlight-sym"> ${shortSym(r.sym)}</span></span>
-          ${w52Html(r)}
-        </div>
-        <div style="text-align:right;flex-shrink:0;">
-          <div class="stock-highlight-price">${fmtEur(r.priceEur)}</div>
-          <div class="stock-highlight-pct ${r.pct>=0?'g':'r'}" style="margin-top:2px;">${fmtPct(r.pct)}</div>
-        </div>
-      </div>`).join('');
+    const fmtEur=v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+    const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
+    const shortSym=sym=>{
+      const s=String(sym);
+      return s.includes('.')?s.split('.')[0]:s.includes(':')?s.split(':')[1]:s;
+    };
 
-    // ── Alle restlichen Positionen ab Platz 4 ──
-    const rest=rows.slice(3);
-    const rowHtml=r=>`
-      <div class="stock-row">
-        <img class="stock-row-logo" src="${logoUrl(r.logo)}" alt="${r.name}" onerror="this.style.display='none'">
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:baseline;gap:4px;">
-            <div class="stock-row-name">${r.name}</div>
-            <span style="font-size:8.5px;font-weight:600;color:var(--t3);flex-shrink:0;">${shortSym(r.sym)}</span>
-          </div>
-          ${r.high52&&r.low52&&r.high52>r.low52?`<div class="stock-row-52w"><span class="stock-row-52w-lbl">${r.low52.toLocaleString('de-DE',{maximumFractionDigits:0})}</span><div class="stock-52w-bar" style="height:2px;flex:1;"><div class="stock-52w-dot" style="left:${Math.max(0,Math.min(100,((r.price-r.low52)/(r.high52-r.low52))*100))}%;width:5px;height:5px;top:-1.5px;"></div></div><span class="stock-row-52w-lbl">${r.high52.toLocaleString('de-DE',{maximumFractionDigits:0})}</span></div>`:''}
-        </div>
-        <div style="text-align:right;flex-shrink:0;">
-          <div class="stock-row-price">${fmtEur(r.priceEur)}</div>
-          <div class="stock-row-pct ${r.pct>=0?'g':'r'}" style="font-size:8.5px;">${fmtPct(r.pct)}</div>
-        </div>
-      </div>`;
-    if(allEl)allEl.innerHTML=rest.map(rowHtml).join('');
+    renderStocksRows(rows,fmtEur,fmtPct,shortSym);
 
     const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
     if(metaEl){
       metaEl.style.display='flex';
-      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
+      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub + Yahoo Finance · Stand ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
     }
 
     renderTicker(rows,fmtEur,fmtPct);
+    fill52W(); // async nachladen, kein await → blockiert nicht
   }catch(e){
     if(hlEl)hlEl.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
   }
   if(window._lbTick)window._lbTick();
+}
+
+function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
+  const hlEl=document.getElementById('stocksHighlights');
+  const allEl=document.getElementById('stocksAll');
+
+  const w52Html=(r,compact)=>{
+    if(!r.high52||!r.low52||r.high52<=r.low52)return '';
+    const pct=Math.max(0,Math.min(100,((r.price-r.low52)/(r.high52-r.low52))*100));
+    const fmtN=v=>v>=1000?v.toLocaleString('de-DE',{maximumFractionDigits:0}):v.toFixed(2).replace('.',',');
+    if(compact){
+      return `<div class="stock-row-52w">
+        <span class="stock-row-52w-lbl">${fmtN(r.low52)}</span>
+        <div class="stock-52w-bar" style="height:2px;flex:1;overflow:visible;">
+          <div class="stock-52w-dot" style="left:${pct}%;width:5px;height:5px;top:-1.5px;"></div>
+        </div>
+        <span class="stock-row-52w-lbl">${fmtN(r.high52)}</span>
+      </div>`;
+    }
+    return `<div class="stock-52w">
+      <span class="stock-52w-lbl">${fmtN(r.low52)}</span>
+      <div class="stock-52w-bar" style="overflow:visible;">
+        <div class="stock-52w-dot" style="left:${pct}%"></div>
+      </div>
+      <span class="stock-52w-lbl">${fmtN(r.high52)}</span>
+    </div>`;
+  };
+
+  const top3=rows.slice(0,3);
+  if(hlEl)hlEl.innerHTML=top3.map((r,i)=>`
+    <div class="stock-highlight${i===0?' top1':''}">
+      <div class="stock-highlight-rank">${i+1}</div>
+      <img class="stock-highlight-logo" src="${logoUrl(r.logo)}" alt="${r.name}" onerror="this.style.display='none'">
+      <div class="stock-highlight-name" style="min-width:0;flex:1;">
+        <span style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.name}<span class="stock-highlight-sym"> ${shortSym(r.sym||r.fhSym||r.yfSym)}</span></span>
+        ${w52Html(r,false)}
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div class="stock-highlight-price">${fmtEur(r.priceEur)}</div>
+        <div class="stock-highlight-pct ${r.pct>=0?'g':'r'}" style="margin-top:2px;">${fmtPct(r.pct)}</div>
+      </div>
+    </div>`).join('');
+
+  const rest=rows.slice(3);
+  if(allEl)allEl.innerHTML=rest.map(r=>`
+    <div class="stock-row">
+      <img class="stock-row-logo" src="${logoUrl(r.logo)}" alt="${r.name}" onerror="this.style.display='none'">
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:baseline;gap:4px;">
+          <div class="stock-row-name">${r.name}</div>
+          <span style="font-size:8.5px;font-weight:600;color:var(--t3);flex-shrink:0;">${shortSym(r.sym||r.fhSym||r.yfSym)}</span>
+        </div>
+        ${w52Html(r,true)}
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div class="stock-row-price">${fmtEur(r.priceEur)}</div>
+        <div class="stock-row-pct ${r.pct>=0?'g':'r'}" style="font-size:8.5px;">${fmtPct(r.pct)}</div>
+      </div>
+    </div>`).join('');
 }
 
 loadStocks();
