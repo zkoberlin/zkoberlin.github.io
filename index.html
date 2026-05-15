@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.3.1 -->
+<title>Paul · Hub</title><!-- v5.3.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1127,7 +1127,7 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.25</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.2</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2098,31 +2098,34 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── AKTIEN LIVE ──
+// ── AKTIEN LIVE (Finnhub) ──
+// Finnhub-Symbole: US-Aktien direkt, EU/Non-US mit Börsen-Suffix
 const STOCKS=[
-  {name:'Lotus Bakeries',     sym:'LOTB.BR'},
-  {name:'BKW',                sym:'BKW.SW'},
-  {name:'Deutsche Börse',     sym:'DB1.DE'},
-  {name:'Siemens',            sym:'SIE.DE'},
-  {name:'Hannover Rück',      sym:'HNR1.DE'},
-  {name:'Novo Nordisk',       sym:'NOVO-B.CO'},
-  {name:'Hermès',             sym:'RMS.PA'},
-  {name:'Nubank',             sym:'NU'},
-  {name:'Wolters Kluwer',     sym:'WKL.AS'},
-  {name:'ASML',               sym:'ASML.AS'},
-  {name:'Ferrari',            sym:'RACE.MI'},
-  {name:'Alphabet A',         sym:'GOOGL'},
-  {name:'American Express',   sym:'AXP'},
-  {name:'Cintas',             sym:'CTAS'},
-  {name:'Mercado Libre',      sym:'MELI'},
-  {name:'Microsoft',          sym:'MSFT'},
-  {name:'Netflix',            sym:'NFLX'},
-  {name:'Procter & Gamble',   sym:'PG'},
-  {name:'Zoetis',             sym:'ZTS'},
-  {name:'Clover Health',      sym:'CLOV'},
-  {name:'Richtech Robotics',  sym:'RR'},
-  {name:'Tesla',              sym:'TSLA'},
+  {name:'Lotus Bakeries',    sym:'LOTB:BB',   cur:'EUR'},
+  {name:'BKW',               sym:'BKW:SW',    cur:'CHF'},
+  {name:'Deutsche Börse',    sym:'DB1:GR',    cur:'EUR'},
+  {name:'Siemens',           sym:'SIE:GR',    cur:'EUR'},
+  {name:'Hannover Rück',     sym:'HNR1:GR',   cur:'EUR'},
+  {name:'Novo Nordisk',      sym:'NOVO/B:DC', cur:'DKK'},
+  {name:'Hermès',            sym:'RMS:FP',    cur:'EUR'},
+  {name:'Nubank',            sym:'NU',        cur:'USD'},
+  {name:'Wolters Kluwer',    sym:'WKL:NA',    cur:'EUR'},
+  {name:'ASML',              sym:'ASML',      cur:'USD'},
+  {name:'Ferrari',           sym:'RACE',      cur:'USD'},
+  {name:'Alphabet A',        sym:'GOOGL',     cur:'USD'},
+  {name:'American Express',  sym:'AXP',       cur:'USD'},
+  {name:'Cintas',            sym:'CTAS',      cur:'USD'},
+  {name:'Mercado Libre',     sym:'MELI',      cur:'USD'},
+  {name:'Microsoft',         sym:'MSFT',      cur:'USD'},
+  {name:'Netflix',           sym:'NFLX',      cur:'USD'},
+  {name:'Procter & Gamble',  sym:'PG',        cur:'USD'},
+  {name:'Zoetis',            sym:'ZTS',       cur:'USD'},
+  {name:'Clover Health',     sym:'CLOV',      cur:'USD'},
+  {name:'Richtech Robotics', sym:'RR',        cur:'USD'},
+  {name:'Tesla',             sym:'TSLA',      cur:'USD'},
 ];
+
+const FH_KEY_LS='hub_finnhub_key';
 
 function toggleStocksAll(){
   const el=document.getElementById('stocksAll');
@@ -2131,62 +2134,85 @@ function toggleStocksAll(){
   if(arr)arr.classList.toggle('open',open);
 }
 
-async function fetchYahooQuotes(symbols){
-  const joined=symbols.join('%2C');
-  const base=`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${joined}&fields=regularMarketPrice,regularMarketChangePercent,currency`;
-  const proxies=[
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(base)}`,
-    `https://corsproxy.io/?url=${encodeURIComponent(base)}`,
-  ];
-  for(const url of proxies){
-    try{
-      const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
-      if(!r.ok)continue;
-      const j=await r.json();
-      const result=j?.quoteResponse?.result;
-      if(Array.isArray(result)&&result.length)return result;
-    }catch(e){}
-  }
-  return null;
+function showFinnhubKeyPrompt(){
+  const wrap=document.getElementById('stocksWrap');
+  if(!wrap)return;
+  wrap.style.display='block';
+  const top3El=document.getElementById('stocksTop3');
+  if(top3El)top3El.innerHTML=`
+    <div style="padding:8px 2px 4px;">
+      <div style="font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.5;">
+        Für Live-Kurse einmalig einen kostenlosen
+        <a href="https://finnhub.io" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;">Finnhub API-Key</a>
+        eintragen (30 Sek. Registrierung, kein Abo):
+      </div>
+      <div style="display:flex;gap:6px;">
+        <input id="fhKeyInput" type="text" placeholder="z.B. cq1abc23def456..." autocomplete="off"
+          style="flex:1;font-family:'Montserrat',sans-serif;font-size:11px;padding:7px 10px;border-radius:var(--r3);border:1px solid var(--border);background:var(--card);color:var(--t);outline:none;">
+        <button onclick="saveFinnhubKey()" style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;padding:7px 12px;border-radius:var(--r3);border:none;background:var(--blue);color:#fff;cursor:pointer;">Speichern</button>
+      </div>
+    </div>`;
+}
+
+function saveFinnhubKey(){
+  const inp=document.getElementById('fhKeyInput');
+  const key=inp?.value?.trim();
+  if(!key||key.length<10)return;
+  localStorage.setItem(FH_KEY_LS,key);
+  loadStocks();
+}
+
+async function fetchFinnhubQuote(sym,key){
+  const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${key}`;
+  const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const d=await r.json();
+  // c=current, pc=prev close, dp=change%
+  if(!d||d.c===0&&d.pc===0)return null;
+  return{price:d.c,prevClose:d.pc,pct:d.dp};
 }
 
 async function loadStocks(){
+  const key=localStorage.getItem(FH_KEY_LS)||'';
+  if(!key){showFinnhubKeyPrompt();if(window._lbTick)window._lbTick();return;}
+
+  const wrap=document.getElementById('stocksWrap');
+  const top3El=document.getElementById('stocksTop3');
+  const allEl=document.getElementById('stocksAll');
+  const metaEl=document.getElementById('stocksMeta');
+  const metaTxt=document.getElementById('stocksMetaTxt');
+  if(wrap)wrap.style.display='block';
+
+  // Skeleton während Laden
+  if(top3El)top3El.innerHTML=['','',''].map(()=>`
+    <div class="stock-chip">
+      <div class="stock-chip-dot"></div>
+      <div class="stock-chip-name skeleton" style="height:10px;width:55%;border-radius:4px;"></div>
+      <div class="skeleton" style="height:10px;width:50px;border-radius:4px;margin-left:auto;"></div>
+    </div>`).join('');
+
   try{
-    const wrap=document.getElementById('stocksWrap');
-    const top3El=document.getElementById('stocksTop3');
-    const allEl=document.getElementById('stocksAll');
-    const metaEl=document.getElementById('stocksMeta');
-    const metaTxt=document.getElementById('stocksMetaTxt');
-
-    const symbols=STOCKS.map(s=>s.sym);
-    const quotes=await fetchYahooQuotes(symbols);
-    if(!quotes)throw new Error('Keine Daten');
-
-    // Map symbol → quote
-    const qMap={};
-    quotes.forEach(q=>{ qMap[q.symbol]=q; });
-
-    // Merge mit Namen, sortiert nach Tagesperformance
-    const rows=STOCKS.map(s=>{
-      const q=qMap[s.sym];
-      const pct=q?.regularMarketChangePercent??null;
-      const price=q?.regularMarketPrice??null;
-      const cur=q?.currency||'EUR';
-      return{name:s.name,sym:s.sym,pct,price,cur};
-    }).filter(r=>r.pct!==null);
+    // Sequenziell mit 120ms Pause → bleibt weit unter 60req/min
+    const rows=[];
+    for(const s of STOCKS){
+      try{
+        const q=await fetchFinnhubQuote(s.sym,key);
+        if(q)rows.push({name:s.name,sym:s.sym,cur:s.cur,price:q.price,pct:q.pct});
+      }catch(e){}
+      await new Promise(r=>setTimeout(r,120));
+    }
+    if(!rows.length)throw new Error('Keine Daten');
 
     rows.sort((a,b)=>b.pct-a.pct);
 
     const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
     const fmtPrice=(v,cur)=>{
-      if(cur==='USD')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';
-      if(cur==='GBP')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' £';
-      return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+      const sym=cur==='USD'?' $':cur==='CHF'?' Fr.':cur==='GBP'?' £':cur==='DKK'?' kr':' €';
+      return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+sym;
     };
 
     // Top 3
-    const top3=rows.slice(0,3);
-    top3El.innerHTML=top3.map(r=>`
+    if(top3El)top3El.innerHTML=rows.slice(0,3).map(r=>`
       <div class="stock-chip">
         <div class="stock-chip-dot ${r.pct>=0?'g':'r'}"></div>
         <div class="stock-chip-name">${r.name}</div>
@@ -2195,28 +2221,31 @@ async function loadStocks(){
       </div>`).join('');
 
     // Alle Positionen
-    allEl.innerHTML=rows.map(r=>`
+    if(allEl)allEl.innerHTML=rows.map(r=>`
       <div class="stock-row">
         <div class="stock-row-name">${r.name}</div>
         <div class="stock-row-price">${fmtPrice(r.price,r.cur)}</div>
         <div class="stock-row-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
       </div>`).join('');
 
-    // Meta-Zeile
-    const now2=new Date();
-    const ts=now2.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
-    if(metaTxt)metaTxt.textContent=`Yahoo Finance · ~15 Min Verzögerung · Stand ${ts}`;
-    if(metaEl)metaEl.style.display='flex';
-
-    if(wrap)wrap.style.display='block';
+    // Meta
+    const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
+    if(metaTxt)metaTxt.textContent=`Finnhub · Realtime · Stand ${ts} · <span onclick="resetFinnhubKey()" style="cursor:pointer;text-decoration:underline;">Key zurücksetzen</span>`;
+    if(metaEl){metaEl.style.display='flex';metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · <span onclick="resetFinnhubKey()" style="cursor:pointer;text-decoration:underline;color:var(--blue);">Key ändern</span></span>`;}
 
     // Ticker befüllen
     renderTicker(rows);
   }catch(e){
-    // Fehler still – Abschnitt bleibt versteckt
+    if(top3El)top3El.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
   }
   if(window._lbTick)window._lbTick();
 }
+
+function resetFinnhubKey(){
+  localStorage.removeItem(FH_KEY_LS);
+  showFinnhubKeyPrompt();
+}
+
 loadStocks();
 
 // ── TICKER STRIP (recycelt loadStocks-Daten) ──
