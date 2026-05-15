@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.10</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.12</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2085,7 +2085,7 @@ async function loadUnion(){
       'SV Darmstadt 98':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/SV_Darmstadt_98_logo.svg/180px-SV_Darmstadt_98_logo.svg.png',
       'Eintracht Braunschweig':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Eintracht_Braunschweig_Logo.svg/180px-Eintracht_Braunschweig_Logo.svg.png',
     };
-    const FOTMOB_IDS={'Köln':9787,'1. FC Köln':9787,'FC Köln':9787};
+    const FOTMOB_IDS={'Köln':8722,'1. FC Köln':8722,'FC Köln':8722};
     const getLogoSrc=t=>{
       const fid=FOTMOB_IDS[t.name]||FOTMOB_IDS[t.short_name];
       if(fid)return`https://images.fotmob.com/image_resources/logo/teamlogo/${fid}.png`;
