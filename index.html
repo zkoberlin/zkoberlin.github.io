@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.3.5 -->
+<title>Paul · Hub</title><!-- v5.4.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -501,6 +501,30 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* Blur gilt auch für Aktien-Werte */
 .fin-blurred .stock-chip-val,
 .fin-blurred .stock-row-price{filter:blur(5px);user-select:none;transition:filter .25s;}
+
+/* ── AKTIEN-KACHEL (eigenständig) ── */
+.acard.stocks{border-color:rgba(0,113,227,.22);}
+.acard.stocks:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
+.stocks-card-wrap{padding:0 11px 8px;}
+/* Top-3 Highlights */
+.stocks-highlights{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}
+.stock-highlight{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);transition:border-color .15s;}
+.stock-highlight.top1{border-color:rgba(0,113,227,.25);background:var(--blue-l);}
+.stock-highlight-rank{font-size:9px;font-weight:800;color:var(--t3);min-width:14px;text-align:center;}
+.stock-highlight.top1 .stock-highlight-rank{color:var(--blue);}
+.stock-highlight-logo{width:20px;height:20px;border-radius:5px;object-fit:contain;flex-shrink:0;background:var(--card);}
+.stock-highlight-name{font-size:11px;font-weight:600;color:var(--t);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stock-highlight-sym{font-size:9px;color:var(--t3);font-weight:500;margin-left:3px;}
+.stock-highlight-price{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);white-space:nowrap;}
+.stock-highlight-pct{font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;padding:2px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+.stock-highlight-pct.g{color:var(--green);background:var(--green-l);}
+.stock-highlight-pct.r{color:var(--red);background:var(--red-l);}
+/* Divider zwischen Highlights und Liste */
+.stocks-divider{height:1px;background:var(--border);margin:0 0 6px;}
+/* Blur für neue Kachel */
+.stocks-blurred .stock-highlight-price,
+.stocks-blurred .stock-row-price,
+.stocks-blurred .stock-chip-val{filter:blur(5px);user-select:none;transition:filter .25s;}
 
 /* ── PROMI GEBURTSTAG CHIPS ── */
 .promi-chip{display:flex;align-items:center;gap:6px;padding:4px 0;}
@@ -1131,7 +1155,7 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.5</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.4.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1457,26 +1481,6 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
     </div>
     <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
 
-    <!-- Aktien Live-Kurse -->
-    <div class="stocks-wrap" id="stocksWrap" style="display:none;">
-      <!-- Top 3 immer sichtbar -->
-      <div class="stocks-top3" id="stocksTop3">
-        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:60%;border-radius:4px;"></div></div>
-        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:55%;border-radius:4px;"></div></div>
-        <div class="stock-chip"><div class="stock-chip-dot"></div><div class="stock-chip-name skeleton" style="height:10px;width:50%;border-radius:4px;"></div></div>
-      </div>
-      <!-- Toggle für alle (nur Mobile) -->
-      <div class="stocks-toggle" id="stocksToggle" onclick="toggleStocksAll()">
-        <span class="stocks-toggle-lbl">Alle Positionen</span>
-        <span class="stocks-toggle-arrow" id="stocksArrow">▼</span>
-      </div>
-      <!-- Alle Positionen -->
-      <div class="stocks-all" id="stocksAll"></div>
-      <div class="stocks-meta" id="stocksMeta" style="display:none;">
-        <div class="stocks-meta-dot"></div><span id="stocksMetaTxt">–</span>
-      </div>
-    </div>
-
     <!-- Bitcoin Live-Kurs -->
     <div class="btc-footer" id="btcFooter">
       <div class="btc-left">
@@ -1488,6 +1492,44 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
     </div>
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
+
+  <!-- AKTIEN -->
+  <div class="acard stocks" id="stocksCard">
+    <div class="a-top">
+      <div class="a-icon b">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+        <button class="fin-blur-btn" id="stocksBlurBtn" onclick="toggleStocksBlur(event)" title="Kurse ausblenden">👁 Zeigen</button>
+        <div class="a-status">Live</div>
+      </div>
+    </div>
+    <div class="a-name">Portfolio · Aktien</div>
+    <div class="a-desc">Parqet · alle Kurse in EUR · Krypto ausgeblendet</div>
+
+    <div class="stocks-card-wrap" id="stocksCardWrap">
+      <!-- Top 3 Highlights -->
+      <div class="stocks-highlights" id="stocksHighlights">
+        <div class="stock-highlight"><div class="stock-highlight-rank">1</div><div class="skeleton" style="height:10px;width:55%;border-radius:4px;flex:1;"></div></div>
+        <div class="stock-highlight"><div class="stock-highlight-rank">2</div><div class="skeleton" style="height:10px;width:50%;border-radius:4px;flex:1;"></div></div>
+        <div class="stock-highlight"><div class="stock-highlight-rank">3</div><div class="skeleton" style="height:10px;width:45%;border-radius:4px;flex:1;"></div></div>
+      </div>
+      <div class="stocks-divider"></div>
+      <!-- Toggle für alle (nur Mobile) -->
+      <div class="stocks-toggle" id="stocksToggle" onclick="toggleStocksAll()">
+        <span class="stocks-toggle-lbl">Alle weiteren Positionen</span>
+        <span class="stocks-toggle-arrow" id="stocksArrow">▼</span>
+      </div>
+      <!-- Alle Positionen ab Platz 4 -->
+      <div class="stocks-all" id="stocksAll"></div>
+      <div class="stocks-meta" id="stocksMeta" style="display:none;">
+        <div class="stocks-meta-dot"></div><span id="stocksMetaTxt">–</span>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -2102,39 +2144,34 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── AKTIEN LIVE (Finnhub, hardcoded key) ──
+// ── AKTIEN LIVE (Finnhub) ──
 const FH_KEY='d83ncvhr01qkm5c8rrjgd83ncvhr01qkm5c8rrk0';
 
-// Finnhub-Symbole + Clearbit-Logo-Domain
-// Nur aktive Positionen (value>0 aus Parqet), keine Duplikate
-// Europäische Aktien: Finnhub nutzt EXCHANGE:SYMBOL Format
+// Vollständiges Parqet-Portfolio (ca. 22 Aktien, kein Krypto)
 const STOCKS=[
-  {name:'Microsoft',         sym:'MSFT',           logo:'microsoft.com',      cur:'USD'},
-  {name:'Alphabet',          sym:'GOOGL',           logo:'abc.xyz',            cur:'USD'},
-  {name:'Tesla',             sym:'TSLA',            logo:'tesla.com',          cur:'USD'},
-  {name:'Netflix',           sym:'NFLX',            logo:'netflix.com',        cur:'USD'},
-  {name:'American Express',  sym:'AXP',             logo:'americanexpress.com',cur:'USD'},
-  {name:'Cintas',            sym:'CTAS',            logo:'cintas.com',         cur:'USD'},
-  {name:'Mercado Libre',     sym:'MELI',            logo:'mercadolibre.com',   cur:'USD'},
-  {name:'Procter & Gamble',  sym:'PG',              logo:'pg.com',             cur:'USD'},
-  {name:'Zoetis',            sym:'ZTS',             logo:'zoetis.com',         cur:'USD'},
-  {name:'Clover Health',     sym:'CLOV',            logo:'cloverhealth.com',   cur:'USD'},
-  {name:'Richtech Robotics', sym:'RR',              logo:'richtechrobotics.com',cur:'USD'},
-  {name:'Nubank',            sym:'NU',              logo:'nubank.com.br',      cur:'USD'},
-  {name:'ASML',              sym:'ASML',            logo:'asml.com',           cur:'USD'},
-  {name:'Ferrari',           sym:'RACE',            logo:'ferrari.com',        cur:'USD'},
-  {name:'ASML (NL)',         sym:'XAMS:ASML',       logo:'asml.com',           cur:'EUR', skip:true}, // ASML bereits als USD oben
-  {name:'Wolters Kluwer',    sym:'XAMS:WKL',        logo:'wolterskluwer.com',  cur:'EUR'},
-  {name:'Hermès',            sym:'XPAR:RMS',        logo:'hermes.com',         cur:'EUR'},
-  {name:'ASML Holding',      sym:'XAMS:ASML',       logo:'asml.com',           cur:'EUR', skip:true},
-  {name:'Ferrari (MI)',      sym:'XMIL:RACE',       logo:'ferrari.com',        cur:'EUR', skip:true},
-  {name:'Deutsche Börse',    sym:'XETR:DB1',        logo:'deutsche-boerse.com',cur:'EUR'},
-  {name:'Siemens',           sym:'XETR:SIE',        logo:'siemens.com',        cur:'EUR'},
-  {name:'Hannover Rück',     sym:'XETR:HNR1',       logo:'hannover-re.com',    cur:'EUR'},
-  {name:'Novo Nordisk',      sym:'XCSE:NOVO_B',     logo:'novonordisk.com',    cur:'DKK'},
-  {name:'Lotus Bakeries',    sym:'XBRU:LOTB',       logo:'lotusbakeries.com',  cur:'EUR'},
-  {name:'BKW',               sym:'XSWX:BKW',        logo:'bkw.ch',             cur:'CHF'},
-].filter(s=>!s.skip);
+  {name:'Microsoft',         sym:'MSFT',        logo:'microsoft.com',       cur:'USD'},
+  {name:'Alphabet',          sym:'GOOGL',        logo:'abc.xyz',             cur:'USD'},
+  {name:'Tesla',             sym:'TSLA',         logo:'tesla.com',           cur:'USD'},
+  {name:'Netflix',           sym:'NFLX',         logo:'netflix.com',         cur:'USD'},
+  {name:'American Express',  sym:'AXP',          logo:'americanexpress.com', cur:'USD'},
+  {name:'Cintas',            sym:'CTAS',         logo:'cintas.com',          cur:'USD'},
+  {name:'Mercado Libre',     sym:'MELI',         logo:'mercadolibre.com',    cur:'USD'},
+  {name:'Procter & Gamble',  sym:'PG',           logo:'pg.com',              cur:'USD'},
+  {name:'Zoetis',            sym:'ZTS',          logo:'zoetis.com',          cur:'USD'},
+  {name:'Clover Health',     sym:'CLOV',         logo:'cloverhealth.com',    cur:'USD'},
+  {name:'Richtech Robotics', sym:'RR',           logo:'richtechrobotics.com',cur:'USD'},
+  {name:'Nubank',            sym:'NU',           logo:'nubank.com.br',       cur:'USD'},
+  {name:'ASML',              sym:'ASML',         logo:'asml.com',            cur:'USD'},
+  {name:'Ferrari',           sym:'RACE',         logo:'ferrari.com',         cur:'USD'},
+  {name:'Wolters Kluwer',    sym:'XAMS:WKL',     logo:'wolterskluwer.com',   cur:'EUR'},
+  {name:'Hermès',            sym:'XPAR:RMS',     logo:'hermes.com',          cur:'EUR'},
+  {name:'Deutsche Börse',    sym:'XETR:DB1',     logo:'deutsche-boerse.com', cur:'EUR'},
+  {name:'Siemens',           sym:'XETR:SIE',     logo:'siemens.com',         cur:'EUR'},
+  {name:'Hannover Rück',     sym:'XETR:HNR1',    logo:'hannover-re.com',     cur:'EUR'},
+  {name:'Novo Nordisk',      sym:'XCSE:NOVO_B',  logo:'novonordisk.com',     cur:'DKK'},
+  {name:'Lotus Bakeries',    sym:'XBRU:LOTB',    logo:'lotusbakeries.com',   cur:'EUR'},
+  {name:'BKW',               sym:'XSWX:BKW',     logo:'bkw.ch',              cur:'CHF'},
+];
 
 function toggleStocksAll(){
   const el=document.getElementById('stocksAll');
@@ -2142,6 +2179,23 @@ function toggleStocksAll(){
   const open=el.classList.toggle('open');
   if(arr)arr.classList.toggle('open',open);
 }
+
+let _stocksBlurred=true;
+function toggleStocksBlur(e){
+  if(e)e.preventDefault();
+  _stocksBlurred=!_stocksBlurred;
+  const wrap=document.getElementById('stocksCardWrap');
+  const btn=document.getElementById('stocksBlurBtn');
+  if(wrap)wrap.classList.toggle('stocks-blurred',_stocksBlurred);
+  if(btn)btn.textContent=_stocksBlurred?'👁 Zeigen':'👁 Blenden';
+}
+// Blur sofort aktivieren
+(function(){
+  const wrap=document.getElementById('stocksCardWrap');
+  const btn=document.getElementById('stocksBlurBtn');
+  if(wrap)wrap.classList.add('stocks-blurred');
+  if(btn)btn.textContent='👁 Zeigen';
+})();
 
 function logoUrl(domain){
   return `https://logo.clearbit.com/${domain}?size=32`;
@@ -2157,7 +2211,6 @@ async function fetchFinnhubQuote(sym){
 }
 
 async function getEurRates(){
-  // ECB daily XML – kein CORS-Problem
   try{
     const r=await fetch('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',{signal:AbortSignal.timeout(5000)});
     const txt=await r.text();
@@ -2166,32 +2219,19 @@ async function getEurRates(){
     let m;while((m=re.exec(txt))!==null)rates[m[1]]=parseFloat(m[2]);
     return rates;
   }catch(e){
-    // Fallback-Kurse (grob)
     return{EUR:1,USD:0.92,CHF:1.04,DKK:0.134,GBP:1.18};
   }
 }
 
 async function loadStocks(){
-  const wrap=document.getElementById('stocksWrap');
-  const top3El=document.getElementById('stocksTop3');
+  const hlEl=document.getElementById('stocksHighlights');
   const allEl=document.getElementById('stocksAll');
   const metaEl=document.getElementById('stocksMeta');
 
-  if(wrap)wrap.style.display='block';
-
-  // Skeleton
-  if(top3El)top3El.innerHTML=['','',''].map(()=>`
-    <div class="stock-chip">
-      <div class="stock-chip-dot"></div>
-      <div class="stock-chip-name skeleton" style="height:10px;width:55%;border-radius:4px;"></div>
-      <div class="skeleton" style="height:10px;width:44px;border-radius:4px;margin-left:auto;flex-shrink:0;"></div>
-    </div>`).join('');
-
   try{
-    // EUR-Kurse parallel holen
     const ratesPromise=getEurRates();
 
-    // Alle Quotes sequenziell (100ms Pause → max 10/sek, weit unter 60/min)
+    // Alle Quotes sequenziell (100ms Pause → unter 60/min)
     const rawRows=[];
     for(const s of STOCKS){
       try{
@@ -2205,41 +2245,32 @@ async function loadStocks(){
 
     const rates=await ratesPromise;
 
-    // Alles in EUR umrechnen
     const toEur=(v,cur)=>{
-      if(cur==='EUR')return v;
-      const rate=rates[cur];
-      if(!rate)return v;
-      return v/rate; // rate = EUR pro 1 Fremdwährung → nein, ECB gibt Fremdwährung pro EUR an
-      // ECB: rate = wie viel Fremdwährung = 1 EUR → v[cur] / rate[cur] = v in EUR
-    };
-    // Korrekte ECB-Logik: rate[USD]=1.08 bedeutet 1 EUR = 1.08 USD
-    // Also: preis_in_USD / rate[USD] = preis_in_EUR
-    const toEurCorrect=(v,cur)=>{
       if(cur==='EUR')return v;
       const rate=rates[cur];
       if(!rate)return v;
       return v/rate;
     };
 
-    const rows=rawRows.map(s=>({
-      ...s,
-      priceEur:toEurCorrect(s.price,s.cur),
-    }));
-
+    const rows=rawRows.map(s=>({...s,priceEur:toEur(s.price,s.cur)}));
     rows.sort((a,b)=>b.pct-a.pct);
 
     const fmtEur=v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
     const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
 
-    const chipHtml=r=>`
-      <div class="stock-chip">
-        <img class="stock-chip-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
-        <div class="stock-chip-name">${r.name}</div>
-        <div class="stock-chip-val">${fmtEur(r.priceEur)}</div>
-        <div class="stock-chip-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
-      </div>`;
+    // ── Top 3 Highlights (hervorgehoben) ──
+    const top3=rows.slice(0,3);
+    if(hlEl)hlEl.innerHTML=top3.map((r,i)=>`
+      <div class="stock-highlight${i===0?' top1':''}">
+        <div class="stock-highlight-rank">${i+1}</div>
+        <img class="stock-highlight-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
+        <div class="stock-highlight-name">${r.name}<span class="stock-highlight-sym">${r.sym.includes(':')?r.sym.split(':')[1]:r.sym}</span></div>
+        <div class="stock-highlight-price">${fmtEur(r.priceEur)}</div>
+        <div class="stock-highlight-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
+      </div>`).join('');
 
+    // ── Alle restlichen Positionen ab Platz 4 ──
+    const rest=rows.slice(3);
     const rowHtml=r=>`
       <div class="stock-row">
         <img class="stock-row-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
@@ -2247,19 +2278,17 @@ async function loadStocks(){
         <div class="stock-row-price">${fmtEur(r.priceEur)}</div>
         <div class="stock-row-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
       </div>`;
-
-    if(top3El)top3El.innerHTML=rows.slice(0,3).map(chipHtml).join('');
-    if(allEl)allEl.innerHTML=rows.map(rowHtml).join('');
+    if(allEl)allEl.innerHTML=rest.map(rowHtml).join('');
 
     const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
     if(metaEl){
       metaEl.style.display='flex';
-      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · alle Kurse in EUR</span>`;
+      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
     }
 
     renderTicker(rows,fmtEur,fmtPct);
   }catch(e){
-    if(top3El)top3El.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
+    if(hlEl)hlEl.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
   }
   if(window._lbTick)window._lbTick();
 }
@@ -2275,10 +2304,13 @@ function renderTicker(rows,fmtEur,fmtPct){
   const _fmtEur=fmtEur||(v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €');
   const _fmtPct=fmtPct||(v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %');
 
+  // Ticker zeigt nur das Kürzel (Symbol ohne Exchange-Prefix)
+  const tickerSym=sym=>sym.includes(':')?sym.split(':')[1]:sym;
+
   const html=rows.map(r=>`
     <div class="ticker-item">
       <img class="ticker-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
-      <span class="ticker-item-name">${r.name}</span>
+      <span class="ticker-item-name">${tickerSym(r.sym)}</span>
       <span class="ticker-item-price">${_fmtEur(r.priceEur??r.price)}</span>
       <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${_fmtPct(r.pct)}</span>
     </div>`).join('');
