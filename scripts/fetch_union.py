@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.2.3 — Free API Live Football Data (RapidAPI)
+fetch_union.py v5.2.4 — Free API Live Football Data (RapidAPI)
  
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -11,6 +11,9 @@ FIXES:
 - v5.2.3: FOTMOB_LOGOS als zuverlässiger Fallback für alle Bundesliga-Teams
           Wenn RapidAPI-Logo leer → Fotmob CDN (images.fotmob.com) wird genutzt
           Gilt für Tabellen-Teams, last_match und next_match
+- v5.2.4: H2H (Direktvergleich) gegen nächsten Gegner ergänzt
+          Wird aus all_m (alle Ligaspiele, bereits geladen) berechnet — kein Extra-Request
+          Schreibt data["h2h"] mit: wins/draws/losses, goals_for/against, letzte 8 Duelle
  
 Endpoints (~7-12 Requests/Tag je nach Tabellengröße):
   1. football-get-standing-all?leagueid=54
@@ -255,7 +258,116 @@ def load_previous_ranks():
         return {t["name"]: t["rank"] for t in old.get("table_context", [])}
     except Exception:
         return {}
- 
+
+
+def build_h2h(all_m, next_m):
+    """
+    Berechnet den Direktvergleich Union vs. nächster Gegner
+    aus den bereits geladenen Ligaspielen (all_m) — kein Extra-API-Request.
+
+    Liefert ein dict mit:
+      opponent, wins, draws, losses, goals_for, goals_against, matches (max 8, neueste zuerst)
+    """
+    if not next_m:
+        return {}
+
+    # Gegner-ID aus dem nächsten Spiel ermitteln
+    if next_m["is_home"]:
+        opp_name = next_m["away_name"]
+        # away_logo enthält immer die Fotmob-URL → ID extrahieren oder Name-Matching
+        opp_id_candidates = [next_m.get("away_logo","")]
+    else:
+        opp_name = next_m["home_name"]
+        opp_id_candidates = [next_m.get("home_logo","")]
+
+    # Gegner-ID aus dem Logo-URL extrahieren (Fotmob-Muster: .../teamlogo/{id}.png)
+    opp_fotmob_id = None
+    for logo_url in opp_id_candidates:
+        if logo_url and "teamlogo/" in logo_url:
+            try:
+                opp_fotmob_id = logo_url.split("teamlogo/")[-1].replace(".png","").strip()
+            except Exception:
+                pass
+
+    print(f"H2H: Suche Spiele Union vs. {opp_name} (Fotmob-ID: {opp_fotmob_id})")
+
+    wins = draws = losses = goals_for = goals_against = 0
+    matches = []
+
+    for m in all_m:
+        h = m["home"]
+        a = m["away"]
+        h_id = str(h["id"])
+        a_id = str(a["id"])
+
+        # Ist Union in diesem Spiel?
+        union_is_home  = (h_id == UID_S)
+        union_is_away  = (a_id == UID_S)
+        if not union_is_home and not union_is_away:
+            continue
+
+        # Ist der Gegner in diesem Spiel? Matching per ID (Fotmob) oder Name
+        opp_side = a if union_is_home else h
+        opp_match = False
+        if opp_fotmob_id and str(opp_side["id"]) == opp_fotmob_id:
+            opp_match = True
+        else:
+            # Name-Fallback: case-insensitive Teilstring
+            opp_name_lower = opp_name.lower()
+            side_name_lower = opp_side["name"].lower()
+            if opp_name_lower in side_name_lower or side_name_lower in opp_name_lower:
+                opp_match = True
+
+        if not opp_match:
+            continue
+
+        # Spiel nur auswerten wenn abgeschlossen
+        gf_raw = h["score"] if union_is_home else a["score"]
+        ga_raw = a["score"] if union_is_home else h["score"]
+        if gf_raw is None or ga_raw is None:
+            continue
+
+        gf_int = int(gf_raw)
+        ga_int = int(ga_raw)
+        goals_for     += gf_int
+        goals_against += ga_int
+
+        if gf_int > ga_int:
+            res = "W"; wins  += 1
+        elif gf_int < ga_int:
+            res = "L"; losses += 1
+        else:
+            res = "D"; draws += 1
+
+        matches.append({
+            "date":        m["status"].get("utcTime",""),
+            "home_name":   h["name"],
+            "away_name":   a["name"],
+            "home_goals":  int(h["score"]),
+            "away_goals":  int(a["score"]),
+            "union_result": res,
+        })
+
+    # Neueste zuerst
+    matches.sort(key=lambda x: x["date"], reverse=True)
+    total = wins + draws + losses
+    print(f"H2H: {total} Spiele gefunden — {wins}S {draws}U {losses}N")
+
+    if total == 0:
+        # Kein Spiel in aktueller Saison gefunden (z.B. Aufsteiger)
+        # Gibt leeres Dict zurück → Frontend zeigt Hinweis
+        return {}
+
+    return {
+        "opponent":      opp_name,
+        "wins":          wins,
+        "draws":         draws,
+        "losses":        losses,
+        "goals_for":     goals_for,
+        "goals_against": goals_against,
+        "matches":       matches[:8],
+    }
+
  
 def main():
     now = datetime.now(timezone.utc)
@@ -334,6 +446,10 @@ def main():
  
     form_calc = "".join(filter(None, [result_char(m) for m in done[-9:]]))
     print(f"   Form (berechnet): {form_calc}")
+
+    # 3b. H2H — aus all_m berechnen, kein Extra-Request
+    print("3b. H2H (Direktvergleich) ...")
+    h2h = build_h2h(all_m, next_m)
  
     # 4. Match Stats
     match_stats = {}
@@ -418,6 +534,7 @@ def main():
         "union_scorers":    union_scorers,
         "top_scorers":      top_scorers,
         "top_assisters":    top_assisters,
+        "h2h":              h2h,   # ← NEU v5.2.4
     }
  
     os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
@@ -428,4 +545,3 @@ def main():
  
 if __name__ == "__main__":
     main()
- 
