@@ -38,94 +38,109 @@ UID_S  = str(UID)
 OUT    = os.path.join(os.path.dirname(__file__), "..", "data", "union.json")
  
 
-# ── Fotmob-IDs für alle relevanten Bundesliga / 2. Liga Teams ──
-# Fotmob CDN: https://images.fotmob.com/image_resources/logo/teamlogo/{id}.png
-# Zuverlässiger als RapidAPI-Logo-Endpoint (kein Referer-Schutz, PNG)
-FOTMOB_LOGOS = {
-    # Bundesliga 2025/26
-    "FC Bayern München":          "https://images.fotmob.com/image_resources/logo/teamlogo/132.png",
-    "Bayern München":             "https://images.fotmob.com/image_resources/logo/teamlogo/132.png",
-    "Bayer 04 Leverkusen":        "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
-    "Leverkusen":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
-    "Borussia Dortmund":          "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
-    "Dortmund":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
-    "RB Leipzig":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9944.png",
-    "Leipzig":                    "https://images.fotmob.com/image_resources/logo/teamlogo/9944.png",
-    "Eintracht Frankfurt":        "https://images.fotmob.com/image_resources/logo/teamlogo/9921.png",
-    "Frankfurt":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9921.png",
-    "VfB Stuttgart":              "https://images.fotmob.com/image_resources/logo/teamlogo/9928.png",
-    "Stuttgart":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9928.png",
-    "SC Freiburg":                "https://images.fotmob.com/image_resources/logo/teamlogo/9922.png",
-    "Freiburg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9922.png",
-    "Werder Bremen":              "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
-    "Bremen":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
-    "Borussia Mönchengladbach":   "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
-    "B. Mönchengladbach":         "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
-    "Mönchengladbach":            "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
-    "TSG Hoffenheim":             "https://images.fotmob.com/image_resources/logo/teamlogo/9918.png",
-    "Hoffenheim":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9918.png",
-    "FC Augsburg":                "https://images.fotmob.com/image_resources/logo/teamlogo/9925.png",
-    "Augsburg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9925.png",
-    "VfL Wolfsburg":              "https://images.fotmob.com/image_resources/logo/teamlogo/9934.png",
-    "Wolfsburg":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9934.png",
-    "1. FC Union Berlin":         "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
-    "Union Berlin":               "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
-    "1. FC Heidenheim":           "https://images.fotmob.com/image_resources/logo/teamlogo/10188.png",
-    "Heidenheim":                 "https://images.fotmob.com/image_resources/logo/teamlogo/10188.png",
-    "VfL Bochum":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9811.png",
-    "Bochum":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9811.png",
-    "1. FSV Mainz 05":            "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
-    "FSV Mainz 05":               "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
-    "Mainz 05":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
-    "Mainz":                      "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
-    "FC St. Pauli":               "https://images.fotmob.com/image_resources/logo/teamlogo/9875.png",
-    "St. Pauli":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9875.png",
-    "Holstein Kiel":              "https://images.fotmob.com/image_resources/logo/teamlogo/10209.png",
-    "Kiel":                       "https://images.fotmob.com/image_resources/logo/teamlogo/10209.png",
-    "1. FC Köln":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png",
-    "Köln":                       "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png",
-    # 2. Liga (Aufsteiger / mögliche Playoff-Gegner)
-    "Hamburger SV":               "https://images.fotmob.com/image_resources/logo/teamlogo/9782.png",
-    "HSV":                        "https://images.fotmob.com/image_resources/logo/teamlogo/9782.png",
-    "Fortuna Düsseldorf":         "https://images.fotmob.com/image_resources/logo/teamlogo/9781.png",
-    "Düsseldorf":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9781.png",
-    "Hannover 96":                "https://images.fotmob.com/image_resources/logo/teamlogo/9798.png",
-    "Hannover":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9798.png",
-    "Karlsruher SC":              "https://images.fotmob.com/image_resources/logo/teamlogo/9807.png",
-    "Karlsruhe":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9807.png",
-    "1. FC Nürnberg":             "https://images.fotmob.com/image_resources/logo/teamlogo/9864.png",
-    "Nürnberg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9864.png",
-    "FC Schalke 04":              "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
-    "Schalke 04":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
-    "Schalke":                    "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
-    "Hertha BSC":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
-    "Hertha":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
-    "SpVgg Greuther Fürth":       "https://images.fotmob.com/image_resources/logo/teamlogo/9920.png",
-    "Greuther Fürth":             "https://images.fotmob.com/image_resources/logo/teamlogo/9920.png",
-    "1. FC Kaiserslautern":       "https://images.fotmob.com/image_resources/logo/teamlogo/9804.png",
-    "Kaiserslautern":             "https://images.fotmob.com/image_resources/logo/teamlogo/9804.png",
-    "SV 07 Elversberg":           "https://images.fotmob.com/image_resources/logo/teamlogo/10246.png",
-    "Elversberg":                 "https://images.fotmob.com/image_resources/logo/teamlogo/10246.png",
-    "1. FC Magdeburg":            "https://images.fotmob.com/image_resources/logo/teamlogo/9861.png",
-    "Magdeburg":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9861.png",
-    "SSV Ulm 1846":               "https://images.fotmob.com/image_resources/logo/teamlogo/10219.png",
-    "Ulm":                        "https://images.fotmob.com/image_resources/logo/teamlogo/10219.png",
-    "Preußen Münster":            "https://images.fotmob.com/image_resources/logo/teamlogo/10154.png",
-    "Münster":                    "https://images.fotmob.com/image_resources/logo/teamlogo/10154.png",
-    "SC Paderborn 07":            "https://images.fotmob.com/image_resources/logo/teamlogo/9869.png",
-    "Paderborn":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9869.png",
-    "SV Darmstadt 98":            "https://images.fotmob.com/image_resources/logo/teamlogo/10036.png",
-    "Darmstadt":                  "https://images.fotmob.com/image_resources/logo/teamlogo/10036.png",
+# ── Fotmob-IDs — ausschließlich aus fotmob.com-URLs verifiziert ──
+# URL-Muster: https://www.fotmob.com/teams/{id}/overview/{slug}
+# Logos: https://images.fotmob.com/image_resources/logo/teamlogo/{id}.png
+FOTMOB_IDS = {
+    # Bundesliga 2025/26 — verifiziert
+    "1. FC Union Berlin":         8149,   # /teams/8149 (auch UID im Script)
+    "Union Berlin":               8149,
+    "Bayer 04 Leverkusen":        8178,   # /teams/8178
+    "Leverkusen":                 8178,
+    "TSG Hoffenheim":             8226,   # /teams/8226
+    "Hoffenheim":                 8226,
+    "FC Augsburg":                8406,   # /teams/8406
+    "Augsburg":                   8406,
+    "SV Werder Bremen":           8697,   # /teams/8697
+    "Werder Bremen":              8697,
+    "Bremen":                     8697,
+    "VfL Wolfsburg":              8721,   # /teams/8721
+    "Wolfsburg":                  8721,
+    "FC St. Pauli":               8152,   # /teams/8152
+    "St. Pauli":                  8152,
+    "Borussia Mönchengladbach":   9788,   # /teams/9788
+    "B. Mönchengladbach":         9788,
+    "Mönchengladbach":            9788,
+    "Borussia Dortmund":          9789,   # /teams/9789
+    "Dortmund":                   9789,
+    "Hamburger SV":               9790,   # /teams/9790
+    "HSV":                        9790,
+    "Eintracht Frankfurt":        9810,   # /teams/9810
+    "Frankfurt":                  9810,
+    "FC Bayern München":          9823,   # /teams/9823
+    "Bayern München":             9823,
+    "Bayern":                     9823,
+    "1. FSV Mainz 05":            9905,   # /teams/9905
+    "FSV Mainz 05":               9905,
+    "Mainz 05":                   9905,
+    "Mainz":                      9905,
+    "VfL Bochum":                 9911,   # /teams/9911
+    "Bochum":                     9911,
+    "VfB Stuttgart":              10269,  # /teams/10269
+    "Stuttgart":                  10269,
+    "RB Leipzig":                 178475, # /teams/178475
+    "Leipzig":                    178475,
+}
+
+# Wikipedia-Logos als Fallback (für Teams ohne verifizierten Fotmob-ID)
+WIKI_LOGOS = {
+    "SC Freiburg":        "https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/120px-SC-Freiburg_Logo-neu.svg.png",
+    "Freiburg":           "https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/120px-SC-Freiburg_Logo-neu.svg.png",
+    "1. FC Köln":         "https://upload.wikimedia.org/wikipedia/de/thumb/d/d6/Logo_1._FC_Koeln.svg/120px-Logo_1._FC_Koeln.svg.png",
+    "Köln":               "https://upload.wikimedia.org/wikipedia/de/thumb/d/d6/Logo_1._FC_Koeln.svg/120px-Logo_1._FC_Koeln.svg.png",
+    "1. FC Heidenheim":   "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/1._FC_Heidenheim_1846_Logo.svg/120px-1._FC_Heidenheim_1846_Logo.svg.png",
+    "Heidenheim":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/1._FC_Heidenheim_1846_Logo.svg/120px-1._FC_Heidenheim_1846_Logo.svg.png",
+    "Holstein Kiel":      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/120px-Holstein_Kiel_Logo.svg.png",
+    "Kiel":               "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Holstein_Kiel_Logo.svg/120px-Holstein_Kiel_Logo.svg.png",
+    "Hannover 96":        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Hannover_96_Logo.svg/120px-Hannover_96_Logo.svg.png",
+    "Hannover":           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Hannover_96_Logo.svg/120px-Hannover_96_Logo.svg.png",
+    "Fortuna Düsseldorf": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/120px-Fortuna_D%C3%BCsseldorf.svg.png",
+    "Düsseldorf":         "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Fortuna_D%C3%BCsseldorf.svg/120px-Fortuna_D%C3%BCsseldorf.svg.png",
+    "Hertha BSC":         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Hertha_BSC_Logo_2012.svg/120px-Hertha_BSC_Logo_2012.svg.png",
+    "Hertha":             "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Hertha_BSC_Logo_2012.svg/120px-Hertha_BSC_Logo_2012.svg.png",
+    "FC Schalke 04":      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/120px-FC_Schalke_04_Logo.svg.png",
+    "Schalke 04":         "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/120px-FC_Schalke_04_Logo.svg.png",
+    "Schalke":            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/FC_Schalke_04_Logo.svg/120px-FC_Schalke_04_Logo.svg.png",
+    "1. FC Nürnberg":     "https://upload.wikimedia.org/wikipedia/de/thumb/c/c9/1._FC_N%C3%BCrnberg.svg/120px-1._FC_N%C3%BCrnberg.svg.png",
+    "Nürnberg":           "https://upload.wikimedia.org/wikipedia/de/thumb/c/c9/1._FC_N%C3%BCrnberg.svg/120px-1._FC_N%C3%BCrnberg.svg.png",
+    "SpVgg Greuther Fürth":"https://upload.wikimedia.org/wikipedia/de/thumb/9/96/SpVgg_Greuther_F%C3%BCrth.svg/120px-SpVgg_Greuther_F%C3%BCrth.svg.png",
+    "Greuther Fürth":     "https://upload.wikimedia.org/wikipedia/de/thumb/9/96/SpVgg_Greuther_F%C3%BCrth.svg/120px-SpVgg_Greuther_F%C3%BCrth.svg.png",
+    "1. FC Kaiserslautern":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/1._FC_Kaiserslautern_Logo_2018.svg/120px-1._FC_Kaiserslautern_Logo_2018.svg.png",
+    "Kaiserslautern":     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/1._FC_Kaiserslautern_Logo_2018.svg/120px-1._FC_Kaiserslautern_Logo_2018.svg.png",
+    "1. FC Magdeburg":    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/1._FC_Magdeburg.svg/120px-1._FC_Magdeburg.svg.png",
+    "Magdeburg":          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/1._FC_Magdeburg.svg/120px-1._FC_Magdeburg.svg.png",
+    "Karlsruher SC":      "https://upload.wikimedia.org/wikipedia/de/thumb/c/c7/Logo_Karlsruher_SC.svg/120px-Logo_Karlsruher_SC.svg.png",
+    "Karlsruhe":          "https://upload.wikimedia.org/wikipedia/de/thumb/c/c7/Logo_Karlsruher_SC.svg/120px-Logo_Karlsruher_SC.svg.png",
+    "SC Paderborn 07":    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/SC_Paderborn_07_logo.svg/120px-SC_Paderborn_07_logo.svg.png",
+    "Paderborn":          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/SC_Paderborn_07_logo.svg/120px-SC_Paderborn_07_logo.svg.png",
+    "SV Darmstadt 98":    "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/SV_Darmstadt_98_logo.svg/120px-SV_Darmstadt_98_logo.svg.png",
+    "Darmstadt":          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/SV_Darmstadt_98_logo.svg/120px-SV_Darmstadt_98_logo.svg.png",
+    "SV 07 Elversberg":   "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/SV_07_Elversberg.svg/120px-SV_07_Elversberg.svg.png",
+    "Elversberg":         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/SV_07_Elversberg.svg/120px-SV_07_Elversberg.svg.png",
+    "SSV Ulm 1846":       "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/SSV_Ulm_1846_logo.svg/120px-SSV_Ulm_1846_logo.svg.png",
+    "Ulm":                "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/SSV_Ulm_1846_logo.svg/120px-SSV_Ulm_1846_logo.svg.png",
+    "Preußen Münster":    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Preu%C3%9Fen_M%C3%BCnster_logo.svg/120px-Preu%C3%9Fen_M%C3%BCnster_logo.svg.png",
+    "Münster":            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Preu%C3%9Fen_M%C3%BCnster_logo.svg/120px-Preu%C3%9Fen_M%C3%BCnster_logo.svg.png",
 }
 
 def fotmob_fallback(name):
-    """Sucht Fotmob-Logo via exaktem Namen, dann Teilstring-Suche."""
-    if name in FOTMOB_LOGOS:
-        return FOTMOB_LOGOS[name]
+    """Fotmob CDN wenn verifizierte ID vorhanden, sonst Wikipedia."""
+    # Exakter Name
+    if name in FOTMOB_IDS:
+        fid = FOTMOB_IDS[name]
+        return f"https://images.fotmob.com/image_resources/logo/teamlogo/{fid}.png"
+    # Wikipedia-Fallback
+    if name in WIKI_LOGOS:
+        return WIKI_LOGOS[name]
+    # Teilstring-Suche Fotmob
     nl = name.lower()
-    for k, v in FOTMOB_LOGOS.items():
+    for k, fid in FOTMOB_IDS.items():
         if nl in k.lower() or k.lower() in nl:
-            return v
+            return f"https://images.fotmob.com/image_resources/logo/teamlogo/{fid}.png"
+    # Teilstring-Suche Wikipedia
+    for k, url in WIKI_LOGOS.items():
+        if nl in k.lower() or k.lower() in nl:
+            return url
     return ""
 
 # Logo-Cache: RapidAPI-Team-ID -> Logo-URL
