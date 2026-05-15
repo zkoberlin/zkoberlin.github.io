@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.3.4 -->
+<title>Paul · Hub</title><!-- v5.3.5 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -594,19 +594,19 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 /* ── STOCK TICKER STRIP ── */
 #stockTicker{
   position:sticky;top:57px;z-index:99;
-  background:rgba(242,242,247,.92);
+  background:rgba(242,242,247,.94);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
-  height:28px;overflow:hidden;
+  height:32px;overflow:hidden;
   transition:background .3s;
 }
-html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
-@media(prefers-color-scheme:dark){html:not([data-theme="light"]) #stockTicker{background:rgba(14,14,16,.92);}}
-#stockTicker.loading{opacity:.4;}
+html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) #stockTicker{background:rgba(14,14,16,.94);}}
+#stockTicker.loading{opacity:.35;}
 .ticker-track{
-  display:flex;align-items:center;
-  white-space:nowrap;height:28px;
-  animation:tickerScroll 55s linear infinite;
+  display:inline-flex;align-items:center;
+  white-space:nowrap;height:32px;
+  animation:tickerScroll 70s linear infinite;
   will-change:transform;
 }
 .ticker-track:hover{animation-play-state:paused;}
@@ -616,18 +616,22 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
 }
 .ticker-item{
   display:inline-flex;align-items:center;gap:5px;
-  padding:0 16px;
+  padding:0 14px;
   font-family:'Montserrat',sans-serif;
   font-size:10px;font-weight:600;
   color:var(--t);
   border-right:1px solid var(--border);
-  height:28px;flex-shrink:0;
+  height:32px;flex-shrink:0;
 }
-.ticker-item-name{color:var(--t3);font-weight:500;}
+.ticker-logo{width:14px;height:14px;border-radius:3px;object-fit:contain;flex-shrink:0;background:var(--card2);}
+.ticker-item-name{color:var(--t3);font-weight:500;font-size:9.5px;}
 .ticker-item-price{font-variant-numeric:tabular-nums;}
-.ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9.5px;padding:1px 5px;border-radius:4px;}
+.ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9px;padding:1px 5px;border-radius:4px;}
 .ticker-item-pct.g{color:var(--green);background:var(--green-l);}
 .ticker-item-pct.r{color:var(--red);background:var(--red-l);}
+/* Logos in der Kachel */
+.stock-chip-logo{width:18px;height:18px;border-radius:4px;object-fit:contain;flex-shrink:0;background:var(--card2);}
+.stock-row-logo{width:15px;height:15px;border-radius:3px;object-fit:contain;flex-shrink:0;background:var(--card2);}
 
 /* ── LOAD BAR ── */
 #loadBar{
@@ -1127,7 +1131,7 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.4</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.3.5</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1484,20 +1488,6 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.92);}
     </div>
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
-
-  <!-- Finnhub Key-Eingabe (außerhalb der <a>-Karte!) -->
-  <div id="fhKeyBox" style="display:none;margin:6px 0 0;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:11px 13px;">
-    <div style="font-size:10px;color:var(--t2);margin-bottom:8px;line-height:1.5;">
-      Für Live-Aktienkurse einmalig einen kostenlosen
-      <a href="https://finnhub.io" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;">Finnhub API-Key</a>
-      eintragen — wird im Browser gespeichert, nie wieder nötig:
-    </div>
-    <div style="display:flex;gap:6px;">
-      <input id="fhKeyInput" type="text" placeholder="API Key von finnhub.io..." autocomplete="off"
-        style="flex:1;font-family:'Montserrat',sans-serif;font-size:11px;padding:7px 10px;border-radius:var(--r3);border:1px solid var(--border);background:var(--card);color:var(--t);outline:none;min-width:0;">
-      <button id="fhKeySaveBtn" style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;padding:7px 14px;border-radius:var(--r3);border:none;background:var(--blue);color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0;">Speichern</button>
-    </div>
-  </div>
 
 </div>
 
@@ -2112,34 +2102,39 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── AKTIEN LIVE (Finnhub) ──
-// Finnhub-Symbole: US-Aktien direkt, EU/Non-US mit Börsen-Suffix
-const STOCKS=[
-  {name:'Lotus Bakeries',    sym:'LOTB:BB',   cur:'EUR'},
-  {name:'BKW',               sym:'BKW:SW',    cur:'CHF'},
-  {name:'Deutsche Börse',    sym:'DB1:GR',    cur:'EUR'},
-  {name:'Siemens',           sym:'SIE:GR',    cur:'EUR'},
-  {name:'Hannover Rück',     sym:'HNR1:GR',   cur:'EUR'},
-  {name:'Novo Nordisk',      sym:'NOVO/B:DC', cur:'DKK'},
-  {name:'Hermès',            sym:'RMS:FP',    cur:'EUR'},
-  {name:'Nubank',            sym:'NU',        cur:'USD'},
-  {name:'Wolters Kluwer',    sym:'WKL:NA',    cur:'EUR'},
-  {name:'ASML',              sym:'ASML',      cur:'USD'},
-  {name:'Ferrari',           sym:'RACE',      cur:'USD'},
-  {name:'Alphabet A',        sym:'GOOGL',     cur:'USD'},
-  {name:'American Express',  sym:'AXP',       cur:'USD'},
-  {name:'Cintas',            sym:'CTAS',      cur:'USD'},
-  {name:'Mercado Libre',     sym:'MELI',      cur:'USD'},
-  {name:'Microsoft',         sym:'MSFT',      cur:'USD'},
-  {name:'Netflix',           sym:'NFLX',      cur:'USD'},
-  {name:'Procter & Gamble',  sym:'PG',        cur:'USD'},
-  {name:'Zoetis',            sym:'ZTS',       cur:'USD'},
-  {name:'Clover Health',     sym:'CLOV',      cur:'USD'},
-  {name:'Richtech Robotics', sym:'RR',        cur:'USD'},
-  {name:'Tesla',             sym:'TSLA',      cur:'USD'},
-];
+// ── AKTIEN LIVE (Finnhub, hardcoded key) ──
+const FH_KEY='d83ncvhr01qkm5c8rrjgd83ncvhr01qkm5c8rrk0';
 
-const FH_KEY_LS='hub_finnhub_key';
+// Finnhub-Symbole + Clearbit-Logo-Domain
+// Nur aktive Positionen (value>0 aus Parqet), keine Duplikate
+// Europäische Aktien: Finnhub nutzt EXCHANGE:SYMBOL Format
+const STOCKS=[
+  {name:'Microsoft',         sym:'MSFT',           logo:'microsoft.com',      cur:'USD'},
+  {name:'Alphabet',          sym:'GOOGL',           logo:'abc.xyz',            cur:'USD'},
+  {name:'Tesla',             sym:'TSLA',            logo:'tesla.com',          cur:'USD'},
+  {name:'Netflix',           sym:'NFLX',            logo:'netflix.com',        cur:'USD'},
+  {name:'American Express',  sym:'AXP',             logo:'americanexpress.com',cur:'USD'},
+  {name:'Cintas',            sym:'CTAS',            logo:'cintas.com',         cur:'USD'},
+  {name:'Mercado Libre',     sym:'MELI',            logo:'mercadolibre.com',   cur:'USD'},
+  {name:'Procter & Gamble',  sym:'PG',              logo:'pg.com',             cur:'USD'},
+  {name:'Zoetis',            sym:'ZTS',             logo:'zoetis.com',         cur:'USD'},
+  {name:'Clover Health',     sym:'CLOV',            logo:'cloverhealth.com',   cur:'USD'},
+  {name:'Richtech Robotics', sym:'RR',              logo:'richtechrobotics.com',cur:'USD'},
+  {name:'Nubank',            sym:'NU',              logo:'nubank.com.br',      cur:'USD'},
+  {name:'ASML',              sym:'ASML',            logo:'asml.com',           cur:'USD'},
+  {name:'Ferrari',           sym:'RACE',            logo:'ferrari.com',        cur:'USD'},
+  {name:'ASML (NL)',         sym:'XAMS:ASML',       logo:'asml.com',           cur:'EUR', skip:true}, // ASML bereits als USD oben
+  {name:'Wolters Kluwer',    sym:'XAMS:WKL',        logo:'wolterskluwer.com',  cur:'EUR'},
+  {name:'Hermès',            sym:'XPAR:RMS',        logo:'hermes.com',         cur:'EUR'},
+  {name:'ASML Holding',      sym:'XAMS:ASML',       logo:'asml.com',           cur:'EUR', skip:true},
+  {name:'Ferrari (MI)',      sym:'XMIL:RACE',       logo:'ferrari.com',        cur:'EUR', skip:true},
+  {name:'Deutsche Börse',    sym:'XETR:DB1',        logo:'deutsche-boerse.com',cur:'EUR'},
+  {name:'Siemens',           sym:'XETR:SIE',        logo:'siemens.com',        cur:'EUR'},
+  {name:'Hannover Rück',     sym:'XETR:HNR1',       logo:'hannover-re.com',    cur:'EUR'},
+  {name:'Novo Nordisk',      sym:'XCSE:NOVO_B',     logo:'novonordisk.com',    cur:'DKK'},
+  {name:'Lotus Bakeries',    sym:'XBRU:LOTB',       logo:'lotusbakeries.com',  cur:'EUR'},
+  {name:'BKW',               sym:'XSWX:BKW',        logo:'bkw.ch',             cur:'CHF'},
+].filter(s=>!s.skip);
 
 function toggleStocksAll(){
   const el=document.getElementById('stocksAll');
@@ -2148,139 +2143,146 @@ function toggleStocksAll(){
   if(arr)arr.classList.toggle('open',open);
 }
 
-function showFinnhubKeyPrompt(){
-  const box=document.getElementById('fhKeyBox');
-  if(box)box.style.display='block';
+function logoUrl(domain){
+  return `https://logo.clearbit.com/${domain}?size=32`;
 }
 
-function saveFinnhubKey(e){
-  if(e)e.stopPropagation();
-  const inp=document.getElementById('fhKeyInput');
-  const key=inp?.value?.trim();
-  if(!key||key.length<10)return;
-  localStorage.setItem(FH_KEY_LS,key);
-  const box=document.getElementById('fhKeyBox');
-  if(box)box.style.display='none';
-  loadStocks();
-}
-
-async function fetchFinnhubQuote(sym,key){
-  const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${key}`;
-  const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+async function fetchFinnhubQuote(sym){
+  const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${FH_KEY}`;
+  const r=await fetch(url,{signal:AbortSignal.timeout(7000)});
   if(!r.ok)throw new Error('HTTP '+r.status);
   const d=await r.json();
-  // c=current, pc=prev close, dp=change%
-  if(!d||d.c===0&&d.pc===0)return null;
-  return{price:d.c,prevClose:d.pc,pct:d.dp};
+  if(!d||(!d.c&&!d.pc))return null;
+  return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100)};
+}
+
+async function getEurRates(){
+  // ECB daily XML – kein CORS-Problem
+  try{
+    const r=await fetch('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',{signal:AbortSignal.timeout(5000)});
+    const txt=await r.text();
+    const rates={EUR:1};
+    const re=/currency='([A-Z]+)'\s+rate='([\d.]+)'/g;
+    let m;while((m=re.exec(txt))!==null)rates[m[1]]=parseFloat(m[2]);
+    return rates;
+  }catch(e){
+    // Fallback-Kurse (grob)
+    return{EUR:1,USD:0.92,CHF:1.04,DKK:0.134,GBP:1.18};
+  }
 }
 
 async function loadStocks(){
-  const key=localStorage.getItem(FH_KEY_LS)||'';
-  if(!key){showFinnhubKeyPrompt();if(window._lbTick)window._lbTick();return;}
-
   const wrap=document.getElementById('stocksWrap');
   const top3El=document.getElementById('stocksTop3');
   const allEl=document.getElementById('stocksAll');
   const metaEl=document.getElementById('stocksMeta');
-  const metaTxt=document.getElementById('stocksMetaTxt');
+
   if(wrap)wrap.style.display='block';
 
-  // Skeleton während Laden
+  // Skeleton
   if(top3El)top3El.innerHTML=['','',''].map(()=>`
     <div class="stock-chip">
       <div class="stock-chip-dot"></div>
       <div class="stock-chip-name skeleton" style="height:10px;width:55%;border-radius:4px;"></div>
-      <div class="skeleton" style="height:10px;width:50px;border-radius:4px;margin-left:auto;"></div>
+      <div class="skeleton" style="height:10px;width:44px;border-radius:4px;margin-left:auto;flex-shrink:0;"></div>
     </div>`).join('');
 
   try{
-    // Sequenziell mit 120ms Pause → bleibt weit unter 60req/min
-    const rows=[];
+    // EUR-Kurse parallel holen
+    const ratesPromise=getEurRates();
+
+    // Alle Quotes sequenziell (100ms Pause → max 10/sek, weit unter 60/min)
+    const rawRows=[];
     for(const s of STOCKS){
       try{
-        const q=await fetchFinnhubQuote(s.sym,key);
-        if(q)rows.push({name:s.name,sym:s.sym,cur:s.cur,price:q.price,pct:q.pct});
+        const q=await fetchFinnhubQuote(s.sym);
+        if(q&&q.price>0)rawRows.push({...s,price:q.price,pct:q.pct});
       }catch(e){}
-      await new Promise(r=>setTimeout(r,120));
+      await new Promise(r=>setTimeout(r,100));
     }
-    if(!rows.length)throw new Error('Keine Daten');
+
+    if(!rawRows.length)throw new Error('Keine Daten');
+
+    const rates=await ratesPromise;
+
+    // Alles in EUR umrechnen
+    const toEur=(v,cur)=>{
+      if(cur==='EUR')return v;
+      const rate=rates[cur];
+      if(!rate)return v;
+      return v/rate; // rate = EUR pro 1 Fremdwährung → nein, ECB gibt Fremdwährung pro EUR an
+      // ECB: rate = wie viel Fremdwährung = 1 EUR → v[cur] / rate[cur] = v in EUR
+    };
+    // Korrekte ECB-Logik: rate[USD]=1.08 bedeutet 1 EUR = 1.08 USD
+    // Also: preis_in_USD / rate[USD] = preis_in_EUR
+    const toEurCorrect=(v,cur)=>{
+      if(cur==='EUR')return v;
+      const rate=rates[cur];
+      if(!rate)return v;
+      return v/rate;
+    };
+
+    const rows=rawRows.map(s=>({
+      ...s,
+      priceEur:toEurCorrect(s.price,s.cur),
+    }));
 
     rows.sort((a,b)=>b.pct-a.pct);
 
+    const fmtEur=v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
     const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
-    const fmtPrice=(v,cur)=>{
-      const sym=cur==='USD'?' $':cur==='CHF'?' Fr.':cur==='GBP'?' £':cur==='DKK'?' kr':' €';
-      return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+sym;
-    };
 
-    // Top 3
-    if(top3El)top3El.innerHTML=rows.slice(0,3).map(r=>`
+    const chipHtml=r=>`
       <div class="stock-chip">
-        <div class="stock-chip-dot ${r.pct>=0?'g':'r'}"></div>
+        <img class="stock-chip-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
         <div class="stock-chip-name">${r.name}</div>
-        <div class="stock-chip-val">${fmtPrice(r.price,r.cur)}</div>
+        <div class="stock-chip-val">${fmtEur(r.priceEur)}</div>
         <div class="stock-chip-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
-      </div>`).join('');
+      </div>`;
 
-    // Alle Positionen
-    if(allEl)allEl.innerHTML=rows.map(r=>`
+    const rowHtml=r=>`
       <div class="stock-row">
+        <img class="stock-row-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
         <div class="stock-row-name">${r.name}</div>
-        <div class="stock-row-price">${fmtPrice(r.price,r.cur)}</div>
+        <div class="stock-row-price">${fmtEur(r.priceEur)}</div>
         <div class="stock-row-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</div>
-      </div>`).join('');
+      </div>`;
 
-    // Meta
+    if(top3El)top3El.innerHTML=rows.slice(0,3).map(chipHtml).join('');
+    if(allEl)allEl.innerHTML=rows.map(rowHtml).join('');
+
     const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
-    if(metaTxt)metaTxt.textContent=`Finnhub · Realtime · Stand ${ts} · <span onclick="resetFinnhubKey()" style="cursor:pointer;text-decoration:underline;">Key zurücksetzen</span>`;
-    if(metaEl){metaEl.style.display='flex';metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · <span onclick="resetFinnhubKey()" style="cursor:pointer;text-decoration:underline;color:var(--blue);">Key ändern</span></span>`;}
+    if(metaEl){
+      metaEl.style.display='flex';
+      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub · Realtime · Stand ${ts} · alle Kurse in EUR</span>`;
+    }
 
-    // Ticker befüllen
-    renderTicker(rows);
+    renderTicker(rows,fmtEur,fmtPct);
   }catch(e){
     if(top3El)top3El.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
   }
   if(window._lbTick)window._lbTick();
 }
 
-function resetFinnhubKey(){
-  localStorage.removeItem(FH_KEY_LS);
-  const wrap=document.getElementById('stocksWrap');
-  if(wrap)wrap.style.display='none';
-  showFinnhubKeyPrompt();
-}
-
 loadStocks();
 
-// Finnhub Key-Box Events (außerhalb <a>, kein stopPropagation nötig)
-(function(){
-  const btn=document.getElementById('fhKeySaveBtn');
-  const inp=document.getElementById('fhKeyInput');
-  if(btn)btn.addEventListener('click',saveFinnhubKey);
-  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveFinnhubKey();});
-})();
-
-// ── TICKER STRIP (recycelt loadStocks-Daten) ──
-function renderTicker(rows){
+// ── TICKER STRIP ──
+function renderTicker(rows,fmtEur,fmtPct){
   const track=document.getElementById('tickerTrack');
   const strip=document.getElementById('stockTicker');
   if(!track||!rows||!rows.length)return;
 
-  const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
-  const fmtPrice=(v,cur)=>{
-    if(cur==='USD')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' $';
-    if(cur==='GBP')return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' £';
-    return v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
-  };
+  const _fmtEur=fmtEur||(v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €');
+  const _fmtPct=fmtPct||(v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %');
 
-  // Doppelt für nahtlose Loop-Animation
   const html=rows.map(r=>`
     <div class="ticker-item">
+      <img class="ticker-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
       <span class="ticker-item-name">${r.name}</span>
-      <span class="ticker-item-price">${fmtPrice(r.price,r.cur)}</span>
-      <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${fmtPct(r.pct)}</span>
+      <span class="ticker-item-price">${_fmtEur(r.priceEur??r.price)}</span>
+      <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${_fmtPct(r.pct)}</span>
     </div>`).join('');
-  track.innerHTML=html+html; // doppelt für Loop
+  track.innerHTML=html+html; // doppelt für nahtlosen Loop
   if(strip)strip.classList.remove('loading');
 }
 async function loadKids(){
