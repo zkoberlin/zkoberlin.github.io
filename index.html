@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.1 -->
+<title>Paul · Hub</title><!-- v5.5.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -237,7 +237,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 }
 .wsun-side{display:flex;align-items:center;gap:7px;flex:1;}
 .wsun-side.set{justify-content:flex-end;}
-.wsun-icon{font-size:16px;line-height:1;}
+.wsun-icon{width:36px;height:36px;flex-shrink:0;}
+.wsun-icon svg{width:100%;height:100%;}
 .wsun-info{}
 .wsun-lbl{font-size:7.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.35);}
 .wsun-time{font-size:13px;font-weight:700;color:#FFD95A;letter-spacing:-.4px;font-variant-numeric:tabular-nums;}
@@ -1301,7 +1302,40 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
       <!-- Sonnenaufgang / -untergang -->
       <div class="weather-sun-row" id="wSunRow" style="display:none;">
         <div class="wsun-side rise">
-          <div class="wsun-icon">🌅</div>
+          <div class="wsun-icon">
+            <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sky gradient -->
+              <defs>
+                <radialGradient id="sunRiseGlow" cx="50%" cy="70%" r="60%">
+                  <stop offset="0%" stop-color="#FFE27A" stop-opacity="0.5"/>
+                  <stop offset="100%" stop-color="#FF8C42" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="skyRise" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1a3a6b"/>
+                  <stop offset="100%" stop-color="#FF6B35"/>
+                </linearGradient>
+              </defs>
+              <!-- Sky bg -->
+              <rect width="36" height="36" rx="8" fill="url(#skyRise)"/>
+              <!-- Glow halo -->
+              <ellipse cx="18" cy="24" rx="14" ry="8" fill="url(#sunRiseGlow)"/>
+              <!-- Sun rays (thin lines) -->
+              <line x1="18" y1="6" x2="18" y2="9" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
+              <line x1="26.5" y1="9" x2="24.4" y2="11.1" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+              <line x1="9.5" y1="9" x2="11.6" y2="11.1" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+              <line x1="30" y1="18" x2="27" y2="18" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <line x1="6" y1="18" x2="9" y2="18" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+              <!-- Sun (half circle rising) -->
+              <path d="M11 24 A7 7 0 0 1 25 24" fill="#FFD95A"/>
+              <ellipse cx="18" cy="24" rx="7" ry="2.5" fill="#FFC832"/>
+              <!-- Horizon line -->
+              <line x1="4" y1="24" x2="32" y2="24" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round"/>
+              <!-- Water shimmer lines -->
+              <line x1="8" y1="27" x2="14" y2="27" stroke="rgba(255,220,100,.4)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="22" y1="27" x2="28" y2="27" stroke="rgba(255,220,100,.4)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="10" y1="29.5" x2="26" y2="29.5" stroke="rgba(255,220,100,.25)" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+          </div>
           <div class="wsun-info">
             <div class="wsun-lbl">Aufgang</div>
             <div class="wsun-time" id="wSunrise">–</div>
@@ -1318,7 +1352,44 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
             <div class="wsun-lbl">Untergang</div>
             <div class="wsun-time" id="wSunset">–</div>
           </div>
-          <div class="wsun-icon">🌇</div>
+          <div class="wsun-icon">
+            <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="sunSetGlow" cx="50%" cy="70%" r="60%">
+                  <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="skySet" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1a1a3e"/>
+                  <stop offset="60%" stop-color="#6b2fa0"/>
+                  <stop offset="100%" stop-color="#e05c2a"/>
+                </linearGradient>
+              </defs>
+              <!-- Sky bg -->
+              <rect width="36" height="36" rx="8" fill="url(#skySet)"/>
+              <!-- Glow halo -->
+              <ellipse cx="18" cy="24" rx="13" ry="7" fill="url(#sunSetGlow)"/>
+              <!-- Sun (half circle setting) -->
+              <path d="M11 24 A7 7 0 0 1 25 24" fill="#FF8C42"/>
+              <ellipse cx="18" cy="24" rx="7" ry="2.5" fill="#e05c2a"/>
+              <!-- Horizon line -->
+              <line x1="4" y1="24" x2="32" y2="24" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round"/>
+              <!-- Stars appearing -->
+              <circle cx="8" cy="7" r="0.8" fill="rgba(255,255,255,.7)"/>
+              <circle cx="26" cy="5" r="1" fill="rgba(255,255,255,.6)"/>
+              <circle cx="30" cy="11" r="0.7" fill="rgba(255,255,255,.5)"/>
+              <circle cx="14" cy="10" r="0.6" fill="rgba(255,255,255,.4)"/>
+              <!-- Water shimmer lines warm tones -->
+              <line x1="8" y1="27" x2="13" y2="27" stroke="rgba(255,140,60,.45)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="23" y1="27" x2="28" y2="27" stroke="rgba(255,140,60,.45)" stroke-width="1" stroke-linecap="round"/>
+              <line x1="10" y1="29.5" x2="26" y2="29.5" stroke="rgba(255,140,60,.25)" stroke-width="1" stroke-linecap="round"/>
+              <!-- City silhouette -->
+              <rect x="4" y="20" width="4" height="4" fill="rgba(0,0,0,.35)" rx="1"/>
+              <rect x="5.5" y="18.5" width="1" height="1.5" fill="rgba(0,0,0,.35)"/>
+              <rect x="28" y="21" width="4" height="3" fill="rgba(0,0,0,.35)" rx="1"/>
+              <rect x="29" y="19.5" width="1.5" height="1.5" fill="rgba(0,0,0,.35)"/>
+            </svg>
+          </div>
         </div>
       </div>
     </a>
