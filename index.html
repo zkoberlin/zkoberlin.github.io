@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.4.9 -->
+<title>Paul · Hub</title><!-- v5.5.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1066,18 +1066,24 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   height:30px;margin-bottom:10px;
   border:1px solid var(--border);
 }
+/* Beide Seiten koennen die "hoehere" sein — rot = Gewinner */
 .uc-poss-bar-left{
-  background:var(--union);
   display:flex;align-items:center;padding:0 10px;
-  font-size:12px;font-weight:700;color:#fff;
+  font-size:12px;font-weight:700;
   font-variant-numeric:tabular-nums;white-space:nowrap;
+  transition:background .3s,color .3s;
 }
+.uc-poss-bar-left.higher{background:var(--union);color:#fff;}
+.uc-poss-bar-left.lower{background:var(--card2);color:var(--t2);font-weight:600;}
 .uc-poss-bar-right{
-  flex:1;background:var(--card2);
+  flex:1;
   display:flex;align-items:center;justify-content:flex-end;padding:0 10px;
-  font-size:12px;font-weight:600;color:var(--t2);
+  font-size:12px;font-weight:700;
   font-variant-numeric:tabular-nums;white-space:nowrap;
+  transition:background .3s,color .3s;
 }
+.uc-poss-bar-right.higher{background:var(--union);color:#fff;}
+.uc-poss-bar-right.lower{background:var(--card2);color:var(--t2);font-weight:600;}
 .uc-poss-lbl{
   text-align:center;font-size:8.5px;font-weight:600;color:var(--t3);
   text-transform:uppercase;letter-spacing:.35px;margin-bottom:4px;
@@ -1225,7 +1231,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.4.4</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3038,14 +3044,23 @@ async function loadUnion(){
 
       const hasStats=ms.possession||statRows.length>0;
 
-      const possHtml=ms.possession?`
+      const possHtml=(()=>{
+        if(!ms.possession) return '';
+        const pu=Number(ms.possession.union), po=Number(ms.possession.opp);
+        const uHigher=pu>=po;
+        // Der groessere Wert bekommt width, der kleinere bekommt flex:1 (Rest)
+        const leftStyle=`width:${pu}%`;
+        const leftCls=uHigher?'higher':'lower';
+        const rightCls=!uHigher?'higher':'lower';
+        return `
         <div class="uc-poss-preview">
           <div class="uc-poss-lbl">Ballbesitz</div>
           <div class="uc-poss-bar-wrap">
-            <div class="uc-poss-bar-left ${Number(ms.possession.union)>=Number(ms.possession.opp)?'higher':'lower'}" style="width:${ms.possession.union}%">${ms.possession.union}%</div>
-            <div class="uc-poss-bar-right ${Number(ms.possession.opp)>Number(ms.possession.union)?'higher':'lower'}">${ms.possession.opp}%</div>
+            <div class="uc-poss-bar-left ${leftCls}" style="${leftStyle}">${pu}%</div>
+            <div class="uc-poss-bar-right ${rightCls}">${po}%</div>
           </div>
-        </div>`:'';
+        </div>`;
+      })();
 
       const rowsHtml=statRows.map(([lbl,uv,ov,un,on])=>{
         const uWins=un>on, oWins=on>un;
