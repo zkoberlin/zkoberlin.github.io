@@ -620,19 +620,19 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 /* ── STOCK TICKER STRIP ── */
 #stockTicker{
   position:sticky;top:57px;z-index:99;
-  background:rgba(242,242,247,.94);
+  background:rgba(15,15,17,.96);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-  height:32px;overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  height:28px;overflow:hidden;
   transition:background .3s;
 }
-html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
-@media(prefers-color-scheme:dark){html:not([data-theme="light"]) #stockTicker{background:rgba(14,14,16,.94);}}
+html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-bottom-color:rgba(255,255,255,.05);}
+@media(prefers-color-scheme:light){html:not([data-theme="dark"]) #stockTicker{background:rgba(20,20,22,.97);border-bottom-color:rgba(255,255,255,.05);}}
 #stockTicker.loading{opacity:.35;}
 .ticker-track{
   display:inline-flex;align-items:center;
-  white-space:nowrap;height:32px;
-  animation:tickerScroll 70s linear infinite;
+  white-space:nowrap;height:28px;
+  animation:tickerScroll 90s linear infinite;
   will-change:transform;
 }
 .ticker-track:hover{animation-play-state:paused;}
@@ -641,20 +641,19 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
   100%{transform:translateX(-50%);}
 }
 .ticker-item{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:0 14px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0 16px;
   font-family:'Montserrat',sans-serif;
   font-size:10px;font-weight:600;
-  color:var(--t);
-  border-right:1px solid var(--border);
-  height:32px;flex-shrink:0;
+  color:#e8e8ed;
+  border-right:1px solid rgba(255,255,255,.08);
+  height:28px;flex-shrink:0;
 }
-.ticker-logo{width:14px;height:14px;border-radius:3px;object-fit:contain;flex-shrink:0;background:var(--card2);}
-.ticker-item-name{color:var(--t3);font-weight:500;font-size:9.5px;}
-.ticker-item-price{font-variant-numeric:tabular-nums;}
-.ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9px;padding:1px 5px;border-radius:4px;}
-.ticker-item-pct.g{color:var(--green);background:var(--green-l);}
-.ticker-item-pct.r{color:var(--red);background:var(--red-l);}
+.ticker-item-name{color:rgba(255,255,255,.45);font-weight:500;font-size:9px;letter-spacing:.3px;}
+.ticker-item-price{font-variant-numeric:tabular-nums;color:#f0f0f5;}
+.ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9px;font-weight:700;}
+.ticker-item-pct.g{color:#34d399;}
+.ticker-item-pct.r{color:#f87171;}
 /* Logos in der Kachel */
 .stock-chip-logo{width:18px;height:18px;border-radius:4px;object-fit:contain;flex-shrink:0;background:var(--card2);}
 .stock-row-logo{width:15px;height:15px;border-radius:3px;object-fit:contain;flex-shrink:0;background:var(--card2);}
@@ -2247,7 +2246,8 @@ async function getEurRates(){
     let m;while((m=re.exec(txt))!==null)rates[m[1]]=parseFloat(m[2]);
     return rates;
   }catch(e){
-    return{EUR:1,USD:0.92,CHF:1.04,DKK:0.134,GBP:1.18};
+    // ECB-Format: 1 EUR = X Fremdwährung (nicht invertiert!)
+    return{EUR:1,USD:1.12,CHF:0.93,DKK:7.46,GBP:0.85,SEK:11.6,NOK:11.8};
   }
 }
 
@@ -2399,15 +2399,20 @@ function renderTicker(rows,fmtEur,fmtPct){
   const _fmtEur=fmtEur||(v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €');
   const _fmtPct=fmtPct||(v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %');
 
-  // Ticker zeigt nur das Kürzel (Symbol ohne Exchange-Prefix)
-  const tickerSym=sym=>sym.includes(':')?sym.split(':')[1]:sym;
+  // Kürzel ohne Exchange-Prefix
+  const tickerSym=r=>{
+    const s=String(r.sym||r.fhSym||r.yfSym||'');
+    return s.includes('.')?s.split('.')[0]:s.includes(':')?s.split(':')[1]:s;
+  };
 
-  const html=rows.map(r=>`
+  // Sortierung: alphabetisch für TV-Ticker
+  const sorted=[...rows].sort((a,b)=>tickerSym(a).localeCompare(tickerSym(b)));
+
+  const html=sorted.map(r=>`
     <div class="ticker-item">
-      <img class="ticker-logo" src="${logoUrl(r.logo)}" alt="" onerror="this.style.display='none'">
-      <span class="ticker-item-name">${tickerSym(r.sym)}</span>
+      <span class="ticker-item-name">${tickerSym(r)}</span>
       <span class="ticker-item-price">${_fmtEur(r.priceEur??r.price)}</span>
-      <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${_fmtPct(r.pct)}</span>
+      <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${r.pct>=0?'▲':'▼'} ${Math.abs(r.pct).toFixed(2).replace('.',',')}%</span>
     </div>`).join('');
   track.innerHTML=html+html; // doppelt für nahtlosen Loop
   if(strip)strip.classList.remove('loading');
