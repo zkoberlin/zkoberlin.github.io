@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.13 -->
+<title>Paul · Hub</title><!-- v5.2.14 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -116,24 +116,104 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
 
 /* Weather expanded */
-.weather-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(255,149,0,.30);box-shadow:var(--sh);overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s;}
-.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.55);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
-.weather-main{padding:13px 16px;display:flex;align-items:center;gap:12px;}
-.weather-icon{font-size:32px;flex-shrink:0;}
-.weather-info{flex:1;}
-.weather-city{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
-.weather-temp{font-size:28px;font-weight:300;letter-spacing:-1.5px;line-height:1;}
-.weather-desc{font-size:11px;color:var(--t2);margin-top:2px;}
-.weather-feels{font-size:10px;color:var(--t3);margin-top:1px;}
-.weather-forecast{border-top:1px solid var(--border);padding:10px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.weather-day{text-align:center;padding:6px 4px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);}
-.weather-day-name{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--t3);margin-bottom:4px;-webkit-font-smoothing:antialiased;}
-.weather-day-icon{font-size:18px;margin-bottom:3px;}
-.weather-day-temp{font-size:11px;font-weight:600;color:var(--t);}
-.weather-day-range{font-size:9.5px;color:var(--t2);margin-top:1px;}
-.weather-today-extra{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);}
-.wte-chip{display:flex;align-items:center;gap:3px;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;font-weight:500;color:var(--t2);white-space:nowrap;}
-.wte-chip .wte-val{font-weight:700;color:var(--t);}
+/* ── WEATHER CARD – Redesign v5.2.14 ── */
+.weather-card{
+  position:relative;
+  border-radius:var(--r);
+  border:1px solid rgba(255,149,0,.22);
+  box-shadow:var(--sh);
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  background:linear-gradient(140deg,#0f2040 0%,#1a3a5c 45%,#0d1e35 100%);
+  color:#fff;
+  text-decoration:none;
+  display:block;
+}
+.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.5);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
+/* Atmospheric glow overlay */
+.weather-card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 80% at 80% -10%,rgba(255,200,80,.10) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 60% at 10% 100%,rgba(100,160,255,.08) 0%,transparent 60%);
+}
+/* Stars/noise texture */
+.weather-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(1px 1px at 20% 15%,rgba(255,255,255,.25) 0%,transparent 100%),
+                   radial-gradient(1px 1px at 70% 25%,rgba(255,255,255,.18) 0%,transparent 100%),
+                   radial-gradient(1.5px 1.5px at 40% 60%,rgba(255,255,255,.12) 0%,transparent 100%),
+                   radial-gradient(1px 1px at 85% 70%,rgba(255,255,255,.15) 0%,transparent 100%),
+                   radial-gradient(1px 1px at 15% 80%,rgba(255,255,255,.10) 0%,transparent 100%);
+}
+.weather-main{
+  padding:16px 18px 14px;
+  display:flex;align-items:flex-start;gap:14px;
+  position:relative;z-index:1;
+}
+.weather-icon{
+  font-size:52px;flex-shrink:0;line-height:1;
+  filter:drop-shadow(0 2px 12px rgba(255,200,80,.3));
+  animation:wicon-float 4s ease-in-out infinite;
+}
+@keyframes wicon-float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-3px);}
+}
+.weather-info{flex:1;min-width:0;}
+.weather-city{
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;color:rgba(255,255,255,.45);
+  margin-bottom:4px;-webkit-font-smoothing:antialiased;
+}
+.weather-temp{
+  font-size:52px;font-weight:200;letter-spacing:-3px;line-height:.95;
+  color:#fff;font-variant-numeric:tabular-nums;
+  text-shadow:0 2px 20px rgba(255,200,80,.2);
+}
+.weather-desc{
+  font-size:12px;font-weight:500;color:rgba(255,255,255,.75);
+  margin-top:5px;letter-spacing:-.1px;
+}
+.weather-feels{font-size:10px;color:rgba(255,255,255,.40);margin-top:2px;}
+/* Today chips row */
+.weather-today-extra{
+  display:flex;gap:5px;flex-wrap:wrap;
+  margin-top:10px;
+}
+.wte-chip{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(4px);
+  border-radius:20px;padding:4px 10px;
+  font-size:10px;font-weight:500;color:rgba(255,255,255,.65);
+  white-space:nowrap;
+}
+.wte-chip .wte-val{font-weight:700;color:#fff;}
+/* Forecast strip */
+.weather-forecast{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:11px 18px 13px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;
+  position:relative;z-index:1;
+  background:rgba(0,0,0,.18);
+}
+.weather-day{
+  text-align:center;padding:8px 5px;
+  border-radius:10px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  transition:background .15s,transform .15s;
+}
+.weather-day:hover{background:rgba(255,255,255,.12);transform:translateY(-1px);}
+.weather-day-name{
+  font-size:8.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.4px;color:rgba(255,255,255,.40);
+  margin-bottom:5px;-webkit-font-smoothing:antialiased;
+}
+.weather-day-icon{font-size:20px;margin-bottom:4px;}
+.weather-day-temp{font-size:12px;font-weight:700;color:#fff;letter-spacing:-.3px;}
+.weather-day-range{font-size:9px;color:rgba(255,255,255,.40);margin-top:2px;font-variant-numeric:tabular-nums;}
 
 /* ── HOVER CARD ── */
 .hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
@@ -364,10 +444,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   }
 
   /* Wetter-Karte kompakter */
-  .weather-main{padding:11px 13px;gap:10px;}
-  .weather-icon{font-size:26px;}
-  .weather-temp{font-size:22px;}
-  .weather-forecast{padding:8px 13px;gap:5px;}
+  .weather-main{padding:13px 14px;gap:11px;}
+  .weather-icon{font-size:38px;}
+  .weather-temp{font-size:38px;}
+  .weather-forecast{padding:9px 14px 11px;gap:5px;}
 
   /* Emil & Rosa – Zahlen kleiner auf Mobile */
   .er-n{font-size:36px!important;}
@@ -796,6 +876,79 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .uc-stat-pill-val{font-size:9.5px;}
 }
 
+/* ── H2H (Head-to-Head) Block ── */
+.uc-h2h{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:12px 14px;
+  transition:border-color .15s;
+}
+.uc-h2h:hover{border-color:rgba(232,0,28,.18);}
+.uc-h2h-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:11px;
+}
+.uc-h2h-lbl{
+  font-size:7.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.55px;color:var(--t3);
+  -webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;gap:5px;
+}
+.uc-h2h-lbl::before{
+  content:'';display:inline-block;
+  width:3px;height:3px;border-radius:50%;
+  background:var(--t3);flex-shrink:0;
+}
+/* Bilanz-Balken (Union Win | Unentschieden | Opp Win) */
+.uc-h2h-bar-wrap{margin-bottom:11px;}
+.uc-h2h-bar{
+  display:flex;height:7px;border-radius:4px;overflow:hidden;gap:2px;
+  margin-bottom:5px;
+}
+.uc-h2h-bar-w{background:var(--union);border-radius:4px 0 0 4px;}
+.uc-h2h-bar-d{background:var(--t3);opacity:.5;}
+.uc-h2h-bar-l{background:var(--t2);opacity:.4;border-radius:0 4px 4px 0;}
+.uc-h2h-bar-labels{
+  display:flex;justify-content:space-between;
+  font-size:8.5px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.uc-h2h-bar-labels .lw{color:var(--union);}
+.uc-h2h-bar-labels .ld{color:var(--t3);}
+.uc-h2h-bar-labels .ll{color:var(--t2);}
+/* Stats row: Tore + Heimquote */
+.uc-h2h-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:5px;
+  margin-bottom:11px;
+}
+.uc-h2h-stat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:7px 6px;text-align:center;
+}
+.uc-h2h-stat-val{
+  font-size:16px;font-weight:700;color:var(--union);
+  letter-spacing:-.5px;font-variant-numeric:tabular-nums;line-height:1;
+}
+.uc-h2h-stat-lbl{font-size:7px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;margin-top:3px;}
+/* Letzte Duelle */
+.uc-h2h-matches{display:flex;flex-direction:column;gap:4px;}
+.uc-h2h-match{
+  display:flex;align-items:center;gap:6px;
+  font-size:9.5px;padding:5px 7px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:7px;
+}
+.uc-h2h-match-date{color:var(--t3);font-size:8.5px;min-width:26px;flex-shrink:0;font-variant-numeric:tabular-nums;}
+.uc-h2h-match-teams{flex:1;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px;}
+.uc-h2h-match-score{
+  font-size:11px;font-weight:800;letter-spacing:-.5px;
+  font-variant-numeric:tabular-nums;flex-shrink:0;
+  padding:1px 6px;border-radius:5px;
+}
+.uc-h2h-match-score.w{color:var(--green);background:var(--green-l);border:1px solid var(--green-b);}
+.uc-h2h-match-score.l{color:var(--red);background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);}
+.uc-h2h-match-score.d{color:var(--t2);background:var(--card2);border:1px solid var(--border);}
+.uc-h2h-empty{font-size:10px;color:var(--t3);text-align:center;padding:10px 0;}
+
 </style>
 </head>
 <body>
@@ -810,7 +963,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.12</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.14</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2214,6 +2367,80 @@ async function loadUnion(){
         <div class="uc-match-meta">${fmtDt(next.date)}</div>`;
     }
 
+    // ── H2H Block (Direktvergleich mit dem nächsten Gegner) ──
+    let h2hHtml='';
+    const h2h=d.h2h;
+    const nextOppName=next?(next.is_home?next.away_name:next.home_name):'';
+    if(h2h && (h2h.wins!==undefined||h2h.matches)){
+      const hw=h2h.wins||0,hd=h2h.draws||0,hl=h2h.losses||0;
+      const htot=hw+hd+hl||1;
+      const wPct=Math.round((hw/htot)*100);
+      const dPct=Math.round((hd/htot)*100);
+      const lPct=100-wPct-dPct;
+      const avgGf=htot>0?((h2h.goals_for||0)/htot).toFixed(1):'–';
+      const avgGa=htot>0?((h2h.goals_against||0)/htot).toFixed(1):'–';
+      const homeWinPct=h2h.home_wins&&htot>0?Math.round((h2h.home_wins/htot)*100):null;
+
+      // Letzte Duelle
+      const prevMatches=(h2h.matches||[]).slice(0,5);
+      const prevHtml=prevMatches.length?prevMatches.map(m=>{
+        const yr=m.date?new Date(m.date).getFullYear().toString().slice(-2):'??';
+        const cls=m.union_result==='W'?'w':m.union_result==='L'?'l':'d';
+        const scoreStr=`${m.home_goals}:${m.away_goals}`;
+        const homeTeam=m.home_name||'Union';
+        const awayTeam=m.away_name||nextOppName;
+        return`<div class="uc-h2h-match">
+          <span class="uc-h2h-match-date">'${yr}</span>
+          <span class="uc-h2h-match-teams">${homeTeam} – ${awayTeam}</span>
+          <span class="uc-h2h-match-score ${cls}">${scoreStr}</span>
+        </div>`;
+      }).join(''):`<div class="uc-h2h-empty">Keine Spieldaten verfügbar</div>`;
+
+      h2hHtml=`
+      <div class="uc-h2h">
+        <div class="uc-h2h-header">
+          <div class="uc-h2h-lbl">Direktvergleich · Union vs. ${nextOppName||'Gegner'}</div>
+          <div style="font-size:9px;color:var(--t3);">${htot} Spiele</div>
+        </div>
+        <div class="uc-h2h-bar-wrap">
+          <div class="uc-h2h-bar">
+            <div class="uc-h2h-bar-w" style="flex:${hw}"></div>
+            <div class="uc-h2h-bar-d" style="flex:${hd}"></div>
+            <div class="uc-h2h-bar-l" style="flex:${hl}"></div>
+          </div>
+          <div class="uc-h2h-bar-labels">
+            <span class="lw">${hw} Siege</span>
+            <span class="ld">${hd} Unentsch.</span>
+            <span class="ll">${hl} Niederlagen</span>
+          </div>
+        </div>
+        <div class="uc-h2h-stats">
+          <div class="uc-h2h-stat">
+            <div class="uc-h2h-stat-val">${wPct}%</div>
+            <div class="uc-h2h-stat-lbl">Siegquote</div>
+          </div>
+          <div class="uc-h2h-stat">
+            <div class="uc-h2h-stat-val">${avgGf}</div>
+            <div class="uc-h2h-stat-lbl">⚽ Ø Tore</div>
+          </div>
+          <div class="uc-h2h-stat">
+            <div class="uc-h2h-stat-val">${avgGa}</div>
+            <div class="uc-h2h-stat-lbl">🥅 Ø Gegent.</div>
+          </div>
+        </div>
+        <div class="uc-h2h-lbl" style="margin-bottom:7px;">Letzte Duelle</div>
+        <div class="uc-h2h-matches">${prevHtml}</div>
+      </div>`;
+    } else if(nextOppName){
+      // Placeholder wenn h2h fehlt in JSON — weist auf Python-Script hin
+      h2hHtml=`
+      <div class="uc-h2h">
+        <div class="uc-h2h-lbl">Direktvergleich · Union vs. ${nextOppName}</div>
+        <div class="uc-h2h-empty" style="margin-top:8px;">H2H-Daten fehlen — <code style="font-size:8px;">h2h</code> ins union.json ergänzen</div>
+      </div>`;
+    }
+    }
+
     // ── Top 3 Torschützen (Karten-Grid) ──
     const allScorers=(d.union_scorers||[]);
     const top3Goals=allScorers.slice(0,3);
@@ -2267,6 +2494,7 @@ async function loadUnion(){
       </div>
       <div class="uc-match">${lastHtml}</div>
       <div class="uc-match">${nextHtml}</div>
+      ${h2hHtml}
       <div class="uc-box">
         <div class="uc-box-lbl">⚽ Top 3 Torschützen</div>
         ${top3GoalsHtml}
