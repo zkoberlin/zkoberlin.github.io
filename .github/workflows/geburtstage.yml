@@ -2,7 +2,7 @@ name: Geburtstage aktualisieren
  
 on:
   schedule:
-    - cron: '0 4 * * *'   # täglich 04:00 UTC (morgens 06:00 Berlin)
+    - cron: '0 1 * * *'   # täglich 04:00 UTC (morgens 06:00 Berlin)
   workflow_dispatch:
  
 jobs:
