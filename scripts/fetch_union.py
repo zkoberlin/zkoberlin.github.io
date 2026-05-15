@@ -353,13 +353,8 @@ def build_h2h_historical(next_m):
 
         fd_match_id = None
         for m in md_matches:
-            h = m.get("homeTeam", {})
-            a = m.get("awayTeam", {})
-            h_id = h.get("id")
-            a_id = a.get("id")
-            # Debug: alle Teams auf Spieltag ausgeben
-            print(f"   Spiel: {h.get('shortName','?')} vs {a.get('shortName','?')} (ids: {h_id} / {a_id})")
-            # Vergleich als int UND string absichern
+            h_id = m.get("homeTeam", {}).get("id")
+            a_id = m.get("awayTeam", {}).get("id")
             if str(h_id) == str(FD_UID) or str(a_id) == str(FD_UID):
                 fd_match_id = m.get("id")
                 print(f"   Union-Spiel gefunden: fd_match_id={fd_match_id}")
