@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-14T18:19:31.862422+00:00",
+  "updated_at": "2026-05-15T07:15:48.584374+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -11,13 +11,13 @@
   "losses": 15,
   "goals_for": 40,
   "goals_against": 58,
-  "form": "LLLDW",
-  "team_logo": "",
+  "form": "LWLDLLLDW",
+  "team_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
   "table_context": [
     {
       "rank": 10,
       "name": "Mainz 05",
-      "logo": "",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
       "points": 37,
       "is_union": false,
       "qual_color": null,
@@ -26,7 +26,7 @@
     {
       "rank": 11,
       "name": "Hamburger SV",
-      "logo": "",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9782.png",
       "points": 37,
       "is_union": false,
       "qual_color": null,
@@ -35,7 +35,7 @@
     {
       "rank": 12,
       "name": "Union Berlin",
-      "logo": "",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
       "points": 36,
       "is_union": true,
       "qual_color": null,
@@ -44,7 +44,7 @@
     {
       "rank": 13,
       "name": "B. Mönchengladbach",
-      "logo": "",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
       "points": 35,
       "is_union": false,
       "qual_color": null,
@@ -53,7 +53,7 @@
     {
       "rank": 14,
       "name": "Köln",
-      "logo": "",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png",
       "points": 32,
       "is_union": false,
       "qual_color": null,
@@ -66,8 +66,8 @@
     "date": "2026-05-10T17:30:00Z",
     "home_name": "Mainz",
     "away_name": "Union Berlin",
-    "home_logo": "",
-    "away_logo": "",
+    "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
     "goals_home": 1,
     "goals_away": 3,
     "is_home": false,
@@ -79,8 +79,8 @@
     "date": "2026-05-16T13:30:00Z",
     "home_name": "Union Berlin",
     "away_name": "Augsburg",
-    "home_logo": "",
-    "away_logo": "",
+    "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
+    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9925.png",
     "goals_home": 0,
     "goals_away": 0,
     "is_home": true
