@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title>
+<title>Paul · Hub</title><!-- v4.5.30 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1416,9 +1416,15 @@ async function loadSchulferien(){
 
   if(current){
     const daysLeft=Math.round((current.end-today)/86400000);
-    document.getElementById('ferienCountdown').textContent=
-      daysLeft===0?'🎉 Letzter Ferientag!':daysLeft===1?'noch 1 Tag':'noch '+daysLeft+' Tage';
-    document.getElementById('ferienCountdown').style.color='var(--green)';
+    const countdownEl=document.getElementById('ferienCountdown');
+    if(daysLeft===0){
+      countdownEl.textContent='Heute letzter Tag 🎉';
+    } else if(daysLeft===1){
+      countdownEl.textContent='noch 1 Tag';
+    } else {
+      countdownEl.textContent='noch '+daysLeft+' Tage';
+    }
+    countdownEl.style.color='var(--green)';
     document.getElementById('ferienName').textContent='🎉 '+fmtFerienName(current.name)+' – laufen gerade!';
     document.getElementById('ferienDates').textContent=fmtFerienRange(current.start,current.end);
     iconEl.innerHTML='<span style="font-size:20px;">🎉</span>';
@@ -1511,7 +1517,7 @@ async function loadW(){
 loadW();
 
 // ── FINANZEN BLUR ──
-let _finBlurred=false;
+let _finBlurred=true;
 function toggleFinBlur(e){
   if(e)e.preventDefault();
   _finBlurred=!_finBlurred;
@@ -1520,6 +1526,13 @@ function toggleFinBlur(e){
   if(wrap)wrap.classList.toggle('fin-blurred',_finBlurred);
   if(btn)btn.textContent=_finBlurred?'👁 Zeigen':'👁 Blenden';
 }
+// Blur sofort beim Laden aktivieren
+(function initBlur(){
+  const wrap=document.getElementById('finRowWrap');
+  const btn=document.getElementById('finBlurBtn');
+  if(wrap)wrap.classList.add('fin-blurred');
+  if(btn)btn.textContent='👁 Zeigen';
+})();
 
 // ── FINANZEN ──
 async function loadFin(){
