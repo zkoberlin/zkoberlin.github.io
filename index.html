@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.8 -->
+<title>Paul · Hub</title><!-- v5.2.9 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1439,24 +1439,16 @@ async function loadSchulferien(){
       return;
     }
     const daysUntilF=Math.round((next.start-today)/86400000);
-    document.getElementById('ferienCountdown').textContent=
-      daysUntilF===1?'Morgen gehts los!':'in '+daysUntilF+' Tagen';
-    document.getElementById('ferienCountdown').style.color='var(--blue)';
+    const cdText=daysUntilF<=0?'Heute 🎉':daysUntilF===1?'Morgen gehts los!':'in '+daysUntilF+' Tagen';
+    document.getElementById('ferienCountdown').textContent=cdText;
+    document.getElementById('ferienCountdown').style.color=daysUntilF<=0?'var(--green)':'var(--blue)';
     document.getElementById('ferienName').textContent=fmtFerienName(next.name);
     document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
-    // Mini calendar SVG showing start date of next Ferien
     const MKF=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
     const fDay=next.start.getDate();
     const fMon=MKF[next.start.getMonth()].toUpperCase();
-    iconEl.innerHTML=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;border-radius:var(--r3);overflow:hidden;">
-      <rect width="44" height="44" fill="white"/>
-      <rect y="0" width="44" height="15" fill="#e8001c"/>
-      <text x="22" y="11" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="6.5" font-weight="700" fill="white" letter-spacing=".3">${fMon}</text>
-      <text x="22" y="34" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="19" font-weight="300" fill="#1D1D1F">${fDay}</text>
-    </svg>`;
-    iconEl.style.background='transparent';
-    iconEl.style.border='none';
-    iconEl.style.padding='0';
+    iconEl.style.cssText='width:44px;height:44px;flex-shrink:0;overflow:hidden;border-radius:9px;border:none;background:transparent;padding:0;display:block;';
+    iconEl.innerHTML=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect width="44" height="44" rx="9" fill="white"/><rect y="0" width="44" height="16" fill="#e8001c"/><rect y="7" width="44" height="9" fill="#e8001c"/><text x="22" y="12" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" font-weight="700" fill="white" letter-spacing=".4">${fMon}</text><text x="22" y="35" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="20" font-weight="300" fill="#1D1D1F">${fDay}</text></svg>`;
   }
 }
 function fmtFerienName(n){
