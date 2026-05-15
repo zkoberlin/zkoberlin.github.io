@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-15T07:23:13.869094+00:00",
+  "updated_at": "2026-05-15T13:15:48.975500+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -85,48 +85,7 @@
     "goals_away": 0,
     "is_home": true
   },
-  "last_match_stats": {
-    "possession": {
-      "union": 47,
-      "opp": 53
-    },
-    "xg": {
-      "union": "2.68",
-      "opp": "1.61"
-    },
-    "shots": {
-      "union": 16,
-      "opp": 15
-    },
-    "shots_on_target": {
-      "union": 9,
-      "opp": 4
-    },
-    "touches_box": {
-      "union": 20,
-      "opp": 33
-    },
-    "big_chance": {
-      "union": 6,
-      "opp": 4
-    },
-    "yellow_cards": {
-      "union": 1,
-      "opp": 2
-    },
-    "corners": {
-      "union": 8,
-      "opp": 7
-    },
-    "saves": {
-      "union": 3,
-      "opp": 6
-    },
-    "fouls": {
-      "union": 10,
-      "opp": 11
-    }
-  },
+  "last_match_stats": {},
   "union_scorers": [
     {
       "id": 609504,
