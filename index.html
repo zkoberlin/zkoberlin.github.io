@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.4.3 -->
+<title>Paul · Hub</title><!-- v5.4.4 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1155,7 +1155,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.4.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.4.4</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2147,30 +2147,33 @@ loadBtc();
 const FH_KEY='d83ncvhr01qkm5c8rrjgd83ncvhr01qkm5c8rrk0';
 
 // Vollständiges Parqet-Portfolio – 22 Positionen
-// api: 'fh' = Finnhub (US-Listings), 'yf' = Yahoo Finance (EU/CH/DK-Listings)
+// fhSym  = Finnhub-Symbol (US-Listing oder ADR)
+// yfSym  = Yahoo Finance Symbol (EU-Listing, CORS-Proxy-Fallback)
+// fbEur  = Parqet-Fallback-Preis in EUR (falls beide APIs fehlschlagen)
+// fbPct  = letzter bekannter Tages-%  (Platzhalter, greift nur bei totalem API-Ausfall)
 const STOCKS=[
-  {name:'Microsoft',         fhSym:'MSFT',      yfSym:null,        logo:'microsoft.com',        api:'fh', cur:'USD'},
-  {name:'Alphabet',          fhSym:'GOOGL',     yfSym:null,        logo:'google.com',            api:'fh', cur:'USD'},
-  {name:'ASML',              fhSym:'ASML',      yfSym:null,        logo:'asml.com',              api:'fh', cur:'USD'},
-  {name:'Novo Nordisk',      fhSym:'NVO',       yfSym:null,        logo:'novonordisk.com',       api:'fh', cur:'USD'},
-  {name:'Deutsche Börse',    fhSym:null,        yfSym:'DB1.DE',    logo:'deutsche-boerse.com',   api:'yf', cur:'EUR'},
-  {name:'Procter & Gamble',  fhSym:'PG',        yfSym:null,        logo:'pg.com',                api:'fh', cur:'USD'},
-  {name:'Lotus Bakeries',    fhSym:null,        yfSym:'LOTB.BR',   logo:'lotusbakeries.com',     api:'yf', cur:'EUR'},
-  {name:'Wolters Kluwer',    fhSym:null,        yfSym:'WKL.AS',    logo:'wolterskluwer.com',     api:'yf', cur:'EUR'},
-  {name:'Mercado Libre',     fhSym:'MELI',      yfSym:null,        logo:'mercadolibre.com',      api:'fh', cur:'USD'},
-  {name:'Siemens',           fhSym:null,        yfSym:'SIE.DE',    logo:'siemens.com',           api:'yf', cur:'EUR'},
-  {name:'Hannover Rück',     fhSym:null,        yfSym:'HNR1.DE',   logo:'hannover-re.com',       api:'yf', cur:'EUR'},
-  {name:'Ferrari',           fhSym:'RACE',      yfSym:null,        logo:'ferrari.com',           api:'fh', cur:'USD'},
-  {name:'Tesla',             fhSym:'TSLA',      yfSym:null,        logo:'tesla.com',             api:'fh', cur:'USD'},
-  {name:'Nubank',            fhSym:'NU',        yfSym:null,        logo:'nu.com.br',             api:'fh', cur:'USD'},
-  {name:'Cintas',            fhSym:'CTAS',      yfSym:null,        logo:'cintas.com',            api:'fh', cur:'USD'},
-  {name:'American Express',  fhSym:'AXP',       yfSym:null,        logo:'americanexpress.com',   api:'fh', cur:'USD'},
-  {name:'Hermès',            fhSym:null,        yfSym:'RMS.PA',    logo:'hermes.com',            api:'yf', cur:'EUR'},
-  {name:'Netflix',           fhSym:'NFLX',      yfSym:null,        logo:'netflix.com',           api:'fh', cur:'USD'},
-  {name:'BKW',               fhSym:null,        yfSym:'BKW.SW',    logo:'bkw.ch',               api:'yf', cur:'CHF'},
-  {name:'Zoetis',            fhSym:'ZTS',       yfSym:null,        logo:'zoetis.com',            api:'fh', cur:'USD'},
-  {name:'Richtech Robotics', fhSym:'RR',        yfSym:null,        logo:'richtechrobotics.com',  api:'fh', cur:'USD'},
-  {name:'Clover Health',     fhSym:'CLOV',      yfSym:null,        logo:'cloverhealth.com',      api:'fh', cur:'USD'},
+  {name:'Microsoft',         fhSym:'MSFT',   yfSym:null,      logo:'microsoft.com',       cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Alphabet',          fhSym:'GOOGL',  yfSym:null,      logo:'google.com',           cur:'USD', fbEur:null,    fbPct:null},
+  {name:'ASML',              fhSym:'ASML',   yfSym:null,      logo:'asml.com',             cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Novo Nordisk',      fhSym:'NVO',    yfSym:null,      logo:'novonordisk.com',      cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Deutsche Börse',    fhSym:null,     yfSym:'DB1.DE',  logo:'deutsche-boerse.com',  cur:'EUR', fbEur:244.15,  fbPct:0},
+  {name:'Procter & Gamble',  fhSym:'PG',     yfSym:null,      logo:'pg.com',               cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Lotus Bakeries',    fhSym:null,     yfSym:'LOTB.BR', logo:'lotusbakeries.com',    cur:'EUR', fbEur:10530,   fbPct:0},
+  {name:'Wolters Kluwer',    fhSym:'WTKWY',  yfSym:'WKL.AS',  logo:'wolterskluwer.com',    cur:'USD', fbEur:61.38,   fbPct:0},
+  {name:'Mercado Libre',     fhSym:'MELI',   yfSym:null,      logo:'mercadolibre.com',     cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Siemens',           fhSym:'SIEGY',  yfSym:'SIE.DE',  logo:'siemens.com',          cur:'USD', fbEur:258.67,  fbPct:0},
+  {name:'Hannover Rück',     fhSym:'HVRRF',  yfSym:'HNR1.DE', logo:'hannover-re.com',      cur:'USD', fbEur:236.70,  fbPct:0},
+  {name:'Ferrari',           fhSym:'RACE',   yfSym:null,      logo:'ferrari.com',          cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Tesla',             fhSym:'TSLA',   yfSym:null,      logo:'tesla.com',            cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Nubank',            fhSym:'NU',     yfSym:null,      logo:'nu.com.br',            cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Cintas',            fhSym:'CTAS',   yfSym:null,      logo:'cintas.com',           cur:'USD', fbEur:null,    fbPct:null},
+  {name:'American Express',  fhSym:'AXP',    yfSym:null,      logo:'americanexpress.com',  cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Hermès',            fhSym:'HESAY',  yfSym:'RMS.PA',  logo:'hermes.com',           cur:'USD', fbEur:1576.50, fbPct:0},
+  {name:'Netflix',           fhSym:'NFLX',   yfSym:null,      logo:'netflix.com',          cur:'USD', fbEur:null,    fbPct:null},
+  {name:'BKW',               fhSym:null,     yfSym:'BKW.SW',  logo:'bkw.ch',              cur:'EUR', fbEur:163.10,  fbPct:0},
+  {name:'Zoetis',            fhSym:'ZTS',    yfSym:null,      logo:'zoetis.com',           cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Richtech Robotics', fhSym:'RR',     yfSym:null,      logo:'richtechrobotics.com', cur:'USD', fbEur:null,    fbPct:null},
+  {name:'Clover Health',     fhSym:'CLOV',   yfSym:null,      logo:'cloverhealth.com',     cur:'USD', fbEur:null,    fbPct:null},
 ];
 
 function toggleStocksAll(){
@@ -2185,15 +2188,13 @@ function logoUrl(domain){
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 }
 
-// Finnhub Quote (US-Aktien)
+// Finnhub Quote (US-Aktien + ADRs)
 async function fetchFinnhubQuote(sym){
   const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${FH_KEY}`;
   const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
   if(!r.ok)throw new Error('HTTP '+r.status);
   const d=await r.json();
   if(!d||!d.c||d.c===0)return null;
-  // d.h/d.l = heutiges High/Low, nicht 52W. Für 52W bräuchte man /stock/metric (Premium).
-  // Wir nutzen die Metric-API mit Basic-Plan-Fallback:
   return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100),high52:null,low52:null};
 }
 
@@ -2210,28 +2211,29 @@ async function fetchFinnhub52W(sym){
   }catch(e){return null;}
 }
 
-// Yahoo Finance via allorigins Proxy (EU/CH-Aktien)
+// Yahoo Finance via mehrere CORS-Proxies (EU-Listings ohne US-ADR)
 async function fetchYahooQuote(yfSym){
+  const yBase=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=5d`;
+  const yBase2=`https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=5d`;
   const proxies=[
-    `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=2d`,
-    `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=2d`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yBase)}`,
+    `https://corsproxy.io/?${encodeURIComponent(yBase)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yBase2)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(yBase)}`,
   ];
-  for(const base of proxies){
+  for(const url of proxies){
     try{
-      // allorigins als CORS-Proxy
-      const url=`https://api.allorigins.win/raw?url=${encodeURIComponent(base)}`;
-      const r=await fetch(url,{signal:AbortSignal.timeout(10000)});
+      const r=await fetch(url,{signal:AbortSignal.timeout(12000)});
       if(!r.ok)continue;
-      const d=await r.json();
+      const txt=await r.text();
+      if(!txt||txt.length<20)continue;
+      const d=JSON.parse(txt);
       const meta=d?.chart?.result?.[0]?.meta;
       if(!meta||!meta.regularMarketPrice)continue;
       const price=meta.regularMarketPrice;
       const prev=meta.chartPreviousClose??meta.previousClose??price;
-      const pct=((price-prev)/prev)*100;
-      const high52=meta.fiftyTwoWeekHigh??null;
-      const low52=meta.fiftyTwoWeekLow??null;
-      const currency=meta.currency??'EUR';
-      return{price,pct,high52,low52,currency};
+      const pct=prev?((price-prev)/prev)*100:0;
+      return{price,pct,high52:meta.fiftyTwoWeekHigh??null,low52:meta.fiftyTwoWeekLow??null,currency:meta.currency??'EUR'};
     }catch(e){continue;}
   }
   return null;
@@ -2258,29 +2260,35 @@ async function loadStocks(){
 
   try{
     const ratesPromise=getEurRates();
-    const rawRows=[];
 
-    // Parallel batches: alle Quotes gleichzeitig, dann 52W nach
+    // Alle Quotes parallel: Finnhub zuerst, Yahoo als Fallback, fbEur als letzter Ausweg
     const quotePromises=STOCKS.map(async(s)=>{
-      try{
-        if(s.api==='fh'){
+      // 1. Finnhub (US-Listing oder ADR)
+      if(s.fhSym){
+        try{
           const q=await fetchFinnhubQuote(s.fhSym);
           if(q&&q.price>0)return{...s,sym:s.fhSym,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52};
-        }else{
+        }catch(e){}
+      }
+      // 2. Yahoo Finance via CORS-Proxies (EU-Listings)
+      if(s.yfSym){
+        try{
           const q=await fetchYahooQuote(s.yfSym);
           if(q&&q.price>0){
-            // Yahoo gibt Preis in lokaler Währung (EUR für .DE/.AS/.PA, CHF für .SW)
-            return{...s,sym:s.yfSym.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,
-              // Yahoo-Preise für EUR-Aktien sind bereits in EUR → kein Umrechnen
-              cur:q.currency==='CHF'?'CHF':'EUR'};
+            const cur=q.currency==='CHF'?'CHF':'EUR';
+            return{...s,sym:s.yfSym.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,cur};
           }
-        }
-      }catch(e){}
+        }catch(e){}
+      }
+      // 3. Hardcodierter Fallback (Parqet-Preis, statisch)
+      if(s.fbEur!=null){
+        return{...s,sym:(s.fhSym||s.yfSym?.split('.')[0]||s.name),price:s.fbEur,pct:s.fbPct??0,high52:null,low52:null,cur:'EUR',isFallback:true};
+      }
       return null;
     });
 
     const results=await Promise.all(quotePromises);
-    results.forEach(r=>{if(r)rawRows.push(r);});
+    const rawRows=results.filter(Boolean);
 
     if(!rawRows.length)throw new Error('Keine Daten');
 
@@ -2295,34 +2303,35 @@ async function loadStocks(){
     const rows=rawRows.map(s=>({...s,priceEur:toEur(s.price,s.cur)}));
     rows.sort((a,b)=>b.pct-a.pct);
 
-    // Jetzt 52W für Finnhub-Aktien nachladen (parallel, non-blocking)
-    const fill52W=async()=>{
-      const fhRows=rows.filter(r=>r.api==='fh'&&(!r.high52||!r.low52));
-      await Promise.all(fhRows.map(async r=>{
-        const m=await fetchFinnhub52W(r.fhSym);
-        if(m){r.high52=m.high52;r.low52=m.low52;}
-      }));
-      // Re-render nach 52W-Daten
-      renderStocksRows(rows,fmtEur,fmtPct,shortSym);
-    };
-
     const fmtEur=v=>v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
     const fmtPct=v=>(v>=0?'▲ +':'▼ ')+Math.abs(v).toFixed(2).replace('.',',')+' %';
     const shortSym=sym=>{
-      const s=String(sym);
+      const s=String(sym??'');
       return s.includes('.')?s.split('.')[0]:s.includes(':')?s.split(':')[1]:s;
     };
 
     renderStocksRows(rows,fmtEur,fmtPct,shortSym);
 
+    const fallbackCount=rows.filter(r=>r.isFallback).length;
     const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
     if(metaEl){
       metaEl.style.display='flex';
-      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub + Yahoo Finance · Stand ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
+      const hint=fallbackCount?` · ${fallbackCount}× statisch`:' · live';
+      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub + Yahoo${hint} · ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
     }
 
     renderTicker(rows,fmtEur,fmtPct);
-    fill52W(); // async nachladen, kein await → blockiert nicht
+
+    // 52W nachladen (non-blocking)
+    (async()=>{
+      const fhRows=rows.filter(r=>r.fhSym&&!r.isFallback&&(!r.high52||!r.low52));
+      await Promise.all(fhRows.map(async r=>{
+        const m=await fetchFinnhub52W(r.fhSym);
+        if(m){r.high52=m.high52;r.low52=m.low52;}
+      }));
+      renderStocksRows(rows,fmtEur,fmtPct,shortSym);
+    })();
+
   }catch(e){
     if(hlEl)hlEl.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
   }
