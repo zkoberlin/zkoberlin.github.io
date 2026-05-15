@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.0 -->
+<title>Paul · Hub</title><!-- v5.5.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1204,16 +1204,19 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   width:16px;height:16px;flex-shrink:0;
   color:var(--t3);transition:transform .25s;
 }
-.uc-h2h-body{} /* desktop: immer sichtbar */
+/* Preview (S/U/N-Balken): immer sichtbar */
+.uc-h2h-preview{}
+/* Details (Stats + Letzte Duelle): auf Mobile kollabiert */
+.uc-h2h-details{}
 @media(max-width:600px){
   .uc-h2h{cursor:pointer;}
   .uc-h2h-chevron{display:block;}
-  .uc-h2h-body{
+  .uc-h2h-details{
     overflow:hidden;
     max-height:0;
-    transition:max-height .3s ease;
+    transition:max-height .35s ease;
   }
-  .uc-h2h.open .uc-h2h-body{max-height:600px;}
+  .uc-h2h.open .uc-h2h-details{max-height:700px;}
   .uc-h2h.open .uc-h2h-chevron{transform:rotate(180deg);}
 }
 
@@ -1231,7 +1234,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3168,7 +3171,7 @@ async function loadUnion(){
             <svg class="uc-h2h-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
           </div>
         </div>
-        <div class="uc-h2h-body">
+        <div class="uc-h2h-preview">
           <div class="uc-h2h-bar-wrap">
             <div class="uc-h2h-bar">
               <div class="uc-h2h-bar-w" style="flex:${hw}"></div>
@@ -3181,6 +3184,8 @@ async function loadUnion(){
               <span class="ll">${hl} Niederlagen</span>
             </div>
           </div>
+        </div>
+        <div class="uc-h2h-details">
           <div class="uc-h2h-stats">
             <div class="uc-h2h-stat">
               <div class="uc-h2h-stat-val">${wPct}%</div>
