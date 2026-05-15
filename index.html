@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.9 -->
+<title>Paul · Hub</title><!-- v5.2.10 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -807,7 +807,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.7</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.10</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1337,11 +1337,12 @@ async function loadPromiGeburtstage(){
         ? `<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
         : `<div class="promi-foto-placeholder">🎂</div>`;
       const alter = p.alter ? `· ${p.alter}` : '';
+      const beruf = (p.beruf || '').replace(/\s*\(Born\s+\d{4}\)/gi, '').trim();
       return `<div class="promi-chip">
         ${fotoHtml}
         <div class="promi-info">
           <div class="promi-name">${p.name}</div>
-          <div class="promi-meta">${p.beruf} ${alter}</div>
+          <div class="promi-meta">${beruf} ${alter}</div>
         </div>
       </div>`;
     }).join('<div style="height:1px;background:var(--border);margin:1px 0;"></div>');
