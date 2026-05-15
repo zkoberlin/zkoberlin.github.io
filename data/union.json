@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-15T17:48:32.054325+00:00",
+  "updated_at": "2026-05-15T18:20:04.937295+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -225,6 +225,7 @@
   ],
   "h2h": {
     "opponent": "Augsburg",
+    "source": "rapidapi-current-season",
     "wins": 0,
     "draws": 2,
     "losses": 0,
