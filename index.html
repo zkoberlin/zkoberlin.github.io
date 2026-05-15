@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.18 -->
+<title>Paul · Hub</title><!-- v5.2.19 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -177,21 +177,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
   margin-top:5px;letter-spacing:-.1px;
 }
 .weather-feels{font-size:10px;color:rgba(255,255,255,.40);margin-top:2px;}
-/* Today chips row */
-.weather-today-extra{
-  display:flex;gap:5px;flex-wrap:wrap;
-  margin-top:10px;
-}
-.wte-chip{
-  display:flex;align-items:center;gap:4px;
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(4px);
-  border-radius:20px;padding:4px 10px;
-  font-size:10px;font-weight:500;color:rgba(255,255,255,.65);
-  white-space:nowrap;
-}
-.wte-chip .wte-val{font-weight:700;color:#fff;}
+
 /* Weather detail grid (UV, Luftqualität, Niederschlag, Sonne) */
 .weather-details{
   display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
@@ -1010,7 +996,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.18</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.19</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1031,7 +1017,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
           <div class="weather-temp" id="wTemp">--°</div>
           <div class="weather-desc" id="wDesc">Lädt…</div>
           <div class="weather-feels" id="wFeels"></div>
-          <div class="weather-today-extra" id="wTodayExtra" style="display:none;"></div>
+
         </div>
       </div>
       <div class="weather-forecast" id="wForecast">
@@ -1039,8 +1025,14 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
       </div>
-      <!-- Detail grid: UV · Luftq. · Niederschlag · Temp-Range -->
+      <!-- Detail grid: Temp-Range · UV · Niederschlag · Wind -->
       <div class="weather-details" id="wDetails" style="display:none;">
+        <div class="wdetail">
+          <div class="wdetail-icon">🌡️</div>
+          <div class="wdetail-val" id="wdTRange">–</div>
+          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdTBar" style="background:linear-gradient(90deg,#38bdf8,#fb923c);width:60%"></div></div>
+          <div class="wdetail-lbl">Min · Max</div>
+        </div>
         <div class="wdetail" id="wdUV">
           <div class="wdetail-icon">🕶️</div>
           <div class="wdetail-val" id="wdUVVal">–</div>
@@ -1052,12 +1044,6 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
           <div class="wdetail-val" id="wdPrecVal">–</div>
           <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdPrecBar" style="background:#60a5fa;width:0%"></div></div>
           <div class="wdetail-lbl">Niederschlag</div>
-        </div>
-        <div class="wdetail">
-          <div class="wdetail-icon">🌡️</div>
-          <div class="wdetail-val" id="wdTRange">–</div>
-          <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdTBar" style="background:linear-gradient(90deg,#38bdf8,#fb923c);width:60%"></div></div>
-          <div class="wdetail-lbl">Min · Max</div>
         </div>
         <div class="wdetail">
           <div class="wdetail-icon">💨</div>
@@ -1764,22 +1750,10 @@ async function fetchWetter(lat,lon,city){
     document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
     document.getElementById('wCity').textContent=city;
     document.getElementById('wFeels').textContent=`Gefühlt ${Math.round(d.current.apparent_temperature)}°C`;
-    // Today-extra: max/min, wind, precipitation (desktop only)
+    // ── Detail Grid ──
     const todayMax=Math.round(d.daily.temperature_2m_max[0]);
     const todayMin=Math.round(d.daily.temperature_2m_min[0]);
     const wind=Math.round(d.current.wind_speed_10m||0);
-    const precip=(d.daily.precipitation_sum?.[0]||0).toFixed(1);
-    const extraEl=document.getElementById('wTodayExtra');
-    if(extraEl){
-      extraEl.innerHTML=`
-        <div class="wte-chip">↑ <span class="wte-val">${todayMax}°</span></div>
-        <div class="wte-chip">↓ <span class="wte-val">${todayMin}°</span></div>
-        <div class="wte-chip">💨 <span class="wte-val">${wind} km/h</span></div>
-        ${parseFloat(precip)>0?`<div class="wte-chip">🌧 <span class="wte-val">${precip} mm</span></div>`:''}
-      `;
-      extraEl.style.display='flex';
-    }
-    // ── Detail Grid ──
     const uvIdx=d.daily.uv_index_max?.[0]??null;
     const precipProb=d.daily.precipitation_probability_max?.[0]??null;
     const detailEl=document.getElementById('wDetails');
