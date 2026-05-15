@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.4.5 -->
+<title>Paul · Hub</title><!-- v5.4.6 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1028,64 +1028,88 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 .uc-last-result-badge.l{background:rgba(255,59,48,.09);color:var(--red);border:1px solid rgba(255,59,48,.2);}
 .uc-last-result-badge.d{background:var(--card2);color:var(--t2);border:1px solid var(--border);}
 
+/* ── Letztes Spiel: Stats Toggle ── */
+.uc-stats-toggle{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:5px;
+  margin-top:6px;padding:5px 0 2px;
+  font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;
+  cursor:pointer;border:none;background:none;
+}
+.uc-stats-toggle-arrow{font-size:8px;transition:transform .25s;}
+.uc-stats-toggle.open .uc-stats-toggle-arrow{transform:rotate(180deg);}
+
 /* ── Stat-Bars (Screenshot-Stil) ── */
 .uc-stat-bars{
   border-top:1px solid var(--border);
-  padding:10px 0 2px;
+  padding:10px 0 4px;
   display:flex;flex-direction:column;gap:0;
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .3s ease, padding .3s ease;
+  padding-top:0;padding-bottom:0;
 }
+.uc-stat-bars.open{
+  max-height:400px;
+  padding:10px 0 4px;
+}
+
 /* Ballbesitz-Balken */
 .uc-poss-bar-wrap{
   display:flex;border-radius:20px;overflow:hidden;
-  height:34px;margin-bottom:10px;
+  height:30px;margin-bottom:10px;
   border:1px solid var(--border);
 }
 .uc-poss-bar-left{
   background:var(--union);
-  display:flex;align-items:center;padding:0 12px;
-  font-size:13px;font-weight:700;color:#fff;
-  font-variant-numeric:tabular-nums;
-  border-radius:20px 0 0 20px;
-  transition:width .4s ease;
+  display:flex;align-items:center;padding:0 10px;
+  font-size:12px;font-weight:700;color:#fff;
+  font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 .uc-poss-bar-right{
-  flex:1;
-  background:var(--card2);
-  display:flex;align-items:center;justify-content:flex-end;padding:0 12px;
-  font-size:13px;font-weight:600;color:var(--t2);
-  font-variant-numeric:tabular-nums;
-  border-radius:0 20px 20px 0;
+  flex:1;background:var(--card2);
+  display:flex;align-items:center;justify-content:flex-end;padding:0 10px;
+  font-size:12px;font-weight:600;color:var(--t2);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
 }
+.uc-poss-lbl{
+  text-align:center;font-size:8.5px;font-weight:600;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.35px;margin-bottom:4px;
+}
+
 /* Einzelne Stat-Zeile */
 .uc-stat-row{
-  display:flex;align-items:center;
-  padding:7px 0;
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;
   border-bottom:1px solid var(--border);
 }
 .uc-stat-row:last-child{border-bottom:none;}
-.uc-stat-row-union{
-  min-width:36px;text-align:left;
-  font-size:13px;font-variant-numeric:tabular-nums;
+
+/* Chip — gemeinsame Basis für beide Seiten */
+.uc-stat-chip{
+  min-width:42px;
+  height:26px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:20px;
+  font-size:12px;font-weight:600;
+  font-variant-numeric:tabular-nums;
+  padding:0 10px;
+  flex-shrink:0;
 }
-.uc-stat-row-union.win{
-  background:var(--union);color:#fff;
-  padding:2px 9px;border-radius:20px;
-  font-weight:700;font-size:12px;
+.uc-stat-chip.neutral{
+  color:var(--t3);font-weight:400;
+  /* kein Hintergrund — nur Zahl */
+}
+.uc-stat-chip.win-union{
+  background:var(--union);color:#fff;font-weight:700;
+}
+.uc-stat-chip.win-opp{
+  background:var(--card2);color:var(--t);font-weight:700;
+  border:1px solid var(--border);
 }
 .uc-stat-row-lbl{
   flex:1;text-align:center;
   font-size:10px;font-weight:500;color:var(--t2);
   line-height:1.3;
-}
-.uc-stat-row-opp{
-  min-width:36px;text-align:right;
-  font-size:13px;font-variant-numeric:tabular-nums;
-}
-.uc-stat-row-opp.win{
-  background:var(--card2);color:var(--t);
-  padding:2px 9px;border-radius:20px;
-  font-weight:700;font-size:12px;
-  border:1px solid var(--border);
 }
 
 /* ── H2H (Head-to-Head) Block ── */
@@ -2998,7 +3022,7 @@ async function loadUnion(){
       const outc=last.result==='W'?'Sieg':last.result==='L'?'Niederlage':'Unentschieden';
       const hA=last.is_home?'Heim':'Auswärts';
       const ms=d.last_match_stats||{};
-      // Stat-Bars: Screenshot-Stil (Ballbesitz-Balken + Zeilen mit Highlight-Chips)
+      // Stat-Bars: Screenshot-Stil — symmetrische Chips + Toggle
       const statRows=[];
       if(ms.shots)           statRows.push(['Gesamtschüsse',ms.shots.union,ms.shots.opp,Number(ms.shots.union),Number(ms.shots.opp)]);
       if(ms.shots_on_target) statRows.push(['Torschüsse',ms.shots_on_target.union,ms.shots_on_target.opp,Number(ms.shots_on_target.union),Number(ms.shots_on_target.opp)]);
@@ -3006,23 +3030,34 @@ async function loadUnion(){
       if(ms.corners)         statRows.push(['Ecken',ms.corners.union,ms.corners.opp,Number(ms.corners.union),Number(ms.corners.opp)]);
       if(ms.touches_box)     statRows.push(['Ballber. Strafraum',ms.touches_box.union,ms.touches_box.opp,Number(ms.touches_box.union),Number(ms.touches_box.opp)]);
 
-      // Ballbesitz-Balken
+      const hasStats=ms.possession||statRows.length>0;
+
       const possHtml=ms.possession?`
+        <div class="uc-poss-lbl">Ballbesitz</div>
         <div class="uc-poss-bar-wrap">
           <div class="uc-poss-bar-left" style="width:${ms.possession.union}%">${ms.possession.union}%</div>
           <div class="uc-poss-bar-right">${ms.possession.opp}%</div>
         </div>`:'';
 
-      const pillsHtml=(possHtml||statRows.length)?`
-        <div class="uc-stat-bars">
+      const rowsHtml=statRows.map(([lbl,uv,ov,un,on])=>{
+        const uWins=un>on, oWins=on>un;
+        const uCls=uWins?'win-union':'neutral';
+        const oCls=oWins?'win-opp':'neutral';
+        return`<div class="uc-stat-row">
+          <span class="uc-stat-chip ${uCls}">${uv}</span>
+          <span class="uc-stat-row-lbl">${lbl}</span>
+          <span class="uc-stat-chip ${oCls}">${ov}</span>
+        </div>`;}).join('');
+
+      const statsBlockId='ucStats_'+Date.now();
+      const toggleHtml=hasStats?`
+        <button class="uc-stats-toggle" onclick="
+          var b=this,p=document.getElementById('${statsBlockId}');
+          p.classList.toggle('open');b.classList.toggle('open');
+        ">Spielstatistik <span class="uc-stats-toggle-arrow">▼</span></button>
+        <div class="uc-stat-bars" id="${statsBlockId}">
           ${possHtml}
-          ${statRows.map(([lbl,uv,ov,un,on])=>{
-            const uWins=un>on,oWins=on>un;
-            return`<div class="uc-stat-row">
-              <span class="uc-stat-row-union${uWins?' win':''}">${uv}</span>
-              <span class="uc-stat-row-lbl">${lbl}</span>
-              <span class="uc-stat-row-opp${oWins?' win':''}">${ov}</span>
-            </div>`;}).join('')}
+          ${rowsHtml}
         </div>`:'';
 
       lastHtml=`
@@ -3044,7 +3079,7 @@ async function loadUnion(){
             <span>·</span>
             <span>${fmtDt(last.date)}</span>
           </div>
-          ${pillsHtml}
+          ${toggleHtml}
         </div>`;
     }
 
