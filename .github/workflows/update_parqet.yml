@@ -1,0 +1,38 @@
+name: Update Parqet Data
+
+on:
+  schedule:
+    # Täglich um 07:00 UTC (09:00 MEZ / 08:00 CET)
+    - cron: "0 7 * * *"
+  workflow_dispatch: # Manueller Trigger über GitHub UI
+
+jobs:
+  fetch-parqet:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Damit der Job ins Repo committen darf
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Python Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Abhängigkeiten installieren
+        run: pip install requests
+
+      - name: Parqet-Daten holen
+        env:
+          PARQET_API_KEY: ${{ secrets.PARQET_API_KEY }}
+        run: python scripts/fetch_parqet.py
+
+      - name: JSON committen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/parqet.json
+          git diff --cached --quiet || git commit -m "chore: update parqet data $(date -u +'%Y-%m-%d')"
+          git push
