@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.14 -->
+<title>Paul · Hub</title><!-- v5.2.15 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1383,7 +1383,8 @@ async function loadDayInfo(){
 
   // ── "Heute ist" – aus data/special-days.json ──
   try {
-    const res = await fetch('data/special-days.json');
+    const res = await fetch('data/special-days.json',{signal:AbortSignal.timeout(4000)});
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const special = await res.json();
     document.getElementById('specialVal').textContent = special[key] || sprueche[now.getDay()][0];
   } catch(e) {
@@ -1392,9 +1393,10 @@ async function loadDayInfo(){
 
   // ── Namenstag – lokale JSON (via GitHub Actions) + API-Fallbacks ──
   try {
-    // 1. Primär: lokale JSON (täglich via GitHub Actions aus katolisch.de o.ä.)
     const key2=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     let found = false;
+
+    // 1. Primär: lokale JSON
     try {
       const res2 = await fetch('data/namenstage.json', {signal: AbortSignal.timeout(3000)});
       if(res2.ok){
@@ -1404,23 +1406,29 @@ async function loadDayInfo(){
       }
     } catch(e2) {}
 
-    // 2. Fallback A: nameday.abalin.net V1
+    // 2. Fallback A: nameday.abalin.net (via allorigins CORS-Proxy)
     if(!found){
       try {
-        const res = await fetch(`https://nameday.abalin.net/api/V1/today?country=de`, {signal: AbortSignal.timeout(4000)});
-        const json = await res.json();
-        const names = json?.data?.de;
-        if(names){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+        const apiUrl=`https://nameday.abalin.net/api/V1/today?country=de`;
+        const proxyUrl=`https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+        const res = await fetch(proxyUrl, {signal: AbortSignal.timeout(5000)});
+        if(res.ok){
+          const json = await res.json();
+          const names = json?.data?.de;
+          if(names){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+        }
       } catch(e3) {}
     }
 
-    // 3. Fallback B: api.nameday.info
+    // 3. Fallback B: nameday.info (direkt – oft CORS-offen)
     if(!found){
       try {
         const res = await fetch(`https://api.nameday.info/nameday/DE/${m}/${d}`, {signal: AbortSignal.timeout(4000)});
-        const json = await res.json();
-        const names = json?.data || json?.namedays || [];
-        if(names && names.length){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+        if(res.ok){
+          const json = await res.json();
+          const names = json?.data || json?.namedays || [];
+          if(names && names.length){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
+        }
       } catch(e4) {}
     }
 
@@ -1544,15 +1552,18 @@ loadPromiGeburtstage();
 })();
 
 // ── SCHULFERIEN BERLIN ──
-// Daten kommen aus /data/schulferien_berlin.json (täglich via GitHub Actions aktualisiert)
+// Daten kommen aus data/schulferien_berlin.json (täglich via GitHub Actions aktualisiert)
+// Fallback: openholidaysapi.org direkt
 async function loadSchulferien(){
   const now2=new Date();
   const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
   const iconEl=document.getElementById('ferienIcon');
 
   let ferien=[];
+
+  // 1. Primär: lokale JSON
   try{
-    const r=await fetch('/data/schulferien_berlin.json',{signal:AbortSignal.timeout(5000)});
+    const r=await fetch('data/schulferien_berlin.json',{signal:AbortSignal.timeout(5000)});
     if(!r.ok) throw new Error('JSON nicht erreichbar');
     const raw=await r.json();
     ferien=raw.map(f=>({
@@ -1561,10 +1572,25 @@ async function loadSchulferien(){
       end:new Date(f.end)
     }));
   }catch(e){
-    document.getElementById('ferienName').textContent='Daten nicht verfügbar';
-    document.getElementById('ferienCountdown').textContent='–';
-    document.getElementById('ferienDates').textContent='–';
-    return;
+    // 2. Fallback: openholidaysapi.org live
+    try{
+      const yr=now2.getFullYear();
+      const url=`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${yr}-01-01&validTo=${yr+1}-12-31`;
+      const r2=await fetch(url,{signal:AbortSignal.timeout(7000)});
+      if(!r2.ok) throw new Error('API '+r2.status);
+      const raw2=await r2.json();
+      ferien=raw2.map(f=>({
+        name:(f.name&&f.name[0]&&f.name[0].text)||f.id||'Ferien',
+        start:new Date(f.startDate),
+        end:new Date(f.endDate)
+      }));
+      console.log('Schulferien: Fallback openholidaysapi.org OK');
+    }catch(e2){
+      document.getElementById('ferienName').textContent='Daten nicht verfügbar';
+      document.getElementById('ferienCountdown').textContent='–';
+      document.getElementById('ferienDates').textContent='–';
+      return;
+    }
   }
 
   ferien.sort((a,b)=>a.start-b.start);
@@ -1858,9 +1884,11 @@ async function loadKids(){
         document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;
       }
     }
-  }catch(e){}
-}
-loadKids();
+  }catch(e){
+    console.warn('Kids-Sheet Fehler:',e);
+    const track=document.getElementById('erTrack');
+    if(track)track.innerHTML='<div style="font-size:10px;color:var(--t3);padding:4px 0;grid-column:1/-1;">⚠️ Tabelle nicht erreichbar</div>';
+  }
 
 // ── iCAL ──
 function parseICS(txt){
@@ -1929,10 +1957,10 @@ async function loadICAL(){
     // iCal URL – Google Calendar public iCal feed
     const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
 
-    // Try multiple CORS proxies in order
+    // Try multiple CORS proxies in order (allorigins first – stabilster)
     const PROXIES=[
-      u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
       u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+      u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
       u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
       u=>`https://thingproxy.freeboard.io/fetch/${u}`,
     ];
@@ -2173,7 +2201,10 @@ async function loadUnion(){
 
   try{
     const r=await fetch('data/union.json',{signal:AbortSignal.timeout(6000)});
-    if(!r.ok)throw new Error('JSON nicht erreichbar');
+    if(!r.ok){
+      const hint=r.status===404?'data/union.json fehlt – GitHub Action einrichten':'JSON nicht erreichbar ('+r.status+')';
+      throw new Error(hint);
+    }
     const d=await r.json();
     if(!d.rank)throw new Error('Keine Daten — GitHub Action noch nicht gelaufen?');
 
