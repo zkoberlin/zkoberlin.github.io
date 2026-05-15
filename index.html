@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.4.6 -->
+<title>Paul · Hub</title><!-- v5.4.7 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1060,17 +1060,20 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   border:1px solid var(--border);
 }
 .uc-poss-bar-left{
-  background:var(--union);
   display:flex;align-items:center;padding:0 10px;
-  font-size:12px;font-weight:700;color:#fff;
+  font-size:12px;font-weight:700;
   font-variant-numeric:tabular-nums;white-space:nowrap;
 }
+.uc-poss-bar-left.higher{background:var(--union);color:#fff;}
+.uc-poss-bar-left.lower{background:var(--card2);color:var(--t2);font-weight:400;}
 .uc-poss-bar-right{
-  flex:1;background:var(--card2);
+  flex:1;
   display:flex;align-items:center;justify-content:flex-end;padding:0 10px;
-  font-size:12px;font-weight:600;color:var(--t2);
+  font-size:12px;font-weight:700;
   font-variant-numeric:tabular-nums;white-space:nowrap;
 }
+.uc-poss-bar-right.higher{background:var(--union);color:#fff;}
+.uc-poss-bar-right.lower{background:var(--card2);color:var(--t2);font-weight:400;}
 .uc-poss-lbl{
   text-align:center;font-size:8.5px;font-weight:600;color:var(--t3);
   text-transform:uppercase;letter-spacing:.35px;margin-bottom:4px;
@@ -1103,8 +1106,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   background:var(--union);color:#fff;font-weight:700;
 }
 .uc-stat-chip.win-opp{
-  background:var(--card2);color:var(--t);font-weight:700;
-  border:1px solid var(--border);
+  background:rgba(120,120,128,.18);color:var(--t);font-weight:700;
+  border:1px solid rgba(120,120,128,.25);
 }
 .uc-stat-row-lbl{
   flex:1;text-align:center;
@@ -3035,8 +3038,8 @@ async function loadUnion(){
       const possHtml=ms.possession?`
         <div class="uc-poss-lbl">Ballbesitz</div>
         <div class="uc-poss-bar-wrap">
-          <div class="uc-poss-bar-left" style="width:${ms.possession.union}%">${ms.possession.union}%</div>
-          <div class="uc-poss-bar-right">${ms.possession.opp}%</div>
+          <div class="uc-poss-bar-left ${Number(ms.possession.union)>=Number(ms.possession.opp)?'higher':'lower'}" style="width:${ms.possession.union}%">${ms.possession.union}%</div>
+          <div class="uc-poss-bar-right ${Number(ms.possession.opp)>Number(ms.possession.union)?'higher':'lower'}">${ms.possession.opp}%</div>
         </div>`:'';
 
       const rowsHtml=statRows.map(([lbl,uv,ov,un,on])=>{
