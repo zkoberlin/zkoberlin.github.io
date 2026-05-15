@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.2.24 -->
+<title>Paul · Hub</title><!-- v5.2.25 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -429,6 +429,21 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 .fin-sync{font-size:9px;color:var(--t3);padding:0 15px 10px;display:flex;align-items:center;gap:4px;}
 .fin-sync-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 4px var(--green);}
+
+/* Parqet Depot-Strip */
+.depot-strip{margin:0 11px 9px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 12px;}
+.depot-strip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.depot-strip-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);-webkit-font-smoothing:antialiased;}
+.depot-strip-date{font-size:8px;color:var(--t3);}
+.depot-strip-row{display:flex;gap:7px;}
+.depot-kpi{flex:1;min-width:0;}
+.depot-kpi-lbl{font-size:8px;color:var(--t3);margin-bottom:2px;font-weight:500;}
+.depot-kpi-val{font-size:14px;font-weight:700;letter-spacing:-.4px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.depot-kpi-val.g{color:var(--green);}
+.depot-kpi-val.r{color:#ff3b30;}
+.depot-kpi-val.b{color:var(--blue);}
+.depot-kpi-val.n{color:var(--t);}
+.depot-divider{width:1px;background:var(--border);flex-shrink:0;}
 
 /* Kalender KW-Bar oben */
 .kal-kw-bar{display:flex;align-items:center;justify-content:space-between;margin:6px 11px 8px;background:var(--blue-l);border:1px solid var(--blue-b);border-radius:var(--r3);padding:6px 10px;}
@@ -1041,7 +1056,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.20</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.2.25</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1359,6 +1374,29 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
       </div>
     </div>
     <div class="fin-sync"><div class="fin-sync-dot" id="syncDot"></div><span id="syncLbl">JSONBin · Monatlich</span></div>
+    <!-- Parqet Depot -->
+    <div class="depot-strip" id="depotStrip">
+      <div class="depot-strip-head">
+        <div class="depot-strip-lbl">📈 Depot · YTD</div>
+        <div class="depot-strip-date" id="depotDate">–</div>
+      </div>
+      <div class="depot-strip-row">
+        <div class="depot-kpi">
+          <div class="depot-kpi-lbl">Depotwert</div>
+          <div class="depot-kpi-val n" id="depotWert">–</div>
+        </div>
+        <div class="depot-divider"></div>
+        <div class="depot-kpi">
+          <div class="depot-kpi-lbl">Performance</div>
+          <div class="depot-kpi-val" id="depotPerf">–</div>
+        </div>
+        <div class="depot-divider"></div>
+        <div class="depot-kpi">
+          <div class="depot-kpi-lbl">Dividenden</div>
+          <div class="depot-kpi-val b" id="depotDiv">–</div>
+        </div>
+      </div>
+    </div>
     <div class="a-footer"><span id="finUpdated">–</span><span>→</span></div>
   </a>
 
@@ -1947,6 +1985,39 @@ async function loadFin(){
   if(window._lbTick)window._lbTick();
 }
 loadFin();
+
+// ── PARQET DEPOT ──
+async function loadParqet(){
+  try{
+    const r=await fetch('/data/parqet.json',{signal:AbortSignal.timeout(5000)});
+    if(!r.ok)throw new Error('parqet.json nicht erreichbar');
+    const d=await r.json();
+
+    const fmtEur=v=>v==null?'–':(v<0?'-':'')+Math.abs(v).toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0})+' €';
+    const fmtPct=v=>v==null?'–':(v>=0?'+':'')+v.toFixed(2).replace('.',',')+' %';
+
+    const el=id=>document.getElementById(id);
+    if(!el('depotWert'))return;
+
+    el('depotWert').textContent=fmtEur(d.gesamtwert);
+    el('depotWert').classList.add(d.gesamtwert>=d.jahresstart?'g':'r');
+
+    const perfEl=el('depotPerf');
+    perfEl.textContent=fmtPct(d.ttwror_ytd);
+    perfEl.className='depot-kpi-val '+(d.ttwror_ytd>=0?'g':'r');
+
+    el('depotDiv').textContent=fmtEur(d.dividenden_netto_ytd);
+
+    if(d.updated){
+      const dt=new Date(d.updated);
+      el('depotDate').textContent=dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+    }
+  }catch(e){
+    const el=document.getElementById('depotStrip');
+    if(el)el.style.display='none';
+  }
+}
+loadParqet();
 
 // ── KIDS ──
 async function loadKids(){
