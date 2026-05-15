@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.2.1 — Free API Live Football Data (RapidAPI)
+fetch_union.py v5.2.3 — Free API Live Football Data (RapidAPI)
  
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
           FIX: Logo-URL per get_logo(t["id"]) direkt aus RapidAPI holen
 - v5.2.1: rank_change pro Tabellen-Team hinzugefügt (grün/rot/orange Pfeile im Frontend)
           Wert positiv = verbessert, negativ = verschlechtert, 0 = gleich
+- v5.2.2: form_calc auf done[-9:] erweitert → 9 statt 5 letzte Spiele in Bilanz
+- v5.2.3: FOTMOB_LOGOS als zuverlässiger Fallback für alle Bundesliga-Teams
+          Wenn RapidAPI-Logo leer → Fotmob CDN (images.fotmob.com) wird genutzt
+          Gilt für Tabellen-Teams, last_match und next_match
  
 Endpoints (~7-12 Requests/Tag je nach Tabellengröße):
   1. football-get-standing-all?leagueid=54
@@ -33,6 +37,97 @@ UID    = 8149
 UID_S  = str(UID)
 OUT    = os.path.join(os.path.dirname(__file__), "..", "data", "union.json")
  
+
+# ── Fotmob-IDs für alle relevanten Bundesliga / 2. Liga Teams ──
+# Fotmob CDN: https://images.fotmob.com/image_resources/logo/teamlogo/{id}.png
+# Zuverlässiger als RapidAPI-Logo-Endpoint (kein Referer-Schutz, PNG)
+FOTMOB_LOGOS = {
+    # Bundesliga 2025/26
+    "FC Bayern München":          "https://images.fotmob.com/image_resources/logo/teamlogo/132.png",
+    "Bayern München":             "https://images.fotmob.com/image_resources/logo/teamlogo/132.png",
+    "Bayer 04 Leverkusen":        "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
+    "Leverkusen":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
+    "Borussia Dortmund":          "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
+    "Dortmund":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
+    "RB Leipzig":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9944.png",
+    "Leipzig":                    "https://images.fotmob.com/image_resources/logo/teamlogo/9944.png",
+    "Eintracht Frankfurt":        "https://images.fotmob.com/image_resources/logo/teamlogo/9921.png",
+    "Frankfurt":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9921.png",
+    "VfB Stuttgart":              "https://images.fotmob.com/image_resources/logo/teamlogo/9928.png",
+    "Stuttgart":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9928.png",
+    "SC Freiburg":                "https://images.fotmob.com/image_resources/logo/teamlogo/9922.png",
+    "Freiburg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9922.png",
+    "Werder Bremen":              "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
+    "Bremen":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
+    "Borussia Mönchengladbach":   "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
+    "B. Mönchengladbach":         "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
+    "Mönchengladbach":            "https://images.fotmob.com/image_resources/logo/teamlogo/9793.png",
+    "TSG Hoffenheim":             "https://images.fotmob.com/image_resources/logo/teamlogo/9918.png",
+    "Hoffenheim":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9918.png",
+    "FC Augsburg":                "https://images.fotmob.com/image_resources/logo/teamlogo/9925.png",
+    "Augsburg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9925.png",
+    "VfL Wolfsburg":              "https://images.fotmob.com/image_resources/logo/teamlogo/9934.png",
+    "Wolfsburg":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9934.png",
+    "1. FC Union Berlin":         "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
+    "Union Berlin":               "https://images.fotmob.com/image_resources/logo/teamlogo/9997.png",
+    "1. FC Heidenheim":           "https://images.fotmob.com/image_resources/logo/teamlogo/10188.png",
+    "Heidenheim":                 "https://images.fotmob.com/image_resources/logo/teamlogo/10188.png",
+    "VfL Bochum":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9811.png",
+    "Bochum":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9811.png",
+    "1. FSV Mainz 05":            "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+    "FSV Mainz 05":               "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+    "Mainz 05":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+    "Mainz":                      "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+    "FC St. Pauli":               "https://images.fotmob.com/image_resources/logo/teamlogo/9875.png",
+    "St. Pauli":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9875.png",
+    "Holstein Kiel":              "https://images.fotmob.com/image_resources/logo/teamlogo/10209.png",
+    "Kiel":                       "https://images.fotmob.com/image_resources/logo/teamlogo/10209.png",
+    "1. FC Köln":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png",
+    "Köln":                       "https://images.fotmob.com/image_resources/logo/teamlogo/9906.png",
+    # 2. Liga (Aufsteiger / mögliche Playoff-Gegner)
+    "Hamburger SV":               "https://images.fotmob.com/image_resources/logo/teamlogo/9782.png",
+    "HSV":                        "https://images.fotmob.com/image_resources/logo/teamlogo/9782.png",
+    "Fortuna Düsseldorf":         "https://images.fotmob.com/image_resources/logo/teamlogo/9781.png",
+    "Düsseldorf":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9781.png",
+    "Hannover 96":                "https://images.fotmob.com/image_resources/logo/teamlogo/9798.png",
+    "Hannover":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9798.png",
+    "Karlsruher SC":              "https://images.fotmob.com/image_resources/logo/teamlogo/9807.png",
+    "Karlsruhe":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9807.png",
+    "1. FC Nürnberg":             "https://images.fotmob.com/image_resources/logo/teamlogo/9864.png",
+    "Nürnberg":                   "https://images.fotmob.com/image_resources/logo/teamlogo/9864.png",
+    "FC Schalke 04":              "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
+    "Schalke 04":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
+    "Schalke":                    "https://images.fotmob.com/image_resources/logo/teamlogo/9878.png",
+    "Hertha BSC":                 "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
+    "Hertha":                     "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
+    "SpVgg Greuther Fürth":       "https://images.fotmob.com/image_resources/logo/teamlogo/9920.png",
+    "Greuther Fürth":             "https://images.fotmob.com/image_resources/logo/teamlogo/9920.png",
+    "1. FC Kaiserslautern":       "https://images.fotmob.com/image_resources/logo/teamlogo/9804.png",
+    "Kaiserslautern":             "https://images.fotmob.com/image_resources/logo/teamlogo/9804.png",
+    "SV 07 Elversberg":           "https://images.fotmob.com/image_resources/logo/teamlogo/10246.png",
+    "Elversberg":                 "https://images.fotmob.com/image_resources/logo/teamlogo/10246.png",
+    "1. FC Magdeburg":            "https://images.fotmob.com/image_resources/logo/teamlogo/9861.png",
+    "Magdeburg":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9861.png",
+    "SSV Ulm 1846":               "https://images.fotmob.com/image_resources/logo/teamlogo/10219.png",
+    "Ulm":                        "https://images.fotmob.com/image_resources/logo/teamlogo/10219.png",
+    "Preußen Münster":            "https://images.fotmob.com/image_resources/logo/teamlogo/10154.png",
+    "Münster":                    "https://images.fotmob.com/image_resources/logo/teamlogo/10154.png",
+    "SC Paderborn 07":            "https://images.fotmob.com/image_resources/logo/teamlogo/9869.png",
+    "Paderborn":                  "https://images.fotmob.com/image_resources/logo/teamlogo/9869.png",
+    "SV Darmstadt 98":            "https://images.fotmob.com/image_resources/logo/teamlogo/10036.png",
+    "Darmstadt":                  "https://images.fotmob.com/image_resources/logo/teamlogo/10036.png",
+}
+
+def fotmob_fallback(name):
+    """Sucht Fotmob-Logo via exaktem Namen, dann Teilstring-Suche."""
+    if name in FOTMOB_LOGOS:
+        return FOTMOB_LOGOS[name]
+    nl = name.lower()
+    for k, v in FOTMOB_LOGOS.items():
+        if nl in k.lower() or k.lower() in nl:
+            return v
+    return ""
+
 # Logo-Cache: RapidAPI-Team-ID -> Logo-URL
 _logo_cache = {}
  
@@ -40,15 +135,19 @@ def get_logo(team_id, team_name=""):
     tid = str(team_id)
     if tid in _logo_cache:
         return _logo_cache[tid]
+    url = ""
     try:
         lr = fetch(f"/football-team-logo?teamid={tid}")
         url = lr.get("logo","") if isinstance(lr, dict) else ""
-        _logo_cache[tid] = url
-        return url
     except Exception as e:
         print(f"   WARN Logo {tid} ({team_name}): {e}", file=sys.stderr)
-        _logo_cache[tid] = ""
-        return ""
+    # Fotmob CDN als Fallback wenn RapidAPI leer
+    if not url and team_name:
+        url = fotmob_fallback(team_name)
+        if url:
+            print(f"   Fotmob-Fallback fuer {team_name}: {url[-40:]}")
+    _logo_cache[tid] = url
+    return url
  
 def short(name):
     for p,r in [("Borussia ","B. "),("1. FC ",""),("FC ",""),
@@ -218,7 +317,7 @@ def main():
     if next_m: print(f"   Naechstes: {next_m['home_name']} vs {next_m['away_name']} - {next_m['date'][:10]}")
     if not next_m: print("   Kein naechstes Spiel - Saisonende?")
  
-    form_calc = "".join(filter(None, [result_char(m) for m in done[-5:]]))
+    form_calc = "".join(filter(None, [result_char(m) for m in done[-9:]]))
     print(f"   Form (berechnet): {form_calc}")
  
     # 4. Match Stats
@@ -295,7 +394,7 @@ def main():
         "losses":           losses,
         "goals_for":        gf,
         "goals_against":    ga,
-        "form":             form_calc or form[-5:],
+        "form":             form_calc or form[-9:],
         "team_logo":        team_logo,
         "table_context":    context,
         "last_match":       last_m,
