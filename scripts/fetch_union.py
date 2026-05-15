@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.3.0 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.3.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -14,9 +14,12 @@ FIXES:
 - v5.2.4: H2H (Direktvergleich) gegen nächsten Gegner ergänzt
           Wird aus all_m (alle Ligaspiele, bereits geladen) berechnet — kein Extra-Request
           Schreibt data["h2h"] mit: wins/draws/losses, goals_for/against, letzte 8 Duelle
-- v5.3.0: H2H jetzt primär via football-data.org (FOOTBALLDATA_KEY) — saisonübergreifend
-          Liefert bis zu 10 historische Duelle (alle Bundesliga-Saisons seit ~2013)
-          build_h2h() bleibt als Fallback für den Fall dass football-data.org nicht erreichbar
+- v5.3.0: H2H jetzt primär via football-data.org — saisonübergreifend
+          build_h2h() bleibt als Fallback
+- v5.3.1: football-data.org H2H-Strategie auf Free-Tier-kompatible Endpoints umgestellt
+          Schritt 1: /v4/competitions/BL1/matches?matchday={md} → Match-ID des nächsten Spiels
+          Schritt 2: /v4/matches/{matchId}/head2head?limit=10 → historische Duelle
+          Beide Endpoints im Free Tier verfügbar — kein paid Plan nötig
 
 Endpoints RapidAPI (~7-12 Requests/Tag):
   1. football-get-standing-all?leagueid=54
@@ -27,8 +30,9 @@ Endpoints RapidAPI (~7-12 Requests/Tag):
   6. football-get-top-players-by-goals?leagueid=54
   7. football-get-top-players-by-assists?leagueid=54
 
-Endpoints football-data.org (1 Request/Tag):
-  8. /v4/matches?competitions=BL1&teams=399,{opp_fd_id}&head2head=true&limit=10
+Endpoints football-data.org (2 Requests/Tag, Free Tier):
+  8. /v4/competitions/BL1/matches?matchday={md}  → Match-ID holen
+  9. /v4/matches/{matchId}/head2head?limit=10    → historische H2H-Duelle
 """
 
 import json, os, sys, time, urllib.request, urllib.error
@@ -319,46 +323,63 @@ def get_fd_team_id(name):
 
 def build_h2h_historical(next_m):
     """
-    Primäre H2H-Quelle: football-data.org — saisonübergreifend.
-    Liefert bis zu 10 historische Duelle (Bundesliga seit ~2013/14).
+    Primäre H2H-Quelle: football-data.org — saisonübergreifend, Free Tier.
 
-    Endpoint: GET /v4/teams/399/matches?competitions=BL1&head2head=10&status=FINISHED
-    → football-data.org liefert alle Matches zwischen Union und dem Gegner
-      für die letzten N Spiele, kompetitionsübergreifend, neueste zuerst.
+    Schritt 1: /v4/competitions/BL1/matches?matchday={md}
+               → Alle Spiele des nächsten Spieltags → Match-ID des Union-Spiels
+    Schritt 2: /v4/matches/{matchId}/head2head?limit=10
+               → Letzte 10 Duelle zwischen Union und Gegner (saisonübergreifend)
+
+    Beide Endpoints sind im kostenlosen Free Tier verfügbar.
     """
     if not FD_KEY or not next_m:
         return None
 
     opp_name = next_m["away_name"] if next_m["is_home"] else next_m["home_name"]
-    opp_fd_id = get_fd_team_id(opp_name)
+    matchday  = next_m.get("matchday")
 
-    if not opp_fd_id:
-        print(f"   WARN H2H: Kein football-data.org ID für '{opp_name}' — Fallback", file=sys.stderr)
+    if not matchday:
+        print(f"   WARN H2H: Kein Spieltag in next_m — Fallback", file=sys.stderr)
         return None
 
-    print(f"3b-hist. H2H via football-data.org: Union (399) vs. {opp_name} (fd-id={opp_fd_id}) ...")
+    print(f"3b-hist. H2H via football-data.org (Free Tier): Union vs. {opp_name} ...")
 
     try:
-        # Schritt 1: Letzten abgeschlossenen Match zwischen den beiden Teams holen
-        # football-data.org H2H-Endpoint erfordert eine Match-ID als Ausgangspunkt.
-        # Wir holen stattdessen alle Matches von Union (fd_id=399) und filtern nach Gegner.
-        data = fd_fetch(f"/v4/teams/{FD_UID}/matches?competitions=BL1&status=FINISHED&limit=100")
-        all_matches = data.get("matches", [])
-        print(f"   fd.org: {len(all_matches)} abgeschlossene BL1-Spiele von Union geladen")
+        # Schritt 1: Match-ID des nächsten Union-Spiels bei football-data.org holen
+        print(f"   Schritt 1: Spieltag {matchday} Matches holen ...")
+        data = fd_fetch(f"/v4/competitions/BL1/matches?matchday={matchday}")
+        md_matches = data.get("matches", [])
+        print(f"   {len(md_matches)} Spiele auf Spieltag {matchday}")
+
+        fd_match_id = None
+        for m in md_matches:
+            h_id = m.get("homeTeam", {}).get("id")
+            a_id = m.get("awayTeam", {}).get("id")
+            if FD_UID in (h_id, a_id):
+                fd_match_id = m.get("id")
+                print(f"   Union-Spiel gefunden: fd_match_id={fd_match_id}")
+                break
+
+        if not fd_match_id:
+            print(f"   WARN: Union-Spiel auf Spieltag {matchday} nicht gefunden — Fallback", file=sys.stderr)
+            return None
+
+        # Schritt 2: H2H-Duelle via Match-ID
+        print(f"   Schritt 2: H2H für match {fd_match_id} holen ...")
+        h2h_data = fd_fetch(f"/v4/matches/{fd_match_id}/head2head?limit=10")
+        h2h_matches = h2h_data.get("matches", [])
+        agg         = h2h_data.get("aggregates", {})
+        print(f"   {len(h2h_matches)} H2H-Duelle gefunden")
 
         wins = draws = losses = goals_for = goals_against = 0
         matches = []
 
-        for m in all_matches:
-            h = m.get("homeTeam", {})
-            a = m.get("awayTeam", {})
-            h_id = h.get("id")
-            a_id = a.get("id")
-
-            # Ist der Gegner beteiligt?
-            if h_id != opp_fd_id and a_id != opp_fd_id:
+        for m in h2h_matches:
+            if m.get("status") != "FINISHED":
                 continue
 
+            h = m.get("homeTeam", {})
+            a = m.get("awayTeam", {})
             score = m.get("score", {})
             full  = score.get("fullTime", {})
             gh = full.get("home")
@@ -366,7 +387,7 @@ def build_h2h_historical(next_m):
             if gh is None or ga is None:
                 continue
 
-            union_is_home = (h_id == FD_UID)
+            union_is_home = (h.get("id") == FD_UID)
             gf_int = gh if union_is_home else ga
             ga_int = ga if union_is_home else gh
             goals_for     += gf_int
@@ -380,14 +401,13 @@ def build_h2h_historical(next_m):
                 res = "D"; draws  += 1
 
             matches.append({
-                "date":         m.get("utcDate",""),
-                "home_name":    h.get("name",""),
-                "away_name":    a.get("name",""),
+                "date":         m.get("utcDate", ""),
+                "home_name":    h.get("shortName", h.get("name", "")),
+                "away_name":    a.get("shortName", a.get("name", "")),
                 "home_goals":   gh,
                 "away_goals":   ga,
                 "union_result": res,
-                "competition":  m.get("competition",{}).get("name",""),
-                "season":       m.get("season",{}).get("startDate","")[:4],
+                "season":       m.get("season", {}).get("startDate", "")[:4],
             })
 
         # Neueste zuerst
@@ -396,7 +416,7 @@ def build_h2h_historical(next_m):
         print(f"   H2H (historisch): {total} Duelle — {wins}S {draws}U {losses}N")
 
         if total == 0:
-            print(f"   WARN: Keine Duelle gefunden — Aufsteiger oder 2. Liga-Gegner?", file=sys.stderr)
+            print(f"   WARN: Keine abgeschlossenen Duelle — Aufsteiger?", file=sys.stderr)
             return None
 
         return {
@@ -407,7 +427,7 @@ def build_h2h_historical(next_m):
             "losses":        losses,
             "goals_for":     goals_for,
             "goals_against": goals_against,
-            "matches":       matches[:10],   # max. 10 Duelle
+            "matches":       matches[:10],
         }
 
     except Exception as e:
