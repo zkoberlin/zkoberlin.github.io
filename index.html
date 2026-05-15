@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.4.0 -->
+<title>Paul · Hub</title><!-- v5.4.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1039,8 +1039,7 @@ html[data-theme="dark"] #stockTicker{background:rgba(14,14,16,.94);}
   border-radius:8px;padding:4px 7px;min-width:44px;flex:1 1 auto;max-width:80px;
 }
 .uc-stat-pill-lbl{font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.35px;color:var(--t3);margin-bottom:2px;white-space:nowrap;}
-.uc-stat-pill-val{font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);}
-.uc-stat-pill-val.union{color:var(--union);}
+.uc-stat-pill-val{font-size:10px;font-variant-numeric:tabular-nums;}
 /* Mobile: pills dürfen etwas kleiner werden */
 @media(max-width:430px){
   .uc-stat-pill{padding:3px 5px;min-width:38px;}
@@ -2870,7 +2869,7 @@ async function loadUnion(){
           ${statRows.map(([lbl,uv,ov,un,on])=>{
             const uWins=un>on,oWins=on>un;
             const uStyle=uWins?'font-weight:700;color:var(--union);':'color:var(--t3);font-weight:400;';
-            const oStyle=oWins?'font-weight:700;color:var(--t);':'color:var(--t3);font-weight:400;';
+            const oStyle=oWins?'font-weight:600;color:var(--t2);':'color:var(--t3);font-weight:400;';
             return`<div class="uc-stat-pill">
               <div class="uc-stat-pill-lbl">${lbl}</div>
               <div style="display:flex;gap:3px;align-items:center;">
