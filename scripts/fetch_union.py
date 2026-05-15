@@ -56,15 +56,15 @@ BASE   = f"https://{HOST}"
 LEAGUE = 54
 UID    = 8149   # Union Berlin bei RapidAPI / FotMob
 UID_S  = str(UID)
-FD_UID = 399    # Union Berlin bei football-data.org
+FD_UID = 28     # Union Berlin bei football-data.org (verifiziert aus API-Response)
 OUT    = os.path.join(os.path.dirname(__file__), "..", "data", "union.json")
 
 
 # ── football-data.org Team-IDs für Bundesliga-Teams ──
 # Quelle: https://api.football-data.org/v4/competitions/BL1/teams
 FD_TEAM_IDS = {
-    "Union Berlin":               399,
-    "1. FC Union Berlin":         399,
+    "Union Berlin":               28,
+    "1. FC Union Berlin":         28,
     "FC Bayern München":          5,
     "Bayern München":             5,
     "Bayern":                     5,
