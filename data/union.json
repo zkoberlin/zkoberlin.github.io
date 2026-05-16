@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-16T10:30:25.995806+00:00",
+  "updated_at": "2026-05-16T10:36:29.757598+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -70,7 +70,7 @@
     {
       "rank": 14,
       "name": "Köln",
-      "logo": "https://upload.wikimedia.org/wikipedia/de/thumb/d/d6/Logo_1._FC_Koeln.svg/120px-Logo_1._FC_Koeln.svg.png",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8722.png",
       "points": 32,
       "is_union": false,
       "qual_color": null,
