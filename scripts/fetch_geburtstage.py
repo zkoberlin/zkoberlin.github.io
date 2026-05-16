@@ -259,8 +259,8 @@ def build_wikimedia_url(filename):
     )
 
 # ── Fallback: Wikipedia REST API ───────────────────────────────────────────
-def fetch_via_wikipedia(month, day, year, seen_names):
-    print("  🔄 Fallback: Wikipedia REST API …")
+def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
+    print(f"  🔄 Fallback: Wikipedia REST API (benötigt {needed}) …")
     url = f"https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/{month:02d}/{day:02d}"
     data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=20)
     births = data.get("births", [])
@@ -274,7 +274,7 @@ def fetch_via_wikipedia(month, day, year, seen_names):
     ]
 
     for entry in births:
-        if len(output) >= 2:
+        if len(output) >= needed:
             break
         year_born = entry.get("year")
         pages = entry.get("pages", [])
@@ -336,11 +336,12 @@ def main():
 
     print(f"\n  → {len(output)}/4 via Wikidata SPARQL")
 
-    # Fallback wenn zu wenig Treffer
-    if len(output) < 3:
+    # Fallback wenn zu wenig Treffer (Ziel: immer 4)
+    if len(output) < 4:
+        needed = 4 - len(output)
         seen_names = {e["name"] for e in output}
         try:
-            fb = fetch_via_wikipedia(month, day, year, seen_names)
+            fb = fetch_via_wikipedia(month, day, year, seen_names, needed)
             output.extend(fb)
         except Exception as e:
             print(f"   ❌ Wikipedia Fallback fehlgeschlagen: {e}")
