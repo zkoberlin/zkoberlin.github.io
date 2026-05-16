@@ -175,8 +175,6 @@ FOTMOB_IDS = {
     "Stuttgart":                  10269,
     "RB Leipzig":                 178475,
     "Leipzig":                    178475,
-    "SC Freiburg":                8358,
-    "Freiburg":                   8358,
 }
 
 # Wikipedia-Logos als Fallback
@@ -251,10 +249,11 @@ def get_logo(team_id, team_name=""):
         url = lr.get("logo","") if isinstance(lr, dict) else ""
     except Exception as e:
         print(f"   WARN Logo {tid} ({team_name}): {e}", file=sys.stderr)
-    if not url and team_name:
-        url = fotmob_fallback(team_name)
-        if url:
-            print(f"   Fotmob-Fallback fuer {team_name}: {url[-40:]}")
+    if not url:
+        # RapidAPI-IDs sind fuer Bundesliga-Teams identisch mit Fotmob-IDs
+        # direkt als Fotmob-CDN-URL nutzen, kein manuelles Dictionary noetig
+        url = f"https://images.fotmob.com/image_resources/logo/teamlogo/{tid}.png"
+        print(f"   Fotmob-ID-Fallback fuer {team_name} ({tid})")
     _logo_cache[tid] = url
     return url
 
