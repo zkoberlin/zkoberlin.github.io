@@ -175,6 +175,8 @@ FOTMOB_IDS = {
     "Stuttgart":                  10269,
     "RB Leipzig":                 178475,
     "Leipzig":                    178475,
+    "SC Freiburg":                8715,
+    "Freiburg":                   8715,
 }
 
 # Wikipedia-Logos als Fallback
