@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-15T18:41:35.310581+00:00",
+  "updated_at": "2026-05-16T06:58:09.860260+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -10,9 +10,21 @@
   "draws": 9,
   "losses": 15,
   "goals_for": 40,
-  "goals_against": 58,
+  "goals_against": 3,
   "form": "LWLDLLLDW",
   "team_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
+  "best_win": {
+    "home": "Union Berlin",
+    "home_goals": 3,
+    "away": "M'gladbach",
+    "away_goals": 1
+  },
+  "worst_loss": {
+    "home": "Bayern München",
+    "home_goals": 4,
+    "away": "Union Berlin",
+    "away_goals": 0
+  },
   "table_context": [
     {
       "rank": 10,
@@ -76,7 +88,7 @@
   "next_match": {
     "event_id": "4829619",
     "matchday": 34,
-    "date": "2026-05-16T13:30:00Z",
+    "date": "2026-05-16T13:30:00.000Z",
     "home_name": "Union Berlin",
     "away_name": "Augsburg",
     "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
@@ -323,5 +335,27 @@
         "season": "2020"
       }
     ]
+  },
+  "opponent_season_stats": {
+    "rank": 9,
+    "matches_played": 33,
+    "wins": 12,
+    "draws": 7,
+    "losses": 14,
+    "goals_for": 45,
+    "goals_against": 57,
+    "clean_sheets": 5,
+    "best_win": {
+      "home": "Freiburg",
+      "home_goals": 1,
+      "away": "Augsburg",
+      "away_goals": 3
+    },
+    "worst_loss": {
+      "home": "Augsburg",
+      "home_goals": 0,
+      "away": "RB Leipzig",
+      "away_goals": 6
+    }
   }
 }
