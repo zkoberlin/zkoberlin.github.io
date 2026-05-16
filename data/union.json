@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-16T10:19:55.293953+00:00",
+  "updated_at": "2026-05-16T10:24:29.625918+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -351,7 +351,7 @@
     "goals_against": 57,
     "clean_sheets": 5,
     "best_win": {
-      "home": "SC Freiburg",
+      "home": "Freiburg",
       "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8715.png",
       "home_goals": 1,
       "away": "Augsburg",
