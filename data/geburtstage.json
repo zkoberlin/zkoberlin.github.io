@@ -1,30 +1,30 @@
 {
-  "datum": "15.05.2026",
-  "generiert": "2026-05-15T05:32:56Z",
+  "datum": "16.05.2026",
+  "generiert": "2026-05-16T06:58:43Z",
   "geburtstage": [
     {
-      "name": "Haerin",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "South Korean Singer (Born 2006)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Haerin_Seoul_Fashion_Week_3.jpg/330px-Haerin_Seoul_Fashion_Week_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Haerin"
-    },
-    {
-      "name": "Huddy (musician)",
+      "name": "Ryan Gravenberch",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "American Internet Celebrity (Born 2002)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Lil_Huddy_%28cropped%29.jpg/330px-Lil_Huddy_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Huddy_(musician)"
+      "beruf": "Dutch Footballer (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3342_by_Stepro_%28cropped%29.jpg/330px-2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3342_by_Stepro_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Ryan_Gravenberch"
     },
     {
-      "name": "Dayana Yastremska",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Ukrainian Tennis Player (Born 2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Yastremska_RGQ23.jpg/330px-Yastremska_RGQ23.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Dayana_Yastremska"
+      "name": "Louisa Chirico",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "American Tennis Player (Born 1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Chirico_RGQ22_%2818%29_%2852129870144%29.jpg/330px-Chirico_RGQ22_%2818%29_%2852129870144%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Louisa_Chirico"
+    },
+    {
+      "name": "Elizabeth Ralston",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Australian Soccer Player",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Elizabeth_Ralston"
     }
   ]
 }
