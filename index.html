@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.6 -->
+<title>Paul · Hub</title><!-- v5.5.7 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -895,6 +895,35 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   margin-top:8px;text-align:center;letter-spacing:.1px;
 }
 
+/* Win Probability */
+.uc-prob{margin-top:10px;}
+.uc-prob-bar{
+  display:flex;height:6px;border-radius:4px;overflow:hidden;gap:2px;
+}
+.uc-prob-seg{height:100%;border-radius:4px;transition:flex .4s ease;}
+.uc-prob-seg.home{background:var(--union);}
+.uc-prob-seg.draw{background:var(--t3);opacity:.6;}
+.uc-prob-seg.away{background:var(--t2);opacity:.45;}
+.uc-prob-labels{
+  display:flex;justify-content:space-between;
+  margin-top:5px;
+}
+.uc-prob-lbl{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  font-size:9px;color:var(--t3);
+}
+.uc-prob-lbl.home{align-items:flex-start;}
+.uc-prob-lbl.away{align-items:flex-end;}
+.uc-prob-lbl .pval{
+  font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--text);line-height:1;
+}
+.uc-prob-lbl.home .pval{color:var(--union);}
+.uc-prob-src{
+  font-size:8px;color:var(--t3);text-align:center;
+  margin-top:4px;letter-spacing:.1px;
+}
+
 /* Stat bars */
 .uc-bars{margin-top:10px;border-top:1px solid var(--border);padding-top:9px;display:flex;flex-direction:column;gap:6px;}
 .uc-bar-row{display:grid;grid-template-columns:38px 1fr 38px;align-items:center;gap:6px;}
@@ -1356,7 +1385,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.6</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.7</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3321,7 +3350,32 @@ async function loadUnion(){
           <div class="uc-next-vs">${dStr}</div>
           <div class="uc-match-team r">${img(oppLogo||LOGOS[opp]||'',34,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
         </div>
-        <div class="uc-match-meta">${fmtDt(next.date)}</div>`;
+        <div class="uc-match-meta">${fmtDt(next.date)}</div>
+        ${(()=>{
+          // H2H-basierte Wahrscheinlichkeit
+          const h=d.h2h;
+          if(!h||h.wins===undefined) return '';
+          const hw=h.wins||0,hd=h.draws||0,hl=h.losses||0;
+          const tot=hw+hd+hl;
+          if(tot<1) return '';
+          const wP=Math.round((hw/tot)*100);
+          const dP=Math.round((hd/tot)*100);
+          const lP=100-wP-dP;
+          const opp=next.is_home?next.away_name:next.home_name;
+          return `<div class="uc-prob">
+            <div class="uc-prob-bar">
+              <div class="uc-prob-seg home" style="flex:${wP}"></div>
+              <div class="uc-prob-seg draw" style="flex:${dP}"></div>
+              <div class="uc-prob-seg away" style="flex:${lP}"></div>
+            </div>
+            <div class="uc-prob-labels">
+              <div class="uc-prob-lbl home"><span class="pval">${wP}%</span>Union Sieg</div>
+              <div class="uc-prob-lbl"><span class="pval">${dP}%</span>Unentsch.</div>
+              <div class="uc-prob-lbl away"><span class="pval">${lP}%</span>${opp} Sieg</div>
+            </div>
+            <div class="uc-prob-src">Basierend auf ${tot} Direktvergleichen</div>
+          </div>`;
+        })()}`;
     }
 
     // ── H2H Block (Direktvergleich mit dem nächsten Gegner) ──
