@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.6.0 -->
+<title>Paul · Hub</title><!-- v5.6.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1416,7 +1416,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.6.0</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.6.1</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3520,7 +3520,10 @@ async function loadUnion(){
       <div class="uc-season" onclick="this.classList.toggle('open')">
         <div class="uc-season-header">
           <div class="uc-season-lbl">Bisherige Saison · Union vs. ${oppName}</div>
-          <svg class="uc-season-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+          <div style="display:flex;align-items:center;gap:6px;">
+            ${oLogoHtml?`<img src="${oppLogoSrc||LOGOS[oppName]||''}" onerror="this.style.visibility='hidden'" alt="" style="width:18px;height:18px;object-fit:contain;flex-shrink:0;">`:``}
+            <svg class="uc-season-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+          </div>
         </div>
         <div class="uc-season-teams">
           <div class="uc-season-team">
