@@ -1,8 +1,15 @@
 """
-fetch_geburtstage.py
-Holt täglich 3 bekannte lebende Geburtstagskinder via Wikidata SPARQL.
-Gefiltert auf: Schauspieler, Sportler, Musiker, Politiker.
-Wird von GitHub Actions automatisch ausgeführt.
+fetch_geburtstage.py  –  v2.0
+Holt täglich 4 bekannte lebende Geburtstagskinder via Wikidata SPARQL.
+
+FIX v2.0:
+  - Garantierter Kategorie-Mix: je 1 Abfrage pro Gruppe (Sport / Musik / Schauspiel / Politik).
+    Vorher: alle QIDs in einem VALUES-Block → ORDER BY sitelinks schnappte sich immer Sportler.
+  - Reihenfolge der Kategorien täglich deterministisch-shuffled (reproduzierbar pro Tag).
+  - Fallback auf Wikipedia REST API wenn Wikidata < 3 Ergebnisse liefert.
+  - JSON-Struktur bleibt identisch mit v1.
+
+Wird von GitHub Actions automatisch ausgeführt (täglich 06:00 UTC).
 """
 
 import json
@@ -13,37 +20,50 @@ from datetime import datetime
 import re
 import hashlib
 import time
+import random
 
-# ── Berufsgruppen-Filter ───────────────────────────────────────────────────
-# Wikidata QIDs für erlaubte Berufsgruppen (und ihre Unterklassen)
-ERLAUBTE_BERUFE_QID = {
-    # Schauspieler
-    "Q33999",    # Schauspieler
-    "Q10798782", # Filmschauspieler
-    "Q3282637",  # Fernsehschauspieler
-    # Musiker / Sänger
-    "Q177220",   # Sänger
-    "Q639669",   # Musiker
-    "Q753110",   # Songwriter
-    "Q488205",   # Singer-Songwriter
-    "Q183945",   # Rapper
-    "Q855091",   # DJ
-    # Sportler
-    "Q2066131",  # Sportler (allgemein)
-    "Q937857",   # Fußballspieler
-    "Q10873124", # Tennisspieler
-    "Q10843402", # Schwimmer
-    "Q11338576", # Leichtathlet
-    "Q628099",   # Rennfahrer
-    "Q10833314", # Skisportler
-    "Q10843263", # Radfahrer
-    # Politiker
-    "Q82955",    # Politiker
-    "Q48352",    # Staatsoberhaupt
-    "Q16533",    # Richter (Verfassungsgericht etc.)
+# ── Kategorie-Gruppen mit QIDs ─────────────────────────────────────────────
+# Pro Gruppe eigene SPARQL-Abfrage → garantierter Mix in der Ausgabe.
+
+KATEGORIEN = {
+    "sport": [
+        "Q2066131",  # Sportler (allgemein)
+        "Q937857",   # Fußballspieler
+        "Q10873124", # Tennisspieler
+        "Q10843402", # Schwimmer
+        "Q11338576", # Leichtathlet
+        "Q628099",   # Rennfahrer
+        "Q10833314", # Skisportler
+        "Q10843263", # Radfahrer
+        "Q3665646",  # Basketballer
+        "Q13141064", # Boxer
+        "Q19204627", # Golfer
+        "Q10871364", # Eishockeyspieler
+        "Q4009406",  # Footballspieler
+    ],
+    "musik": [
+        "Q177220",   # Sänger
+        "Q639669",   # Musiker
+        "Q753110",   # Songwriter
+        "Q488205",   # Singer-Songwriter
+        "Q183945",   # Rapper
+        "Q855091",   # DJ
+        "Q36834",    # Komponist
+    ],
+    "schauspiel": [
+        "Q33999",    # Schauspieler
+        "Q10798782", # Filmschauspieler
+        "Q3282637",  # Fernsehschauspieler
+        "Q2259451",  # Theaterschauspieler
+    ],
+    "politik": [
+        "Q82955",    # Politiker
+        "Q48352",    # Staatsoberhaupt
+        "Q16533",    # Richter
+    ],
 }
 
-# Deutsche Bezeichnungen für die Berufsgruppen
+# Deutsche Bezeichnungen
 BERUF_DEUTSCH = {
     "Q33999":    "Schauspieler/in",
     "Q10798782": "Schauspieler/in",
@@ -69,13 +89,19 @@ BERUF_DEUTSCH = {
     "Q4009406":  "Footballspieler/in",
     "Q10833314": "Skisportler/in",
     "Q10843263": "Radfahrer/in",
-    "Q11774891": "Ringer/in",
     "Q82955":    "Politiker/in",
     "Q48352":    "Staatsoberhaupt",
     "Q16533":    "Richter/in",
 }
 
-# ── Hilfsfunktion: HTTP-Request mit Retry bei 429 ─────────────────────────
+KATEGORIE_LABEL = {
+    "sport":      "⚽ Sport",
+    "musik":      "🎵 Musik",
+    "schauspiel": "🎬 Schauspiel",
+    "politik":    "🏛️  Politik",
+}
+
+# ── HTTP-Request mit Retry bei 429 ─────────────────────────────────────────
 def get_json(url, headers=None, timeout=30, retries=3):
     for attempt in range(retries):
         try:
@@ -97,11 +123,9 @@ def get_json(url, headers=None, timeout=30, retries=3):
                 raise
     raise Exception(f"Alle {retries} Versuche fehlgeschlagen für {url}")
 
-# ── 1. WIKIDATA SPARQL ABFRAGE ─────────────────────────────────────────────
-# Wir filtern direkt in SPARQL auf die erlaubten Berufs-QIDs (VALUES-Block)
-def build_query(month, day):
-    # VALUES-Liste aus den QIDs bauen
-    qid_values = " ".join(f"wd:{qid}" for qid in ERLAUBTE_BERUFE_QID)
+# ── SPARQL-Abfrage für eine Kategorie ──────────────────────────────────────
+def build_query_for_category(month, day, qid_list):
+    qid_values = " ".join(f"wd:{qid}" for qid in qid_list)
     return f"""
     SELECT DISTINCT ?person ?birth_year ?occupation ?sitelinks WHERE {{
       VALUES ?occupation {{ {qid_values} }}
@@ -111,13 +135,63 @@ def build_query(month, day):
               wikibase:sitelinks ?sitelinks .
       FILTER(MONTH(?dob) = {month} && DAY(?dob) = {day})
       FILTER NOT EXISTS {{ ?person wdt:P570 [] }}
-      FILTER(?sitelinks > 20)
+      FILTER(?sitelinks > 15)
     }}
     ORDER BY DESC(?sitelinks)
-    LIMIT 15
+    LIMIT 5
     """
 
-# ── 2. ENTITY-DATEN VIA WIKIDATA API ──────────────────────────────────────
+def fetch_category(month, day, year, kategorie_key, qid_list, seen_qids):
+    """Führt SPARQL für eine Kategorie aus, gibt besten ungesehenen Treffer zurück."""
+    label = KATEGORIE_LABEL.get(kategorie_key, kategorie_key)
+    print(f"  {label} …")
+
+    try:
+        query = build_query_for_category(month, day, qid_list)
+        sparql_url = (
+            "https://query.wikidata.org/sparql?query="
+            + urllib.parse.quote(query)
+            + "&format=json"
+        )
+        raw = get_json(sparql_url, headers={
+            "User-Agent": "PaulDashboard/2.0 (github.com/zkoberlin)",
+            "Accept": "application/sparql-results+json"
+        }, timeout=45, retries=3)
+
+        results = raw.get("results", {}).get("bindings", [])
+        print(f"     → {len(results)} Treffer in Wikidata")
+
+        for row in results:
+            qid = row["person"]["value"].split("/")[-1]
+            if qid in seen_qids:
+                continue
+            occ_qid = row.get("occupation", {}).get("value", "").split("/")[-1]
+            birth_yr = row.get("birth_year", {}).get("value", "")[:4]
+
+            name, beruf, foto = get_entity_data(qid, occ_qid)
+            if not name or re.match(r"^Q\d+$", name):
+                continue
+
+            alter = year - int(birth_yr) if birth_yr.isdigit() else None
+            seen_qids.add(qid)
+            print(f"     ✓ {name} ({alter}) – {beruf}")
+            return {
+                "name":        name,
+                "alter":       alter,
+                "geburtsjahr": int(birth_yr) if birth_yr.isdigit() else None,
+                "beruf":       beruf,
+                "foto":        foto,
+                "wikidata":    f"https://www.wikidata.org/wiki/{qid}"
+            }
+
+        print(f"     – Kein verwertbarer Treffer")
+        return None
+
+    except Exception as e:
+        print(f"     ❌ SPARQL fehlgeschlagen: {e}")
+        return None
+
+# ── Entity-Daten via Wikidata API ──────────────────────────────────────────
 def get_entity_data(qid, occupation_qid=None):
     try:
         url = (
@@ -127,7 +201,7 @@ def get_entity_data(qid, occupation_qid=None):
             f"&languages=de|en"
             f"&format=json"
         )
-        data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=20)
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=20)
         entity = data["entities"][qid]
 
         labels = entity.get("labels", {})
@@ -139,7 +213,6 @@ def get_entity_data(qid, occupation_qid=None):
 
         claims = entity.get("claims", {})
 
-        # Beruf: erst aus SPARQL-Ergebnis (occupation_qid), sonst aus Claims
         beruf = "Persönlichkeit"
         if occupation_qid and occupation_qid in BERUF_DEUTSCH:
             beruf = BERUF_DEUTSCH[occupation_qid]
@@ -147,7 +220,6 @@ def get_entity_data(qid, occupation_qid=None):
             beruf_qid = claims["P106"][0]["mainsnak"]["datavalue"]["value"]["id"]
             beruf = BERUF_DEUTSCH.get(beruf_qid, get_label(beruf_qid))
 
-        # Foto
         foto = None
         if "P18" in claims:
             filename = claims["P18"][0]["mainsnak"]["datavalue"]["value"]
@@ -166,7 +238,7 @@ def get_label(qid):
             f"?action=wbgetentities&ids={qid}"
             f"&props=labels&languages=de|en&format=json"
         )
-        data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=10)
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=10)
         labels = data["entities"][qid].get("labels", {})
         return (
             labels.get("de", {}).get("value")
@@ -176,7 +248,7 @@ def get_label(qid):
     except Exception:
         return "Persönlichkeit"
 
-# ── 3. WIKIMEDIA FOTO-URL ──────────────────────────────────────────────────
+# ── Wikimedia Foto-URL ─────────────────────────────────────────────────────
 def build_wikimedia_url(filename):
     filename_encoded = filename.replace(" ", "_")
     md5 = hashlib.md5(filename_encoded.encode()).hexdigest()
@@ -186,45 +258,40 @@ def build_wikimedia_url(filename):
         f"/120px-{urllib.parse.quote(filename_encoded)}"
     )
 
-# ── 4. FALLBACK: Wikipedia REST API ───────────────────────────────────────
-def fetch_via_wikipedia(month, day, year):
-    print("   🔄 Fallback: Wikipedia REST API ...")
+# ── Fallback: Wikipedia REST API ───────────────────────────────────────────
+def fetch_via_wikipedia(month, day, year, seen_names):
+    print("  🔄 Fallback: Wikipedia REST API …")
     url = f"https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/{month:02d}/{day:02d}"
-    data = get_json(url, headers={"User-Agent": "PaulDashboard/1.0"}, timeout=20)
+    data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=20)
     births = data.get("births", [])
     output = []
 
-    # Schlagwörter für erlaubte Berufe im Beschreibungstext
     ERLAUBTE_KEYWORDS = [
         "actor", "actress", "singer", "musician", "rapper", "songwriter",
         "footballer", "soccer", "basketball", "tennis", "athlete", "boxer",
         "swimmer", "racing driver", "golfer", "politician", "president",
         "chancellor", "minister", "director", "performer", "entertainer",
-        "Schauspieler", "Sänger", "Musiker", "Sportler", "Politiker",
-        "Fußballer", "Basketballer"
     ]
 
     for entry in births:
-        if len(output) >= 3:
+        if len(output) >= 2:
             break
         year_born = entry.get("year")
         pages = entry.get("pages", [])
         if not pages or not year_born:
             continue
         page = pages[0]
+        title = page.get("titles", {}).get("normalized", "")
+        if title in seen_names:
+            continue
         description = page.get("description", "").lower()
         extract = page.get("extract", "").lower()
 
-        # Nur erlaubte Berufsgruppen
-        if not any(kw.lower() in description or kw.lower() in extract
-                   for kw in ERLAUBTE_KEYWORDS):
+        if not any(kw.lower() in description or kw.lower() in extract for kw in ERLAUBTE_KEYWORDS):
             continue
-
-        # Grobe Lebend-Prüfung
         if "died" in extract or "death" in extract:
             continue
 
-        title = page.get("titles", {}).get("normalized", "")
         thumbnail = page.get("thumbnail", {}).get("source", None)
         alter = year - int(year_born)
 
@@ -236,75 +303,50 @@ def fetch_via_wikipedia(month, day, year):
             "foto":        thumbnail,
             "wikidata":    page.get("content_urls", {}).get("desktop", {}).get("page", "")
         })
-        print(f"   ✓ {title} ({alter})")
+        seen_names.add(title)
+        print(f"     ✓ {title} ({alter}) [Wikipedia-Fallback]")
 
     return output
 
-# ── 5. HAUPTFUNKTION ───────────────────────────────────────────────────────
+# ── Hauptfunktion ──────────────────────────────────────────────────────────
 def main():
     today = datetime.utcnow()
     month = today.month
     day   = today.day
     year  = today.year
 
-    print(f"📅 Suche Geburtstagskinder für {day}.{month}.{year} ...")
+    print(f"\n📅 Geburtstagskinder für {day:02d}.{month:02d}.{year}")
+    print("─" * 50)
 
     output = []
+    seen_qids = set()
 
-    # Versuch 1: Wikidata SPARQL mit Berufsfilter
-    try:
-        query = build_query(month, day)
-        sparql_url = (
-            "https://query.wikidata.org/sparql?query="
-            + urllib.parse.quote(query)
-            + "&format=json"
-        )
-        raw = get_json(sparql_url, headers={
-            "User-Agent": "PaulDashboard/1.0 (github.com/zkoberlin)",
-            "Accept": "application/sparql-results+json"
-        }, timeout=45, retries=3)
+    # Reihenfolge der Kategorien: täglich deterministisch-shuffled
+    # (seed = Tag+Monat → reproduzierbar, aber wechselnd)
+    kategorie_keys = list(KATEGORIEN.keys())
+    random.seed(day * 100 + month)
+    random.shuffle(kategorie_keys)
+    print(f"  Reihenfolge: {' → '.join(KATEGORIE_LABEL.get(k, k) for k in kategorie_keys)}\n")
 
-        results = raw.get("results", {}).get("bindings", [])
-        print(f"   → {len(results)} Ergebnisse (gefiltert auf Schauspieler/Sportler/Musiker/Politiker)")
+    for key in kategorie_keys:
+        entry = fetch_category(month, day, year, key, KATEGORIEN[key], seen_qids)
+        if entry:
+            output.append(entry)
+        time.sleep(2)  # Rate-limit-freundlich zwischen Anfragen
 
-        seen = set()
-        unique = []
-        for row in results:
-            qid = row["person"]["value"].split("/")[-1]
-            if qid not in seen:
-                seen.add(qid)
-                occ_qid = row.get("occupation", {}).get("value", "").split("/")[-1]
-                unique.append((qid, row, occ_qid))
+    print(f"\n  → {len(output)}/4 via Wikidata SPARQL")
 
-        for qid, row, occ_qid in unique:
-            if len(output) >= 3:
-                break
-            birth_yr = row.get("birth_year", {}).get("value", "")[:4]
-            name, beruf, foto = get_entity_data(qid, occ_qid)
-            if not name or re.match(r"^Q\d+$", name):
-                continue
-            alter = year - int(birth_yr) if birth_yr.isdigit() else None
-            output.append({
-                "name":        name,
-                "alter":       alter,
-                "geburtsjahr": int(birth_yr) if birth_yr.isdigit() else None,
-                "beruf":       beruf,
-                "foto":        foto,
-                "wikidata":    f"https://www.wikidata.org/wiki/{qid}"
-            })
-            print(f"   ✓ {name} ({alter}) – {beruf}")
-
-    except Exception as e:
-        print(f"   ❌ Wikidata SPARQL fehlgeschlagen: {e}")
-
-    # Fallback: Wikipedia REST API
+    # Fallback wenn zu wenig Treffer
     if len(output) < 3:
+        seen_names = {e["name"] for e in output}
         try:
-            output = fetch_via_wikipedia(month, day, year)
+            fb = fetch_via_wikipedia(month, day, year, seen_names)
+            output.extend(fb)
         except Exception as e:
-            print(f"   ❌ Auch Wikipedia Fallback fehlgeschlagen: {e}")
+            print(f"   ❌ Wikipedia Fallback fehlgeschlagen: {e}")
 
-    # JSON schreiben
+    output = output[:4]
+
     result = {
         "datum":       f"{day:02d}.{month:02d}.{year}",
         "generiert":   today.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -314,7 +356,9 @@ def main():
     with open("data/geburtstage.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✅ data/geburtstage.json geschrieben ({len(output)} Einträge)")
+    beruf_summary = ", ".join(e.get("beruf", "?") for e in output)
+    print(f"\n✅ data/geburtstage.json – {len(output)} Einträge")
+    print(f"   Mix: {beruf_summary}")
 
 if __name__ == "__main__":
     main()
