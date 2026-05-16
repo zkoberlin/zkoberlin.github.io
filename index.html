@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.7.0 -->
+<title>Paul · Hub</title><!-- v5.8.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1421,27 +1421,85 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   cursor:default;
   justify-content:space-between;
 }
-/* Inhalt der Match-Card: auf Mobile kollabiert */
+/* Inhalt der Match-Card: Desktop immer offen */
 .uc-match-body{}
+@media(min-width:601px){
+  .uc-match-body{max-height:none;}
+  .uc-match-chevron{display:none;}
+}
+
+/* ── Letztes Spiel: auf Mobile standardmäßig OFFEN (Scoreline + Ballbesitz sichtbar) ── */
+/* Stats-Detail-Rows bleiben collapsible via eigenem Toggle */
 @media(max-width:600px){
-  .uc-match{cursor:pointer;}
-  .uc-match-chevron{display:block;}
-  .uc-match-lbl{cursor:pointer;}
-  .uc-match-body{
-    overflow:hidden;
-    max-height:0;
-    transition:max-height .35s ease;
+  /* Letztes Spiel: kein Accordion auf Card-Ebene — immer offen */
+  .uc-match.last-match{cursor:default;}
+  .uc-match.last-match .uc-match-lbl{cursor:default;}
+  .uc-match.last-match .uc-match-chevron{display:none!important;}
+  .uc-match.last-match .uc-match-body{
+    max-height:none;
+    border-top:1px solid var(--border);
+    margin-top:10px;padding-top:10px;
   }
-  .uc-match.open .uc-match-body{max-height:600px;}
-  .uc-match.open .uc-match-chevron{transform:rotate(180deg);}
-  .uc-match.open .uc-match-body{
+  /* Nächstes Spiel: kein Accordion auf Card-Ebene — immer offen */
+  .uc-match.next-match{cursor:default;}
+  .uc-match.next-match .uc-match-lbl{cursor:default;}
+  .uc-match.next-match .uc-match-chevron{display:none!important;}
+  .uc-match.next-match .uc-match-body{
+    max-height:none;
     border-top:1px solid var(--border);
     margin-top:10px;padding-top:10px;
   }
 }
-@media(min-width:601px){
-  .uc-match-body{max-height:none;}
-  .uc-match-chevron{display:none;}
+
+/* ── H2H + Saison kombinierter Toggle ── */
+.uc-analysis-wrap{display:flex;flex-direction:column;gap:8px;}
+/* Toggle-Button über dem Block */
+.uc-analysis-toggle{
+  display:none; /* nur Mobile */
+}
+@media(max-width:600px){
+  .uc-analysis-toggle{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--card2);border:1px solid var(--border);
+    border-radius:var(--r3);padding:10px 14px;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s;
+  }
+  .uc-analysis-toggle:hover{background:var(--card);}
+  .uc-analysis-toggle-left{display:flex;flex-direction:column;gap:2px;}
+  .uc-analysis-toggle-lbl{
+    font-size:8px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.5px;color:var(--t3);-webkit-font-smoothing:antialiased;
+    display:flex;align-items:center;gap:5px;
+  }
+  .uc-analysis-toggle-lbl::before{
+    content:'';display:inline-block;width:3px;height:3px;
+    border-radius:50%;background:var(--t3);flex-shrink:0;
+  }
+  .uc-analysis-preview{
+    font-size:11px;color:var(--t2);font-weight:500;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-top:1px;
+  }
+  .uc-analysis-chevron{
+    width:16px;height:16px;flex-shrink:0;
+    color:var(--t3);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .uc-analysis-wrap.open .uc-analysis-chevron{transform:rotate(180deg);}
+  /* Collapsible content */
+  .uc-analysis-body{
+    overflow:hidden;max-height:0;
+    transition:max-height .38s cubic-bezier(.4,0,.2,1);
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .uc-analysis-wrap.open .uc-analysis-body{max-height:9999px;}
+  /* Auf Mobile: H2H und Season nicht mehr eigenständig klickbar */
+  .uc-h2h{cursor:default;}
+  .uc-h2h-chevron{display:none!important;}
+  .uc-h2h-details{max-height:none!important;}
+  .uc-season{cursor:default;}
+  .uc-season-chevron{display:none!important;}
+  .uc-season-details{max-height:none!important;}
 }
 
 </style>
@@ -1458,7 +1516,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.6.1</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3735,10 +3793,26 @@ async function loadUnion(){
           ${tblHtml}
         </div>
       </div>
-      <div class="uc-match" onclick="this.classList.toggle('open')">${lastHtml}</div>
-      <div class="uc-match" onclick="this.classList.toggle('open')">${nextHtml}</div>
-      ${h2hHtml}
-      ${seasonCompareHtml}
+      <div class="uc-match last-match">${lastHtml}</div>
+      <div class="uc-match next-match">${nextHtml}</div>
+      ${h2hHtml || seasonCompareHtml ? `
+      <div class="uc-analysis-wrap" id="ucAnalysisWrap">
+        <div class="uc-analysis-toggle" onclick="(function(el){el.classList.toggle('open');})(document.getElementById('ucAnalysisWrap'))">
+          <div class="uc-analysis-toggle-left">
+            <div class="uc-analysis-toggle-lbl">Analyse · ${nextOppName||'Gegner'}</div>
+            <div class="uc-analysis-preview">${(()=>{
+              if(!h2h||h2h.wins===undefined) return 'Direktvergleich · Bisherige Saison';
+              const hw=h2h.wins||0,hd=h2h.draws||0,hl=h2h.losses||0;
+              return `${hw}S ${hd}U ${hl}N · ${nextOppName||'Gegner'}`;
+            })()}</div>
+          </div>
+          <svg class="uc-analysis-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+        </div>
+        <div class="uc-analysis-body">
+          ${h2hHtml}
+          ${seasonCompareHtml}
+        </div>
+      </div>`:''}
       <div class="uc-box">
         <div class="uc-box-lbl">⚽ Top 3 Torschützen</div>
         ${top3GoalsHtml}
