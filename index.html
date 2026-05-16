@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.1 -->
+<title>Paul · Hub</title><!-- v5.8.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1516,7 +1516,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.1
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.2
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -2208,40 +2208,95 @@ function toggleHist(){
 }
 
 // ── PROMI GEBURTSTAGE ──
-async function loadPromiGeburtstage(){
-  const el = document.getElementById('bdayVal');
-  try {
-    // Cache-Busting: täglich neue JSON laden (nicht gecachten Stand vom Vortag)
-    const today_cb=new Date();
-    const cb_key=`${today_cb.getFullYear()}-${today_cb.getMonth()}-${today_cb.getDate()}`;
-    const res = await fetch(`data/geburtstage.json?v=${cb_key}`);
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const list = data.geburtstage || [];
+function renderPromis(list, el){
+  if(!list.length){
+    el.innerHTML='<div style="font-size:10px;color:var(--t3);">Heute keine Daten</div>';
+    return;
+  }
+  el.innerHTML=list.map(p=>{
+    const fotoHtml=p.foto
+      ?`<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
+      :`<div class="promi-foto-placeholder">🎂</div>`;
+    const alter=p.alter?`· ${p.alter}`:'';
+    const beruf=(p.beruf||'').replace(/\s*\(Born\s+\d{4}\)/gi,'').trim();
+    return`<div class="promi-chip">
+      ${fotoHtml}
+      <div class="promi-info">
+        <div class="promi-name">${p.name}</div>
+        <div class="promi-meta">${beruf} ${alter}</div>
+      </div>
+    </div>`;
+  }).join('<div style="height:1px;background:var(--border);margin:1px 0;"></div>');
+}
 
-    if(!list.length){
-      el.innerHTML = '<div style="font-size:10px;color:var(--t3);">Heute keine Daten</div>';
+async function fetchPromiWikipedia(el){
+  // Direkter Wikipedia-Fallback wenn JSON veraltet oder nicht verfügbar
+  try{
+    const now=new Date();
+    const m=String(now.getMonth()+1).padStart(2,'0');
+    const d=String(now.getDate()).padStart(2,'0');
+    const res=await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/${m}/${d}`,
+      {signal:AbortSignal.timeout(8000)});
+    if(!res.ok) throw new Error('Wikipedia '+res.status);
+    const data=await res.json();
+    const births=data.births||[];
+    const KEYWORDS=['actor','actress','singer','musician','rapper','songwriter',
+      'footballer','soccer','basketball','tennis','athlete','boxer','swimmer',
+      'racing driver','golfer','politician','president','chancellor','minister',
+      'director','performer','entertainer'];
+    const list=[];
+    for(const entry of births){
+      if(list.length>=3) break;
+      const yr=entry.year;
+      const pages=entry.pages||[];
+      if(!pages.length||!yr) continue;
+      const page=pages[0];
+      const desc=(page.description||'').toLowerCase();
+      const ext=(page.extract||'').toLowerCase();
+      if(!KEYWORDS.some(k=>desc.includes(k)||ext.includes(k))) continue;
+      if(ext.includes('died')||ext.includes('death')) continue;
+      list.push({
+        name:page.titles?.normalized||'',
+        alter:now.getFullYear()-parseInt(yr),
+        beruf:(page.description||'Persönlichkeit'),
+        foto:page.thumbnail?.source||null
+      });
+    }
+    renderPromis(list,el);
+  }catch(e){
+    console.warn('Wikipedia Fallback fehlgeschlagen:',e);
+    el.innerHTML='<div style="font-size:10px;color:var(--t3);">–</div>';
+  }
+}
+
+async function loadPromiGeburtstage(){
+  const el=document.getElementById('bdayVal');
+  try{
+    // Cache-Busting: täglich neue JSON (Querystring = heutiges Datum)
+    const now=new Date();
+    const cb=`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
+    const res=await fetch(`data/geburtstage.json?v=${cb}`,{signal:AbortSignal.timeout(6000)});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+
+    // ── Datum-Prüfung: JSON von heute? ──
+    // Format im JSON: "16.05.2025" → parsen und vergleichen
+    const jsonDatum=data.datum||'';
+    const [jd,jm,jy]=jsonDatum.split('.').map(Number);
+    const isToday=(jd===now.getDate()&&jm===(now.getMonth()+1)&&jy===now.getFullYear());
+
+    if(!isToday){
+      // GitHub Action noch nicht gelaufen → direkt Wikipedia abfragen
+      console.info('geburtstage.json ist veraltet ('+jsonDatum+') → Wikipedia-Fallback');
+      await fetchPromiWikipedia(el);
       return;
     }
 
-    el.innerHTML = list.map(p => {
-      const fotoHtml = p.foto
-        ? `<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
-        : `<div class="promi-foto-placeholder">🎂</div>`;
-      const alter = p.alter ? `· ${p.alter}` : '';
-      const beruf = (p.beruf || '').replace(/\s*\(Born\s+\d{4}\)/gi, '').trim();
-      return `<div class="promi-chip">
-        ${fotoHtml}
-        <div class="promi-info">
-          <div class="promi-name">${p.name}</div>
-          <div class="promi-meta">${beruf} ${alter}</div>
-        </div>
-      </div>`;
-    }).join('<div style="height:1px;background:var(--border);margin:1px 0;"></div>');
+    renderPromis(data.geburtstage||[], el);
 
-  } catch(e) {
-    console.warn('Promi-Geburtstage Fehler:', e);
-    el.innerHTML = '<div style="font-size:10px;color:var(--t3);">–</div>';
+  }catch(e){
+    console.warn('Promi-Geburtstage Fehler:',e,'→ Wikipedia-Fallback');
+    await fetchPromiWikipedia(el);
   }
 }
 loadPromiGeburtstage();
