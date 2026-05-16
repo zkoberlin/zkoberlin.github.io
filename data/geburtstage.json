@@ -1,6 +1,6 @@
 {
   "datum": "16.05.2026",
-  "generiert": "2026-05-16T07:34:01Z",
+  "generiert": "2026-05-16T08:24:53Z",
   "geburtstage": [
     {
       "name": "Ryan Gravenberch",
@@ -17,14 +17,6 @@
       "beruf": "American Tennis Player (Born 1996)",
       "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Chirico_RGQ22_%2818%29_%2852129870144%29.jpg/330px-Chirico_RGQ22_%2818%29_%2852129870144%29.jpg",
       "wikidata": "https://en.wikipedia.org/wiki/Louisa_Chirico"
-    },
-    {
-      "name": "Elizabeth Ralston",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Australian Soccer Player",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Elizabeth_Ralston"
     }
   ]
 }
