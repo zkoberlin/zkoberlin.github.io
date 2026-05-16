@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.4.0 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.4.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -673,16 +673,20 @@ def build_opponent_season_stats(all_m, next_m, table):
             if margin > best_win_margin:
                 best_win_margin = margin
                 best_win_data = {
-                    "home": h["name"], "home_goals": gh,
-                    "away": a["name"], "away_goals": ga,
+                    "home": h["name"], "home_logo": get_logo(h["id"], h["name"]),
+                    "home_goals": gh,
+                    "away": a["name"], "away_logo": get_logo(a["id"], a["name"]),
+                    "away_goals": ga,
                 }
         elif margin < 0:
             losses += 1
             if abs(margin) > worst_loss_margin:
                 worst_loss_margin = abs(margin)
                 worst_loss_data = {
-                    "home": h["name"], "home_goals": gh,
-                    "away": a["name"], "away_goals": ga,
+                    "home": h["name"], "home_logo": get_logo(h["id"], h["name"]),
+                    "home_goals": gh,
+                    "away": a["name"], "away_logo": get_logo(a["id"], a["name"]),
+                    "away_goals": ga,
                 }
         else:
             draws += 1
@@ -798,6 +802,15 @@ def main():
     form_calc = "".join(filter(None, [result_char(m) for m in done[-9:]]))
     print(f"   Form (berechnet): {form_calc}")
 
+    # Union clean_sheets (kein Gegentor erhalten) aus done-Matches berechnen
+    union_clean_sheets = 0
+    for m in done:
+        is_h = m["home"]["id"] == UID_S
+        goals_conceded = m["away"]["score"] if is_h else m["home"]["score"]
+        if goals_conceded is not None and int(goals_conceded) == 0:
+            union_clean_sheets += 1
+    print(f"   Union clean_sheets: {union_clean_sheets}")
+
     # 3b. H2H — primär football-data.org (historisch), Fallback RapidAPI (aktuelle Saison)
     print("3b. H2H (Direktvergleich) ...")
     h2h = build_h2h_historical(next_m)
@@ -824,20 +837,24 @@ def main():
         union_is_away = (a_id == UID_S)
         if not union_is_home and not union_is_away:
             continue
-        gh = h.get("score"); ga = a.get("score")
-        if gh is None or ga is None: continue
-        gh, ga = int(gh), int(ga)
-        gf_u = gh if union_is_home else ga
-        ga_u = ga if union_is_home else gh
+        m_gh = h.get("score"); m_ga = a.get("score")
+        if m_gh is None or m_ga is None: continue
+        m_gh, m_ga = int(m_gh), int(m_ga)
+        gf_u = m_gh if union_is_home else m_ga
+        ga_u = m_ga if union_is_home else m_gh
         margin = gf_u - ga_u
         if margin > union_best_win_margin:
             union_best_win_margin = margin
-            union_best_win = {"home": h["name"], "home_goals": gh,
-                              "away": a["name"], "away_goals": ga}
+            union_best_win = {"home": h["name"], "home_logo": get_logo(h["id"], h["name"]),
+                              "home_goals": m_gh,
+                              "away": a["name"], "away_logo": get_logo(a["id"], a["name"]),
+                              "away_goals": m_ga}
         if -margin > union_worst_loss_margin:
             union_worst_loss_margin = -margin
-            union_worst_loss = {"home": h["name"], "home_goals": gh,
-                                "away": a["name"], "away_goals": ga}
+            union_worst_loss = {"home": h["name"], "home_logo": get_logo(h["id"], h["name"]),
+                                "home_goals": m_gh,
+                                "away": a["name"], "away_logo": get_logo(a["id"], a["name"]),
+                                "away_goals": m_ga}
     if union_best_win_margin > 0:
         print(f"   Union best_win: {union_best_win['home']} {union_best_win['home_goals']}:{union_best_win['away_goals']} {union_best_win['away']}")
     if union_worst_loss_margin > 0:
@@ -917,6 +934,7 @@ def main():
         "losses":                 losses,
         "goals_for":              gf,
         "goals_against":          ga,
+        "clean_sheets":           union_clean_sheets,
         "form":                   form_calc or form[-9:],
         "team_logo":              team_logo,
         "best_win":               union_best_win if union_best_win_margin > 0 else None,
