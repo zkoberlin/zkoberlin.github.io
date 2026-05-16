@@ -115,7 +115,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
 /* ── SECTION ── */
-.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;padding-right:2px;margin-top:6px;-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
+.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
 
 /* ── WEATHER CARD – Apple Redesign v5.2.8 ── */
 .weather-card{
@@ -1373,40 +1373,33 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   .uc-season-details{max-height:none;}
 }
 
-/* ══ UNIFIED SECTION COLLAPSE ══ */
-/* .sec is already defined above with flex layout */
-.sec-chevron{
-  display:flex;align-items:center;justify-content:center;
-  width:22px;height:22px;flex-shrink:0;
-  border-radius:50%;
-  background:var(--card2);
-  border:1px solid var(--border);
-  transition:background .15s,transform .3s cubic-bezier(.4,0,.2,1);
+/* ── Match Card Accordion (Letztes & Nächstes Spiel) ── */
+.uc-match-chevron{
+  display:none;
+  width:16px;height:16px;flex-shrink:0;
+  color:var(--t3);transition:transform .25s;
 }
-.sec-chevron svg{
-  width:11px;height:11px;
-  color:var(--t3);
-  transition:transform .3s cubic-bezier(.4,0,.2,1);
+/* Match-Label wird zum Accordion-Header */
+.uc-match-lbl{
+  cursor:default;
+  justify-content:space-between;
 }
-.sec:hover .sec-chevron{background:var(--card);}
-
-/* Collapsible body */
-.sec-body{
-  overflow:hidden;
-  transition:max-height .38s cubic-bezier(.4,0,.2,1), opacity .28s ease;
+/* Inhalt der Match-Card: auf Mobile kollabiert */
+.uc-match-body{}
+@media(max-width:600px){
+  .uc-match{cursor:pointer;}
+  .uc-match-chevron{display:block;}
+  .uc-match-lbl{cursor:pointer;}
+  .uc-match-body{
+    overflow:hidden;
+    max-height:0;
+    transition:max-height .35s ease;
+  }
+  .uc-match.open .uc-match-body{max-height:600px;}
+  .uc-match.open .uc-match-chevron{transform:rotate(180deg);}
 }
-.sec-body.collapsed{
-  max-height:0!important;
-  opacity:0;
-  pointer-events:none;
-}
-.sec-body.expanded{
-  opacity:1;
-}
-
-/* Chevron rotation when open */
-.sec[data-open="true"] .sec-chevron svg{
-  transform:rotate(180deg);
+@media(min-width:601px){
+  .uc-match-body{max-height:none;}
 }
 
 </style>
@@ -1598,11 +1591,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 </div>
 
 <!-- Emil & Rosa -->
-<div class="sec" id="sec-er" onclick="toggleSec('er')">
-  <span>👧 Emil & Rosa</span>
-  <span class="sec-chevron"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></span>
-</div>
-<div class="sec-body" id="sec-body-er">
+<div class="sec">👧 Emil & Rosa</div>
 <a class="hcard er-link" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
 <div class="er" id="erCard">
   <div class="er-top">
@@ -1660,14 +1649,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   </div>
 </div>
 </a>
-</div><!-- /sec-body-er -->
 
 <!-- Alma -->
-<div class="sec" id="sec-alma" onclick="toggleSec('alma')">
-  <span>🧡 Alma · Schwerin</span>
-  <span class="sec-chevron"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></span>
-</div>
-<div class="sec-body" id="sec-body-alma">
+<div class="sec">🧡 Alma · Schwerin</div>
 <a class="alma-card" href="/kalenderpaul/?filter=schwerin" target="_blank" id="almaCard">
   <!-- Section 1: Hauptcountdown (aktuell / nächster Besuch) -->
   <div class="alma-section" id="almaMain">
@@ -1703,14 +1687,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     </div>
   </div>
 </a>
-</div><!-- /sec-body-alma -->
 
 <!-- Apps -->
-<div class="sec" id="sec-apps" onclick="toggleSec('apps')">
-  <span>📱 Apps</span>
-  <span class="sec-chevron"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></span>
-</div>
-<div class="sec-body" id="sec-body-apps">
+<div class="sec">📱 Apps</div>
 <div class="app-row">
 
   <!-- KALENDER -->
@@ -1835,14 +1814,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 
 </div>
 
-</div><!-- /sec-body-apps -->
-
 <!-- Union Berlin Card -->
-<div class="sec" id="sec-union" onclick="toggleSec('union')">
-  <span>⚽ 1. FC Union Berlin</span>
-  <span class="sec-chevron"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></span>
-</div>
-<div class="sec-body" id="sec-body-union">
+<div class="sec">⚽ 1. FC Union Berlin</div>
 <div class="union-card" id="unionCard">
   <div class="uc-header">
     <div class="uc-club">
@@ -1897,7 +1870,6 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   </div>
   <div class="uc-footer"><span id="ucUpdated">–</span><span style="color:rgba(232,0,28,.5);font-weight:600;">⚽ EISERN UNION</span></div>
 </div>
-</div><!-- /sec-body-union -->
 
 </main>
 
@@ -3321,7 +3293,8 @@ async function loadUnion(){
         </div>`:'';
 
       lastHtml=`
-        <div class="uc-match-lbl">Letztes Spiel · ${hA} · Spieltag ${last.matchday}</div>
+        <div class="uc-match-lbl">Letztes Spiel · ${hA} · Spieltag ${last.matchday}<svg class="uc-match-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></div>
+        <div class="uc-match-body">
         <div class="uc-last-minimal">
           <div class="uc-last-scoreline">
             <div class="uc-last-team">
@@ -3340,6 +3313,7 @@ async function loadUnion(){
             <span>${fmtDt(last.date)}</span>
           </div>
           ${toggleHtml}
+        </div>
         </div>`;
     }
 
@@ -3354,7 +3328,8 @@ async function loadUnion(){
       const hA=next.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️';
       const unionLogo=d.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
       nextHtml=`
-        <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}</div>
+        <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}<svg class="uc-match-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></div>
+        <div class="uc-match-body">
         <div class="uc-match-teams">
           <div class="uc-match-team">${img(unionLogo,34,'4px')}<span class="uc-match-name">Union Berlin</span></div>
           <div class="uc-next-vs">${dStr}</div>
@@ -3385,7 +3360,8 @@ async function loadUnion(){
             </div>
             <div class="uc-prob-src">Basierend auf ${tot} Direktvergleichen</div>
           </div>`;
-        })()}`;
+        })()}
+        </div>`;
     }
 
     // ── H2H Block (Direktvergleich mit dem nächsten Gegner) ──
@@ -3656,8 +3632,8 @@ async function loadUnion(){
           ${tblHtml}
         </div>
       </div>
-      <div class="uc-match">${lastHtml}</div>
-      <div class="uc-match">${nextHtml}</div>
+      <div class="uc-match" onclick="this.classList.toggle('open')">${lastHtml}</div>
+      <div class="uc-match" onclick="this.classList.toggle('open')">${nextHtml}</div>
       ${h2hHtml}
       ${seasonCompareHtml}
       <div class="uc-box">
@@ -3682,79 +3658,6 @@ async function loadUnion(){
 }
 loadUnion();
 
-
-// ══ UNIFIED SECTION COLLAPSE ══
-// Sections: er, alma, apps, union
-// Mobile: default collapsed; Desktop: default expanded
-// State stored in localStorage key: hub_sec_{id}
-
-const SEC_IDS = ['er','alma','apps','union'];
-const isMobile = () => window.innerWidth <= 600;
-
-function secDefaultOpen(id){
-  // default: mobile=closed, desktop=open
-  const stored = localStorage.getItem('hub_sec_'+id);
-  if(stored !== null) return stored === '1';
-  return !isMobile();
-}
-
-function applySecState(id, open, animate){
-  const btn  = document.getElementById('sec-'+id);
-  const body = document.getElementById('sec-body-'+id);
-  if(!btn || !body) return;
-
-  // Measure natural height for animation
-  if(open){
-    body.style.maxHeight = body.scrollHeight + 'px';
-    body.classList.remove('collapsed');
-    body.classList.add('expanded');
-  } else {
-    // Set explicit maxHeight before collapsing (needed for transition)
-    body.style.maxHeight = body.scrollHeight + 'px';
-    // Force reflow
-    body.offsetHeight;
-    body.style.maxHeight = '0px';
-    body.classList.add('collapsed');
-    body.classList.remove('expanded');
-  }
-  btn.setAttribute('data-open', open ? 'true' : 'false');
-  localStorage.setItem('hub_sec_'+id, open ? '1' : '0');
-}
-
-function toggleSec(id){
-  const btn = document.getElementById('sec-'+id);
-  if(!btn) return;
-  const isOpen = btn.getAttribute('data-open') === 'true';
-  applySecState(id, !isOpen, true);
-}
-
-// Init all sections
-function initSecs(){
-  SEC_IDS.forEach(id => {
-    const open = secDefaultOpen(id);
-    const body = document.getElementById('sec-body-'+id);
-    if(!body) return;
-    // Set initial maxHeight without transition
-    body.style.transition = 'none';
-    if(open){
-      body.style.maxHeight = '9999px';
-      body.classList.add('expanded');
-      body.classList.remove('collapsed');
-    } else {
-      body.style.maxHeight = '0px';
-      body.classList.add('collapsed');
-      body.classList.remove('expanded');
-    }
-    const btn = document.getElementById('sec-'+id);
-    if(btn) btn.setAttribute('data-open', open ? 'true' : 'false');
-    // Re-enable transition after paint
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => { body.style.transition = ''; });
-    });
-  });
-}
-
-initSecs();
 
 // ── LOAD BAR ──
 (function(){
