@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.2 -->
+<title>Paul · Hub</title><!-- v5.5.3 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1221,6 +1221,123 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   .uc-h2h.open .uc-h2h-chevron{transform:rotate(180deg);}
 }
 
+/* ── Saison-Vergleich Block ── */
+.uc-season{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:12px 14px;
+  transition:border-color .15s;
+}
+.uc-season:hover{border-color:rgba(232,0,28,.18);}
+.uc-season-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:13px;
+}
+.uc-season-lbl{
+  font-size:7.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.55px;color:var(--t3);
+  -webkit-font-smoothing:antialiased;
+  display:flex;align-items:center;gap:5px;
+}
+.uc-season-lbl::before{
+  content:'';display:inline-block;
+  width:3px;height:3px;border-radius:50%;
+  background:var(--t3);flex-shrink:0;
+}
+/* Logos-Zeile über der Tabelle */
+.uc-season-teams{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.uc-season-team{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  width:60px;
+}
+.uc-season-team-logo{
+  width:28px;height:28px;object-fit:contain;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.12));
+}
+.uc-season-team-name{
+  font-size:8px;font-weight:700;color:var(--t2);
+  text-align:center;line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:60px;
+}
+/* Einzelne Vergleichs-Zeile */
+.uc-season-row{
+  display:grid;grid-template-columns:52px 1fr 52px;
+  align-items:center;gap:5px;
+  padding:5px 0;
+  border-bottom:1px solid var(--border);
+}
+.uc-season-row:last-child{border-bottom:none;}
+.uc-season-row-lbl{
+  font-size:9.5px;font-weight:500;color:var(--t2);
+  text-align:center;line-height:1.3;
+}
+/* Wert-Chips: Union links, Gegner rechts */
+.uc-season-val{
+  font-size:12px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+  padding:3px 8px;border-radius:20px;
+  text-align:center;line-height:1.2;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+/* Besser / schlechter / neutral */
+.uc-season-val.better{
+  background:rgba(52,199,89,.13);color:var(--green);
+  border:1px solid var(--green-b);
+}
+.uc-season-val.worse{
+  background:var(--card);color:var(--t2);
+  border:1px solid var(--border);
+}
+.uc-season-val.neutral{
+  background:var(--card);color:var(--t);
+  border:1px solid var(--border);
+}
+/* Spezial-Zeilen: Höchster Sieg / Niederlage */
+.uc-season-row.match-row{
+  grid-template-columns:1fr auto 1fr;
+  gap:6px;align-items:center;
+}
+.uc-season-match{
+  display:flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.uc-season-match.left{justify-content:flex-start;}
+.uc-season-match.right{justify-content:flex-end;}
+.uc-season-match-score{
+  font-size:12px;font-weight:800;
+  font-variant-numeric:tabular-nums;
+  padding:1px 6px;border-radius:6px;
+  background:var(--union-l);color:var(--union);
+  border:1px solid rgba(232,0,28,.15);
+  white-space:nowrap;
+}
+.uc-season-match-logo{
+  width:14px;height:14px;object-fit:contain;flex-shrink:0;
+}
+/* Accordion (wie H2H) */
+.uc-season-chevron{
+  display:none;
+  width:16px;height:16px;flex-shrink:0;
+  color:var(--t3);transition:transform .25s;
+}
+.uc-season-details{}
+@media(max-width:600px){
+  .uc-season{cursor:pointer;}
+  .uc-season-chevron{display:block;}
+  .uc-season-details{
+    overflow:hidden;
+    max-height:0;
+    transition:max-height .35s ease;
+  }
+  .uc-season.open .uc-season-details{max-height:900px;}
+  .uc-season.open .uc-season-chevron{transform:rotate(180deg);}
+}
+
 </style>
 </head>
 <body>
@@ -1235,7 +1352,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.1</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.3</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3284,6 +3401,138 @@ async function loadUnion(){
       </div>`;
     }
 
+    // ── Saison-Vergleich mit dem nächsten Gegner ──
+    let seasonCompareHtml='';
+    const opp_stats=d.opponent_season_stats;
+    const oppName=nextOppName||'Gegner';
+    const oppLogoSrc=next?(next.is_home?next.away_logo:next.home_logo):null;
+    const unionLogoSrc=d.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
+
+    if(opp_stats && opp_stats.matches_played){
+      const uMp=d.matches_played||0;
+      const oMp=opp_stats.matches_played||1;
+
+      // Hilfsfunktion: Chip rendern, bessere Seite grün
+      // higherIsBetter=true → höherer Wert = besser; false → niedrigerer Wert = besser
+      function scVal(uVal, oVal, higherIsBetter, side){
+        const u=parseFloat(uVal)||0;
+        const o=parseFloat(oVal)||0;
+        const isUnion=(side==='union');
+        let cls='neutral';
+        if(u!==o){
+          const uBetter=higherIsBetter?u>=o:u<=o;
+          cls=isUnion?(uBetter?'better':'worse'):(uBetter?'worse':'better');
+        }
+        const display=typeof uVal==='string'?uVal:(isUnion?uVal:oVal);
+        return`<div class="uc-season-val ${cls}">${display}</div>`;
+      }
+
+      // Tore pro Spiel
+      const uGpg=uMp>0?((d.goals_for||0)/uMp).toFixed(2):'–';
+      const oGpg=oMp>0?((opp_stats.goals_for||0)/oMp).toFixed(2):'–';
+      // Gegentore pro Spiel
+      const uGapg=uMp>0?((d.goals_against||0)/uMp).toFixed(2):'–';
+      const oGapg=oMp>0?((opp_stats.goals_against||0)/oMp).toFixed(2):'–';
+
+      // Logos
+      const uLogoHtml=unionLogoSrc?`<img class="uc-season-team-logo" src="${unionLogoSrc}" onerror="this.style.visibility='hidden'" alt="">`:'';
+      const oLogoHtml=oppLogoSrc||LOGOS[oppName]?`<img class="uc-season-team-logo" src="${oppLogoSrc||LOGOS[oppName]}" onerror="this.style.visibility='hidden'" alt="">`:'';
+
+      // Höchster Sieg: best_win = {home, home_goals, away, away_goals}
+      const uBw=d.best_win||null;
+      const oBw=opp_stats.best_win||null;
+      function matchRow(lbl, uBm, oBm){
+        const uHtml=uBm?`
+          <div class="uc-season-match left">
+            <img class="uc-season-match-logo" src="${LOGOS[uBm.home]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="uc-season-match-score">${uBm.home_goals}:${uBm.away_goals}</span>
+            <img class="uc-season-match-logo" src="${LOGOS[uBm.away]||''}" onerror="this.style.visibility='hidden'" alt="">
+          </div>`:`<div class="uc-season-match left" style="color:var(--t3);font-size:9px;">–</div>`;
+        const oHtml=oBm?`
+          <div class="uc-season-match right">
+            <img class="uc-season-match-logo" src="${LOGOS[oBm.home]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <span class="uc-season-match-score" style="background:var(--card2);color:var(--t);border-color:var(--border);">${oBm.home_goals}:${oBm.away_goals}</span>
+            <img class="uc-season-match-logo" src="${LOGOS[oBm.away]||''}" onerror="this.style.visibility='hidden'" alt="">
+          </div>`:`<div class="uc-season-match right" style="color:var(--t3);font-size:9px;">–</div>`;
+        return`<div class="uc-season-row match-row">
+          ${uHtml}
+          <div class="uc-season-row-lbl">${lbl}</div>
+          ${oHtml}
+        </div>`;
+      }
+
+      const uCs=d.clean_sheets!==undefined?d.clean_sheets:'–';
+      const oCs=opp_stats.clean_sheets!==undefined?opp_stats.clean_sheets:'–';
+      const uRk=d.rank||'–';
+      const oRk=opp_stats.rank||'–';
+      const uW=d.wins||0, uD=d.draws||0, uL=d.losses||0;
+      const oW=opp_stats.wins||0, oD=opp_stats.draws||0, oL=opp_stats.losses||0;
+
+      seasonCompareHtml=`
+      <div class="uc-season" onclick="this.classList.toggle('open')">
+        <div class="uc-season-header">
+          <div class="uc-season-lbl">Bisherige Saison · Union vs. ${oppName}</div>
+          <svg class="uc-season-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+        </div>
+        <div class="uc-season-teams">
+          <div class="uc-season-team">
+            ${uLogoHtml}
+            <div class="uc-season-team-name">Union Berlin</div>
+          </div>
+          <div style="font-size:8px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.4px;">vs.</div>
+          <div class="uc-season-team">
+            ${oLogoHtml}
+            <div class="uc-season-team-name">${oppName}</div>
+          </div>
+        </div>
+        <div class="uc-season-details">
+          <div class="uc-season-row">
+            ${scVal(uRk,oRk,false,'union')}
+            <div class="uc-season-row-lbl">Tabellenplatz</div>
+            ${scVal(oRk,uRk,false,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uW,oW,true,'union')}
+            <div class="uc-season-row-lbl">Gewonnen</div>
+            ${scVal(oW,uW,true,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uD,oD,false,'union')}
+            <div class="uc-season-row-lbl">Remis</div>
+            ${scVal(oD,uD,false,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uL,oL,false,'union')}
+            <div class="uc-season-row-lbl">Verloren</div>
+            ${scVal(oL,uL,false,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uGpg,oGpg,true,'union')}
+            <div class="uc-season-row-lbl">Tore pro Spiel</div>
+            ${scVal(oGpg,uGpg,true,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uGapg,oGapg,false,'union')}
+            <div class="uc-season-row-lbl">Gegnerische Tore pro Spiel</div>
+            ${scVal(oGapg,uGapg,false,'opp')}
+          </div>
+          <div class="uc-season-row">
+            ${scVal(uCs,oCs,true,'union')}
+            <div class="uc-season-row-lbl">Ohne Gegentor</div>
+            ${scVal(oCs,uCs,true,'opp')}
+          </div>
+          ${matchRow('Höchster Sieg', uBw, oBw)}
+          ${matchRow('Höchste Niederlage', d.worst_loss||null, opp_stats.worst_loss||null)}
+        </div>
+      </div>`;
+    } else if(nextOppName){
+      seasonCompareHtml=`
+      <div class="uc-season">
+        <div class="uc-season-lbl">Bisherige Saison · Union vs. ${oppName}</div>
+        <div class="uc-h2h-empty" style="margin-top:8px;">Gegner-Saisondaten fehlen — <code style="font-size:8px;">opponent_season_stats</code> ins union.json ergänzen</div>
+      </div>`;
+    }
+
     // ── Top 3 Torschützen (Karten-Grid) ──
     const allScorers=(d.union_scorers||[]);
     const top3Goals=allScorers.slice(0,3);
@@ -3338,6 +3587,7 @@ async function loadUnion(){
       <div class="uc-match">${lastHtml}</div>
       <div class="uc-match">${nextHtml}</div>
       ${h2hHtml}
+      ${seasonCompareHtml}
       <div class="uc-box">
         <div class="uc-box-lbl">⚽ Top 3 Torschützen</div>
         ${top3GoalsHtml}
