@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.7 -->
+<title>Paul · Hub</title><!-- v5.5.8 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -117,157 +117,159 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* ── SECTION ── */
 .sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
 
-/* Weather expanded */
-/* ── WEATHER CARD – Redesign v5.2.17 ── */
+/* ── WEATHER CARD – Apple Redesign v5.2.8 ── */
 .weather-card{
   position:relative;
   border-radius:var(--r);
-  border:1px solid rgba(255,149,0,.22);
+  border:1px solid var(--border);
   box-shadow:var(--sh);
   overflow:hidden;
   transition:transform .2s,box-shadow .2s,border-color .2s;
-  background:linear-gradient(140deg,#0f2040 0%,#1a3a5c 45%,#0d1e35 100%);
-  color:#fff;
+  background:var(--card);
+  color:var(--text);
   text-decoration:none;
   display:block;
 }
-.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.5);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
-/* Atmospheric glow overlay */
+/* Light mode: subtle warm sky tint */
 .weather-card::before{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 120% 80% at 80% -10%,rgba(255,200,80,.10) 0%,transparent 60%),
-             radial-gradient(ellipse 60% 60% at 10% 100%,rgba(100,160,255,.08) 0%,transparent 60%);
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 100% 60% at 90% 0%,rgba(255,180,50,.07) 0%,transparent 65%),
+             radial-gradient(ellipse 50% 50% at 0% 100%,rgba(100,180,255,.05) 0%,transparent 60%);
 }
-/* Stars/noise texture */
-.weather-card::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background-image:radial-gradient(1px 1px at 20% 15%,rgba(255,255,255,.25) 0%,transparent 100%),
-                   radial-gradient(1px 1px at 70% 25%,rgba(255,255,255,.18) 0%,transparent 100%),
-                   radial-gradient(1.5px 1.5px at 40% 60%,rgba(255,255,255,.12) 0%,transparent 100%),
-                   radial-gradient(1px 1px at 85% 70%,rgba(255,255,255,.15) 0%,transparent 100%),
-                   radial-gradient(1px 1px at 15% 80%,rgba(255,255,255,.10) 0%,transparent 100%);
+[data-theme='dark'] .weather-card::before{
+  background:radial-gradient(ellipse 100% 60% at 90% 0%,rgba(255,180,50,.10) 0%,transparent 65%),
+             radial-gradient(ellipse 50% 50% at 0% 100%,rgba(100,160,255,.08) 0%,transparent 60%);
 }
+.weather-card:hover{transform:translateY(-2px);border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.10),var(--sh-h);}
+
+/* ── TOP SECTION: icon + temp + meta ── */
 .weather-main{
-  padding:16px 18px 14px;
-  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 18px 14px;
+  display:flex;align-items:flex-start;gap:16px;
   position:relative;z-index:1;
 }
 .weather-icon{
-  font-size:52px;flex-shrink:0;line-height:1;
-  filter:drop-shadow(0 2px 12px rgba(255,200,80,.3));
-  animation:wicon-float 4s ease-in-out infinite;
+  font-size:56px;flex-shrink:0;line-height:1;
+  filter:drop-shadow(0 2px 10px rgba(255,180,50,.25));
+  animation:wicon-float 5s ease-in-out infinite;
 }
 @keyframes wicon-float{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-3px);}
+  50%{transform:translateY(-4px);}
 }
 .weather-info{flex:1;min-width:0;}
 .weather-city{
-  font-size:8.5px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.6px;color:rgba(255,255,255,.45);
-  margin-bottom:4px;-webkit-font-smoothing:antialiased;
+  font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.65px;color:var(--t3);
+  margin-bottom:3px;-webkit-font-smoothing:antialiased;
 }
 .weather-temp{
-  font-size:52px;font-weight:200;letter-spacing:-3px;line-height:.95;
-  color:#fff;font-variant-numeric:tabular-nums;
-  text-shadow:0 2px 20px rgba(255,200,80,.2);
+  font-size:56px;font-weight:200;letter-spacing:-3.5px;line-height:.92;
+  color:var(--text);font-variant-numeric:tabular-nums;
 }
 .weather-desc{
-  font-size:12px;font-weight:500;color:rgba(255,255,255,.75);
-  margin-top:5px;letter-spacing:-.1px;
+  font-size:12.5px;font-weight:500;color:var(--t2);
+  margin-top:6px;letter-spacing:-.15px;
 }
-.weather-feels{font-size:10px;color:rgba(255,255,255,.40);margin-top:2px;}
+.weather-feels{font-size:10.5px;color:var(--t3);margin-top:2px;font-variant-numeric:tabular-nums;}
 /* Temp-row: big temp + inline min/max */
-.weather-temp-row{display:flex;align-items:flex-end;gap:10px;}
+.weather-temp-row{display:flex;align-items:flex-end;gap:12px;}
 .wtr-minmax{
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding-bottom:4px;gap:3px;
+  padding-bottom:5px;gap:3px;
 }
 .wtr-val{
-  font-size:13px;font-weight:700;color:#fff;
-  letter-spacing:-.4px;font-variant-numeric:tabular-nums;line-height:1;
+  font-size:13px;font-weight:600;color:var(--t2);
+  letter-spacing:-.3px;font-variant-numeric:tabular-nums;line-height:1;
 }
 .wtr-bar{
-  width:44px;height:3px;border-radius:2px;
+  width:42px;height:2.5px;border-radius:2px;
   background:linear-gradient(90deg,#38bdf8,#fb923c);
-  opacity:.75;
+  opacity:.6;
 }
 .wtr-lbl{
   font-size:7px;font-weight:600;text-transform:uppercase;
-  letter-spacing:.4px;color:rgba(255,255,255,.35);
+  letter-spacing:.5px;color:var(--t3);
   -webkit-font-smoothing:antialiased;
 }
 
-/* Weather detail grid (UV, Niederschlag, Wind) */
+/* ── DETAIL ROW: UV · Regen · Wind ── */
 .weather-details{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
-  padding:10px 18px 13px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);
+  border-top:1px solid var(--border);
   position:relative;z-index:1;
 }
 .wdetail{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:10px;padding:8px 7px 7px;
+  background:var(--card);
+  padding:10px 10px 9px;
   text-align:center;
   transition:background .15s;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
 }
-.wdetail:hover{background:rgba(255,255,255,.12);}
-.wdetail-icon{font-size:14px;line-height:1;margin-bottom:3px;}
+.wdetail:hover{background:var(--card2);}
+.wdetail-icon{font-size:15px;line-height:1;margin-bottom:1px;}
 .wdetail-val{
-  font-size:13px;font-weight:700;color:#fff;
+  font-size:14px;font-weight:700;color:var(--text);
   letter-spacing:-.5px;line-height:1;font-variant-numeric:tabular-nums;
 }
 .wdetail-lbl{
   font-size:7.5px;font-weight:600;text-transform:uppercase;
-  letter-spacing:.4px;color:rgba(255,255,255,.38);
-  margin-top:3px;-webkit-font-smoothing:antialiased;
+  letter-spacing:.4px;color:var(--t3);
+  margin-top:2px;-webkit-font-smoothing:antialiased;
 }
 .wdetail-bar{
-  height:3px;border-radius:2px;
-  background:rgba(255,255,255,.12);
-  margin-top:5px;overflow:hidden;
+  height:2px;border-radius:2px;
+  background:var(--border);
+  margin-top:4px;overflow:hidden;width:80%;
 }
-.wdetail-bar-fill{height:100%;border-radius:2px;transition:width .5s ease;}
-/* Sun row */
+.wdetail-bar-fill{height:100%;border-radius:2px;transition:width .6s ease;}
+
+/* ── SUN ROW ── */
 .weather-sun-row{
-  display:flex;align-items:center;justify-content:center;gap:0;
-  padding:8px 18px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px 11px;
   position:relative;z-index:1;
-  border-top:1px solid rgba(255,255,255,.06);
+  border-top:1px solid var(--border);
+  background:var(--card);
 }
-.wsun-side{display:flex;align-items:center;gap:7px;flex:1;}
-.wsun-side.set{justify-content:flex-end;}
-.wsun-icon{width:36px;height:36px;flex-shrink:0;}
+.wsun-side{display:flex;align-items:center;gap:8px;}
+.wsun-side.set{flex-direction:row-reverse;}
+.wsun-icon{width:32px;height:32px;flex-shrink:0;}
 .wsun-icon svg{width:100%;height:100%;}
 .wsun-info{}
-.wsun-lbl{font-size:7.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.35);}
-.wsun-time{font-size:13px;font-weight:700;color:#FFD95A;letter-spacing:-.4px;font-variant-numeric:tabular-nums;}
+.wsun-lbl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.45px;color:var(--t3);}
+.wsun-time{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.5px;font-variant-numeric:tabular-nums;}
 .wsun-arc{flex:1;display:flex;align-items:center;justify-content:center;}
-.wsun-arc svg{opacity:.35;}
-/* Forecast strip */
+.wsun-arc svg path{stroke:rgba(255,190,60,.5);}
+[data-theme='dark'] .wsun-arc svg path{stroke:rgba(255,210,80,.4);}
+.wsun-arc svg circle{fill:#FFD95A;}
+[data-theme='dark'] .wsun-arc svg circle{fill:#FFD95A;}
+
+/* ── FORECAST STRIP ── */
 .weather-forecast{
-  border-top:1px solid rgba(255,255,255,.08);
-  padding:11px 18px 13px;
+  border-top:1px solid var(--border);
+  padding:11px 14px 13px;
   display:grid;grid-template-columns:repeat(3,1fr);gap:7px;
   position:relative;z-index:1;
-  background:rgba(0,0,0,.18);
+  background:var(--card);
 }
 .weather-day{
-  text-align:center;padding:8px 5px;
-  border-radius:10px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
+  text-align:center;padding:9px 6px 8px;
+  border-radius:11px;
+  background:var(--card2);
+  border:1px solid var(--border);
   transition:background .15s,transform .15s;
 }
-.weather-day:hover{background:rgba(255,255,255,.12);transform:translateY(-1px);}
+.weather-day:hover{background:var(--surface2);transform:translateY(-1px);}
 .weather-day-name{
   font-size:8.5px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.4px;color:rgba(255,255,255,.40);
+  letter-spacing:.4px;color:var(--t3);
   margin-bottom:5px;-webkit-font-smoothing:antialiased;
 }
 .weather-day-icon{font-size:20px;margin-bottom:4px;}
-.weather-day-temp{font-size:12px;font-weight:700;color:#fff;letter-spacing:-.3px;}
-.weather-day-range{font-size:9px;color:rgba(255,255,255,.40);margin-top:2px;font-variant-numeric:tabular-nums;}
+.weather-day-temp{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.3px;}
+.weather-day-range{font-size:9px;color:var(--t3);margin-top:2px;font-variant-numeric:tabular-nums;}
 
 /* ── HOVER CARD ── */
 .hcard{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer;text-decoration:none;color:inherit;display:block;}
@@ -1385,7 +1387,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.7</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.8</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1420,13 +1422,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
           </div>
           <div class="weather-desc" id="wDesc">Lädt…</div>
           <div class="weather-feels" id="wFeels"></div>
-
         </div>
-      </div>
-      <div class="weather-forecast" id="wForecast">
-        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
-        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
-        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
       </div>
       <!-- Detail grid: UV · Niederschlag · Wind -->
       <div class="weather-details" id="wDetails" style="display:none;">
@@ -1453,37 +1449,15 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
       <div class="weather-sun-row" id="wSunRow" style="display:none;">
         <div class="wsun-side rise">
           <div class="wsun-icon">
-            <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-              <!-- Sky gradient -->
-              <defs>
-                <radialGradient id="sunRiseGlow" cx="50%" cy="70%" r="60%">
-                  <stop offset="0%" stop-color="#FFE27A" stop-opacity="0.5"/>
-                  <stop offset="100%" stop-color="#FF8C42" stop-opacity="0"/>
-                </radialGradient>
-                <linearGradient id="skyRise" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1a3a6b"/>
-                  <stop offset="100%" stop-color="#FF6B35"/>
-                </linearGradient>
-              </defs>
-              <!-- Sky bg -->
-              <rect width="36" height="36" rx="8" fill="url(#skyRise)"/>
-              <!-- Glow halo -->
-              <ellipse cx="18" cy="24" rx="14" ry="8" fill="url(#sunRiseGlow)"/>
-              <!-- Sun rays (thin lines) -->
-              <line x1="18" y1="6" x2="18" y2="9" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-              <line x1="26.5" y1="9" x2="24.4" y2="11.1" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-              <line x1="9.5" y1="9" x2="11.6" y2="11.1" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-              <line x1="30" y1="18" x2="27" y2="18" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-              <line x1="6" y1="18" x2="9" y2="18" stroke="#FFE27A" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-              <!-- Sun (half circle rising) -->
-              <path d="M11 24 A7 7 0 0 1 25 24" fill="#FFD95A"/>
-              <ellipse cx="18" cy="24" rx="7" ry="2.5" fill="#FFC832"/>
-              <!-- Horizon line -->
-              <line x1="4" y1="24" x2="32" y2="24" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-linecap="round"/>
-              <!-- Water shimmer lines -->
-              <line x1="8" y1="27" x2="14" y2="27" stroke="rgba(255,220,100,.4)" stroke-width="1" stroke-linecap="round"/>
-              <line x1="22" y1="27" x2="28" y2="27" stroke="rgba(255,220,100,.4)" stroke-width="1" stroke-linecap="round"/>
-              <line x1="10" y1="29.5" x2="26" y2="29.5" stroke="rgba(255,220,100,.25)" stroke-width="1" stroke-linecap="round"/>
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="17" r="6" fill="#FFB800" opacity=".9"/>
+              <line x1="16" y1="5" x2="16" y2="8" stroke="#FFB800" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="23.6" y1="8.4" x2="21.4" y2="10.6" stroke="#FFB800" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="8.4" y1="8.4" x2="10.6" y2="10.6" stroke="#FFB800" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="27" y1="17" x2="24" y2="17" stroke="#FFB800" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="5" y1="17" x2="8" y2="17" stroke="#FFB800" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="4" y1="23" x2="28" y2="23" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".2"/>
+              <polyline points="10,26 16,20 22,26" stroke="#FFB800" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
             </svg>
           </div>
           <div class="wsun-info">
@@ -1492,9 +1466,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
           </div>
         </div>
         <div class="wsun-arc">
-          <svg width="60" height="24" viewBox="0 0 60 24">
-            <path d="M4 22 Q30 2 56 22" stroke="rgba(255,220,80,.7)" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
-            <circle cx="30" cy="22" r="3" fill="#FFD95A"/>
+          <svg width="52" height="22" viewBox="0 0 52 22">
+            <path d="M4 20 Q26 2 48 20" stroke="" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+            <circle cx="26" cy="20" r="2.5"/>
           </svg>
         </div>
         <div class="wsun-side set">
@@ -1503,44 +1477,23 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
             <div class="wsun-time" id="wSunset">–</div>
           </div>
           <div class="wsun-icon">
-            <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="sunSetGlow" cx="50%" cy="70%" r="60%">
-                  <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.6"/>
-                  <stop offset="100%" stop-color="#c0392b" stop-opacity="0"/>
-                </radialGradient>
-                <linearGradient id="skySet" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1a1a3e"/>
-                  <stop offset="60%" stop-color="#6b2fa0"/>
-                  <stop offset="100%" stop-color="#e05c2a"/>
-                </linearGradient>
-              </defs>
-              <!-- Sky bg -->
-              <rect width="36" height="36" rx="8" fill="url(#skySet)"/>
-              <!-- Glow halo -->
-              <ellipse cx="18" cy="24" rx="13" ry="7" fill="url(#sunSetGlow)"/>
-              <!-- Sun (half circle setting) -->
-              <path d="M11 24 A7 7 0 0 1 25 24" fill="#FF8C42"/>
-              <ellipse cx="18" cy="24" rx="7" ry="2.5" fill="#e05c2a"/>
-              <!-- Horizon line -->
-              <line x1="4" y1="24" x2="32" y2="24" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round"/>
-              <!-- Stars appearing -->
-              <circle cx="8" cy="7" r="0.8" fill="rgba(255,255,255,.7)"/>
-              <circle cx="26" cy="5" r="1" fill="rgba(255,255,255,.6)"/>
-              <circle cx="30" cy="11" r="0.7" fill="rgba(255,255,255,.5)"/>
-              <circle cx="14" cy="10" r="0.6" fill="rgba(255,255,255,.4)"/>
-              <!-- Water shimmer lines warm tones -->
-              <line x1="8" y1="27" x2="13" y2="27" stroke="rgba(255,140,60,.45)" stroke-width="1" stroke-linecap="round"/>
-              <line x1="23" y1="27" x2="28" y2="27" stroke="rgba(255,140,60,.45)" stroke-width="1" stroke-linecap="round"/>
-              <line x1="10" y1="29.5" x2="26" y2="29.5" stroke="rgba(255,140,60,.25)" stroke-width="1" stroke-linecap="round"/>
-              <!-- City silhouette -->
-              <rect x="4" y="20" width="4" height="4" fill="rgba(0,0,0,.35)" rx="1"/>
-              <rect x="5.5" y="18.5" width="1" height="1.5" fill="rgba(0,0,0,.35)"/>
-              <rect x="28" y="21" width="4" height="3" fill="rgba(0,0,0,.35)" rx="1"/>
-              <rect x="29" y="19.5" width="1.5" height="1.5" fill="rgba(0,0,0,.35)"/>
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="17" r="6" fill="#FF6B00" opacity=".85"/>
+              <line x1="16" y1="5" x2="16" y2="8" stroke="#FF6B00" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+              <line x1="23.6" y1="8.4" x2="21.4" y2="10.6" stroke="#FF6B00" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+              <line x1="8.4" y1="8.4" x2="10.6" y2="10.6" stroke="#FF6B00" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+              <line x1="27" y1="17" x2="24" y2="17" stroke="#FF6B00" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+              <line x1="5" y1="17" x2="8" y2="17" stroke="#FF6B00" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+              <line x1="4" y1="23" x2="28" y2="23" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".2"/>
+              <polyline points="10,20 16,26 22,20" stroke="#FF6B00" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
             </svg>
           </div>
         </div>
+      </div>
+      <div class="weather-forecast" id="wForecast">
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
+        <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
       </div>
     </a>
     <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
