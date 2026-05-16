@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.2 -->
+<title>Paul · Hub</title><!-- v5.8.3 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1452,7 +1452,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 }
 
 /* ── H2H + Saison kombinierter Toggle ── */
-.uc-analysis-wrap{display:flex;flex-direction:column;gap:8px;}
+.uc-analysis-wrap{display:flex;flex-direction:column;gap:12px;}
 /* Toggle-Button über dem Block */
 .uc-analysis-toggle{
   display:none; /* nur Mobile */
@@ -1516,7 +1516,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.2
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.3
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1528,6 +1528,16 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <!-- wird per JS befüllt -->
   </div>
 </div>
+<script>
+// Aktien-Banner nur Mo–Fr anzeigen
+(function(){
+  const day = new Date().getDay(); // 0=So, 6=Sa
+  if(day === 0 || day === 6){
+    const ticker = document.getElementById('stockTicker');
+    if(ticker) ticker.style.display = 'none';
+  }
+})();
+</script>
 
 <main>
 
@@ -3713,17 +3723,23 @@ async function loadUnion(){
           );
           return fuzzyKey ? LOGOS[fuzzyKey] : '';
         }
+        function logoImg(bm, side){
+          const src = logoSrc(bm, side);
+          if(src) return `<img class="uc-season-match-logo" src="${src}" onerror="this.style.display='none'" alt="" title="${side==='home'?bm.home:bm.away}">`;
+          // Kein Logo-src gefunden: leerer Platzhalter
+          return `<span class="uc-season-match-logo" style="display:inline-block;width:18px;height:18px;"></span>`;
+        }
         const uHtml=uBm?`
           <div class="uc-season-match left">
-            <img class="uc-season-match-logo" src="${logoSrc(uBm,'home')}" onerror="this.style.visibility='hidden'" alt="" title="${uBm.home}">
+            ${logoImg(uBm,'home')}
             <span class="uc-season-match-score">${uBm.home_goals}:${uBm.away_goals}</span>
-            <img class="uc-season-match-logo" src="${logoSrc(uBm,'away')}" onerror="this.style.visibility='hidden'" alt="" title="${uBm.away}">
+            ${logoImg(uBm,'away')}
           </div>`:`<div class="uc-season-match left" style="color:var(--t3);font-size:9px;">–</div>`;
         const oHtml=oBm?`
           <div class="uc-season-match right">
-            <img class="uc-season-match-logo" src="${logoSrc(oBm,'home')}" onerror="this.style.visibility='hidden'" alt="" title="${oBm.home}">
+            ${logoImg(oBm,'home')}
             <span class="uc-season-match-score" style="background:var(--card2);color:var(--t);border-color:var(--border);">${oBm.home_goals}:${oBm.away_goals}</span>
-            <img class="uc-season-match-logo" src="${logoSrc(oBm,'away')}" onerror="this.style.visibility='hidden'" alt="" title="${oBm.away}">
+            ${logoImg(oBm,'away')}
           </div>`:`<div class="uc-season-match right" style="color:var(--t3);font-size:9px;">–</div>`;
         return`<div class="uc-season-row match-row">
           ${uHtml}
