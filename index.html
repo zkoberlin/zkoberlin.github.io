@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.6.1 -->
+<title>Paul · Hub</title><!-- v5.6.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1379,6 +1379,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   width:16px;height:16px;flex-shrink:0;
   color:var(--t3);transition:transform .25s;
 }
+/* Match-Preview: immer sichtbar */
+.uc-match-preview{margin-bottom:0;}
 /* Match-Label wird zum Accordion-Header */
 .uc-match-lbl{
   cursor:default;
@@ -1397,9 +1399,14 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   }
   .uc-match.open .uc-match-body{max-height:600px;}
   .uc-match.open .uc-match-chevron{transform:rotate(180deg);}
+  .uc-match.open .uc-match-body{
+    border-top:1px solid var(--border);
+    margin-top:10px;padding-top:10px;
+  }
 }
 @media(min-width:601px){
   .uc-match-body{max-height:none;}
+  .uc-match-chevron{display:none;}
 }
 
 </style>
@@ -3292,18 +3299,20 @@ async function loadUnion(){
             </div>`:''}
         </div>`:'';
 
+      const unionLogoLast=d.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
+      const homeLogo=last.home_logo||LOGOS[last.home_name]||(last.is_home?unionLogoLast:'');
+      const awayLogo=last.away_logo||LOGOS[last.away_name]||(!last.is_home?unionLogoLast:'');
       lastHtml=`
         <div class="uc-match-lbl">Letztes Spiel · ${hA} · Spieltag ${last.matchday}<svg class="uc-match-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></div>
-        <div class="uc-match-body">
-        <div class="uc-last-minimal">
+        <div class="uc-match-preview">
           <div class="uc-last-scoreline">
             <div class="uc-last-team">
-              <img class="uc-last-team-logo" src="${last.home_logo||LOGOS[last.home_name]||''}" onerror="this.style.visibility='hidden'" alt="">
+              <img class="uc-last-team-logo" src="${homeLogo}" onerror="this.style.visibility='hidden'" alt="">
               <div class="uc-last-team-name">${last.home_name}</div>
             </div>
             <div class="uc-last-score-box ${cls}">${last.goals_home}:${last.goals_away}</div>
             <div class="uc-last-team">
-              <img class="uc-last-team-logo" src="${last.away_logo||LOGOS[last.away_name]||''}" onerror="this.style.visibility='hidden'" alt="">
+              <img class="uc-last-team-logo" src="${awayLogo}" onerror="this.style.visibility='hidden'" alt="">
               <div class="uc-last-team-name">${last.away_name}</div>
             </div>
           </div>
@@ -3312,8 +3321,9 @@ async function loadUnion(){
             <span>·</span>
             <span>${fmtDt(last.date)}</span>
           </div>
-          ${toggleHtml}
         </div>
+        <div class="uc-match-body">
+          ${toggleHtml||'<div style="color:var(--t3);font-size:11px;text-align:center;padding:4px 0;">Keine Statistiken verfügbar</div>'}
         </div>`;
     }
 
@@ -3329,15 +3339,16 @@ async function loadUnion(){
       const unionLogo=d.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
       nextHtml=`
         <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${next.matchday}<svg class="uc-match-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg></div>
-        <div class="uc-match-body">
-        <div class="uc-match-teams">
-          <div class="uc-match-team">${img(unionLogo,34,'4px')}<span class="uc-match-name">Union Berlin</span></div>
-          <div class="uc-next-vs">${dStr}</div>
-          <div class="uc-match-team r">${img(oppLogo||LOGOS[opp]||'',34,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
+        <div class="uc-match-preview">
+          <div class="uc-match-teams">
+            <div class="uc-match-team">${img(unionLogo,34,'4px')}<span class="uc-match-name">Union Berlin</span></div>
+            <div class="uc-next-vs">${dStr}</div>
+            <div class="uc-match-team r">${img(oppLogo||LOGOS[opp]||'',34,'4px')}<span class="uc-match-name" style="text-align:right;">${opp}</span></div>
+          </div>
+          <div class="uc-match-meta">${fmtDt(next.date)}</div>
         </div>
-        <div class="uc-match-meta">${fmtDt(next.date)}</div>
+        <div class="uc-match-body">
         ${(()=>{
-          // H2H-basierte Wahrscheinlichkeit
           const h=d.h2h;
           if(!h||h.wins===undefined) return '';
           const hw=h.wins||0,hd=h.draws||0,hl=h.losses||0;
@@ -3520,10 +3531,7 @@ async function loadUnion(){
       <div class="uc-season" onclick="this.classList.toggle('open')">
         <div class="uc-season-header">
           <div class="uc-season-lbl">Bisherige Saison · Union vs. ${oppName}</div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            ${oLogoHtml?`<img src="${oppLogoSrc||LOGOS[oppName]||''}" onerror="this.style.visibility='hidden'" alt="" style="width:18px;height:18px;object-fit:contain;flex-shrink:0;">`:``}
-            <svg class="uc-season-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
-          </div>
+          <svg class="uc-season-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
         </div>
         <div class="uc-season-teams">
           <div class="uc-season-team">
