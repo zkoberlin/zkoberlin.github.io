@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.5 -->
+<title>Paul · Hub</title><!-- v5.5.6 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1356,7 +1356,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.5</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.6</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3445,17 +3445,22 @@ async function loadUnion(){
       const uBw=d.best_win||null;
       const oBw=opp_stats.best_win||null;
       function matchRow(lbl, uBm, oBm){
+        function mLogo(bm, name){ return bm.home_logo||bm.away_logo?null:null, bm; } // unused
+        function logoSrc(bm, side){
+          const logo = side==='home' ? (bm.home_logo||LOGOS[bm.home]||'') : (bm.away_logo||LOGOS[bm.away]||'');
+          return logo;
+        }
         const uHtml=uBm?`
           <div class="uc-season-match left">
-            <img class="uc-season-match-logo" src="${LOGOS[uBm.home]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <img class="uc-season-match-logo" src="${logoSrc(uBm,'home')}" onerror="this.style.visibility='hidden'" alt="" title="${uBm.home}">
             <span class="uc-season-match-score">${uBm.home_goals}:${uBm.away_goals}</span>
-            <img class="uc-season-match-logo" src="${LOGOS[uBm.away]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <img class="uc-season-match-logo" src="${logoSrc(uBm,'away')}" onerror="this.style.visibility='hidden'" alt="" title="${uBm.away}">
           </div>`:`<div class="uc-season-match left" style="color:var(--t3);font-size:9px;">–</div>`;
         const oHtml=oBm?`
           <div class="uc-season-match right">
-            <img class="uc-season-match-logo" src="${LOGOS[oBm.home]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <img class="uc-season-match-logo" src="${logoSrc(oBm,'home')}" onerror="this.style.visibility='hidden'" alt="" title="${oBm.home}">
             <span class="uc-season-match-score" style="background:var(--card2);color:var(--t);border-color:var(--border);">${oBm.home_goals}:${oBm.away_goals}</span>
-            <img class="uc-season-match-logo" src="${LOGOS[oBm.away]||''}" onerror="this.style.visibility='hidden'" alt="">
+            <img class="uc-season-match-logo" src="${logoSrc(oBm,'away')}" onerror="this.style.visibility='hidden'" alt="" title="${oBm.away}">
           </div>`:`<div class="uc-season-match right" style="color:var(--t3);font-size:9px;">–</div>`;
         return`<div class="uc-season-row match-row">
           ${uHtml}
@@ -3464,7 +3469,7 @@ async function loadUnion(){
         </div>`;
       }
 
-      const uCs=d.clean_sheets!==undefined?d.clean_sheets:'–';
+      const uCs=d.clean_sheets!==undefined&&d.clean_sheets!==null?d.clean_sheets:'–';
       const oCs=opp_stats.clean_sheets!==undefined?opp_stats.clean_sheets:'–';
       const uRk=d.rank||'–';
       const oRk=opp_stats.rank||'–';
