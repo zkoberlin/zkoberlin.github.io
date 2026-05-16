@@ -209,20 +209,69 @@
     "goals_against": 57,
     "clean_sheets": 5,
     "best_win": {
-      "home": "Augsburg",
-      "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
+      "home": "SC Freiburg",
+      "home_logo": "https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/180px-SC-Freiburg_Logo-neu.svg.png",
       "home_goals": 1,
-      "away": "SC Freiburg",
-      "away_logo": "https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/180px-SC-Freiburg_Logo-neu.svg.png",
+      "away": "FC Augsburg",
+      "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
       "away_goals": 3
     },
     "worst_loss": {
-      "home": "Augsburg",
+      "home": "FC Augsburg",
       "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
       "home_goals": 0,
       "away": "RB Leipzig",
       "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/178475.png",
       "away_goals": 6
     }
+  },
+  "h2h": {
+    "wins": 5,
+    "draws": 4,
+    "losses": 6,
+    "goals_for": 20,
+    "goals_against": 24,
+    "matches": [
+      {
+        "date": "2024-04-12",
+        "home_name": "Augsburg",
+        "away_name": "Union Berlin",
+        "home_goals": 2,
+        "away_goals": 0,
+        "union_result": "L"
+      },
+      {
+        "date": "2023-11-25",
+        "home_name": "Union Berlin",
+        "away_name": "Augsburg",
+        "home_goals": 1,
+        "away_goals": 1,
+        "union_result": "D"
+      },
+      {
+        "date": "2023-04-08",
+        "home_name": "Augsburg",
+        "away_name": "Union Berlin",
+        "home_goals": 0,
+        "away_goals": 2,
+        "union_result": "W"
+      },
+      {
+        "date": "2022-11-05",
+        "home_name": "Union Berlin",
+        "away_name": "Augsburg",
+        "home_goals": 2,
+        "away_goals": 0,
+        "union_result": "W"
+      },
+      {
+        "date": "2022-04-02",
+        "home_name": "Augsburg",
+        "away_name": "Union Berlin",
+        "home_goals": 1,
+        "away_goals": 0,
+        "union_result": "L"
+      }
+    ]
   }
 }
