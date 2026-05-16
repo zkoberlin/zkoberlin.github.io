@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-16T06:58:09.860260+00:00",
+  "updated_at": "2026-05-16T07:23:15.298432+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 33,
@@ -10,19 +10,24 @@
   "draws": 9,
   "losses": 15,
   "goals_for": 40,
-  "goals_against": 3,
+  "goals_against": 58,
+  "clean_sheets": 6,
   "form": "LWLDLLLDW",
   "team_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
   "best_win": {
     "home": "Union Berlin",
+    "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
     "home_goals": 3,
     "away": "M'gladbach",
+    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9788.png",
     "away_goals": 1
   },
   "worst_loss": {
     "home": "Bayern München",
+    "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
     "home_goals": 4,
     "away": "Union Berlin",
+    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
     "away_goals": 0
   },
   "table_context": [
@@ -347,14 +352,18 @@
     "clean_sheets": 5,
     "best_win": {
       "home": "Freiburg",
+      "home_logo": "https://upload.wikimedia.org/wikipedia/de/thumb/f/f1/SC-Freiburg_Logo-neu.svg/120px-SC-Freiburg_Logo-neu.svg.png",
       "home_goals": 1,
       "away": "Augsburg",
+      "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
       "away_goals": 3
     },
     "worst_loss": {
       "home": "Augsburg",
+      "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
       "home_goals": 0,
       "away": "RB Leipzig",
+      "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/178475.png",
       "away_goals": 6
     }
   }
