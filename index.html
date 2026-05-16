@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.3 -->
+<title>Paul · Hub</title><!-- v5.5.4 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1337,6 +1337,10 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   .uc-season.open .uc-season-details{max-height:900px;}
   .uc-season.open .uc-season-chevron{transform:rotate(180deg);}
 }
+/* Desktop: immer aufgeklappt */
+@media(min-width:601px){
+  .uc-season-details{max-height:none;}
+}
 
 </style>
 </head>
@@ -1352,7 +1356,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.3</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.4</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3414,17 +3418,22 @@ async function loadUnion(){
 
       // Hilfsfunktion: Chip rendern, bessere Seite grün
       // higherIsBetter=true → höherer Wert = besser; false → niedrigerer Wert = besser
+      // scVal: rendert einen Wert-Chip mit korrekter Farb-Logik
+      // side='union' → zeigt uVal, side='opp' → zeigt oVal
+      // higherIsBetter=true → größerer Wert = grün; false → kleinerer = grün
       function scVal(uVal, oVal, higherIsBetter, side){
-        const u=parseFloat(uVal)||0;
-        const o=parseFloat(oVal)||0;
         const isUnion=(side==='union');
+        const displayVal = isUnion ? uVal : oVal;
+        const u=parseFloat(String(uVal))||0;
+        const o=parseFloat(String(oVal))||0;
         let cls='neutral';
         if(u!==o){
-          const uBetter=higherIsBetter?u>=o:u<=o;
+          // uBetter: ist Unions Wert der bessere?
+          const uBetter=higherIsBetter?(u>o):(u<o);
+          // Diese Seite (union oder opp) bekommt 'better' wenn sie die bessere ist
           cls=isUnion?(uBetter?'better':'worse'):(uBetter?'worse':'better');
         }
-        const display=typeof uVal==='string'?uVal:(isUnion?uVal:oVal);
-        return`<div class="uc-season-val ${cls}">${display}</div>`;
+        return`<div class="uc-season-val ${cls}">${displayVal}</div>`;
       }
 
       // Tore pro Spiel
