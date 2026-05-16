@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.3.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.4.0 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -16,6 +16,11 @@ FIXES:
           Schreibt data["h2h"] mit: wins/draws/losses, goals_for/against, letzte 8 Duelle
 - v5.3.0: H2H jetzt primär via football-data.org — saisonübergreifend
           build_h2h() bleibt als Fallback
+- v5.4.0: opponent_season_stats ergänzt (kein extra Request — aus all_m berechnet)
+          Felder: rank, matches_played, wins, draws, losses, goals_for, goals_against,
+                  clean_sheets, best_win, worst_loss
+          Union best_win / worst_loss ebenfalls aus all_m berechnet und ins JSON geschrieben
+          Frontend zeigt damit "Bisherige Saison"-Vergleichsblock in der Union-Kachel
 - v5.3.1: football-data.org H2H-Strategie auf Free-Tier-kompatible Endpoints umgestellt
           Schritt 1: /v4/competitions/BL1/matches?matchday={md} → Match-ID des nächsten Spiels
           Schritt 2: /v4/matches/{matchId}/head2head?limit=10 → historische Duelle
@@ -582,6 +587,131 @@ def parse_match(m, matchday_num, finished=True):
     return obj
 
 
+def build_opponent_season_stats(all_m, next_m, table):
+    """
+    Berechnet Saison-Statistiken für den nächsten Gegner aus bereits geladenen Daten.
+    Kein extra API-Request — nutzt all_m (alle Ligaspiele) und table (Standings).
+
+    Rückgabe-Dict:
+      rank, matches_played, wins, draws, losses,
+      goals_for, goals_against, clean_sheets,
+      best_win  { home, home_goals, away, away_goals },
+      worst_loss{ home, home_goals, away, away_goals }
+    """
+    if not next_m:
+        return None
+
+    opp_name = next_m["away_name"] if next_m["is_home"] else next_m["home_name"]
+    print(f"   Gegner-Saisonstats für: {opp_name}")
+
+    # Gegner-ID aus all_m herleiten (erste Übereinstimmung)
+    opp_id = None
+    opp_name_lower = opp_name.lower()
+    for m in all_m:
+        for side in [m["home"], m["away"]]:
+            sn = side.get("name","").lower()
+            if opp_name_lower in sn or sn in opp_name_lower:
+                opp_id = str(side["id"])
+                break
+        if opp_id:
+            break
+
+    if not opp_id:
+        print(f"   WARN: Gegner-ID für '{opp_name}' nicht gefunden", file=sys.stderr)
+        return None
+
+    print(f"   Gegner-ID: {opp_id}")
+
+    # Rang aus Standings-Tabelle
+    opp_rank = None
+    for t in table:
+        if str(t.get("id","")) == opp_id:
+            opp_rank = t.get("idx")
+            break
+    # Fallback: Name-Matching in Tabelle
+    if opp_rank is None:
+        for t in table:
+            tn = t.get("name","").lower()
+            if opp_name_lower in tn or tn in opp_name_lower:
+                opp_rank = t.get("idx")
+                break
+
+    # Alle abgeschlossenen Spiele des Gegners auswerten
+    wins = draws = losses = goals_for = goals_against = clean_sheets = 0
+    best_win_margin  = -1
+    worst_loss_margin = -1
+    best_win_data  = None
+    worst_loss_data = None
+
+    for m in all_m:
+        if not m["status"].get("finished"):
+            continue
+        h, a = m["home"], m["away"]
+        h_id, a_id = str(h["id"]), str(a["id"])
+        opp_is_home = (h_id == opp_id)
+        opp_is_away = (a_id == opp_id)
+        if not opp_is_home and not opp_is_away:
+            continue
+
+        gh = h.get("score")
+        ga = a.get("score")
+        if gh is None or ga is None:
+            continue
+        gh, ga = int(gh), int(ga)
+
+        gf_opp = gh if opp_is_home else ga
+        ga_opp = ga if opp_is_home else gh
+
+        goals_for     += gf_opp
+        goals_against += ga_opp
+        if ga_opp == 0:
+            clean_sheets += 1
+
+        margin = gf_opp - ga_opp
+        if margin > 0:
+            wins += 1
+            if margin > best_win_margin:
+                best_win_margin = margin
+                best_win_data = {
+                    "home": h["name"], "home_goals": gh,
+                    "away": a["name"], "away_goals": ga,
+                }
+        elif margin < 0:
+            losses += 1
+            if abs(margin) > worst_loss_margin:
+                worst_loss_margin = abs(margin)
+                worst_loss_data = {
+                    "home": h["name"], "home_goals": gh,
+                    "away": a["name"], "away_goals": ga,
+                }
+        else:
+            draws += 1
+
+    played = wins + draws + losses
+    print(f"   {opp_name}: {played} Spiele, {wins}S {draws}U {losses}N, "
+          f"{goals_for}:{goals_against} Tore, {clean_sheets}× ohne Gegentor, Rang {opp_rank}")
+
+    if played == 0:
+        return None
+
+    result = {
+        "rank":           opp_rank,
+        "matches_played": played,
+        "wins":           wins,
+        "draws":          draws,
+        "losses":         losses,
+        "goals_for":      goals_for,
+        "goals_against":  goals_against,
+        "clean_sheets":   clean_sheets,
+    }
+    if best_win_data:
+        result["best_win"] = best_win_data
+    if worst_loss_data:
+        result["worst_loss"] = worst_loss_data
+
+    return result
+
+
 def load_previous_ranks():
     """Vorherige Ränge aus bestehender union.json lesen (für rank_change)."""
     try:
@@ -675,6 +805,44 @@ def main():
         print("   → Fallback auf RapidAPI H2H (nur aktuelle Saison) ...")
         h2h = build_h2h(all_m, next_m)
 
+    # 3c. Gegner-Saisonstats (kein extra Request — nutzt all_m + table)
+    print("3c. Gegner-Saisonstats ...")
+    opponent_season_stats = build_opponent_season_stats(all_m, next_m, table)
+
+    # 3d. Union best_win / worst_loss aus all_m berechnen
+    print("3d. Union best_win / worst_loss ...")
+    union_best_win_margin  = -1
+    union_worst_loss_margin = -1
+    union_best_win  = None
+    union_worst_loss = None
+    for m in all_m:
+        if not m["status"].get("finished"):
+            continue
+        h, a = m["home"], m["away"]
+        h_id, a_id = str(h["id"]), str(a["id"])
+        union_is_home = (h_id == UID_S)
+        union_is_away = (a_id == UID_S)
+        if not union_is_home and not union_is_away:
+            continue
+        gh = h.get("score"); ga = a.get("score")
+        if gh is None or ga is None: continue
+        gh, ga = int(gh), int(ga)
+        gf_u = gh if union_is_home else ga
+        ga_u = ga if union_is_home else gh
+        margin = gf_u - ga_u
+        if margin > union_best_win_margin:
+            union_best_win_margin = margin
+            union_best_win = {"home": h["name"], "home_goals": gh,
+                              "away": a["name"], "away_goals": ga}
+        if -margin > union_worst_loss_margin:
+            union_worst_loss_margin = -margin
+            union_worst_loss = {"home": h["name"], "home_goals": gh,
+                                "away": a["name"], "away_goals": ga}
+    if union_best_win_margin > 0:
+        print(f"   Union best_win: {union_best_win['home']} {union_best_win['home_goals']}:{union_best_win['away_goals']} {union_best_win['away']}")
+    if union_worst_loss_margin > 0:
+        print(f"   Union worst_loss: {union_worst_loss['home']} {union_worst_loss['home_goals']}:{union_worst_loss['away_goals']} {union_worst_loss['away']}")
+
     # 4. Match Stats
     match_stats = {}
     if last_m and last_m.get("event_id"):
@@ -737,28 +905,31 @@ def main():
         print(f"   WARN: {e}", file=sys.stderr)
 
     result = {
-        "updated_at":       now.isoformat(),
-        "league":           "Bundesliga",
-        "season":           "2025/26",
-        "matchday":         played,
-        "rank":             rank,
-        "points":           pts,
-        "matches_played":   played,
-        "wins":             wins,
-        "draws":            draws,
-        "losses":           losses,
-        "goals_for":        gf,
-        "goals_against":    ga,
-        "form":             form_calc or form[-9:],
-        "team_logo":        team_logo,
-        "table_context":    context,
-        "last_match":       last_m,
-        "next_match":       next_m,
-        "last_match_stats": match_stats,
-        "union_scorers":    union_scorers,
-        "top_scorers":      top_scorers,
-        "top_assisters":    top_assisters,
-        "h2h":              h2h,
+        "updated_at":             now.isoformat(),
+        "league":                 "Bundesliga",
+        "season":                 "2025/26",
+        "matchday":               played,
+        "rank":                   rank,
+        "points":                 pts,
+        "matches_played":         played,
+        "wins":                   wins,
+        "draws":                  draws,
+        "losses":                 losses,
+        "goals_for":              gf,
+        "goals_against":          ga,
+        "form":                   form_calc or form[-9:],
+        "team_logo":              team_logo,
+        "best_win":               union_best_win if union_best_win_margin > 0 else None,
+        "worst_loss":             union_worst_loss if union_worst_loss_margin > 0 else None,
+        "table_context":          context,
+        "last_match":             last_m,
+        "next_match":             next_m,
+        "last_match_stats":       match_stats,
+        "union_scorers":          union_scorers,
+        "top_scorers":            top_scorers,
+        "top_assisters":          top_assisters,
+        "h2h":                    h2h,
+        "opponent_season_stats":  opponent_season_stats,
     }
 
     os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
