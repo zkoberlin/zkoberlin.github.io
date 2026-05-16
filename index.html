@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.6.2 -->
+<title>Paul · Hub</title><!-- v5.7.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -540,6 +540,41 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .promi-meta{font-size:9.5px;color:var(--t2);margin-top:0px;}
 
 
+/* ── COLLAPSIBLE SECTIONS ── */
+.cs-wrap{display:contents;}/* desktop: no wrapper behavior */
+.cs-header{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);border-radius:var(--r2);border:1px solid var(--border);
+  box-shadow:var(--sh);padding:10px 14px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .15s;
+}
+.cs-header:hover{background:var(--card2);}
+.cs-header-left{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;}
+.cs-header-title{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);-webkit-font-smoothing:antialiased;}
+.cs-preview{font-size:11px;color:var(--t2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;margin-top:1px;}
+.cs-chevron{flex-shrink:0;width:20px;height:20px;color:var(--t3);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.cs-chevron.open{transform:rotate(180deg);}
+.cs-body{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .38s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;gap:0;
+}
+.cs-body.open{max-height:9999px;}
+/* Desktop: always expanded, header hidden */
+@media(min-width:601px){
+  .cs-header{display:none!important;}
+  .cs-body{max-height:none!important;overflow:visible!important;}
+}
+/* Mobile: section label hidden (replaced by cs-header) */
+@media(max-width:600px){
+  .cs-sec-label{display:none!important;}
+  .cs-body{gap:0;}
+  .cs-body.open>.er-link,
+  .cs-body.open>.alma-card,
+  .cs-body.open>.app-row{margin-top:8px;}
+}
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
 html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 @media(prefers-color-scheme:dark){html:not([data-theme="light"]) .bnav{background:rgba(14,14,16,.92);}}
@@ -1598,7 +1633,15 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 </div>
 
 <!-- Emil & Rosa -->
-<div class="sec">👧 Emil & Rosa</div>
+<div class="cs-header" onclick="toggleSection('er')" id="csHdrEr">
+  <div class="cs-header-left">
+    <div class="cs-header-title">👧 Emil &amp; Rosa</div>
+    <div class="cs-preview" id="csPreviewEr">Lädt…</div>
+  </div>
+  <svg class="cs-chevron" id="csChevronEr" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 10 13 15 8"/></svg>
+</div>
+<div class="sec cs-sec-label">👧 Emil &amp; Rosa</div>
+<div class="cs-body" id="csBodyEr">
 <a class="hcard er-link" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
 <div class="er" id="erCard">
   <div class="er-top">
@@ -1656,9 +1699,18 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   </div>
 </div>
 </a>
+</div><!-- /csBodyEr -->
 
 <!-- Alma -->
-<div class="sec">🧡 Alma · Schwerin</div>
+<div class="cs-header" onclick="toggleSection('alma')" id="csHdrAlma">
+  <div class="cs-header-left">
+    <div class="cs-header-title">🧡 Alma · Schwerin</div>
+    <div class="cs-preview" id="csPreviewAlma">Lädt…</div>
+  </div>
+  <svg class="cs-chevron" id="csChevronAlma" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 10 13 15 8"/></svg>
+</div>
+<div class="sec cs-sec-label">🧡 Alma · Schwerin</div>
+<div class="cs-body" id="csBodyAlma">
 <a class="alma-card" href="/kalenderpaul/?filter=schwerin" target="_blank" id="almaCard">
   <!-- Section 1: Hauptcountdown (aktuell / nächster Besuch) -->
   <div class="alma-section" id="almaMain">
@@ -1694,9 +1746,18 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     </div>
   </div>
 </a>
+</div><!-- /csBodyAlma -->
 
 <!-- Apps -->
-<div class="sec">📱 Apps</div>
+<div class="cs-header" onclick="toggleSection('apps')" id="csHdrApps">
+  <div class="cs-header-left">
+    <div class="cs-header-title">📱 Apps</div>
+    <div class="cs-preview" id="csPreviewApps">Kalender · Finanzen · Aktien</div>
+  </div>
+  <svg class="cs-chevron" id="csChevronApps" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 10 13 15 8"/></svg>
+</div>
+<div class="sec cs-sec-label">📱 Apps</div>
+<div class="cs-body" id="csBodyApps" style="padding-top:0;">
 <div class="app-row">
 
   <!-- KALENDER -->
@@ -1819,7 +1880,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     </div>
   </div>
 
-</div>
+</div><!-- /app-row -->
+</div><!-- /csBodyApps -->
 
 <!-- Union Berlin Card -->
 <div class="sec">⚽ 1. FC Union Berlin</div>
@@ -1887,6 +1949,23 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 </nav>
 
 <script>
+// ── COLLAPSIBLE SECTIONS ──
+// State: all closed on mobile by default; desktop always open via CSS
+const _csState={er:false,alma:false,apps:false};
+function toggleSection(id){
+  const body=document.getElementById('csBody'+id.charAt(0).toUpperCase()+id.slice(1));
+  const chev=document.getElementById('csChevron'+id.charAt(0).toUpperCase()+id.slice(1));
+  if(!body)return;
+  _csState[id]=!_csState[id];
+  body.classList.toggle('open',_csState[id]);
+  if(chev)chev.classList.toggle('open',_csState[id]);
+}
+// Preview updaters — called by data loaders after data arrives
+function updateCsPreview(id,text){
+  const el=document.getElementById('csPreview'+id.charAt(0).toUpperCase()+id.slice(1));
+  if(el)el.textContent=text;
+}
+
 const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const MK=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
@@ -2785,6 +2864,7 @@ async function loadKids(){
         document.getElementById('c2s').textContent=`${npCnt} Tage · ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
       }
       if(nd){document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WK[nd.date.getDay()]}. ${nd.date.getDate()}. ${MK[nd.date.getMonth()]}</strong></span>`;}
+      updateCsPreview('er', `Bei Paul 🏠 · noch ${cnt} ${cnt===1?'Tag':'Tage'}`);
 
     } else {
       // Kids at Dani → show remaining days there + how many days at Paul in next block
@@ -2805,6 +2885,7 @@ async function loadKids(){
         document.getElementById('c2s').textContent=`ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
         document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;
       }
+      updateCsPreview('er', `Bei Dani · noch ${cnt} Tage · kommen ${np?WK[np.date.getDay()]+'. '+np.date.getDate()+'. '+MK[np.date.getMonth()]:'–'}`);
     }
   }catch(e){
     console.warn('Kids-Sheet Fehler:',e);
@@ -2967,6 +3048,15 @@ async function loadICAL(){
       }).join('');
     }
 
+    // ── Apps preview ──
+    if(displayEvs.length>0){
+      const first=displayEvs[0];
+      const when2=fmtW(first.date);
+      updateCsPreview('apps',`Kalender: ${first.sum} · ${when2}`);
+    } else {
+      updateCsPreview('apps','Kalender · Finanzen · Aktien');
+    }
+
     // ── Union card footer ──
     const unionCard=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
 
@@ -3032,6 +3122,7 @@ function loadAlma(evs){
       document.getElementById('almaTitle').textContent=todayEv.sum;
       document.getElementById('almaDate').textContent=`Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}`;
       document.getElementById('almaRange').textContent=`${hoursLeft} Std · ${minsLeft} Min verbleibend`;
+      updateCsPreview('alma', `Gerade in Schwerin 🧡 · noch ${daysLeft===0?'heute':daysLeft+' Tage'}`);
 
       // Show next trip in almaNext row
       const next=future.find(e=>st(e.date)>tripEnd);
@@ -3074,6 +3165,7 @@ function loadAlma(evs){
       document.getElementById('almaTitle').textContent=next.sum;
       document.getElementById('almaDate').textContent=fmtFull(next.date);
       document.getElementById('almaRange').textContent=countdownStr;
+      updateCsPreview('alma', `Nächster Besuch in ${nextDays} Tagen · ${next.sum}`);
 
       if(overNext){
         const d2=diff(today,st(overNext.date));
