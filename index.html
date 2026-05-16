@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.5.4 -->
+<title>Paul · Hub</title><!-- v5.5.5 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1356,7 +1356,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.4</div>
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.5.5</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3416,24 +3416,18 @@ async function loadUnion(){
       const uMp=d.matches_played||0;
       const oMp=opp_stats.matches_played||1;
 
-      // Hilfsfunktion: Chip rendern, bessere Seite grün
-      // higherIsBetter=true → höherer Wert = besser; false → niedrigerer Wert = besser
-      // scVal: rendert einen Wert-Chip mit korrekter Farb-Logik
-      // side='union' → zeigt uVal, side='opp' → zeigt oVal
-      // higherIsBetter=true → größerer Wert = grün; false → kleinerer = grün
-      function scVal(uVal, oVal, higherIsBetter, side){
-        const isUnion=(side==='union');
-        const displayVal = isUnion ? uVal : oVal;
-        const u=parseFloat(String(uVal))||0;
-        const o=parseFloat(String(oVal))||0;
+      // chip(val, other, higherIsBetter):
+      // zeigt immer 'val', vergleicht mit 'other' zur Farbgebung
+      // higherIsBetter=true  → val > other = grün (z.B. Siege, Tore)
+      // higherIsBetter=false → val < other = grün (z.B. Gegentore, Niederlagen, Rang)
+      function chip(val, other, higherIsBetter){
+        const v=parseFloat(String(val));
+        const o=parseFloat(String(other));
         let cls='neutral';
-        if(u!==o){
-          // uBetter: ist Unions Wert der bessere?
-          const uBetter=higherIsBetter?(u>o):(u<o);
-          // Diese Seite (union oder opp) bekommt 'better' wenn sie die bessere ist
-          cls=isUnion?(uBetter?'better':'worse'):(uBetter?'worse':'better');
+        if(!isNaN(v)&&!isNaN(o)&&v!==o){
+          cls=(higherIsBetter?(v>o):(v<o))?'better':'worse';
         }
-        return`<div class="uc-season-val ${cls}">${displayVal}</div>`;
+        return`<div class="uc-season-val ${cls}">${val}</div>`;
       }
 
       // Tore pro Spiel
@@ -3496,39 +3490,39 @@ async function loadUnion(){
         </div>
         <div class="uc-season-details">
           <div class="uc-season-row">
-            ${scVal(uRk,oRk,false,'union')}
+            ${chip(uRk, oRk, false)}
             <div class="uc-season-row-lbl">Tabellenplatz</div>
-            ${scVal(oRk,uRk,false,'opp')}
+            ${chip(oRk, uRk, false)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uW,oW,true,'union')}
+            ${chip(uW, oW, true)}
             <div class="uc-season-row-lbl">Gewonnen</div>
-            ${scVal(oW,uW,true,'opp')}
+            ${chip(oW, uW, true)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uD,oD,false,'union')}
+            ${chip(uD, oD, false)}
             <div class="uc-season-row-lbl">Remis</div>
-            ${scVal(oD,uD,false,'opp')}
+            ${chip(oD, uD, false)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uL,oL,false,'union')}
+            ${chip(uL, oL, false)}
             <div class="uc-season-row-lbl">Verloren</div>
-            ${scVal(oL,uL,false,'opp')}
+            ${chip(oL, uL, false)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uGpg,oGpg,true,'union')}
+            ${chip(uGpg, oGpg, true)}
             <div class="uc-season-row-lbl">Tore pro Spiel</div>
-            ${scVal(oGpg,uGpg,true,'opp')}
+            ${chip(oGpg, uGpg, true)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uGapg,oGapg,false,'union')}
+            ${chip(uGapg, oGapg, false)}
             <div class="uc-season-row-lbl">Gegnerische Tore pro Spiel</div>
-            ${scVal(oGapg,uGapg,false,'opp')}
+            ${chip(oGapg, uGapg, false)}
           </div>
           <div class="uc-season-row">
-            ${scVal(uCs,oCs,true,'union')}
+            ${chip(uCs, oCs, true)}
             <div class="uc-season-row-lbl">Ohne Gegentor</div>
-            ${scVal(oCs,uCs,true,'opp')}
+            ${chip(oCs, uCs, true)}
           </div>
           ${matchRow('Höchster Sieg', uBw, oBw)}
           ${matchRow('Höchste Niederlage', d.worst_loss||null, opp_stats.worst_loss||null)}
