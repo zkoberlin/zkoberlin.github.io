@@ -1,13 +1,12 @@
 """
-fetch_geburtstage.py  –  v2.0
-Holt täglich 4 bekannte lebende Geburtstagskinder via Wikidata SPARQL.
+fetch_geburtstage.py  –  v3.0
+Holt täglich 4 bekannte Geburtstagskinder via Wikidata SPARQL.
 
-FIX v2.0:
-  - Garantierter Kategorie-Mix: je 1 Abfrage pro Gruppe (Sport / Musik / Schauspiel / Politik).
-    Vorher: alle QIDs in einem VALUES-Block → ORDER BY sitelinks schnappte sich immer Sportler.
-  - Reihenfolge der Kategorien täglich deterministisch-shuffled (reproduzierbar pro Tag).
-  - Fallback auf Wikipedia REST API wenn Wikidata < 3 Ergebnisse liefert.
-  - JSON-Struktur bleibt identisch mit v1.
+NEU v3.0:
+  - Deutsche Personen (P27 = Q183) werden PRIORISIERT (bis zu 2 Slots).
+  - Restliche Slots mit internationalem Kategorie-Mix auffüllen (wie v2).
+  - Deutsche Treffer erscheinen immer zuerst in der Ausgabe.
+  - Neues Feld "nationalitaet" im JSON ("🇩🇪 Deutsch" oder None).
 
 Wird von GitHub Actions automatisch ausgeführt (täglich 06:00 UTC).
 """
@@ -23,47 +22,24 @@ import time
 import random
 
 # ── Kategorie-Gruppen mit QIDs ─────────────────────────────────────────────
-# Pro Gruppe eigene SPARQL-Abfrage → garantierter Mix in der Ausgabe.
-
 KATEGORIEN = {
     "sport": [
-        "Q2066131",  # Sportler (allgemein)
-        "Q937857",   # Fußballspieler
-        "Q10873124", # Tennisspieler
-        "Q10843402", # Schwimmer
-        "Q11338576", # Leichtathlet
-        "Q628099",   # Rennfahrer
-        "Q10833314", # Skisportler
-        "Q10843263", # Radfahrer
-        "Q3665646",  # Basketballer
-        "Q13141064", # Boxer
-        "Q19204627", # Golfer
-        "Q10871364", # Eishockeyspieler
-        "Q4009406",  # Footballspieler
+        "Q2066131",  "Q937857",   "Q10873124", "Q10843402", "Q11338576",
+        "Q628099",   "Q10833314", "Q10843263", "Q3665646",  "Q13141064",
+        "Q19204627", "Q10871364", "Q4009406",
     ],
     "musik": [
-        "Q177220",   # Sänger
-        "Q639669",   # Musiker
-        "Q753110",   # Songwriter
-        "Q488205",   # Singer-Songwriter
-        "Q183945",   # Rapper
-        "Q855091",   # DJ
-        "Q36834",    # Komponist
+        "Q177220",   "Q639669",   "Q753110",   "Q488205",
+        "Q183945",   "Q855091",   "Q36834",
     ],
     "schauspiel": [
-        "Q33999",    # Schauspieler
-        "Q10798782", # Filmschauspieler
-        "Q3282637",  # Fernsehschauspieler
-        "Q2259451",  # Theaterschauspieler
+        "Q33999",    "Q10798782", "Q3282637",  "Q2259451",
     ],
     "politik": [
-        "Q82955",    # Politiker
-        "Q48352",    # Staatsoberhaupt
-        "Q16533",    # Richter
+        "Q82955",    "Q48352",    "Q16533",
     ],
 }
 
-# Deutsche Bezeichnungen
 BERUF_DEUTSCH = {
     "Q33999":    "Schauspieler/in",
     "Q10798782": "Schauspieler/in",
@@ -101,6 +77,9 @@ KATEGORIE_LABEL = {
     "politik":    "🏛️  Politik",
 }
 
+# QIDs aller deutschen Berufsgruppen für die DE-Abfrage
+ALL_OCCUPATION_QIDS = list({qid for qids in KATEGORIEN.values() for qid in qids})
+
 # ── HTTP-Request mit Retry bei 429 ─────────────────────────────────────────
 def get_json(url, headers=None, timeout=30, retries=3):
     for attempt in range(retries):
@@ -123,7 +102,79 @@ def get_json(url, headers=None, timeout=30, retries=3):
                 raise
     raise Exception(f"Alle {retries} Versuche fehlgeschlagen für {url}")
 
-# ── SPARQL-Abfrage für eine Kategorie ──────────────────────────────────────
+# ── NEU: SPARQL nur für Deutsche (P27 = Q183) ─────────────────────────────
+def fetch_deutsche(month, day, year, seen_qids, max_results=2):
+    """
+    Priorisierungs-Abfrage: Nur Personen mit deutscher Staatsangehörigkeit.
+    Liefert bis zu max_results Einträge.
+    """
+    print(f"  🇩🇪 Deutsche Personen …")
+    qid_values = " ".join(f"wd:{qid}" for qid in ALL_OCCUPATION_QIDS)
+
+    query = f"""
+    SELECT DISTINCT ?person ?birth_year ?occupation ?sitelinks WHERE {{
+      VALUES ?occupation {{ {qid_values} }}
+      ?person wdt:P569 ?dob ;
+              wdt:P31  wd:Q5 ;
+              wdt:P106 ?occupation ;
+              wdt:P27  wd:Q183 ;
+              wikibase:sitelinks ?sitelinks .
+      FILTER(MONTH(?dob) = {month} && DAY(?dob) = {day})
+      FILTER NOT EXISTS {{ ?person wdt:P570 [] }}
+      FILTER(?sitelinks > 8)
+    }}
+    ORDER BY DESC(?sitelinks)
+    LIMIT 10
+    """
+
+    try:
+        sparql_url = (
+            "https://query.wikidata.org/sparql?query="
+            + urllib.parse.quote(query)
+            + "&format=json"
+        )
+        raw = get_json(sparql_url, headers={
+            "User-Agent": "PaulDashboard/3.0 (github.com/zkoberlin)",
+            "Accept": "application/sparql-results+json"
+        }, timeout=45, retries=3)
+
+        results = raw.get("results", {}).get("bindings", [])
+        print(f"     → {len(results)} deutsche Treffer in Wikidata")
+
+        output = []
+        for row in results:
+            if len(output) >= max_results:
+                break
+            qid = row["person"]["value"].split("/")[-1]
+            if qid in seen_qids:
+                continue
+            occ_qid = row.get("occupation", {}).get("value", "").split("/")[-1]
+            birth_yr = row.get("birth_year", {}).get("value", "")[:4]
+
+            name, beruf, foto = get_entity_data(qid, occ_qid)
+            if not name or re.match(r"^Q\d+$", name):
+                continue
+
+            alter = year - int(birth_yr) if birth_yr.isdigit() else None
+            seen_qids.add(qid)
+            print(f"     ✓ {name} ({alter}) – {beruf} 🇩🇪")
+            output.append({
+                "name":          name,
+                "alter":         alter,
+                "geburtsjahr":   int(birth_yr) if birth_yr.isdigit() else None,
+                "beruf":         beruf,
+                "foto":          foto,
+                "wikidata":      f"https://www.wikidata.org/wiki/{qid}",
+                "nationalitaet": "🇩🇪 Deutsch",
+            })
+
+        return output
+
+    except Exception as e:
+        print(f"     ❌ DE-SPARQL fehlgeschlagen: {e}")
+        return []
+
+# ── SPARQL-Abfrage für eine internationale Kategorie ──────────────────────
 def build_query_for_category(month, day, qid_list):
     qid_values = " ".join(f"wd:{qid}" for qid in qid_list)
     return f"""
@@ -142,7 +193,7 @@ def build_query_for_category(month, day, qid_list):
     """
 
 def fetch_category(month, day, year, kategorie_key, qid_list, seen_qids):
-    """Führt SPARQL für eine Kategorie aus, gibt besten ungesehenen Treffer zurück."""
+    """Führt SPARQL für eine internationale Kategorie aus."""
     label = KATEGORIE_LABEL.get(kategorie_key, kategorie_key)
     print(f"  {label} …")
 
@@ -154,7 +205,7 @@ def fetch_category(month, day, year, kategorie_key, qid_list, seen_qids):
             + "&format=json"
         )
         raw = get_json(sparql_url, headers={
-            "User-Agent": "PaulDashboard/2.0 (github.com/zkoberlin)",
+            "User-Agent": "PaulDashboard/3.0 (github.com/zkoberlin)",
             "Accept": "application/sparql-results+json"
         }, timeout=45, retries=3)
 
@@ -176,12 +227,13 @@ def fetch_category(month, day, year, kategorie_key, qid_list, seen_qids):
             seen_qids.add(qid)
             print(f"     ✓ {name} ({alter}) – {beruf}")
             return {
-                "name":        name,
-                "alter":       alter,
-                "geburtsjahr": int(birth_yr) if birth_yr.isdigit() else None,
-                "beruf":       beruf,
-                "foto":        foto,
-                "wikidata":    f"https://www.wikidata.org/wiki/{qid}"
+                "name":          name,
+                "alter":         alter,
+                "geburtsjahr":   int(birth_yr) if birth_yr.isdigit() else None,
+                "beruf":         beruf,
+                "foto":          foto,
+                "wikidata":      f"https://www.wikidata.org/wiki/{qid}",
+                "nationalitaet": None,
             }
 
         print(f"     – Kein verwertbarer Treffer")
@@ -201,7 +253,7 @@ def get_entity_data(qid, occupation_qid=None):
             f"&languages=de|en"
             f"&format=json"
         )
-        data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=20)
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/3.0"}, timeout=20)
         entity = data["entities"][qid]
 
         labels = entity.get("labels", {})
@@ -238,7 +290,7 @@ def get_label(qid):
             f"?action=wbgetentities&ids={qid}"
             f"&props=labels&languages=de|en&format=json"
         )
-        data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=10)
+        data = get_json(url, headers={"User-Agent": "PaulDashboard/3.0"}, timeout=10)
         labels = data["entities"][qid].get("labels", {})
         return (
             labels.get("de", {}).get("value")
@@ -262,7 +314,7 @@ def build_wikimedia_url(filename):
 def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
     print(f"  🔄 Fallback: Wikipedia REST API (benötigt {needed}) …")
     url = f"https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/{month:02d}/{day:02d}"
-    data = get_json(url, headers={"User-Agent": "PaulDashboard/2.0"}, timeout=20)
+    data = get_json(url, headers={"User-Agent": "PaulDashboard/3.0"}, timeout=20)
     births = data.get("births", [])
     output = []
 
@@ -296,12 +348,13 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
         alter = year - int(year_born)
 
         output.append({
-            "name":        title,
-            "alter":       alter,
-            "geburtsjahr": int(year_born),
-            "beruf":       page.get("description", "Persönlichkeit").title(),
-            "foto":        thumbnail,
-            "wikidata":    page.get("content_urls", {}).get("desktop", {}).get("page", "")
+            "name":          title,
+            "alter":         alter,
+            "geburtsjahr":   int(year_born),
+            "beruf":         page.get("description", "Persönlichkeit").title(),
+            "foto":          thumbnail,
+            "wikidata":      page.get("content_urls", {}).get("desktop", {}).get("page", ""),
+            "nationalitaet": None,
         })
         seen_names.add(title)
         print(f"     ✓ {title} ({alter}) [Wikipedia-Fallback]")
@@ -321,22 +374,32 @@ def main():
     output = []
     seen_qids = set()
 
-    # Reihenfolge der Kategorien: täglich deterministisch-shuffled
-    # (seed = Tag+Monat → reproduzierbar, aber wechselnd)
+    # ── Schritt 1: Deutsche Personen priorisieren (bis zu 2 Slots) ──────────
+    print("\n[1/2] Priorisierung: Deutsche Personen")
+    deutsche = fetch_deutsche(month, day, year, seen_qids, max_results=2)
+    output.extend(deutsche)
+    time.sleep(2)
+
+    # ── Schritt 2: Restliche Slots mit internationalem Mix füllen ───────────
+    remaining = 4 - len(output)
+    print(f"\n[2/2] Internationaler Mix ({remaining} Slots verbleibend)")
+
     kategorie_keys = list(KATEGORIEN.keys())
     random.seed(day * 100 + month)
     random.shuffle(kategorie_keys)
     print(f"  Reihenfolge: {' → '.join(KATEGORIE_LABEL.get(k, k) for k in kategorie_keys)}\n")
 
     for key in kategorie_keys:
+        if len(output) >= 4:
+            break
         entry = fetch_category(month, day, year, key, KATEGORIEN[key], seen_qids)
         if entry:
             output.append(entry)
-        time.sleep(2)  # Rate-limit-freundlich zwischen Anfragen
+        time.sleep(2)
 
     print(f"\n  → {len(output)}/4 via Wikidata SPARQL")
 
-    # Fallback wenn zu wenig Treffer (Ziel: immer 4)
+    # ── Fallback wenn zu wenig Treffer ──────────────────────────────────────
     if len(output) < 4:
         needed = 4 - len(output)
         seen_names = {e["name"] for e in output}
@@ -357,8 +420,9 @@ def main():
     with open("data/geburtstage.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
+    de_count = sum(1 for e in output if e.get("nationalitaet"))
     beruf_summary = ", ".join(e.get("beruf", "?") for e in output)
-    print(f"\n✅ data/geburtstage.json – {len(output)} Einträge")
+    print(f"\n✅ data/geburtstage.json – {len(output)} Einträge ({de_count}x 🇩🇪)")
     print(f"   Mix: {beruf_summary}")
 
 if __name__ == "__main__":
