@@ -1,5 +1,5 @@
 """
-fetch_geburtstage.py  –  v3.2
+fetch_geburtstage.py  –  v3.3
 Holt täglich 4 bekannte Geburtstagskinder via Wikidata SPARQL.
 
 NEU v3.0:
@@ -314,9 +314,9 @@ def build_wikimedia_url(filename):
 def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
     print(f"  🔄 Fallback: Wikipedia REST API (benötigt {needed}) …")
     url = f"https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/{month:02d}/{day:02d}"
-    data = get_json(url, headers={"User-Agent": "PaulDashboard/3.2"}, timeout=20)
+    data = get_json(url, headers={"User-Agent": "PaulDashboard/3.3"}, timeout=20)
     births = data.get("births", [])
-    output = []
+    alle = []  # Erst ALLE sammeln, dann sortieren
 
     ERLAUBTE_KEYWORDS = [
         "actor", "actress", "singer", "musician", "rapper", "songwriter",
@@ -324,10 +324,12 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
         "swimmer", "racing driver", "golfer", "politician", "president",
         "chancellor", "minister", "director", "performer", "entertainer",
     ]
+    DE_KEYWORDS = [
+        "german", "deutsch", "german-born", "german politician", "german actor",
+        "german singer", "german footballer", "german musician", "german athlete",
+    ]
 
     for entry in births:
-        if len(output) >= needed:
-            break
         year_born = entry.get("year")
         pages = entry.get("pages", [])
         if not pages or not year_born:
@@ -339,22 +341,17 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
         description = page.get("description", "").lower()
         extract = page.get("extract", "").lower()
 
-        if not any(kw.lower() in description or kw.lower() in extract for kw in ERLAUBTE_KEYWORDS):
+        if not any(kw in description or kw in extract for kw in ERLAUBTE_KEYWORDS):
             continue
         if "died" in extract or "death" in extract:
             continue
 
         thumbnail = page.get("thumbnail", {}).get("source", None)
         alter = year - int(year_born)
-
-        # Deutsche Personen im Wikipedia-Fallback erkennen
-        DE_KEYWORDS = ["german", "deutsch", "german-born", "german politician",
-                       "german actor", "german singer", "german footballer",
-                       "german musician", "german athlete", "german tennis"]
-        desc_lower = (page.get("description", "") + " " + page.get("extract", ""))[:300].lower()
+        desc_lower = (description + " " + extract)[:400]
         ist_deutsch = any(kw in desc_lower for kw in DE_KEYWORDS)
 
-        output.append({
+        alle.append({
             "name":          title,
             "alter":         alter,
             "geburtsjahr":   int(year_born),
@@ -363,11 +360,15 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
             "wikidata":      page.get("content_urls", {}).get("desktop", {}).get("page", ""),
             "nationalitaet": "🇩🇪 Deutsch" if ist_deutsch else None,
         })
-        seen_names.add(title)
-        print(f"     ✓ {title} ({alter}) [Wikipedia-Fallback]")
 
-    # Deutsche zuerst sortieren
-    output.sort(key=lambda x: 0 if x.get("nationalitaet") else 1)
+    # Deutsche zuerst, dann nach Originalreihenfolge (API sortiert nach Relevanz)
+    alle.sort(key=lambda x: 0 if x.get("nationalitaet") else 1)
+
+    output = alle[:needed]
+    for p in output:
+        flag = "🇩🇪 " if p.get("nationalitaet") else ""
+        print(f"     ✓ {flag}{p['name']} ({p['alter']}) [Wikipedia-Fallback]")
+        seen_names.add(p["name"])
     return output
 
 # ── Hauptfunktion ──────────────────────────────────────────────────────────
