@@ -802,12 +802,11 @@ def build_opponent_season_stats(all_m, next_m, table):
     return result
 
 
-def load_previous_ranks():
-    """Vorherige Ränge aus bestehender union.json lesen (für rank_change)."""
+def load_previous_json():
+    """Bestehende union.json lesen -- fuer rank_change und season_avg_stats Cache."""
     try:
         with open(OUT, "r", encoding="utf-8") as f:
-            old = json.load(f)
-        return {t["name"]: t["rank"] for t in old.get("table_context", [])}
+            return json.load(f)
     except Exception:
         return {}
 
@@ -815,8 +814,12 @@ def load_previous_ranks():
 def main():
     now = datetime.now(timezone.utc)
 
-    prev_ranks = load_previous_ranks()
+    prev_json  = load_previous_json()
+    prev_ranks = {t["name"]: t["rank"] for t in prev_json.get("table_context", [])}
+    cached_avg = prev_json.get("season_avg_stats")
     print(f"Vorherige Raenge: {len(prev_ranks)} Teams bekannt")
+    if cached_avg:
+        print(f"   season_avg_stats im Cache ({cached_avg.get('games_processed',0)} Spiele)")
 
     # 1. Standings
     print("1. Standings ...")
@@ -958,12 +961,29 @@ def main():
             print(f"   WARN: {e}", file=sys.stderr)
 
     # 4b. Saison-Durchschnittsstats (alle abgeschlossenen Spiele aggregiert)
+    # Schutzmechanismus: nur berechnen wenn
+    #   (a) noch kein Cache vorhanden, ODER
+    #   (b) neue Saison begonnen hat (next_match wieder vorhanden), ODER
+    #   (c) mehr Spiele gespielt als im Cache (Saison laeuft noch)
     season_avg_stats = None
-    if done:
+    cache_games = cached_avg.get("games_processed", 0) if cached_avg else 0
+    season_ended = next_m is None
+    cache_complete = cache_games >= len(done)
+
+    if cached_avg and season_ended and cache_complete:
+        # Saisonende + Cache vollstaendig → einfach Cache wiederverwenden
+        season_avg_stats = cached_avg
+        print(f"4b. Saison-Stats aus Cache ({cache_games} Spiele) -- kein API-Call noetig")
+    elif done:
+        print(f"4b. Saison-Stats neu berechnen (Cache: {cache_games} / aktuell: {len(done)} Spiele) ...")
         try:
             season_avg_stats = aggregate_season_stats(done)
         except Exception as e:
             print(f"   WARN season_avg_stats: {e}", file=sys.stderr)
+            # Fallback: Cache behalten falls vorhanden
+            if cached_avg:
+                season_avg_stats = cached_avg
+                print(f"   Fallback auf Cache ({cache_games} Spiele)")
 
     # 5. Union Squad
     print("5. Union Squad ...")
