@@ -2,107 +2,110 @@
   "transfers": [
     {
       "name": "Derrick Köhn",
-      "player_id": null,
-      "position": {
-        "label": "LWB",
-        "key": "left_wing_back_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 860260,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/860260.png",
+      "position": "LWB",
+      "type": "in",
+      "club_name": "Galatasaray",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
+      "club_id": 8637,
+      "fee": "4,0 Mio. €",
+      "market_value": "2,4 Mio. €",
+      "date": "2025-08-19T21:04:45Z"
     },
     {
       "name": "Dmytro Bogdanov",
-      "player_id": null,
-      "position": null,
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
-    },
-    {
-      "name": "Stanley N'Soki",
-      "player_id": null,
-      "position": {
-        "label": "CB",
-        "key": "centerback_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 1640793,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1640793.png",
+      "position": "",
+      "type": "in",
+      "club_name": "Dynamo Dresden",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8480.png",
+      "club_id": 8480,
+      "fee": "Unbekannt",
+      "market_value": "270 Tsd. €",
+      "date": "2025-08-14T12:46:46Z"
     },
     {
       "name": "Matheo Raab",
-      "player_id": null,
-      "position": {
-        "label": "GK",
-        "key": "keeper"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 1156148,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1156148.png",
+      "position": "GK",
+      "type": "in",
+      "club_name": "Hamburger SV",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9790.png",
+      "club_id": 9790,
+      "fee": "410 Tsd. €",
+      "market_value": "620 Tsd. €",
+      "date": "2025-07-11T12:54:57Z"
     },
     {
       "name": "Ilyas Ansah",
-      "player_id": null,
-      "position": {
-        "label": "ST",
-        "key": "striker_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 1515977,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1515977.png",
+      "position": "ST",
+      "type": "in",
+      "club_name": "Paderborn",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8460.png",
+      "club_id": 8460,
+      "fee": "4,0 Mio. €",
+      "market_value": "4,1 Mio. €",
+      "date": "2025-06-07T16:52:15Z"
     },
     {
       "name": "Andrej Ilic",
-      "player_id": null,
-      "position": {
-        "label": "ST",
-        "key": "striker_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 1047670,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1047670.png",
+      "position": "ST",
+      "type": "in",
+      "club_name": "Lille",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8639.png",
+      "club_id": 8639,
+      "fee": "5,0 Mio. €",
+      "market_value": "3,0 Mio. €",
+      "date": "2025-06-03T10:47:23Z"
     },
     {
       "name": "Woo-Yeong Jeong",
-      "player_id": null,
-      "position": {
-        "label": "AM",
-        "key": "centerattackingmidfielder_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 949673,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/949673.png",
+      "position": "AM",
+      "type": "in",
+      "club_name": "VfB Stuttgart",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10269.png",
+      "club_id": 10269,
+      "fee": "4,0 Mio. €",
+      "market_value": "4,2 Mio. €",
+      "date": "2025-05-28T16:53:11Z"
     },
     {
       "name": "Oliver Burke",
-      "player_id": null,
-      "position": {
-        "label": "ST",
-        "key": "striker_short"
-      },
-      "type": "out",
-      "club_name": "",
-      "club_logo": "",
-      "fee": "",
-      "date": ""
+      "player_id": 609504,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/609504.png",
+      "position": "ST",
+      "type": "in",
+      "club_name": "Werder Bremen",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8697.png",
+      "club_id": 8697,
+      "fee": "Ablösefrei",
+      "market_value": "2,0 Mio. €",
+      "date": "2025-05-26T11:09:31Z"
+    },
+    {
+      "name": "Stanley N'Soki",
+      "player_id": 907495,
+      "photo_url": "https://images.fotmob.com/image_resources/playerimages/907495.png",
+      "position": "CB",
+      "type": "loan",
+      "club_name": "Hoffenheim",
+      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8226.png",
+      "club_id": 8226,
+      "fee": "Leihe",
+      "market_value": "2,2 Mio. €",
+      "date": "2025-07-24T14:23:51Z"
     }
   ],
-  "updated_at": "2026-05-17T16:14:46.511629+00:00",
+  "updated_at": "2026-05-17T16:21:24.421074+00:00",
   "team_id": "8149",
   "source": "RapidAPI / free-api-live-football-data"
 }
