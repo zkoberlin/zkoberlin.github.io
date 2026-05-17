@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.3 -->
+<title>Paul · Hub</title><!-- v5.8.4 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1406,6 +1406,60 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 /* Desktop: immer aufgeklappt */
 @media(min-width:601px){
   .uc-season-details{max-height:none;}
+}
+/* ── Saisonzusammenfassung (Saisonende) ── */
+.uc-season-summary{
+  background:var(--card2);border-radius:var(--r2);
+  border:1px solid var(--border);padding:14px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.uc-season-summary-header{
+  display:flex;align-items:center;gap:10px;
+}
+.uc-ss-logo{
+  width:36px;height:36px;object-fit:contain;flex-shrink:0;
+}
+.uc-ss-title{
+  font-family:var(--font-head);font-size:13px;font-weight:700;
+  letter-spacing:-.3px;color:var(--t);
+}
+.uc-ss-sub{
+  font-size:10px;color:var(--t2);margin-top:2px;
+}
+.uc-ss-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+}
+.uc-ss-stat{
+  background:var(--card);border-radius:var(--r3);
+  border:1px solid var(--border);padding:8px 6px;
+  text-align:center;
+}
+.uc-ss-val{
+  font-size:18px;font-weight:800;letter-spacing:-.5px;
+  font-variant-numeric:tabular-nums;color:var(--t);
+  line-height:1;
+}
+.uc-ss-lbl{
+  font-size:8.5px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--t3);margin-top:4px;
+  font-family:var(--font-head);
+}
+.uc-ss-streaks{
+  display:flex;flex-direction:column;gap:5px;
+}
+.uc-ss-streak{
+  font-size:11px;font-weight:600;padding:5px 9px;
+  border-radius:var(--r3);
+}
+.uc-ss-streak.w{background:var(--green-l);color:var(--green);}
+.uc-ss-streak.l{background:var(--red-l);color:var(--red);}
+.uc-ss-form-wrap{
+  padding-top:4px;
+}
+.uc-ss-footer{
+  font-size:9.5px;color:var(--t3);text-align:center;
+  padding-top:4px;border-top:1px solid var(--border);
+  line-height:1.5;
 }
 
 /* ── Match Card Accordion (Letztes & Nächstes Spiel) ── */
@@ -3545,7 +3599,92 @@ async function loadUnion(){
 
     // ── Nächstes Spiel ──
     const next=d.next_match;
-    let nextHtml='<div style="color:var(--t3);font-size:11px;text-align:center;padding:6px 0;">Kein nächstes Spiel in den Daten — GitHub Action prüfen 🔄</div>';
+
+    // ── Saisonzusammenfassung (erscheint nur wenn kein next_match vorhanden) ──
+    function buildSeasonSummary(d){
+      const mp=d.matches_played||0;
+      const w=d.wins||0,dr=d.draws||0,l=d.losses||0;
+      const gf=d.goals_for||0,ga=d.goals_against||0;
+      const pts=d.points||0;
+      const rank=d.rank||'–';
+      const cs=d.clean_sheets||0;
+      const form=d.form||'';
+
+      // Form-Dots
+      const formDots=[...form].map(c=>{
+        const cls=c==='W'?'w':c==='L'?'l':'d';
+        return`<span class="uc-form-dot ${cls}">${c==='W'?'S':c==='L'?'N':'U'}</span>`;
+      }).join('');
+
+      // Punkte-Prognose (Ø Pkt × 34 Spieltage)
+      const avgPts=mp>0?(pts/mp).toFixed(2):'–';
+
+      // Beste / schlechteste Phase aus form (längste W-Serie / L-Serie)
+      let bestStreak=0,cur=0;
+      for(const c of form){if(c==='W'){cur++;bestStreak=Math.max(bestStreak,cur);}else cur=0;}
+      let worstStreak=0,curL=0;
+      for(const c of form){if(c==='L'){curL++;worstStreak=Math.max(worstStreak,curL);}else curL=0;}
+
+      const teamLogo=d.team_logo||'';
+
+      return`
+      <div class="uc-season-summary">
+        <div class="uc-season-summary-header">
+          ${teamLogo?`<img src="${teamLogo}" class="uc-ss-logo" onerror="this.style.visibility='hidden'" alt="">`:''}
+          <div>
+            <div class="uc-ss-title">Saison 2025/26 · Abschluss</div>
+            <div class="uc-ss-sub">Bundesliga · ${mp} Spieltage · Platz ${rank}</div>
+          </div>
+        </div>
+        <div class="uc-ss-grid">
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${pts}</div>
+            <div class="uc-ss-lbl">Punkte</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${rank}.</div>
+            <div class="uc-ss-lbl">Platz</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${w}</div>
+            <div class="uc-ss-lbl">Siege</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${dr}</div>
+            <div class="uc-ss-lbl">Remis</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${l}</div>
+            <div class="uc-ss-lbl">Niederlagen</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${gf}:${ga}</div>
+            <div class="uc-ss-lbl">Tore</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${cs}</div>
+            <div class="uc-ss-lbl">Clean Sheets</div>
+          </div>
+          <div class="uc-ss-stat">
+            <div class="uc-ss-val">${avgPts}</div>
+            <div class="uc-ss-lbl">Ø Pkt./Spiel</div>
+          </div>
+        </div>
+        ${bestStreak>1||worstStreak>1?`
+        <div class="uc-ss-streaks">
+          ${bestStreak>1?`<div class="uc-ss-streak w">🔥 Längste Siegesserie: ${bestStreak} Spiele</div>`:''}
+          ${worstStreak>1?`<div class="uc-ss-streak l">📉 Längste Niederlagenserie: ${worstStreak} Spiele</div>`:''}
+        </div>`:''}
+        ${form?`
+        <div class="uc-ss-form-wrap">
+          <div class="uc-box-lbl" style="margin-bottom:6px;">Letzte Form (9 Spiele)</div>
+          <div class="uc-form" style="flex-wrap:wrap;">${formDots}</div>
+        </div>`:''}
+        <div class="uc-ss-footer">Nächste Saison startet voraussichtlich August 2026 · Die Daten aktualisieren sich automatisch 🔄</div>
+      </div>`;
+    }
+
+    let nextHtml=!next?buildSeasonSummary(d):'<div style="color:var(--t3);font-size:11px;text-align:center;padding:6px 0;">Kein nächstes Spiel — GitHub Action prüfen 🔄</div>';
     if(next && next.date){
       const days=Math.round((new Date(next.date)-new Date())/86400000);
       const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
@@ -3873,7 +4012,7 @@ async function loadUnion(){
         </div>
       </div>
       <div class="uc-match last-match">${lastHtml}</div>
-      <div class="uc-match next-match">${nextHtml}</div>
+      <div class="${next?'uc-match next-match':''}">${nextHtml}</div>
       ${h2hHtml || seasonCompareHtml ? `
       <div class="uc-analysis-wrap" id="ucAnalysisWrap">
         <div class="uc-analysis-toggle" onclick="(function(el){el.classList.toggle('open');})(document.getElementById('ucAnalysisWrap'))">
