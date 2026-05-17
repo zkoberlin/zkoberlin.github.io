@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.9.0 -->
+<title>Paul · Hub</title><!-- v5.9.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1462,6 +1462,18 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   padding-top:4px;border-top:1px solid var(--border);
   line-height:1.5;
 }
+/* Hinweis: wie lange noch sichtbar + was danach kommt */
+.uc-ss-transition-hint{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  font-size:9px;color:var(--t2);
+  margin-top:8px;padding:5px 11px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;
+  font-family:var(--font-head);font-weight:500;letter-spacing:.1px;
+  width:fit-content;
+}
+.uc-ss-footer+.uc-ss-transition-hint{display:flex;margin-left:auto;margin-right:auto;}
+.uc-ss-th-icon{font-size:10px;flex-shrink:0;opacity:.7;}
 /* Saison-Stat-Bars */
 .uc-ss-statbars{
   display:flex;flex-direction:column;gap:8px;
@@ -1674,7 +1686,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.8.7
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.1
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3829,6 +3841,10 @@ async function loadUnion(){
         </div>`:''}
         ${avgStatsHtml}
         <div class="uc-ss-footer">Nächste Saison startet voraussichtlich August 2026 · Die Daten aktualisieren sich automatisch 🔄</div>
+        <div class="uc-ss-transition-hint">
+          <span class="uc-ss-th-icon">⏱</span>
+          Noch ${Math.max(0,7-daysSinceLastMatch)} Tag${Math.max(0,7-daysSinceLastMatch)===1?'':'e'} sichtbar · danach: Transferfenster 🔄
+        </div>
       </div>`;
     }
 
@@ -4332,6 +4348,11 @@ async function loadTransfers(unionData, nextMatch){
       ?`Stand: ${new Date(updatedAt).getDate()}.${new Date(updatedAt).getMonth()+1}.`
       :'';
 
+    // Hinweis wie lange das Transfer-Fenster noch sichtbar ist
+    const transitionHint=isNewSeason
+      ?`<div class="uc-ss-transition-hint"><span class="uc-ss-th-icon">⏱</span>Sichtbar bis Spieltag 4 · danach: Nächstes Spiel</div>`
+      :`<div class="uc-ss-transition-hint"><span class="uc-ss-th-icon">⏱</span>Sichtbar bis Saisonstart · danach: Spielplan &amp; Analyse</div>`;
+
     el.innerHTML=`
       ${nextMatchHtml}
       <div class="uc-box">
@@ -4341,17 +4362,22 @@ async function loadTransfers(unionData, nextMatch){
           ${section(outs,'❌ Abgänge')}
           ${section(loans,'🔁 Leihen')}
           ${updStr?`<div class="uc-transfer-footer">${updStr} · Daten via RapidAPI 🔄</div>`:''}
+          ${transitionHint}
         </div>
       </div>`;
 
   }catch(e){
     console.warn('Transfers error:',e);
+    const transitionHintErr=isNewSeason
+      ?`<div class="uc-ss-transition-hint" style="margin-top:8px;"><span class="uc-ss-th-icon">⏱</span>Sichtbar bis Spieltag 4 · danach: Nächstes Spiel</div>`
+      :`<div class="uc-ss-transition-hint" style="margin-top:8px;"><span class="uc-ss-th-icon">⏱</span>Sichtbar bis Saisonstart · danach: Spielplan &amp; Analyse</div>`;
     el.innerHTML=`
       ${nextMatchHtml}
       <div class="uc-offseason-banner">
         <div class="uc-offseason-icon">🔄</div>
         <div class="uc-offseason-title">Transferfenster · ${seasonLabel}</div>
         <div class="uc-offseason-sub">Daten noch nicht verfügbar · GitHub Action einrichten<br><code style="font-size:8px;opacity:.6;">data/transfers.json</code></div>
+        ${transitionHintErr}
       </div>`;
   }
 }
