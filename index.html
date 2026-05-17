@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.9.2 -->
+<title>Paul · Hub</title><!-- v5.9.3 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1689,7 +1689,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.2
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.3
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3874,8 +3874,9 @@ async function loadUnion(){
     const showPreseason      = !next && daysSinceLastMatch>7 && seasonStartDate && daysUntilSeasonStart<=14 && daysUntilSeasonStart>=0;
     const showTransferWindow = showOffseasonClean || showPreseason || (next && currentMatchday<=3);
 
+    let seasonSummaryHtml='';
     if(showSeasonSummary){
-      nextHtml=buildSeasonSummary(d);
+      seasonSummaryHtml=buildSeasonSummary(d);
     } else if(showPreseason){
       nextHtml=`
         <div class="uc-offseason-banner" style="background:rgba(232,0,28,.06);border:1.5px solid rgba(232,0,28,.15);">
@@ -4219,9 +4220,9 @@ async function loadUnion(){
       </div>
       <div class="uc-match last-match">${lastHtml}</div>`:''}
       ${showTransferWindow?'<div id="ucTransferSection"><div class="uc-offseason-banner"><div class="uc-offseason-icon">⏳</div><div class="uc-offseason-title">Transfers werden geladen …</div></div></div>':''}
+      ${showSeasonSummary&&seasonSummaryHtml?`<div>${seasonSummaryHtml}</div>`:''}
       ${!showTransferWindow&&next?`<div class="uc-match next-match">${nextHtml}</div>`:''}
-      ${!showTransferWindow&&!next&&nextHtml?`<div>${nextHtml}</div>`:''}
-      ${showSeasonSummary&&nextHtml?`<div>${nextHtml}</div>`:''}
+      ${!showTransferWindow&&!next&&!showSeasonSummary&&nextHtml?`<div>${nextHtml}</div>`:''}
       ${h2hHtml || seasonCompareHtml ? `
       <div class="uc-analysis-wrap" id="ucAnalysisWrap">
         <div class="uc-analysis-toggle" onclick="(function(el){el.classList.toggle('open');})(document.getElementById('ucAnalysisWrap'))">
