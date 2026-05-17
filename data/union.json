@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-17T07:08:50.571055+00:00",
+  "updated_at": "2026-05-17T11:43:09.655709+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 34,
@@ -38,7 +38,7 @@
       "points": 43,
       "is_union": false,
       "qual_color": null,
-      "rank_change": null
+      "rank_change": 0
     },
     {
       "rank": 10,
@@ -56,7 +56,7 @@
       "points": 39,
       "is_union": true,
       "qual_color": null,
-      "rank_change": 1
+      "rank_change": 0
     },
     {
       "rank": 12,
@@ -65,7 +65,7 @@
       "points": 38,
       "is_union": false,
       "qual_color": null,
-      "rank_change": 1
+      "rank_change": 0
     },
     {
       "rank": 13,
@@ -74,7 +74,7 @@
       "points": 38,
       "is_union": false,
       "qual_color": null,
-      "rank_change": -2
+      "rank_change": 0
     }
   ],
   "last_match": {
@@ -131,6 +131,49 @@
     "fouls": {
       "union": 6,
       "opp": 7
+    }
+  },
+  "season_avg_stats": {
+    "games_processed": 34,
+    "possession": {
+      "union": 40.21,
+      "opp": 59.79
+    },
+    "xg": {
+      "union": 1.35,
+      "opp": 1.54
+    },
+    "shots": {
+      "union": 12.47,
+      "opp": 12.94
+    },
+    "shots_on_target": {
+      "union": 3.91,
+      "opp": 4.41
+    },
+    "big_chance": {
+      "union": 2.18,
+      "opp": 2.71
+    },
+    "corners": {
+      "union": 5.0,
+      "opp": 4.82
+    },
+    "touches_box": {
+      "union": 22.88,
+      "opp": 23.12
+    },
+    "saves": {
+      "union": 2.74,
+      "opp": 2.59
+    },
+    "fouls": {
+      "union": 12.26,
+      "opp": 10.06
+    },
+    "yellow_cards": {
+      "union": 2.59,
+      "opp": 2.26
     }
   },
   "union_scorers": [
