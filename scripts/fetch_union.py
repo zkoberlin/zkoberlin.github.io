@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.4.2 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.5.0 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -16,7 +16,12 @@ FIXES:
           Schreibt data["h2h"] mit: wins/draws/losses, goals_for/against, letzte 8 Duelle
 - v5.3.0: H2H jetzt primär via football-data.org — saisonübergreifend
           build_h2h() bleibt als Fallback
-- v5.4.2: rank_change eingefroren wenn kein neuer Spieltag gespielt wurde
+- v5.5.0: season_start_date ins JSON geschrieben (hardcoded "2026-08-21", ggf. anpassen)
+          Frontend nutzt diesen Wert für 4-Zustands-Logik:
+          ≤7 Tage nach Saison → Saisonabschluss | >7 Tage & >14 vor Start → Offseason
+          ≤14 Tage vor season_start_date → Vorfreude-Modus mit Countdown
+
+
           Vergleich: prev_points == current_points → rank_change aus Cache behalten
           Statt täglich auf 0 zurückzufallen bleiben Pfeile bis zum nächsten Spieltag sichtbar
 - v5.4.0: opponent_season_stats ergänzt (kein extra Request — aus all_m berechnet)
@@ -965,13 +970,28 @@ def main():
         print(f"   Union worst_loss: {union_worst_loss['home']} {union_worst_loss['home_goals']}:{union_worst_loss['away_goals']} {union_worst_loss['away']}")
 
     # 4. Match Stats (letztes Spiel)
+    # Retry wenn vorheriger Run leere Stats geliefert hat (API-Verzögerung nach Spielende)
     match_stats = {}
-    if last_m and last_m.get("event_id"):
+    prev_last_stats = prev_json.get("last_match_stats", {})
+    prev_last_event = prev_json.get("last_match", {}).get("event_id") if prev_json.get("last_match") else None
+    curr_last_event = last_m.get("event_id") if last_m else None
+    # Stats aus Cache übernehmen wenn: gleiches Spiel UND Cache nicht leer
+    use_cached_stats = (
+        prev_last_event and curr_last_event and
+        str(prev_last_event) == str(curr_last_event) and
+        bool(prev_last_stats)
+    )
+    if use_cached_stats:
+        match_stats = prev_last_stats
+        print(f"4. Match Stats aus Cache (event={curr_last_event}, {len(match_stats)} Felder)")
+    elif last_m and last_m.get("event_id"):
         print(f"4. Match Stats (event={last_m['event_id']}) ...")
         try:
             sr = fetch(f"/football-get-match-event-all-stats?eventid={last_m['event_id']}")
             match_stats = parse_match_stats(sr, last_m["is_home"])
             print(f"   Keys: {list(match_stats.keys())}")
+            if not match_stats:
+                print("   WARN: API lieferte leere Stats — wird beim nächsten Run erneut versucht", file=sys.stderr)
         except Exception as e:
             print(f"   WARN: {e}", file=sys.stderr)
 
@@ -1054,6 +1074,7 @@ def main():
         "updated_at":             now.isoformat(),
         "league":                 "Bundesliga",
         "season":                 "2025/26",
+        "season_start_date":      "2026-08-21",  # Bundesliga-Saisonstart 26/27 — ggf. anpassen
         "matchday":               played,
         "rank":                   rank,
         "points":                 pts,
