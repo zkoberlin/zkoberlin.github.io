@@ -1,7 +1,108 @@
 {
-  "transfers": [],
-  "updated_at": "2025-05-17T00:00:00+00:00",
+  "transfers": [
+    {
+      "name": "Derrick Köhn",
+      "player_id": null,
+      "position": {
+        "label": "LWB",
+        "key": "left_wing_back_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Dmytro Bogdanov",
+      "player_id": null,
+      "position": null,
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Stanley N'Soki",
+      "player_id": null,
+      "position": {
+        "label": "CB",
+        "key": "centerback_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Matheo Raab",
+      "player_id": null,
+      "position": {
+        "label": "GK",
+        "key": "keeper"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Ilyas Ansah",
+      "player_id": null,
+      "position": {
+        "label": "ST",
+        "key": "striker_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Andrej Ilic",
+      "player_id": null,
+      "position": {
+        "label": "ST",
+        "key": "striker_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Woo-Yeong Jeong",
+      "player_id": null,
+      "position": {
+        "label": "AM",
+        "key": "centerattackingmidfielder_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    },
+    {
+      "name": "Oliver Burke",
+      "player_id": null,
+      "position": {
+        "label": "ST",
+        "key": "striker_short"
+      },
+      "type": "out",
+      "club_name": "",
+      "club_logo": "",
+      "fee": "",
+      "date": ""
+    }
+  ],
+  "updated_at": "2026-05-17T16:14:46.511629+00:00",
   "team_id": "8149",
-  "source": "RapidAPI / free-api-live-football-data",
-  "_note": "Platzhalter — wird durch GitHub Action befüllt"
+  "source": "RapidAPI / free-api-live-football-data"
 }
