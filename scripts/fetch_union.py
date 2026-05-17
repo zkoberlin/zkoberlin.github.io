@@ -560,6 +560,91 @@ def parse_match_stats(sr, is_home_union):
     return result
 
 
+def aggregate_season_stats(done):
+    """
+    Ruft Match-Stats fuer alle abgeschlossenen Union-Spiele ab und berechnet
+    Saisondurchschnitte. Schreibt season_avg_stats ins JSON.
+
+    Felder: possession, xg, shots, shots_on_target, big_chance,
+            corners, touches_box, saves, fouls, yellow_cards
+    """
+    WANTED = {
+        "BallPossesion":   "possession",
+        "expected_goals":  "xg",
+        "total_shots":     "shots",
+        "ShotsOnTarget":   "shots_on_target",
+        "big_chance":      "big_chance",
+        "corners":         "corners",
+        "touches_opp_box": "touches_box",
+        "keeper_saves":    "saves",
+        "fouls":           "fouls",
+        "yellow_cards":    "yellow_cards",
+    }
+
+    totals_u = {k: 0.0 for k in WANTED.values()}
+    totals_o = {k: 0.0 for k in WANTED.values()}
+    counts   = {k: 0   for k in WANTED.values()}
+    games_processed = 0
+
+    print(f"4b. Saison-Stat-Aggregation: {len(done)} Spiele werden abgefragt ...")
+
+    def pv(v):
+        if v is None: return None
+        try: return float(str(v).split()[0])
+        except: return None
+
+    for i, m in enumerate(done):
+        eid = m.get("id") or m.get("event_id")
+        if not eid:
+            continue
+        is_home = m["home"]["id"] == UID_S
+        ui = 0 if is_home else 1
+
+        try:
+            sr = fetch(f"/football-get-match-event-all-stats?eventid={eid}")
+            seen = set()
+            for section in sr.get("stats", []):
+                for s in section.get("stats", []):
+                    k = s.get("key")
+                    if k not in WANTED or k in seen or s.get("type") == "title":
+                        continue
+                    seen.add(k)
+                    field = WANTED[k]
+                    vals = s.get("stats", [None, None])
+                    uv = pv(vals[ui]   if ui     < len(vals) else None)
+                    ov = pv(vals[1-ui] if (1-ui) < len(vals) else None)
+                    if uv is not None:
+                        totals_u[field] += uv
+                        counts[field]   += 1
+                    if ov is not None:
+                        totals_o[field] += ov
+            games_processed += 1
+            print(f"   [{i+1}/{len(done)}] event={eid} OK")
+        except Exception as e:
+            print(f"   [{i+1}/{len(done)}] event={eid} WARN: {e}", file=sys.stderr)
+        if i < len(done) - 1:
+            time.sleep(1.5)
+
+    if games_processed == 0:
+        print("   WARN: Keine Stats aggregiert", file=sys.stderr)
+        return None
+
+    def avg_u(field):
+        n = counts[field]
+        return round(totals_u[field] / n, 2) if n else None
+
+    def avg_o(field):
+        n = counts[field]
+        return round(totals_o[field] / n, 2) if n else None
+
+    result = {"games_processed": games_processed}
+    for field in WANTED.values():
+        result[field] = {"union": avg_u(field), "opp": avg_o(field)}
+
+    print(f"   OK: {games_processed} Spiele · Ø xG={result['xg']['union']} · Ø Schuesse={result['shots']['union']}")
+    return result
+
+
 def result_char(m):
     is_h = m["home"]["id"] == UID_S
     ug = m["home"]["score"] if is_h else m["away"]["score"]
@@ -861,7 +946,7 @@ def main():
     if union_worst_loss_margin > 0:
         print(f"   Union worst_loss: {union_worst_loss['home']} {union_worst_loss['home_goals']}:{union_worst_loss['away_goals']} {union_worst_loss['away']}")
 
-    # 4. Match Stats
+    # 4. Match Stats (letztes Spiel)
     match_stats = {}
     if last_m and last_m.get("event_id"):
         print(f"4. Match Stats (event={last_m['event_id']}) ...")
@@ -871,6 +956,14 @@ def main():
             print(f"   Keys: {list(match_stats.keys())}")
         except Exception as e:
             print(f"   WARN: {e}", file=sys.stderr)
+
+    # 4b. Saison-Durchschnittsstats (alle abgeschlossenen Spiele aggregiert)
+    season_avg_stats = None
+    if done:
+        try:
+            season_avg_stats = aggregate_season_stats(done)
+        except Exception as e:
+            print(f"   WARN season_avg_stats: {e}", file=sys.stderr)
 
     # 5. Union Squad
     print("5. Union Squad ...")
@@ -944,6 +1037,7 @@ def main():
         "last_match":             last_m,
         "next_match":             next_m,
         "last_match_stats":       match_stats,
+        "season_avg_stats":       season_avg_stats,
         "union_scorers":          union_scorers,
         "top_scorers":            top_scorers,
         "top_assisters":          top_assisters,
