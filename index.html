@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.7 -->
+<title>Paul · Hub</title><!-- v5.9.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1502,6 +1502,68 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   letter-spacing:.5px;color:var(--t3);font-family:var(--font-head);
   margin-bottom:2px;
 }
+
+/* ══ TRANSFER WINDOW ══ */
+.uc-transfer-wrap{display:flex;flex-direction:column;gap:10px;}
+.uc-transfer-header{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;
+  background:linear-gradient(135deg,rgba(232,0,28,.08),rgba(0,113,227,.06));
+  border:1px solid rgba(232,0,28,.15);
+  border-radius:var(--r3);
+}
+.uc-transfer-header-icon{font-size:20px;flex-shrink:0;}
+.uc-transfer-header-text{}
+.uc-transfer-header-title{font-size:12px;font-weight:700;letter-spacing:-.3px;font-family:var(--font-head);}
+.uc-transfer-header-sub{font-size:9.5px;color:var(--t2);margin-top:2px;}
+.uc-transfer-list{display:flex;flex-direction:column;gap:7px;}
+.uc-tr-card{
+  display:flex;align-items:center;gap:11px;
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:10px 12px;
+  transition:border-color .15s;
+}
+.uc-tr-card:hover{border-color:rgba(232,0,28,.18);}
+.uc-tr-card.in{border-left:3px solid var(--green);}
+.uc-tr-card.out{border-left:3px solid var(--red);}
+.uc-tr-card.loan{border-left:3px solid var(--orange);}
+.uc-tr-photo{
+  width:42px;height:42px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
+  background:var(--card);border:1px solid var(--border);
+}
+.uc-tr-photo-fallback{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:var(--card2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.uc-tr-info{flex:1;min-width:0;}
+.uc-tr-name{font-size:12px;font-weight:700;letter-spacing:-.25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-tr-pos{font-size:9px;color:var(--t2);margin-top:1px;}
+.uc-tr-club-row{display:flex;align-items:center;gap:5px;margin-top:5px;}
+.uc-tr-club-logo{width:16px;height:16px;object-fit:contain;flex-shrink:0;}
+.uc-tr-club-name{font-size:10px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-tr-arrow{font-size:9px;color:var(--t3);flex-shrink:0;}
+.uc-tr-badge{
+  flex-shrink:0;
+  font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  padding:3px 7px;border-radius:20px;font-family:var(--font-head);
+}
+.uc-tr-badge.in{background:var(--green-l);color:var(--green);border:1px solid var(--green-b);}
+.uc-tr-badge.out{background:var(--red-l);color:var(--red);border:1px solid rgba(255,59,48,.2);}
+.uc-tr-badge.loan{background:var(--orange-l);color:var(--orange);border:1px solid var(--orange-b);}
+.uc-tr-empty{font-size:11px;color:var(--t3);text-align:center;padding:16px 0;}
+.uc-transfer-footer{font-size:9px;color:var(--t3);text-align:center;padding-top:4px;}
+/* Offseason-Banner (zwischen Saison-Ende und Transferfenster) */
+.uc-offseason-banner{
+  background:linear-gradient(135deg,var(--card2),var(--card));
+  border:1px solid var(--border);border-radius:var(--r3);
+  padding:18px 16px;text-align:center;
+}
+.uc-offseason-icon{font-size:28px;margin-bottom:8px;}
+.uc-offseason-title{font-size:13px;font-weight:700;letter-spacing:-.3px;font-family:var(--font-head);}
+.uc-offseason-sub{font-size:10px;color:var(--t2);margin-top:4px;line-height:1.5;}
 
 /* ── Match Card Accordion (Letztes & Nächstes Spiel) ── */
 .uc-match-chevron{
@@ -3770,7 +3832,26 @@ async function loadUnion(){
       </div>`;
     }
 
-    let nextHtml=!next?buildSeasonSummary(d):'<div style="color:var(--t3);font-size:11px;text-align:center;padding:6px 0;">Kein nächstes Spiel — GitHub Action prüfen 🔄</div>';
+    let nextHtml='';
+    // ── Saison-Zustand ermitteln ──
+    // Rückblick: kein next_match + last_match ≤ 7 Tage alt
+    // Transfer-Fenster: kein next_match + last_match > 7 Tage alt
+    //                   ODER next_match vorhanden + matchday <= 3
+    const now=new Date();
+    const lastMatchDate=d.last_match?new Date(d.last_match.date):null;
+    const daysSinceLastMatch=lastMatchDate?Math.round((now-lastMatchDate)/86400000):999;
+    const currentMatchday=d.matchday||0;
+    const showSeasonSummary=!next && daysSinceLastMatch<=7;
+    const showTransferWindow=(!next && daysSinceLastMatch>7)||(next && currentMatchday<=3);
+    const showOffseason=!next && daysSinceLastMatch>7 && false; // absorbed into transfer
+
+    if(showSeasonSummary){
+      nextHtml=buildSeasonSummary(d);
+    } else if(!next){
+      // Fallback: kein next_match, kein klarer Zustand
+      nextHtml=buildSeasonSummary(d);
+    }
+
     if(next && next.date){
       const days=Math.round((new Date(next.date)-new Date())/86400000);
       const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
@@ -4084,6 +4165,7 @@ async function loadUnion(){
         </div>`).join(''):'<div style="color:var(--t3);font-size:10px;">Keine Daten</div>';
 
     // ── Render ──
+
     document.getElementById('ucBody').innerHTML=`
       ${statsHtml}
       <div class="uc-2col">
@@ -4098,7 +4180,9 @@ async function loadUnion(){
         </div>
       </div>
       <div class="uc-match last-match">${lastHtml}</div>
-      <div class="${next?'uc-match next-match':''}">${nextHtml}</div>
+      ${showTransferWindow?'<div id="ucTransferSection"><div class="uc-offseason-banner"><div class="uc-offseason-icon">⏳</div><div class="uc-offseason-title">Transfers werden geladen …</div></div></div>':''}
+      ${!showTransferWindow&&next?`<div class="uc-match next-match">${nextHtml}</div>`:''}
+      ${!showTransferWindow&&!next&&nextHtml?`<div>${nextHtml}</div>`:''}
       ${h2hHtml || seasonCompareHtml ? `
       <div class="uc-analysis-wrap" id="ucAnalysisWrap">
         <div class="uc-analysis-toggle" onclick="(function(el){el.classList.toggle('open');})(document.getElementById('ucAnalysisWrap'))">
@@ -4126,6 +4210,9 @@ async function loadUnion(){
         ${top3ScorerHtml}
       </div>`;
 
+    // Transfer-Fenster async laden (nach DOM-Render)
+    if(showTransferWindow) setTimeout(()=>loadTransfers(d,next),0);
+
     const upd=d.updated_at?new Date(d.updated_at):new Date();
     document.getElementById('ucUpdated').textContent=
       `Stand: ${upd.getDate()}.${upd.getMonth()+1}. · ${String(upd.getHours()).padStart(2,'0')}:${String(upd.getMinutes()).padStart(2,'0')} Uhr`;
@@ -4138,6 +4225,136 @@ async function loadUnion(){
   if(window._lbTick)window._lbTick();
 }
 loadUnion();
+
+// ── TRANSFER WINDOW — lädt data/transfers.json ──
+async function loadTransfers(unionData, nextMatch){
+  const el=document.getElementById('ucTransferSection');
+  if(!el) return;
+
+  const currentMatchday=unionData.matchday||0;
+  const isNewSeason=!!nextMatch; // true = neue Saison läuft bereits
+  const seasonLabel=isNewSeason?`Neue Saison · bis Spieltag 3`:`Offseason ${new Date().getFullYear()}`;
+
+  // Nächstes-Spiel-HTML (bei Transfer-Fenster in neuer Saison zusätzlich anzeigen)
+  let nextMatchHtml='';
+  if(nextMatch && nextMatch.date){
+    const now2=new Date();
+    const days=Math.round((new Date(nextMatch.date)-now2)/86400000);
+    const dStr=days<=0?'Heute ⚡':days===1?'Morgen ⚡':`in ${days} Tagen`;
+    const oppN=nextMatch.is_home?nextMatch.away_name:nextMatch.home_name;
+    const oppL=nextMatch.is_home?nextMatch.away_logo:nextMatch.home_logo;
+    const hA=nextMatch.is_home?'Heimspiel 🏠':'Auswärtsspiel ✈️';
+    const unionLogo=unionData.team_logo||'https://tmssl.akamaized.net/images/wappen/head/89.png';
+    const WDU2=['So','Mo','Di','Mi','Do','Fr','Sa'],MNU2=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+    const nd=new Date(nextMatch.date);
+    const fmtDt2=`${WDU2[nd.getDay()]}. ${nd.getDate()}. ${MNU2[nd.getMonth()]} · ${String(nd.getHours()).padStart(2,'0')}:${String(nd.getMinutes()).padStart(2,'0')} Uhr`;
+    function img2(url,sz,rd=''){
+      if(!url)return`<span style="display:inline-block;width:${sz}px;"></span>`;
+      return`<img src="${url}" width="${sz}" height="${sz}" style="object-fit:contain;flex-shrink:0;${rd?'border-radius:'+rd+';':''}" alt="" onerror="this.style.visibility='hidden'">`;
+    }
+    nextMatchHtml=`<div class="uc-match next-match" style="margin-bottom:0;">
+      <div class="uc-match-lbl">Nächstes Spiel · ${hA} · Spieltag ${nextMatch.matchday}</div>
+      <div class="uc-match-preview">
+        <div class="uc-match-teams">
+          <div class="uc-match-team">${img2(unionLogo,34,'4px')}<span class="uc-match-name">Union Berlin</span></div>
+          <div class="uc-next-vs">${dStr}</div>
+          <div class="uc-match-team r">${img2(oppL||'',34,'4px')}<span class="uc-match-name" style="text-align:right;">${oppN}</span></div>
+        </div>
+        <div class="uc-match-meta">${fmtDt2}</div>
+      </div>
+    </div>`;
+  }
+
+  try{
+    const r=await fetch('data/transfers.json',{signal:AbortSignal.timeout(6000)});
+    if(!r.ok) throw new Error('transfers.json nicht erreichbar ('+r.status+')');
+    const td=await r.json();
+
+    const transfers=td.transfers||[];
+    const updatedAt=td.updated_at||null;
+
+    if(!transfers.length){
+      el.innerHTML=`
+        ${nextMatchHtml}
+        <div class="uc-box">
+          <div class="uc-box-lbl">🔄 Transferfenster · ${seasonLabel}</div>
+          <div class="uc-tr-empty">Noch keine Transfers bestätigt</div>
+        </div>`;
+      return;
+    }
+
+    // Gruppen: Zugänge / Abgänge / Leihen
+    const ins=transfers.filter(t=>t.type==='in');
+    const outs=transfers.filter(t=>t.type==='out');
+    const loans=transfers.filter(t=>t.type==='loan');
+
+    function trCard(t){
+      const typeCls=t.type==='in'?'in':t.type==='out'?'out':'loan';
+      const typeLbl=t.type==='in'?'Zugang':t.type==='out'?'Abgang':'Leihe';
+      const photoUrl=t.player_id
+        ?`https://images.fotmob.com/image_resources/playerimages/${t.player_id}.png`
+        :(t.photo_url||'');
+      const photoHtml=photoUrl
+        ?`<img class="uc-tr-photo" src="${photoUrl}" onerror="this.outerHTML='<div class=\\'uc-tr-photo-fallback\\'>👤</div>'" alt="">`
+        :`<div class="uc-tr-photo-fallback">👤</div>`;
+
+      const clubLogoHtml=t.club_logo
+        ?`<img class="uc-tr-club-logo" src="${t.club_logo}" onerror="this.style.display='none'" alt="">`:'';
+      const clubName=t.club_name||'–';
+      const arrowHtml=t.type==='in'?'←':t.type==='out'?'→':'⇄';
+      const feeHtml=t.fee?`<span style="font-size:8.5px;color:var(--t3);margin-left:auto;flex-shrink:0;">${t.fee}</span>`:'';
+
+      return`<div class="uc-tr-card ${typeCls}">
+        ${photoHtml}
+        <div class="uc-tr-info">
+          <div class="uc-tr-name">${t.name||'Unbekannt'}</div>
+          <div class="uc-tr-pos">${t.position||'–'}</div>
+          <div class="uc-tr-club-row">
+            ${clubLogoHtml}
+            <span class="uc-tr-arrow">${arrowHtml}</span>
+            <span class="uc-tr-club-name">${clubName}</span>
+            ${feeHtml}
+          </div>
+        </div>
+        <div class="uc-tr-badge ${typeCls}">${typeLbl}</div>
+      </div>`;
+    }
+
+    function section(list,title){
+      if(!list.length) return '';
+      return`<div>
+        <div class="uc-box-lbl" style="margin-bottom:6px;">${title}</div>
+        <div class="uc-transfer-list">${list.map(trCard).join('')}</div>
+      </div>`;
+    }
+
+    const updStr=updatedAt
+      ?`Stand: ${new Date(updatedAt).getDate()}.${new Date(updatedAt).getMonth()+1}.`
+      :'';
+
+    el.innerHTML=`
+      ${nextMatchHtml}
+      <div class="uc-box">
+        <div class="uc-box-lbl">🔄 Transfers · ${seasonLabel}</div>
+        <div class="uc-transfer-wrap">
+          ${section(ins,'✅ Zugänge')}
+          ${section(outs,'❌ Abgänge')}
+          ${section(loans,'🔁 Leihen')}
+          ${updStr?`<div class="uc-transfer-footer">${updStr} · Daten via RapidAPI 🔄</div>`:''}
+        </div>
+      </div>`;
+
+  }catch(e){
+    console.warn('Transfers error:',e);
+    el.innerHTML=`
+      ${nextMatchHtml}
+      <div class="uc-offseason-banner">
+        <div class="uc-offseason-icon">🔄</div>
+        <div class="uc-offseason-title">Transferfenster · ${seasonLabel}</div>
+        <div class="uc-offseason-sub">Daten noch nicht verfügbar · GitHub Action einrichten<br><code style="font-size:8px;opacity:.6;">data/transfers.json</code></div>
+      </div>`;
+  }
+}
 
 
 // ── LOAD BAR ──
