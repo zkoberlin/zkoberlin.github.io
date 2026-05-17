@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-17T11:51:31.487371+00:00",
+  "updated_at": "2026-05-17T15:48:37.509591+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "matchday": 34,
@@ -91,48 +91,7 @@
     "result": "W"
   },
   "next_match": null,
-  "last_match_stats": {
-    "possession": {
-      "union": 49,
-      "opp": 51
-    },
-    "xg": {
-      "union": "3.68",
-      "opp": "0.61"
-    },
-    "shots": {
-      "union": 17,
-      "opp": 11
-    },
-    "shots_on_target": {
-      "union": 9,
-      "opp": 1
-    },
-    "touches_box": {
-      "union": 29,
-      "opp": 26
-    },
-    "big_chance": {
-      "union": 4,
-      "opp": 0
-    },
-    "yellow_cards": {
-      "union": 3,
-      "opp": 1
-    },
-    "corners": {
-      "union": 4,
-      "opp": 9
-    },
-    "saves": {
-      "union": 1,
-      "opp": 5
-    },
-    "fouls": {
-      "union": 6,
-      "opp": 7
-    }
-  },
+  "last_match_stats": {},
   "season_avg_stats": {
     "games_processed": 34,
     "possession": {
