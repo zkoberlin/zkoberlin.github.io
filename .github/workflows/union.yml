@@ -2,7 +2,7 @@ name: Union Berlin Daten aktualisieren
  
 on:
   schedule:
-    - cron: '0 7 * * *'   # täglich 07:00 UTC
+    - cron: '0 23 * * *'   # täglich 23:00 UTC = 01:00 Uhr Berlin — nach allen Spielen
   workflow_dispatch:        # manueller Trigger
  
 jobs:
