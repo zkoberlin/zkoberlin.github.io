@@ -1,26 +1,26 @@
 {
-  "updated_at": "2026-05-16T10:48:57.550012+00:00",
+  "updated_at": "2026-05-17T07:08:50.571055+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
-  "matchday": 33,
-  "rank": 12,
-  "points": 36,
-  "matches_played": 33,
-  "wins": 9,
+  "matchday": 34,
+  "rank": 11,
+  "points": 39,
+  "matches_played": 34,
+  "wins": 10,
   "draws": 9,
   "losses": 15,
-  "goals_for": 40,
+  "goals_for": 44,
   "goals_against": 58,
-  "clean_sheets": 6,
-  "form": "LWLDLLLDW",
+  "clean_sheets": 7,
+  "form": "WLDLLLDWW",
   "team_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
   "best_win": {
     "home": "Union Berlin",
     "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
-    "home_goals": 3,
-    "away": "M'gladbach",
-    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9788.png",
-    "away_goals": 1
+    "home_goals": 4,
+    "away": "Augsburg",
+    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
+    "away_goals": 0
   },
   "worst_loss": {
     "home": "Bayern München",
@@ -32,116 +32,105 @@
   },
   "table_context": [
     {
+      "rank": 9,
+      "name": "Augsburg",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
+      "points": 43,
+      "is_union": false,
+      "qual_color": null,
+      "rank_change": null
+    },
+    {
       "rank": 10,
       "name": "Mainz 05",
       "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
-      "points": 37,
+      "points": 40,
       "is_union": false,
       "qual_color": null,
       "rank_change": 0
     },
     {
       "rank": 11,
-      "name": "Hamburger SV",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9790.png",
-      "points": 37,
-      "is_union": false,
+      "name": "Union Berlin",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
+      "points": 39,
+      "is_union": true,
       "qual_color": null,
-      "rank_change": 0
+      "rank_change": 1
     },
     {
       "rank": 12,
-      "name": "Union Berlin",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
-      "points": 36,
-      "is_union": true,
+      "name": "B. Mönchengladbach",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9788.png",
+      "points": 38,
+      "is_union": false,
       "qual_color": null,
-      "rank_change": 0
+      "rank_change": 1
     },
     {
       "rank": 13,
-      "name": "B. Mönchengladbach",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9788.png",
-      "points": 35,
+      "name": "Hamburger SV",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9790.png",
+      "points": 38,
       "is_union": false,
       "qual_color": null,
-      "rank_change": 0
-    },
-    {
-      "rank": 14,
-      "name": "Köln",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8722.png",
-      "points": 32,
-      "is_union": false,
-      "qual_color": null,
-      "rank_change": 0
+      "rank_change": -2
     }
   ],
   "last_match": {
-    "event_id": "4829608",
-    "matchday": 33,
-    "date": "2026-05-10T17:30:00Z",
-    "home_name": "Mainz",
-    "away_name": "Union Berlin",
-    "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
-    "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
-    "goals_home": 1,
-    "goals_away": 3,
-    "is_home": false,
-    "result": "W"
-  },
-  "next_match": {
     "event_id": "4829619",
     "matchday": 34,
-    "date": "2026-05-16T13:30:00.000Z",
+    "date": "2026-05-16T13:30:00Z",
     "home_name": "Union Berlin",
     "away_name": "Augsburg",
     "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
     "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
-    "goals_home": 0,
+    "goals_home": 4,
     "goals_away": 0,
-    "is_home": true
+    "is_home": true,
+    "result": "W"
   },
+  "next_match": null,
   "last_match_stats": {
     "possession": {
-      "union": 47,
-      "opp": 53
+      "union": 49,
+      "opp": 51
     },
     "xg": {
-      "union": "2.68",
-      "opp": "1.61"
+      "union": "3.68",
+      "opp": "0.61"
     },
     "shots": {
-      "union": 16,
-      "opp": 15
+      "union": 17,
+      "opp": 11
     },
     "shots_on_target": {
       "union": 9,
-      "opp": 4
+      "opp": 1
     },
     "touches_box": {
-      "union": 20,
-      "opp": 33
+      "union": 29,
+      "opp": 26
     },
     "big_chance": {
-      "union": 6,
-      "opp": 4
+      "union": 4,
+      "opp": 0
     },
     "yellow_cards": {
-      "union": 1,
-      "opp": 2
+      "union": 3,
+      "opp": 1
     },
     "corners": {
-      "union": 8,
-      "opp": 7
+      "union": 4,
+      "opp": 9
     },
     "saves": {
-      "union": 3,
-      "opp": 6
+      "union": 1,
+      "opp": 5
     },
     "fouls": {
-      "union": 10,
-      "opp": 11
+      "union": 6,
+      "opp": 7
     }
   },
   "union_scorers": [
@@ -151,7 +140,16 @@
       "pos": "ST,CAM,RW",
       "shirt": 7,
       "goals": 6,
-      "assists": 1,
+      "assists": 2,
+      "injured": false
+    },
+    {
+      "id": 1047670,
+      "name": "Andrej Ilic",
+      "pos": "ST",
+      "shirt": 23,
+      "goals": 5,
+      "assists": 9,
       "injured": false
     },
     {
@@ -182,20 +180,11 @@
       "injured": false
     },
     {
-      "id": 1047670,
-      "name": "Andrej Ilic",
-      "pos": "ST",
-      "shirt": 23,
-      "goals": 3,
-      "assists": 9,
-      "injured": false
-    },
-    {
       "id": 949673,
       "name": "Woo-Yeong Jeong",
       "pos": "CAM,ST",
       "shirt": 11,
-      "goals": 3,
+      "goals": 4,
       "assists": 1,
       "injured": true
     }
@@ -205,7 +194,7 @@
       "id": 194165,
       "name": "Harry Kane",
       "teamName": "Bayern München",
-      "goals": 33
+      "goals": 36
     },
     {
       "id": 661519,
@@ -217,7 +206,7 @@
       "id": 448540,
       "name": "Serhou Guirassy",
       "teamName": "Borussia Dortmund",
-      "goals": 16
+      "goals": 17
     }
   ],
   "top_assisters": [
@@ -231,140 +220,15 @@
       "id": 659272,
       "name": "Julian Ryerson",
       "teamName": "Borussia Dortmund",
-      "assists": 14
+      "assists": 15
     },
     {
       "id": 860914,
       "name": "Luis Díaz",
       "teamName": "Bayern München",
-      "assists": 13
+      "assists": 14
     }
   ],
-  "h2h": {
-    "opponent": "Augsburg",
-    "source": "football-data.org",
-    "wins": 1,
-    "draws": 4,
-    "losses": 5,
-    "goals_for": 7,
-    "goals_against": 14,
-    "matches": [
-      {
-        "date": "2026-01-15T19:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 1,
-        "away_goals": 1,
-        "union_result": "D",
-        "season": "2025"
-      },
-      {
-        "date": "2025-05-17T13:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 1,
-        "away_goals": 2,
-        "union_result": "W",
-        "season": "2024"
-      },
-      {
-        "date": "2025-01-15T19:30:00Z",
-        "home_name": "Union Berlin",
-        "away_name": "Augsburg",
-        "home_goals": 0,
-        "away_goals": 2,
-        "union_result": "L",
-        "season": "2024"
-      },
-      {
-        "date": "2024-04-12T18:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 2,
-        "away_goals": 0,
-        "union_result": "L",
-        "season": "2023"
-      },
-      {
-        "date": "2023-11-25T14:30:00Z",
-        "home_name": "Union Berlin",
-        "away_name": "Augsburg",
-        "home_goals": 1,
-        "away_goals": 1,
-        "union_result": "D",
-        "season": "2023"
-      },
-      {
-        "date": "2023-05-06T13:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 1,
-        "away_goals": 0,
-        "union_result": "L",
-        "season": "2022"
-      },
-      {
-        "date": "2022-11-09T19:30:00Z",
-        "home_name": "Union Berlin",
-        "away_name": "Augsburg",
-        "home_goals": 2,
-        "away_goals": 2,
-        "union_result": "D",
-        "season": "2022"
-      },
-      {
-        "date": "2022-02-05T14:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 2,
-        "away_goals": 0,
-        "union_result": "L",
-        "season": "2021"
-      },
-      {
-        "date": "2021-09-11T13:30:00Z",
-        "home_name": "Union Berlin",
-        "away_name": "Augsburg",
-        "home_goals": 0,
-        "away_goals": 0,
-        "union_result": "D",
-        "season": "2021"
-      },
-      {
-        "date": "2021-01-23T14:30:00Z",
-        "home_name": "Augsburg",
-        "away_name": "Union Berlin",
-        "home_goals": 2,
-        "away_goals": 1,
-        "union_result": "L",
-        "season": "2020"
-      }
-    ]
-  },
-  "opponent_season_stats": {
-    "rank": 9,
-    "matches_played": 33,
-    "wins": 12,
-    "draws": 7,
-    "losses": 14,
-    "goals_for": 45,
-    "goals_against": 57,
-    "clean_sheets": 5,
-    "best_win": {
-      "home": "Freiburg",
-      "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8358.png",
-      "home_goals": 1,
-      "away": "Augsburg",
-      "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
-      "away_goals": 3
-    },
-    "worst_loss": {
-      "home": "Augsburg",
-      "home_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
-      "home_goals": 0,
-      "away": "RB Leipzig",
-      "away_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/178475.png",
-      "away_goals": 6
-    }
-  }
+  "h2h": {},
+  "opponent_season_stats": null
 }
