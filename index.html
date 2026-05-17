@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.5 -->
+<title>Paul · Hub</title><!-- v5.8.6 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -3653,7 +3653,7 @@ async function loadUnion(){
       // Form-Dots
       const formDots=[...form].map(c=>{
         const cls=c==='W'?'w':c==='L'?'l':'d';
-        return`<span class="uc-form-dot ${cls}">${c==='W'?'S':c==='L'?'N':'U'}</span>`;
+        return`<span class="uc-fd ${cls}">${c==='W'?'S':c==='L'?'N':'U'}</span>`;
       }).join('');
 
       // Punkte-Prognose (Ø Pkt × 34 Spieltage)
@@ -3675,8 +3675,8 @@ async function loadUnion(){
         const total=(oN!=null)?(uN+oN)||1:uN||1;
         const uFlex=Math.round((uN/total)*100);
         const oFlex=100-uFlex;
-        const uBetter=oN!=null?(higherBetter?(uN>oN):(uN<oN)):true;
-        const uColor=uBetter?'var(--union)':'var(--t3)';
+        const uBetter=oN!=null?(higherBetter?(uN>oN):(uN<oN)):null;
+        const uColor=uBetter===true?'var(--green)':uBetter===false?'var(--red)':'var(--union)';
         const uValStr=Number.isInteger(uN)?uN:uN.toFixed(2);
         const oValStr=oN!=null?(Number.isInteger(oN)?oN:oN.toFixed(2)):null;
         return`<div class="uc-ss-statbar-row">
