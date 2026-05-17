@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.5.0 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.5.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -970,17 +970,18 @@ def main():
         print(f"   Union worst_loss: {union_worst_loss['home']} {union_worst_loss['home_goals']}:{union_worst_loss['away_goals']} {union_worst_loss['away']}")
 
     # 4. Match Stats (letztes Spiel)
-    # Retry wenn vorheriger Run leere Stats geliefert hat (API-Verzögerung nach Spielende)
+    # Strategie:
+    #   (a) Cache vorhanden + gleiches Spiel + Cache nicht leer → Cache nutzen
+    #   (b) Sonst: API abrufen
+    #   (c) API liefert leer + Cache hat Daten für gleiches Spiel → Cache als Fallback
     match_stats = {}
     prev_last_stats = prev_json.get("last_match_stats", {})
     prev_last_event = prev_json.get("last_match", {}).get("event_id") if prev_json.get("last_match") else None
     curr_last_event = last_m.get("event_id") if last_m else None
-    # Stats aus Cache übernehmen wenn: gleiches Spiel UND Cache nicht leer
-    use_cached_stats = (
-        prev_last_event and curr_last_event and
-        str(prev_last_event) == str(curr_last_event) and
-        bool(prev_last_stats)
-    )
+    same_event = (prev_last_event and curr_last_event and
+                  str(prev_last_event) == str(curr_last_event))
+    use_cached_stats = same_event and bool(prev_last_stats)
+
     if use_cached_stats:
         match_stats = prev_last_stats
         print(f"4. Match Stats aus Cache (event={curr_last_event}, {len(match_stats)} Felder)")
@@ -991,9 +992,18 @@ def main():
             match_stats = parse_match_stats(sr, last_m["is_home"])
             print(f"   Keys: {list(match_stats.keys())}")
             if not match_stats:
-                print("   WARN: API lieferte leere Stats — wird beim nächsten Run erneut versucht", file=sys.stderr)
+                # API leer → Cache-Fallback falls verfügbar (gleiches Spiel)
+                if same_event and prev_last_stats:
+                    match_stats = prev_last_stats
+                    print(f"   API leer — Cache-Fallback genutzt ({len(match_stats)} Felder)")
+                else:
+                    print("   WARN: API lieferte leere Stats — wird beim nächsten Run erneut versucht", file=sys.stderr)
         except Exception as e:
             print(f"   WARN: {e}", file=sys.stderr)
+            # Exception → Cache-Fallback falls verfügbar
+            if same_event and prev_last_stats:
+                match_stats = prev_last_stats
+                print(f"   Exception — Cache-Fallback genutzt ({len(match_stats)} Felder)")
 
     # 4b. Saison-Durchschnittsstats (alle abgeschlossenen Spiele aggregiert)
     # Schutzmechanismus: nur berechnen wenn
