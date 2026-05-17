@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.4 -->
+<title>Paul · Hub</title><!-- v5.8.5 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1460,6 +1460,46 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   font-size:9.5px;color:var(--t3);text-align:center;
   padding-top:4px;border-top:1px solid var(--border);
   line-height:1.5;
+}
+/* Saison-Stat-Bars */
+.uc-ss-statbars{
+  display:flex;flex-direction:column;gap:8px;
+}
+.uc-ss-statbar-row{
+  display:flex;flex-direction:column;gap:3px;
+}
+.uc-ss-statbar-labels{
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.uc-ss-statbar-lbl{
+  font-size:9px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.4px;color:var(--t3);font-family:var(--font-head);
+}
+.uc-ss-statbar-vals{
+  display:flex;gap:4px;align-items:center;
+}
+.uc-ss-statbar-val{
+  font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+  color:var(--t);
+}
+.uc-ss-statbar-val.opp{color:var(--t2);font-weight:500;}
+.uc-ss-statbar-sep{font-size:9px;color:var(--t3);}
+.uc-ss-bar-wrap{
+  display:flex;height:5px;border-radius:3px;overflow:hidden;gap:2px;
+}
+.uc-ss-bar-u{
+  background:var(--union);border-radius:3px;transition:flex .4s ease;
+  min-width:3px;
+}
+.uc-ss-bar-o{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:3px;transition:flex .4s ease;
+  min-width:3px;
+}
+.uc-ss-statbars-title{
+  font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;color:var(--t3);font-family:var(--font-head);
+  margin-bottom:2px;
 }
 
 /* ── Match Card Accordion (Letztes & Nächstes Spiel) ── */
@@ -3627,6 +3667,49 @@ async function loadUnion(){
 
       const teamLogo=d.team_logo||'';
 
+      // ── Saisondurchschnitt-Stats ──
+      const avg=d.season_avg_stats||null;
+      function statBar(lbl, uVal, oVal, higherBetter=true, unit=''){
+        if(uVal==null) return '';
+        const uN=parseFloat(uVal), oN=oVal!=null?parseFloat(oVal):null;
+        const total=(oN!=null)?(uN+oN)||1:uN||1;
+        const uFlex=Math.round((uN/total)*100);
+        const oFlex=100-uFlex;
+        const uBetter=oN!=null?(higherBetter?(uN>oN):(uN<oN)):true;
+        const uColor=uBetter?'var(--union)':'var(--t3)';
+        const uValStr=Number.isInteger(uN)?uN:uN.toFixed(2);
+        const oValStr=oN!=null?(Number.isInteger(oN)?oN:oN.toFixed(2)):null;
+        return`<div class="uc-ss-statbar-row">
+          <div class="uc-ss-statbar-labels">
+            <span class="uc-ss-statbar-lbl">${lbl}</span>
+            <div class="uc-ss-statbar-vals">
+              <span class="uc-ss-statbar-val" style="color:${uColor}">${uValStr}${unit}</span>
+              ${oValStr!=null?`<span class="uc-ss-statbar-sep">·</span><span class="uc-ss-statbar-val opp">${oValStr}${unit} Geg.</span>`:''}
+            </div>
+          </div>
+          <div class="uc-ss-bar-wrap">
+            <div class="uc-ss-bar-u" style="flex:${uFlex};background:${uColor}"></div>
+            ${oValStr!=null?`<div class="uc-ss-bar-o" style="flex:${oFlex}"></div>`:''}
+          </div>
+        </div>`;
+      }
+      const avgStatsHtml=avg?`
+        <div>
+          <div class="uc-ss-statbars-title">Ø pro Spiel · ${avg.games_processed} Spiele ausgewertet</div>
+          <div class="uc-ss-statbars">
+            ${statBar('Ballbesitz',        avg.possession?.union,      avg.possession?.opp,      true,  '%')}
+            ${statBar('Expected Goals xG', avg.xg?.union,              avg.xg?.opp,              true,  '')}
+            ${statBar('Schüsse',           avg.shots?.union,           avg.shots?.opp,           true,  '')}
+            ${statBar('Schüsse aufs Tor',  avg.shots_on_target?.union, avg.shots_on_target?.opp, true,  '')}
+            ${statBar('Big Chances',       avg.big_chance?.union,      avg.big_chance?.opp,      true,  '')}
+            ${statBar('Ecken',             avg.corners?.union,         avg.corners?.opp,         true,  '')}
+            ${statBar('Ballaktionen Box',  avg.touches_box?.union,     avg.touches_box?.opp,     true,  '')}
+            ${statBar('Paraden Keeper',    avg.saves?.union,           avg.saves?.opp,           false, '')}
+            ${statBar('Fouls',             avg.fouls?.union,           avg.fouls?.opp,           false, '')}
+            ${statBar('Gelbe Karten',      avg.yellow_cards?.union,    avg.yellow_cards?.opp,    false, '')}
+          </div>
+        </div>`:'';
+
       return`
       <div class="uc-season-summary">
         <div class="uc-season-summary-header">
@@ -3680,6 +3763,7 @@ async function loadUnion(){
           <div class="uc-box-lbl" style="margin-bottom:6px;">Letzte Form (9 Spiele)</div>
           <div class="uc-form" style="flex-wrap:wrap;">${formDots}</div>
         </div>`:''}
+        ${avgStatsHtml}
         <div class="uc-ss-footer">Nächste Saison startet voraussichtlich August 2026 · Die Daten aktualisieren sich automatisch 🔄</div>
       </div>`;
     }
