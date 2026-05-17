@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.9.1 -->
+<title>Paul · Hub</title><!-- v5.9.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1557,6 +1557,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 .uc-tr-club-logo{width:16px;height:16px;object-fit:contain;flex-shrink:0;}
 .uc-tr-club-name{font-size:10px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .uc-tr-arrow{font-size:9px;color:var(--t3);flex-shrink:0;}
+.uc-tr-fee-row{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;}
+.uc-tr-fee{font-size:8.5px;font-weight:600;color:var(--t2);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2px 7px;}
+.uc-tr-mv{font-size:8px;color:var(--t3);}
 .uc-tr-badge{
   flex-shrink:0;
   font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
@@ -1686,7 +1689,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.1
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.2
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -4307,9 +4310,8 @@ async function loadTransfers(unionData, nextMatch){
     function trCard(t){
       const typeCls=t.type==='in'?'in':t.type==='out'?'out':'loan';
       const typeLbl=t.type==='in'?'Zugang':t.type==='out'?'Abgang':'Leihe';
-      const photoUrl=t.player_id
-        ?`https://images.fotmob.com/image_resources/playerimages/${t.player_id}.png`
-        :(t.photo_url||'');
+      // photo_url kommt direkt aus JSON (Fotmob-URL mit playerId)
+      const photoUrl=t.photo_url||'';
       const photoHtml=photoUrl
         ?`<img class="uc-tr-photo" src="${photoUrl}" onerror="this.outerHTML='<div class=\\'uc-tr-photo-fallback\\'>👤</div>'" alt="">`
         :`<div class="uc-tr-photo-fallback">👤</div>`;
@@ -4318,7 +4320,8 @@ async function loadTransfers(unionData, nextMatch){
         ?`<img class="uc-tr-club-logo" src="${t.club_logo}" onerror="this.style.display='none'" alt="">`:'';
       const clubName=t.club_name||'–';
       const arrowHtml=t.type==='in'?'←':t.type==='out'?'→':'⇄';
-      const feeHtml=t.fee?`<span style="font-size:8.5px;color:var(--t3);margin-left:auto;flex-shrink:0;">${t.fee}</span>`:'';
+      const feeHtml=t.fee?`<span class="uc-tr-fee">${t.fee}</span>`:'';
+      const mvHtml=t.market_value?`<span class="uc-tr-mv">MW ${t.market_value}</span>`:'';
 
       return`<div class="uc-tr-card ${typeCls}">
         ${photoHtml}
@@ -4329,8 +4332,8 @@ async function loadTransfers(unionData, nextMatch){
             ${clubLogoHtml}
             <span class="uc-tr-arrow">${arrowHtml}</span>
             <span class="uc-tr-club-name">${clubName}</span>
-            ${feeHtml}
           </div>
+          ${feeHtml||mvHtml?`<div class="uc-tr-fee-row">${feeHtml}${mvHtml}</div>`:''}
         </div>
         <div class="uc-tr-badge ${typeCls}">${typeLbl}</div>
       </div>`;
