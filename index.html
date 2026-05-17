@@ -3476,7 +3476,7 @@ function loadAlma(evs){
   }catch(e){console.log('Alma error:',e);}
 }
 
-// ── UNION BERLIN v5.1.0 — via data/union.json ──
+// ── UNION BERLIN v5.2.0 — via data/union.json ──
 async function loadUnion(){
   const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
@@ -3853,22 +3853,38 @@ async function loadUnion(){
 
     let nextHtml='';
     // ── Saison-Zustand ermitteln ──
-    // Rückblick: kein next_match + last_match ≤ 7 Tage alt
-    // Transfer-Fenster: kein next_match + last_match > 7 Tage alt
-    //                   ODER next_match vorhanden + matchday <= 3
+    // Zustand 1 — showSeasonSummary:  kein next_match + letztes Spiel ≤ 7 Tage
+    //             → Formkurve, Tabelle, letztes Spiel + Stats sichtbar
+    // Zustand 2 — showOffseasonClean: kein next_match + > 7 Tage + > 14 Tage vor season_start_date
+    //             → nur Header + Transfers (Formkurve/Tabelle/letztes Spiel ausgeblendet)
+    // Zustand 3 — showPreseason:      kein next_match + ≤ 14 Tage vor season_start_date
+    //             → Transfers + Countdown-Banner (Formkurve/Tabelle/letztes Spiel ausgeblendet)
+    // Zustand 4 — Normalbetrieb:      next_match vorhanden + Spieltag > 3
     const now=new Date();
     const lastMatchDate=d.last_match?new Date(d.last_match.date):null;
     const daysSinceLastMatch=lastMatchDate?Math.round((now-lastMatchDate)/86400000):999;
     const currentMatchday=d.matchday||0;
-    const showSeasonSummary=!next && daysSinceLastMatch<=7;
-    const showTransferWindow=(!next && daysSinceLastMatch>7)||(next && currentMatchday<=3);
-    const showOffseason=!next && daysSinceLastMatch>7 && false; // absorbed into transfer
+
+    // season_start_date aus JSON (Python schreibt z.B. "2026-08-21")
+    const seasonStartDate=d.season_start_date?new Date(d.season_start_date):null;
+    const daysUntilSeasonStart=seasonStartDate?Math.round((seasonStartDate-now)/86400000):999;
+
+    const showSeasonSummary  = !next && daysSinceLastMatch<=7;
+    const showOffseasonClean = !next && daysSinceLastMatch>7 && (daysUntilSeasonStart>14 || !seasonStartDate);
+    const showPreseason      = !next && daysSinceLastMatch>7 && seasonStartDate && daysUntilSeasonStart<=14 && daysUntilSeasonStart>=0;
+    const showTransferWindow = showOffseasonClean || showPreseason || (next && currentMatchday<=3);
 
     if(showSeasonSummary){
       nextHtml=buildSeasonSummary(d);
+    } else if(showPreseason){
+      nextHtml=`
+        <div class="uc-offseason-banner" style="background:rgba(232,0,28,.06);border:1.5px solid rgba(232,0,28,.15);">
+          <div class="uc-offseason-icon">🏁</div>
+          <div class="uc-offseason-title">Neue Saison in ${daysUntilSeasonStart} Tag${daysUntilSeasonStart===1?'':'en'}</div>
+          <div class="uc-offseason-sub">Bundesliga startet ${seasonStartDate.getDate()}.${seasonStartDate.getMonth()+1}.${seasonStartDate.getFullYear()} · Transferfenster läuft</div>
+        </div>`;
     } else if(!next){
-      // Fallback: kein next_match, kein klarer Zustand
-      nextHtml=buildSeasonSummary(d);
+      nextHtml='';
     }
 
     if(next && next.date){
@@ -4184,9 +4200,12 @@ async function loadUnion(){
         </div>`).join(''):'<div style="color:var(--t3);font-size:10px;">Keine Daten</div>';
 
     // ── Render ──
+    // Formkurve, Tabelle, letztes Spiel: nur in Zustand 1 (Saisonabschluss ≤7 Tage) und Normalbetrieb
+    const showSeasonContent = showSeasonSummary || !!next;
 
     document.getElementById('ucBody').innerHTML=`
       ${statsHtml}
+      ${showSeasonContent?`
       <div class="uc-2col">
         <div class="uc-box">
           <div class="uc-box-lbl">Letzte 9 Spiele</div>
@@ -4198,10 +4217,11 @@ async function loadUnion(){
           ${tblHtml}
         </div>
       </div>
-      <div class="uc-match last-match">${lastHtml}</div>
+      <div class="uc-match last-match">${lastHtml}</div>`:''}
       ${showTransferWindow?'<div id="ucTransferSection"><div class="uc-offseason-banner"><div class="uc-offseason-icon">⏳</div><div class="uc-offseason-title">Transfers werden geladen …</div></div></div>':''}
       ${!showTransferWindow&&next?`<div class="uc-match next-match">${nextHtml}</div>`:''}
       ${!showTransferWindow&&!next&&nextHtml?`<div>${nextHtml}</div>`:''}
+      ${showSeasonSummary&&nextHtml?`<div>${nextHtml}</div>`:''}
       ${h2hHtml || seasonCompareHtml ? `
       <div class="uc-analysis-wrap" id="ucAnalysisWrap">
         <div class="uc-analysis-toggle" onclick="(function(el){el.classList.toggle('open');})(document.getElementById('ucAnalysisWrap'))">
