@@ -1,34 +1,7 @@
 {
   "datum": "17.05.2026",
-  "generiert": "2026-05-17T15:07:00Z",
+  "generiert": "2026-05-17T15:31:29Z",
   "geburtstage": [
-    {
-      "name": "Julie Anne San Jose",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Filipino Singer (Born 1994)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Julie_Anne_San_Jose_at_Culture_and_the_Arts_2020.jpg/330px-Julie_Anne_San_Jose_at_Culture_and_the_Arts_2020.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Julie_Anne_San_Jose",
-      "nationalitaet": null
-    },
-    {
-      "name": "Johanna Konta",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "British Tennis Player (Born 1991)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Konta_RG19_%2829%29_%2848199186357%29.jpg/330px-Konta_RG19_%2829%29_%2848199186357%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Johanna_Konta",
-      "nationalitaet": null
-    },
-    {
-      "name": "Adil Omar",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "Pakistani Musician",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Adil_Omar",
-      "nationalitaet": null
-    },
     {
       "name": "Will Clyburn",
       "alter": 36,
@@ -36,7 +9,34 @@
       "beruf": "American Basketball Player (Born 1990)",
       "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Will_Clyburn_21_FC_Barcelona_%28basketball%29_Euroleague_20251120_%284%29_%28cropped%29.jpg/330px-Will_Clyburn_21_FC_Barcelona_%28basketball%29_Euroleague_20251120_%284%29_%28cropped%29.jpg",
       "wikidata": "https://en.wikipedia.org/wiki/Will_Clyburn",
-      "nationalitaet": null
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Fabian Giefer",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Giefer_Schalke_2015.jpg/330px-Giefer_Schalke_2015.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Fabian_Giefer",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Alex Wright",
+      "alter": 51,
+      "geburtsjahr": 1975,
+      "beruf": "German Professional Wrestler (Born 1975)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/20/Alex_Wright_wrestler_%28cropped%29.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Alex_Wright",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Udo Lindenberg",
+      "alter": 80,
+      "geburtsjahr": 1946,
+      "beruf": "German Musician And Composer (Born 1946)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pressekonferenz_Aktion_Birlikte_-_Zusammenstehen-8395.jpg/330px-Pressekonferenz_Aktion_Birlikte_-_Zusammenstehen-8395.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Udo_Lindenberg",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
