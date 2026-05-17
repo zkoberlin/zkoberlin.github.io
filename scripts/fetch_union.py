@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.4.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.4.2 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -16,6 +16,9 @@ FIXES:
           Schreibt data["h2h"] mit: wins/draws/losses, goals_for/against, letzte 8 Duelle
 - v5.3.0: H2H jetzt primär via football-data.org — saisonübergreifend
           build_h2h() bleibt als Fallback
+- v5.4.2: rank_change eingefroren wenn kein neuer Spieltag gespielt wurde
+          Vergleich: prev_points == current_points → rank_change aus Cache behalten
+          Statt täglich auf 0 zurückzufallen bleiben Pfeile bis zum nächsten Spieltag sichtbar
 - v5.4.0: opponent_season_stats ergänzt (kein extra Request — aus all_m berechnet)
           Felder: rank, matches_played, wins, draws, losses, goals_for, goals_against,
                   clean_sheets, best_win, worst_loss
@@ -814,9 +817,12 @@ def load_previous_json():
 def main():
     now = datetime.now(timezone.utc)
 
-    prev_json  = load_previous_json()
-    prev_ranks = {t["name"]: t["rank"] for t in prev_json.get("table_context", [])}
-    cached_avg = prev_json.get("season_avg_stats")
+    prev_json   = load_previous_json()
+    prev_table  = prev_json.get("table_context", [])
+    prev_ranks  = {t["name"]: t["rank"]        for t in prev_table}
+    prev_points = {t["name"]: t["points"]      for t in prev_table}
+    prev_rc     = {t["name"]: t.get("rank_change") for t in prev_table}
+    cached_avg  = prev_json.get("season_avg_stats")
     print(f"Vorherige Raenge: {len(prev_ranks)} Teams bekannt")
     if cached_avg:
         print(f"   season_avg_stats im Cache ({cached_avg.get('games_processed',0)} Spiele)")
@@ -849,7 +855,17 @@ def main():
         logo = get_logo(t["id"], t["name"])
         team_short = short(t["name"])
         prev = prev_ranks.get(team_short)
-        rank_change = (prev - t["idx"]) if prev is not None else None
+        # rank_change neu berechnen
+        fresh_rc = (prev - t["idx"]) if prev is not None else None
+        # Einfrieren: Wenn Punkte gleich geblieben sind (kein neuer Spieltag),
+        # alten rank_change behalten statt auf 0 zu fallen
+        prev_pts_val = prev_points.get(team_short)
+        if prev_pts_val is not None and prev_pts_val == t["pts"] and fresh_rc == 0:
+            rank_change = prev_rc.get(team_short)  # eingefroren
+            print(f"   {t['idx']}. {team_short} | {t['pts']} Pkt | change=FROZEN({rank_change})")
+        else:
+            rank_change = fresh_rc
+            print(f"   {t['idx']}. {team_short} | {t['pts']} Pkt | change={rank_change}")
         context.append({
             "rank":        t["idx"],
             "name":        team_short,
@@ -859,7 +875,6 @@ def main():
             "qual_color":  t.get("qualColor"),
             "rank_change": rank_change,
         })
-        print(f"   {t['idx']}. {team_short} | {t['pts']} Pkt | change={rank_change}")
 
     # 2. Union Team Logo
     print("2. Union Team Logo ...")
