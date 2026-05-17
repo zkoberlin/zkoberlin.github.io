@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_union.py v5.5.1 — Free API Live Football Data (RapidAPI) + football-data.org H2H
+fetch_union.py v5.5.2 — Free API Live Football Data (RapidAPI) + football-data.org H2H
 
 FIXES:
 - v5.2.0: LOGO_MAP verwendete Transfermarkt-IDs statt RapidAPI-IDs → falsche Logos
@@ -568,13 +568,17 @@ def parse_match_stats(sr, is_home_union):
     return result
 
 
-def aggregate_season_stats(done):
+def aggregate_season_stats(done, last_event_id=None):
     """
     Ruft Match-Stats fuer alle abgeschlossenen Union-Spiele ab und berechnet
     Saisondurchschnitte. Schreibt season_avg_stats ins JSON.
 
     Felder: possession, xg, shots, shots_on_target, big_chance,
             corners, touches_box, saves, fouls, yellow_cards
+
+    Gibt (season_avg_stats, last_match_stats) zurück.
+    last_match_stats wird befüllt wenn last_event_id übergeben wird und
+    die Stats für dieses Spiel im Loop abgerufen werden.
     """
     WANTED = {
         "BallPossesion":   "possession",
@@ -593,6 +597,7 @@ def aggregate_season_stats(done):
     totals_o = {k: 0.0 for k in WANTED.values()}
     counts   = {k: 0   for k in WANTED.values()}
     games_processed = 0
+    last_match_stats_out = {}
 
     print(f"4b. Saison-Stat-Aggregation: {len(done)} Spiele werden abgefragt ...")
 
@@ -611,6 +616,7 @@ def aggregate_season_stats(done):
         try:
             sr = fetch(f"/football-get-match-event-all-stats?eventid={eid}")
             seen = set()
+            parsed = {}
             for section in sr.get("stats", []):
                 for s in section.get("stats", []):
                     k = s.get("key")
@@ -626,8 +632,17 @@ def aggregate_season_stats(done):
                         counts[field]   += 1
                     if ov is not None:
                         totals_o[field] += ov
+                    parsed[field] = {
+                        "union": str(vals[ui])   if ui     < len(vals) else None,
+                        "opp":   str(vals[1-ui]) if (1-ui) < len(vals) else None,
+                    }
+            # Wenn das letzte Spiel im Loop ist → Stats merken
+            if last_event_id and str(eid) == str(last_event_id) and parsed:
+                last_match_stats_out = parsed
+                print(f"   [{i+1}/{len(done)}] event={eid} OK (+ last_match_stats gespeichert)")
+            else:
+                print(f"   [{i+1}/{len(done)}] event={eid} OK")
             games_processed += 1
-            print(f"   [{i+1}/{len(done)}] event={eid} OK")
         except Exception as e:
             print(f"   [{i+1}/{len(done)}] event={eid} WARN: {e}", file=sys.stderr)
         if i < len(done) - 1:
@@ -635,7 +650,7 @@ def aggregate_season_stats(done):
 
     if games_processed == 0:
         print("   WARN: Keine Stats aggregiert", file=sys.stderr)
-        return None
+        return None, {}
 
     def avg_u(field):
         n = counts[field]
@@ -650,7 +665,7 @@ def aggregate_season_stats(done):
         result[field] = {"union": avg_u(field), "opp": avg_o(field)}
 
     print(f"   OK: {games_processed} Spiele · Ø xG={result['xg']['union']} · Ø Schuesse={result['shots']['union']}")
-    return result
+    return result, last_match_stats_out
 
 
 def result_char(m):
@@ -1019,10 +1034,24 @@ def main():
         # Saisonende + Cache vollstaendig → einfach Cache wiederverwenden
         season_avg_stats = cached_avg
         print(f"4b. Saison-Stats aus Cache ({cache_games} Spiele) -- kein API-Call noetig")
+        # last_match_stats noch leer? → Einzelabruf für letztes Spiel
+        if not match_stats and last_m and last_m.get("event_id"):
+            print(f"4b+. last_match_stats leer — Einzelabruf event={last_m['event_id']} ...")
+            try:
+                sr = fetch(f"/football-get-match-event-all-stats?eventid={last_m['event_id']}")
+                match_stats = parse_match_stats(sr, last_m["is_home"])
+                print(f"   Keys: {list(match_stats.keys())}")
+            except Exception as e:
+                print(f"   WARN last_match_stats Einzelabruf: {e}", file=sys.stderr)
     elif done:
         print(f"4b. Saison-Stats neu berechnen (Cache: {cache_games} / aktuell: {len(done)} Spiele) ...")
+        last_event_id = last_m.get("event_id") if last_m else None
         try:
-            season_avg_stats = aggregate_season_stats(done)
+            season_avg_stats, stats_from_loop = aggregate_season_stats(done, last_event_id=last_event_id)
+            # last_match_stats aus Loop übernehmen falls noch leer
+            if not match_stats and stats_from_loop:
+                match_stats = stats_from_loop
+                print(f"4b+. last_match_stats aus Aggregations-Loop übernommen ({len(match_stats)} Felder)")
         except Exception as e:
             print(f"   WARN season_avg_stats: {e}", file=sys.stderr)
             # Fallback: Cache behalten falls vorhanden
