@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.8.6 -->
+<title>Paul · Hub</title><!-- v5.8.7 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -536,7 +536,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .promi-foto{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--card2);border:1px solid var(--border);}
 .promi-foto-placeholder{width:28px;height:28px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
 .promi-info{flex:1;min-width:0;}
-.promi-name{font-size:11px;font-weight:600;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.promi-name{font-size:11px;font-weight:600;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;}
+.promi-flag{font-size:10px;flex-shrink:0;line-height:1;}
 .promi-meta{font-size:9.5px;color:var(--t2);margin-top:0px;}
 
 
@@ -2324,10 +2325,11 @@ function renderPromis(list, el){
       :`<div class="promi-foto-placeholder">🎂</div>`;
     const alter=p.alter?`· ${p.alter}`:'';
     const beruf=(p.beruf||'').replace(/\s*\(Born\s+\d{4}\)/gi,'').trim();
+    const flagHtml=p.nationalitaet?`<span class="promi-flag" title="${p.nationalitaet}">🇩🇪</span>`:'';
     return`<div class="promi-chip">
       ${fotoHtml}
       <div class="promi-info">
-        <div class="promi-name">${p.name}</div>
+        <div class="promi-name"><span style="overflow:hidden;text-overflow:ellipsis;">${p.name}</span>${flagHtml}</div>
         <div class="promi-meta">${beruf} ${alter}</div>
       </div>
     </div>`;
