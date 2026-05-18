@@ -1600,7 +1600,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.9</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.8.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -3072,6 +3072,15 @@ function parseICS(text) {
       if(key === 'DESCRIPTION')  current.description = val;
       if(key === 'LOCATION')     current.location = val;
       if(key === 'UID') { current.uid = val.trim(); uidCount++; }
+      if(key === 'RRULE')        current.rrule = val; // ← wiederkehrende Termine
+      if(key === 'EXDATE') {
+        // Ausnahmen (gelöschte Einzeltermine einer Serie)
+        if(!current.exdates) current.exdates = [];
+        val.split(',').forEach(v => {
+          const d = parseICSDate(v.trim());
+          if(d) current.exdates.push(d);
+        });
+      }
       if(key === 'DTSTART') {
         current.startRaw = val;
         current.start = parseICSDate(val);
@@ -3110,6 +3119,99 @@ function parseICS(text) {
   console.log('parseICS: found', events.length, 'events,', uidCount, 'with UIDs');
   if(uidCount === 0) console.warn('NO UIDs found! First 3 lines:', lines.slice(0,3));
   return events;
+}
+
+// ── RRULE EXPANDER ────────────────────────────────────────────────────
+// Expandiert ein wiederkehrendes VEVENT in Einzel-Vorkommen für die
+// nächsten RRULE_HORIZON_DAYS Tage ab heute.
+const RRULE_HORIZON_DAYS = 365;
+
+function expandRecurring(ev) {
+  if(!ev.rrule || !ev.start) return [ev];
+
+  const parts = {};
+  ev.rrule.split(';').forEach(p => {
+    const [k, v] = p.split('=');
+    parts[k] = v;
+  });
+
+  const freq   = parts['FREQ']     || '';
+  const count  = parts['COUNT']    ? parseInt(parts['COUNT']) : null;
+  const until  = parts['UNTIL']    ? parseICSDate(parts['UNTIL']) : null;
+  const byday  = parts['BYDAY']    ? parts['BYDAY'].split(',') : null; // z.B. MO,TU,WE
+  const interval = parts['INTERVAL'] ? parseInt(parts['INTERVAL']) : 1;
+
+  // Horizont: heute bis heute + RRULE_HORIZON_DAYS
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  const horizonDate = new Date(today.getTime() + RRULE_HORIZON_DAYS * 86400000);
+  const horizonKey  = horizonDate.getFullYear() + '-' +
+                      String(horizonDate.getMonth()+1).padStart(2,'0') + '-' +
+                      String(horizonDate.getDate()).padStart(2,'0');
+
+  const exdates = new Set(ev.exdates || []);
+  const occurrences = [];
+  let cur = new Date(ev.start + 'T12:00:00');
+  let n = 0;
+  const MAX = 1000; // Sicherheitslimit
+
+  const DOW = ['SU','MO','TU','WE','TH','FR','SA'];
+
+  while(n < MAX) {
+    const key = cur.getFullYear() + '-' +
+                String(cur.getMonth()+1).padStart(2,'0') + '-' +
+                String(cur.getDate()).padStart(2,'0');
+
+    // Abbruchbedingungen
+    if(key > horizonKey) break;
+    if(until && key > until) break;
+    if(count !== null && occurrences.length >= count) break;
+
+    // Nur Vorkommen ab heute injizieren; aber Zähler läuft weiter (COUNT-Kompatibilität)
+    const inWindow = key >= todayKey;
+    const notExcluded = !exdates.has(key);
+
+    // BYDAY-Filter (z.B. MO,WE,FR bei wöchentlicher Wiederholung)
+    const dowOk = !byday || byday.includes(DOW[cur.getDay()]);
+
+    if(inWindow && notExcluded && dowOk) {
+      occurrences.push({
+        ...ev,
+        start: key,
+        end: ev.end ? shiftDateByDays(ev.end, daysDiff(ev.start, key)) : key,
+        rrule: undefined // nicht nochmal expandieren
+      });
+    }
+
+    // Nächstes Vorkommen berechnen
+    if(freq === 'DAILY') {
+      cur.setDate(cur.getDate() + interval);
+    } else if(freq === 'WEEKLY') {
+      if(byday && byday.length > 1) {
+        // Mehrere Wochentage: tageweise vorwärtsgehen
+        cur.setDate(cur.getDate() + 1);
+      } else {
+        cur.setDate(cur.getDate() + 7 * interval);
+      }
+    } else if(freq === 'MONTHLY') {
+      cur.setMonth(cur.getMonth() + interval);
+    } else if(freq === 'YEARLY') {
+      cur.setFullYear(cur.getFullYear() + interval);
+    } else {
+      break; // unbekannte Frequenz → nicht expandieren
+    }
+    n++;
+  }
+
+  return occurrences.length > 0 ? occurrences : [];
+}
+
+function daysDiff(startKey, endKey) {
+  return Math.round((new Date(endKey+'T12:00:00') - new Date(startKey+'T12:00:00')) / 86400000);
+}
+function shiftDateByDays(dateKey, days) {
+  const d = new Date(dateKey+'T12:00:00');
+  d.setDate(d.getDate() + days);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
 function parseICSDate(val) {
@@ -3171,7 +3273,17 @@ function catFromTitle(title) {
 function injectICalEvents(events, url='') {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
 
+  // Wiederkehrende Termine expandieren bevor wir injizieren
+  const expanded = [];
   for(const ev of events) {
+    if(ev.rrule) {
+      expanded.push(...expandRecurring(ev));
+    } else {
+      expanded.push(ev);
+    }
+  }
+
+  for(const ev of expanded) {
     if(!ev.start || !ev.title) continue;
     // Skip past events
     if(ev.start < todayKey) continue;
