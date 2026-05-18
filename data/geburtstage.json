@@ -1,41 +1,41 @@
 {
-  "datum": "17.05.2026",
-  "generiert": "2026-05-17T15:31:29Z",
+  "datum": "18.05.2026",
+  "generiert": "2026-05-18T12:57:06Z",
   "geburtstage": [
     {
-      "name": "Will Clyburn",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "American Basketball Player (Born 1990)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Will_Clyburn_21_FC_Barcelona_%28basketball%29_Euroleague_20251120_%284%29_%28cropped%29.jpg/330px-Will_Clyburn_21_FC_Barcelona_%28basketball%29_Euroleague_20251120_%284%29_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Will_Clyburn",
+      "name": "Heinz-Harald Frentzen",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Formel-1-Fahrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Heinz-Harald_Frentzen_a.jpg/120px-Heinz-Harald_Frentzen_a.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q76720",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Fabian Giefer",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Giefer_Schalke_2015.jpg/330px-Giefer_Schalke_2015.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Fabian_Giefer",
+      "name": "Michael Cretu",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Komponist/in",
+      "foto": null,
+      "wikidata": "https://www.wikidata.org/wiki/Q77006",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Alex Wright",
-      "alter": 51,
-      "geburtsjahr": 1975,
-      "beruf": "German Professional Wrestler (Born 1975)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/20/Alex_Wright_wrestler_%28cropped%29.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Alex_Wright",
+      "name": "Ralf Kelleners",
+      "alter": 58,
+      "geburtsjahr": 1968,
+      "beruf": "German Racing Driver (Born 1968)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/2008_Petit_LeMans_Oct_2_Day_2_%2890%29_%282917765837%29.jpg/330px-2008_Petit_LeMans_Oct_2_Day_2_%2890%29_%282917765837%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Ralf_Kelleners",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Udo Lindenberg",
-      "alter": 80,
-      "geburtsjahr": 1946,
-      "beruf": "German Musician And Composer (Born 1946)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pressekonferenz_Aktion_Birlikte_-_Zusammenstehen-8395.jpg/330px-Pressekonferenz_Aktion_Birlikte_-_Zusammenstehen-8395.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Udo_Lindenberg",
+      "name": "Nobby Stiles",
+      "alter": 84,
+      "geburtsjahr": 1942,
+      "beruf": "English Footballer (1942–2020)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Nobby_Stiles_%281966%29.jpg/330px-Nobby_Stiles_%281966%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Nobby_Stiles",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
