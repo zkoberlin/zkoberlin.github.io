@@ -1596,7 +1596,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.6</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -3100,9 +3100,11 @@ function injectICalEvents(events, url='') {
                     String(cur.getMonth()+1).padStart(2,'0') + '-' + 
                     String(cur.getDate()).padStart(2,'0');
         if(!SE[key]) SE[key] = [];
-        // Duplicate check: exact title match on same day (not prefix, to allow same-named events on different days)
-        if(!SE[key].some(e => e.t === display && e.fromIcal)) {
+        // Duplicate check: exact title match on same day, same source (hellomed vs gmail)
+        const isHelmomedUrl = url.includes('hellomed');
+        if(!SE[key].some(e => e.t === display && e.fromIcal && !!e.fromHellomed === isHelmomedUrl)) {
           const entry = {t: display, c: cat, cats: allCats, fromIcal: true};
+          if(isHelmomedUrl) entry.fromHellomed = true;
           if(ev.startTime && key === ev.start) entry.startTime = ev.startTime;
           if(ev.endTime && key === ev.start) entry.endTime = ev.endTime;
           if(ev.location) entry.location = ev.location;
@@ -3113,7 +3115,8 @@ function injectICalEvents(events, url='') {
       }
     } else {
       if(!SE[ev.start]) SE[ev.start] = [];
-      if(!SE[ev.start].some(e => e.t === display && e.fromIcal)) {
+      const isHelmomedUrl = url.includes('hellomed');
+      if(!SE[ev.start].some(e => e.t === display && e.fromIcal && !!e.fromHellomed === isHelmomedUrl)) {
         const entry = {t: display, c: cat, cats: allCats, fromIcal: true};
         if(ev.startTime) entry.startTime = ev.startTime;
         if(ev.endTime) entry.endTime = ev.endTime;
