@@ -1581,9 +1581,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .eli.evt-past {
   opacity: 0.38;
 }
-/* Vergangene Termine komplett ausblenden (wenn letzter Tages-Termin vorbei) */
+/* Vergangene Termine stark dimmen (nie komplett ausblenden) */
 .eli.evt-past-hidden {
-  display: none !important;
+  opacity: 0.22;
 }
 </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1596,7 +1596,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.7</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2031,22 +2031,7 @@ function markActiveEvent() {
     el.classList.remove('evt-active', 'evt-past', 'evt-past-hidden');
   });
 
-  // First pass: find the end time of the last timed event today (ganztägig excluded)
-  let lastTimedEndMin = -1;
-  (SE[todayKey] || []).forEach(ev => {
-    const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-    if (!timeStr) return;
-    const [h, m] = timeStr.split(':').map(Number);
-    const startMin = h * 60 + m;
-    const endMin = ev.endTime
-      ? (parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]))
-      : startMin + 60;
-    if (endMin > lastTimedEndMin) lastTimedEndMin = endMin;
-  });
-  // Are ALL timed events of today finished?
-  const allTimedEventsDone = lastTimedEndMin >= 0 && nowMin >= lastTimedEndMin;
-
-  // Second pass: mark active / past / hidden
+  // Mark active / past events for today
   (SE[todayKey] || []).forEach(ev => {
     const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
     if (!timeStr) return;
@@ -2063,8 +2048,7 @@ function markActiveEvent() {
       if (nowMin >= startMin && nowMin < endMin) {
         el.classList.add('evt-active');
       } else if (nowMin >= endMin) {
-        // If last event of the day is done → hide completely; otherwise just dim
-        el.classList.add(allTimedEventsDone ? 'evt-past-hidden' : 'evt-past');
+        el.classList.add('evt-past');
       }
     });
   });
