@@ -1581,9 +1581,13 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .eli.evt-past {
   opacity: 0.38;
 }
-/* Vergangene Termine stark dimmen (nie komplett ausblenden) */
+/* Alle Termine des Tages vorbei → komplett ausblenden */
 .eli.evt-past-hidden {
-  opacity: 0.22;
+  display: none;
+}
+/* Woche: vergangener Tag-Header ausblenden wenn alle Termine vorbei */
+.woche-day-card.day-all-past {
+  display: none;
 }
 </style>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1596,7 +1600,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.7</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.7.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2027,31 +2031,120 @@ function markActiveEvent() {
   const todayKey = dk(now.getFullYear(), now.getMonth(), now.getDate());
   const nowMin = now.getHours() * 60 + now.getMinutes();
 
+  // Reset all state
   document.querySelectorAll('#cal .eli').forEach(el => {
     el.classList.remove('evt-active', 'evt-past', 'evt-past-hidden');
   });
+  document.querySelectorAll('#cal .woche-day-card').forEach(card => {
+    card.classList.remove('day-all-past');
+  });
 
-  // Mark active / past events for today
-  (SE[todayKey] || []).forEach(ev => {
+  // Helper: parse endMin for an event
+  function getEndMin(ev) {
     const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
-    if (!timeStr) return;
+    if (!timeStr) return null;
     const [h, m] = timeStr.split(':').map(Number);
     const startMin = h * 60 + m;
-    const endMin = ev.endTime
-      ? (parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]))
-      : startMin + 60;
-    const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
+    if (ev.endTime) {
+      return parseInt(ev.endTime.split(':')[0]) * 60 + parseInt(ev.endTime.split(':')[1]);
+    }
+    return startMin + 60;
+  }
+
+  // ── TAG-ANSICHT ──────────────────────────────────────────────────
+  if (currentView === 'tag') {
+    // Only act on today (viewOffset === 0)
+    if (viewOffset !== 0) return;
+
+    const evs = (SE[todayKey] || []).filter(ev =>
+      ev.startTime || ev.t.match(/\d{1,2}:\d{2}/)
+    );
+
+    // Check: are ALL timed events done?
+    const allDone = evs.length > 0 && evs.every(ev => {
+      const endMin = getEndMin(ev);
+      return endMin !== null && nowMin >= endMin;
+    });
 
     document.querySelectorAll('#cal .eli').forEach(el => {
-      const enText = el.querySelector('.en')?.textContent || '';
-      if (!enText.includes(title)) return;
-      if (nowMin >= startMin && nowMin < endMin) {
-        el.classList.add('evt-active');
-      } else if (nowMin >= endMin) {
-        el.classList.add('evt-past');
+      if (allDone) {
+        el.classList.add('evt-past-hidden');
+        return;
+      }
+      // Match event to DOM element by title snippet
+      const evs2 = SE[todayKey] || [];
+      for (const ev of evs2) {
+        const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+        if (!timeStr) continue;
+        const [h, m] = timeStr.split(':').map(Number);
+        const startMin = h * 60 + m;
+        const endMin = getEndMin(ev);
+        const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
+        const enText = el.querySelector('.en')?.textContent || '';
+        if (!enText.includes(title)) continue;
+        if (nowMin >= startMin && nowMin < endMin) {
+          el.classList.add('evt-active');
+        } else if (nowMin >= endMin) {
+          el.classList.add('evt-past');
+        }
+        break;
       }
     });
-  });
+
+  // ── WOCHE-ANSICHT ────────────────────────────────────────────────
+  } else if (currentView === 'woche') {
+    // Only act on the current week
+    if (viewOffset !== 0) return;
+
+    document.querySelectorAll('#cal .woche-day-card').forEach(card => {
+      // Determine the date key from the day title (woche-day-title contains date info)
+      // We use data-key attribute set during render — if missing, skip
+      const key = card.dataset.key;
+      if (!key) return;
+
+      const isToday = key === todayKey;
+      const evs = (SE[key] || []).filter(ev =>
+        ev.startTime || ev.t.match(/\d{1,2}:\d{2}/)
+      );
+
+      const elis = card.querySelectorAll('.eli');
+
+      if (isToday) {
+        const allDone = evs.length > 0 && evs.every(ev => {
+          const endMin = getEndMin(ev);
+          return endMin !== null && nowMin >= endMin;
+        });
+
+        if (allDone) {
+          elis.forEach(el => el.classList.add('evt-past-hidden'));
+          // If all events hidden, hide the entire card
+          card.classList.add('day-all-past');
+          return;
+        }
+
+        // Mark individual events active/past for today
+        elis.forEach(el => {
+          for (const ev of evs) {
+            const timeStr = ev.startTime || (ev.t.match(/(\d{1,2}:\d{2})/) ? ev.t.match(/(\d{1,2}:\d{2})/)[1] : null);
+            if (!timeStr) continue;
+            const [h, m] = timeStr.split(':').map(Number);
+            const startMin = h * 60 + m;
+            const endMin = getEndMin(ev);
+            const title = ev.t.replace(/^\d{1,2}:\d{2}\s*/, '').trim().substring(0, 20);
+            const enText = el.querySelector('.en')?.textContent || '';
+            if (!enText.includes(title)) continue;
+            if (nowMin >= startMin && nowMin < endMin) {
+              el.classList.add('evt-active');
+            } else if (nowMin >= endMin) {
+              el.classList.add('evt-past');
+            }
+            break;
+          }
+        });
+      }
+      // Past days (before today) in current week are already skipped in renderWocheView
+    });
+  }
 }
 // Alle 60s aktualisieren
 setInterval(() => {
@@ -2196,6 +2289,7 @@ function renderWocheView(cal, base) {
     // Day card
     const card = document.createElement('div');
     card.className = 'woche-day-card' + (isToday ? ' woche-today' : '') + (isWE ? ' woche-weekend' : '');
+    card.dataset.key = key;
 
     // Header: "Heute · Sonntag, 10. Mai 2026"
     const dayName = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'][i];
