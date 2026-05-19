@@ -1636,7 +1636,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.1</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.2</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -3772,7 +3772,8 @@ const NEUE_LS_KEY   = 'kalender_snapshot_v1';
 const NEUE_SEEN_KEY = 'kalender_snapshot_seen_v1';
 const NEUE_WINDOW_H = 48; // Stunden zurückblicken für "neu"
 
-let _neueTermineList = [];
+let _neueTermineList    = [];
+let _geaendertTermineList = [];
 
 function buildEventFingerprints() {
   const fps = {};
@@ -3780,27 +3781,47 @@ function buildEventFingerprints() {
   Object.keys(SE).forEach(dateKey => {
     if(dateKey < todayKey) return;
     (SE[dateKey] || []).forEach(ev => {
-      if(!ev.fromIcal) return; // Nur iCal-Events tracken
+      if(!ev.fromIcal) return;
       const fp = (ev.t || '').trim() + '|' + dateKey;
       fps[fp] = {
         t: ev.t, c: ev.c, dateKey,
-        startTime: ev.startTime, endTime: ev.endTime, location: ev.location,
-        fromIcal: true,
-        fromSheet: ev.fromSheet || false,
-        fromApi:   ev.fromApi   || false
+        startTime: ev.startTime  || null,
+        endTime:   ev.endTime    || null,
+        location:  ev.location   || null,
+        fromIcal:  true,
+        fromSheet: ev.fromSheet  || false,
+        fromApi:   ev.fromApi    || false
       };
     });
   });
   return fps;
 }
 
+// Welche Felder haben sich geändert? Gibt lesbares Label zurück.
+function diffFields(oldEv, newEv) {
+  const changes = [];
+  const fmtTime = (s, e) => s ? (e && e !== s ? s + '–' + e : s + ' Uhr') : null;
+  const oldTime = fmtTime(oldEv.startTime, oldEv.endTime);
+  const newTime = fmtTime(newEv.startTime, newEv.endTime);
+  if(oldTime !== newTime) {
+    changes.push(oldTime
+      ? `⏱ ${oldTime} → ${newTime || 'ganztägig'}`
+      : `⏱ ganztägig → ${newTime}`);
+  }
+  if((oldEv.location || '') !== (newEv.location || '')) {
+    changes.push(oldEv.location
+      ? `📍 ${oldEv.location} → ${newEv.location || '—'}`
+      : `📍 Ort hinzugefügt: ${newEv.location}`);
+  }
+  return changes;
+}
+
 function checkNeueTermine() {
-  const current = buildEventFingerprints();
-  const savedRaw  = localStorage.getItem(NEUE_LS_KEY);
-  const seenRaw   = localStorage.getItem(NEUE_SEEN_KEY);
+  const current  = buildEventFingerprints();
+  const savedRaw = localStorage.getItem(NEUE_LS_KEY);
+  const seenRaw  = localStorage.getItem(NEUE_SEEN_KEY);
 
   if(!savedRaw) {
-    // Erster Besuch – Snapshot speichern, nix anzeigen
     saveSnapshot(current);
     return;
   }
@@ -3808,35 +3829,84 @@ function checkNeueTermine() {
   let saved;
   try { saved = JSON.parse(savedRaw); } catch(e) { saveSnapshot(current); return; }
 
-  const savedFps  = saved.fps   || {};
-  const savedTime = saved.time  || 0;
-  const seenFps   = seenRaw ? JSON.parse(seenRaw) : {};
+  const savedFps = saved.fps  || {};
+  const seenFps  = seenRaw ? JSON.parse(seenRaw) : {};
 
-  // Cutoff: nur Termine die seit letztem Snapshot hinzukamen
-  const newItems = [];
+  const newItems      = [];
+  const changedItems  = [];
+
   Object.keys(current).forEach(fp => {
-    if(!savedFps[fp] && !seenFps[fp]) {
+    if(savedFps[fp]) {
+      // Key existiert – Werte vergleichen
+      const changes = diffFields(savedFps[fp], current[fp]);
+      if(changes.length > 0 && !seenFps['chg|' + fp]) {
+        changedItems.push({ ...current[fp], changes });
+      }
+    } else if(!seenFps[fp]) {
+      // Neuer Termin
       newItems.push(current[fp]);
     }
   });
 
-  // Sortieren nach Datum
-  newItems.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
-  _neueTermineList = newItems;
+  newItems.sort((a,b)     => a.dateKey.localeCompare(b.dateKey));
+  changedItems.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
 
-  if(newItems.length > 0) {
+  _neueTermineList     = newItems;
+  _geaendertTermineList = changedItems;
+
+  const total = newItems.length + changedItems.length;
+  if(total > 0) {
     const btn = document.getElementById('neueTermineBtn');
     const cnt = document.getElementById('neueTermineCount');
-    if(btn) { btn.style.display = 'inline-flex'; }
-    if(cnt) cnt.textContent = newItems.length;
+    if(btn) btn.style.display = 'inline-flex';
+    if(cnt) cnt.textContent = total;
   }
 
-  // Snapshot aktualisieren (neuer Stand)
   saveSnapshot(current);
 }
 
 function saveSnapshot(fps) {
   localStorage.setItem(NEUE_LS_KEY, JSON.stringify({ fps, time: Date.now() }));
+}
+
+// ── Gemeinsamer Renderer für ein eli-Item ────────────────────────────
+function renderNeueEli(ev, colorMap2, mode) {
+  // mode: 'new' | 'changed'
+  const color    = colorMap2[ev.c] || '#aeaeb2';
+  const title    = (ev.t || '').replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+  const timeRange = ev.startTime
+    ? (ev.endTime && ev.endTime !== ev.startTime
+        ? ev.startTime + ' – ' + ev.endTime + ' Uhr'
+        : ev.startTime + ' Uhr')
+    : null;
+  const locStr   = ev.location ? ' · ' + ev.location : '';
+  const timeHtml = timeRange ? `<div class="et">${timeRange}${locStr}</div>` : '';
+  const dateStr  = fmtDate(ev.dateKey);
+
+  const srcBadges = [];
+  if(mode === 'new') {
+    srcBadges.push('<span class="src-badge" style="color:#f59e0b;background:rgba(245,158,11,.10)">✦ Neu</span>');
+    if(ev.fromIcal)  srcBadges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+    if(ev.fromSheet) srcBadges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
+    if(ev.fromApi)   srcBadges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
+  } else {
+    srcBadges.push('<span class="src-badge" style="color:#818cf8;background:rgba(129,140,248,.10)">✎ Geändert</span>');
+    if(ev.fromIcal) srcBadges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
+  }
+
+  const changesHtml = (ev.changes || []).map(c =>
+    `<div class="et" style="margin-top:2px;color:var(--text2);">${c}</div>`
+  ).join('');
+
+  return `<div class="eli neue-eli" data-datekey="${ev.dateKey}" style="cursor:pointer;margin-bottom:6px;">
+    <div class="eli-dot" style="background:${color}"></div>
+    <div class="evt-info">
+      <div class="en">${title} ${srcBadges.join('')}</div>
+      ${timeHtml}
+      ${changesHtml}
+      <div class="et" style="margin-top:3px;color:var(--blue);font-weight:600;">${dateStr}</div>
+    </div>
+  </div>`;
 }
 
 function openNeueTermineSheet() {
@@ -3852,8 +3922,11 @@ function openNeueTermineSheet() {
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
 
-  if(!_neueTermineList.length) {
-    list.innerHTML = '<div style="padding:16px 4px;font-size:13px;color:var(--text3);text-align:center;">Keine neuen Termine gefunden.</div>';
+  const hasNew     = _neueTermineList.length > 0;
+  const hasChanged = _geaendertTermineList.length > 0;
+
+  if(!hasNew && !hasChanged) {
+    list.innerHTML = '<div style="padding:16px 4px;font-size:13px;color:var(--text3);text-align:center;">Keine Änderungen gefunden.</div>';
   } else {
     const savedRaw = localStorage.getItem(NEUE_LS_KEY);
     let savedTime = null;
@@ -3863,34 +3936,27 @@ function openNeueTermineSheet() {
       sub.textContent = `Seit ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})} · ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr`;
     }
 
-    list.innerHTML = _neueTermineList.map(ev => {
-      const color = colorMap2[ev.c] || '#aeaeb2';
-      const title = (ev.t || '').replace(/^\d{1,2}:\d{2}\s*/, '').trim();
-      const timeRange = ev.startTime ? (ev.endTime && ev.endTime !== ev.startTime ? ev.startTime + ' – ' + ev.endTime + ' Uhr' : ev.startTime + ' Uhr') : null;
-      const locStr = ev.location ? ' · ' + ev.location : '';
-      const timeHtml = timeRange ? `<div class="et">${timeRange}${locStr}</div>` : '';
-      const dateStr = fmtDate(ev.dateKey);
-      const srcBadges = [];
-      srcBadges.push('<span class="src-badge" style="color:#f59e0b;background:rgba(245,158,11,.1)">✦ Neu</span>');
-      if(ev.fromIcal)  srcBadges.push('<span class="src-badge" style="color:#34d399">● iCal</span>');
-      if(ev.fromSheet) srcBadges.push('<span class="src-badge" style="color:#a78bfa">● Kids Sheet</span>');
-      if(ev.fromApi)   srcBadges.push('<span class="src-badge" style="color:#f59e0b">● API</span>');
-      return `<div class="eli neue-eli" data-datekey="${ev.dateKey}" style="cursor:pointer;margin-bottom:6px;">
-        <div class="eli-dot" style="background:${color}"></div>
-        <div class="evt-info">
-          <div class="en">${title} ${srcBadges.join('')}</div>
-          ${timeHtml}
-          <div class="et" style="margin-top:2px;color:var(--blue);font-weight:600;">${dateStr}</div>
-        </div>
-      </div>`;
-    }).join('');
+    let html = '';
 
-    // Click → Tag-Ansicht springen
+    if(hasNew) {
+      html += `<div style="font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:4px 2px 8px;">✦ Neue Termine (${_neueTermineList.length})</div>`;
+      html += _neueTermineList.map(ev => renderNeueEli(ev, colorMap2, 'new')).join('');
+    }
+
+    if(hasChanged) {
+      if(hasNew) html += `<div style="height:1px;background:var(--border);margin:10px 0 12px;"></div>`;
+      html += `<div style="font-family:var(--font-head);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:4px 2px 8px;">✎ Geänderte Termine (${_geaendertTermineList.length})</div>`;
+      html += _geaendertTermineList.map(ev => renderNeueEli(ev, colorMap2, 'changed')).join('');
+    }
+
+    list.innerHTML = html;
+
+    // Click → Tag-Ansicht
     list.querySelectorAll('.neue-eli').forEach(el => {
       el.addEventListener('click', () => {
         const dateKey = el.dataset.datekey;
         closeNeueTermineSheet();
-        const d = new Date(dateKey + 'T12:00:00');
+        const d    = new Date(dateKey + 'T12:00:00');
         const base = new Date();
         const diffDays = Math.round((d - base) / 86400000);
         setView('tag');
@@ -3912,14 +3978,16 @@ function closeNeueTermineSheet() {
 }
 
 function markNeueTermineGesehen() {
-  // Alle aktuell gezeigten fps als "gesehen" markieren
   const seen = {};
   _neueTermineList.forEach(ev => {
-    const fp = (ev.t || '').trim() + '|' + ev.dateKey;
-    seen[fp] = true;
+    seen[(ev.t || '').trim() + '|' + ev.dateKey] = true;
+  });
+  _geaendertTermineList.forEach(ev => {
+    seen['chg|' + (ev.t || '').trim() + '|' + ev.dateKey] = true;
   });
   localStorage.setItem(NEUE_SEEN_KEY, JSON.stringify(seen));
-  _neueTermineList = [];
+  _neueTermineList      = [];
+  _geaendertTermineList = [];
   const btn = document.getElementById('neueTermineBtn');
   if(btn) btn.style.display = 'none';
   closeNeueTermineSheet();
