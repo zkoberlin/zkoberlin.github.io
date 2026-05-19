@@ -892,6 +892,29 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 }
 .apple-cal-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--surface); }
 
+/* Neue Termine Badge Button */
+.neue-termine-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 32px; padding: 0 10px;
+  border-radius: 10px;
+  border: 1.5px solid #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+  font-family: var(--font-head);
+  font-size: 11.5px; font-weight: 700;
+  cursor: pointer; flex-shrink: 0;
+  transition: .15s;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  animation: neue-pulse 2.5s ease-in-out infinite;
+}
+.neue-termine-btn:hover { background: #fde68a; border-color: #d97706; }
+[data-theme="dark"] .neue-termine-btn { background: rgba(245,158,11,.15); color: #fcd34d; border-color: rgba(245,158,11,.5); }
+@keyframes neue-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+  50% { box-shadow: 0 0 0 4px rgba(245,158,11,.2); }
+}
+
 /* View Switcher (Tag / Woche / Monat) */
 .view-switcher {
   display: inline-flex;
@@ -1600,7 +1623,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.8.0</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.0</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1608,6 +1631,9 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
       <button class="hub-btn" onclick="location.reload(true)" title="Neu laden" style="font-size:16px;line-height:1;">↺</button>
+      <button class="neue-termine-btn" id="neueTermineBtn" onclick="openNeueTermineSheet()" title="Neue Termine seit letztem Besuch" style="display:none;">
+        🆕 <span id="neueTermineCount">0</span>
+      </button>
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
         <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
         <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
@@ -1707,6 +1733,23 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Neue Termine Bottom Sheet -->
+<div class="filter-backdrop" id="neueTermineBackdrop" onclick="closeNeueTermineSheet()"></div>
+<div class="filter-sheet" id="neueTermineSheet">
+  <div class="filter-sheet-handle"></div>
+  <div class="filter-sheet-header">
+    <span class="filter-sheet-title">🆕 Neue Termine</span>
+    <button class="filter-sheet-close" onclick="closeNeueTermineSheet()">✕</button>
+  </div>
+  <div id="neueTermineSubtitle" style="padding:0 18px 8px;font-size:11.5px;color:var(--text2);font-family:var(--font-head);-webkit-font-smoothing:antialiased;"></div>
+  <div id="neueTermineList" style="overflow-y:auto;max-height:calc(60vh - 100px);padding:0 14px;"></div>
+  <div style="padding:14px 18px 20px;flex-shrink:0;">
+    <button onclick="markNeueTermineGesehen()" style="width:100%;padding:11px;border-radius:12px;border:none;background:var(--blue);color:#fff;font-family:var(--font-head);font-size:13.5px;font-weight:600;cursor:pointer;-webkit-font-smoothing:antialiased;letter-spacing:-.2px;">
+      ✓ Alle als gesehen markieren
+    </button>
+  </div>
+</div>
 
 <script>
 const today = new Date();
@@ -3668,10 +3711,8 @@ const _dynPromise = loadAllDynamicData().then(() => {
 // Load iCal events after initial render
 const _icalPromise = loadICalEvents();
 
-// Nach BEIDEN Ladevorgängen: finaler Filter-Count-Refresh
-Promise.allSettled([_dynPromise, _icalPromise]).then(() => {
-  hideEmptyFilters();
-});
+// Nach BEIDEN Ladevorgängen: finaler Filter-Count-Refresh + Neue Termine Check
+// → wird unten zusammen mit checkNeueTermine() aufgerufen
 
 // Set header height – called immediately and after every render
 function updateHeaderVar() {
@@ -3709,7 +3750,162 @@ window.addEventListener('scroll', () => {
 
 // Update header title on scroll to show current visible month
 
-</script>
+// ── NEUE TERMINE SEIT LETZTEM BESUCH ────────────────────────────────
+// Fingerprint: "titel|datum" für alle iCal-Events (fromIcal:true)
+// Snapshot wird nach BEIDEN Ladezyklen gespeichert (dyn + ical)
+// Vergleich mit gespeichertem Snapshot → Badge anzeigen
+
+const NEUE_LS_KEY   = 'kalender_snapshot_v1';
+const NEUE_SEEN_KEY = 'kalender_snapshot_seen_v1';
+const NEUE_WINDOW_H = 48; // Stunden zurückblicken für "neu"
+
+let _neueTermineList = [];
+
+function buildEventFingerprints() {
+  const fps = {};
+  const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
+  Object.keys(SE).forEach(dateKey => {
+    if(dateKey < todayKey) return; // Vergangenheit ignorieren
+    (SE[dateKey] || []).forEach(ev => {
+      if(!ev.fromIcal) return; // Nur iCal-Events tracken
+      const fp = (ev.t || '').trim() + '|' + dateKey;
+      fps[fp] = {t: ev.t, c: ev.c, dateKey, startTime: ev.startTime, endTime: ev.endTime, location: ev.location};
+    });
+  });
+  return fps;
+}
+
+function checkNeueTermine() {
+  const current = buildEventFingerprints();
+  const savedRaw  = localStorage.getItem(NEUE_LS_KEY);
+  const seenRaw   = localStorage.getItem(NEUE_SEEN_KEY);
+
+  if(!savedRaw) {
+    // Erster Besuch – Snapshot speichern, nix anzeigen
+    saveSnapshot(current);
+    return;
+  }
+
+  let saved;
+  try { saved = JSON.parse(savedRaw); } catch(e) { saveSnapshot(current); return; }
+
+  const savedFps  = saved.fps   || {};
+  const savedTime = saved.time  || 0;
+  const seenFps   = seenRaw ? JSON.parse(seenRaw) : {};
+
+  // Cutoff: nur Termine die seit letztem Snapshot hinzukamen
+  const newItems = [];
+  Object.keys(current).forEach(fp => {
+    if(!savedFps[fp] && !seenFps[fp]) {
+      newItems.push(current[fp]);
+    }
+  });
+
+  // Sortieren nach Datum
+  newItems.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
+  _neueTermineList = newItems;
+
+  if(newItems.length > 0) {
+    const btn = document.getElementById('neueTermineBtn');
+    const cnt = document.getElementById('neueTermineCount');
+    if(btn) { btn.style.display = 'inline-flex'; }
+    if(cnt) cnt.textContent = newItems.length;
+  }
+
+  // Snapshot aktualisieren (neuer Stand)
+  saveSnapshot(current);
+}
+
+function saveSnapshot(fps) {
+  localStorage.setItem(NEUE_LS_KEY, JSON.stringify({ fps, time: Date.now() }));
+}
+
+function openNeueTermineSheet() {
+  const sheet    = document.getElementById('neueTermineSheet');
+  const backdrop = document.getElementById('neueTermineBackdrop');
+  const list     = document.getElementById('neueTermineList');
+  const sub      = document.getElementById('neueTermineSubtitle');
+
+  const colorMap2 = {
+    'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
+    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+    'e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9',
+    'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
+  };
+
+  if(!_neueTermineList.length) {
+    list.innerHTML = '<div style="padding:16px 4px;font-size:13px;color:var(--text3);text-align:center;">Keine neuen Termine gefunden.</div>';
+  } else {
+    const savedRaw = localStorage.getItem(NEUE_LS_KEY);
+    let savedTime = null;
+    try { savedTime = JSON.parse(savedRaw)?.time; } catch(e) {}
+    if(savedTime) {
+      const d = new Date(savedTime);
+      sub.textContent = `Seit ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})} · ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr`;
+    }
+
+    list.innerHTML = _neueTermineList.map(ev => {
+      const color = colorMap2[ev.c] || '#aeaeb2';
+      const title = (ev.t || '').replace(/^\d{1,2}:\d{2}\s*/, '').trim();
+      const timeRange = ev.startTime ? (ev.endTime && ev.endTime !== ev.startTime ? ev.startTime + ' – ' + ev.endTime + ' Uhr' : ev.startTime + ' Uhr') : null;
+      const locStr = ev.location ? ' · ' + ev.location : '';
+      const timeHtml = timeRange ? `<div class="et">${timeRange}${locStr}</div>` : '';
+      const dateStr = fmtDate(ev.dateKey);
+      return `<div class="eli neue-eli" data-datekey="${ev.dateKey}" style="cursor:pointer;margin-bottom:6px;">
+        <div class="eli-dot" style="background:${color}"></div>
+        <div class="evt-info">
+          <div class="en">${title} <span class="src-badge" style="color:#f59e0b">● Neu</span></div>
+          ${timeHtml}
+          <div class="et" style="margin-top:2px;color:var(--blue);font-weight:600;">${dateStr}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Click → Tag-Ansicht springen
+    list.querySelectorAll('.neue-eli').forEach(el => {
+      el.addEventListener('click', () => {
+        const dateKey = el.dataset.datekey;
+        closeNeueTermineSheet();
+        const d = new Date(dateKey + 'T12:00:00');
+        const base = new Date();
+        const diffDays = Math.round((d - base) / 86400000);
+        setView('tag');
+        viewOffset = diffDays;
+        renderView();
+      });
+    });
+  }
+
+  sheet.classList.add('on');
+  backdrop.classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNeueTermineSheet() {
+  document.getElementById('neueTermineSheet').classList.remove('on');
+  document.getElementById('neueTermineBackdrop').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+function markNeueTermineGesehen() {
+  // Alle aktuell gezeigten fps als "gesehen" markieren
+  const seen = {};
+  _neueTermineList.forEach(ev => {
+    const fp = (ev.t || '').trim() + '|' + ev.dateKey;
+    seen[fp] = true;
+  });
+  localStorage.setItem(NEUE_SEEN_KEY, JSON.stringify(seen));
+  _neueTermineList = [];
+  const btn = document.getElementById('neueTermineBtn');
+  if(btn) btn.style.display = 'none';
+  closeNeueTermineSheet();
+}
+
+// Aufruf nach beiden Ladezyklen
+Promise.allSettled([_dynPromise, _icalPromise]).then(() => {
+  hideEmptyFilters();
+  checkNeueTermine();
+});</script>
 <!-- Add Event Modal -->
 
 </body>
