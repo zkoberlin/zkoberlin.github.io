@@ -1636,7 +1636,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.2</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.3</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -3768,9 +3768,8 @@ window.addEventListener('scroll', () => {
 // Snapshot wird nach BEIDEN Ladezyklen gespeichert (dyn + ical)
 // Vergleich mit gespeichertem Snapshot → Badge anzeigen
 
-const NEUE_LS_KEY   = 'kalender_snapshot_v1';
-const NEUE_SEEN_KEY = 'kalender_snapshot_seen_v1';
-const NEUE_WINDOW_H = 48; // Stunden zurückblicken für "neu"
+const SNAPSHOT_URL  = 'https://kalender-proxy.paul-bendzko.workers.dev/snapshot';
+const NEUE_SEEN_KEY = 'kalender_snapshot_seen_v1'; // bleibt lokal (gerätespezifisch)
 
 let _neueTermineList    = [];
 let _geaendertTermineList = [];
@@ -3816,34 +3815,43 @@ function diffFields(oldEv, newEv) {
   return changes;
 }
 
-function checkNeueTermine() {
-  const current  = buildEventFingerprints();
-  const savedRaw = localStorage.getItem(NEUE_LS_KEY);
-  const seenRaw  = localStorage.getItem(NEUE_SEEN_KEY);
+let _snapshotTime = null; // wird in checkNeueTermine gesetzt
 
-  if(!savedRaw) {
+async function checkNeueTermine() {
+  const current = buildEventFingerprints();
+  const seenRaw = localStorage.getItem(NEUE_SEEN_KEY);
+  const seenFps = seenRaw ? JSON.parse(seenRaw) : {};
+
+  // Snapshot vom Worker laden
+  let saved = null;
+  try {
+    const res = await fetch(SNAPSHOT_URL, { cache: 'no-store' });
+    if(res.ok) {
+      const json = await res.json();
+      saved = json;
+    }
+  } catch(err) {
+    console.warn('Snapshot GET fehlgeschlagen:', err.message);
+  }
+
+  if(!saved) {
     saveSnapshot(current);
     return;
   }
 
-  let saved;
-  try { saved = JSON.parse(savedRaw); } catch(e) { saveSnapshot(current); return; }
+  _snapshotTime = saved.time || null;
+  const savedFps = saved.fps || {};
 
-  const savedFps = saved.fps  || {};
-  const seenFps  = seenRaw ? JSON.parse(seenRaw) : {};
-
-  const newItems      = [];
-  const changedItems  = [];
+  const newItems     = [];
+  const changedItems = [];
 
   Object.keys(current).forEach(fp => {
     if(savedFps[fp]) {
-      // Key existiert – Werte vergleichen
       const changes = diffFields(savedFps[fp], current[fp]);
       if(changes.length > 0 && !seenFps['chg|' + fp]) {
         changedItems.push({ ...current[fp], changes });
       }
     } else if(!seenFps[fp]) {
-      // Neuer Termin
       newItems.push(current[fp]);
     }
   });
@@ -3851,7 +3859,7 @@ function checkNeueTermine() {
   newItems.sort((a,b)     => a.dateKey.localeCompare(b.dateKey));
   changedItems.sort((a,b) => a.dateKey.localeCompare(b.dateKey));
 
-  _neueTermineList     = newItems;
+  _neueTermineList      = newItems;
   _geaendertTermineList = changedItems;
 
   const total = newItems.length + changedItems.length;
@@ -3862,11 +3870,17 @@ function checkNeueTermine() {
     if(cnt) cnt.textContent = total;
   }
 
+  // Neuen Snapshot speichern (aktueller Stand)
   saveSnapshot(current);
 }
 
 function saveSnapshot(fps) {
-  localStorage.setItem(NEUE_LS_KEY, JSON.stringify({ fps, time: Date.now() }));
+  const payload = JSON.stringify({ fps, time: Date.now() });
+  fetch(SNAPSHOT_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: payload
+  }).catch(err => console.warn('Snapshot PUT fehlgeschlagen:', err.message));
 }
 
 // ── Gemeinsamer Renderer für ein eli-Item ────────────────────────────
@@ -3928,11 +3942,8 @@ function openNeueTermineSheet() {
   if(!hasNew && !hasChanged) {
     list.innerHTML = '<div style="padding:16px 4px;font-size:13px;color:var(--text3);text-align:center;">Keine Änderungen gefunden.</div>';
   } else {
-    const savedRaw = localStorage.getItem(NEUE_LS_KEY);
-    let savedTime = null;
-    try { savedTime = JSON.parse(savedRaw)?.time; } catch(e) {}
-    if(savedTime) {
-      const d = new Date(savedTime);
+    if(_snapshotTime) {
+      const d = new Date(_snapshotTime);
       sub.textContent = `Seit ${d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})} · ${d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr`;
     }
 
