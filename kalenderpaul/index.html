@@ -322,6 +322,18 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .main { padding: 24px 32px 60px; max-width: 1100px; margin: 0 auto; }
 @media (max-width: 600px) {
   .main { padding: 12px 10px 80px; }
+  .version-badge { display: none; }
+  .version-badge-mobile {
+    display: inline-block;
+    font-size: 10px; font-weight: 600;
+    color: var(--text3);
+    letter-spacing: .2px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+}
+@media (min-width: 601px) {
+  .version-badge-mobile { display: none; }
 }
 
 /* Month card */
@@ -1636,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.3</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.4</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2013,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.textContent = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()}`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.4</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
