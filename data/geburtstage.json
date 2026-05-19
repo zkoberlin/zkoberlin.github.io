@@ -1,42 +1,42 @@
 {
-  "datum": "18.05.2026",
-  "generiert": "2026-05-18T12:57:06Z",
+  "datum": "19.05.2026",
+  "generiert": "2026-05-19T12:23:45Z",
   "geburtstage": [
     {
-      "name": "Heinz-Harald Frentzen",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Formel-1-Fahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Heinz-Harald_Frentzen_a.jpg/120px-Heinz-Harald_Frentzen_a.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q76720",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Michael Cretu",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Komponist/in",
+      "name": "Peter Zadek",
+      "alter": 100,
+      "geburtsjahr": 1926,
+      "beruf": "German Director (1926–2009)",
       "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q77006",
+      "wikidata": "https://en.wikipedia.org/wiki/Peter_Zadek",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ralf Kelleners",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "German Racing Driver (Born 1968)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/2008_Petit_LeMans_Oct_2_Day_2_%2890%29_%282917765837%29.jpg/330px-2008_Petit_LeMans_Oct_2_Day_2_%2890%29_%282917765837%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Ralf_Kelleners",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "JoJo Siwa",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "American Singer And Dancer (Born 2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/JoJo_Siwa_2026.jpg/330px-JoJo_Siwa_2026.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/JoJo_Siwa",
+      "nationalitaet": null
     },
     {
-      "name": "Nobby Stiles",
-      "alter": 84,
-      "geburtsjahr": 1942,
-      "beruf": "English Footballer (1942–2020)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Nobby_Stiles_%281966%29.jpg/330px-Nobby_Stiles_%281966%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Nobby_Stiles",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Riccardo Calafiori",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Italian Footballer (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/2024_Emirates_Cup_-_Riccardo_Calafiori_%282%29_%28cropped%29.jpg/330px-2024_Emirates_Cup_-_Riccardo_Calafiori_%282%29_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Riccardo_Calafiori",
+      "nationalitaet": null
+    },
+    {
+      "name": "Rafa Marín",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Spanish Footballer (Born 2002)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Rafa_Mar%C3%ADn",
+      "nationalitaet": null
     }
   ]
 }
