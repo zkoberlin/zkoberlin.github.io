@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.0 -->
+<title>Paul · Hub</title><!-- v5.10.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -629,8 +629,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-c-wlbl{font-size:9px;color:var(--t3);}
 .atk-c-wlbl.today{color:var(--blue);font-weight:700;}
 .atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:7px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
-.atk-graph-panel{display:none;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
-.atk-graph-panel.open{display:block;}
+.atk-graph-panel{display:block;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+@media(max-width:600px){.atk-graph-panel{display:none;}.atk-graph-panel.open{display:block;}}
 .atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
 .atk-period-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
@@ -1969,13 +1969,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 <div class="sec cs-sec-label">🍺 Alkohol-Tracker</div>
 <div class="cs-body" id="csBodyAtk">
 <div class="atk-wrap">
-  <div class="atk-tabs">
-    <div class="atk-tab active" onclick="atkSwitchDesign('a',this)">Design A · Pills</div>
-    <div class="atk-tab" onclick="atkSwitchDesign('b',this)">Design B · Kompakt</div>
-    <div class="atk-tab" onclick="atkSwitchDesign('c',this)">Design C · Ring</div>
-  </div>
+
   <!-- DESIGN A -->
-  <div class="atk-panel active" id="atkPanelA">
+  <div id="atkPanelA">
     <div class="atk-a">
       <div class="atk-a-top">
         <div>
@@ -1988,13 +1984,17 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         </div>
       </div>
       <div class="atk-pills">
-        <div class="atk-pill" onclick="atkLog('bier03',1.0,'🍺 Bier 0,3l','a')">🍺 Bier 0,3l</div>
-        <div class="atk-pill" onclick="atkLog('bier05',1.7,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
-        <div class="atk-pill" onclick="atkLog('wein02',1.4,'🍷 Wein 0,2l','a')">🍷 Wein 0,2l</div>
-        <div class="atk-pill" onclick="atkLog('wein04',2.8,'🍷 Wein 0,4l','a')">🍷 Wein 0,4l</div>
-        <div class="atk-pill" onclick="atkLog('schnaps2',0.5,'🥃 Schnaps 2cl','a')">🥃 Schnaps 2cl</div>
-        <div class="atk-pill" onclick="atkLog('schnaps4',1.0,'🥃 Schnaps 4cl','a')">🥃 Schnaps 4cl</div>
-        <div class="atk-pill" onclick="atkLog('mix03',0.8,'🍹 Mix 0,3l','a')">🍹 Mix 0,3l</div>
+        <div class="atk-pill" onclick="atkLog('bier03',1.2,'🍺 Bier 0,3l','a')">🍺 Bier 0,3l</div>
+        <div class="atk-pill" onclick="atkLog('bier05',2.0,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
+        <div class="atk-pill" onclick="atkLog('wein02',1.9,'🍷 Wein 0,2l','a')">🍷 Wein 0,2l</div>
+        <div class="atk-pill" onclick="atkLog('wein04',3.8,'🍷 Wein 0,4l','a')">🍷 Wein 0,4l</div>
+        <div class="atk-pill" onclick="atkLog('schnaps2',0.6,'🥃 Schnaps 2cl','a')">🥃 Schnaps 2cl</div>
+        <div class="atk-pill" onclick="atkLog('schnaps4',1.3,'🥃 Schnaps 4cl','a')">🥃 Schnaps 4cl</div>
+        <div class="atk-pill" onclick="atkLog('mix03',1.2,'🍹 Mix 0,3l','a')">🍹 Mix 0,3l</div>
+      </div>
+      <div style="padding:4px 16px 0;font-size:9.5px;color:var(--t3);display:flex;flex-wrap:wrap;gap:8px;">
+        <span>🍺 0,3l = 1,2g</span><span>🍺 0,5l = 2,0g</span><span>🍷 0,2l = 1,9g</span><span>🍷 0,4l = 3,8g</span><span>🥃 2cl = 0,6g</span><span>🥃 4cl = 1,3g</span>
+        <span style="color:var(--t3);font-style:italic">· g reiner Alkohol</span>
       </div>
       <div class="atk-week">
         <div class="atk-week-bars" id="atkA-weekBars">
@@ -2019,92 +2019,6 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
       <div class="atk-graph-compare" id="atkA-compare"></div>
     </div>
   </div>
-  <!-- DESIGN B -->
-  <div class="atk-panel" id="atkPanelB">
-    <div class="atk-b">
-      <div class="atk-b-head">
-        <div class="atk-b-title">🍺 Alkohol</div>
-        <div class="atk-b-period">letzte 7 Tage</div>
-      </div>
-      <div class="atk-b-stats">
-        <div class="atk-b-stat">
-          <div class="atk-b-val" id="atkB-today">0,0</div>
-          <div class="atk-b-lbl">Heute</div>
-          <div class="atk-b-delta" id="atkB-todayDelta">– vs. gestern</div>
-        </div>
-        <div class="atk-b-stat">
-          <div class="atk-b-val" id="atkB-week">0,0</div>
-          <div class="atk-b-lbl">Diese Woche</div>
-          <div class="atk-b-delta" id="atkB-weekDelta">– vs. letzte Wo.</div>
-        </div>
-      </div>
-      <div class="atk-b-addrow">
-        <select class="atk-b-sel" id="atkB-sel">
-          <option value="bier03|1.0">🍺 Bier 0,3l · 1,0 Einh.</option>
-          <option value="bier05|1.7">🍺 Bier 0,5l · 1,7 Einh.</option>
-          <option value="wein02|1.4">🍷 Wein 0,2l · 1,4 Einh.</option>
-          <option value="wein04|2.8">🍷 Wein 0,4l · 2,8 Einh.</option>
-          <option value="schnaps2|0.5">🥃 Schnaps 2cl · 0,5 Einh.</option>
-          <option value="schnaps4|1.0">🥃 Schnaps 4cl · 1,0 Einh.</option>
-          <option value="mix03|0.8">🍹 Mix 0,3l · 0,8 Einh.</option>
-        </select>
-        <button class="atk-b-btn" onclick="atkLogFromB()">+ Log</button>
-      </div>
-      <div class="atk-b-chartarea">
-        <div class="atk-b-minibars" id="atkB-minibars"></div>
-        <div class="atk-week-days" id="atkB-weekDays"></div>
-      </div>
-    </div>
-    <div class="atk-graph-toggle" onclick="atkToggleGraph('b')">
-      <span>📊</span><span id="atkB-graphToggleLabel">Verlauf anzeigen</span>
-    </div>
-    <div class="atk-graph-panel" id="atkB-graphPanel">
-      <div class="atk-period-row" id="atkB-periods"></div>
-      <div class="atk-graph-canvas"><canvas id="atkB-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
-      <div class="atk-graph-compare" id="atkB-compare"></div>
-    </div>
-  </div>
-  <!-- DESIGN C -->
-  <div class="atk-panel" id="atkPanelC">
-    <div class="atk-c">
-      <div class="atk-c-grid">
-        <div class="atk-c-ring">
-          <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--border)" stroke-width="6"/>
-            <circle id="atkC-ringArc" cx="36" cy="36" r="30" fill="none" stroke="var(--blue)" stroke-width="6" stroke-dasharray="188.5" stroke-dashoffset="188.5" stroke-linecap="round" style="transition:stroke-dashoffset .5s ease;"/>
-          </svg>
-          <div class="atk-c-ring-center">
-            <div class="atk-c-ring-num" id="atkC-ringNum">0,0</div>
-            <div class="atk-c-ring-unit">Einh.</div>
-          </div>
-        </div>
-        <div>
-          <div class="atk-c-right-head">
-            <div class="atk-c-title">🍺 Heute</div>
-            <div style="font-size:10px;color:var(--t3)">Limit: <span id="atkC-limit">5</span> Einh.</div>
-          </div>
-          <div class="atk-c-btns">
-            <button class="atk-c-btn" onclick="atkLog('bier03',1.0,'🍺 0,3l','c')">🍺 0,3l</button>
-            <button class="atk-c-btn" onclick="atkLog('bier05',1.7,'🍺 0,5l','c')">🍺 0,5l</button>
-            <button class="atk-c-btn" onclick="atkLog('wein02',1.4,'🍷 Wein','c')">🍷 Wein</button>
-            <button class="atk-c-btn" onclick="atkLog('schnaps2',0.5,'🥃 Shot','c')">🥃 Shot</button>
-            <button class="atk-c-btn" onclick="atkLog('mix03',0.8,'🍹 Mix','c')">🍹 Mix</button>
-          </div>
-          <div class="atk-c-log" id="atkC-log"></div>
-        </div>
-      </div>
-      <div class="atk-c-weekrow" id="atkC-weekrow"></div>
-    </div>
-    <div class="atk-graph-toggle" onclick="atkToggleGraph('c')">
-      <span>📊</span><span id="atkC-graphToggleLabel">Verlauf anzeigen</span>
-    </div>
-    <div class="atk-graph-panel" id="atkC-graphPanel">
-      <div class="atk-period-row" id="atkC-periods"></div>
-      <div class="atk-graph-canvas"><canvas id="atkC-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
-      <div class="atk-graph-compare" id="atkC-compare"></div>
-    </div>
-  </div>
-</div><!-- /atk-wrap -->
 </div><!-- /csBodyAtk -->
 
 <!-- Emil & Rosa -->
@@ -4662,14 +4576,14 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.1 ──
+// ── ALKOHOL TRACKER v5.10.2 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'woche', b:'woche', c:'woche'};
 
 var TAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MONATE = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-var ATK_LIMIT = 5;
+var ATK_LIMIT = 8;
 
 function atkLoadData() {
   try { return JSON.parse(localStorage.getItem('atkData_v1') || '{}'); }
@@ -5110,10 +5024,18 @@ function atkRenderGraph(design, periodId) {
 }
 
 // Init on DOMContentLoaded to be safe
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', atkRenderAll);
-} else {
+function atkInit() {
   atkRenderAll();
+  // Desktop: render graph immediately; mobile: wait for toggle
+  if (window.innerWidth > 600) {
+    atkRenderGraph('a', 'woche');
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', atkInit);
+} else {
+  // Chart.js might not be ready yet — wait one tick
+  setTimeout(atkInit, 0);
 }
 </script>
 </body>
