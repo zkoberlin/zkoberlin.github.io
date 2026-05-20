@@ -1648,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.7</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.8</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2025,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.7</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.8</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -3231,6 +3231,7 @@ function expandRecurring(ev) {
   const occurrences = [];
   let cur = new Date(ev.start + 'T12:00:00');
   let n = 0;
+  let totalCount = 0; // Zählt ALLE Vorkommen ab DTSTART (für COUNT-Kompatibilität)
   const MAX = 1000; // Sicherheitslimit
 
   const DOW = ['SU','MO','TU','WE','TH','FR','SA'];
@@ -3243,7 +3244,7 @@ function expandRecurring(ev) {
     // Abbruchbedingungen
     if(key > horizonKey) break;
     if(until && key > until) break;
-    if(count !== null && occurrences.length >= count) break;
+    if(count !== null && totalCount >= count) break; // COUNT = alle Vorkommen ab DTSTART
 
     // Nur Vorkommen ab heute injizieren; aber Zähler läuft weiter (COUNT-Kompatibilität)
     const inWindow = key >= todayKey;
@@ -3251,6 +3252,8 @@ function expandRecurring(ev) {
 
     // BYDAY-Filter (z.B. MO,WE,FR bei wöchentlicher Wiederholung)
     const dowOk = !byday || byday.includes(DOW[cur.getDay()]);
+
+    if(dowOk && notExcluded) totalCount++; // immer zählen, auch Vergangenheit
 
     if(inWindow && notExcluded && dowOk) {
       occurrences.push({
