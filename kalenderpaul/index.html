@@ -1648,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.4</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.5</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2025,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.4</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.5</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -3421,7 +3421,7 @@ async function loadICalEvents() {
     setLoadStatus(statusId, 'loading', label + ' …');
     try {
       const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(url);
-      const res = await fetch(proxyUrl);
+      const res = await fetch(proxyUrl, { cache: 'no-store' });
       if(!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const events = parseICS(text);
@@ -3593,7 +3593,7 @@ async function loadKidsSheet() {
     const tabName = 'Kids';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
     const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(sheetUrl);
-    const res = await fetch(proxyUrl);
+    const res = await fetch(proxyUrl, { cache: 'no-store' });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
     
