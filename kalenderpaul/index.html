@@ -1648,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.6</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.7</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2025,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.6</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.7</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -3147,6 +3147,11 @@ function parseICS(text) {
       if(key === 'LOCATION')     current.location = val;
       if(key === 'UID') { current.uid = val.trim(); uidCount++; }
       if(key === 'RRULE')        current.rrule = val; // ← wiederkehrende Termine
+      if(key === 'RECURRENCE-ID') {
+        // Verschobener/geänderter Einzeltermin einer Serie → merken welches Datum ersetzt wird
+        const d = parseICSDate(val);
+        if(d) current.recurrenceId = d;
+      }
       if(key === 'EXDATE') {
         // Ausnahmen (gelöschte Einzeltermine einer Serie)
         if(!current.exdates) current.exdates = [];
@@ -3348,11 +3353,31 @@ function injectICalEvents(events, url='') {
   const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
 
   // Wiederkehrende Termine expandieren bevor wir injizieren
+  // Erst: alle RECURRENCE-IDs pro UID sammeln (= Dates die durch Ausnahme-VEVENTs ersetzt werden)
+  const recurrenceOverrides = {}; // uid → Set of date strings
+  for(const ev of events) {
+    if(ev.recurrenceId && ev.uid) {
+      const uid = ev.uid.trim();
+      if(!recurrenceOverrides[uid]) recurrenceOverrides[uid] = new Set();
+      recurrenceOverrides[uid].add(ev.recurrenceId);
+    }
+  }
+
   const expanded = [];
   for(const ev of events) {
     if(ev.rrule) {
-      expanded.push(...expandRecurring(ev));
+      // RECURRENCE-ID-Dates zur EXDATE-Liste hinzufügen, damit verschobene Termine nicht doppelt erscheinen
+      const uid = ev.uid ? ev.uid.trim() : null;
+      const overrides = uid && recurrenceOverrides[uid] ? [...recurrenceOverrides[uid]] : [];
+      const evWithOverrides = overrides.length > 0
+        ? { ...ev, exdates: [...(ev.exdates || []), ...overrides] }
+        : ev;
+      expanded.push(...expandRecurring(evWithOverrides));
+    } else if(!ev.recurrenceId) {
+      // Normale Einzel-VEVENTs ohne RECURRENCE-ID direkt übernehmen
+      expanded.push(ev);
     } else {
+      // VEVENTs mit RECURRENCE-ID: das ist der verschobene/geänderte Termin → DTSTART ist das neue Datum
       expanded.push(ev);
     }
   }
