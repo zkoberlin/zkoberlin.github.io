@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.8 -->
+<title>Paul · Hub</title><!-- v5.10.9 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1774,7 +1774,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.8
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.9
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -4569,7 +4569,7 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.8 ──
+// ── ALKOHOL TRACKER v5.10.9 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'today'};
@@ -4644,11 +4644,12 @@ function atkPullSheet(callback) {
     .then(function(json) {
       if (!json.ok) { atkSetSyncStatus('⚠ Sync-Fehler', '#e24b4a'); return; }
       var data = {};
+      var validRows = 0;
       var skipped = 0;
       for (var i = 0; i < json.rows.length; i++) {
         var row = json.rows[i];
         var dk = atkNormalizeDate(row.date);
-        if (!dk) { skipped++; continue; }
+        if (!dk) { skipped++; console.warn('atk: kein Datum für Zeile', i, row); continue; }
         if (!data[dk]) data[dk] = { entries: [] };
         data[dk].entries.push({
           id:    row.id    || '',
@@ -4657,12 +4658,28 @@ function atkPullSheet(callback) {
           time:  atkNormalizeTime(row.time),
           ts:    row.ts   || 0
         });
+        validRows++;
       }
-      if (skipped > 0) console.warn('atk: ' + skipped + ' Zeilen ohne Datum übersprungen');
+
+      // Sicherheit: nur speichern wenn Sheet echte Daten hat
+      // Nie mit weniger Einträgen überschreiben als lokal vorhanden
+      var localData = atkLoadData();
+      var localCount = Object.keys(localData).reduce(function(s,k){ return s + (localData[k].entries ? localData[k].entries.length : 0); }, 0);
+      var sheetCount = validRows;
+
+      if (sheetCount === 0 && localCount > 0) {
+        // Sheet leer / alle Zeilen ungültig → local behalten, Fehler loggen
+        console.warn('atk: Sheet hat 0 gültige Zeilen, ' + skipped + ' übersprungen. Lokale Daten bleiben erhalten.');
+        atkSetSyncStatus('⚠ Sheet leer – lokal behalten', '#f59e0b');
+        setTimeout(function(){ atkSetSyncStatus(''); }, 4000);
+        if (callback) callback();
+        return;
+      }
+
       atkSaveData(data);
       var today = atkToday();
       var todayU = data[today] ? data[today].entries.reduce(function(s,e){ return s+e.units; },0) : 0;
-      atkSetSyncStatus('✓ Synced · ' + atkFmt(todayU) + ' g heute', '#3a9e5f');
+      atkSetSyncStatus('✓ ' + sheetCount + ' Einträge · heute ' + atkFmt(todayU) + ' g', '#3a9e5f');
       setTimeout(function(){ atkSetSyncStatus(''); }, 3000);
       if (callback) callback();
     })
