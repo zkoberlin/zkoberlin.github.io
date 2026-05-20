@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.9.3 -->
+<title>Paul · Hub</title><!-- v5.10.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -556,6 +556,90 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .cs-preview{font-size:11px;color:var(--t2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px;margin-top:1px;}
 .cs-chevron{flex-shrink:0;width:20px;height:20px;color:var(--t3);transition:transform .3s cubic-bezier(.4,0,.2,1);}
 .cs-chevron.open{transform:rotate(180deg);}
+
+/* ── ALKOHOL TRACKER ── */
+.atk-wrap{display:flex;flex-direction:column;gap:10px;padding:0;}
+.atk-tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.atk-tab{padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);transition:background .15s,color .15s;}
+.atk-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.atk-panel{display:none;}
+.atk-panel.active{display:block;}
+.atk-a{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
+.atk-a-top{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 0;}
+.atk-a-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.2px;font-family:var(--font-head);}
+.atk-a-sub{font-size:10px;color:var(--t3);margin-top:1px;}
+.atk-a-today{text-align:right;}
+.atk-a-num{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.5px;font-family:var(--font-head);}
+.atk-a-numunit{font-size:12px;font-weight:500;color:var(--t3);}
+.atk-pills{display:flex;gap:7px;flex-wrap:wrap;padding:12px 16px 0;}
+.atk-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11.5px;font-weight:600;color:var(--text);cursor:pointer;font-family:var(--font-head);transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
+.atk-pill:hover{border-color:var(--blue);color:var(--blue);}
+.atk-pill:active{transform:scale(.97);}
+.atk-week{padding:12px 16px 0;}
+.atk-week-bars{display:flex;gap:4px;margin-bottom:5px;}
+.atk-week-bar{flex:1;height:6px;border-radius:3px;background:var(--card2);overflow:hidden;}
+.atk-week-bar-fill{height:100%;border-radius:3px;background:var(--blue);transition:width .4s ease;}
+.atk-week-days{display:flex;gap:4px;}
+.atk-week-day{flex:1;text-align:center;font-size:10px;color:var(--t3);}
+.atk-week-day.today{color:var(--blue);font-weight:700;}
+.atk-log{padding:10px 16px 14px;margin-top:8px;border-top:1px solid var(--border);}
+.atk-log-row{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--t2);padding:3px 0;}
+.atk-log-left{display:flex;align-items:center;gap:7px;}
+.atk-log-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+.atk-log-undo{font-size:10px;color:#e24b4a;cursor:pointer;padding:2px 5px;border-radius:5px;}
+.atk-log-empty{font-size:11px;color:var(--t3);text-align:center;padding:8px 0;}
+.atk-b{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+.atk-b-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.atk-b-title{font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-head);}
+.atk-b-period{font-size:10px;color:var(--t3);}
+.atk-b-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.atk-b-stat{background:var(--card2);border-radius:var(--r2);padding:10px 12px;}
+.atk-b-val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);letter-spacing:-.4px;font-family:var(--font-head);}
+.atk-b-lbl{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-top:2px;}
+.atk-b-delta{font-size:10.5px;font-weight:600;margin-top:3px;}
+.atk-b-delta.pos{color:#e24b4a;}
+.atk-b-delta.neg{color:#3a9e5f;}
+.atk-b-addrow{display:flex;gap:7px;margin-bottom:11px;}
+.atk-b-sel{flex:1;padding:7px 10px;border-radius:9px;border:1px solid var(--border);background:var(--card2);font-size:11.5px;font-family:var(--font-head);color:var(--text);}
+.atk-b-btn{padding:7px 14px;border-radius:9px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
+.atk-b-btn:active{transform:scale(.97);}
+.atk-b-chartarea{border-top:1px solid var(--border);padding-top:11px;}
+.atk-b-minibars{display:flex;gap:4px;align-items:flex-end;height:44px;margin-bottom:4px;}
+.atk-b-minibar{flex:1;border-radius:3px 3px 0 0;background:var(--blue);}
+.atk-c{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+.atk-c-grid{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;}
+.atk-c-ring{position:relative;width:72px;height:72px;flex-shrink:0;}
+.atk-c-ring svg{transform:rotate(-90deg);}
+.atk-c-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.atk-c-ring-num{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text);letter-spacing:-.3px;font-family:var(--font-head);}
+.atk-c-ring-unit{font-size:8.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--t3);}
+.atk-c-right-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.atk-c-title{font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-head);}
+.atk-c-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.atk-c-btn{padding:5px 10px;border-radius:8px;background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
+.atk-c-btn:hover{border-color:var(--blue);color:var(--blue);}
+.atk-c-btn:active{transform:scale(.96);}
+.atk-c-log{margin-top:9px;display:flex;flex-direction:column;gap:3px;}
+.atk-c-log-item{font-size:11px;color:var(--t2);display:flex;justify-content:space-between;align-items:center;}
+.atk-c-log-undo{font-size:10px;color:#e24b4a;cursor:pointer;padding:1px 5px;}
+.atk-c-weekrow{display:flex;gap:4px;margin-top:12px;padding-top:11px;border-top:1px solid var(--border);}
+.atk-c-wday{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.atk-c-wbarwrap{height:28px;display:flex;align-items:flex-end;width:100%;}
+.atk-c-wbar{width:100%;border-radius:2px 2px 0 0;background:var(--blue);}
+.atk-c-wlbl{font-size:9px;color:var(--t3);}
+.atk-c-wlbl.today{color:var(--blue);font-weight:700;}
+.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:7px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
+.atk-graph-panel{display:none;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+.atk-graph-panel.open{display:block;}
+.atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
+.atk-period-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.atk-graph-canvas{position:relative;width:100%;height:160px;}
+.atk-graph-compare{font-size:10.5px;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+.atk-cmp-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block;}
+.atk-cmp-dot.prev{background:var(--t3);}
+@media(max-width:600px){.atk-graph-toggle{display:flex;}}
+
 .cs-body{
   overflow:hidden;
   max-height:0;
@@ -574,6 +658,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
   .cs-body{gap:0;}
   .cs-body.open>.er-link,
   .cs-body.open>.alma-card,
+  .cs-body.open>.atk-wrap,
   .cs-body.open>.app-row{margin-top:8px;}
 }
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
@@ -1689,7 +1774,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.9.3
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.0
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1872,6 +1957,155 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
       </div>
     </div>
 </div>
+
+<!-- ═══════════════ ALKOHOL TRACKER ═══════════════ -->
+<div class="cs-header" onclick="toggleSection('atk')" id="csHdrAtk">
+  <div class="cs-header-left">
+    <div class="cs-header-title">🍺 Alkohol-Tracker</div>
+    <div class="cs-preview" id="csPreviewAtk">Heute: 0,0 Einh.</div>
+  </div>
+  <svg class="cs-chevron" id="csChevronAtk" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 10 13 15 8"/></svg>
+</div>
+<div class="sec cs-sec-label">🍺 Alkohol-Tracker</div>
+<div class="cs-body" id="csBodyAtk">
+<div class="atk-wrap">
+  <div class="atk-tabs">
+    <div class="atk-tab active" onclick="atkSwitchDesign('a',this)">Design A · Pills</div>
+    <div class="atk-tab" onclick="atkSwitchDesign('b',this)">Design B · Kompakt</div>
+    <div class="atk-tab" onclick="atkSwitchDesign('c',this)">Design C · Ring</div>
+  </div>
+  <!-- DESIGN A -->
+  <div class="atk-panel active" id="atkPanelA">
+    <div class="atk-a">
+      <div class="atk-a-top">
+        <div>
+          <div class="atk-a-title">🍺 Alkohol-Tracker</div>
+          <div class="atk-a-sub" id="atkA-date">Heute</div>
+        </div>
+        <div class="atk-a-today">
+          <div class="atk-a-num"><span id="atkA-today">0,0</span> <span class="atk-a-numunit">Einh.</span></div>
+          <div class="atk-a-sub">Woche: <span id="atkA-week">0,0</span></div>
+        </div>
+      </div>
+      <div class="atk-pills">
+        <div class="atk-pill" onclick="atkLog('bier03',1.0,'🍺 Bier 0,3l','a')">🍺 Bier 0,3l</div>
+        <div class="atk-pill" onclick="atkLog('bier05',1.7,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
+        <div class="atk-pill" onclick="atkLog('wein02',1.4,'🍷 Wein 0,2l','a')">🍷 Wein 0,2l</div>
+        <div class="atk-pill" onclick="atkLog('wein04',2.8,'🍷 Wein 0,4l','a')">🍷 Wein 0,4l</div>
+        <div class="atk-pill" onclick="atkLog('schnaps2',0.5,'🥃 Schnaps 2cl','a')">🥃 Schnaps 2cl</div>
+        <div class="atk-pill" onclick="atkLog('schnaps4',1.0,'🥃 Schnaps 4cl','a')">🥃 Schnaps 4cl</div>
+        <div class="atk-pill" onclick="atkLog('mix03',0.8,'🍹 Mix 0,3l','a')">🍹 Mix 0,3l</div>
+      </div>
+      <div class="atk-week">
+        <div class="atk-week-bars" id="atkA-weekBars">
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+          <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
+        </div>
+        <div class="atk-week-days" id="atkA-weekDays"></div>
+      </div>
+      <div class="atk-log" id="atkA-log"></div>
+    </div>
+    <div class="atk-graph-toggle" onclick="atkToggleGraph('a')">
+      <span>📊</span><span id="atkA-graphToggleLabel">Verlauf anzeigen</span>
+    </div>
+    <div class="atk-graph-panel" id="atkA-graphPanel">
+      <div class="atk-period-row" id="atkA-periods"></div>
+      <div class="atk-graph-canvas"><canvas id="atkA-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
+      <div class="atk-graph-compare" id="atkA-compare"></div>
+    </div>
+  </div>
+  <!-- DESIGN B -->
+  <div class="atk-panel" id="atkPanelB">
+    <div class="atk-b">
+      <div class="atk-b-head">
+        <div class="atk-b-title">🍺 Alkohol</div>
+        <div class="atk-b-period">letzte 7 Tage</div>
+      </div>
+      <div class="atk-b-stats">
+        <div class="atk-b-stat">
+          <div class="atk-b-val" id="atkB-today">0,0</div>
+          <div class="atk-b-lbl">Heute</div>
+          <div class="atk-b-delta" id="atkB-todayDelta">– vs. gestern</div>
+        </div>
+        <div class="atk-b-stat">
+          <div class="atk-b-val" id="atkB-week">0,0</div>
+          <div class="atk-b-lbl">Diese Woche</div>
+          <div class="atk-b-delta" id="atkB-weekDelta">– vs. letzte Wo.</div>
+        </div>
+      </div>
+      <div class="atk-b-addrow">
+        <select class="atk-b-sel" id="atkB-sel">
+          <option value="bier03|1.0">🍺 Bier 0,3l · 1,0 Einh.</option>
+          <option value="bier05|1.7">🍺 Bier 0,5l · 1,7 Einh.</option>
+          <option value="wein02|1.4">🍷 Wein 0,2l · 1,4 Einh.</option>
+          <option value="wein04|2.8">🍷 Wein 0,4l · 2,8 Einh.</option>
+          <option value="schnaps2|0.5">🥃 Schnaps 2cl · 0,5 Einh.</option>
+          <option value="schnaps4|1.0">🥃 Schnaps 4cl · 1,0 Einh.</option>
+          <option value="mix03|0.8">🍹 Mix 0,3l · 0,8 Einh.</option>
+        </select>
+        <button class="atk-b-btn" onclick="atkLogFromB()">+ Log</button>
+      </div>
+      <div class="atk-b-chartarea">
+        <div class="atk-b-minibars" id="atkB-minibars"></div>
+        <div class="atk-week-days" id="atkB-weekDays"></div>
+      </div>
+    </div>
+    <div class="atk-graph-toggle" onclick="atkToggleGraph('b')">
+      <span>📊</span><span id="atkB-graphToggleLabel">Verlauf anzeigen</span>
+    </div>
+    <div class="atk-graph-panel" id="atkB-graphPanel">
+      <div class="atk-period-row" id="atkB-periods"></div>
+      <div class="atk-graph-canvas"><canvas id="atkB-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
+      <div class="atk-graph-compare" id="atkB-compare"></div>
+    </div>
+  </div>
+  <!-- DESIGN C -->
+  <div class="atk-panel" id="atkPanelC">
+    <div class="atk-c">
+      <div class="atk-c-grid">
+        <div class="atk-c-ring">
+          <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--border)" stroke-width="6"/>
+            <circle id="atkC-ringArc" cx="36" cy="36" r="30" fill="none" stroke="var(--blue)" stroke-width="6" stroke-dasharray="188.5" stroke-dashoffset="188.5" stroke-linecap="round" style="transition:stroke-dashoffset .5s ease;"/>
+          </svg>
+          <div class="atk-c-ring-center">
+            <div class="atk-c-ring-num" id="atkC-ringNum">0,0</div>
+            <div class="atk-c-ring-unit">Einh.</div>
+          </div>
+        </div>
+        <div>
+          <div class="atk-c-right-head">
+            <div class="atk-c-title">🍺 Heute</div>
+            <div style="font-size:10px;color:var(--t3)">Limit: <span id="atkC-limit">5</span> Einh.</div>
+          </div>
+          <div class="atk-c-btns">
+            <button class="atk-c-btn" onclick="atkLog('bier03',1.0,'🍺 0,3l','c')">🍺 0,3l</button>
+            <button class="atk-c-btn" onclick="atkLog('bier05',1.7,'🍺 0,5l','c')">🍺 0,5l</button>
+            <button class="atk-c-btn" onclick="atkLog('wein02',1.4,'🍷 Wein','c')">🍷 Wein</button>
+            <button class="atk-c-btn" onclick="atkLog('schnaps2',0.5,'🥃 Shot','c')">🥃 Shot</button>
+            <button class="atk-c-btn" onclick="atkLog('mix03',0.8,'🍹 Mix','c')">🍹 Mix</button>
+          </div>
+          <div class="atk-c-log" id="atkC-log"></div>
+        </div>
+      </div>
+      <div class="atk-c-weekrow" id="atkC-weekrow"></div>
+    </div>
+    <div class="atk-graph-toggle" onclick="atkToggleGraph('c')">
+      <span>📊</span><span id="atkC-graphToggleLabel">Verlauf anzeigen</span>
+    </div>
+    <div class="atk-graph-panel" id="atkC-graphPanel">
+      <div class="atk-period-row" id="atkC-periods"></div>
+      <div class="atk-graph-canvas"><canvas id="atkC-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
+      <div class="atk-graph-compare" id="atkC-compare"></div>
+    </div>
+  </div>
+</div><!-- /atk-wrap -->
+</div><!-- /csBodyAtk -->
 
 <!-- Emil & Rosa -->
 <div class="cs-header" onclick="toggleSection('er')" id="csHdrEr">
@@ -4423,6 +4657,464 @@ async function loadTransfers(unionData, nextMatch){
 
 loadICAL();
 
+</script>
+
+<!-- Chart.js for tracker graphs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── ALKOHOL TRACKER v5.10.0 ──
+(function(){
+  const STORE_KEY = 'atkData_v1';
+  const DESIGNS = ['a','b','c'];
+  const PERIODS = [
+    {id:'today',   label:'Heute'},
+    {id:'gestern', label:'Gestern'},
+    {id:'woche',   label:'Woche'},
+    {id:'letzt_w', label:'Letzte Wo.'},
+    {id:'monat',   label:'Monat'},
+    {id:'ytd',     label:'YTD'},
+    {id:'start',   label:'Seit Beginn'},
+  ];
+  const TAGE_SHORT = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const LIMIT = 5;
+
+  function dateKey(d){ return d.toISOString().slice(0,10); }
+  function today(){ return dateKey(new Date()); }
+
+  function loadData(){
+    try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'{}'); }
+    catch(e){ return {}; }
+  }
+  function saveData(d){ localStorage.setItem(STORE_KEY, JSON.stringify(d)); }
+
+  function getDayEntries(data, dk){
+    return (data[dk]||{entries:[]}).entries;
+  }
+  function getDayUnits(data, dk){
+    return getDayEntries(data,dk).reduce((s,e)=>s+e.units,0);
+  }
+
+  function getWeekKeys(){
+    const keys=[];
+    const now=new Date();
+    const dow=now.getDay(); // 0=So
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - ((dow+6)%7));
+    for(let i=0;i<7;i++){
+      const d=new Date(monday);
+      d.setDate(monday.getDate()+i);
+      keys.push(dateKey(d));
+    }
+    return keys;
+  }
+
+  function getPrevWeekKeys(){
+    const keys=[];
+    const now=new Date();
+    const dow=now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - ((dow+6)%7) - 7);
+    for(let i=0;i<7;i++){
+      const d=new Date(monday);
+      d.setDate(monday.getDate()+i);
+      keys.push(dateKey(d));
+    }
+    return keys;
+  }
+
+  function fmtUnits(u){ return u.toFixed(1).replace('.',','); }
+
+  // ── RENDER ALL DESIGNS ──
+  function renderAll(){
+    const data = loadData();
+    const td = today();
+    const yd = dateKey(new Date(Date.now()-86400000));
+    const wKeys = getWeekKeys();
+    const pwKeys = getPrevWeekKeys();
+    const todayU = getDayUnits(data, td);
+    const yestU  = getDayUnits(data, yd);
+    const weekU  = wKeys.reduce((s,k)=>s+getDayUnits(data,k),0);
+    const pWeekU = pwKeys.reduce((s,k)=>s+getDayUnits(data,k),0);
+    const todayEntries = getDayEntries(data, td);
+
+    // PREVIEW in cs-header
+    const prev = document.getElementById('csPreviewAtk');
+    if(prev) prev.textContent = 'Heute: '+fmtUnits(todayU)+' Einh. · Woche: '+fmtUnits(weekU);
+
+    // ── DESIGN A ──
+    const dateEl = document.getElementById('atkA-date');
+    if(dateEl){
+      const now=new Date();
+      dateEl.textContent='Heute · '+['So','Mo','Di','Mi','Do','Fr','Sa'][now.getDay()]+', '+now.getDate()+'. '+['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][now.getMonth()];
+    }
+    const a_today=document.getElementById('atkA-today');
+    const a_week=document.getElementById('atkA-week');
+    if(a_today) a_today.textContent=fmtUnits(todayU);
+    if(a_week) a_week.textContent=fmtUnits(weekU);
+
+    // Week bars A
+    const wbarsEl=document.getElementById('atkA-weekBars');
+    const wdaysEl=document.getElementById('atkA-weekDays');
+    const maxW=Math.max(...wKeys.map(k=>getDayUnits(data,k)),LIMIT);
+    if(wbarsEl){
+      const bars=wbarsEl.querySelectorAll('.atk-week-bar-fill');
+      wKeys.forEach((k,i)=>{
+        const u=getDayUnits(data,k);
+        if(bars[i]) bars[i].style.width=Math.min(100,(u/maxW)*100)+'%';
+      });
+    }
+    if(wdaysEl){
+      wdaysEl.innerHTML='';
+      const now=new Date();
+      wKeys.forEach(k=>{
+        const d=new Date(k);
+        const div=document.createElement('div');
+        div.className='atk-week-day'+(k===td?' today':'');
+        div.textContent=TAGE_SHORT[(d.getDay()+1)%7+((d.getDay()==0)?6:d.getDay()-1)];
+        // simpler: Mo=1..So=0
+        div.textContent=['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()];
+        wdaysEl.appendChild(div);
+      });
+    }
+
+    // Log A
+    const logA=document.getElementById('atkA-log');
+    if(logA){
+      if(!todayEntries.length){
+        logA.innerHTML='<div class="atk-log-empty">Noch nichts eingetragen</div>';
+      } else {
+        logA.innerHTML=[...todayEntries].reverse().slice(0,5).map((e,ri)=>{
+          const realIdx=todayEntries.length-1-ri;
+          return '<div class="atk-log-row"><div class="atk-log-left"><div class="atk-log-dot"></div>'+e.label+'</div><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">'+e.time+' · '+fmtUnits(e.units)+' Einh.</span><span class="atk-log-undo" onclick="atkUndo('+realIdx+')">↩</span></div></div>';
+        }).join('');
+      }
+    }
+
+    // ── DESIGN B ──
+    const b_today=document.getElementById('atkB-today');
+    const b_week=document.getElementById('atkB-week');
+    const b_tdDelta=document.getElementById('atkB-todayDelta');
+    const b_wDelta=document.getElementById('atkB-weekDelta');
+    if(b_today) b_today.textContent=fmtUnits(todayU);
+    if(b_week) b_week.textContent=fmtUnits(weekU);
+    if(b_tdDelta){
+      const diff=todayU-yestU;
+      b_tdDelta.className='atk-b-delta'+(diff>0?' pos':diff<0?' neg':'');
+      b_tdDelta.textContent=(diff===0?'±0':(diff>0?'↑ +':' ↓ ')+fmtUnits(Math.abs(diff)))+' vs. gestern';
+    }
+    if(b_wDelta){
+      const diff=weekU-pWeekU;
+      b_wDelta.className='atk-b-delta'+(diff>0?' pos':diff<0?' neg':'');
+      b_wDelta.textContent=(diff===0?'±0':(diff>0?'↑ +':'↓ ')+fmtUnits(Math.abs(diff)))+' vs. letzte Wo.';
+    }
+    // Mini bars B
+    const mbEl=document.getElementById('atkB-minibars');
+    const wdB=document.getElementById('atkB-weekDays');
+    if(mbEl){
+      mbEl.innerHTML='';
+      const maxB=Math.max(...wKeys.map(k=>getDayUnits(data,k)),0.1);
+      wKeys.forEach(k=>{
+        const u=getDayUnits(data,k);
+        const pct=Math.max(5,(u/maxB)*100);
+        const div=document.createElement('div');
+        div.className='atk-b-minibar';
+        div.style.height=pct+'%';
+        div.style.opacity=k===td?'1':u>0?'0.45':'0.12';
+        mbEl.appendChild(div);
+      });
+    }
+    if(wdB){
+      wdB.innerHTML='';
+      wKeys.forEach(k=>{
+        const d=new Date(k);
+        const div=document.createElement('div');
+        div.className='atk-week-day'+(k===td?' today':'');
+        div.textContent=['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()];
+        wdB.appendChild(div);
+      });
+    }
+
+    // ── DESIGN C ──
+    const arcEl=document.getElementById('atkC-ringArc');
+    const numEl=document.getElementById('atkC-ringNum');
+    if(arcEl && numEl){
+      const pct=Math.min(1, todayU/LIMIT);
+      const circumf=188.5;
+      arcEl.style.strokeDashoffset=circumf-(pct*circumf);
+      numEl.textContent=fmtUnits(todayU);
+    }
+    // Log C
+    const logC=document.getElementById('atkC-log');
+    if(logC){
+      if(!todayEntries.length){
+        logC.innerHTML='<div style="font-size:11px;color:var(--t3);margin-top:4px;">Noch nichts eingetragen</div>';
+      } else {
+        logC.innerHTML=[...todayEntries].reverse().slice(0,3).map((e,ri)=>{
+          const realIdx=todayEntries.length-1-ri;
+          return '<div class="atk-c-log-item"><span>'+e.label+' · '+e.time+'</span><span class="atk-c-log-undo" onclick="atkUndo('+realIdx+')">↩ undo</span></div>';
+        }).join('');
+      }
+    }
+    // Week row C
+    const wrEl=document.getElementById('atkC-weekrow');
+    if(wrEl){
+      wrEl.innerHTML='';
+      const maxC=Math.max(...wKeys.map(k=>getDayUnits(data,k)),0.1);
+      wKeys.forEach(k=>{
+        const u=getDayUnits(data,k);
+        const d=new Date(k);
+        const pct=Math.max(0,(u/maxC)*100);
+        const isToday=k===td;
+        wrEl.innerHTML+='<div class="atk-c-wday"><div class="atk-c-wbarwrap"><div class="atk-c-wbar" style="height:'+pct+'%;opacity:'+(isToday?'1':u>0?'0.45':'0.1')+'"></div></div><div class="atk-c-wlbl'+(isToday?' today':'')+'">'+['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]+'</div></div>';
+      });
+    }
+
+    // Graph if open
+    DESIGNS.forEach(d=>{ if(document.getElementById('atkC-graphPanel')){ /* handled in renderGraph */ }});
+  }
+
+  // ── LOG ENTRY ──
+  window.atkLog = function(id, units, label, design){
+    const data=loadData();
+    const td_key=today();
+    if(!data[td_key]) data[td_key]={entries:[]};
+    const now=new Date();
+    const hm=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    data[td_key].entries.push({id,units,label,time:hm,ts:Date.now()});
+    saveData(data);
+    renderAll();
+    // flash pill in design A
+    if(design==='a'){
+      const pills=document.querySelectorAll('.atk-pill');
+      pills.forEach(p=>{ if(p.textContent.includes(label.replace(/[🍺🍷🥃🍹]/g,'').trim())) { p.classList.add('just-added'); setTimeout(()=>p.classList.remove('just-added'),600); }});
+    }
+  };
+
+  window.atkLogFromB = function(){
+    const sel=document.getElementById('atkB-sel');
+    if(!sel) return;
+    const [id,units]=sel.value.split('|');
+    const label=sel.options[sel.selectedIndex].text.split(' · ')[0];
+    atkLog(id,parseFloat(units),label,'b');
+  };
+
+  window.atkUndo = function(idx){
+    const data=loadData();
+    const td_key=today();
+    if(data[td_key]&&data[td_key].entries[idx]!=null){
+      data[td_key].entries.splice(idx,1);
+      saveData(data);
+      renderAll();
+    }
+  };
+
+  // ── DESIGN SWITCH ──
+  window.atkSwitchDesign = function(d, tabEl){
+    document.querySelectorAll('.atk-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.atk-tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('atkPanel'+d.toUpperCase()).classList.add('active');
+    tabEl.classList.add('active');
+    renderAll();
+  };
+
+  // ── GRAPH TOGGLE (mobile) ──
+  window.atkToggleGraph = function(d){
+    const panel=document.getElementById('atk'+d.toUpperCase()+'-graphPanel');
+    const lbl=document.getElementById('atk'+d.toUpperCase()+'-graphToggleLabel');
+    if(!panel) return;
+    const isOpen=panel.classList.toggle('open');
+    if(lbl) lbl.textContent=isOpen?'Verlauf ausblenden':'Verlauf anzeigen';
+    if(isOpen) renderGraph(d,'woche');
+  };
+
+  // ── GRAPH RENDER ──
+  const chartInstances={};
+  function renderGraph(design, periodId){
+    // Build periods UI
+    const periodsEl=document.getElementById('atk'+design.toUpperCase()+'-periods');
+    if(periodsEl){
+      periodsEl.innerHTML=PERIODS.map(p=>
+        '<div class="atk-period-btn'+(p.id===periodId?' active':'')+'" onclick="atkSetPeriod(''+design+'',''+p.id+'',this)">'+p.label+'</div>'
+      ).join('');
+    }
+
+    const data=loadData();
+    const td=today();
+    let labels=[], currentVals=[], prevVals=[], title='';
+
+    if(periodId==='today'){
+      // hourly today
+      const entries=getDayEntries(data,td);
+      labels=[]; currentVals=[];
+      for(let h=0;h<24;h++){
+        labels.push(h+' Uhr');
+        currentVals.push(entries.filter(e=>parseInt(e.time)<h+1&&parseInt(e.time)>=h).reduce((s,e)=>s+e.units,0));
+      }
+      const yKeys=dateKey(new Date(Date.now()-86400000));
+      prevVals=currentVals.map(()=>0);
+      title='Heute (stündlich)';
+    } else if(periodId==='gestern'){
+      const yd=dateKey(new Date(Date.now()-86400000));
+      const entries=getDayEntries(data,yd);
+      labels=[]; currentVals=[]; prevVals=[];
+      for(let h=0;h<24;h++){
+        labels.push(h+'h');
+        currentVals.push(entries.filter(e=>parseInt(e.time)<h+1&&parseInt(e.time)>=h).reduce((s,e)=>s+e.units,0));
+        prevVals.push(0);
+      }
+      title='Gestern';
+    } else if(periodId==='woche'){
+      const wk=getWeekKeys();
+      const pwk=getPrevWeekKeys();
+      labels=wk.map(k=>{ const d=new Date(k); return ['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]; });
+      currentVals=wk.map(k=>getDayUnits(data,k));
+      prevVals=pwk.map(k=>getDayUnits(data,k));
+      title='Diese Woche vs. letzte Woche';
+    } else if(periodId==='letzt_w'){
+      const pwk=getPrevWeekKeys();
+      const ppwk=getPrevWeekKeys().map(k=>dateKey(new Date(new Date(k).getTime()-7*86400000)));
+      labels=pwk.map(k=>{ const d=new Date(k); return ['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]; });
+      currentVals=pwk.map(k=>getDayUnits(data,k));
+      prevVals=ppwk.map(k=>getDayUnits(data,k));
+      title='Letzte Woche vs. Vorwoche';
+    } else if(periodId==='monat'){
+      const now=new Date();
+      const days=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+      const prevDays=new Date(now.getFullYear(),now.getMonth(),0).getDate();
+      labels=Array.from({length:days},(_,i)=>i+1+'.');
+      currentVals=Array.from({length:days},(_,i)=>{
+        const d=new Date(now.getFullYear(),now.getMonth(),i+1);
+        return getDayUnits(data,dateKey(d));
+      });
+      prevVals=Array.from({length:Math.min(days,prevDays)},(_,i)=>{
+        const d=new Date(now.getFullYear(),now.getMonth()-1,i+1);
+        return getDayUnits(data,dateKey(d));
+      });
+      title='Dieser Monat vs. Vormonat';
+    } else if(periodId==='ytd'){
+      const now=new Date();
+      labels=[]; currentVals=[]; prevVals=[];
+      for(let m=0;m<now.getMonth()+1;m++){
+        const mn=['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][m];
+        labels.push(mn);
+        const daysInMonth=new Date(now.getFullYear(),m+1,0).getDate();
+        let sum=0;
+        for(let d=1;d<=daysInMonth;d++) sum+=getDayUnits(data,dateKey(new Date(now.getFullYear(),m,d)));
+        currentVals.push(sum);
+        let psum=0;
+        for(let d=1;d<=daysInMonth;d++) psum+=getDayUnits(data,dateKey(new Date(now.getFullYear()-1,m,d)));
+        prevVals.push(psum);
+      }
+      title='YTD vs. Vorjahr';
+    } else if(periodId==='start'){
+      // All time: group by month
+      const keys=Object.keys(data).sort();
+      if(!keys.length){ labels=['–']; currentVals=[0]; prevVals=[0]; }
+      else {
+        const monthMap={};
+        keys.forEach(k=>{ const m=k.slice(0,7); monthMap[m]=(monthMap[m]||0)+getDayUnits(data,k); });
+        const months=Object.keys(monthMap).sort();
+        labels=months.map(m=>{ const [y,mo]=m.split('-'); return ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][parseInt(mo)-1]+' '+y.slice(2); });
+        currentVals=months.map(m=>monthMap[m]);
+        prevVals=[];
+      }
+      title='Seit Beginn';
+    }
+
+    // Summary compare
+    const compareEl=document.getElementById('atk'+design.toUpperCase()+'-compare');
+    if(compareEl){
+      const curSum=currentVals.reduce((s,v)=>s+v,0);
+      const prevSum=prevVals.reduce((s,v)=>s+v,0);
+      const diff=curSum-prevSum;
+      compareEl.innerHTML=
+        '<span><span class="atk-cmp-dot"></span> Aktuell: '+fmtUnits(curSum)+' Einh.</span>'+
+        (prevSum>0?'<span><span class="atk-cmp-dot prev"></span> Vorperiode: '+fmtUnits(prevSum)+' Einh.</span>'+
+        '<span style="font-weight:700;color:'+(diff<=0?'#3a9e5f':'#e24b4a')+'">'+
+        (diff===0?'±0':(diff>0?'+':'')+fmtUnits(diff))+' Einh.</span>':'');
+    }
+
+    // Chart
+    const canvasId='atk'+design.toUpperCase()+'-chart';
+    const ctx=document.getElementById(canvasId);
+    if(!ctx) return;
+    if(chartInstances[design]) chartInstances[design].destroy();
+
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    const gridColor=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
+    const textColor=isDark?'#8e8e93':'#6e6e73';
+    const blue='#0071E3';
+    const gray=isDark?'#48484a':'#c7c7cc';
+
+    const datasets=[{
+      label:'Aktuell',
+      data:currentVals,
+      backgroundColor:blue+'33',
+      borderColor:blue,
+      borderWidth:2,
+      borderRadius:4,
+      pointRadius:3,
+      pointBackgroundColor:blue,
+      fill:true,
+      tension:0.3,
+      type: labels.length>10 ? 'line' : 'bar',
+    }];
+    if(prevVals.length){
+      datasets.push({
+        label:'Vorperiode',
+        data:prevVals.slice(0,labels.length),
+        backgroundColor:gray+'44',
+        borderColor:gray,
+        borderWidth:1.5,
+        borderRadius:4,
+        borderDash:[4,3],
+        pointRadius:2,
+        fill:false,
+        tension:0.3,
+        type: labels.length>10 ? 'line' : 'bar',
+      });
+    }
+
+    chartInstances[design]=new Chart(ctx,{
+      type: labels.length>10 ? 'line' : 'bar',
+      data:{ labels, datasets },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            callbacks:{
+              label: ctx => fmtUnits(ctx.parsed.y||0)+' Einh.'
+            }
+          }
+        },
+        scales:{
+          x:{
+            ticks:{color:textColor,font:{size:10,family:'Montserrat'},maxRotation:45,autoSkip:true,maxTicksLimit:12},
+            grid:{display:false},
+            border:{display:false}
+          },
+          y:{
+            ticks:{color:textColor,font:{size:10,family:'Montserrat'},callback:v=>fmtUnits(v)},
+            grid:{color:gridColor},
+            border:{display:false},
+            min:0
+          }
+        }
+      }
+    });
+  }
+
+  window.atkSetPeriod = function(design, periodId, el){
+    document.querySelectorAll('#atk'+design.toUpperCase()+'-periods .atk-period-btn').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+    renderGraph(design, periodId);
+  };
+
+  // init
+  renderAll();
+})();
 </script>
 </body>
 </html>
