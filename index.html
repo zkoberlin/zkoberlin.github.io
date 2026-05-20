@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.4 -->
+<title>Paul · Hub</title><!-- v5.10.5 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -558,7 +558,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .cs-chevron.open{transform:rotate(180deg);}
 
 /* ── ALKOHOL TRACKER ── */
-.atk-wrap{display:flex;flex-direction:column;gap:10px;padding:0;}
+.atk-wrap{display:flex;flex-direction:column;gap:8px;padding:0;}
 .atk-tabs{display:flex;gap:6px;flex-wrap:wrap;}
 .atk-tab{padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);transition:background .15s,color .15s;}
 .atk-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
@@ -571,18 +571,18 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-a-today{text-align:right;}
 .atk-a-num{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.5px;font-family:var(--font-head);}
 .atk-a-numunit{font-size:12px;font-weight:500;color:var(--t3);}
-.atk-pills{display:flex;gap:7px;flex-wrap:wrap;padding:12px 16px 0;}
+.atk-pills{display:flex;gap:7px;flex-wrap:wrap;padding:10px 16px 0;}
 .atk-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11.5px;font-weight:600;color:var(--text);cursor:pointer;font-family:var(--font-head);transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
 .atk-pill:hover{border-color:var(--blue);color:var(--blue);}
 .atk-pill:active{transform:scale(.97);}
-.atk-week{padding:12px 16px 0;}
+.atk-week{padding:10px 16px 10px;}
 .atk-week-bars{display:flex;gap:4px;margin-bottom:5px;}
 .atk-week-bar{flex:1;height:6px;border-radius:3px;background:var(--card2);overflow:hidden;}
 .atk-week-bar-fill{height:100%;border-radius:3px;background:var(--blue);transition:width .4s ease;}
 .atk-week-days{display:flex;gap:4px;}
 .atk-week-day{flex:1;text-align:center;font-size:10px;color:var(--t3);}
 .atk-week-day.today{color:var(--blue);font-weight:700;}
-.atk-log{padding:10px 16px 14px;margin-top:8px;border-top:1px solid var(--border);}
+.atk-log{padding:10px 16px 10px;margin-top:6px;border-top:1px solid var(--border);}
 .atk-log-row{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--t2);padding:3px 0;}
 .atk-log-left{display:flex;align-items:center;gap:7px;}
 .atk-log-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;}
@@ -628,17 +628,17 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-c-wbar{width:100%;border-radius:2px 2px 0 0;background:var(--blue);}
 .atk-c-wlbl{font-size:9px;color:var(--t3);}
 .atk-c-wlbl.today{color:var(--blue);font-weight:700;}
-.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:7px;border-radius:10px;background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
-.atk-graph-panel{display:block;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
-@media(max-width:600px){.atk-graph-panel{display:none;}.atk-graph-panel.open{display:block;}}
+.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;padding:9px;border-radius:var(--r2);background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
+.atk-graph-panel{display:block;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+@media(max-width:600px){.atk-graph-toggle{display:flex;}.atk-graph-panel{display:none;}.atk-graph-panel.open{display:block;}}
 .atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
 .atk-period-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
-.atk-graph-canvas{position:relative;width:100%;height:160px;}
-.atk-graph-compare{font-size:10.5px;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
-.atk-cmp-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block;}
+.atk-graph-canvas{position:relative;width:100%;height:180px;}
+.atk-graph-compare{font-size:10.5px;color:var(--t2);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+.atk-cmp-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block;flex-shrink:0;}
 .atk-cmp-dot.prev{background:var(--t3);}
-@media(max-width:600px){.atk-graph-toggle{display:flex;}}
+.atk-cmp-dot.trend{background:#f59e0b;}
 
 .cs-body{
   overflow:hidden;
@@ -1774,7 +1774,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.4
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.5
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -4577,7 +4577,7 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.4 ──
+// ── ALKOHOL TRACKER v5.10.5 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'woche', b:'woche', c:'woche'};
@@ -4943,6 +4943,10 @@ function atkRenderGraph(design, periodId) {
       html += '<span style="font-weight:700;color:' + (diff <= 0 ? '#3a9e5f' : '#e24b4a') + '">' +
         (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' g</span>';
     }
+    if (showTrend && trendVals.length > 1) {
+      var tSlope = trendVals[trendVals.length-1] - trendVals[0];
+      html += '<span><span class="atk-cmp-dot trend"></span> Trend: ' + (tSlope > 0.05 ? '↗ steigend' : tSlope < -0.05 ? '↘ fallend' : '→ stabil') + '</span>';
+    }
     compareEl.innerHTML = html;
   }
 
@@ -4962,6 +4966,20 @@ function atkRenderGraph(design, periodId) {
   var gray      = isDark ? '#636366' : '#c7c7cc';
   var chartType = labels.length > 14 ? 'line' : 'bar';
 
+  // Trendlinie berechnen (lineare Regression) für Monat, letzt_w, ytd, start
+  var showTrend = (periodId === 'monat' || periodId === 'letzt_w' || periodId === 'ytd' || periodId === 'start');
+  var trendVals = [];
+  if (showTrend && curVals.length > 1) {
+    var n = curVals.length;
+    var sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    for (var ti = 0; ti < n; ti++) { sumX += ti; sumY += curVals[ti]; sumXY += ti * curVals[ti]; sumXX += ti * ti; }
+    var slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) || 0;
+    var intercept = (sumY - slope * sumX) / n;
+    for (var ti = 0; ti < n; ti++) {
+      trendVals.push(parseFloat(Math.max(0, slope * ti + intercept).toFixed(1)));
+    }
+  }
+
   var datasets = [{
     label: 'Aktuell',
     data:  curVals,
@@ -4972,7 +4990,8 @@ function atkRenderGraph(design, periodId) {
     pointRadius:  chartType === 'line' ? 3 : 0,
     pointBackgroundColor: blue,
     fill:    chartType === 'line',
-    tension: 0.3
+    tension: 0.3,
+    order: 2
   }];
   if (prevVals.length) {
     datasets.push({
@@ -4984,7 +5003,22 @@ function atkRenderGraph(design, periodId) {
       borderRadius: chartType === 'bar' ? 3 : 0,
       pointRadius:  chartType === 'line' ? 2 : 0,
       fill:    false,
-      tension: 0.3
+      tension: 0.3,
+      order: 3
+    });
+  }
+  if (trendVals.length) {
+    datasets.push({
+      label: 'Trend',
+      data:  trendVals,
+      type:  'line',
+      borderColor:  '#f59e0b',
+      borderWidth:  1.5,
+      borderDash:   [4, 3],
+      pointRadius:  0,
+      fill:         false,
+      tension:      0,
+      order:        1
     });
   }
 
