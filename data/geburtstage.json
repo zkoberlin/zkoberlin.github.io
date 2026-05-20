@@ -1,41 +1,41 @@
 {
-  "datum": "19.05.2026",
-  "generiert": "2026-05-19T12:23:45Z",
+  "datum": "20.05.2026",
+  "generiert": "2026-05-20T11:38:02Z",
   "geburtstage": [
     {
-      "name": "Peter Zadek",
-      "alter": 100,
-      "geburtsjahr": 1926,
-      "beruf": "German Director (1926–2009)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Peter_Zadek",
+      "name": "Nils Schumann",
+      "alter": 48,
+      "geburtsjahr": 1978,
+      "beruf": "German Middle-Distance Runner",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Koech%2C_Kiplagat%2C_Schumann_2.jpg/330px-Koech%2C_Kiplagat%2C_Schumann_2.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Nils_Schumann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "JoJo Siwa",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "American Singer And Dancer (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/JoJo_Siwa_2026.jpg/330px-JoJo_Siwa_2026.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/JoJo_Siwa",
+      "name": "Jamie Chadwick",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "British Racing Driver (Born 1998)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Jamie_Chadwick_%28cropped%29.jpg/330px-Jamie_Chadwick_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Jamie_Chadwick",
       "nationalitaet": null
     },
     {
-      "name": "Riccardo Calafiori",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Italian Footballer (Born 2002)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/2024_Emirates_Cup_-_Riccardo_Calafiori_%282%29_%28cropped%29.jpg/330px-2024_Emirates_Cup_-_Riccardo_Calafiori_%282%29_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Riccardo_Calafiori",
+      "name": "Kaoru Mitoma",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Japanese Footballer (Born 1997)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Kaoru_Mitoma_%282022%29.jpg/330px-Kaoru_Mitoma_%282022%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Kaoru_Mitoma",
       "nationalitaet": null
     },
     {
-      "name": "Rafa Marín",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Spanish Footballer (Born 2002)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Rafa_Mar%C3%ADn",
+      "name": "Brian Kelly (rugby league)",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Australian Rugby League Footballer (Born 1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Brian_Kelly_Titans.jpg/330px-Brian_Kelly_Titans.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Brian_Kelly_(rugby_league)",
       "nationalitaet": null
     }
   ]
