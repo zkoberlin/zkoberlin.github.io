@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.2 -->
+<title>Paul · Hub</title><!-- v5.10.3 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -2009,6 +2009,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         <div class="atk-week-days" id="atkA-weekDays"></div>
       </div>
       <div class="atk-log" id="atkA-log"></div>
+      <div style="padding:0 16px 10px;font-size:9.5px;font-weight:500;" id="atkSyncStatus"></div>
     </div>
     <div class="atk-graph-toggle" onclick="atkToggleGraph('a')">
       <span>📊</span><span id="atkA-graphToggleLabel">Verlauf anzeigen</span>
@@ -4576,47 +4577,147 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.2 ──
+// ── ALKOHOL TRACKER v5.10.3 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'woche', b:'woche', c:'woche'};
 
-var TAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+var TAGE   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MONATE = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-var ATK_LIMIT = 8;
+var ATK_LIMIT  = 8;
+var ATK_SCRIPT = 'https://script.google.com/macros/s/AKfycbyq0iGYTk0SplKIUhntniGX-cpb_go9hzOpebsDAtdXQmcZGe3sMNBrjJ_FzWbeDBcUEg/exec';
+var _atkSyncing = false;
+var _atkSyncTimer = null;
 
+/* ── LOCAL CACHE (offline-fähig) ── */
 function atkLoadData() {
   try { return JSON.parse(localStorage.getItem('atkData_v1') || '{}'); }
   catch(e) { return {}; }
 }
-
 function atkSaveData(d) {
   try { localStorage.setItem('atkData_v1', JSON.stringify(d)); }
-  catch(e) { console.warn('atk: localStorage not available', e); }
+  catch(e) {}
 }
 
-function atkDateKey(d) { return d.toISOString().slice(0,10); }
-function atkToday()    { return atkDateKey(new Date()); }
+/* ── SHEET HELPERS ── */
+function atkDateKey(d)  { return d.toISOString().slice(0,10); }
+function atkToday()     { return atkDateKey(new Date()); }
+function atkFmt(u)      { return u.toFixed(1).replace('.', ','); }
 
+function atkSetSyncStatus(txt, color) {
+  var el = document.getElementById('atkSyncStatus');
+  if (el) { el.textContent = txt; el.style.color = color || 'var(--t3)'; }
+}
+
+/* ── PULL FROM SHEET → rebuild localStorage ── */
+function atkPullSheet(callback) {
+  atkSetSyncStatus('↻ Sync…', 'var(--blue)');
+  fetch(ATK_SCRIPT)
+    .then(function(r){ return r.json(); })
+    .then(function(json) {
+      if (!json.ok) { atkSetSyncStatus('⚠ Sync-Fehler', '#e24b4a'); return; }
+      // Rebuild data object from sheet rows
+      var data = {};
+      for (var i = 0; i < json.rows.length; i++) {
+        var row = json.rows[i];
+        if (!row.date) continue;
+        if (!data[row.date]) data[row.date] = { entries: [] };
+        data[row.date].entries.push({
+          id: row.id, units: row.units, label: row.label,
+          time: row.time, ts: row.ts || 0
+        });
+      }
+      atkSaveData(data);
+      atkSetSyncStatus('✓ Synced', '#3a9e5f');
+      setTimeout(function(){ atkSetSyncStatus(''); }, 3000);
+      if (callback) callback();
+    })
+    .catch(function(err) {
+      console.warn('atk pull error:', err);
+      atkSetSyncStatus('Offline', 'var(--t3)');
+      if (callback) callback();
+    });
+}
+
+/* ── PUSH ONE ENTRY TO SHEET ── */
+function atkPushEntry(entry, dateKey) {
+  var body = {
+    action: 'log',
+    date:   dateKey,
+    time:   entry.time,
+    id:     entry.id,
+    label:  entry.label,
+    units:  entry.units,
+    ts:     entry.ts
+  };
+  fetch(ATK_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify(body)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(json){
+    if (json.ok) {
+      atkSetSyncStatus('✓ Gespeichert', '#3a9e5f');
+      setTimeout(function(){ atkSetSyncStatus(''); }, 2000);
+    } else {
+      atkSetSyncStatus('⚠ Sheet-Fehler', '#e24b4a');
+    }
+  })
+  .catch(function(){
+    atkSetSyncStatus('Offline – lokal gespeichert', 'var(--t3)');
+  });
+}
+
+/* ── PUSH DELETE TO SHEET ── */
+function atkPushDelete(dateKey, ts) {
+  fetch(ATK_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'delete', date: dateKey, ts: ts })
+  }).catch(function(){});
+}
+
+/* ── LOG ENTRY ── */
+function atkLog(id, units, label, design) {
+  var data = atkLoadData();
+  var tk   = atkToday();
+  if (!data[tk]) data[tk] = { entries: [] };
+  var now  = new Date();
+  var hm   = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+  var ts   = Date.now();
+  var entry = { id: id, units: units, label: label, time: hm, ts: ts };
+  data[tk].entries.push(entry);
+  atkSaveData(data);
+  atkRenderAll();
+  atkPushEntry(entry, tk);
+}
+
+function atkUndo(idx) {
+  var data = atkLoadData();
+  var tk   = atkToday();
+  if (data[tk] && data[tk].entries && data[tk].entries[idx] != null) {
+    var entry = data[tk].entries[idx];
+    data[tk].entries.splice(idx, 1);
+    atkSaveData(data);
+    atkRenderAll();
+    if (entry.ts) atkPushDelete(tk, entry.ts);
+  }
+}
+
+/* ── GET ENTRIES / UNITS ── */
 function atkGetEntries(data, dk) {
   return (data[dk] && data[dk].entries) ? data[dk].entries : [];
 }
-
 function atkGetUnits(data, dk) {
   return atkGetEntries(data, dk).reduce(function(s,e){ return s + e.units; }, 0);
 }
 
-function atkFmt(u) {
-  return u.toFixed(1).replace('.', ',');
-}
-
+/* ── WEEK HELPERS ── */
 function atkWeekKeys(offset) {
   offset = offset || 0;
-  var keys = [];
-  var now = new Date();
-  var dow = now.getDay();
+  var keys   = [];
+  var now    = new Date();
   var monday = new Date(now);
-  monday.setDate(now.getDate() - ((dow + 6) % 7) - (offset * 7));
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7) - (offset * 7));
   for (var i = 0; i < 7; i++) {
     var d = new Date(monday);
     d.setDate(monday.getDate() + i);
@@ -4625,38 +4726,38 @@ function atkWeekKeys(offset) {
   return keys;
 }
 
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
 function atkRenderAll() {
-  var data = atkLoadData();
-  var td = atkToday();
-  var yd = atkDateKey(new Date(Date.now() - 86400000));
-  var wk = atkWeekKeys(0);
-  var pwk = atkWeekKeys(1);
-
+  var data  = atkLoadData();
+  var td    = atkToday();
+  var yd    = atkDateKey(new Date(Date.now() - 86400000));
+  var wk    = atkWeekKeys(0);
+  var pwk   = atkWeekKeys(1);
   var todayU = atkGetUnits(data, td);
   var yestU  = atkGetUnits(data, yd);
   var weekU  = wk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
-  var pWeekU = pwk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
   var entries = atkGetEntries(data, td);
 
   // cs-header preview
   var prev = document.getElementById('csPreviewAtk');
-  if (prev) prev.textContent = 'Heute: ' + atkFmt(todayU) + ' Einh. · Woche: ' + atkFmt(weekU);
+  if (prev) prev.textContent = 'Heute: ' + atkFmt(todayU) + ' g · Woche: ' + atkFmt(weekU) + ' g';
 
-  // ── DESIGN A ──
-  var el;
-  el = document.getElementById('atkA-date');
+  // Date label
+  var el = document.getElementById('atkA-date');
   if (el) {
     var now = new Date();
     el.textContent = 'Heute · ' + TAGE[now.getDay()] + ', ' + now.getDate() + '. ' + MONATE[now.getMonth()];
   }
-  el = document.getElementById('atkA-today');
-  if (el) el.textContent = atkFmt(todayU);
-  el = document.getElementById('atkA-week');
-  if (el) el.textContent = atkFmt(weekU);
 
-  // Week bars A
+  // Stats
+  el = document.getElementById('atkA-today'); if (el) el.textContent = atkFmt(todayU);
+  el = document.getElementById('atkA-week');  if (el) el.textContent = atkFmt(weekU);
+
+  // Week bars
   var wbarsEl = document.getElementById('atkA-weekBars');
-  var maxW = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([ATK_LIMIT]));
+  var maxW    = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([ATK_LIMIT]));
   if (wbarsEl) {
     var fills = wbarsEl.querySelectorAll('.atk-week-bar-fill');
     for (var i = 0; i < 7; i++) {
@@ -4668,145 +4769,38 @@ function atkRenderAll() {
   if (wdaysEl) {
     wdaysEl.innerHTML = '';
     for (var i = 0; i < 7; i++) {
-      var d = new Date(wk[i]);
+      var d   = new Date(wk[i]);
       var div = document.createElement('div');
-      div.className = 'atk-week-day' + (wk[i] === td ? ' today' : '');
+      div.className   = 'atk-week-day' + (wk[i] === td ? ' today' : '');
       div.textContent = TAGE[d.getDay()];
       wdaysEl.appendChild(div);
     }
   }
 
-  // Log A
+  // Log
   var logA = document.getElementById('atkA-log');
   if (logA) {
     if (!entries.length) {
       logA.innerHTML = '<div class="atk-log-empty">Noch nichts eingetragen</div>';
     } else {
-      var html = '';
+      var html  = '';
       var shown = entries.slice().reverse().slice(0, 5);
       for (var i = 0; i < shown.length; i++) {
-        var e = shown[i];
-        var realIdx = entries.length - 1 - i;
-        html += '<div class="atk-log-row"><div class="atk-log-left"><div class="atk-log-dot"></div>' + e.label + '</div>' +
-          '<div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' Einh.</span>' +
-          '<span class="atk-log-undo" onclick="atkUndo(' + realIdx + ')">↩</span></div></div>';
+        var e        = shown[i];
+        var realIdx  = entries.length - 1 - i;
+        html += '<div class="atk-log-row">' +
+          '<div class="atk-log-left"><div class="atk-log-dot"></div>' + e.label + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' g</span>' +
+          '<span class="atk-log-undo" onclick="atkUndo(' + realIdx + ')">↩</span>' +
+          '</div></div>';
       }
       logA.innerHTML = html;
     }
   }
-
-  // ── DESIGN B ──
-  el = document.getElementById('atkB-today'); if (el) el.textContent = atkFmt(todayU);
-  el = document.getElementById('atkB-week');  if (el) el.textContent = atkFmt(weekU);
-  el = document.getElementById('atkB-todayDelta');
-  if (el) {
-    var diff = todayU - yestU;
-    el.className = 'atk-b-delta' + (diff > 0 ? ' pos' : diff < 0 ? ' neg' : '');
-    el.textContent = (diff === 0 ? '±0' : (diff > 0 ? '↑ +' : '↓ ') + atkFmt(Math.abs(diff))) + ' vs. gestern';
-  }
-  el = document.getElementById('atkB-weekDelta');
-  if (el) {
-    var diff = weekU - pWeekU;
-    el.className = 'atk-b-delta' + (diff > 0 ? ' pos' : diff < 0 ? ' neg' : '');
-    el.textContent = (diff === 0 ? '±0' : (diff > 0 ? '↑ +' : '↓ ') + atkFmt(Math.abs(diff))) + ' vs. letzte Wo.';
-  }
-
-  var mbEl = document.getElementById('atkB-minibars');
-  if (mbEl) {
-    mbEl.innerHTML = '';
-    var maxB = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([0.1]));
-    for (var i = 0; i < 7; i++) {
-      var u = atkGetUnits(data, wk[i]);
-      var pct = Math.max(5, (u / maxB) * 100);
-      var div = document.createElement('div');
-      div.className = 'atk-b-minibar';
-      div.style.height = pct + '%';
-      div.style.opacity = wk[i] === td ? '1' : u > 0 ? '0.45' : '0.12';
-      mbEl.appendChild(div);
-    }
-  }
-  var wdB = document.getElementById('atkB-weekDays');
-  if (wdB) {
-    wdB.innerHTML = '';
-    for (var i = 0; i < 7; i++) {
-      var d = new Date(wk[i]);
-      var div = document.createElement('div');
-      div.className = 'atk-week-day' + (wk[i] === td ? ' today' : '');
-      div.textContent = TAGE[d.getDay()];
-      wdB.appendChild(div);
-    }
-  }
-
-  // ── DESIGN C ──
-  var arcEl = document.getElementById('atkC-ringArc');
-  var numEl = document.getElementById('atkC-ringNum');
-  if (arcEl && numEl) {
-    var pct = Math.min(1, todayU / ATK_LIMIT);
-    arcEl.style.strokeDashoffset = 188.5 - (pct * 188.5);
-    numEl.textContent = atkFmt(todayU);
-  }
-
-  var logC = document.getElementById('atkC-log');
-  if (logC) {
-    if (!entries.length) {
-      logC.innerHTML = '<div style="font-size:11px;color:var(--t3);margin-top:4px;">Noch nichts eingetragen</div>';
-    } else {
-      var html = '';
-      var shown = entries.slice().reverse().slice(0, 3);
-      for (var i = 0; i < shown.length; i++) {
-        var e = shown[i];
-        var realIdx = entries.length - 1 - i;
-        html += '<div class="atk-c-log-item"><span>' + e.label + ' · ' + e.time + '</span>' +
-          '<span class="atk-c-log-undo" onclick="atkUndo(' + realIdx + ')">↩ undo</span></div>';
-      }
-      logC.innerHTML = html;
-    }
-  }
-
-  var wrEl = document.getElementById('atkC-weekrow');
-  if (wrEl) {
-    wrEl.innerHTML = '';
-    var maxC = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([0.1]));
-    for (var i = 0; i < 7; i++) {
-      var k = wk[i];
-      var u = atkGetUnits(data, k);
-      var d = new Date(k);
-      var pct = Math.max(0, (u / maxC) * 100);
-      var isToday = k === td;
-      wrEl.innerHTML += '<div class="atk-c-wday"><div class="atk-c-wbarwrap"><div class="atk-c-wbar" style="height:' + pct + '%;opacity:' + (isToday ? '1' : u > 0 ? '0.45' : '0.1') + '"></div></div><div class="atk-c-wlbl' + (isToday ? ' today' : '') + '">' + TAGE[d.getDay()] + '</div></div>';
-    }
-  }
 }
 
-function atkLog(id, units, label, design) {
-  var data = atkLoadData();
-  var tk = atkToday();
-  if (!data[tk]) data[tk] = {entries: []};
-  var now = new Date();
-  var hm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
-  data[tk].entries.push({id: id, units: units, label: label, time: hm, ts: Date.now()});
-  atkSaveData(data);
-  atkRenderAll();
-}
-
-function atkLogFromB() {
-  var sel = document.getElementById('atkB-sel');
-  if (!sel) return;
-  var parts = sel.value.split('|');
-  var label = sel.options[sel.selectedIndex].text.split(' · ')[0];
-  atkLog(parts[0], parseFloat(parts[1]), label, 'b');
-}
-
-function atkUndo(idx) {
-  var data = atkLoadData();
-  var tk = atkToday();
-  if (data[tk] && data[tk].entries && data[tk].entries[idx] != null) {
-    data[tk].entries.splice(idx, 1);
-    atkSaveData(data);
-    atkRenderAll();
-  }
-}
-
+/* ── DESIGN SWITCH (kept for compat) ── */
 function atkSwitchDesign(d, tabEl) {
   var panels = document.querySelectorAll('.atk-panel');
   for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
@@ -4818,15 +4812,17 @@ function atkSwitchDesign(d, tabEl) {
   atkRenderAll();
 }
 
+/* ── GRAPH TOGGLE (mobile) ── */
 function atkToggleGraph(d) {
   var panel = document.getElementById('atk' + d.toUpperCase() + '-graphPanel');
-  var lbl = document.getElementById('atk' + d.toUpperCase() + '-graphToggleLabel');
+  var lbl   = document.getElementById('atk' + d.toUpperCase() + '-graphToggleLabel');
   if (!panel) return;
   var isOpen = panel.classList.toggle('open');
   if (lbl) lbl.textContent = isOpen ? 'Verlauf ausblenden' : 'Verlauf anzeigen';
   if (isOpen) atkRenderGraph(d, _atkCurrentPeriod[d] || 'woche');
 }
 
+/* ── PERIOD ROW ── */
 function atkSetPeriod(design, periodId, el) {
   _atkCurrentPeriod[design] = periodId;
   var row = document.getElementById('atk' + design.toUpperCase() + '-periods');
@@ -4852,63 +4848,57 @@ function atkBuildPeriodRow(design, activePeriod) {
   if (!row) return;
   row.innerHTML = '';
   for (var i = 0; i < periods.length; i++) {
-    var p = periods[i];
+    var p   = periods[i];
     var btn = document.createElement('div');
-    btn.className = 'atk-period-btn' + (p.id === activePeriod ? ' active' : '');
+    btn.className   = 'atk-period-btn' + (p.id === activePeriod ? ' active' : '');
     btn.textContent = p.label;
     btn.setAttribute('onclick', 'atkSetPeriod("' + design + '","' + p.id + '",this)');
     row.appendChild(btn);
   }
 }
 
+/* ── GRAPH RENDER ── */
+var _atkCharts        = {};
+var _atkCurrentPeriod = {a:'woche'};
+
 function atkRenderGraph(design, periodId) {
   atkBuildPeriodRow(design, periodId);
 
-  var data = atkLoadData();
-  var td = atkToday();
-  var yd = atkDateKey(new Date(Date.now() - 86400000));
-  var labels = [], curVals = [], prevVals = [];
+  var data    = atkLoadData();
+  var td      = atkToday();
+  var yd      = atkDateKey(new Date(Date.now() - 86400000));
+  var labels  = [], curVals = [], prevVals = [];
 
   if (periodId === 'today' || periodId === 'gestern') {
-    var dk = periodId === 'today' ? td : yd;
+    var dk      = periodId === 'today' ? td : yd;
     var entries = atkGetEntries(data, dk);
     for (var h = 0; h < 24; h++) {
       labels.push(h + 'h');
       var sum = 0;
       for (var e = 0; e < entries.length; e++) {
-        var eh = parseInt(entries[e].time);
-        if (eh === h) sum += entries[e].units;
+        if (parseInt(entries[e].time) === h) sum += entries[e].units;
       }
-      curVals.push(sum);
+      curVals.push(parseFloat(sum.toFixed(1)));
     }
-    prevVals = [];
-  } else if (periodId === 'woche') {
-    var wk = atkWeekKeys(0);
-    var pwk = atkWeekKeys(1);
+  } else if (periodId === 'woche' || periodId === 'letzt_w') {
+    var off  = periodId === 'woche' ? 0 : 1;
+    var wk   = atkWeekKeys(off);
+    var pwk  = atkWeekKeys(off + 1);
     for (var i = 0; i < 7; i++) {
       var d = new Date(wk[i]);
       labels.push(TAGE[d.getDay()]);
-      curVals.push(atkGetUnits(data, wk[i]));
-      prevVals.push(atkGetUnits(data, pwk[i]));
-    }
-  } else if (periodId === 'letzt_w') {
-    var wk = atkWeekKeys(1);
-    var pwk = atkWeekKeys(2);
-    for (var i = 0; i < 7; i++) {
-      var d = new Date(wk[i]);
-      labels.push(TAGE[d.getDay()]);
-      curVals.push(atkGetUnits(data, wk[i]));
-      prevVals.push(atkGetUnits(data, pwk[i]));
+      curVals.push(parseFloat(atkGetUnits(data, wk[i]).toFixed(1)));
+      prevVals.push(parseFloat(atkGetUnits(data, pwk[i]).toFixed(1)));
     }
   } else if (periodId === 'monat') {
-    var now = new Date();
+    var now        = new Date();
     var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     var daysInPrev  = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
     for (var i = 1; i <= daysInMonth; i++) {
       labels.push(i + '.');
-      curVals.push(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth(), i))));
+      curVals.push(parseFloat(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth(), i))).toFixed(1)));
       if (i <= daysInPrev)
-        prevVals.push(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth() - 1, i))));
+        prevVals.push(parseFloat(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth() - 1, i))).toFixed(1)));
     }
   } else if (periodId === 'ytd') {
     var now = new Date();
@@ -4920,8 +4910,8 @@ function atkRenderGraph(design, periodId) {
         s  += atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), m, d)));
         ps += atkGetUnits(data, atkDateKey(new Date(now.getFullYear() - 1, m, d)));
       }
-      curVals.push(s);
-      prevVals.push(ps);
+      curVals.push(parseFloat(s.toFixed(1)));
+      prevVals.push(parseFloat(ps.toFixed(1)));
     }
   } else { // start
     var allKeys = Object.keys(data).sort();
@@ -4936,7 +4926,7 @@ function atkRenderGraph(design, periodId) {
       for (var i = 0; i < months.length; i++) {
         var parts = months[i].split('-');
         labels.push(MONATE[parseInt(parts[1])-1] + ' ' + parts[0].slice(2));
-        curVals.push(mm[months[i]]);
+        curVals.push(parseFloat(mm[months[i]].toFixed(1)));
       }
     }
   }
@@ -4944,54 +4934,56 @@ function atkRenderGraph(design, periodId) {
   // Compare summary
   var compareEl = document.getElementById('atk' + design.toUpperCase() + '-compare');
   if (compareEl) {
-    var curSum = curVals.reduce(function(s,v){ return s+v; }, 0);
-    var prevSum = prevVals.reduce(function(s,v){ return s+v; }, 0);
-    var diff = curSum - prevSum;
-    var html = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' Einh.</span>';
+    var curSum  = parseFloat(curVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
+    var prevSum = parseFloat(prevVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
+    var diff    = parseFloat((curSum - prevSum).toFixed(1));
+    var html    = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' g</span>';
     if (prevSum > 0) {
-      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' Einh.</span>';
+      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' g</span>';
       html += '<span style="font-weight:700;color:' + (diff <= 0 ? '#3a9e5f' : '#e24b4a') + '">' +
-        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' Einh.</span>';
+        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' g</span>';
     }
     compareEl.innerHTML = html;
   }
 
-  // Chart
-  var canvasId = 'atk' + design.toUpperCase() + '-chart';
-  var ctx = document.getElementById(canvasId);
+  // Draw chart
+  var ctx = document.getElementById('atk' + design.toUpperCase() + '-chart');
   if (!ctx) return;
-  if (typeof Chart === 'undefined') { ctx.parentElement.innerHTML = '<div style="font-size:11px;color:var(--t3);text-align:center;padding:20px;">Chart.js lädt noch…</div>'; return; }
+  if (typeof Chart === 'undefined') {
+    ctx.parentElement.innerHTML = '<div style="font-size:11px;color:var(--t3);text-align:center;padding:20px 0">Chart.js lädt…</div>';
+    return;
+  }
   if (_atkCharts[design]) { try { _atkCharts[design].destroy(); } catch(e){} }
 
-  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var isDark    = document.documentElement.getAttribute('data-theme') === 'dark';
   var gridColor = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
   var tickColor = isDark ? '#8e8e93' : '#6e6e73';
-  var blue = '#0071E3';
-  var gray = isDark ? '#636366' : '#c7c7cc';
-
+  var blue      = '#0071E3';
+  var gray      = isDark ? '#636366' : '#c7c7cc';
   var chartType = labels.length > 14 ? 'line' : 'bar';
+
   var datasets = [{
     label: 'Aktuell',
-    data: curVals,
+    data:  curVals,
     backgroundColor: blue + '33',
-    borderColor: blue,
+    borderColor:     blue,
     borderWidth: 2,
     borderRadius: chartType === 'bar' ? 4 : 0,
-    pointRadius: chartType === 'line' ? 3 : 0,
+    pointRadius:  chartType === 'line' ? 3 : 0,
     pointBackgroundColor: blue,
-    fill: chartType === 'line',
+    fill:    chartType === 'line',
     tension: 0.3
   }];
   if (prevVals.length) {
     datasets.push({
       label: 'Vorperiode',
-      data: prevVals.slice(0, labels.length),
+      data:  prevVals.slice(0, labels.length),
       backgroundColor: gray + '33',
-      borderColor: gray,
+      borderColor:     gray,
       borderWidth: 1.5,
-      borderRadius: chartType === 'bar' ? 4 : 0,
-      pointRadius: chartType === 'line' ? 2 : 0,
-      fill: false,
+      borderRadius: chartType === 'bar' ? 3 : 0,
+      pointRadius:  chartType === 'line' ? 2 : 0,
+      fill:    false,
       tension: 0.3
     });
   }
@@ -5004,17 +4996,17 @@ function atkRenderGraph(design, periodId) {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' Einh.'; } } }
+        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' g'; } } }
       },
       scales: {
         x: {
           ticks: { color: tickColor, font: { size: 10, family: 'Montserrat' }, maxRotation: 45, autoSkip: true, maxTicksLimit: 12 },
-          grid: { display: false },
+          grid:   { display: false },
           border: { display: false }
         },
         y: {
-          ticks: { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v); } },
-          grid: { color: gridColor },
+          ticks:  { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v) + ' g'; } },
+          grid:   { color: gridColor },
           border: { display: false },
           min: 0
         }
@@ -5023,18 +5015,25 @@ function atkRenderGraph(design, periodId) {
   });
 }
 
-// Init on DOMContentLoaded to be safe
+/* ── INIT ── */
 function atkInit() {
+  // 1. Render sofort aus lokalem Cache
   atkRenderAll();
-  // Desktop: render graph immediately; mobile: wait for toggle
   if (window.innerWidth > 600) {
     atkRenderGraph('a', 'woche');
   }
+  // 2. Sheet im Hintergrund pullen und neu rendern
+  atkPullSheet(function() {
+    atkRenderAll();
+    if (window.innerWidth > 600) {
+      atkRenderGraph('a', _atkCurrentPeriod['a'] || 'woche');
+    }
+  });
 }
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', atkInit);
 } else {
-  // Chart.js might not be ready yet — wait one tick
   setTimeout(atkInit, 0);
 }
 </script>
