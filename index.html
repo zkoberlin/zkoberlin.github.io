@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.5 -->
+<title>Paul · Hub</title><!-- v5.10.6 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -558,6 +558,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .cs-chevron.open{transform:rotate(180deg);}
 
 /* ── ALKOHOL TRACKER ── */
+.atk-outer{margin:0;}
 .atk-wrap{display:flex;flex-direction:column;gap:8px;padding:0;}
 .atk-tabs{display:flex;gap:6px;flex-wrap:wrap;}
 .atk-tab{padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);transition:background .15s,color .15s;}
@@ -628,8 +629,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-c-wbar{width:100%;border-radius:2px 2px 0 0;background:var(--blue);}
 .atk-c-wlbl{font-size:9px;color:var(--t3);}
 .atk-c-wlbl.today{color:var(--blue);font-weight:700;}
-.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;padding:9px;border-radius:var(--r2);background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
-.atk-graph-panel{display:block;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:9px;border-radius:var(--r2);background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
+.atk-graph-panel{display:block;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
 @media(max-width:600px){.atk-graph-toggle{display:flex;}.atk-graph-panel{display:none;}.atk-graph-panel.open{display:block;}}
 .atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
@@ -658,7 +659,6 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
   .cs-body{gap:0;}
   .cs-body.open>.er-link,
   .cs-body.open>.alma-card,
-  .cs-body.open>.atk-wrap,
   .cs-body.open>.app-row{margin-top:8px;}
 }
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(242,242,247,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:8px 0 22px;z-index:100;justify-content:space-around;transition:background .3s;}
@@ -1774,7 +1774,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.5
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.6
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1959,15 +1959,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 </div>
 
 <!-- ═══════════════ ALKOHOL TRACKER ═══════════════ -->
-<div class="cs-header" onclick="toggleSection('atk')" id="csHdrAtk">
-  <div class="cs-header-left">
-    <div class="cs-header-title">🍺 Alkohol-Tracker</div>
-    <div class="cs-preview" id="csPreviewAtk">Heute: 0,0 Einh.</div>
-  </div>
-  <svg class="cs-chevron" id="csChevronAtk" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 10 13 15 8"/></svg>
-</div>
-<div class="sec cs-sec-label">🍺 Alkohol-Tracker</div>
-<div class="cs-body" id="csBodyAtk">
+<div id="csBodyAtk" class="atk-outer">
 <div class="atk-wrap">
 
   <!-- DESIGN A -->
@@ -4577,7 +4569,7 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.5 ──
+// ── ALKOHOL TRACKER v5.10.6 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'woche', b:'woche', c:'woche'};
@@ -4740,9 +4732,7 @@ function atkRenderAll() {
   var weekU  = wk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
   var entries = atkGetEntries(data, td);
 
-  // cs-header preview
-  var prev = document.getElementById('csPreviewAtk');
-  if (prev) prev.textContent = 'Heute: ' + atkFmt(todayU) + ' g · Woche: ' + atkFmt(weekU) + ' g';
+
 
   // Date label
   var el = document.getElementById('atkA-date');
