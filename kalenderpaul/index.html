@@ -1648,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.5</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.6</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -2025,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.5</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.6</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -3133,8 +3133,14 @@ function parseICS(text) {
     } else if(current) {
       const sep = line.indexOf(':');
       if(sep === -1) continue;
+      // Key korrekt extrahieren: auch bei EXDATE;TZID=Europe/Berlin:20260520T...
+      // → split am ersten ';' oder ':', dann [0] = reiner Key
       const key = line.substring(0, sep).split(';')[0].toUpperCase();
-      const val = line.substring(sep + 1);
+      // Val: bei TZID-Params (z.B. EXDATE;TZID=...:Wert) ist der echte Wert
+      // NACH dem letzten ':', damit TZID nicht mit in val landet
+      const val = line.includes(';TZID=')
+        ? line.substring(line.lastIndexOf(':') + 1)
+        : line.substring(sep + 1);
 
       if(key === 'SUMMARY')      current.title = val;
       if(key === 'DESCRIPTION')  current.description = val;
@@ -3421,7 +3427,7 @@ async function loadICalEvents() {
     setLoadStatus(statusId, 'loading', label + ' …');
     try {
       const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(url);
-      const res = await fetch(proxyUrl, { cache: 'no-store' });
+      const res = await fetch(proxyUrl);
       if(!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const events = parseICS(text);
@@ -3593,7 +3599,7 @@ async function loadKidsSheet() {
     const tabName = 'Kids';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
     const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(sheetUrl);
-    const res = await fetch(proxyUrl, { cache: 'no-store' });
+    const res = await fetch(proxyUrl);
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
     
