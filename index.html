@@ -4662,459 +4662,459 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.0 ──
-(function(){
-  const STORE_KEY = 'atkData_v1';
-  const DESIGNS = ['a','b','c'];
-  const PERIODS = [
+// ── ALKOHOL TRACKER v5.10.1 ──
+
+var _atkCharts = {};
+var _atkCurrentPeriod = {a:'woche', b:'woche', c:'woche'};
+
+var TAGE = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+var MONATE = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var ATK_LIMIT = 5;
+
+function atkLoadData() {
+  try { return JSON.parse(localStorage.getItem('atkData_v1') || '{}'); }
+  catch(e) { return {}; }
+}
+
+function atkSaveData(d) {
+  try { localStorage.setItem('atkData_v1', JSON.stringify(d)); }
+  catch(e) { console.warn('atk: localStorage not available', e); }
+}
+
+function atkDateKey(d) { return d.toISOString().slice(0,10); }
+function atkToday()    { return atkDateKey(new Date()); }
+
+function atkGetEntries(data, dk) {
+  return (data[dk] && data[dk].entries) ? data[dk].entries : [];
+}
+
+function atkGetUnits(data, dk) {
+  return atkGetEntries(data, dk).reduce(function(s,e){ return s + e.units; }, 0);
+}
+
+function atkFmt(u) {
+  return u.toFixed(1).replace('.', ',');
+}
+
+function atkWeekKeys(offset) {
+  offset = offset || 0;
+  var keys = [];
+  var now = new Date();
+  var dow = now.getDay();
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - ((dow + 6) % 7) - (offset * 7));
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    keys.push(atkDateKey(d));
+  }
+  return keys;
+}
+
+function atkRenderAll() {
+  var data = atkLoadData();
+  var td = atkToday();
+  var yd = atkDateKey(new Date(Date.now() - 86400000));
+  var wk = atkWeekKeys(0);
+  var pwk = atkWeekKeys(1);
+
+  var todayU = atkGetUnits(data, td);
+  var yestU  = atkGetUnits(data, yd);
+  var weekU  = wk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
+  var pWeekU = pwk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
+  var entries = atkGetEntries(data, td);
+
+  // cs-header preview
+  var prev = document.getElementById('csPreviewAtk');
+  if (prev) prev.textContent = 'Heute: ' + atkFmt(todayU) + ' Einh. · Woche: ' + atkFmt(weekU);
+
+  // ── DESIGN A ──
+  var el;
+  el = document.getElementById('atkA-date');
+  if (el) {
+    var now = new Date();
+    el.textContent = 'Heute · ' + TAGE[now.getDay()] + ', ' + now.getDate() + '. ' + MONATE[now.getMonth()];
+  }
+  el = document.getElementById('atkA-today');
+  if (el) el.textContent = atkFmt(todayU);
+  el = document.getElementById('atkA-week');
+  if (el) el.textContent = atkFmt(weekU);
+
+  // Week bars A
+  var wbarsEl = document.getElementById('atkA-weekBars');
+  var maxW = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([ATK_LIMIT]));
+  if (wbarsEl) {
+    var fills = wbarsEl.querySelectorAll('.atk-week-bar-fill');
+    for (var i = 0; i < 7; i++) {
+      var u = atkGetUnits(data, wk[i]);
+      if (fills[i]) fills[i].style.width = Math.min(100, (u / maxW) * 100) + '%';
+    }
+  }
+  var wdaysEl = document.getElementById('atkA-weekDays');
+  if (wdaysEl) {
+    wdaysEl.innerHTML = '';
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(wk[i]);
+      var div = document.createElement('div');
+      div.className = 'atk-week-day' + (wk[i] === td ? ' today' : '');
+      div.textContent = TAGE[d.getDay()];
+      wdaysEl.appendChild(div);
+    }
+  }
+
+  // Log A
+  var logA = document.getElementById('atkA-log');
+  if (logA) {
+    if (!entries.length) {
+      logA.innerHTML = '<div class="atk-log-empty">Noch nichts eingetragen</div>';
+    } else {
+      var html = '';
+      var shown = entries.slice().reverse().slice(0, 5);
+      for (var i = 0; i < shown.length; i++) {
+        var e = shown[i];
+        var realIdx = entries.length - 1 - i;
+        html += '<div class="atk-log-row"><div class="atk-log-left"><div class="atk-log-dot"></div>' + e.label + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' Einh.</span>' +
+          '<span class="atk-log-undo" onclick="atkUndo(' + realIdx + ')">↩</span></div></div>';
+      }
+      logA.innerHTML = html;
+    }
+  }
+
+  // ── DESIGN B ──
+  el = document.getElementById('atkB-today'); if (el) el.textContent = atkFmt(todayU);
+  el = document.getElementById('atkB-week');  if (el) el.textContent = atkFmt(weekU);
+  el = document.getElementById('atkB-todayDelta');
+  if (el) {
+    var diff = todayU - yestU;
+    el.className = 'atk-b-delta' + (diff > 0 ? ' pos' : diff < 0 ? ' neg' : '');
+    el.textContent = (diff === 0 ? '±0' : (diff > 0 ? '↑ +' : '↓ ') + atkFmt(Math.abs(diff))) + ' vs. gestern';
+  }
+  el = document.getElementById('atkB-weekDelta');
+  if (el) {
+    var diff = weekU - pWeekU;
+    el.className = 'atk-b-delta' + (diff > 0 ? ' pos' : diff < 0 ? ' neg' : '');
+    el.textContent = (diff === 0 ? '±0' : (diff > 0 ? '↑ +' : '↓ ') + atkFmt(Math.abs(diff))) + ' vs. letzte Wo.';
+  }
+
+  var mbEl = document.getElementById('atkB-minibars');
+  if (mbEl) {
+    mbEl.innerHTML = '';
+    var maxB = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([0.1]));
+    for (var i = 0; i < 7; i++) {
+      var u = atkGetUnits(data, wk[i]);
+      var pct = Math.max(5, (u / maxB) * 100);
+      var div = document.createElement('div');
+      div.className = 'atk-b-minibar';
+      div.style.height = pct + '%';
+      div.style.opacity = wk[i] === td ? '1' : u > 0 ? '0.45' : '0.12';
+      mbEl.appendChild(div);
+    }
+  }
+  var wdB = document.getElementById('atkB-weekDays');
+  if (wdB) {
+    wdB.innerHTML = '';
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(wk[i]);
+      var div = document.createElement('div');
+      div.className = 'atk-week-day' + (wk[i] === td ? ' today' : '');
+      div.textContent = TAGE[d.getDay()];
+      wdB.appendChild(div);
+    }
+  }
+
+  // ── DESIGN C ──
+  var arcEl = document.getElementById('atkC-ringArc');
+  var numEl = document.getElementById('atkC-ringNum');
+  if (arcEl && numEl) {
+    var pct = Math.min(1, todayU / ATK_LIMIT);
+    arcEl.style.strokeDashoffset = 188.5 - (pct * 188.5);
+    numEl.textContent = atkFmt(todayU);
+  }
+
+  var logC = document.getElementById('atkC-log');
+  if (logC) {
+    if (!entries.length) {
+      logC.innerHTML = '<div style="font-size:11px;color:var(--t3);margin-top:4px;">Noch nichts eingetragen</div>';
+    } else {
+      var html = '';
+      var shown = entries.slice().reverse().slice(0, 3);
+      for (var i = 0; i < shown.length; i++) {
+        var e = shown[i];
+        var realIdx = entries.length - 1 - i;
+        html += '<div class="atk-c-log-item"><span>' + e.label + ' · ' + e.time + '</span>' +
+          '<span class="atk-c-log-undo" onclick="atkUndo(' + realIdx + ')">↩ undo</span></div>';
+      }
+      logC.innerHTML = html;
+    }
+  }
+
+  var wrEl = document.getElementById('atkC-weekrow');
+  if (wrEl) {
+    wrEl.innerHTML = '';
+    var maxC = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([0.1]));
+    for (var i = 0; i < 7; i++) {
+      var k = wk[i];
+      var u = atkGetUnits(data, k);
+      var d = new Date(k);
+      var pct = Math.max(0, (u / maxC) * 100);
+      var isToday = k === td;
+      wrEl.innerHTML += '<div class="atk-c-wday"><div class="atk-c-wbarwrap"><div class="atk-c-wbar" style="height:' + pct + '%;opacity:' + (isToday ? '1' : u > 0 ? '0.45' : '0.1') + '"></div></div><div class="atk-c-wlbl' + (isToday ? ' today' : '') + '">' + TAGE[d.getDay()] + '</div></div>';
+    }
+  }
+}
+
+function atkLog(id, units, label, design) {
+  var data = atkLoadData();
+  var tk = atkToday();
+  if (!data[tk]) data[tk] = {entries: []};
+  var now = new Date();
+  var hm = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+  data[tk].entries.push({id: id, units: units, label: label, time: hm, ts: Date.now()});
+  atkSaveData(data);
+  atkRenderAll();
+}
+
+function atkLogFromB() {
+  var sel = document.getElementById('atkB-sel');
+  if (!sel) return;
+  var parts = sel.value.split('|');
+  var label = sel.options[sel.selectedIndex].text.split(' · ')[0];
+  atkLog(parts[0], parseFloat(parts[1]), label, 'b');
+}
+
+function atkUndo(idx) {
+  var data = atkLoadData();
+  var tk = atkToday();
+  if (data[tk] && data[tk].entries && data[tk].entries[idx] != null) {
+    data[tk].entries.splice(idx, 1);
+    atkSaveData(data);
+    atkRenderAll();
+  }
+}
+
+function atkSwitchDesign(d, tabEl) {
+  var panels = document.querySelectorAll('.atk-panel');
+  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+  var tabs = document.querySelectorAll('.atk-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  var target = document.getElementById('atkPanel' + d.toUpperCase());
+  if (target) target.classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  atkRenderAll();
+}
+
+function atkToggleGraph(d) {
+  var panel = document.getElementById('atk' + d.toUpperCase() + '-graphPanel');
+  var lbl = document.getElementById('atk' + d.toUpperCase() + '-graphToggleLabel');
+  if (!panel) return;
+  var isOpen = panel.classList.toggle('open');
+  if (lbl) lbl.textContent = isOpen ? 'Verlauf ausblenden' : 'Verlauf anzeigen';
+  if (isOpen) atkRenderGraph(d, _atkCurrentPeriod[d] || 'woche');
+}
+
+function atkSetPeriod(design, periodId, el) {
+  _atkCurrentPeriod[design] = periodId;
+  var row = document.getElementById('atk' + design.toUpperCase() + '-periods');
+  if (row) {
+    var btns = row.querySelectorAll('.atk-period-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  }
+  if (el) el.classList.add('active');
+  atkRenderGraph(design, periodId);
+}
+
+function atkBuildPeriodRow(design, activePeriod) {
+  var periods = [
     {id:'today',   label:'Heute'},
     {id:'gestern', label:'Gestern'},
     {id:'woche',   label:'Woche'},
     {id:'letzt_w', label:'Letzte Wo.'},
     {id:'monat',   label:'Monat'},
     {id:'ytd',     label:'YTD'},
-    {id:'start',   label:'Seit Beginn'},
+    {id:'start',   label:'Seit Beginn'}
   ];
-  const TAGE_SHORT = ['So','Mo','Di','Mi','Do','Fr','Sa'];
-  const LIMIT = 5;
-
-  function dateKey(d){ return d.toISOString().slice(0,10); }
-  function today(){ return dateKey(new Date()); }
-
-  function loadData(){
-    try{ return JSON.parse(localStorage.getItem(STORE_KEY)||'{}'); }
-    catch(e){ return {}; }
+  var row = document.getElementById('atk' + design.toUpperCase() + '-periods');
+  if (!row) return;
+  row.innerHTML = '';
+  for (var i = 0; i < periods.length; i++) {
+    var p = periods[i];
+    var btn = document.createElement('div');
+    btn.className = 'atk-period-btn' + (p.id === activePeriod ? ' active' : '');
+    btn.textContent = p.label;
+    btn.setAttribute('onclick', 'atkSetPeriod("' + design + '","' + p.id + '",this)');
+    row.appendChild(btn);
   }
-  function saveData(d){ localStorage.setItem(STORE_KEY, JSON.stringify(d)); }
+}
 
-  function getDayEntries(data, dk){
-    return (data[dk]||{entries:[]}).entries;
-  }
-  function getDayUnits(data, dk){
-    return getDayEntries(data,dk).reduce((s,e)=>s+e.units,0);
-  }
+function atkRenderGraph(design, periodId) {
+  atkBuildPeriodRow(design, periodId);
 
-  function getWeekKeys(){
-    const keys=[];
-    const now=new Date();
-    const dow=now.getDay(); // 0=So
-    const monday = new Date(now);
-    monday.setDate(now.getDate() - ((dow+6)%7));
-    for(let i=0;i<7;i++){
-      const d=new Date(monday);
-      d.setDate(monday.getDate()+i);
-      keys.push(dateKey(d));
+  var data = atkLoadData();
+  var td = atkToday();
+  var yd = atkDateKey(new Date(Date.now() - 86400000));
+  var labels = [], curVals = [], prevVals = [];
+
+  if (periodId === 'today' || periodId === 'gestern') {
+    var dk = periodId === 'today' ? td : yd;
+    var entries = atkGetEntries(data, dk);
+    for (var h = 0; h < 24; h++) {
+      labels.push(h + 'h');
+      var sum = 0;
+      for (var e = 0; e < entries.length; e++) {
+        var eh = parseInt(entries[e].time);
+        if (eh === h) sum += entries[e].units;
+      }
+      curVals.push(sum);
     }
-    return keys;
-  }
-
-  function getPrevWeekKeys(){
-    const keys=[];
-    const now=new Date();
-    const dow=now.getDay();
-    const monday = new Date(now);
-    monday.setDate(now.getDate() - ((dow+6)%7) - 7);
-    for(let i=0;i<7;i++){
-      const d=new Date(monday);
-      d.setDate(monday.getDate()+i);
-      keys.push(dateKey(d));
+    prevVals = [];
+  } else if (periodId === 'woche') {
+    var wk = atkWeekKeys(0);
+    var pwk = atkWeekKeys(1);
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(wk[i]);
+      labels.push(TAGE[d.getDay()]);
+      curVals.push(atkGetUnits(data, wk[i]));
+      prevVals.push(atkGetUnits(data, pwk[i]));
     }
-    return keys;
-  }
-
-  function fmtUnits(u){ return u.toFixed(1).replace('.',','); }
-
-  // ── RENDER ALL DESIGNS ──
-  function renderAll(){
-    const data = loadData();
-    const td = today();
-    const yd = dateKey(new Date(Date.now()-86400000));
-    const wKeys = getWeekKeys();
-    const pwKeys = getPrevWeekKeys();
-    const todayU = getDayUnits(data, td);
-    const yestU  = getDayUnits(data, yd);
-    const weekU  = wKeys.reduce((s,k)=>s+getDayUnits(data,k),0);
-    const pWeekU = pwKeys.reduce((s,k)=>s+getDayUnits(data,k),0);
-    const todayEntries = getDayEntries(data, td);
-
-    // PREVIEW in cs-header
-    const prev = document.getElementById('csPreviewAtk');
-    if(prev) prev.textContent = 'Heute: '+fmtUnits(todayU)+' Einh. · Woche: '+fmtUnits(weekU);
-
-    // ── DESIGN A ──
-    const dateEl = document.getElementById('atkA-date');
-    if(dateEl){
-      const now=new Date();
-      dateEl.textContent='Heute · '+['So','Mo','Di','Mi','Do','Fr','Sa'][now.getDay()]+', '+now.getDate()+'. '+['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][now.getMonth()];
+  } else if (periodId === 'letzt_w') {
+    var wk = atkWeekKeys(1);
+    var pwk = atkWeekKeys(2);
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(wk[i]);
+      labels.push(TAGE[d.getDay()]);
+      curVals.push(atkGetUnits(data, wk[i]));
+      prevVals.push(atkGetUnits(data, pwk[i]));
     }
-    const a_today=document.getElementById('atkA-today');
-    const a_week=document.getElementById('atkA-week');
-    if(a_today) a_today.textContent=fmtUnits(todayU);
-    if(a_week) a_week.textContent=fmtUnits(weekU);
-
-    // Week bars A
-    const wbarsEl=document.getElementById('atkA-weekBars');
-    const wdaysEl=document.getElementById('atkA-weekDays');
-    const maxW=Math.max(...wKeys.map(k=>getDayUnits(data,k)),LIMIT);
-    if(wbarsEl){
-      const bars=wbarsEl.querySelectorAll('.atk-week-bar-fill');
-      wKeys.forEach((k,i)=>{
-        const u=getDayUnits(data,k);
-        if(bars[i]) bars[i].style.width=Math.min(100,(u/maxW)*100)+'%';
-      });
+  } else if (periodId === 'monat') {
+    var now = new Date();
+    var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    var daysInPrev  = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    for (var i = 1; i <= daysInMonth; i++) {
+      labels.push(i + '.');
+      curVals.push(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth(), i))));
+      if (i <= daysInPrev)
+        prevVals.push(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth() - 1, i))));
     }
-    if(wdaysEl){
-      wdaysEl.innerHTML='';
-      const now=new Date();
-      wKeys.forEach(k=>{
-        const d=new Date(k);
-        const div=document.createElement('div');
-        div.className='atk-week-day'+(k===td?' today':'');
-        div.textContent=TAGE_SHORT[(d.getDay()+1)%7+((d.getDay()==0)?6:d.getDay()-1)];
-        // simpler: Mo=1..So=0
-        div.textContent=['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()];
-        wdaysEl.appendChild(div);
-      });
+  } else if (periodId === 'ytd') {
+    var now = new Date();
+    for (var m = 0; m <= now.getMonth(); m++) {
+      labels.push(MONATE[m]);
+      var dim = new Date(now.getFullYear(), m + 1, 0).getDate();
+      var s = 0, ps = 0;
+      for (var d = 1; d <= dim; d++) {
+        s  += atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), m, d)));
+        ps += atkGetUnits(data, atkDateKey(new Date(now.getFullYear() - 1, m, d)));
+      }
+      curVals.push(s);
+      prevVals.push(ps);
     }
-
-    // Log A
-    const logA=document.getElementById('atkA-log');
-    if(logA){
-      if(!todayEntries.length){
-        logA.innerHTML='<div class="atk-log-empty">Noch nichts eingetragen</div>';
-      } else {
-        logA.innerHTML=[...todayEntries].reverse().slice(0,5).map((e,ri)=>{
-          const realIdx=todayEntries.length-1-ri;
-          return '<div class="atk-log-row"><div class="atk-log-left"><div class="atk-log-dot"></div>'+e.label+'</div><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--t3)">'+e.time+' · '+fmtUnits(e.units)+' Einh.</span><span class="atk-log-undo" onclick="atkUndo('+realIdx+')">↩</span></div></div>';
-        }).join('');
+  } else { // start
+    var allKeys = Object.keys(data).sort();
+    if (!allKeys.length) { labels = ['–']; curVals = [0]; }
+    else {
+      var mm = {};
+      for (var i = 0; i < allKeys.length; i++) {
+        var mk = allKeys[i].slice(0,7);
+        mm[mk] = (mm[mk] || 0) + atkGetUnits(data, allKeys[i]);
+      }
+      var months = Object.keys(mm).sort();
+      for (var i = 0; i < months.length; i++) {
+        var parts = months[i].split('-');
+        labels.push(MONATE[parseInt(parts[1])-1] + ' ' + parts[0].slice(2));
+        curVals.push(mm[months[i]]);
       }
     }
-
-    // ── DESIGN B ──
-    const b_today=document.getElementById('atkB-today');
-    const b_week=document.getElementById('atkB-week');
-    const b_tdDelta=document.getElementById('atkB-todayDelta');
-    const b_wDelta=document.getElementById('atkB-weekDelta');
-    if(b_today) b_today.textContent=fmtUnits(todayU);
-    if(b_week) b_week.textContent=fmtUnits(weekU);
-    if(b_tdDelta){
-      const diff=todayU-yestU;
-      b_tdDelta.className='atk-b-delta'+(diff>0?' pos':diff<0?' neg':'');
-      b_tdDelta.textContent=(diff===0?'±0':(diff>0?'↑ +':' ↓ ')+fmtUnits(Math.abs(diff)))+' vs. gestern';
-    }
-    if(b_wDelta){
-      const diff=weekU-pWeekU;
-      b_wDelta.className='atk-b-delta'+(diff>0?' pos':diff<0?' neg':'');
-      b_wDelta.textContent=(diff===0?'±0':(diff>0?'↑ +':'↓ ')+fmtUnits(Math.abs(diff)))+' vs. letzte Wo.';
-    }
-    // Mini bars B
-    const mbEl=document.getElementById('atkB-minibars');
-    const wdB=document.getElementById('atkB-weekDays');
-    if(mbEl){
-      mbEl.innerHTML='';
-      const maxB=Math.max(...wKeys.map(k=>getDayUnits(data,k)),0.1);
-      wKeys.forEach(k=>{
-        const u=getDayUnits(data,k);
-        const pct=Math.max(5,(u/maxB)*100);
-        const div=document.createElement('div');
-        div.className='atk-b-minibar';
-        div.style.height=pct+'%';
-        div.style.opacity=k===td?'1':u>0?'0.45':'0.12';
-        mbEl.appendChild(div);
-      });
-    }
-    if(wdB){
-      wdB.innerHTML='';
-      wKeys.forEach(k=>{
-        const d=new Date(k);
-        const div=document.createElement('div');
-        div.className='atk-week-day'+(k===td?' today':'');
-        div.textContent=['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()];
-        wdB.appendChild(div);
-      });
-    }
-
-    // ── DESIGN C ──
-    const arcEl=document.getElementById('atkC-ringArc');
-    const numEl=document.getElementById('atkC-ringNum');
-    if(arcEl && numEl){
-      const pct=Math.min(1, todayU/LIMIT);
-      const circumf=188.5;
-      arcEl.style.strokeDashoffset=circumf-(pct*circumf);
-      numEl.textContent=fmtUnits(todayU);
-    }
-    // Log C
-    const logC=document.getElementById('atkC-log');
-    if(logC){
-      if(!todayEntries.length){
-        logC.innerHTML='<div style="font-size:11px;color:var(--t3);margin-top:4px;">Noch nichts eingetragen</div>';
-      } else {
-        logC.innerHTML=[...todayEntries].reverse().slice(0,3).map((e,ri)=>{
-          const realIdx=todayEntries.length-1-ri;
-          return '<div class="atk-c-log-item"><span>'+e.label+' · '+e.time+'</span><span class="atk-c-log-undo" onclick="atkUndo('+realIdx+')">↩ undo</span></div>';
-        }).join('');
-      }
-    }
-    // Week row C
-    const wrEl=document.getElementById('atkC-weekrow');
-    if(wrEl){
-      wrEl.innerHTML='';
-      const maxC=Math.max(...wKeys.map(k=>getDayUnits(data,k)),0.1);
-      wKeys.forEach(k=>{
-        const u=getDayUnits(data,k);
-        const d=new Date(k);
-        const pct=Math.max(0,(u/maxC)*100);
-        const isToday=k===td;
-        wrEl.innerHTML+='<div class="atk-c-wday"><div class="atk-c-wbarwrap"><div class="atk-c-wbar" style="height:'+pct+'%;opacity:'+(isToday?'1':u>0?'0.45':'0.1')+'"></div></div><div class="atk-c-wlbl'+(isToday?' today':'')+'">'+['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]+'</div></div>';
-      });
-    }
-
-    // Graph if open
-    DESIGNS.forEach(d=>{ if(document.getElementById('atkC-graphPanel')){ /* handled in renderGraph */ }});
   }
 
-  // ── LOG ENTRY ──
-  window.atkLog = function(id, units, label, design){
-    const data=loadData();
-    const td_key=today();
-    if(!data[td_key]) data[td_key]={entries:[]};
-    const now=new Date();
-    const hm=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-    data[td_key].entries.push({id,units,label,time:hm,ts:Date.now()});
-    saveData(data);
-    renderAll();
-    // flash pill in design A
-    if(design==='a'){
-      const pills=document.querySelectorAll('.atk-pill');
-      pills.forEach(p=>{ if(p.textContent.includes(label.replace(/[🍺🍷🥃🍹]/g,'').trim())) { p.classList.add('just-added'); setTimeout(()=>p.classList.remove('just-added'),600); }});
+  // Compare summary
+  var compareEl = document.getElementById('atk' + design.toUpperCase() + '-compare');
+  if (compareEl) {
+    var curSum = curVals.reduce(function(s,v){ return s+v; }, 0);
+    var prevSum = prevVals.reduce(function(s,v){ return s+v; }, 0);
+    var diff = curSum - prevSum;
+    var html = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' Einh.</span>';
+    if (prevSum > 0) {
+      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' Einh.</span>';
+      html += '<span style="font-weight:700;color:' + (diff <= 0 ? '#3a9e5f' : '#e24b4a') + '">' +
+        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' Einh.</span>';
     }
-  };
+    compareEl.innerHTML = html;
+  }
 
-  window.atkLogFromB = function(){
-    const sel=document.getElementById('atkB-sel');
-    if(!sel) return;
-    const [id,units]=sel.value.split('|');
-    const label=sel.options[sel.selectedIndex].text.split(' · ')[0];
-    atkLog(id,parseFloat(units),label,'b');
-  };
+  // Chart
+  var canvasId = 'atk' + design.toUpperCase() + '-chart';
+  var ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  if (typeof Chart === 'undefined') { ctx.parentElement.innerHTML = '<div style="font-size:11px;color:var(--t3);text-align:center;padding:20px;">Chart.js lädt noch…</div>'; return; }
+  if (_atkCharts[design]) { try { _atkCharts[design].destroy(); } catch(e){} }
 
-  window.atkUndo = function(idx){
-    const data=loadData();
-    const td_key=today();
-    if(data[td_key]&&data[td_key].entries[idx]!=null){
-      data[td_key].entries.splice(idx,1);
-      saveData(data);
-      renderAll();
-    }
-  };
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var gridColor = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
+  var tickColor = isDark ? '#8e8e93' : '#6e6e73';
+  var blue = '#0071E3';
+  var gray = isDark ? '#636366' : '#c7c7cc';
 
-  // ── DESIGN SWITCH ──
-  window.atkSwitchDesign = function(d, tabEl){
-    document.querySelectorAll('.atk-panel').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('.atk-tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById('atkPanel'+d.toUpperCase()).classList.add('active');
-    tabEl.classList.add('active');
-    renderAll();
-  };
-
-  // ── GRAPH TOGGLE (mobile) ──
-  window.atkToggleGraph = function(d){
-    const panel=document.getElementById('atk'+d.toUpperCase()+'-graphPanel');
-    const lbl=document.getElementById('atk'+d.toUpperCase()+'-graphToggleLabel');
-    if(!panel) return;
-    const isOpen=panel.classList.toggle('open');
-    if(lbl) lbl.textContent=isOpen?'Verlauf ausblenden':'Verlauf anzeigen';
-    if(isOpen) renderGraph(d,'woche');
-  };
-
-  // ── GRAPH RENDER ──
-  const chartInstances={};
-  function renderGraph(design, periodId){
-    // Build periods UI
-    const periodsEl=document.getElementById('atk'+design.toUpperCase()+'-periods');
-    if(periodsEl){
-      periodsEl.innerHTML=PERIODS.map(p=>
-        '<div class="atk-period-btn'+(p.id===periodId?' active':'')+'" onclick="atkSetPeriod(''+design+'',''+p.id+'',this)">'+p.label+'</div>'
-      ).join('');
-    }
-
-    const data=loadData();
-    const td=today();
-    let labels=[], currentVals=[], prevVals=[], title='';
-
-    if(periodId==='today'){
-      // hourly today
-      const entries=getDayEntries(data,td);
-      labels=[]; currentVals=[];
-      for(let h=0;h<24;h++){
-        labels.push(h+' Uhr');
-        currentVals.push(entries.filter(e=>parseInt(e.time)<h+1&&parseInt(e.time)>=h).reduce((s,e)=>s+e.units,0));
-      }
-      const yKeys=dateKey(new Date(Date.now()-86400000));
-      prevVals=currentVals.map(()=>0);
-      title='Heute (stündlich)';
-    } else if(periodId==='gestern'){
-      const yd=dateKey(new Date(Date.now()-86400000));
-      const entries=getDayEntries(data,yd);
-      labels=[]; currentVals=[]; prevVals=[];
-      for(let h=0;h<24;h++){
-        labels.push(h+'h');
-        currentVals.push(entries.filter(e=>parseInt(e.time)<h+1&&parseInt(e.time)>=h).reduce((s,e)=>s+e.units,0));
-        prevVals.push(0);
-      }
-      title='Gestern';
-    } else if(periodId==='woche'){
-      const wk=getWeekKeys();
-      const pwk=getPrevWeekKeys();
-      labels=wk.map(k=>{ const d=new Date(k); return ['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]; });
-      currentVals=wk.map(k=>getDayUnits(data,k));
-      prevVals=pwk.map(k=>getDayUnits(data,k));
-      title='Diese Woche vs. letzte Woche';
-    } else if(periodId==='letzt_w'){
-      const pwk=getPrevWeekKeys();
-      const ppwk=getPrevWeekKeys().map(k=>dateKey(new Date(new Date(k).getTime()-7*86400000)));
-      labels=pwk.map(k=>{ const d=new Date(k); return ['So','Mo','Di','Mi','Do','Fr','Sa'][d.getDay()]; });
-      currentVals=pwk.map(k=>getDayUnits(data,k));
-      prevVals=ppwk.map(k=>getDayUnits(data,k));
-      title='Letzte Woche vs. Vorwoche';
-    } else if(periodId==='monat'){
-      const now=new Date();
-      const days=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-      const prevDays=new Date(now.getFullYear(),now.getMonth(),0).getDate();
-      labels=Array.from({length:days},(_,i)=>i+1+'.');
-      currentVals=Array.from({length:days},(_,i)=>{
-        const d=new Date(now.getFullYear(),now.getMonth(),i+1);
-        return getDayUnits(data,dateKey(d));
-      });
-      prevVals=Array.from({length:Math.min(days,prevDays)},(_,i)=>{
-        const d=new Date(now.getFullYear(),now.getMonth()-1,i+1);
-        return getDayUnits(data,dateKey(d));
-      });
-      title='Dieser Monat vs. Vormonat';
-    } else if(periodId==='ytd'){
-      const now=new Date();
-      labels=[]; currentVals=[]; prevVals=[];
-      for(let m=0;m<now.getMonth()+1;m++){
-        const mn=['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][m];
-        labels.push(mn);
-        const daysInMonth=new Date(now.getFullYear(),m+1,0).getDate();
-        let sum=0;
-        for(let d=1;d<=daysInMonth;d++) sum+=getDayUnits(data,dateKey(new Date(now.getFullYear(),m,d)));
-        currentVals.push(sum);
-        let psum=0;
-        for(let d=1;d<=daysInMonth;d++) psum+=getDayUnits(data,dateKey(new Date(now.getFullYear()-1,m,d)));
-        prevVals.push(psum);
-      }
-      title='YTD vs. Vorjahr';
-    } else if(periodId==='start'){
-      // All time: group by month
-      const keys=Object.keys(data).sort();
-      if(!keys.length){ labels=['–']; currentVals=[0]; prevVals=[0]; }
-      else {
-        const monthMap={};
-        keys.forEach(k=>{ const m=k.slice(0,7); monthMap[m]=(monthMap[m]||0)+getDayUnits(data,k); });
-        const months=Object.keys(monthMap).sort();
-        labels=months.map(m=>{ const [y,mo]=m.split('-'); return ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'][parseInt(mo)-1]+' '+y.slice(2); });
-        currentVals=months.map(m=>monthMap[m]);
-        prevVals=[];
-      }
-      title='Seit Beginn';
-    }
-
-    // Summary compare
-    const compareEl=document.getElementById('atk'+design.toUpperCase()+'-compare');
-    if(compareEl){
-      const curSum=currentVals.reduce((s,v)=>s+v,0);
-      const prevSum=prevVals.reduce((s,v)=>s+v,0);
-      const diff=curSum-prevSum;
-      compareEl.innerHTML=
-        '<span><span class="atk-cmp-dot"></span> Aktuell: '+fmtUnits(curSum)+' Einh.</span>'+
-        (prevSum>0?'<span><span class="atk-cmp-dot prev"></span> Vorperiode: '+fmtUnits(prevSum)+' Einh.</span>'+
-        '<span style="font-weight:700;color:'+(diff<=0?'#3a9e5f':'#e24b4a')+'">'+
-        (diff===0?'±0':(diff>0?'+':'')+fmtUnits(diff))+' Einh.</span>':'');
-    }
-
-    // Chart
-    const canvasId='atk'+design.toUpperCase()+'-chart';
-    const ctx=document.getElementById(canvasId);
-    if(!ctx) return;
-    if(chartInstances[design]) chartInstances[design].destroy();
-
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    const gridColor=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
-    const textColor=isDark?'#8e8e93':'#6e6e73';
-    const blue='#0071E3';
-    const gray=isDark?'#48484a':'#c7c7cc';
-
-    const datasets=[{
-      label:'Aktuell',
-      data:currentVals,
-      backgroundColor:blue+'33',
-      borderColor:blue,
-      borderWidth:2,
-      borderRadius:4,
-      pointRadius:3,
-      pointBackgroundColor:blue,
-      fill:true,
-      tension:0.3,
-      type: labels.length>10 ? 'line' : 'bar',
-    }];
-    if(prevVals.length){
-      datasets.push({
-        label:'Vorperiode',
-        data:prevVals.slice(0,labels.length),
-        backgroundColor:gray+'44',
-        borderColor:gray,
-        borderWidth:1.5,
-        borderRadius:4,
-        borderDash:[4,3],
-        pointRadius:2,
-        fill:false,
-        tension:0.3,
-        type: labels.length>10 ? 'line' : 'bar',
-      });
-    }
-
-    chartInstances[design]=new Chart(ctx,{
-      type: labels.length>10 ? 'line' : 'bar',
-      data:{ labels, datasets },
-      options:{
-        responsive:true,
-        maintainAspectRatio:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{
-            callbacks:{
-              label: ctx => fmtUnits(ctx.parsed.y||0)+' Einh.'
-            }
-          }
-        },
-        scales:{
-          x:{
-            ticks:{color:textColor,font:{size:10,family:'Montserrat'},maxRotation:45,autoSkip:true,maxTicksLimit:12},
-            grid:{display:false},
-            border:{display:false}
-          },
-          y:{
-            ticks:{color:textColor,font:{size:10,family:'Montserrat'},callback:v=>fmtUnits(v)},
-            grid:{color:gridColor},
-            border:{display:false},
-            min:0
-          }
-        }
-      }
+  var chartType = labels.length > 14 ? 'line' : 'bar';
+  var datasets = [{
+    label: 'Aktuell',
+    data: curVals,
+    backgroundColor: blue + '33',
+    borderColor: blue,
+    borderWidth: 2,
+    borderRadius: chartType === 'bar' ? 4 : 0,
+    pointRadius: chartType === 'line' ? 3 : 0,
+    pointBackgroundColor: blue,
+    fill: chartType === 'line',
+    tension: 0.3
+  }];
+  if (prevVals.length) {
+    datasets.push({
+      label: 'Vorperiode',
+      data: prevVals.slice(0, labels.length),
+      backgroundColor: gray + '33',
+      borderColor: gray,
+      borderWidth: 1.5,
+      borderRadius: chartType === 'bar' ? 4 : 0,
+      pointRadius: chartType === 'line' ? 2 : 0,
+      fill: false,
+      tension: 0.3
     });
   }
 
-  window.atkSetPeriod = function(design, periodId, el){
-    document.querySelectorAll('#atk'+design.toUpperCase()+'-periods .atk-period-btn').forEach(b=>b.classList.remove('active'));
-    el.classList.add('active');
-    renderGraph(design, periodId);
-  };
+  _atkCharts[design] = new Chart(ctx, {
+    type: chartType,
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' Einh.'; } } }
+      },
+      scales: {
+        x: {
+          ticks: { color: tickColor, font: { size: 10, family: 'Montserrat' }, maxRotation: 45, autoSkip: true, maxTicksLimit: 12 },
+          grid: { display: false },
+          border: { display: false }
+        },
+        y: {
+          ticks: { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v); } },
+          grid: { color: gridColor },
+          border: { display: false },
+          min: 0
+        }
+      }
+    }
+  });
+}
 
-  // init
-  renderAll();
-})();
+// Init on DOMContentLoaded to be safe
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', atkRenderAll);
+} else {
+  atkRenderAll();
+}
 </script>
 </body>
 </html>
