@@ -560,7 +560,6 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* ── ALKOHOL TRACKER ── */
 .atk-outer{margin:0;}
 .atk-wrap{display:flex;flex-direction:column;gap:8px;padding:0;}
-.atk-expand-toggle{display:none;align-items:center;justify-content:center;gap:5px;padding:8px 16px;border-top:1px solid var(--border);font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;-webkit-tap-highlight-color:transparent;background:none;border-left:none;border-right:none;border-bottom:none;}
 .atk-tabs{display:flex;gap:6px;flex-wrap:wrap;}
 .atk-tab{padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);transition:background .15s,color .15s;}
 .atk-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
@@ -630,16 +629,15 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-c-wbar{width:100%;border-radius:2px 2px 0 0;background:var(--blue);}
 .atk-c-wlbl{font-size:9px;color:var(--t3);}
 .atk-c-wlbl.today{color:var(--blue);font-weight:700;}
-.atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:9px;border-radius:var(--r2);background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
-.atk-graph-panel{display:block;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
+/* atk-detail: Desktop always open, Mobile collapsed */
+.atk-detail{display:block;}
+.atk-expand-btn{display:none;}
+.atk-graph-panel-inline{margin-top:8px;padding:14px 16px;border-top:1px solid var(--border);}
 @media(max-width:600px){
-  .atk-graph-toggle{display:flex;}
-  .atk-graph-panel{display:none;}
-  .atk-graph-panel.open{display:block;}
-  .atk-mobile-detail{display:none;overflow:hidden;}
-  .atk-mobile-detail.open{display:block;}
-  .atk-expand-toggle{display:flex;}
-  .atk-a-top{cursor:pointer;}
+  .atk-detail{display:none;overflow:hidden;}
+  .atk-detail.open{display:block;}
+  .atk-expand-btn{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-top:1px solid var(--border);font-size:11.5px;font-weight:600;color:var(--blue);cursor:pointer;-webkit-tap-highlight-color:transparent;gap:6px;}
+  .atk-graph-panel-inline{padding:12px 16px 0;}
 }
 .atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
@@ -1974,7 +1972,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   <!-- DESIGN A -->
   <div id="atkPanelA">
     <div class="atk-a">
-      <div class="atk-a-top">
+
+      <!-- HEADER: immer sichtbar, auf Mobile tippbar -->
+      <div class="atk-a-top" onclick="atkToggleMobile()" style="cursor:pointer;" title="Antippen zum Aufklappen">
         <div>
           <div class="atk-a-title">🍺 Alkohol-Tracker</div>
           <div class="atk-a-sub" id="atkA-date">Heute</div>
@@ -1984,21 +1984,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
           <div class="atk-a-sub">Woche: <span id="atkA-week">0,0</span></div>
         </div>
       </div>
-      <div class="atk-mobile-detail" id="atkMobileDetail">
-      <div class="atk-pills">
-        <div class="atk-pill" onclick="atkLog('bier03',1.3,'🍺 Bier 0,33l','a')">🍺 Bier 0,33l</div>
-        <div class="atk-pill" onclick="atkLog('bier05',2.0,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
-        <div class="atk-pill" onclick="atkLog('wein02',1.9,'🍷 Wein 0,2l','a')">🍷 Wein 0,2l</div>
-        <div class="atk-pill" onclick="atkLog('wein04',3.8,'🍷 Wein 0,4l','a')">🍷 Wein 0,4l</div>
-        <div class="atk-pill" onclick="atkLog('schnaps2',0.6,'🥃 Schnaps 2cl','a')">🥃 Schnaps 2cl</div>
-        <div class="atk-pill" onclick="atkLog('schnaps4',1.3,'🥃 Schnaps 4cl','a')">🥃 Schnaps 4cl</div>
-        <div class="atk-pill" onclick="atkLog('mix03',1.2,'🍹 Mix 0,3l','a')">🍹 Mix 0,3l</div>
-      </div>
-      <div style="padding:4px 16px 0;font-size:9.5px;color:var(--t3);display:flex;flex-wrap:wrap;gap:8px;">
-        <span>🍺 0,33l = 1,3g</span><span>🍺 0,5l = 2,0g</span><span>🍷 0,2l = 1,9g</span><span>🍷 0,4l = 3,8g</span><span>🥃 2cl = 0,6g</span><span>🥃 4cl = 1,3g</span>
-        <span style="color:var(--t3);font-style:italic">· g reiner Alkohol</span>
-      </div>
-      </div><!-- /atk-mobile-detail -->
+
+      <!-- WOCHENBALKEN: immer sichtbar -->
       <div class="atk-week">
         <div class="atk-week-bars" id="atkA-weekBars">
           <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
@@ -2011,22 +1998,38 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         </div>
         <div class="atk-week-days" id="atkA-weekDays"></div>
       </div>
-      <div class="atk-mobile-detail" id="atkMobileDetail2">
-      <div class="atk-log" id="atkA-log"></div>
-      <div style="padding:0 16px 10px;font-size:9.5px;font-weight:500;" id="atkSyncStatus"></div>
-      </div><!-- /atk-mobile-detail2 -->
-    </div>
-    <!-- Mobile expand toggle -->
-    <div class="atk-expand-toggle" id="atkExpandToggle" onclick="atkToggleMobile()">
-      <span id="atkExpandLabel">Eintragen ↓</span>
-    </div>
-    <div class="atk-graph-toggle" onclick="atkToggleGraph('a')">
-      <span>📊</span><span id="atkA-graphToggleLabel">Verlauf anzeigen</span>
-    </div>
-    <div class="atk-graph-panel" id="atkA-graphPanel">
-      <div class="atk-period-row" id="atkA-periods"></div>
-      <div class="atk-graph-canvas"><canvas id="atkA-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
-      <div class="atk-graph-compare" id="atkA-compare"></div>
+
+      <!-- EXPAND BUTTON: nur Mobile -->
+      <div class="atk-expand-btn" id="atkExpandBtn" onclick="atkToggleMobile()">
+        <span id="atkExpandLabel">+ Eintragen &amp; Verlauf</span>
+        <svg id="atkExpandChev" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .25s;flex-shrink:0"><polyline points="5 8 10 13 15 8"/></svg>
+      </div>
+
+      <!-- COLLAPSIBLE: Pills + Log — auf Mobile zugeklappt, Desktop immer offen -->
+      <div class="atk-detail" id="atkDetail">
+        <div class="atk-pills">
+          <div class="atk-pill" onclick="atkLog('bier03',1.3,'🍺 Bier 0,33l','a')">🍺 Bier 0,33l</div>
+          <div class="atk-pill" onclick="atkLog('bier05',2.0,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
+          <div class="atk-pill" onclick="atkLog('wein02',1.9,'🍷 Wein 0,2l','a')">🍷 Wein 0,2l</div>
+          <div class="atk-pill" onclick="atkLog('wein04',3.8,'🍷 Wein 0,4l','a')">🍷 Wein 0,4l</div>
+          <div class="atk-pill" onclick="atkLog('schnaps2',0.6,'🥃 Schnaps 2cl','a')">🥃 Schnaps 2cl</div>
+          <div class="atk-pill" onclick="atkLog('schnaps4',1.3,'🥃 Schnaps 4cl','a')">🥃 Schnaps 4cl</div>
+          <div class="atk-pill" onclick="atkLog('mix03',1.2,'🍹 Mix 0,3l','a')">🍹 Mix 0,3l</div>
+        </div>
+        <div style="padding:4px 16px 0;font-size:9.5px;color:var(--t3);display:flex;flex-wrap:wrap;gap:8px;">
+          <span>🍺 0,33l = 1,3g</span><span>🍺 0,5l = 2,0g</span><span>🍷 0,2l = 1,9g</span><span>🍷 0,4l = 3,8g</span><span>🥃 2cl = 0,6g</span><span>🥃 4cl = 1,3g</span>
+          <span style="color:var(--t3);font-style:italic">· g reiner Alkohol</span>
+        </div>
+        <div class="atk-log" id="atkA-log"></div>
+        <div style="padding:0 16px 6px;font-size:9.5px;font-weight:500;" id="atkSyncStatus"></div>
+        <!-- Verlauf direkt integriert -->
+        <div class="atk-graph-panel-inline" id="atkA-graphPanel">
+          <div class="atk-period-row" id="atkA-periods"></div>
+          <div class="atk-graph-canvas"><canvas id="atkA-chart" role="img" aria-label="Alkohol Verlauf"></canvas></div>
+          <div class="atk-graph-compare" id="atkA-compare"></div>
+        </div>
+      </div><!-- /atk-detail -->
+
     </div>
   </div>
 </div><!-- /csBodyAtk -->
@@ -4868,17 +4871,17 @@ function atkRenderAll() {
 
 /* ── DESIGN SWITCH (kept for compat) ── */
 function atkToggleMobile() {
-  var d1  = document.getElementById('atkMobileDetail');
-  var d2  = document.getElementById('atkMobileDetail2');
-  var lbl = document.getElementById('atkExpandLabel');
-  var gt  = document.getElementById('atkA-graphPanel');
-  var gtt = document.querySelector('.atk-graph-toggle');
-  var isOpen = d1 && d1.classList.contains('open');
-  if (d1) d1.classList.toggle('open', !isOpen);
-  if (d2) d2.classList.toggle('open', !isOpen);
-  if (lbl) lbl.textContent = isOpen ? 'Eintragen ↓' : 'Schließen ↑';
-  // hide graph when collapsing
-  if (isOpen && gt) { gt.classList.remove('open'); if (gtt) { var gtlbl = document.getElementById('atkA-graphToggleLabel'); if(gtlbl) gtlbl.textContent='Verlauf anzeigen'; } }
+  var detail = document.getElementById('atkDetail');
+  var lbl    = document.getElementById('atkExpandLabel');
+  var chev   = document.getElementById('atkExpandChev');
+  if (!detail) return;
+  var isOpen = detail.classList.toggle('open');
+  if (lbl)  lbl.textContent  = isOpen ? '− Schließen' : '+ Eintragen & Verlauf';
+  if (chev) chev.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  // Render graph when opening
+  if (isOpen) {
+    atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
+  }
 }
 
 function atkSwitchDesign(d, tabEl) {
@@ -4894,12 +4897,8 @@ function atkSwitchDesign(d, tabEl) {
 
 /* ── GRAPH TOGGLE (mobile) ── */
 function atkToggleGraph(d) {
-  var panel = document.getElementById('atk' + d.toUpperCase() + '-graphPanel');
-  var lbl   = document.getElementById('atk' + d.toUpperCase() + '-graphToggleLabel');
-  if (!panel) return;
-  var isOpen = panel.classList.toggle('open');
-  if (lbl) lbl.textContent = isOpen ? 'Verlauf ausblenden' : 'Verlauf anzeigen';
-  if (isOpen) atkRenderGraph(d, _atkCurrentPeriod[d] || 'today');
+  // kept for compat — graph is now inline in atk-detail
+  atkRenderGraph(d, _atkCurrentPeriod[d] || 'today');
 }
 
 /* ── PERIOD ROW ── */
@@ -5132,8 +5131,9 @@ function atkRenderGraph(design, periodId) {
 function atkInit() {
   // 1. Render sofort aus lokalem Cache
   atkRenderAll();
+  // Desktop: render graph inline immediately
   if (window.innerWidth > 600) {
-    atkRenderGraph('a', 'today');
+    atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
   }
   // 2. Sheet im Hintergrund pullen und neu rendern
   atkPullSheet(function() {
