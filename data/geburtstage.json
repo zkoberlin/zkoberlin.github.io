@@ -1,42 +1,42 @@
 {
-  "datum": "20.05.2026",
-  "generiert": "2026-05-20T11:38:02Z",
+  "datum": "21.05.2026",
+  "generiert": "2026-05-21T12:31:51Z",
   "geburtstage": [
     {
-      "name": "Nils Schumann",
-      "alter": 48,
-      "geburtsjahr": 1978,
-      "beruf": "German Middle-Distance Runner",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Koech%2C_Kiplagat%2C_Schumann_2.jpg/330px-Koech%2C_Kiplagat%2C_Schumann_2.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Nils_Schumann",
+      "name": "Lisa Evans",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Scottish Footballer (Born 1992)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Lisa_Evans.jpg/330px-Lisa_Evans.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Lisa_Evans",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jamie Chadwick",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "British Racing Driver (Born 1998)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Jamie_Chadwick_%28cropped%29.jpg/330px-Jamie_Chadwick_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Jamie_Chadwick",
-      "nationalitaet": null
+      "name": "Philipp Grüneberg",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "German Footballer (Born 1992)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Gr%C3%BCneberg",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Kaoru Mitoma",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Japanese Footballer (Born 1997)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Kaoru_Mitoma_%282022%29.jpg/330px-Kaoru_Mitoma_%282022%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Kaoru_Mitoma",
-      "nationalitaet": null
+      "name": "Max Mutzke",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "Musical Artist",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Max_Mutzke2013PF.jpg/330px-Max_Mutzke2013PF.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Max_Mutzke",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Brian Kelly (rugby league)",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Australian Rugby League Footballer (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Brian_Kelly_Titans.jpg/330px-Brian_Kelly_Titans.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Brian_Kelly_(rugby_league)",
-      "nationalitaet": null
+      "name": "Briana Banks",
+      "alter": 48,
+      "geburtsjahr": 1978,
+      "beruf": "American Pornographic Actress And Model (Born 1978)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Briana_Banks_2016.jpg/330px-Briana_Banks_2016.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Briana_Banks",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
