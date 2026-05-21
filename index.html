@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.10 -->
+<title>Paul · Hub</title><!-- v5.10.11 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -560,6 +560,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* ── ALKOHOL TRACKER ── */
 .atk-outer{margin:0;}
 .atk-wrap{display:flex;flex-direction:column;gap:8px;padding:0;}
+.atk-expand-toggle{display:none;align-items:center;justify-content:center;gap:5px;padding:8px 16px;border-top:1px solid var(--border);font-size:11px;font-weight:600;color:var(--blue);cursor:pointer;-webkit-tap-highlight-color:transparent;background:none;border-left:none;border-right:none;border-bottom:none;}
 .atk-tabs{display:flex;gap:6px;flex-wrap:wrap;}
 .atk-tab{padding:5px 13px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);transition:background .15s,color .15s;}
 .atk-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
@@ -631,7 +632,15 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-c-wlbl.today{color:var(--blue);font-weight:700;}
 .atk-graph-toggle{display:none;align-items:center;justify-content:center;gap:5px;margin-top:8px;padding:9px;border-radius:var(--r2);background:var(--card2);border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);-webkit-tap-highlight-color:transparent;}
 .atk-graph-panel{display:block;margin-top:8px;background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
-@media(max-width:600px){.atk-graph-toggle{display:flex;}.atk-graph-panel{display:none;}.atk-graph-panel.open{display:block;}}
+@media(max-width:600px){
+  .atk-graph-toggle{display:flex;}
+  .atk-graph-panel{display:none;}
+  .atk-graph-panel.open{display:block;}
+  .atk-mobile-detail{display:none;overflow:hidden;}
+  .atk-mobile-detail.open{display:block;}
+  .atk-expand-toggle{display:flex;}
+  .atk-a-top{cursor:pointer;}
+}
 .atk-period-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
 .atk-period-btn{padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:10.5px;font-weight:600;color:var(--t2);cursor:pointer;font-family:var(--font-head);}
 .atk-period-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
@@ -1774,7 +1783,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.10
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.11
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1975,6 +1984,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
           <div class="atk-a-sub">Woche: <span id="atkA-week">0,0</span></div>
         </div>
       </div>
+      <div class="atk-mobile-detail" id="atkMobileDetail">
       <div class="atk-pills">
         <div class="atk-pill" onclick="atkLog('bier03',1.3,'🍺 Bier 0,33l','a')">🍺 Bier 0,33l</div>
         <div class="atk-pill" onclick="atkLog('bier05',2.0,'🍺 Bier 0,5l','a')">🍺 Bier 0,5l</div>
@@ -1988,6 +1998,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         <span>🍺 0,33l = 1,3g</span><span>🍺 0,5l = 2,0g</span><span>🍷 0,2l = 1,9g</span><span>🍷 0,4l = 3,8g</span><span>🥃 2cl = 0,6g</span><span>🥃 4cl = 1,3g</span>
         <span style="color:var(--t3);font-style:italic">· g reiner Alkohol</span>
       </div>
+      </div><!-- /atk-mobile-detail -->
       <div class="atk-week">
         <div class="atk-week-bars" id="atkA-weekBars">
           <div class="atk-week-bar"><div class="atk-week-bar-fill" style="width:0%"></div></div>
@@ -2000,8 +2011,14 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         </div>
         <div class="atk-week-days" id="atkA-weekDays"></div>
       </div>
+      <div class="atk-mobile-detail" id="atkMobileDetail2">
       <div class="atk-log" id="atkA-log"></div>
       <div style="padding:0 16px 10px;font-size:9.5px;font-weight:500;" id="atkSyncStatus"></div>
+      </div><!-- /atk-mobile-detail2 -->
+    </div>
+    <!-- Mobile expand toggle -->
+    <div class="atk-expand-toggle" id="atkExpandToggle" onclick="atkToggleMobile()">
+      <span id="atkExpandLabel">Eintragen ↓</span>
     </div>
     <div class="atk-graph-toggle" onclick="atkToggleGraph('a')">
       <span>📊</span><span id="atkA-graphToggleLabel">Verlauf anzeigen</span>
@@ -4569,7 +4586,7 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.10 ──
+// ── ALKOHOL TRACKER v5.10.11 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'today'};
@@ -4850,6 +4867,20 @@ function atkRenderAll() {
 }
 
 /* ── DESIGN SWITCH (kept for compat) ── */
+function atkToggleMobile() {
+  var d1  = document.getElementById('atkMobileDetail');
+  var d2  = document.getElementById('atkMobileDetail2');
+  var lbl = document.getElementById('atkExpandLabel');
+  var gt  = document.getElementById('atkA-graphPanel');
+  var gtt = document.querySelector('.atk-graph-toggle');
+  var isOpen = d1 && d1.classList.contains('open');
+  if (d1) d1.classList.toggle('open', !isOpen);
+  if (d2) d2.classList.toggle('open', !isOpen);
+  if (lbl) lbl.textContent = isOpen ? 'Eintragen ↓' : 'Schließen ↑';
+  // hide graph when collapsing
+  if (isOpen && gt) { gt.classList.remove('open'); if (gtt) { var gtlbl = document.getElementById('atkA-graphToggleLabel'); if(gtlbl) gtlbl.textContent='Verlauf anzeigen'; } }
+}
+
 function atkSwitchDesign(d, tabEl) {
   var panels = document.querySelectorAll('.atk-panel');
   for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
