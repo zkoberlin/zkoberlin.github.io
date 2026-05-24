@@ -1,41 +1,41 @@
 {
-  "datum": "23.05.2026",
-  "generiert": "2026-05-23T08:36:25Z",
+  "datum": "24.05.2026",
+  "generiert": "2026-05-24T09:25:24Z",
   "geburtstage": [
     {
-      "name": "Katharina Schmid",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "German Ski Jumper (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/20190225_Seefeld_SJ_3326.jpg/330px-20190225_Seefeld_SJ_3326.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Katharina_Schmid",
+      "name": "Martin Winterkorn",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Hochschullehrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Martin_Winterkorn_2015-03-13_001.jpg/120px-Martin_Winterkorn_2015-03-13_001.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q68355",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lena Meyer-Landrut",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "German Singer (Born 1991)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/MJK_67923_Lena_Meyer-Landrut_%28Berlinale_2020%29.jpg/330px-MJK_67923_Lena_Meyer-Landrut_%28Berlinale_2020%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Lena_Meyer-Landrut",
+      "name": "Walter Moers",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schriftsteller",
+      "foto": null,
+      "wikidata": "https://www.wikidata.org/wiki/Q62073",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Manuela Schwesig",
-      "alter": 52,
-      "geburtsjahr": 1974,
-      "beruf": "German Politician (Born 1974)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Visita_-_Manuela_Schwesig_e_comitiva_%2854003160965%29.jpg/330px-Visita_-_Manuela_Schwesig_e_comitiva_%2854003160965%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Manuela_Schwesig",
+      "name": "Lilli Palmer",
+      "alter": 112,
+      "geburtsjahr": 1914,
+      "beruf": "German Actress (1914–1986)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Lilli_Palmer_1946.png/330px-Lilli_Palmer_1946.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Lilli_Palmer",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Tom Tykwer",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "German Film Director",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/MKr350747_Tom_Tykwer_%28NRW-Empfang%2C_Berlinale_2024%29.jpg/330px-MKr350747_Tom_Tykwer_%28NRW-Empfang%2C_Berlinale_2024%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Tom_Tykwer",
+      "name": "Cathinka Buchwieser",
+      "alter": 237,
+      "geburtsjahr": 1789,
+      "beruf": "German Operatic Soprano And Actress (1789–1828)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Cathinka_Buchwieser_1813.tif/lossless-page1-330px-Cathinka_Buchwieser_1813.tif.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Cathinka_Buchwieser",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
