@@ -1,41 +1,41 @@
 {
-  "datum": "24.05.2026",
-  "generiert": "2026-05-24T09:25:24Z",
+  "datum": "25.05.2026",
+  "generiert": "2026-05-25T12:53:27Z",
   "geburtstage": [
     {
-      "name": "Martin Winterkorn",
+      "name": "Klaus Meine",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Hochschullehrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Martin_Winterkorn_2015-03-13_001.jpg/120px-Martin_Winterkorn_2015-03-13_001.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q68355",
+      "beruf": "Songwriter/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG/120px-20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q154978",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Walter Moers",
+      "name": "Samed Yeşil",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schriftsteller",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Samed_Yesil_%28cropped%29.jpg/120px-Samed_Yesil_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q512991",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Moritz Stehling",
+      "alter": 39,
+      "geburtsjahr": 1987,
+      "beruf": "German Professional Footballer (Born 1987)",
       "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q62073",
+      "wikidata": "https://en.wikipedia.org/wiki/Moritz_Stehling",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lilli Palmer",
-      "alter": 112,
-      "geburtsjahr": 1914,
-      "beruf": "German Actress (1914–1986)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Lilli_Palmer_1946.png/330px-Lilli_Palmer_1946.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Lilli_Palmer",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Cathinka Buchwieser",
-      "alter": 237,
-      "geburtsjahr": 1789,
-      "beruf": "German Operatic Soprano And Actress (1789–1828)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Cathinka_Buchwieser_1813.tif/lossless-page1-330px-Cathinka_Buchwieser_1813.tif.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Cathinka_Buchwieser",
+      "name": "Alfred Kubel",
+      "alter": 117,
+      "geburtsjahr": 1909,
+      "beruf": "German Politician (1909–1999)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Bundesarchiv_B_145_Bild-F046646-0036%2C_Bonn%2C_Empfang_f%C3%BCr_Bundesratsdirektor_Dr._Pfitzer_%28Alfred_Kubel_cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Alfred_Kubel",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
