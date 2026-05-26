@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.11 -->
+<title>Paul · Hub</title><!-- v5.10.12 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1781,7 +1781,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.11
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.12
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -4402,6 +4402,7 @@ async function loadUnion(){
           ${seasonCompareHtml}
         </div>
       </div>`:''}
+      ${!showTransferWindow?`
       <div class="uc-box">
         <div class="uc-box-lbl">⚽ Top 3 Torschützen</div>
         ${top3GoalsHtml}
@@ -4409,7 +4410,7 @@ async function loadUnion(){
       <div class="uc-box">
         <div class="uc-box-lbl">🎯 Top 3 Scorer (Tore + Assists)</div>
         ${top3ScorerHtml}
-      </div>`;
+      </div>`:''}` ;
 
     // Transfer-Fenster async laden (nach DOM-Render)
     if(showTransferWindow) setTimeout(()=>loadTransfers(d,next),0);
