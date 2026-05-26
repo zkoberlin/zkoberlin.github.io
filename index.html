@@ -4410,7 +4410,8 @@ async function loadUnion(){
       <div class="uc-box">
         <div class="uc-box-lbl">🎯 Top 3 Scorer (Tore + Assists)</div>
         ${top3ScorerHtml}
-      </div>`:''}` ;
+      </div>`:''}
+    `;
 
     // Transfer-Fenster async laden (nach DOM-Render)
     if(showTransferWindow) setTimeout(()=>loadTransfers(d,next),0);
