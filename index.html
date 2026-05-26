@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.10.13 -->
+<title>Paul · Hub</title><!-- v5.11.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -589,6 +589,22 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-log-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;}
 .atk-log-undo{font-size:10px;color:#e24b4a;cursor:pointer;padding:2px 5px;border-radius:5px;}
 .atk-log-empty{font-size:11px;color:var(--t3);text-align:center;padding:8px 0;}
+/* ── ATK STREAKS ── */
+.atk-streaks{display:flex;gap:6px;padding:0 16px 10px;flex-wrap:wrap;}
+.atk-streak-chip{flex:1;min-width:120px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:8px 10px;display:flex;flex-direction:column;gap:2px;position:relative;overflow:hidden;}
+.atk-streak-chip.sober{border-color:var(--green-b);background:var(--green-l);}
+.atk-streak-chip.drinking{border-color:var(--orange-b);background:var(--orange-l);}
+.atk-streak-chip.record-sober{border-color:var(--green-b);background:var(--green-l);box-shadow:0 0 0 1.5px var(--green);}
+.atk-streak-chip.record-drinking{border-color:var(--orange-b);background:var(--orange-l);box-shadow:0 0 0 1.5px var(--orange);}
+.atk-streak-num{font-size:20px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums;font-family:var(--font-head);line-height:1;}
+.atk-streak-num.green{color:var(--green);}
+.atk-streak-num.orange{color:var(--orange);}
+.atk-streak-num.grey{color:var(--t3);}
+.atk-streak-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);font-family:var(--font-head);}
+.atk-streak-sub{font-size:9.5px;color:var(--t3);margin-top:1px;}
+.atk-streak-record{font-size:9px;font-weight:700;color:var(--green);margin-top:3px;padding:2px 5px;border-radius:5px;background:var(--green-l);border:1px solid var(--green-b);align-self:flex-start;}
+.atk-streak-record.drink{color:var(--orange);background:var(--orange-l);border-color:var(--orange-b);}
+.atk-streak-trophy{position:absolute;top:6px;right:8px;font-size:14px;opacity:.5;}
 .atk-b{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);padding:14px 16px;}
 .atk-b-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
 .atk-b-title{font-size:13px;font-weight:700;color:var(--text);font-family:var(--font-head);}
@@ -1998,6 +2014,9 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         </div>
         <div class="atk-week-days" id="atkA-weekDays"></div>
       </div>
+
+      <!-- STREAKS -->
+      <div id="atkStreaks" class="atk-streaks"></div>
 
       <!-- EXPAND BUTTON: nur Mobile -->
       <div class="atk-expand-btn" id="atkExpandBtn" onclick="atkToggleMobile()">
@@ -4802,6 +4821,148 @@ function atkWeekKeys(offset) {
 }
 
 /* ══════════════════════════════════════════
+   STREAK ENGINE
+══════════════════════════════════════════ */
+function atkLoadRecords() {
+  try { return JSON.parse(localStorage.getItem('atkRecords_v1') || '{}'); }
+  catch(e) { return {}; }
+}
+function atkSaveRecords(r) {
+  try { localStorage.setItem('atkRecords_v1', JSON.stringify(r)); } catch(e) {}
+}
+
+function atkComputeStreaks(data) {
+  // Build sorted list of all date-keys that exist in data
+  var allKeys = Object.keys(data).sort();
+  if (!allKeys.length) return { soberCur:0, drinkCur:0, soberBest:0, drinkBest:0 };
+
+  // Walk backwards from today to compute current streaks
+  var td = atkToday();
+  var soberCur = 0, drinkCur = 0;
+  var soberDone = false, drinkDone = false;
+  var d = new Date(td);
+
+  for (var i = 0; i < 1000; i++) {
+    var dk = atkDateKey(d);
+    var u  = atkGetUnits(data, dk);
+    if (!soberDone) {
+      if (u === 0) { soberCur++; }
+      else { soberDone = true; }
+    }
+    if (!drinkDone) {
+      if (u > 0) { drinkCur++; }
+      else if (i > 0) { drinkDone = true; } // allow gap on "today" if nothing logged yet
+    }
+    if (soberDone && drinkDone) break;
+    // only go back as far as earliest data key
+    if (dk <= allKeys[0] && i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+
+  // Walk ALL data to find best ever streaks
+  // Build a dense calendar from first to last data key
+  var first = new Date(allKeys[0]);
+  var last  = new Date(td);
+  var soberBest = 0, drinkBest = 0;
+  var sc = 0, dc = 0;
+  var cur = new Date(first);
+  while (cur <= last) {
+    var k = atkDateKey(cur);
+    var u = atkGetUnits(data, k);
+    if (u === 0) { sc++; dc = 0; }
+    else         { dc++; sc = 0; }
+    if (sc > soberBest) soberBest = sc;
+    if (dc > drinkBest) drinkBest = dc;
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  return { soberCur: soberCur, drinkCur: drinkCur, soberBest: soberBest, drinkBest: drinkBest };
+}
+
+function atkFmtDate(isoStr) {
+  if (!isoStr) return '';
+  var d = new Date(isoStr);
+  return d.getDate() + '. ' + MONATE[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function atkRenderStreaks() {
+  var el = document.getElementById('atkStreaks');
+  if (!el) return;
+
+  var data    = atkLoadData();
+  var records = atkLoadRecords();
+  var s       = atkComputeStreaks(data);
+
+  // Check and update records
+  var recordBroken = { sober: false, drink: false };
+  if (s.soberBest > (records.soberBest || 0)) {
+    records.soberBest     = s.soberBest;
+    records.soberBestDate = atkToday();
+    recordBroken.sober    = true;
+  }
+  if (s.drinkBest > (records.drinkBest || 0)) {
+    records.drinkBest     = s.drinkBest;
+    records.drinkBestDate = atkToday();
+    recordBroken.drink    = true;
+  }
+  atkSaveRecords(records);
+
+  var soberIsRecord  = s.soberCur > 0 && s.soberCur >= (records.soberBest || 0);
+  var drinkIsRecord  = s.drinkCur > 0 && s.drinkCur >= (records.drinkBest || 0);
+
+  function chipHtml(opts) {
+    // opts: { num, numColor, label, sub, recordVal, recordDate, recordColor, isRecord, trophy }
+    var chipClass = 'atk-streak-chip';
+    if (opts.isRecord && opts.recordColor === 'green') chipClass += ' record-sober';
+    else if (opts.isRecord && opts.recordColor === 'drink') chipClass += ' record-drinking';
+    var recordHtml = '';
+    if (opts.recordVal > 1) {
+      var breakTxt = opts.isRecord && recordBroken[opts.recordColor === 'green' ? 'sober' : 'drink']
+        ? '🏆 Neuer Rekord!'
+        : ('Rekord: ' + opts.recordVal + ' Tage' + (opts.recordDate ? ' · ' + atkFmtDate(opts.recordDate) : ''));
+      recordHtml = '<div class="atk-streak-record' + (opts.recordColor !== 'green' ? ' drink' : '') + '">' + breakTxt + '</div>';
+    }
+    var trophyHtml = opts.isRecord ? '<div class="atk-streak-trophy">🏆</div>' : '';
+    return '<div class="' + chipClass + '">' + trophyHtml +
+      '<div class="atk-streak-lbl">' + opts.label + '</div>' +
+      '<div class="atk-streak-num ' + opts.numColor + '">' + opts.num + (opts.num === 1 ? ' Tag' : ' Tage') + '</div>' +
+      '<div class="atk-streak-sub">' + opts.sub + '</div>' +
+      recordHtml +
+      '</div>';
+  }
+
+  var html = '';
+
+  // Sober streak chip
+  var soberSub = s.soberCur === 0 ? 'Heute getrunken' : (s.soberCur === 1 ? 'Gestern oder heute nüchtern' : 'am Stück nüchtern');
+  html += chipHtml({
+    num: s.soberCur,
+    numColor: s.soberCur >= 3 ? 'green' : 'grey',
+    label: '🫗 Nüchtern-Serie',
+    sub: soberSub,
+    recordVal: records.soberBest || 0,
+    recordDate: records.soberBestDate,
+    recordColor: 'green',
+    isRecord: soberIsRecord
+  });
+
+  // Drinking streak chip
+  var drinkSub = s.drinkCur === 0 ? 'Aktuell nüchtern' : (s.drinkCur === 1 ? 'Tag getrunken' : 'Tage am Stück getrunken');
+  html += chipHtml({
+    num: s.drinkCur,
+    numColor: s.drinkCur >= 3 ? 'orange' : (s.drinkCur > 0 ? 'orange' : 'grey'),
+    label: '🍺 Trink-Serie',
+    sub: drinkSub,
+    recordVal: records.drinkBest || 0,
+    recordDate: records.drinkBestDate,
+    recordColor: 'drink',
+    isRecord: drinkIsRecord
+  });
+
+  el.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
    RENDER
 ══════════════════════════════════════════ */
 function atkRenderAll() {
@@ -4871,6 +5032,9 @@ function atkRenderAll() {
       logA.innerHTML = html;
     }
   }
+
+  // Streaks
+  atkRenderStreaks();
 }
 
 /* ── DESIGN SWITCH (kept for compat) ── */
