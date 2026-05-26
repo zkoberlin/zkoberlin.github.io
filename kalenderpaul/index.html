@@ -1648,7 +1648,7 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
     <div class="header-left">
       <span class="header-icon">📅</span>
       <div class="header-text">
-        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.8</span></h1>
+        <h1>Kalender 2026 – Paul <span class="version-badge">v3.9.9</span></h1>
         <p id="headerDate"></p>
       </div>
     </div>
@@ -1660,8 +1660,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
         🔔<span class="neue-termine-badge" id="neueTermineCount">0</span>
       </button>
       <div class="view-switcher" id="viewSwitcher" style="display:none;">
-        <button class="view-btn" id="vbTag" onclick="setView('tag')">Tag</button>
-        <button class="view-btn active" id="vbWoche" onclick="setView('woche')">Woche</button>
+        <button class="view-btn active" id="vbTag" onclick="setView('tag')">Tag</button>
+        <button class="view-btn" id="vbWoche" onclick="setView('woche')">Woche</button>
         <button class="view-btn" id="vbMonat" onclick="setView('monat')">Monat</button>
         <button class="view-btn" id="vbAlle" onclick="setView('alle')">Alle</button>
       </div>
@@ -1680,8 +1680,8 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
       </svg>
     </button>
     <div class="view-switcher" style="flex:1;">
-      <button class="view-btn" id="vbTagM" onclick="setView('tag')">Tag</button>
-      <button class="view-btn active" id="vbWocheM" onclick="setView('woche')">Woche</button>
+      <button class="view-btn active" id="vbTagM" onclick="setView('tag')">Tag</button>
+      <button class="view-btn" id="vbWocheM" onclick="setView('woche')">Woche</button>
       <button class="view-btn" id="vbMonatM" onclick="setView('monat')">Monat</button>
       <button class="view-btn" id="vbAlleM" onclick="setView('alle')">Alle</button>
     </div>
@@ -2025,7 +2025,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.8</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile">v3.9.9</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -2050,7 +2050,7 @@ function initViewUI() {
 window.addEventListener('resize', initViewUI, {passive:true});
 
 // ── VIEW SWITCHER ────────────────────────────────────────────────────
-let currentView = 'woche';
+let currentView = 'tag';
 // Navigation offsets (days offset for tag, weeks for woche, months for monat)
 let viewOffset = 0;
 
