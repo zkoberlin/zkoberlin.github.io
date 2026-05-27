@@ -1,41 +1,41 @@
 {
-  "datum": "25.05.2026",
-  "generiert": "2026-05-25T12:53:27Z",
+  "datum": "27.05.2026",
+  "generiert": "2026-05-27T13:50:44Z",
   "geburtstage": [
     {
-      "name": "Klaus Meine",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Songwriter/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG/120px-20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q154978",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Samed Yeşil",
+      "name": "Jonas Hector",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Samed_Yesil_%28cropped%29.jpg/120px-Samed_Yesil_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q512991",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/20180602_FIFA_Friendly_Match_Austria_vs._Germany_Jonas_Hector_850_0692.jpg/120px-20180602_FIFA_Friendly_Match_Austria_vs._Germany_Jonas_Hector_850_0692.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q994561",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Moritz Stehling",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Professional Footballer (Born 1987)",
+      "name": "Maximilian Arnold",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Krasnodar-Wolfsburg_%2819%29_2014-10-24_Maximilian_Arnold.jpg/120px-Krasnodar-Wolfsburg_%2819%29_2014-10-24_Maximilian_Arnold.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1093851",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Marty Kristian",
+      "alter": 79,
+      "geburtsjahr": 1947,
+      "beruf": "German-Born, British-Based Musician (Born 1947)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Moritz_Stehling",
+      "wikidata": "https://en.wikipedia.org/wiki/Marty_Kristian",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Alfred Kubel",
-      "alter": 117,
-      "geburtsjahr": 1909,
-      "beruf": "German Politician (1909–1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Bundesarchiv_B_145_Bild-F046646-0036%2C_Bonn%2C_Empfang_f%C3%BCr_Bundesratsdirektor_Dr._Pfitzer_%28Alfred_Kubel_cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Alfred_Kubel",
+      "name": "Hans Lammers",
+      "alter": 147,
+      "geburtsjahr": 1879,
+      "beruf": "German Jurist And Nazi Politician (1879–1962)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Bundesarchiv_Bild_146-2008-0276%2C_Hans_Heinrich_Lammers.jpg/330px-Bundesarchiv_Bild_146-2008-0276%2C_Hans_Heinrich_Lammers.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Hans_Lammers",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
