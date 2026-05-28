@@ -1,42 +1,42 @@
 {
-  "datum": "27.05.2026",
-  "generiert": "2026-05-27T13:50:44Z",
+  "datum": "28.05.2026",
+  "generiert": "2026-05-28T12:55:53Z",
   "geburtstage": [
     {
-      "name": "Jonas Hector",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/20180602_FIFA_Friendly_Match_Austria_vs._Germany_Jonas_Hector_850_0692.jpg/120px-20180602_FIFA_Friendly_Match_Austria_vs._Germany_Jonas_Hector_850_0692.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q994561",
+      "name": "Hans-Jörg Butt",
+      "alter": 52,
+      "geburtsjahr": 1974,
+      "beruf": "German Footballer (Born 1974)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/J%C3%B6rg_Butt_%E2%80%93_Tag_der_Legenden_2016_04.jpg/330px-J%C3%B6rg_Butt_%E2%80%93_Tag_der_Legenden_2016_04.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-J%C3%B6rg_Butt",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Maximilian Arnold",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Krasnodar-Wolfsburg_%2819%29_2014-10-24_Maximilian_Arnold.jpg/120px-Krasnodar-Wolfsburg_%2819%29_2014-10-24_Maximilian_Arnold.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q1093851",
+      "name": "Dietrich Fischer-Dieskau",
+      "alter": 101,
+      "geburtsjahr": 1925,
+      "beruf": "German Lyric Baritone And Conductor (1925–2012)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Dietrich_Fischer-Dieskau_-_Buste%2C_face_-_Baryton_allemand_-_btv1b10219465v.jpg/330px-Dietrich_Fischer-Dieskau_-_Buste%2C_face_-_Baryton_allemand_-_btv1b10219465v.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Dietrich_Fischer-Dieskau",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Marty Kristian",
-      "alter": 79,
-      "geburtsjahr": 1947,
-      "beruf": "German-Born, British-Based Musician (Born 1947)",
+      "name": "Georg Gaßmann",
+      "alter": 116,
+      "geburtsjahr": 1910,
+      "beruf": "German Politician",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Marty_Kristian",
+      "wikidata": "https://en.wikipedia.org/wiki/Georg_Ga%C3%9Fmann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Hans Lammers",
-      "alter": 147,
-      "geburtsjahr": 1879,
-      "beruf": "German Jurist And Nazi Politician (1879–1962)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Bundesarchiv_Bild_146-2008-0276%2C_Hans_Heinrich_Lammers.jpg/330px-Bundesarchiv_Bild_146-2008-0276%2C_Hans_Heinrich_Lammers.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Hans_Lammers",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Phil Foden",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "English Footballer (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2613%2C_Phil_Foden.jpg/330px-2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2613%2C_Phil_Foden.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Phil_Foden",
+      "nationalitaet": null
     }
   ]
 }
