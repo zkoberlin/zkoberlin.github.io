@@ -1,42 +1,42 @@
 {
-  "datum": "28.05.2026",
-  "generiert": "2026-05-28T12:55:53Z",
+  "datum": "29.05.2026",
+  "generiert": "2026-05-29T12:33:42Z",
   "geburtstage": [
     {
-      "name": "Hans-Jörg Butt",
-      "alter": 52,
-      "geburtsjahr": 1974,
-      "beruf": "German Footballer (Born 1974)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/J%C3%B6rg_Butt_%E2%80%93_Tag_der_Legenden_2016_04.jpg/330px-J%C3%B6rg_Butt_%E2%80%93_Tag_der_Legenden_2016_04.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Hans-J%C3%B6rg_Butt",
+      "name": "Arne Friedrich",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Arne_Friedrich_2019_%28cropped%29.jpg/120px-Arne_Friedrich_2019_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q63676",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Dietrich Fischer-Dieskau",
-      "alter": 101,
-      "geburtsjahr": 1925,
-      "beruf": "German Lyric Baritone And Conductor (1925–2012)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Dietrich_Fischer-Dieskau_-_Buste%2C_face_-_Baryton_allemand_-_btv1b10219465v.jpg/330px-Dietrich_Fischer-Dieskau_-_Buste%2C_face_-_Baryton_allemand_-_btv1b10219465v.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Dietrich_Fischer-Dieskau",
+      "name": "Felix Passlack",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Passlack170727_%28cropped%29.jpg/120px-Passlack170727_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q20995048",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Georg Gaßmann",
-      "alter": 116,
-      "geburtsjahr": 1910,
-      "beruf": "German Politician",
+      "name": "Andreas Schäffer",
+      "alter": 42,
+      "geburtsjahr": 1984,
+      "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Georg_Ga%C3%9Fmann",
+      "wikidata": "https://en.wikipedia.org/wiki/Andreas_Sch%C3%A4ffer",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Phil Foden",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "English Footballer (Born 2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2613%2C_Phil_Foden.jpg/330px-2023-10-04_Fu%C3%9Fball%2C_M%C3%A4nner%2C_UEFA_Champions_League%2C_RB_Leipzig_-_Manchester_City_FC_1DX_2613%2C_Phil_Foden.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Phil_Foden",
-      "nationalitaet": null
+      "name": "Sven Kubis",
+      "alter": 51,
+      "geburtsjahr": 1975,
+      "beruf": "German Footballer (Born 1975)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Sven_Kubis",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
