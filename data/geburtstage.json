@@ -1,42 +1,42 @@
 {
-  "datum": "29.05.2026",
-  "generiert": "2026-05-29T12:33:42Z",
+  "datum": "30.05.2026",
+  "generiert": "2026-05-30T09:24:58Z",
   "geburtstage": [
     {
-      "name": "Arne Friedrich",
+      "name": "Thomas Häßler",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Arne_Friedrich_2019_%28cropped%29.jpg/120px-Arne_Friedrich_2019_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q63676",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Thomas_H%C3%A4%C3%9Fler_%282%29_%28cropped%29.JPG/120px-Thomas_H%C3%A4%C3%9Fler_%282%29_%28cropped%29.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q155911",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Felix Passlack",
+      "name": "Ruscha Ignatowa",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Passlack170727_%28cropped%29.jpg/120px-Passlack170727_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q20995048",
+      "beruf": "Dieb",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Dr._Ruja_Ignatova_%28cropped%29.jpg/120px-Dr._Ruja_Ignatova_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q20819716",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Andreas Schäffer",
-      "alter": 42,
-      "geburtsjahr": 1984,
-      "beruf": "German Footballer",
+      "name": "Siegmund Glücksmann",
+      "alter": 142,
+      "geburtsjahr": 1884,
+      "beruf": "German-Jewish Socialist Politician",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Andreas_Sch%C3%A4ffer",
+      "wikidata": "https://en.wikipedia.org/wiki/Siegmund_Gl%C3%BCcksmann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Sven Kubis",
-      "alter": 51,
-      "geburtsjahr": 1975,
-      "beruf": "German Footballer (Born 1975)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Sven_Kubis",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Natty (Thai singer)",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Thai Singer (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/KISS_OF_LIFE_NATTY_Gucci_photo_call.jpg/330px-KISS_OF_LIFE_NATTY_Gucci_photo_call.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Natty_(Thai_singer)",
+      "nationalitaet": null
     }
   ]
 }
