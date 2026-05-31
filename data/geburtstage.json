@@ -1,42 +1,42 @@
 {
-  "datum": "30.05.2026",
-  "generiert": "2026-05-30T09:24:58Z",
+  "datum": "31.05.2026",
+  "generiert": "2026-05-31T10:02:01Z",
   "geburtstage": [
     {
-      "name": "Thomas Häßler",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Thomas_H%C3%A4%C3%9Fler_%282%29_%28cropped%29.JPG/120px-Thomas_H%C3%A4%C3%9Fler_%282%29_%28cropped%29.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q155911",
+      "name": "Marco Reus",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "German Footballer (Born 1989)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/2023-08-12_TSV_Schott_Mainz_gegen_Borussia_Dortmund_%28DFB-Pokal_2023-24%29_by_Sandro_Halank%E2%80%93126.jpg/330px-2023-08-12_TSV_Schott_Mainz_gegen_Borussia_Dortmund_%28DFB-Pokal_2023-24%29_by_Sandro_Halank%E2%80%93126.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Marco_Reus",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ruscha Ignatowa",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Dieb",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Dr._Ruja_Ignatova_%28cropped%29.jpg/120px-Dr._Ruja_Ignatova_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q20819716",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Siegmund Glücksmann",
-      "alter": 142,
-      "geburtsjahr": 1884,
-      "beruf": "German-Jewish Socialist Politician",
+      "name": "Moses Sichone",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Zambian Footballer (Born 1977)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Siegmund_Gl%C3%BCcksmann",
+      "wikidata": "https://en.wikipedia.org/wiki/Moses_Sichone",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Natty (Thai singer)",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Thai Singer (Born 2002)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/KISS_OF_LIFE_NATTY_Gucci_photo_call.jpg/330px-KISS_OF_LIFE_NATTY_Gucci_photo_call.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Natty_(Thai_singer)",
-      "nationalitaet": null
+      "name": "Fritz Hilpert",
+      "alter": 70,
+      "geburtsjahr": 1956,
+      "beruf": "Musical Artist",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Fritz_Hilpert",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Karl Bartos",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "German Musician And Composer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Karl_Bartos_2005.jpg/330px-Karl_Bartos_2005.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Karl_Bartos",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
