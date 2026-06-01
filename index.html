@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.11.0 -->
+<title>Paul · Hub</title><!-- v5.12.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1797,7 +1797,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.10.13
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.0
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1944,6 +1944,14 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         <div id="bdayVal" style="display:flex;flex-direction:column;gap:5px;">
           <div style="font-size:10px;color:var(--t3);">Lädt…</div>
         </div>
+      </div>
+      <!-- Horoskop Zwillinge – KI-generiert, 1× täglich gecached -->
+      <div style="width:100%;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);" id="horoSection">
+        <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:5px;">♊ Horoskop · Zwillinge</div>
+        <div id="horoVal" style="font-size:10.5px;color:var(--t2);line-height:1.55;">
+          <div style="color:var(--t3);">Lädt…</div>
+        </div>
+        <div id="horoMeta" style="font-size:8.5px;color:var(--t3);margin-top:4px;display:none;"></div>
       </div>
     </a>
     <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;min-width:0;overflow:hidden;" id="dayInfoCard">
@@ -2665,6 +2673,70 @@ async function loadPromiGeburtstage(){
 }
 loadPromiGeburtstage();
 
+// ── HOROSKOP Zwillinge – KI-generiert, 1× täglich gecached ──
+async function loadHoroskop(){
+  const el=document.getElementById('horoVal');
+  const metaEl=document.getElementById('horoMeta');
+  if(!el) return;
+
+  const today=new Date();
+  const dateKey=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const cacheKey=`horo_zwillinge_${dateKey}`;
+
+  // Cache prüfen
+  try{
+    const cached=localStorage.getItem(cacheKey);
+    if(cached){
+      const obj=JSON.parse(cached);
+      if(obj.text){
+        el.innerHTML=`<span style="font-style:italic;">${obj.text}</span>`;
+        if(metaEl){metaEl.textContent='✦ KI-generiert · heute';metaEl.style.display='block';}
+        return;
+      }
+    }
+  }catch(e){}
+
+  // Wochentag auf Deutsch
+  const wochentage=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const monate=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  const wt=wochentage[today.getDay()];
+  const datum=`${wt}, ${today.getDate()}. ${monate[today.getMonth()]} ${today.getFullYear()}`;
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:'Du bist ein einfühlsamer Astrologe. Antworte NUR mit dem Horoskop-Text auf Deutsch, kein JSON, keine Anführungszeichen, kein Präambel. Maximal 2 kurze Sätze (ca. 30–40 Wörter). Persönlich, alltagsnah, leicht positiv aber ehrlich. Kein Esoterik-Klischee.',
+        messages:[{
+          role:'user',
+          content:`Schreibe das heutige Tageshoroskop für eine Person mit Sternzeichen Zwillinge (Geburtstag: 10. Juni 1982). Heute ist ${datum}. Beziehe dich konkret auf den Wochentag und die aktuelle Jahreszeit. Maximal 2 Sätze.`
+        }]
+      })
+    });
+    if(!resp.ok) throw new Error('API '+resp.status);
+    const data=await resp.json();
+    const text=(data.content&&data.content[0]&&data.content[0].text)||'';
+    if(!text) throw new Error('Kein Text');
+
+    el.innerHTML=`<span style="font-style:italic;">${text}</span>`;
+    if(metaEl){metaEl.textContent='✦ KI-generiert · heute';metaEl.style.display='block';}
+
+    // Cachen – nur den heutigen Tag speichern, alte Keys aufräumen
+    try{
+      // Alte Horo-Keys löschen
+      Object.keys(localStorage).filter(k=>k.startsWith('horo_zwillinge_')&&k!==cacheKey).forEach(k=>localStorage.removeItem(k));
+      localStorage.setItem(cacheKey,JSON.stringify({text,date:dateKey}));
+    }catch(e){}
+
+  }catch(e){
+    console.warn('Horoskop Fehler:',e);
+    el.innerHTML='<span style="color:var(--t3);font-size:10px;">Horoskop momentan nicht verfügbar</span>';
+  }
+}
+loadHoroskop();
 
 (function(){
   const now2=new Date();
