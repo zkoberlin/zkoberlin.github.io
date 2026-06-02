@@ -1,41 +1,41 @@
 {
-  "datum": "25.05.2026",
-  "generiert": "2026-05-25T12:53:27Z",
+  "datum": "02.06.2026",
+  "generiert": "2026-06-02T05:20:24Z",
   "geburtstage": [
     {
-      "name": "Klaus Meine",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Songwriter/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG/120px-20140801-141-See-Rock_Festival_2014--Klaus_Meine.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q154978",
+      "name": "Paulo Sérgio (footballer, born June 1969)",
+      "alter": 57,
+      "geburtsjahr": 1969,
+      "beruf": "Brazilian Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Paulo_sergio_silvestre_nascimento.jpg/330px-Paulo_sergio_silvestre_nascimento.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Paulo_S%C3%A9rgio_(footballer%2C_born_June_1969)",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Samed Yeşil",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Samed_Yesil_%28cropped%29.jpg/120px-Samed_Yesil_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q512991",
+      "name": "Caroline Link",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "German Film Director And Screenwriter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Caroline-link-neues-rottmann-2020.jpg/330px-Caroline-link-neues-rottmann-2020.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Caroline_Link",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Moritz Stehling",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Professional Footballer (Born 1987)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Moritz_Stehling",
+      "name": "Johnny Weissmuller",
+      "alter": 122,
+      "geburtsjahr": 1904,
+      "beruf": "American Swimmer, Water-Polo Player, And Actor (1904–1984)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Johny_Weissmuller-publicity.JPG/330px-Johny_Weissmuller-publicity.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Johnny_Weissmuller",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Alfred Kubel",
-      "alter": 117,
-      "geburtsjahr": 1909,
-      "beruf": "German Politician (1909–1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Bundesarchiv_B_145_Bild-F046646-0036%2C_Bonn%2C_Empfang_f%C3%BCr_Bundesratsdirektor_Dr._Pfitzer_%28Alfred_Kubel_cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Alfred_Kubel",
+      "name": "Lotte Reiniger",
+      "alter": 127,
+      "geburtsjahr": 1899,
+      "beruf": "German Silhouette Animator And Film Director (1899–1981)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Lotte_Reiniger_1939.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Lotte_Reiniger",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
