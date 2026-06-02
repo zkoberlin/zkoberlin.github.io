@@ -1,41 +1,41 @@
 {
-  "datum": "01.06.2026",
-  "generiert": "2026-06-01T19:33:07Z",
+  "datum": "02.06.2026",
+  "generiert": "2026-06-02T05:20:24Z",
   "geburtstage": [
     {
-      "name": "Heidi Klum",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Model",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Heidi_Klum_%282010%29.jpg/120px-Heidi_Klum_%282010%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q60036",
+      "name": "Paulo Sérgio (footballer, born June 1969)",
+      "alter": 57,
+      "geburtsjahr": 1969,
+      "beruf": "Brazilian Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Paulo_sergio_silvestre_nascimento.jpg/330px-Paulo_sergio_silvestre_nascimento.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Paulo_S%C3%A9rgio_(footballer%2C_born_June_1969)",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mathias Rust",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Pilot",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/4134Mathias_Rust.JPG/120px-4134Mathias_Rust.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q76657",
+      "name": "Caroline Link",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "German Film Director And Screenwriter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Caroline-link-neues-rottmann-2020.jpg/330px-Caroline-link-neues-rottmann-2020.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Caroline_Link",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Alanis Morissette",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Musiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Alanis_Morissette_10_20_2013_-13_%2810395221685%29.jpg/120px-Alanis_Morissette_10_20_2013_-13_%2810395221685%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q130742",
-      "nationalitaet": null
+      "name": "Johnny Weissmuller",
+      "alter": 122,
+      "geburtsjahr": 1904,
+      "beruf": "American Swimmer, Water-Polo Player, And Actor (1904–1984)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Johny_Weissmuller-publicity.JPG/330px-Johny_Weissmuller-publicity.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Johnny_Weissmuller",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Zazie Beetz",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "American Actress (Born 1991)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Zazie_Beetz-4134.jpg/330px-Zazie_Beetz-4134.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Zazie_Beetz",
+      "name": "Lotte Reiniger",
+      "alter": 127,
+      "geburtsjahr": 1899,
+      "beruf": "German Silhouette Animator And Film Director (1899–1981)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Lotte_Reiniger_1939.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Lotte_Reiniger",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
