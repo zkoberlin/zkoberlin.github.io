@@ -412,7 +412,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
     <span class="d-topbar-title">Finanzplanung</span>
     <span class="d-topbar-sub">Paul</span>
-    <span style="font-size:11px;color:var(--t3);background:var(--card2);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">v2.5</span>
+    <span style="font-size:11px;color:var(--t3);background:var(--card2);padding:2px 8px;border-radius:99px;letter-spacing:0.04em;">v2.6</span>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -463,25 +463,25 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="dr" id="dr-miete" style="cursor:pointer;" onclick="OE('miete')">
         <span class="dico">🏠</span>
         <span class="dlbl" id="dlbl-miete">Miete</span>
-        <input type="range" class="dsl" min="500" max="2500" step="10" value="1808" id="dsl-miete" oninput=\"DI('miete',this.value,event)\">
+        <input type="range" class="dsl" min="500" max="2500" step="10" value="1808" id="dsl-miete" oninput="DI('miete',this.value,event)">
         <span class="dval" id="dval-miete">1808 €</span>
       </div>
       <div class="dr" id="dr-strom" style="cursor:pointer;" onclick="OE('strom')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=vattenfall.de&sz=64" onerror="this.parentNode.textContent='⚡'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-strom">Strom</span>
-        <input type="range" class="dsl" min="10" max="120" step="1" value="43" id="dsl-strom" oninput=\"DI('strom',this.value,event)\">
+        <input type="range" class="dsl" min="10" max="120" step="1" value="43" id="dsl-strom" oninput="DI('strom',this.value,event)">
         <span class="dval" id="dval-strom">43 €</span>
       </div>
       <div class="dr" id="dr-internet" style="cursor:pointer;" onclick="OE('internet')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=telekom.de&sz=64" onerror="this.parentNode.textContent='📡'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-internet">Telekom Internet</span>
-        <input type="range" class="dsl" min="10" max="80" step="1" value="45" id="dsl-internet" oninput=\"DI('internet',this.value,event)\">
+        <input type="range" class="dsl" min="10" max="80" step="1" value="45" id="dsl-internet" oninput="DI('internet',this.value,event)">
         <span class="dval" id="dval-internet">45 €</span>
       </div>
       <div class="dr" id="dr-lebensmittel" style="cursor:pointer;" onclick="OE('lebensmittel')">
         <span class="dico">🛒</span>
         <span class="dlbl" id="dlbl-lebensmittel">Lebensmittel</span>
-        <input type="range" class="dsl" min="100" max="900" step="10" value="450" id="dsl-lebensmittel" oninput=\"DI('lebensmittel',this.value,event)\">
+        <input type="range" class="dsl" min="100" max="900" step="10" value="450" id="dsl-lebensmittel" oninput="DI('lebensmittel',this.value,event)">
         <span class="dval" id="dval-lebensmittel">450 €</span>
       </div>
 </div>
@@ -495,19 +495,19 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="dr" id="dr-haftpflicht" style="cursor:pointer;" onclick="OE('haftpflicht')">
         <span class="dico">🛡️</span>
         <span class="dlbl" id="dlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="20" step="0.01" value="9.08" id="dsl-haftpflicht" oninput=\"DI('haftpflicht',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="20" step="0.01" value="9.08" id="dsl-haftpflicht" oninput="DI('haftpflicht',this.value,event)">
         <span class="dval" id="dval-haftpflicht">9,08 €</span>
       </div>
       <div class="dr" id="dr-rechtsschutz" style="cursor:pointer;" onclick="OE('rechtsschutz')">
         <span class="dico">⚖️</span>
         <span class="dlbl" id="dlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="50" step="0.01" value="31.42" id="dsl-rechtsschutz" oninput=\"DI('rechtsschutz',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="50" step="0.01" value="31.42" id="dsl-rechtsschutz" oninput="DI('rechtsschutz',this.value,event)">
         <span class="dval" id="dval-rechtsschutz">31,42 €</span>
       </div>
       <div class="dr" id="dr-gez" style="cursor:pointer;" onclick="OE('gez')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=rundfunkbeitrag.de&sz=64" onerror="this.parentNode.textContent='📺'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="30" step="0.01" value="18.33" id="dsl-gez" oninput=\"DI('gez',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="30" step="0.01" value="18.33" id="dsl-gez" oninput="DI('gez',this.value,event)">
         <span class="dval" id="dval-gez">18,33 €</span>
       </div>
       </div>
@@ -548,49 +548,49 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="dr" id="dr-unterhalt" style="cursor:pointer;" onclick="OE('unterhalt')">
         <span class="dico">👨‍👧‍👦</span>
         <span class="dlbl" id="dlbl-unterhalt">Unterhalt</span>
-        <input type="range" class="dsl" min="0" max="600" step="10" value="360" id="dsl-unterhalt" oninput=\"DI('unterhalt',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="600" step="10" value="360" id="dsl-unterhalt" oninput="DI('unterhalt',this.value,event)">
         <span class="dval" id="dval-unterhalt">360 €</span>
       </div>
       <div class="dr" id="dr-kids" style="cursor:pointer;" onclick="OE('kids')">
         <span class="dico">🐷</span>
         <span class="dlbl" id="dlbl-kids">Sparen Kids</span>
-        <input type="range" class="dsl" min="0" max="300" step="10" value="150" id="dsl-kids" oninput=\"DI('kids',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="300" step="10" value="150" id="dsl-kids" oninput="DI('kids',this.value,event)">
         <span class="dval" id="dval-kids">150 €</span>
       </div>
       <div class="dr" id="dr-handyemil" style="cursor:pointer;" onclick="OE('handyemil')">
         <span class="dico">📱</span>
         <span class="dlbl" id="dlbl-handyemil">Handy Emil</span>
-        <input type="range" class="dsl" min="0" max="20" step="0.5" value="7.99" id="dsl-handyemil" oninput=\"DI('handyemil',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="20" step="0.5" value="7.99" id="dsl-handyemil" oninput="DI('handyemil',this.value,event)">
         <span class="dval" id="dval-handyemil">7,99 €</span>
       </div>
       <div class="dr" id="dr-handyrosa" style="cursor:pointer;" onclick="OE('handyrosa')">
         <span class="dico">📱</span>
         <span class="dlbl" id="dlbl-handyrosa">Handy Rosa</span>
-        <input type="range" class="dsl" min="0" max="20" step="0.5" value="7.99" id="dsl-handyrosa" oninput=\"DI('handyrosa',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="20" step="0.5" value="7.99" id="dsl-handyrosa" oninput="DI('handyrosa',this.value,event)">
         <span class="dval" id="dval-handyrosa">7,99 €</span>
       </div>
       <div class="dr" id="dr-ukv" style="cursor:pointer;" onclick="OE('ukv')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=ukv.de&sz=64" onerror="this.parentNode.textContent='🏥'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-ukv">UKV Emil</span>
-        <input type="range" class="dsl" min="0" max="20" step="0.5" value="9.89" id="dsl-ukv" oninput=\"DI('ukv',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="20" step="0.5" value="9.89" id="dsl-ukv" oninput="DI('ukv',this.value,event)">
         <span class="dval" id="dval-ukv">9,89 €</span>
       </div>
       <div class="dr" id="dr-sparta" style="cursor:pointer;" onclick="OE('sparta')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=sparta-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-sparta">Sparta Emil</span>
-        <input type="range" class="dsl" min="0" max="30" step="1" value="15" id="dsl-sparta" oninput=\"DI('sparta',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="30" step="1" value="15" id="dsl-sparta" oninput="DI('sparta',this.value,event)">
         <span class="dval" id="dval-sparta">15 €</span>
       </div>
       <div class="dr" id="dr-bling" style="cursor:pointer;" onclick="OE('bling')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=bling.eu&sz=64" onerror="this.parentNode.textContent='💰'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-bling">Bling Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="5" step="0.01" value="2.67" id="dsl-bling" oninput=\"DI('bling',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="5" step="0.01" value="2.67" id="dsl-bling" oninput="DI('bling',this.value,event)">
         <span class="dval" id="dval-bling">2,67 €</span>
       </div>
       <div class="dr" id="dr-unionemil" style="cursor:pointer;" onclick="OE('unionemil')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-unionemil">Union Beitrag Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="5" step="0.01" value="3.5" id="dsl-unionemil" oninput=\"DI('unionemil',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="5" step="0.01" value="3.5" id="dsl-unionemil" oninput="DI('unionemil',this.value,event)">
         <span class="dval" id="dval-unionemil">3,5 €</span>
       </div>
       </div>
@@ -604,61 +604,61 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="dr" id="dr-handypaul" style="cursor:pointer;" onclick="OE('handypaul')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=vodafone.de&sz=64" onerror="this.parentNode.textContent='📶'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-handypaul">Handy Paul</span>
-        <input type="range" class="dsl" min="0" max="30" step="1" value="11" id="dsl-handypaul" oninput=\"DI('handypaul',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="30" step="1" value="11" id="dsl-handypaul" oninput="DI('handypaul',this.value,event)">
         <span class="dval" id="dval-handypaul">11 €</span>
       </div>
       <div class="dr" id="dr-icloud" style="cursor:pointer;" onclick="OE('icloud')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=icloud.com&sz=64" onerror="this.parentNode.textContent='☁️'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-icloud">iCloud</span>
-        <input type="range" class="dsl" min="0" max="15" step="0.5" value="9.99" id="dsl-icloud" oninput=\"DI('icloud',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="15" step="0.5" value="9.99" id="dsl-icloud" oninput="DI('icloud',this.value,event)">
         <span class="dval" id="dval-icloud">9,99 €</span>
       </div>
       <div class="dr" id="dr-spotify" style="cursor:pointer;" onclick="OE('spotify')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=64" onerror="this.parentNode.textContent='🎵'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-spotify">Spotify</span>
-        <input type="range" class="dsl" min="0" max="30" step="0.5" value="21.99" id="dsl-spotify" oninput=\"DI('spotify',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="30" step="0.5" value="21.99" id="dsl-spotify" oninput="DI('spotify',this.value,event)">
         <span class="dval" id="dval-spotify">21,99 €</span>
       </div>
       <div class="dr" id="dr-finanzguru" style="cursor:pointer;" onclick="OE('finanzguru')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=finanzguru.de&sz=64" onerror="this.parentNode.textContent='💹'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-finanzguru">Finanzguru</span>
-        <input type="range" class="dsl" min="0" max="10" step="0.5" value="2.99" id="dsl-finanzguru" oninput=\"DI('finanzguru',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="10" step="0.5" value="2.99" id="dsl-finanzguru" oninput="DI('finanzguru',this.value,event)">
         <span class="dval" id="dval-finanzguru">2,99 €</span>
       </div>
       <div class="dr" id="dr-claude" style="cursor:pointer;" onclick="OE('claude')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" onerror="this.parentNode.textContent='🤖'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-claude">Claude</span>
-        <input type="range" class="dsl" min="0" max="40" step="1" value="22" id="dsl-claude" oninput=\"DI('claude',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="40" step="1" value="22" id="dsl-claude" oninput="DI('claude',this.value,event)">
         <span class="dval" id="dval-claude">22 €</span>
       </div>
       <div class="dr" id="dr-unionmitgl" style="cursor:pointer;" onclick="OE('unionmitgl')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-unionmitgl">Union Mitgliedschaft</span>
-        <input type="range" class="dsl" min="0" max="20" step="1" value="10" id="dsl-unionmitgl" oninput=\"DI('unionmitgl',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="20" step="1" value="10" id="dsl-unionmitgl" oninput="DI('unionmitgl',this.value,event)">
         <span class="dval" id="dval-unionmitgl">10 €</span>
       </div>
       <div class="dr" id="dr-amazon" style="cursor:pointer;" onclick="OE('amazon')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=amazon.de&sz=64" onerror="this.parentNode.textContent='📦'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-amazon">Amazon Prime <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="15" step="0.01" value="7.42" id="dsl-amazon" oninput=\"DI('amazon',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="15" step="0.01" value="7.42" id="dsl-amazon" oninput="DI('amazon',this.value,event)">
         <span class="dval" id="dval-amazon">7,42 €</span>
       </div>
       <div class="dr" id="dr-parqet" style="cursor:pointer;" onclick="OE('parqet')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=parqet.com&sz=64" onerror="this.parentNode.textContent='📈'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-parqet">Parqet <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="10" step="0.01" value="4.5" id="dsl-parqet" oninput=\"DI('parqet',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="10" step="0.01" value="4.5" id="dsl-parqet" oninput="DI('parqet',this.value,event)">
         <span class="dval" id="dval-parqet">4,5 €</span>
       </div>
       <div class="dr" id="dr-futbology" style="cursor:pointer;" onclick="OE('futbology')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=futbology.com&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-futbology">Futbology <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="5" step="0.01" value="0.83" id="dsl-futbology" oninput=\"DI('futbology',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="5" step="0.01" value="0.83" id="dsl-futbology" oninput="DI('futbology',this.value,event)">
         <span class="dval" id="dval-futbology">0,83 €</span>
       </div>
       <div class="dr" id="dr-fotmob" style="cursor:pointer;" onclick="OE('fotmob')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fotmob.com&sz=64" onerror="this.parentNode.textContent='📊'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-fotmob">FotMob <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="5" step="0.01" value="0.71" id="dsl-fotmob" oninput=\"DI('fotmob',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="5" step="0.01" value="0.71" id="dsl-fotmob" oninput="DI('fotmob',this.value,event)">
         <span class="dval" id="dval-fotmob">0,71 €</span>
       </div>
       </div>
@@ -672,19 +672,19 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="dr" id="dr-bvg" style="cursor:pointer;" onclick="OE('bvg')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=bvg.de&sz=64" onerror="this.parentNode.textContent='🚇'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-bvg">BVG Ticket</span>
-        <input type="range" class="dsl" min="0" max="120" step="1" value="63" id="dsl-bvg" oninput=\"DI('bvg',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="120" step="1" value="63" id="dsl-bvg" oninput="DI('bvg',this.value,event)">
         <span class="dval" id="dval-bvg">63 €</span>
       </div>
       <div class="dr" id="dr-dauerkarte" style="cursor:pointer;" onclick="OE('dauerkarte')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='🎟️'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-dauerkarte">Dauerkarte Union <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="30" step="0.01" value="21.67" id="dsl-dauerkarte" oninput=\"DI('dauerkarte',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="30" step="0.01" value="21.67" id="dsl-dauerkarte" oninput="DI('dauerkarte',this.value,event)">
         <span class="dval" id="dval-dauerkarte">21,67 €</span>
       </div>
       <div class="dr" id="dr-garmin" style="cursor:pointer;" onclick="OE('garmin')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=garmin.com&sz=64" onerror="this.parentNode.textContent='⌚'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
         <span class="dlbl" id="dlbl-garmin">Garmin <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
-        <input type="range" class="dsl" min="0" max="15" step="0.01" value="7.42" id="dsl-garmin" oninput=\"DI('garmin',this.value,event)\">
+        <input type="range" class="dsl" min="0" max="15" step="0.01" value="7.42" id="dsl-garmin" oninput="DI('garmin',this.value,event)">
         <span class="dval" id="dval-garmin">7,42 €</span>
       </div>
       </div>
@@ -708,7 +708,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         <div class="d-gh-range"><span>2.000 €</span><span>6.000 €</span></div>
         <div class="d-zrow">
           <span class="d-zlbl">Zusätzl. Einnahmen</span>
-          <input type="range" min="0" max="2000" step="50" value="0" id="dsl-zusatz" style="width:55px;" disabled oninput=\"ZI(this.value,'d',event)\">
+          <input type="range" min="0" max="2000" step="50" value="0" id="dsl-zusatz" style="width:55px;" disabled oninput="ZI(this.value,'d',event)">
           <span class="d-zval" id="d-zusatz-val">0 €</span>
         </div>
       </div>
@@ -716,10 +716,10 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
     <div class="d-ps">
       <div class="d-plbl">Rest-Verteilung <span style="float:right;color:var(--t1);font-weight:600;font-size:11px;" id="d-restlbl">–</span></div>
       <div class="d-pcard">
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl" style="min-width:80px;">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput=\"RI('invest',this.value,'d',event)\"><span class="d-dval" id="d-invest-val">0 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl" style="min-width:80px;">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput=\"RI('notgr',this.value,'d',event)\"><span class="d-dval" id="d-notgr-val">100 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl" style="min-width:80px;">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput=\"RI('urlaub',this.value,'d',event)\"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl" style="min-width:80px;">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput=\"RI('sonder',this.value,'d',event)\"><span class="d-dval" id="d-sonder-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl" style="min-width:80px;">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput="RI('invest',this.value,'d',event)"><span class="d-dval" id="d-invest-val">0 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl" style="min-width:80px;">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-notgr" style="width:80px;" oninput="RI('notgr',this.value,'d',event)"><span class="d-dval" id="d-notgr-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl" style="min-width:80px;">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="dsl-urlaub" style="width:80px;" oninput="RI('urlaub',this.value,'d',event)"><span class="d-dval" id="d-urlaub-val">100 €</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl" style="min-width:80px;">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput="RI('sonder',this.value,'d',event)"><span class="d-dval" id="d-sonder-val">0 €</span></div>
       </div>
     </div>
     <div class="d-ps">
@@ -743,7 +743,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
       <div class="m-topbar-title">Finanzen · Paul</div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
-        <span style="font-size:10px;color:var(--t3);background:var(--card2);padding:2px 7px;border-radius:99px;">v2.5</span>
+        <span style="font-size:10px;color:var(--t3);background:var(--card2);padding:2px 7px;border-radius:99px;">v2.6</span>
         <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
         <button type="button" class="m-icon-btn" onclick="openSM()" title="Cloud-Sync" style="font-size:18px;"><span id="m-sync-ico">⚙️</span></button>
         <span id="m-sync-lbl" style="font-size:10px;color:var(--t3);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
@@ -789,17 +789,17 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
         <div class="m-zrow">
           <button type="button" class="mtog" id="mtog-zusatz" onclick="DT(this,'zusatz')"></button>
           <span class="m-zlbl">Zusätzl. Einnahmen</span>
-          <input type="range" min="0" max="2000" step="50" value="0" id="msl-zusatz" style="width:70px;" disabled oninput=\"ZI(this.value,'m',event)\">
+          <input type="range" min="0" max="2000" step="50" value="0" id="msl-zusatz" style="width:70px;" disabled oninput="ZI(this.value,'m',event)">
           <span class="m-zval" id="m-zusatz-val">0 €</span>
         </div>
       </div>
 
       <div class="m-slbl"><span class="m-slbl-inner">Rest-Verteilung</span><span class="m-slbl-tot" id="m-restlbl">–</span></div>
       <div class="m-rcard">
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('invest')"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput=\"RI('invest',this.value,'m',event)\"><span class="m-rval" id="m-invest-val">0 €</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('notgr')"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-notgr" style="width:90px;" oninput=\"RI('notgr',this.value,'m',event)\"><span class="m-rval" id="m-notgr-val">100 €</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-urlaub" style="width:90px;" oninput=\"RI('urlaub',this.value,'m',event)\"><span class="m-rval" id="m-urlaub-val">100 €</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('sonder')"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput=\"RI('sonder',this.value,'m',event)\"><span class="m-rval" id="m-sonder-val">0 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('invest')"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m',event)"><span class="m-rval" id="m-invest-val">0 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('notgr')"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-notgr" style="width:90px;" oninput="RI('notgr',this.value,'m',event)"><span class="m-rval" id="m-notgr-val">100 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="100" id="msl-urlaub" style="width:90px;" oninput="RI('urlaub',this.value,'m',event)"><span class="m-rval" id="m-urlaub-val">100 €</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('sonder')"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput="RI('sonder',this.value,'m',event)"><span class="m-rval" id="m-sonder-val">0 €</span></div>
       </div>
     </div>
 
@@ -1616,7 +1616,7 @@ function renderCR(it){
     const d=document.createElement('div');d.className='dr';d.id='dr-'+it.k;
     d.style.cursor='pointer';
     d.onclick=(e)=>{if(e.target.tagName!=='INPUT')OE(it.k);};
-    d.innerHTML=`<span class="dico">✏️</span><span class="dlbl" id="dlbl-${it.k}">${it.name}${star}</span><input type="range" class="dsl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="dsl-${it.k}" oninput=\"DI('${it.k}',this.value,event)\"><span class="dval" id="dval-${it.k}">${F(it.monthly)}</span>`;
+    d.innerHTML=`<span class="dico">✏️</span><span class="dlbl" id="dlbl-${it.k}">${it.name}${star}</span><input type="range" class="dsl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="dsl-${it.k}" oninput="DI('${it.k}',this.value,event)"><span class="dval" id="dval-${it.k}">${F(it.monthly)}</span>`;
     db.appendChild(d);
   }
   // Mobile row
@@ -1625,7 +1625,7 @@ function renderCR(it){
     const m=document.createElement('div');m.className='mr';m.id='mr-'+it.k;
     m.style.cursor='pointer';
     m.onclick=(e)=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON')OE(it.k);};
-    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput=\"MI('${it.k}',this.value,event)\"></div>`;
+    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput="MI('${it.k}',this.value,event)"></div>`;
     mb.appendChild(m);
   }
 }
@@ -1910,7 +1910,7 @@ function EU() {
   const amt = parseFloat(raw);
   const prev = document.getElementById('em-prev');
   while(prev.firstChild) prev.removeChild(prev.firstChild);
-  if(!raw || isNaN(amt) || amt<=0) { prev.textContent='Betrag eingeben…'; return; }
+  if(!raw || isNaN(amt) || amt<0) { prev.textContent='Betrag eingeben…'; return; }
   let monthly=amt, ftxt='', scol=null;
   if(mFreq==='yearly') { monthly=R2(amt/12); ftxt=F(amt)+' / Jahr'; scol='#FF3B30'; }
   else if(mFreq==='quarterly') { monthly=R2(amt/3); ftxt=F(amt)+' / Quartal'; scol='#FF9500'; }
@@ -1926,7 +1926,7 @@ function EU() {
 function SE() {
   const raw = document.getElementById('em-amt').value.trim().replace(',','.');
   const amt = parseFloat(raw);
-  if(!amt||isNaN(amt)||amt<=0) return;
+  if(isNaN(amt)||amt<0) return;
   let monthly=amt;
   if(mFreq==='yearly') monthly=R2(amt/12);
   else if(mFreq==='quarterly') monthly=R2(amt/3);
