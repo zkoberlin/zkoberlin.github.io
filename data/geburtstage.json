@@ -1,41 +1,41 @@
 {
-  "datum": "02.06.2026",
-  "generiert": "2026-06-02T05:20:24Z",
+  "datum": "03.06.2026",
+  "generiert": "2026-06-03T05:54:23Z",
   "geburtstage": [
     {
-      "name": "Paulo Sérgio (footballer, born June 1969)",
-      "alter": 57,
-      "geburtsjahr": 1969,
-      "beruf": "Brazilian Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Paulo_sergio_silvestre_nascimento.jpg/330px-Paulo_sergio_silvestre_nascimento.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Paulo_S%C3%A9rgio_(footballer%2C_born_June_1969)",
+      "name": "Rafael Nadal",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Skisportler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Rafael_Nadal_en_2024_%28cropped%29.jpg/120px-Rafael_Nadal_en_2024_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q10132",
+      "nationalitaet": null
+    },
+    {
+      "name": "Suzi Quatro",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/2017_Lieder_am_See_-_Suzi_Quatro_-_by_2eight_-_8SC8448_%28cropped%29.jpg/120px-2017_Lieder_am_See_-_Suzi_Quatro_-_by_2eight_-_8SC8448_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q234750",
+      "nationalitaet": null
+    },
+    {
+      "name": "Louis Hofmann",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "German Actor (Born 1997)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Louis_Hofmann_Hessischer_Film-_und_Kinopreis_2015.JPG/330px-Louis_Hofmann_Hessischer_Film-_und_Kinopreis_2015.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Louis_Hofmann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Caroline Link",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "German Film Director And Screenwriter",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Caroline-link-neues-rottmann-2020.jpg/330px-Caroline-link-neues-rottmann-2020.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Caroline_Link",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Johnny Weissmuller",
-      "alter": 122,
-      "geburtsjahr": 1904,
-      "beruf": "American Swimmer, Water-Polo Player, And Actor (1904–1984)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Johny_Weissmuller-publicity.JPG/330px-Johny_Weissmuller-publicity.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Johnny_Weissmuller",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Lotte Reiniger",
-      "alter": 127,
-      "geburtsjahr": 1899,
-      "beruf": "German Silhouette Animator And Film Director (1899–1981)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Lotte_Reiniger_1939.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Lotte_Reiniger",
+      "name": "Mario Götze",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "German Footballer (Born 1992)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Mario_G%C3%B6tze%2C_Germany_national_football_team_%2807%29.jpg/330px-Mario_G%C3%B6tze%2C_Germany_national_football_team_%2807%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Mario_G%C3%B6tze",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
