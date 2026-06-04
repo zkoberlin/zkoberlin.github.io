@@ -1,41 +1,41 @@
 {
-  "datum": "03.06.2026",
-  "generiert": "2026-06-03T05:54:23Z",
+  "datum": "04.06.2026",
+  "generiert": "2026-06-04T05:48:33Z",
   "geburtstage": [
     {
-      "name": "Rafael Nadal",
+      "name": "Lukas Podolski",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Skisportler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Rafael_Nadal_en_2024_%28cropped%29.jpg/120px-Rafael_Nadal_en_2024_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q10132",
-      "nationalitaet": null
-    },
-    {
-      "name": "Suzi Quatro",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/2017_Lieder_am_See_-_Suzi_Quatro_-_by_2eight_-_8SC8448_%28cropped%29.jpg/120px-2017_Lieder_am_See_-_Suzi_Quatro_-_by_2eight_-_8SC8448_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q234750",
-      "nationalitaet": null
-    },
-    {
-      "name": "Louis Hofmann",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "German Actor (Born 1997)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Louis_Hofmann_Hessischer_Film-_und_Kinopreis_2015.JPG/330px-Louis_Hofmann_Hessischer_Film-_und_Kinopreis_2015.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Louis_Hofmann",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Lukas_Podolski_2019.jpg/120px-Lukas_Podolski_2019.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q134976",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mario Götze",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "German Footballer (Born 1992)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Mario_G%C3%B6tze%2C_Germany_national_football_team_%2807%29.jpg/330px-Mario_G%C3%B6tze%2C_Germany_national_football_team_%2807%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Mario_G%C3%B6tze",
+      "name": "Fahriye Evcen",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Fahriye_Evcen_at_Cannes_2017_%283%29_-_cropped.png/120px-Fahriye_Evcen_at_Cannes_2017_%283%29_-_cropped.png",
+      "wikidata": "https://www.wikidata.org/wiki/Q77665",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Anna-Lena Grönefeld",
+      "alter": 41,
+      "geburtsjahr": 1985,
+      "beruf": "German Tennis Player (Born 1985)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Groenefeld_MA14_%287%29_%2814446344523%29.jpg/330px-Groenefeld_MA14_%287%29_%2814446344523%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Anna-Lena_Gr%C3%B6nefeld",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Alex Manninger",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Austrian Footballer (1977–2026)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Juventus_-_2010_-_Alexander_Manninger_%28cropped%29.jpg/330px-Juventus_-_2010_-_Alexander_Manninger_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Alex_Manninger",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
