@@ -1,41 +1,41 @@
 {
-  "datum": "04.06.2026",
-  "generiert": "2026-06-04T05:48:33Z",
+  "datum": "05.06.2026",
+  "generiert": "2026-06-05T05:07:38Z",
   "geburtstage": [
     {
-      "name": "Lukas Podolski",
+      "name": "Zvjezdan Misimović",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Lukas_Podolski_2019.jpg/120px-Lukas_Podolski_2019.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q134976",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Zvjezdan_Misimovic_October_2011.jpg/120px-Zvjezdan_Misimovic_October_2011.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q158243",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Fahriye Evcen",
+      "name": "Thanos Petsos",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Fahriye_Evcen_at_Cannes_2017_%283%29_-_cropped.png/120px-Fahriye_Evcen_at_Cannes_2017_%283%29_-_cropped.png",
-      "wikidata": "https://www.wikidata.org/wiki/Q77665",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Thanos_Petsos1112.jpg/120px-Thanos_Petsos1112.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q72894",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Anna-Lena Grönefeld",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "German Tennis Player (Born 1985)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Groenefeld_MA14_%287%29_%2814446344523%29.jpg/330px-Groenefeld_MA14_%287%29_%2814446344523%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Anna-Lena_Gr%C3%B6nefeld",
+      "name": "Sören Bertram",
+      "alter": 35,
+      "geburtsjahr": 1991,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Bertram%2C_S%C3%B6ren_Aue_17-18_%281%29_WP.jpg/330px-Bertram%2C_S%C3%B6ren_Aue_17-18_%281%29_WP.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/S%C3%B6ren_Bertram",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Alex Manninger",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "Austrian Footballer (1977–2026)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Juventus_-_2010_-_Alexander_Manninger_%28cropped%29.jpg/330px-Juventus_-_2010_-_Alexander_Manninger_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Alex_Manninger",
+      "name": "Anke Behmer",
+      "alter": 65,
+      "geburtsjahr": 1961,
+      "beruf": "East German Heptathlete",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/29/Bundesarchiv_Bild_183-1983-0522-051%2C_Anke_Vater_%28cropped%29_v2.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Anke_Behmer",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
