@@ -1,42 +1,42 @@
 {
-  "datum": "05.06.2026",
-  "generiert": "2026-06-05T05:07:38Z",
+  "datum": "06.06.2026",
+  "generiert": "2026-06-06T04:44:37Z",
   "geburtstage": [
     {
-      "name": "Zvjezdan Misimović",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Zvjezdan_Misimovic_October_2011.jpg/120px-Zvjezdan_Misimovic_October_2011.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q158243",
+      "name": "Friedrich Bayer",
+      "alter": 201,
+      "geburtsjahr": 1825,
+      "beruf": "German Businessman (1825-1880)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/27/Friedrich_bayer.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Friedrich_Bayer",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Thanos Petsos",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Thanos_Petsos1112.jpg/120px-Thanos_Petsos1112.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q72894",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Rayan Aït-Nouri",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Footballer (Born 2001)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Rayan_A%C3%AFt-Nouri_playing_for_Algeria_in_2024.jpg/330px-Rayan_A%C3%AFt-Nouri_playing_for_Algeria_in_2024.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Rayan_A%C3%AFt-Nouri",
+      "nationalitaet": null
     },
     {
-      "name": "Sören Bertram",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Bertram%2C_S%C3%B6ren_Aue_17-18_%281%29_WP.jpg/330px-Bertram%2C_S%C3%B6ren_Aue_17-18_%281%29_WP.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/S%C3%B6ren_Bertram",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Haechan",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "South Korean Singer (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/20231006_Haechan_%28NCT%29.jpg/330px-20231006_Haechan_%28NCT%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Haechan",
+      "nationalitaet": null
     },
     {
-      "name": "Anke Behmer",
-      "alter": 65,
-      "geburtsjahr": 1961,
-      "beruf": "East German Heptathlete",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/29/Bundesarchiv_Bild_183-1983-0522-051%2C_Anke_Vater_%28cropped%29_v2.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Anke_Behmer",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Jack Hetherington",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Australian Rugby League Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Jack_Hetherington.jpg/330px-Jack_Hetherington.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Jack_Hetherington",
+      "nationalitaet": null
     }
   ]
 }
