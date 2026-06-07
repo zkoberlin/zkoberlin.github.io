@@ -1,41 +1,41 @@
 {
-  "datum": "06.06.2026",
-  "generiert": "2026-06-06T04:44:37Z",
+  "datum": "07.06.2026",
+  "generiert": "2026-06-07T05:15:00Z",
   "geburtstage": [
     {
-      "name": "Friedrich Bayer",
-      "alter": 201,
-      "geburtsjahr": 1825,
-      "beruf": "German Businessman (1825-1880)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/27/Friedrich_bayer.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Friedrich_Bayer",
+      "name": "Til Kiwe",
+      "alter": 116,
+      "geburtsjahr": 1910,
+      "beruf": "German Actor, Voice Actor And Screenwriter",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Til_Kiwe",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Rayan Aït-Nouri",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Footballer (Born 2001)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Rayan_A%C3%AFt-Nouri_playing_for_Algeria_in_2024.jpg/330px-Rayan_A%C3%AFt-Nouri_playing_for_Algeria_in_2024.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Rayan_A%C3%AFt-Nouri",
+      "name": "Gaetano Berenstadt",
+      "alter": 339,
+      "geburtsjahr": 1687,
+      "beruf": "Italian Opera Singer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Senesino%2C_Cuzzoni%2C_Berenstadt.JPG/330px-Senesino%2C_Cuzzoni%2C_Berenstadt.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Gaetano_Berenstadt",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "George Ezra",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "English Singer-Songwriter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Boardmasters2022_%2851_of_246%29_%2852301476769%29_%28CROPPED%29.jpg/330px-Boardmasters2022_%2851_of_246%29_%2852301476769%29_%28CROPPED%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/George_Ezra",
       "nationalitaet": null
     },
     {
-      "name": "Haechan",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "South Korean Singer (Born 2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/20231006_Haechan_%28NCT%29.jpg/330px-20231006_Haechan_%28NCT%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Haechan",
-      "nationalitaet": null
-    },
-    {
-      "name": "Jack Hetherington",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Australian Rugby League Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Jack_Hetherington.jpg/330px-Jack_Hetherington.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Jack_Hetherington",
+      "name": "Swae Lee",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "American Rapper And Singer (Born 1993)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Swae_Lee_%282019%29.png/330px-Swae_Lee_%282019%29.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Swae_Lee",
       "nationalitaet": null
     }
   ]
