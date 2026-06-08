@@ -1,42 +1,42 @@
 {
-  "datum": "07.06.2026",
-  "generiert": "2026-06-07T05:15:00Z",
+  "datum": "08.06.2026",
+  "generiert": "2026-06-08T05:21:49Z",
   "geburtstage": [
     {
-      "name": "Til Kiwe",
-      "alter": 116,
-      "geburtsjahr": 1910,
-      "beruf": "German Actor, Voice Actor And Screenwriter",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Til_Kiwe",
+      "name": "Hildegard Falck",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Leichtathlet",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Hildegard_Falck_c1974.jpg/120px-Hildegard_Falck_c1974.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q258676",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Gaetano Berenstadt",
-      "alter": 339,
-      "geburtsjahr": 1687,
-      "beruf": "Italian Opera Singer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Senesino%2C_Cuzzoni%2C_Berenstadt.JPG/330px-Senesino%2C_Cuzzoni%2C_Berenstadt.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Gaetano_Berenstadt",
+      "name": "Jasmin Tabatabai",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Jasmin_Tabatabai_at_the_2025_Berlin_International_Film_Festival-1233.jpg/120px-Jasmin_Tabatabai_at_the_2025_Berlin_International_Film_Festival-1233.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q66771",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "George Ezra",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "English Singer-Songwriter",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Boardmasters2022_%2851_of_246%29_%2852301476769%29_%28CROPPED%29.jpg/330px-Boardmasters2022_%2851_of_246%29_%2852301476769%29_%28CROPPED%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/George_Ezra",
+      "name": "Ivo Sanader",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Ivo_Sanader_Svecanost_podizanja_NATOve_zastave_Zagreb_67_crop.jpg/120px-Ivo_Sanader_Svecanost_podizanja_NATOve_zastave_Zagreb_67_crop.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q56220",
       "nationalitaet": null
     },
     {
-      "name": "Swae Lee",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "American Rapper And Singer (Born 1993)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Swae_Lee_%282019%29.png/330px-Swae_Lee_%282019%29.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Swae_Lee",
-      "nationalitaet": null
+      "name": "Dana Wynter",
+      "alter": 95,
+      "geburtsjahr": 1931,
+      "beruf": "German-Born English Actress (1931–2011)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Dana_Wynter_-_1962.jpg/330px-Dana_Wynter_-_1962.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Dana_Wynter",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
