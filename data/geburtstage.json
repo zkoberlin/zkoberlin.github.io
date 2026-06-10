@@ -1,41 +1,41 @@
 {
-  "datum": "09.06.2026",
-  "generiert": "2026-06-09T04:57:11Z",
+  "datum": "10.06.2026",
+  "generiert": "2026-06-10T05:09:11Z",
   "geburtstage": [
     {
-      "name": "Anton Burghardt",
-      "alter": 84,
-      "geburtsjahr": 1942,
-      "beruf": "German Footballer And Manager",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Anton_Burghardt",
+      "name": "Martin Harnik",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/20160326_AUT_ALB_2.jpg/120px-20160326_AUT_ALB_2.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q60360",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Gerald Götting",
-      "alter": 103,
-      "geburtsjahr": 1923,
-      "beruf": "East German Politician (1923–2015)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Bundesarchiv_Bild_183-83285-0008%2C_Gerald_G%C3%B6tting.jpg/330px-Bundesarchiv_Bild_183-83285-0008%2C_Gerald_G%C3%B6tting.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Gerald_G%C3%B6tting",
+      "name": "Jürgen Prochnow",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/MJK_60861_Verena_Wengler_und_J%C3%BCrgen_Prochnow_%28Hessischer_Film-_und_Kinopreis_2019%29_%28cropped%29.jpg/120px-MJK_60861_Verena_Wengler_und_J%C3%BCrgen_Prochnow_%28Hessischer_Film-_und_Kinopreis_2019%29_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q61356",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ingolf Dahl",
-      "alter": 114,
-      "geburtsjahr": 1912,
-      "beruf": "German And American Musician (1912–1970)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Ingolf_Dahl_circa_1968.jpg/330px-Ingolf_Dahl_circa_1968.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Ingolf_Dahl",
+      "name": "Annette Schavan",
+      "alter": 71,
+      "geburtsjahr": 1955,
+      "beruf": "German Politician (Born 1955)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Schavan_2010.jpg/330px-Schavan_2010.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Annette_Schavan",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Andrey Osterman",
-      "alter": 340,
-      "geburtsjahr": 1686,
-      "beruf": "Russian Statesman, Vice-Chancellor Of Russian Empire (D. 1747)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/%D0%93%D0%B5%D0%BD%D1%80%D0%B8%D1%85_%D0%98%D0%BE%D0%B3%D0%B0%D0%BD%D0%BD_%D0%A4%D1%80%D0%B8%D0%B4%D1%80%D0%B8%D1%85_%28%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87%29_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%BC%D0%B0%D0%BD.jpg/330px-%D0%93%D0%B5%D0%BD%D1%80%D0%B8%D1%85_%D0%98%D0%BE%D0%B3%D0%B0%D0%BD%D0%BD_%D0%A4%D1%80%D0%B8%D0%B4%D1%80%D0%B8%D1%85_%28%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_%D0%98%D0%B2%D0%B0%D0%BD%D0%BE%D0%B2%D0%B8%D1%87%29_%D0%9E%D1%81%D1%82%D0%B5%D1%80%D0%BC%D0%B0%D0%BD.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Andrey_Osterman",
+      "name": "Burglinde Pollak",
+      "alter": 75,
+      "geburtsjahr": 1951,
+      "beruf": "East German Pentathlete",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Bundesarchiv_Bild_183-J0628-0008-001%2C_Burglinde_Pollak.jpg/330px-Bundesarchiv_Bild_183-J0628-0008-001%2C_Burglinde_Pollak.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Burglinde_Pollak",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
