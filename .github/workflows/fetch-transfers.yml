@@ -1,10 +1,10 @@
 name: Fetch Union Berlin Transfers
 
 on:
-  schedule:
-    # Täglich um 08:00 UTC (10:00 Berliner Sommerzeit)
-    - cron: '0 8 * * *'
-  workflow_dispatch:  # Manuell auslösbar
+  # schedule:
+  #   # Täglich um 08:00 UTC (10:00 Berliner Sommerzeit)
+  #   - cron: '0 8 * * *'
+  workflow_dispatch:  # Manuell auslösbar — reaktivieren wenn Saison 26/27 startet
 
 jobs:
   fetch:
