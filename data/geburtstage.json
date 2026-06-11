@@ -1,41 +1,41 @@
 {
-  "datum": "10.06.2026",
-  "generiert": "2026-06-10T05:09:11Z",
+  "datum": "11.06.2026",
+  "generiert": "2026-06-11T05:18:41Z",
   "geburtstage": [
     {
-      "name": "Martin Harnik",
+      "name": "Kai Havertz",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/20160326_AUT_ALB_2.jpg/120px-20160326_AUT_ALB_2.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q60360",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2059_LR10_by_Stepro.jpg/120px-2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2059_LR10_by_Stepro.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q27310755",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jürgen Prochnow",
+      "name": "Gonzalo Castro",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/MJK_60861_Verena_Wengler_und_J%C3%BCrgen_Prochnow_%28Hessischer_Film-_und_Kinopreis_2019%29_%28cropped%29.jpg/120px-MJK_60861_Verena_Wengler_und_J%C3%BCrgen_Prochnow_%28Hessischer_Film-_und_Kinopreis_2019%29_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q61356",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Gonzalo-castro-bvb-borussia-dortmund.jpg/120px-Gonzalo-castro-bvb-borussia-dortmund.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q28239",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Annette Schavan",
-      "alter": 71,
-      "geburtsjahr": 1955,
-      "beruf": "German Politician (Born 1955)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Schavan_2010.jpg/330px-Schavan_2010.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Annette_Schavan",
+      "name": "Olaf Kapagiannidis",
+      "alter": 57,
+      "geburtsjahr": 1969,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Olaf_Kapagiannidis",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Burglinde Pollak",
-      "alter": 75,
-      "geburtsjahr": 1951,
-      "beruf": "East German Pentathlete",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Bundesarchiv_Bild_183-J0628-0008-001%2C_Burglinde_Pollak.jpg/330px-Bundesarchiv_Bild_183-J0628-0008-001%2C_Burglinde_Pollak.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Burglinde_Pollak",
+      "name": "Penny Ford",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "American Musician (Born 1964)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Pennyford.jpg/330px-Pennyford.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Penny_Ford",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
