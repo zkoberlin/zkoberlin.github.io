@@ -1,41 +1,41 @@
 {
-  "datum": "11.06.2026",
-  "generiert": "2026-06-11T05:18:41Z",
+  "datum": "12.06.2026",
+  "generiert": "2026-06-12T05:24:18Z",
   "geburtstage": [
     {
-      "name": "Kai Havertz",
+      "name": "Bert Sakmann",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2059_LR10_by_Stepro.jpg/120px-2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2059_LR10_by_Stepro.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q27310755",
+      "beruf": "Biophysiker",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Sakmann.jpg/120px-Sakmann.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q77081",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Gonzalo Castro",
+      "name": "Nora Tschirner",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Gonzalo-castro-bvb-borussia-dortmund.jpg/120px-Gonzalo-castro-bvb-borussia-dortmund.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q28239",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Nora_Tschirner_Romy_2019_%28cropped%29.jpg/120px-Nora_Tschirner_Romy_2019_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q63228",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Olaf Kapagiannidis",
-      "alter": 57,
-      "geburtsjahr": 1969,
+      "name": "Jens Böhrnsen",
+      "alter": 77,
+      "geburtsjahr": 1949,
+      "beruf": "German Politician (Born 1949)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Portrait_Buergermeister_Boehrnsen.jpg/330px-Portrait_Buergermeister_Boehrnsen.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Jens_B%C3%B6hrnsen",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Herbert Meyer (footballer)",
+      "alter": 78,
+      "geburtsjahr": 1948,
       "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Olaf_Kapagiannidis",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Penny Ford",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "American Musician (Born 1964)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Pennyford.jpg/330px-Pennyford.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Penny_Ford",
+      "wikidata": "https://en.wikipedia.org/wiki/Herbert_Meyer_(footballer)",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
