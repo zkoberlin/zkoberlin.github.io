@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.12.1 -->
+<title>Paul · Hub</title><!-- v5.12.2 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -1797,7 +1797,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.1
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.2
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -3492,30 +3492,25 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    // iCal URL – Google Calendar public iCal feed
-    const ICAL_URL='https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/public/basic.ics';
-
-    // Try multiple CORS proxies in order (allorigins first – stabilster)
-    const PROXIES=[
-      u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-      u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-      u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
-      u=>`https://thingproxy.freeboard.io/fetch/${u}`,
+    // iCal URLs – private Google Calendar Feeds via Cloudflare Worker Proxy
+    const ICAL_URLS=[
+      'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics',
+      'https://calendar.google.com/calendar/ical/bendzko%40hellomed.com/private-47446a2b152be60bee5ced55d79b08eb/basic.ics',
     ];
 
-    let txt='';
-    for(const makeUrl of PROXIES){
+    let evs=[];
+    let okCount=0;
+    for(const url of ICAL_URLS){
       try{
-        const proxyUrl=makeUrl(ICAL_URL);
+        const proxyUrl='https://kalender-proxy.paul-bendzko.workers.dev/ical?url='+encodeURIComponent(url);
         const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(10000)});
         if(!r.ok)continue;
         const t=await r.text();
-        if(t.includes('BEGIN:VCALENDAR')){txt=t;console.log('iCal geladen via:',proxyUrl.split('?')[0]);break;}
+        if(t.includes('BEGIN:VCALENDAR')){evs=evs.concat(parseICS(t));okCount++;}
       }catch(e){continue;}
     }
 
-    if(!txt.includes('BEGIN:VCALENDAR'))throw new Error('iCal nicht erreichbar');
-    const evs=parseICS(txt);
+    if(okCount===0)throw new Error('iCal nicht erreichbar');
     const today=st(new Date());
 
     // ── Alma ──
