@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.12.2 -->
+<title>Paul · Hub</title><!-- v5.12.3 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -602,6 +602,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-streak-num.grey{color:var(--t3);}
 .atk-streak-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);font-family:var(--font-head);}
 .atk-streak-sub{font-size:9.5px;color:var(--t3);margin-top:1px;}
+.atk-streak-total{font-size:9px;color:var(--t3);margin-top:2px;opacity:.65;font-variant-numeric:tabular-nums;}
 .atk-streak-record{font-size:9px;font-weight:700;color:var(--green);margin-top:3px;padding:2px 5px;border-radius:5px;background:var(--green-l);border:1px solid var(--green-b);align-self:flex-start;}
 .atk-streak-record.drink{color:var(--orange);background:var(--orange-l);border-color:var(--orange-b);}
 .atk-streak-trophy{position:absolute;top:6px;right:8px;font-size:14px;opacity:.5;}
@@ -1797,7 +1798,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.2
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.3
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -4663,7 +4664,7 @@ loadICAL();
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ── ALKOHOL TRACKER v5.10.11 ──
+// ── ALKOHOL TRACKER v5.12.3 ──
 
 var _atkCharts = {};
 var _atkCurrentPeriod = {a:'today'};
@@ -4930,6 +4931,25 @@ function atkComputeStreaks(data) {
   return { soberCur: soberCur, drinkCur: drinkCur, soberBest: soberBest, drinkBest: drinkBest };
 }
 
+function atkComputeTotals(data) {
+  // Total days ever recorded as sober (units===0) vs. drinking (units>0),
+  // across the entire range from the first tracked day until today.
+  var allKeys = Object.keys(data).sort();
+  if (!allKeys.length) return { soberTotal:0, drinkTotal:0 };
+
+  var first = new Date(allKeys[0]);
+  var last  = new Date(atkToday());
+  var soberTotal = 0, drinkTotal = 0;
+  var cur = new Date(first);
+  while (cur <= last) {
+    var k = atkDateKey(cur);
+    var u = atkGetUnits(data, k);
+    if (u === 0) soberTotal++; else drinkTotal++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return { soberTotal: soberTotal, drinkTotal: drinkTotal };
+}
+
 function atkFmtDate(isoStr) {
   if (!isoStr) return '';
   var d = new Date(isoStr);
@@ -4943,6 +4963,7 @@ function atkRenderStreaks() {
   var data    = atkLoadData();
   var records = atkLoadRecords();
   var s       = atkComputeStreaks(data);
+  var totals  = atkComputeTotals(data);
 
   // Check and update records
   var recordBroken = { sober: false, drink: false };
@@ -4974,11 +4995,13 @@ function atkRenderStreaks() {
       recordHtml = '<div class="atk-streak-record' + (opts.recordColor !== 'green' ? ' drink' : '') + '">' + breakTxt + '</div>';
     }
     var trophyHtml = opts.isRecord ? '<div class="atk-streak-trophy">🏆</div>' : '';
+    var totalHtml = (opts.total != null) ? '<div class="atk-streak-total">Insgesamt ' + opts.total + (opts.total === 1 ? ' Tag' : ' Tage') + '</div>' : '';
     return '<div class="' + chipClass + '">' + trophyHtml +
       '<div class="atk-streak-lbl">' + opts.label + '</div>' +
       '<div class="atk-streak-num ' + opts.numColor + '">' + opts.num + (opts.num === 1 ? ' Tag' : ' Tage') + '</div>' +
       '<div class="atk-streak-sub">' + opts.sub + '</div>' +
       recordHtml +
+      totalHtml +
       '</div>';
   }
 
@@ -4994,7 +5017,8 @@ function atkRenderStreaks() {
     recordVal: records.soberBest || 0,
     recordDate: records.soberBestDate,
     recordColor: 'green',
-    isRecord: soberIsRecord
+    isRecord: soberIsRecord,
+    total: totals.soberTotal
   });
 
   // Drinking streak chip
@@ -5007,7 +5031,8 @@ function atkRenderStreaks() {
     recordVal: records.drinkBest || 0,
     recordDate: records.drinkBestDate,
     recordColor: 'drink',
-    isRecord: drinkIsRecord
+    isRecord: drinkIsRecord,
+    total: totals.drinkTotal
   });
 
   el.innerHTML = html;
