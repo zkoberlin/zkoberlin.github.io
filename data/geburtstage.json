@@ -1,41 +1,41 @@
 {
-  "datum": "12.06.2026",
-  "generiert": "2026-06-12T05:24:18Z",
+  "datum": "13.06.2026",
+  "generiert": "2026-06-13T05:13:19Z",
   "geburtstage": [
     {
-      "name": "Bert Sakmann",
+      "name": "Sarah Connor",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Biophysiker",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Sakmann.jpg/120px-Sakmann.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q77081",
+      "beruf": "Komponist/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Nolting_SARAH_CONNOR_GWO-%2815_of_47%29.jpg/120px-Nolting_SARAH_CONNOR_GWO-%2815_of_47%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q63664",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Nora Tschirner",
+      "name": "Markus Winkelhock",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Nora_Tschirner_Romy_2019_%28cropped%29.jpg/120px-Nora_Tschirner_Romy_2019_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q63228",
+      "beruf": "Formel-1-Fahrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/MarkusWinkelhock.jpg/120px-MarkusWinkelhock.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q75841",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jens Böhrnsen",
-      "alter": 77,
-      "geburtsjahr": 1949,
-      "beruf": "German Politician (Born 1949)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Portrait_Buergermeister_Boehrnsen.jpg/330px-Portrait_Buergermeister_Boehrnsen.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Jens_B%C3%B6hrnsen",
+      "name": "Cansın Köktürk",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "German Politician (Born 1993)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Cans%C4%B1n_K%C3%B6kt%C3%BCrk",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Herbert Meyer (footballer)",
-      "alter": 78,
-      "geburtsjahr": 1948,
+      "name": "Silvio Bankert",
+      "alter": 41,
+      "geburtsjahr": 1985,
       "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Herbert_Meyer_(footballer)",
+      "wikidata": "https://en.wikipedia.org/wiki/Silvio_Bankert",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
