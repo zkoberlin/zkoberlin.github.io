@@ -1,42 +1,42 @@
 {
-  "datum": "13.06.2026",
-  "generiert": "2026-06-13T05:13:19Z",
+  "datum": "14.06.2026",
+  "generiert": "2026-06-14T05:23:03Z",
   "geburtstage": [
     {
-      "name": "Sarah Connor",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Komponist/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Nolting_SARAH_CONNOR_GWO-%2815_of_47%29.jpg/120px-Nolting_SARAH_CONNOR_GWO-%2815_of_47%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q63664",
+      "name": "Steffi Graf",
+      "alter": 57,
+      "geburtsjahr": 1969,
+      "beruf": "German Tennis Player (Born 1969)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Steffi_Graf_in_Hamburg_2010_%28cropped%29.jpg/330px-Steffi_Graf_in_Hamburg_2010_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Steffi_Graf",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Markus Winkelhock",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Formel-1-Fahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/MarkusWinkelhock.jpg/120px-MarkusWinkelhock.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q75841",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Cansın Köktürk",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "German Politician (Born 1993)",
+      "name": "Bryce James",
+      "alter": 19,
+      "geburtsjahr": 2007,
+      "beruf": "American Basketball Player (Born 2007)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Cans%C4%B1n_K%C3%B6kt%C3%BCrk",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "wikidata": "https://en.wikipedia.org/wiki/Bryce_James",
+      "nationalitaet": null
     },
     {
-      "name": "Silvio Bankert",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Silvio_Bankert",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Soyoka Yoshida",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Japanese Entertainer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Soyoka_Yoshida_Tainan_2024.jpg/330px-Soyoka_Yoshida_Tainan_2024.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Soyoka_Yoshida",
+      "nationalitaet": null
+    },
+    {
+      "name": "RJ Barrett",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Canadian Basketball Player (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93063.jpg/330px-2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93063.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/RJ_Barrett",
+      "nationalitaet": null
     }
   ]
 }
