@@ -1,41 +1,41 @@
 {
-  "datum": "15.06.2026",
-  "generiert": "2026-06-15T06:12:21Z",
+  "datum": "16.06.2026",
+  "generiert": "2026-06-16T06:21:47Z",
   "geburtstage": [
     {
-      "name": "Christian Rahn",
-      "alter": 47,
-      "geburtsjahr": 1979,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Rahn%2C_Christian_REG_12-13_WP.JPG/330px-Rahn%2C_Christian_REG_12-13_WP.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Christian_Rahn",
+      "name": "Maik Brückner",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "German Politician (Born 1992)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Maik_Br%C3%BCckner",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Oliver Kahn",
-      "alter": 57,
-      "geburtsjahr": 1969,
-      "beruf": "German Footballer (Born 1969)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3179_by_Stepro.jpg/330px-2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3179_by_Stepro.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Oliver_Kahn",
+      "name": "Benjamin Becker",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "German Tennis Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Becker_RG15_%2819282133136%29.jpg/330px-Becker_RG15_%2819282133136%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Benjamin_Becker",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Léon Degrelle",
-      "alter": 120,
-      "geburtsjahr": 1906,
-      "beruf": "Belgian Politician (1906–1994)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/L%C3%A9on_Degrelle_portrait.jpg/330px-L%C3%A9on_Degrelle_portrait.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/L%C3%A9on_Degrelle",
+      "name": "Sibel Kekilli",
+      "alter": 46,
+      "geburtsjahr": 1980,
+      "beruf": "German Actress",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Sibel_Kekilli-68503.jpg/330px-Sibel_Kekilli-68503.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sibel_Kekilli",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Franz Danzi",
-      "alter": 263,
-      "geburtsjahr": 1763,
-      "beruf": "German Conductor And Composer (1763–1826)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Franz_Danzi.JPG/330px-Franz_Danzi.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Franz_Danzi",
+      "name": "Martin Stranzl",
+      "alter": 46,
+      "geburtsjahr": 1980,
+      "beruf": "Austrian Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Martin_Stranzl_2012_Borussia_M%C3%B6nchengladbach.jpg/330px-Martin_Stranzl_2012_Borussia_M%C3%B6nchengladbach.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Martin_Stranzl",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
