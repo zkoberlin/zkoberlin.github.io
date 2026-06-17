@@ -1,41 +1,41 @@
 {
-  "datum": "16.06.2026",
-  "generiert": "2026-06-16T06:21:47Z",
+  "datum": "17.06.2026",
+  "generiert": "2026-06-17T05:57:35Z",
   "geburtstage": [
     {
-      "name": "Maik Brückner",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "German Politician (Born 1992)",
+      "name": "Michael Groß",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schwimmer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Michael_Gross_2014.jpg/120px-Michael_Gross_2014.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q57404",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Ulrike Richter",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schwimmer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Ulrike_Richter_1973.jpg/120px-Ulrike_Richter_1973.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q442443",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Michel-Friedrich Schiefler",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "German Politician (Born 1995)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Maik_Br%C3%BCckner",
+      "wikidata": "https://en.wikipedia.org/wiki/Michel-Friedrich_Schiefler",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Benjamin Becker",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "German Tennis Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Becker_RG15_%2819282133136%29.jpg/330px-Becker_RG15_%2819282133136%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Benjamin_Becker",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Sibel Kekilli",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "German Actress",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Sibel_Kekilli-68503.jpg/330px-Sibel_Kekilli-68503.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sibel_Kekilli",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Martin Stranzl",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "Austrian Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Martin_Stranzl_2012_Borussia_M%C3%B6nchengladbach.jpg/330px-Martin_Stranzl_2012_Borussia_M%C3%B6nchengladbach.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Martin_Stranzl",
+      "name": "Dorothea Röschmann",
+      "alter": 59,
+      "geburtsjahr": 1967,
+      "beruf": "Opera Singer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Dorothea_R%C3%B6schmann",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
