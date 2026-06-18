@@ -1,41 +1,41 @@
 {
-  "datum": "17.06.2026",
-  "generiert": "2026-06-17T05:57:35Z",
+  "datum": "18.06.2026",
+  "generiert": "2026-06-18T05:26:48Z",
   "geburtstage": [
     {
-      "name": "Michael Groß",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schwimmer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Michael_Gross_2014.jpg/120px-Michael_Gross_2014.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q57404",
+      "name": "Katharina Hobgarski",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "German Tennis Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Katharina_Hobgarski_%28GER%29_%2821445556140%29.jpg/330px-Katharina_Hobgarski_%28GER%29_%2821445556140%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Katharina_Hobgarski",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ulrike Richter",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schwimmer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Ulrike_Richter_1973.jpg/120px-Ulrike_Richter_1973.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q442443",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Michel-Friedrich Schiefler",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "German Politician (Born 1995)",
+      "name": "Ivan Kozák",
+      "alter": 56,
+      "geburtsjahr": 1970,
+      "beruf": "Slovak Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Michel-Friedrich_Schiefler",
+      "wikidata": "https://en.wikipedia.org/wiki/Ivan_Koz%C3%A1k",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Dorothea Röschmann",
-      "alter": 59,
-      "geburtsjahr": 1967,
-      "beruf": "Opera Singer",
+      "name": "Frank Müller",
+      "alter": 58,
+      "geburtsjahr": 1968,
+      "beruf": "German Decathlete (Born 1968)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Dorothea_R%C3%B6schmann",
+      "wikidata": "https://en.wikipedia.org/wiki/Frank_M%C3%BCller",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Peter Altmaier",
+      "alter": 68,
+      "geburtsjahr": 1958,
+      "beruf": "German Politician",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Hart_aber_fair_-_2023-12-04-40265.jpg/330px-Hart_aber_fair_-_2023-12-04-40265.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Peter_Altmaier",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
