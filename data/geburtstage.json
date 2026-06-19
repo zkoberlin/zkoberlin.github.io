@@ -1,41 +1,41 @@
 {
-  "datum": "18.06.2026",
-  "generiert": "2026-06-18T05:26:48Z",
+  "datum": "19.06.2026",
+  "generiert": "2026-06-19T06:05:40Z",
   "geburtstage": [
     {
-      "name": "Katharina Hobgarski",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "German Tennis Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Katharina_Hobgarski_%28GER%29_%2821445556140%29.jpg/330px-Katharina_Hobgarski_%28GER%29_%2821445556140%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Katharina_Hobgarski",
+      "name": "Christian Wulff",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Christian_Wulff_crop.jpg/120px-Christian_Wulff_crop.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q2540",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ivan Kozák",
-      "alter": 56,
-      "geburtsjahr": 1970,
-      "beruf": "Slovak Footballer",
+      "name": "Dirk Nowitzki",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Dirk_Nowitzki_-_2019202181209_2019-07-21_Champions_for_Charity_-_1829_-_B70I1864.jpg/120px-Dirk_Nowitzki_-_2019202181209_2019-07-21_Champions_for_Charity_-_1829_-_B70I1864.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44068",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Sabine Braun",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "German Athlete (Born 1965)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ivan_Koz%C3%A1k",
+      "wikidata": "https://en.wikipedia.org/wiki/Sabine_Braun",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Frank Müller",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "German Decathlete (Born 1968)",
+      "name": "Brent Goulet",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "American Soccer Player",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Frank_M%C3%BCller",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Peter Altmaier",
-      "alter": 68,
-      "geburtsjahr": 1958,
-      "beruf": "German Politician",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Hart_aber_fair_-_2023-12-04-40265.jpg/330px-Hart_aber_fair_-_2023-12-04-40265.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Peter_Altmaier",
+      "wikidata": "https://en.wikipedia.org/wiki/Brent_Goulet",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
