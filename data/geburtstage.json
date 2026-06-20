@@ -1,41 +1,41 @@
 {
-  "datum": "19.06.2026",
-  "generiert": "2026-06-19T06:05:40Z",
+  "datum": "20.06.2026",
+  "generiert": "2026-06-20T05:02:16Z",
   "geburtstage": [
     {
-      "name": "Christian Wulff",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Christian_Wulff_crop.jpg/120px-Christian_Wulff_crop.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q2540",
+      "name": "Sead Kolašinac",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Bosnian Footballer (Born 1993)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kolasinac_2015.jpg/330px-Kolasinac_2015.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sead_Kola%C5%A1inac",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Dirk Nowitzki",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Dirk_Nowitzki_-_2019202181209_2019-07-21_Champions_for_Charity_-_1829_-_B70I1864.jpg/120px-Dirk_Nowitzki_-_2019202181209_2019-07-21_Champions_for_Charity_-_1829_-_B70I1864.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q44068",
+      "name": "Andrea Nahles",
+      "alter": 56,
+      "geburtsjahr": 1970,
+      "beruf": "German Politician (Born 1970)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/2019-02-05_Andrea_Nahles-4936.jpg/330px-2019-02-05_Andrea_Nahles-4936.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Andrea_Nahles",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Sabine Braun",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "German Athlete (Born 1965)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Sabine_Braun",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Brent Goulet",
+      "name": "Silke Möller",
       "alter": 62,
       "geburtsjahr": 1964,
-      "beruf": "American Soccer Player",
+      "beruf": "East German Sprinter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Bundesarchiv_Bild_183-1989-0723-014%2C_Silke_M%C3%B6ller%2C_Katrin_Krabbe.jpg/330px-Bundesarchiv_Bild_183-1989-0723-014%2C_Silke_M%C3%B6ller%2C_Katrin_Krabbe.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Silke_M%C3%B6ller",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Willy Rampf",
+      "alter": 73,
+      "geburtsjahr": 1953,
+      "beruf": "German Car Engineer (Born 1953)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Brent_Goulet",
+      "wikidata": "https://en.wikipedia.org/wiki/Willy_Rampf",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
