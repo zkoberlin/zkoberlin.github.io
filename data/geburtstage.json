@@ -1,41 +1,41 @@
 {
-  "datum": "20.06.2026",
-  "generiert": "2026-06-20T05:02:16Z",
+  "datum": "21.06.2026",
+  "generiert": "2026-06-21T05:51:19Z",
   "geburtstage": [
     {
-      "name": "Sead Kolašinac",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Bosnian Footballer (Born 1993)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kolasinac_2015.jpg/330px-Kolasinac_2015.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sead_Kola%C5%A1inac",
+      "name": "Sascha Konietzko",
+      "alter": 65,
+      "geburtsjahr": 1961,
+      "beruf": "German Musician And Producer (Born 1961)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/SaschaKonietzkoin2022.jpg/330px-SaschaKonietzkoin2022.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sascha_Konietzko",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Andrea Nahles",
-      "alter": 56,
-      "geburtsjahr": 1970,
-      "beruf": "German Politician (Born 1970)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/2019-02-05_Andrea_Nahles-4936.jpg/330px-2019-02-05_Andrea_Nahles-4936.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Andrea_Nahles",
+      "name": "Machado de Assis",
+      "alter": 187,
+      "geburtsjahr": 1839,
+      "beruf": "Brazilian Writer (1839–1908)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Machado_de_Assis_by_Marc_Ferrez.jpg/330px-Machado_de_Assis_by_Marc_Ferrez.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Machado_de_Assis",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Silke Möller",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "East German Sprinter",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Bundesarchiv_Bild_183-1989-0723-014%2C_Silke_M%C3%B6ller%2C_Katrin_Krabbe.jpg/330px-Bundesarchiv_Bild_183-1989-0723-014%2C_Silke_M%C3%B6ller%2C_Katrin_Krabbe.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Silke_M%C3%B6ller",
+      "name": "Friedrich Curschmann",
+      "alter": 221,
+      "geburtsjahr": 1805,
+      "beruf": "German Composer And Singer (1805–1841)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Friedrich_Curschmann_by_Adolf_Jebens.jpg/330px-Friedrich_Curschmann_by_Adolf_Jebens.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Friedrich_Curschmann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Willy Rampf",
-      "alter": 73,
-      "geburtsjahr": 1953,
-      "beruf": "German Car Engineer (Born 1953)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Willy_Rampf",
+      "name": "Johann Christoph Friedrich Bach",
+      "alter": 294,
+      "geburtsjahr": 1732,
+      "beruf": "German Musician And Composer (1732-1795)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Johann_Christoph_Friedrich_Bach.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Johann_Christoph_Friedrich_Bach",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
