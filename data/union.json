@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-20T00:10:48.913472+00:00",
+  "updated_at": "2026-06-21T00:09:22.065638+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "season_start_date": "2026-08-21",
@@ -177,102 +177,9 @@
       "opp": 2.26
     }
   },
-  "union_scorers": [
-    {
-      "id": 609504,
-      "name": "Oliver Burke",
-      "pos": "ST,CAM,RW",
-      "shirt": 7,
-      "goals": 6,
-      "assists": 2,
-      "injured": false
-    },
-    {
-      "id": 1047670,
-      "name": "Andrej Ilic",
-      "pos": "ST",
-      "shirt": 23,
-      "goals": 5,
-      "assists": 9,
-      "injured": false
-    },
-    {
-      "id": 304348,
-      "name": "Rani Khedira",
-      "pos": "CDM,CM",
-      "shirt": 8,
-      "goals": 5,
-      "assists": 1,
-      "injured": false
-    },
-    {
-      "id": 1515977,
-      "name": "Ilyas Ansah",
-      "pos": "CAM,ST,LW",
-      "shirt": 10,
-      "goals": 5,
-      "assists": 1,
-      "injured": false
-    },
-    {
-      "id": 724196,
-      "name": "Danilho Doekhi",
-      "pos": "CB",
-      "shirt": 5,
-      "goals": 5,
-      "assists": 0,
-      "injured": false
-    },
-    {
-      "id": 949673,
-      "name": "Woo-Yeong Jeong",
-      "pos": "CAM,ST",
-      "shirt": 11,
-      "goals": 4,
-      "assists": 1,
-      "injured": false
-    }
-  ],
-  "top_scorers": [
-    {
-      "id": 194165,
-      "name": "Harry Kane",
-      "teamName": "Bayern München",
-      "goals": 36
-    },
-    {
-      "id": 661519,
-      "name": "Deniz Undav",
-      "teamName": "VfB Stuttgart",
-      "goals": 19
-    },
-    {
-      "id": 448540,
-      "name": "Serhou Guirassy",
-      "teamName": "Borussia Dortmund",
-      "goals": 17
-    }
-  ],
-  "top_assisters": [
-    {
-      "id": 1029063,
-      "name": "Michael Olise",
-      "teamName": "Bayern München",
-      "assists": 19
-    },
-    {
-      "id": 659272,
-      "name": "Julian Ryerson",
-      "teamName": "Borussia Dortmund",
-      "assists": 15
-    },
-    {
-      "id": 860914,
-      "name": "Luis Díaz",
-      "teamName": "Bayern München",
-      "assists": 14
-    }
-  ],
+  "union_scorers": [],
+  "top_scorers": [],
+  "top_assisters": [],
   "h2h": {},
   "opponent_season_stats": null
 }
