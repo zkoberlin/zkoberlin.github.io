@@ -1,42 +1,42 @@
 {
-  "datum": "22.06.2026",
-  "generiert": "2026-06-22T06:17:55Z",
+  "datum": "23.06.2026",
+  "generiert": "2026-06-23T04:52:55Z",
   "geburtstage": [
     {
-      "name": "Loris Karius",
+      "name": "Marvin Grumann",
       "alter": 33,
       "geburtsjahr": 1993,
-      "beruf": "German Footballer (Born 1993)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Loris_Karius.jpg/330px-Loris_Karius.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Loris_Karius",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Sebastian Jung",
-      "alter": 36,
-      "geburtsjahr": 1990,
       "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Krasnodar-Wolfsburg_%2817%29.jpg/330px-Krasnodar-Wolfsburg_%2817%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Jung",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Marvin_Grumann",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ľubomír Moravčík",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "Slovak Footballer (Born 1965)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Alan_Thompson_and_Lubomir_Moravcik%2C_John_Kennedy_testimonial_match.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/%C4%BDubom%C3%ADr_Morav%C4%8D%C3%ADk",
+      "name": "Hayden Foxe",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Australian Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Hayden_Foxe.jpg/330px-Hayden_Foxe.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Hayden_Foxe",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Miroslav Kadlec",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "Czech Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Miroslav_Kadlec_2015.JPG/330px-Miroslav_Kadlec_2015.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Miroslav_Kadlec",
+      "name": "Klaus von Dohnanyi",
+      "alter": 98,
+      "geburtsjahr": 1928,
+      "beruf": "German Politician (Born 1928)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/2018-11-07-Klaus_von_Dohnanyi-Maischberger-1157.jpg/330px-2018-11-07-Klaus_von_Dohnanyi-Maischberger-1157.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Klaus_von_Dohnanyi",
       "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Starford To'a",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Tonga International Rugby League Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Starford_To'a",
+      "nationalitaet": null
     }
   ]
 }
