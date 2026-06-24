@@ -1,42 +1,42 @@
 {
-  "datum": "23.06.2026",
-  "generiert": "2026-06-23T04:52:55Z",
+  "datum": "24.06.2026",
+  "generiert": "2026-06-24T04:56:35Z",
   "geburtstage": [
     {
-      "name": "Marvin Grumann",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Marvin_Grumann",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Hayden Foxe",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "Australian Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Hayden_Foxe.jpg/330px-Hayden_Foxe.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Hayden_Foxe",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Klaus von Dohnanyi",
-      "alter": 98,
-      "geburtsjahr": 1928,
-      "beruf": "German Politician (Born 1928)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/2018-11-07-Klaus_von_Dohnanyi-Maischberger-1157.jpg/330px-2018-11-07-Klaus_von_Dohnanyi-Maischberger-1157.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Klaus_von_Dohnanyi",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Starford To'a",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Tonga International Rugby League Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Starford_To'a",
+      "name": "Lionel Messi",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Lionel_Messi_NE_Revolution_Inter_Miami_7.9.25-178_%28cropped_2%29.jpg/120px-Lionel_Messi_NE_Revolution_Inter_Miami_7.9.25-178_%28cropped_2%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q615",
       "nationalitaet": null
+    },
+    {
+      "name": "Richard Sukuta-Pasu",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "German Footballer (Born 1990)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Richard_Sukuta-Pasu1112.jpg/330px-Richard_Sukuta-Pasu1112.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Richard_Sukuta-Pasu",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Johanna Welin",
+      "alter": 42,
+      "geburtsjahr": 1984,
+      "beruf": "German Wheelchair Basketball Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Germany_vs_Japan_women%27s_wheelchair_basketball_team_at_the_Sports_Centre%28IMG_3482%29.jpg/330px-Germany_vs_Japan_women%27s_wheelchair_basketball_team_at_the_Sports_Centre%28IMG_3482%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Johanna_Welin",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Nina Dübbers",
+      "alter": 46,
+      "geburtsjahr": 1980,
+      "beruf": "German Tennis Player",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Nina_D%C3%BCbbers",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
