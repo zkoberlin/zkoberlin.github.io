@@ -1,42 +1,42 @@
 {
-  "datum": "24.06.2026",
-  "generiert": "2026-06-24T04:56:35Z",
+  "datum": "25.06.2026",
+  "generiert": "2026-06-25T04:56:01Z",
   "geburtstage": [
     {
-      "name": "Lionel Messi",
+      "name": "Patrick Sensburg",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Lionel_Messi_NE_Revolution_Inter_Miami_7.9.25-178_%28cropped_2%29.jpg/120px-Lionel_Messi_NE_Revolution_Inter_Miami_7.9.25-178_%28cropped_2%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q615",
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Patrick_Sensburg_%282023%29.jpg/120px-Patrick_Sensburg_%282023%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1280872",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Lutz Dombrowski",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Leichtathlet",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Bundesarchiv_Bild_183-W0705-0028%2C_Lutz_Dombrowski.jpg/120px-Bundesarchiv_Bild_183-W0705-0028%2C_Lutz_Dombrowski.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q435266",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Martin Gerschwitz",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "Musical Artist",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Iron_Butterfly_Chmelnice_7_October_2010_-_Martin_Gerschwitz.JPG/330px-Iron_Butterfly_Chmelnice_7_October_2010_-_Martin_Gerschwitz.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Martin_Gerschwitz",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Mckenna Grace",
+      "alter": 20,
+      "geburtsjahr": 2006,
+      "beruf": "American Actress And Singer (Born 2006)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/McKenna_Grace_at_WWD_Style_Awards_2026.jpg/330px-McKenna_Grace_at_WWD_Style_Awards_2026.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Mckenna_Grace",
       "nationalitaet": null
-    },
-    {
-      "name": "Richard Sukuta-Pasu",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "German Footballer (Born 1990)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Richard_Sukuta-Pasu1112.jpg/330px-Richard_Sukuta-Pasu1112.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Richard_Sukuta-Pasu",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Johanna Welin",
-      "alter": 42,
-      "geburtsjahr": 1984,
-      "beruf": "German Wheelchair Basketball Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Germany_vs_Japan_women%27s_wheelchair_basketball_team_at_the_Sports_Centre%28IMG_3482%29.jpg/330px-Germany_vs_Japan_women%27s_wheelchair_basketball_team_at_the_Sports_Centre%28IMG_3482%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Johanna_Welin",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Nina Dübbers",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "German Tennis Player",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Nina_D%C3%BCbbers",
-      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
