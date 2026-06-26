@@ -1,42 +1,42 @@
 {
-  "datum": "25.06.2026",
-  "generiert": "2026-06-25T04:56:01Z",
+  "datum": "26.06.2026",
+  "generiert": "2026-06-26T05:01:15Z",
   "geburtstage": [
     {
-      "name": "Patrick Sensburg",
+      "name": "Peter Sloterdijk",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Patrick_Sensburg_%282023%29.jpg/120px-Patrick_Sensburg_%282023%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q1280872",
+      "beruf": "Philosoph",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Peter_Sloterdijk%2C_Karlsruhe_07-2009%2C_IMGP3019.jpg/120px-Peter_Sloterdijk%2C_Karlsruhe_07-2009%2C_IMGP3019.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44845",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lutz Dombrowski",
+      "name": "Wolfgang Weber",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Leichtathlet",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Bundesarchiv_Bild_183-W0705-0028%2C_Lutz_Dombrowski.jpg/120px-Bundesarchiv_Bild_183-W0705-0028%2C_Lutz_Dombrowski.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q435266",
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Wolfgang_Weber_%281968%29_%28cropped%29.jpg/120px-Wolfgang_Weber_%281968%29_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q509064",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Martin Gerschwitz",
-      "alter": 74,
-      "geburtsjahr": 1952,
-      "beruf": "Musical Artist",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Iron_Butterfly_Chmelnice_7_October_2010_-_Martin_Gerschwitz.JPG/330px-Iron_Butterfly_Chmelnice_7_October_2010_-_Martin_Gerschwitz.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Martin_Gerschwitz",
+      "name": "Leonard Carow",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "German Actor",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Leonard_Carow_%282012%29.jpg/330px-Leonard_Carow_%282012%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Leonard_Carow",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mckenna Grace",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "American Actress And Singer (Born 2006)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/McKenna_Grace_at_WWD_Style_Awards_2026.jpg/330px-McKenna_Grace_at_WWD_Style_Awards_2026.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Mckenna_Grace",
-      "nationalitaet": null
+      "name": "Oliver Stang",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Oliver_Stang",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
