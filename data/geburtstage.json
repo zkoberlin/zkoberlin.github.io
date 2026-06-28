@@ -1,41 +1,41 @@
 {
-  "datum": "27.06.2026",
-  "generiert": "2026-06-27T04:42:59Z",
+  "datum": "28.06.2026",
+  "generiert": "2026-06-28T05:10:00Z",
   "geburtstage": [
     {
-      "name": "Nico Rosberg",
+      "name": "Klaus von Klitzing",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Formel-1-Fahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Nico_Rosberg_2016.jpg/120px-Nico_Rosberg_2016.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q75820",
+      "beruf": "Physiker",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Klaus_von_Klitzing_2015.jpg/120px-Klaus_von_Klitzing_2015.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q71024",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "José Holebas",
+      "name": "Leon Balogun",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/20130814_AT-GR_Jose_Holebas_2371_%28cropped%29.jpg/120px-20130814_AT-GR_Jose_Holebas_2371_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q161044",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Leon_Balogun_2010.jpg/120px-Leon_Balogun_2010.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q509422",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mary McAleese",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Mary_McAleese.jpg/120px-Mary_McAleese.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q174662",
-      "nationalitaet": null
+      "name": "Tom Bischof",
+      "alter": 21,
+      "geburtsjahr": 2005,
+      "beruf": "German Footballer (Born 2005)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Tom_Bischof",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Laura Dre",
-      "alter": 44,
-      "geburtsjahr": 1982,
-      "beruf": "German-Filipina Singer Producer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Laura_Dre",
+      "name": "Hans-Joachim Walde",
+      "alter": 84,
+      "geburtsjahr": 1942,
+      "beruf": "German Athlete (1942–2013)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Rein_Aun%2C_Willi_Holdorf%2C_Hans-Joachim_Walde_1964b.jpg/330px-Rein_Aun%2C_Willi_Holdorf%2C_Hans-Joachim_Walde_1964b.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-Joachim_Walde",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
