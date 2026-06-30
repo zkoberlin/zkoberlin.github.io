@@ -1,42 +1,42 @@
 {
-  "datum": "29.06.2026",
-  "generiert": "2026-06-29T05:21:08Z",
+  "datum": "30.06.2026",
+  "generiert": "2026-06-30T04:55:49Z",
   "geburtstage": [
     {
-      "name": "Dieter Althaus",
-      "alter": 68,
-      "geburtsjahr": 1958,
-      "beruf": "German Politician",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Dieter_althaus2008.jpg/330px-Dieter_althaus2008.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Dieter_Althaus",
+      "name": "Ralf Schumacher",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Formel-1-Fahrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Ralf_Schumacher%2C_2016.png/120px-Ralf_Schumacher%2C_2016.png",
+      "wikidata": "https://www.wikidata.org/wiki/Q75825",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ernst Albrecht (politician, born 1930)",
-      "alter": 96,
-      "geburtsjahr": 1930,
-      "beruf": "German Politician (1930–2014)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Bundesarchiv_B_145_Bild-F078542-0022%2C_Wiesbaden%2C_CDU-Bundesparteitag%2C_Albrecht_%28cropped%29.jpg/330px-Bundesarchiv_B_145_Bild-F078542-0022%2C_Wiesbaden%2C_CDU-Bundesparteitag%2C_Albrecht_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Ernst_Albrecht_(politician%2C_born_1930)",
+      "name": "Frank Rost",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/FrankRost_%28cropped%29.jpg/120px-FrankRost_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q159518",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Franz Seldte",
-      "alter": 144,
-      "geburtsjahr": 1882,
-      "beruf": "Leader Of Stahlhelm From 1920 To 1935 (1882–1947)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/FranzSeldte1933.jpeg/330px-FranzSeldte1933.jpeg",
-      "wikidata": "https://en.wikipedia.org/wiki/Franz_Seldte",
+      "name": "Volker Beck (athlete)",
+      "alter": 70,
+      "geburtsjahr": 1956,
+      "beruf": "East German Sprinter And Hurdler",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bundesarchiv_Bild_183-Z0802-016%2C_Volker_Beck_cropped.jpg/330px-Bundesarchiv_Bild_183-Z0802-016%2C_Volker_Beck_cropped.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Volker_Beck_(athlete)",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Sam Lavagnino",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "American Voice Actor (Born 2006)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Sam_Lavagnino.png/330px-Sam_Lavagnino.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Sam_Lavagnino",
-      "nationalitaet": null
+      "name": "Uwe Kliemann",
+      "alter": 77,
+      "geburtsjahr": 1949,
+      "beruf": "German Footballer And Coach",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Kliemann",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
