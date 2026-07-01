@@ -1,41 +1,41 @@
 {
-  "datum": "30.06.2026",
-  "generiert": "2026-06-30T04:55:49Z",
+  "datum": "01.07.2026",
+  "generiert": "2026-07-01T05:13:51Z",
   "geburtstage": [
     {
-      "name": "Ralf Schumacher",
+      "name": "Steffi Nerius",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Formel-1-Fahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Ralf_Schumacher%2C_2016.png/120px-Ralf_Schumacher%2C_2016.png",
-      "wikidata": "https://www.wikidata.org/wiki/Q75825",
+      "beruf": "Leichtathlet",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Steffi_Nerius_Berlin_2009_%28cropped%29.jpg/120px-Steffi_Nerius_Berlin_2009_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q58044",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Frank Rost",
+      "name": "Herbert Zimmermann",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/FrankRost_%28cropped%29.jpg/120px-FrankRost_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q159518",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Volker Beck (athlete)",
-      "alter": 70,
-      "geburtsjahr": 1956,
-      "beruf": "East German Sprinter And Hurdler",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Bundesarchiv_Bild_183-Z0802-016%2C_Volker_Beck_cropped.jpg/330px-Bundesarchiv_Bild_183-Z0802-016%2C_Volker_Beck_cropped.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Volker_Beck_(athlete)",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Uwe Kliemann",
-      "alter": 77,
-      "geburtsjahr": 1949,
-      "beruf": "German Footballer And Coach",
+      "beruf": "Fußballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Kliemann",
+      "wikidata": "https://www.wikidata.org/wiki/Q512956",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Agnez Mo",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Agnez_Mo_2019_by_Glenn_Francis.jpg/120px-Agnez_Mo_2019_by_Glenn_Francis.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1362169",
+      "nationalitaet": null
+    },
+    {
+      "name": "Michael Schrader",
+      "alter": 39,
+      "geburtsjahr": 1987,
+      "beruf": "German Decathlete",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Mehrkampf_Ratingen_2015_%2829%29.jpg/330px-Mehrkampf_Ratingen_2015_%2829%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Schrader",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
