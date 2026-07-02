@@ -1,42 +1,42 @@
 {
-  "datum": "01.07.2026",
-  "generiert": "2026-07-01T05:13:51Z",
+  "datum": "02.07.2026",
+  "generiert": "2026-07-02T04:51:15Z",
   "geburtstage": [
     {
-      "name": "Steffi Nerius",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Leichtathlet",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Steffi_Nerius_Berlin_2009_%28cropped%29.jpg/120px-Steffi_Nerius_Berlin_2009_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q58044",
+      "name": "Norbert Röttgen",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "German Politician (Born 1965)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/R%C3%B6ttgen_Portrait_Mai2021.jpg/330px-R%C3%B6ttgen_Portrait_Mai2021.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Norbert_R%C3%B6ttgen",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Herbert Zimmermann",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q512956",
+      "name": "Wilhelm Cuno",
+      "alter": 150,
+      "geburtsjahr": 1876,
+      "beruf": "Chancellor Of Germany From 1922 To 1923",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Wilhelm_Cuno%2C_1876-1933%2C_half-length_portrait%2C_facing_right_LCCN2005680053.tif/lossy-page1-330px-Wilhelm_Cuno%2C_1876-1933%2C_half-length_portrait%2C_facing_right_LCCN2005680053.tif.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Wilhelm_Cuno",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Agnez Mo",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Agnez_Mo_2019_by_Glenn_Francis.jpg/120px-Agnez_Mo_2019_by_Glenn_Francis.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q1362169",
+      "name": "Lily Braun",
+      "alter": 161,
+      "geburtsjahr": 1865,
+      "beruf": "German Feminist Writer (1865–1916)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Lily_Braun.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Lily_Braun",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Julia Grabher",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Austrian Tennis Player (Born 1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Grabher_WMQ22_%285%29_%2852191187203%29.jpg/330px-Grabher_WMQ22_%285%29_%2852191187203%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Julia_Grabher",
       "nationalitaet": null
-    },
-    {
-      "name": "Michael Schrader",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Decathlete",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Mehrkampf_Ratingen_2015_%2829%29.jpg/330px-Mehrkampf_Ratingen_2015_%2829%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Schrader",
-      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
