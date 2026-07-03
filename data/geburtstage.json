@@ -1,41 +1,41 @@
 {
-  "datum": "02.07.2026",
-  "generiert": "2026-07-02T04:51:15Z",
+  "datum": "03.07.2026",
+  "generiert": "2026-07-03T04:33:43Z",
   "geburtstage": [
     {
-      "name": "Norbert Röttgen",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "German Politician (Born 1965)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/R%C3%B6ttgen_Portrait_Mai2021.jpg/330px-R%C3%B6ttgen_Portrait_Mai2021.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Norbert_R%C3%B6ttgen",
+      "name": "Sebastian Vettel",
+      "alter": 39,
+      "geburtsjahr": 1987,
+      "beruf": "German Racing Driver (Born 1987)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sebastian_Vettel_-_2022236172324_2022-08-24_Champions_for_Charity_-_Sven_-_1D_X_MK_II_-_0418_-_B70I2428_%28cropped%29.jpg/330px-Sebastian_Vettel_-_2022236172324_2022-08-24_Champions_for_Charity_-_Sven_-_1D_X_MK_II_-_0418_-_B70I2428_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Vettel",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Wilhelm Cuno",
-      "alter": 150,
-      "geburtsjahr": 1876,
-      "beruf": "Chancellor Of Germany From 1922 To 1923",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Wilhelm_Cuno%2C_1876-1933%2C_half-length_portrait%2C_facing_right_LCCN2005680053.tif/lossy-page1-330px-Wilhelm_Cuno%2C_1876-1933%2C_half-length_portrait%2C_facing_right_LCCN2005680053.tif.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Wilhelm_Cuno",
+      "name": "Laura Branigan",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "American Singer (1952–2004)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Laura_Branigan_c._1982.jpg/330px-Laura_Branigan_c._1982.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Laura_Branigan",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lily Braun",
-      "alter": 161,
-      "geburtsjahr": 1865,
-      "beruf": "German Feminist Writer (1865–1916)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Lily_Braun.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Lily_Braun",
+      "name": "Brigitte Fassbaender",
+      "alter": 87,
+      "geburtsjahr": 1939,
+      "beruf": "German Mezzo-Soprano",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Brigitte_Fassbaender.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Brigitte_Fassbaender",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Julia Grabher",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Austrian Tennis Player (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Grabher_WMQ22_%285%29_%2852191187203%29.jpg/330px-Grabher_WMQ22_%285%29_%2852191187203%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Julia_Grabher",
+      "name": "Nefisa Berberović",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Bosnian Tennis Player (Born 1999)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Nefisa_Berberovi%C4%87",
       "nationalitaet": null
     }
   ]
