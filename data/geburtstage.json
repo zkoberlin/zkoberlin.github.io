@@ -1,42 +1,42 @@
 {
-  "datum": "03.07.2026",
-  "generiert": "2026-07-03T04:33:43Z",
+  "datum": "04.07.2026",
+  "generiert": "2026-07-04T04:26:16Z",
   "geburtstage": [
     {
-      "name": "Sebastian Vettel",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Racing Driver (Born 1987)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sebastian_Vettel_-_2022236172324_2022-08-24_Champions_for_Charity_-_Sven_-_1D_X_MK_II_-_0418_-_B70I2428_%28cropped%29.jpg/330px-Sebastian_Vettel_-_2022236172324_2022-08-24_Champions_for_Charity_-_Sven_-_1D_X_MK_II_-_0418_-_B70I2428_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Vettel",
+      "name": "Horst Seehofer",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/12-07-17-landtagsprojekt-bayern-RalfR-001.jpg/120px-12-07-17-landtagsprojekt-bayern-RalfR-001.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44612",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Laura Branigan",
-      "alter": 74,
-      "geburtsjahr": 1952,
-      "beruf": "American Singer (1952–2004)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Laura_Branigan_c._1982.jpg/330px-Laura_Branigan_c._1982.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Laura_Branigan",
+      "name": "David Kross",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Filmschauspieler",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/David_Kross_Deutschlandpremiere_%27Boy7%27_%28cropped%29.JPG/120px-David_Kross_Deutschlandpremiere_%27Boy7%27_%28cropped%29.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q58065",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Brigitte Fassbaender",
-      "alter": 87,
-      "geburtsjahr": 1939,
-      "beruf": "German Mezzo-Soprano",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/3b/Brigitte_Fassbaender.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Brigitte_Fassbaender",
+      "name": "Christoph Preuß",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Christoph_Preu%C3%9F_2011.JPG/330px-Christoph_Preu%C3%9F_2011.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Christoph_Preu%C3%9F",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Nefisa Berberović",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Bosnian Tennis Player (Born 1999)",
+      "name": "Fritz Wilde",
+      "alter": 106,
+      "geburtsjahr": 1920,
+      "beruf": "German Footballer And Manager",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Nefisa_Berberovi%C4%87",
-      "nationalitaet": null
+      "wikidata": "https://en.wikipedia.org/wiki/Fritz_Wilde",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
