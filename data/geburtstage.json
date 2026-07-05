@@ -1,41 +1,41 @@
 {
-  "datum": "04.07.2026",
-  "generiert": "2026-07-04T04:26:16Z",
+  "datum": "05.07.2026",
+  "generiert": "2026-07-05T04:47:32Z",
   "geburtstage": [
     {
-      "name": "Horst Seehofer",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/12-07-17-landtagsprojekt-bayern-RalfR-001.jpg/120px-12-07-17-landtagsprojekt-bayern-RalfR-001.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q44612",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "David Kross",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Filmschauspieler",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/David_Kross_Deutschlandpremiere_%27Boy7%27_%28cropped%29.JPG/120px-David_Kross_Deutschlandpremiere_%27Boy7%27_%28cropped%29.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q58065",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Christoph Preuß",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Christoph_Preu%C3%9F_2011.JPG/330px-Christoph_Preu%C3%9F_2011.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Christoph_Preu%C3%9F",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Fritz Wilde",
-      "alter": 106,
-      "geburtsjahr": 1920,
-      "beruf": "German Footballer And Manager",
+      "name": "Alexander Dimitrenko",
+      "alter": 44,
+      "geburtsjahr": 1982,
+      "beruf": "Ukrainian Boxer (Born 1982)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Fritz_Wilde",
+      "wikidata": "https://en.wikipedia.org/wiki/Alexander_Dimitrenko",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "İsmail YK",
+      "alter": 48,
+      "geburtsjahr": 1978,
+      "beruf": "Turkish German Singer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0smail_YK",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Nicolas Kiefer",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "German Tennis Player (Born 1977)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nicolas_Kiefer_2008_cropped.jpg/330px-Nicolas_Kiefer_2008_cropped.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Nicolas_Kiefer",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Márcio Amoroso",
+      "alter": 52,
+      "geburtsjahr": 1974,
+      "beruf": "Brazilian Footballer (Born 1974)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/M%C3%A1rcio_Amoroso",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
