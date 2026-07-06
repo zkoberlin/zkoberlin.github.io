@@ -1,42 +1,42 @@
 {
-  "datum": "05.07.2026",
-  "generiert": "2026-07-05T04:47:32Z",
+  "datum": "06.07.2026",
+  "generiert": "2026-07-06T05:01:20Z",
   "geburtstage": [
     {
-      "name": "Alexander Dimitrenko",
-      "alter": 44,
-      "geburtsjahr": 1982,
-      "beruf": "Ukrainian Boxer (Born 1982)",
+      "name": "Pau Gasol",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Pau_Gasol_2022_%28cropped%29.png/120px-Pau_Gasol_2022_%28cropped%29.png",
+      "wikidata": "https://www.wikidata.org/wiki/Q193052",
+      "nationalitaet": null
+    },
+    {
+      "name": "Reinhard Roder",
+      "alter": 85,
+      "geburtsjahr": 1941,
+      "beruf": "German Footballer And Manager",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Alexander_Dimitrenko",
+      "wikidata": "https://en.wikipedia.org/wiki/Reinhard_Roder",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "İsmail YK",
-      "alter": 48,
-      "geburtsjahr": 1978,
-      "beruf": "Turkish German Singer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0smail_YK",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Zion Williamson",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "American Basketball Player (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Zion_Williamson_2020_%28cropped%29.jpg/330px-Zion_Williamson_2020_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Zion_Williamson",
+      "nationalitaet": null
     },
     {
-      "name": "Nicolas Kiefer",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "German Tennis Player (Born 1977)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Nicolas_Kiefer_2008_cropped.jpg/330px-Nicolas_Kiefer_2008_cropped.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Nicolas_Kiefer",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Márcio Amoroso",
-      "alter": 52,
-      "geburtsjahr": 1974,
-      "beruf": "Brazilian Footballer (Born 1974)",
+      "name": "Comethazine",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "American Rapper (Born 1998)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/M%C3%A1rcio_Amoroso",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "wikidata": "https://en.wikipedia.org/wiki/Comethazine",
+      "nationalitaet": null
     }
   ]
 }
