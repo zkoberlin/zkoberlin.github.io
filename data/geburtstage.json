@@ -1,42 +1,42 @@
 {
-  "datum": "06.07.2026",
-  "generiert": "2026-07-06T05:01:20Z",
+  "datum": "07.07.2026",
+  "generiert": "2026-07-07T04:40:33Z",
   "geburtstage": [
     {
-      "name": "Pau Gasol",
+      "name": "Nina Hoss",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Pau_Gasol_2022_%28cropped%29.png/120px-Pau_Gasol_2022_%28cropped%29.png",
-      "wikidata": "https://www.wikidata.org/wiki/Q193052",
-      "nationalitaet": null
-    },
-    {
-      "name": "Reinhard Roder",
-      "alter": 85,
-      "geburtsjahr": 1941,
-      "beruf": "German Footballer And Manager",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Reinhard_Roder",
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Nina_Hoss_at_Berlinale_2024_-2.jpg/120px-Nina_Hoss_at_Berlinale_2024_-2.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q61238",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Zion Williamson",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "American Basketball Player (Born 2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Zion_Williamson_2020_%28cropped%29.jpg/330px-Zion_Williamson_2020_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Zion_Williamson",
-      "nationalitaet": null
+      "name": "Erik Zabel",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Sportler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Rund_um_K%C3%B6ln_2017_050.jpg/120px-Rund_um_K%C3%B6ln_2017_050.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44781",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Comethazine",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "American Rapper (Born 1998)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Comethazine",
-      "nationalitaet": null
+      "name": "Marc Stein (footballer)",
+      "alter": 41,
+      "geburtsjahr": 1985,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Marc_Stein_-_Hertha_BSC_Berlin_%281%29.jpg/330px-Marc_Stein_-_Hertha_BSC_Berlin_%281%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Marc_Stein_(footballer)",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Adolf von Thadden",
+      "alter": 105,
+      "geburtsjahr": 1921,
+      "beruf": "German Politician (1921–1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Adolf_von_Thadden_%281969%29.jpg/330px-Adolf_von_Thadden_%281969%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Adolf_von_Thadden",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
