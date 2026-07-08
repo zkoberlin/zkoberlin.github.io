@@ -1,41 +1,41 @@
 {
-  "datum": "07.07.2026",
-  "generiert": "2026-07-07T04:40:33Z",
+  "datum": "08.07.2026",
+  "generiert": "2026-07-08T04:00:11Z",
   "geburtstage": [
     {
-      "name": "Nina Hoss",
+      "name": "Kevin Trapp",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Nina_Hoss_at_Berlinale_2024_-2.jpg/120px-Nina_Hoss_at_Berlinale_2024_-2.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q61238",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/2022128173648_2022-05-08_Fussball_Eintracht_Frankfurt_vs_Borussia_M%C3%B6nchengladbach_-_Sven_-_1D_X_MK_II_-_0670_-_AK8I7405_%28Kevin_Trapp_ropped%29.jpg/120px-2022128173648_2022-05-08_Fussball_Eintracht_Frankfurt_vs_Borussia_M%C3%B6nchengladbach_-_Sven_-_1D_X_MK_II_-_0670_-_AK8I7405_%28Kevin_Trapp_ropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q118207",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Erik Zabel",
+      "name": "Ulrich Wehling",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Sportler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Rund_um_K%C3%B6ln_2017_050.jpg/120px-Rund_um_K%C3%B6ln_2017_050.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q44781",
+      "beruf": "Nordischer Kombinierer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Holmenkollen_Ski_Festival_1977_DEX_PR_014199.jpg/120px-Holmenkollen_Ski_Festival_1977_DEX_PR_014199.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q561263",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Marc Stein (footballer)",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Marc_Stein_-_Hertha_BSC_Berlin_%281%29.jpg/330px-Marc_Stein_-_Hertha_BSC_Berlin_%281%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Marc_Stein_(footballer)",
+      "name": "Walter Scheel",
+      "alter": 107,
+      "geburtsjahr": 1919,
+      "beruf": "President Of Germany From 1974 To 1979",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bundesarchiv_Bild_146-1989-047-20%2C_Walter_Scheel.jpg/330px-Bundesarchiv_Bild_146-1989-047-20%2C_Walter_Scheel.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Walter_Scheel",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Adolf von Thadden",
-      "alter": 105,
-      "geburtsjahr": 1921,
-      "beruf": "German Politician (1921–1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Adolf_von_Thadden_%281969%29.jpg/330px-Adolf_von_Thadden_%281969%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Adolf_von_Thadden",
+      "name": "Edward B. Giller",
+      "alter": 108,
+      "geburtsjahr": 1918,
+      "beruf": "United States Air Force General",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/85/Edward_B._Giller.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Edward_B._Giller",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
