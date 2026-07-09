@@ -1,41 +1,41 @@
 {
-  "datum": "08.07.2026",
-  "generiert": "2026-07-08T04:00:11Z",
+  "datum": "09.07.2026",
+  "generiert": "2026-07-09T04:40:00Z",
   "geburtstage": [
     {
-      "name": "Kevin Trapp",
+      "name": "Nadine Capellmann",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/2022128173648_2022-05-08_Fussball_Eintracht_Frankfurt_vs_Borussia_M%C3%B6nchengladbach_-_Sven_-_1D_X_MK_II_-_0670_-_AK8I7405_%28Kevin_Trapp_ropped%29.jpg/120px-2022128173648_2022-05-08_Fussball_Eintracht_Frankfurt_vs_Borussia_M%C3%B6nchengladbach_-_Sven_-_1D_X_MK_II_-_0670_-_AK8I7405_%28Kevin_Trapp_ropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q118207",
+      "beruf": "Dressurreiter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nadine_Capellmann_Horses-and-Dreams-2013.jpg/120px-Nadine_Capellmann_Horses-and-Dreams-2013.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q450267",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ulrich Wehling",
+      "name": "Saskia Rosendahl",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Nordischer Kombinierer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Holmenkollen_Ski_Festival_1977_DEX_PR_014199.jpg/120px-Holmenkollen_Ski_Festival_1977_DEX_PR_014199.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q561263",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MJK_335150_Saskia_Rosendahl_%28NRW-Empfang%2C_Berlinale_2019%29.jpg/120px-MJK_335150_Saskia_Rosendahl_%28NRW-Empfang%2C_Berlinale_2019%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1589732",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Walter Scheel",
-      "alter": 107,
-      "geburtsjahr": 1919,
-      "beruf": "President Of Germany From 1974 To 1979",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bundesarchiv_Bild_146-1989-047-20%2C_Walter_Scheel.jpg/330px-Bundesarchiv_Bild_146-1989-047-20%2C_Walter_Scheel.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Walter_Scheel",
+      "name": "Thomas Cichon",
+      "alter": 50,
+      "geburtsjahr": 1976,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Cichon%2C_Thomas_OS_08-09_WP.JPG/330px-Cichon%2C_Thomas_OS_08-09_WP.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Cichon",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Edward B. Giller",
-      "alter": 108,
-      "geburtsjahr": 1918,
-      "beruf": "United States Air Force General",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/85/Edward_B._Giller.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Edward_B._Giller",
+      "name": "Thomas Jahn",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "German Film And Television Director (Born 1965)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/2017-11-03_Setbesuch_Professor_T_ZDF_Krimiserie-4206.jpg/330px-2017-11-03_Setbesuch_Professor_T_ZDF_Krimiserie-4206.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Jahn",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
