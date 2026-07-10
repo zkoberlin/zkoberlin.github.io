@@ -1,41 +1,41 @@
 {
-  "datum": "09.07.2026",
-  "generiert": "2026-07-09T04:40:00Z",
+  "datum": "10.07.2026",
+  "generiert": "2026-07-10T04:42:05Z",
   "geburtstage": [
     {
-      "name": "Nadine Capellmann",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Dressurreiter",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nadine_Capellmann_Horses-and-Dreams-2013.jpg/120px-Nadine_Capellmann_Horses-and-Dreams-2013.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q450267",
+      "name": "Mario Gómez",
+      "alter": 41,
+      "geburtsjahr": 1985,
+      "beruf": "German Association Football Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mario_gomez.jpg/330px-Mario_gomez.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Mario_G%C3%B3mez",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Saskia Rosendahl",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MJK_335150_Saskia_Rosendahl_%28NRW-Empfang%2C_Berlinale_2019%29.jpg/120px-MJK_335150_Saskia_Rosendahl_%28NRW-Empfang%2C_Berlinale_2019%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q1589732",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Thomas Cichon",
+      "name": "Lars Ricken",
       "alter": 50,
       "geburtsjahr": 1976,
       "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Cichon%2C_Thomas_OS_08-09_WP.JPG/330px-Cichon%2C_Thomas_OS_08-09_WP.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Cichon",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/10._Tag_der_Legenden_2014_55.JPG/330px-10._Tag_der_Legenden_2014_55.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Lars_Ricken",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Thomas Jahn",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "German Film And Television Director (Born 1965)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/2017-11-03_Setbesuch_Professor_T_ZDF_Krimiserie-4206.jpg/330px-2017-11-03_Setbesuch_Professor_T_ZDF_Krimiserie-4206.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Jahn",
+      "name": "Tilo Wolff",
+      "alter": 54,
+      "geburtsjahr": 1972,
+      "beruf": "German Musician (Born 1972)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Tilo_Wolff.JPG/330px-Tilo_Wolff.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Tilo_Wolff",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Manfred Preußger",
+      "alter": 94,
+      "geburtsjahr": 1932,
+      "beruf": "German Pole Vaulter",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Bundesarchiv_Bild_183-52098-0001%2C_Manfred_Preu%C3%9Fger_beim_Training.jpg/330px-Bundesarchiv_Bild_183-52098-0001%2C_Manfred_Preu%C3%9Fger_beim_Training.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Manfred_Preu%C3%9Fger",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
