@@ -1,41 +1,41 @@
 {
-  "datum": "10.07.2026",
-  "generiert": "2026-07-10T04:42:05Z",
+  "datum": "11.07.2026",
+  "generiert": "2026-07-11T03:58:17Z",
   "geburtstage": [
     {
-      "name": "Mario Gómez",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "German Association Football Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mario_gomez.jpg/330px-Mario_gomez.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Mario_G%C3%B3mez",
+      "name": "Mona Barthel",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Skisportler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mona_Barthel_%2816215868079%29.jpg/120px-Mona_Barthel_%2816215868079%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q77153",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lars Ricken",
-      "alter": 50,
-      "geburtsjahr": 1976,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/10._Tag_der_Legenden_2014_55.JPG/330px-10._Tag_der_Legenden_2014_55.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Lars_Ricken",
+      "name": "Jonathan Burkardt",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://www.wikidata.org/wiki/Q56635612",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Tilo Wolff",
-      "alter": 54,
-      "geburtsjahr": 1972,
-      "beruf": "German Musician (Born 1972)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Tilo_Wolff.JPG/330px-Tilo_Wolff.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Tilo_Wolff",
+      "name": "Rolf Stommelen",
+      "alter": 83,
+      "geburtsjahr": 1943,
+      "beruf": "German Racing Driver (1943–1983)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Stommelen%2C_Rolf_am_1972-07-07.jpg/330px-Stommelen%2C_Rolf_am_1972-07-07.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Rolf_Stommelen",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Manfred Preußger",
-      "alter": 94,
-      "geburtsjahr": 1932,
-      "beruf": "German Pole Vaulter",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Bundesarchiv_Bild_183-52098-0001%2C_Manfred_Preu%C3%9Fger_beim_Training.jpg/330px-Bundesarchiv_Bild_183-52098-0001%2C_Manfred_Preu%C3%9Fger_beim_Training.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Manfred_Preu%C3%9Fger",
+      "name": "Nicolai Gedda",
+      "alter": 101,
+      "geburtsjahr": 1925,
+      "beruf": "Swedish Operatic Tenor (1925–2017)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Nicolai_Gedda_-_collezione_Tino_Barindelli.tif/lossy-page1-330px-Nicolai_Gedda_-_collezione_Tino_Barindelli.tif.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Nicolai_Gedda",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
