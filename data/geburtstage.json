@@ -1,41 +1,41 @@
 {
-  "datum": "11.07.2026",
-  "generiert": "2026-07-11T03:58:17Z",
+  "datum": "12.07.2026",
+  "generiert": "2026-07-12T04:19:14Z",
   "geburtstage": [
     {
-      "name": "Mona Barthel",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Skisportler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Mona_Barthel_%2816215868079%29.jpg/120px-Mona_Barthel_%2816215868079%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q77153",
+      "name": "Simone Laudehr",
+      "alter": 40,
+      "geburtsjahr": 1986,
+      "beruf": "German Footballer (Born 1986)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Simone_Laudehr_2011_3.jpg/330px-Simone_Laudehr_2011_3.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Simone_Laudehr",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jonathan Burkardt",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
+      "name": "Gianluca Curci",
+      "alter": 41,
+      "geburtsjahr": 1985,
+      "beruf": "Italian Footballer (Born 1985)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Gianluca_Curci.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Gianluca_Curci",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Heikko Glöde",
+      "alter": 65,
+      "geburtsjahr": 1961,
+      "beruf": "German Footballer And Manager",
       "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q56635612",
+      "wikidata": "https://en.wikipedia.org/wiki/Heikko_Gl%C3%B6de",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Rolf Stommelen",
-      "alter": 83,
-      "geburtsjahr": 1943,
-      "beruf": "German Racing Driver (1943–1983)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Stommelen%2C_Rolf_am_1972-07-07.jpg/330px-Stommelen%2C_Rolf_am_1972-07-07.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Rolf_Stommelen",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Nicolai Gedda",
-      "alter": 101,
-      "geburtsjahr": 1925,
-      "beruf": "Swedish Operatic Tenor (1925–2017)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Nicolai_Gedda_-_collezione_Tino_Barindelli.tif/lossy-page1-330px-Nicolai_Gedda_-_collezione_Tino_Barindelli.tif.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Nicolai_Gedda",
+      "name": "Wolfgang Dremmler",
+      "alter": 72,
+      "geburtsjahr": 1954,
+      "beruf": "German Footballer (Born 1954)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/2012-09-22_Wolfgang_Dremmler_023q.JPG/330px-2012-09-22_Wolfgang_Dremmler_023q.JPG",
+      "wikidata": "https://en.wikipedia.org/wiki/Wolfgang_Dremmler",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
