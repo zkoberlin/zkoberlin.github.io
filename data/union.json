@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-06-21T00:09:22.065638+00:00",
+  "updated_at": "2026-07-13T23:55:21.937806+00:00",
   "league": "Bundesliga",
   "season": "2025/26",
   "season_start_date": "2026-08-21",
-  "matchday": 34,
-  "rank": 11,
-  "points": 39,
-  "matches_played": 34,
-  "wins": 10,
-  "draws": 9,
-  "losses": 15,
-  "goals_for": 44,
-  "goals_against": 58,
+  "matchday": 0,
+  "rank": 16,
+  "points": 0,
+  "matches_played": 0,
+  "wins": 0,
+  "draws": 0,
+  "losses": 0,
+  "goals_for": 0,
+  "goals_against": 0,
   "clean_sheets": 7,
   "form": "WLDLLLDWW",
   "team_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
@@ -33,49 +33,49 @@
   },
   "table_context": [
     {
-      "rank": 9,
-      "name": "Augsburg",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8406.png",
-      "points": 43,
+      "rank": 14,
+      "name": "RB Leipzig",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/178475.png",
+      "points": 0,
       "is_union": false,
       "qual_color": null,
-      "rank_change": 0
+      "rank_change": null
     },
     {
-      "rank": 10,
-      "name": "Mainz 05",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9905.png",
-      "points": 40,
+      "rank": 15,
+      "name": "Schalke 04",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10189.png",
+      "points": 0,
       "is_union": false,
       "qual_color": null,
-      "rank_change": 0
+      "rank_change": null
     },
     {
-      "rank": 11,
+      "rank": 16,
       "name": "Union Berlin",
       "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8149.png",
-      "points": 39,
+      "points": 0,
       "is_union": true,
-      "qual_color": null,
-      "rank_change": 0
+      "qual_color": "#FFA72F",
+      "rank_change": -5
     },
     {
-      "rank": 12,
-      "name": "B. Mönchengladbach",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9788.png",
-      "points": 38,
+      "rank": 17,
+      "name": "Stuttgart",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/10269.png",
+      "points": 0,
       "is_union": false,
-      "qual_color": null,
-      "rank_change": 0
+      "qual_color": "#FF4646",
+      "rank_change": null
     },
     {
-      "rank": 13,
-      "name": "Hamburger SV",
-      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9790.png",
-      "points": 38,
+      "rank": 18,
+      "name": "Werder Bremen",
+      "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8697.png",
+      "points": 0,
       "is_union": false,
-      "qual_color": null,
-      "rank_change": 0
+      "qual_color": "#FF4646",
+      "rank_change": null
     }
   ],
   "last_match": {
