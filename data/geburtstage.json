@@ -1,42 +1,42 @@
 {
-  "datum": "12.07.2026",
-  "generiert": "2026-07-12T04:19:14Z",
+  "datum": "13.07.2026",
+  "generiert": "2026-07-13T04:22:57Z",
   "geburtstage": [
     {
-      "name": "Simone Laudehr",
-      "alter": 40,
-      "geburtsjahr": 1986,
-      "beruf": "German Footballer (Born 1986)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Simone_Laudehr_2011_3.jpg/330px-Simone_Laudehr_2011_3.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Simone_Laudehr",
+      "name": "Harrison Ford",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Harrison_Ford_-_Televerse_2025-03.jpg/120px-Harrison_Ford_-_Televerse_2025-03.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q81328",
+      "nationalitaet": null
+    },
+    {
+      "name": "Raúl Spank",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "German High Jumper",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/20150725_1325_DM_Leichtathletik_M%C3%A4nner_Hochsprung_8930.jpg/330px-20150725_1325_DM_Leichtathletik_M%C3%A4nner_Hochsprung_8930.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Spank",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Gianluca Curci",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "Italian Footballer (Born 1985)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Gianluca_Curci.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Gianluca_Curci",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Lamine Yamal",
+      "alter": 19,
+      "geburtsjahr": 2007,
+      "beruf": "Spanish Footballer (Born 2007)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Lamine_Yamal_a_Xina_%282025%29.png/330px-Lamine_Yamal_a_Xina_%282025%29.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Lamine_Yamal",
+      "nationalitaet": null
     },
     {
-      "name": "Heikko Glöde",
-      "alter": 65,
-      "geburtsjahr": 1961,
-      "beruf": "German Footballer And Manager",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Heikko_Gl%C3%B6de",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Wolfgang Dremmler",
-      "alter": 72,
-      "geburtsjahr": 1954,
-      "beruf": "German Footballer (Born 1954)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/2012-09-22_Wolfgang_Dremmler_023q.JPG/330px-2012-09-22_Wolfgang_Dremmler_023q.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Wolfgang_Dremmler",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Wyatt Oleff",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "American Actor (Born 2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Wyatt_Oleff_2018.jpg/330px-Wyatt_Oleff_2018.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Wyatt_Oleff",
+      "nationalitaet": null
     }
   ]
 }
