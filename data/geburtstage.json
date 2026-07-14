@@ -1,41 +1,41 @@
 {
-  "datum": "13.07.2026",
-  "generiert": "2026-07-13T04:22:57Z",
+  "datum": "14.07.2026",
+  "generiert": "2026-07-14T03:50:15Z",
   "geburtstage": [
     {
-      "name": "Harrison Ford",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Harrison_Ford_-_Televerse_2025-03.jpg/120px-Harrison_Ford_-_Televerse_2025-03.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q81328",
-      "nationalitaet": null
-    },
-    {
-      "name": "Raúl Spank",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "German High Jumper",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/20150725_1325_DM_Leichtathletik_M%C3%A4nner_Hochsprung_8930.jpg/330px-20150725_1325_DM_Leichtathletik_M%C3%A4nner_Hochsprung_8930.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Ra%C3%BAl_Spank",
+      "name": "Ante Pavelić",
+      "alter": 137,
+      "geburtsjahr": 1889,
+      "beruf": "Dictator Of The Independent State Of Croatia From 1941 To 1945",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Ante_Paveli%C4%87_StAF_%283x4_cropped%29.jpg/330px-Ante_Paveli%C4%87_StAF_%283x4_cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Ante_Paveli%C4%87",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lamine Yamal",
-      "alter": 19,
-      "geburtsjahr": 2007,
-      "beruf": "Spanish Footballer (Born 2007)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Lamine_Yamal_a_Xina_%282025%29.png/330px-Lamine_Yamal_a_Xina_%282025%29.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Lamine_Yamal",
+      "name": "Noah Clowney",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "American Basketball Player (Born 2004)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Noah_Clowney_%28BkrQTK80TE8%29.png/330px-Noah_Clowney_%28BkrQTK80TE8%29.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Noah_Clowney",
       "nationalitaet": null
     },
     {
-      "name": "Wyatt Oleff",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "American Actor (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Wyatt_Oleff_2018.jpg/330px-Wyatt_Oleff_2018.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Wyatt_Oleff",
+      "name": "Paulo Muacho",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "Portuguese Politician (Born 1990)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Paulo_Muacho_-_Entrevista_%27O_Setubalense%27_2022_%28cropped%29.png/330px-Paulo_Muacho_-_Entrevista_%27O_Setubalense%27_2022_%28cropped%29.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Paulo_Muacho",
+      "nationalitaet": null
+    },
+    {
+      "name": "Jérémy Stravius",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "French Swimmer (Born 1988)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/7d/J%C3%A9r%C3%A9my_Stravius.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/J%C3%A9r%C3%A9my_Stravius",
       "nationalitaet": null
     }
   ]
