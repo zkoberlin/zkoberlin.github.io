@@ -1,42 +1,42 @@
 {
-  "datum": "15.07.2026",
-  "generiert": "2026-07-15T03:51:07Z",
+  "datum": "16.07.2026",
+  "generiert": "2026-07-16T03:53:41Z",
   "geburtstage": [
     {
-      "name": "Anthony Randolph",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "American-Slovenian Basketball Player (Born 1989)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Anthony_Randolph_3_Real_Madrid_Baloncesto_Euroleague_20171012_%28cropped%29.jpg/330px-Anthony_Randolph_3_Real_Madrid_Baloncesto_Euroleague_20171012_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Anthony_Randolph",
+      "name": "Sahra Wagenknecht",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/2014-09-11_-_Sahra_Wagenknecht_MdB_-_8301.jpg/120px-2014-09-11_-_Sahra_Wagenknecht_MdB_-_8301.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q77193",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Diane Kruger",
-      "alter": 50,
-      "geburtsjahr": 1976,
-      "beruf": "German Actress (Born 1976)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/MKr378435_Diane_Kruger_%28Amrum%2C_Cannes_2025%29.jpg/330px-MKr378435_Diane_Kruger_%28Amrum%2C_Cannes_2025%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Diane_Kruger",
+      "name": "André Greipel",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Radrennfahrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Deutschland_Tour_2018_Bonn_098.jpg/120px-Deutschland_Tour_2018_Bonn_098.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q168712",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jürgen Möllemann",
-      "alter": 81,
-      "geburtsjahr": 1945,
-      "beruf": "German Politician (1945–2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Jw_moellemann.jpeg/330px-Jw_moellemann.jpeg",
-      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_M%C3%B6llemann",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Amiah Miller",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "American Actress And Model (Born 2004)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Amiah_Miller",
+      "nationalitaet": null
     },
     {
-      "name": "Howard Vernon",
-      "alter": 112,
-      "geburtsjahr": 1914,
-      "beruf": "Swiss Actor And Photographer (1908-1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HowardVernon-1951-Harcourt.png/330px-HowardVernon-1951-Harcourt.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Howard_Vernon",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Kevin Abstract",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "American Rapper And Singer (Born 1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/FEQ_July_2018_Brockhampton_%2843017650620%29_%28cropped%29.jpg/330px-FEQ_July_2018_Brockhampton_%2843017650620%29_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Kevin_Abstract",
+      "nationalitaet": null
     }
   ]
 }
