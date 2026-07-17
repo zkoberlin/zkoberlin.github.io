@@ -1,42 +1,42 @@
 {
-  "datum": "16.07.2026",
-  "generiert": "2026-07-16T03:53:41Z",
+  "datum": "17.07.2026",
+  "generiert": "2026-07-17T03:53:51Z",
   "geburtstage": [
     {
-      "name": "Sahra Wagenknecht",
+      "name": "Robin Koch",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/2014-09-11_-_Sahra_Wagenknecht_MdB_-_8301.jpg/120px-2014-09-11_-_Sahra_Wagenknecht_MdB_-_8301.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q77193",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "André Greipel",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Radrennfahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Deutschland_Tour_2018_Bonn_098.jpg/120px-Deutschland_Tour_2018_Bonn_098.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q168712",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Amiah Miller",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "American Actress And Model (Born 2004)",
+      "beruf": "Fußballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Amiah_Miller",
-      "nationalitaet": null
+      "wikidata": "https://www.wikidata.org/wiki/Q27077869",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Kevin Abstract",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "American Rapper And Singer (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/FEQ_July_2018_Brockhampton_%2843017650620%29_%28cropped%29.jpg/330px-FEQ_July_2018_Brockhampton_%2843017650620%29_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Kevin_Abstract",
-      "nationalitaet": null
+      "name": "Anita Lasker-Wallfisch",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Cellist",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Anita_Lasker-Wallfisch_2007.jpg/120px-Anita_Lasker-Wallfisch_2007.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q214452",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Angela Merkel",
+      "alter": 72,
+      "geburtsjahr": 1954,
+      "beruf": "Chancellor Of Germany From 2005 To 2021",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Angela_Merkel_2019_cropped.jpg/330px-Angela_Merkel_2019_cropped.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Angela_Merkel",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Robert Begerau",
+      "alter": 79,
+      "geburtsjahr": 1947,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Robert_Begerau",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
