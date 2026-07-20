@@ -1,42 +1,42 @@
 {
-  "datum": "19.07.2026",
-  "generiert": "2026-07-19T04:16:22Z",
+  "datum": "20.07.2026",
+  "generiert": "2026-07-20T04:29:20Z",
   "geburtstage": [
     {
-      "name": "Kevin Großkreutz",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "German Footballer (Born 1988)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Kevin_grosskreutz.jpg/330px-Kevin_grosskreutz.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Kevin_Gro%C3%9Fkreutz",
+      "name": "Gerd Binnig",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Physiker",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Gerd_Binnig_sw.jpg/120px-Gerd_Binnig_sw.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q76766",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Francisco Copado",
-      "alter": 52,
-      "geburtsjahr": 1974,
-      "beruf": "Spanish-German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Francisco_Copado",
+      "name": "Waldemar Anton",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Waldemar_Anton_Ecuador_v_Germany_25_June_2026-062.jpg/120px-Waldemar_Anton_Ecuador_v_Germany_25_June_2026-062.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q23559699",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ebbe Sand",
-      "alter": 54,
-      "geburtsjahr": 1972,
-      "beruf": "Danish Footballer (Born 1972)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Schalke_Ebbe_Sand_99.jpg/330px-Schalke_Ebbe_Sand_99.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Ebbe_Sand",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Enrique Peña Nieto",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Enrique_Pe%C3%B1a_Nieto_%28cropped%29.jpg/120px-Enrique_Pe%C3%B1a_Nieto_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q296741",
+      "nationalitaet": null
     },
     {
-      "name": "Pavel Kuka",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "Czech Footballer (Born 1968)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Pavel_Kuka_2013.JPG/330px-Pavel_Kuka_2013.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Pavel_Kuka",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Carlos Alazraqui",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Carlos_Alazraqui_at_Flappers_in_Burbank_20190706_%28cropped%29.jpg/120px-Carlos_Alazraqui_at_Flappers_in_Burbank_20190706_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1075796",
+      "nationalitaet": null
     }
   ]
 }
