@@ -1,41 +1,41 @@
 {
-  "datum": "21.07.2026",
-  "generiert": "2026-07-21T04:08:33Z",
+  "datum": "22.07.2026",
+  "generiert": "2026-07-22T04:10:27Z",
   "geburtstage": [
     {
-      "name": "Stefan Löfven",
+      "name": "Franka Potente",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Stefan_L%C3%B6fven_efter_slutdebatten_i_SVT_2014_%28cropped%29.jpg/120px-Stefan_L%C3%B6fven_efter_slutdebatten_i_SVT_2014_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q2740012",
+      "beruf": "Drehbuchautor",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/MJK_335110_Franka_Potente_%28NRW-Empfang%2C_Berlinale_2019%29.jpg/120px-MJK_335110_Franka_Potente_%28NRW-Empfang%2C_Berlinale_2019%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q65105",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Thomas Kraft",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Hertha_BSC_vs._West_Ham_United_20190731_%28020%29.jpg/120px-Hertha_BSC_vs._West_Ham_United_20190731_%28020%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44834",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Selena Gomez",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Musiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_%28cropped%29.jpg/120px-Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q83287",
       "nationalitaet": null
     },
     {
-      "name": "Klaus Graf",
-      "alter": 57,
-      "geburtsjahr": 1969,
-      "beruf": "German Racing Driver",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Klaus_Graf.jpg/330px-Klaus_Graf.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Klaus_Graf",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Fritz Walter (footballer, born 1960)",
-      "alter": 66,
-      "geburtsjahr": 1960,
-      "beruf": "German Footballer (Born 1960)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Fritz_Walter_(footballer%2C_born_1960)",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Taco (musician)",
-      "alter": 71,
-      "geburtsjahr": 1955,
-      "beruf": "Dutch Musician",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/2751TacoOckerse_%28cropped%29.JPG/330px-2751TacoOckerse_%28cropped%29.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Taco_(musician)",
+      "name": "Lucas Luhr",
+      "alter": 47,
+      "geburtsjahr": 1979,
+      "beruf": "German Racing Driver (Born 1979)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Lucas_Luhr.jpg/330px-Lucas_Luhr.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Lucas_Luhr",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
