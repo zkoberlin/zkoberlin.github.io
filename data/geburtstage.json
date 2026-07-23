@@ -1,41 +1,41 @@
 {
-  "datum": "22.07.2026",
-  "generiert": "2026-07-22T04:10:27Z",
+  "datum": "23.07.2026",
+  "generiert": "2026-07-23T04:01:07Z",
   "geburtstage": [
     {
-      "name": "Franka Potente",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Drehbuchautor",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/MJK_335110_Franka_Potente_%28NRW-Empfang%2C_Berlinale_2019%29.jpg/120px-MJK_335110_Franka_Potente_%28NRW-Empfang%2C_Berlinale_2019%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q65105",
+      "name": "Uwe Barth",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "German Politician And Member Of The Fdp (Born 1964)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Uwe_Barth_Landtag_Th%C3%BCringen_2011-05-19_DSCF6212.jpg/330px-Uwe_Barth_Landtag_Th%C3%BCringen_2011-05-19_DSCF6212.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Barth",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Thomas Kraft",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Hertha_BSC_vs._West_Ham_United_20190731_%28020%29.jpg/120px-Hertha_BSC_vs._West_Ham_United_20190731_%28020%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q44834",
+      "name": "The Doll Family",
+      "alter": 112,
+      "geburtsjahr": 1914,
+      "beruf": "Quartet Of Sibling Entertainers",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/35/The_Doll_Family.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/The_Doll_Family",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Selena Gomez",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Musiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_%28cropped%29.jpg/120px-Selena_Gomez_at_the_2024_Toronto_International_Film_Festival_10_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q83287",
-      "nationalitaet": null
+      "name": "Gustav Heinemann",
+      "alter": 127,
+      "geburtsjahr": 1899,
+      "beruf": "President Of West Germany From 1969 To 1974",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Bundesarchiv_B_145_Bild-F029021-0010%2C_Gustav_Heinemann.jpg/330px-Bundesarchiv_B_145_Bild-F029021-0010%2C_Gustav_Heinemann.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Gustav_Heinemann",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Lucas Luhr",
-      "alter": 47,
-      "geburtsjahr": 1979,
-      "beruf": "German Racing Driver (Born 1979)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Lucas_Luhr.jpg/330px-Lucas_Luhr.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Lucas_Luhr",
+      "name": "Jacob Marschak",
+      "alter": 128,
+      "geburtsjahr": 1898,
+      "beruf": "American Economist (1898–1977)",
+      "foto": "https://upload.wikimedia.org/wikipedia/en/8/85/Marschak.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Marschak",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
