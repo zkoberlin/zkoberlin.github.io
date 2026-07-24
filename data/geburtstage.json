@@ -1,41 +1,41 @@
 {
-  "datum": "23.07.2026",
-  "generiert": "2026-07-23T04:01:07Z",
+  "datum": "24.07.2026",
+  "generiert": "2026-07-24T03:59:23Z",
   "geburtstage": [
     {
-      "name": "Uwe Barth",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "German Politician And Member Of The Fdp (Born 1964)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Uwe_Barth_Landtag_Th%C3%BCringen_2011-05-19_DSCF6212.jpg/330px-Uwe_Barth_Landtag_Th%C3%BCringen_2011-05-19_DSCF6212.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Barth",
+      "name": "Mehdi Mahdavikia",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Mehdi_Mahdavikia.JPG/120px-Mehdi_Mahdavikia.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q313780",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "The Doll Family",
-      "alter": 112,
-      "geburtsjahr": 1914,
-      "beruf": "Quartet Of Sibling Entertainers",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/35/The_Doll_Family.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/The_Doll_Family",
+      "name": "Felix Loch",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennrodler",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2017-02-04_Felix_Loch_by_Sandro_Halank%E2%80%933.jpg/120px-2017-02-04_Felix_Loch_by_Sandro_Halank%E2%80%933.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q60711",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Gustav Heinemann",
-      "alter": 127,
-      "geburtsjahr": 1899,
-      "beruf": "President Of West Germany From 1969 To 1974",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Bundesarchiv_B_145_Bild-F029021-0010%2C_Gustav_Heinemann.jpg/330px-Bundesarchiv_B_145_Bild-F029021-0010%2C_Gustav_Heinemann.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Gustav_Heinemann",
+      "name": "Heinz Burt",
+      "alter": 84,
+      "geburtsjahr": 1942,
+      "beruf": "German-Born British Rock Musician (1942–2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/en/7/7e/Heinz_Burt.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Heinz_Burt",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jacob Marschak",
-      "alter": 128,
-      "geburtsjahr": 1898,
-      "beruf": "American Economist (1898–1977)",
-      "foto": "https://upload.wikimedia.org/wikipedia/en/8/85/Marschak.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Marschak",
+      "name": "Gustav Andreas Tammann",
+      "alter": 94,
+      "geburtsjahr": 1932,
+      "beruf": "German Astronomer (1932–2019)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Gustav_Tammann.jpg/330px-Gustav_Tammann.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Gustav_Andreas_Tammann",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
