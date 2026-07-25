@@ -1,41 +1,41 @@
 {
-  "datum": "24.07.2026",
-  "generiert": "2026-07-24T03:59:23Z",
+  "datum": "25.07.2026",
+  "generiert": "2026-07-25T03:55:51Z",
   "geburtstage": [
     {
-      "name": "Mehdi Mahdavikia",
+      "name": "Karlheinz Förster",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Mehdi_Mahdavikia.JPG/120px-Mehdi_Mahdavikia.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q313780",
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://www.wikidata.org/wiki/Q62091",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Felix Loch",
+      "name": "Jürgen Trittin",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennrodler",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2017-02-04_Felix_Loch_by_Sandro_Halank%E2%80%933.jpg/120px-2017-02-04_Felix_Loch_by_Sandro_Halank%E2%80%933.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q60711",
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Trittin%2C_J%C3%BCrgen-0126.jpg/120px-Trittin%2C_J%C3%BCrgen-0126.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q11762",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Heinz Burt",
-      "alter": 84,
-      "geburtsjahr": 1942,
-      "beruf": "German-Born British Rock Musician (1942–2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/en/7/7e/Heinz_Burt.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Heinz_Burt",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Thurston Moore",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "DJ",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Thurston_Moore_Kongsberg_Jazzfestival_2024_%28002828%29.jpg/120px-Thurston_Moore_Kongsberg_Jazzfestival_2024_%28002828%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q505677",
+      "nationalitaet": null
     },
     {
-      "name": "Gustav Andreas Tammann",
-      "alter": 94,
-      "geburtsjahr": 1932,
-      "beruf": "German Astronomer (1932–2019)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Gustav_Tammann.jpg/330px-Gustav_Tammann.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Gustav_Andreas_Tammann",
+      "name": "Jochem Ziegert",
+      "alter": 72,
+      "geburtsjahr": 1954,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Jochem_Ziegert",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
