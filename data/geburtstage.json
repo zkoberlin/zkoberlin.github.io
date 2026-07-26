@@ -1,41 +1,23 @@
 {
-  "datum": "25.07.2026",
-  "generiert": "2026-07-25T03:55:51Z",
+  "datum": "26.07.2026",
+  "generiert": "2026-07-26T04:19:48Z",
   "geburtstage": [
     {
-      "name": "Karlheinz Förster",
+      "name": "Sandra Bullock",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q62091",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Sandra_Bullock_at_The_Egyptian_Theatre_2024.jpg/120px-Sandra_Bullock_at_The_Egyptian_Theatre_2024.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q40791",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jürgen Trittin",
+      "name": "Felix Magath",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Trittin%2C_J%C3%BCrgen-0126.jpg/120px-Trittin%2C_J%C3%BCrgen-0126.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q11762",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Thurston Moore",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "DJ",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Thurston_Moore_Kongsberg_Jazzfestival_2024_%28002828%29.jpg/120px-Thurston_Moore_Kongsberg_Jazzfestival_2024_%28002828%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q505677",
-      "nationalitaet": null
-    },
-    {
-      "name": "Jochem Ziegert",
-      "alter": 72,
-      "geburtsjahr": 1954,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Jochem_Ziegert",
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Felix_Magath_bei_einer_Pressekonferenz_des_VfL_Wolfsburg_%28cropped%29.JPG/120px-Felix_Magath_bei_einer_Pressekonferenz_des_VfL_Wolfsburg_%28cropped%29.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q153293",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
