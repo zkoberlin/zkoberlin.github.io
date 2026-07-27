@@ -1,23 +1,41 @@
 {
-  "datum": "26.07.2026",
-  "generiert": "2026-07-26T04:19:48Z",
+  "datum": "27.07.2026",
+  "generiert": "2026-07-27T04:29:08Z",
   "geburtstage": [
     {
-      "name": "Sandra Bullock",
+      "name": "Hansi Müller",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Sandra_Bullock_at_The_Egyptian_Theatre_2024.jpg/120px-Sandra_Bullock_at_The_Egyptian_Theatre_2024.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q40791",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Hansi_M%C3%BCller.jpg/120px-Hansi_M%C3%BCller.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q62098",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Felix Magath",
+      "name": "David Storl",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Felix_Magath_bei_einer_Pressekonferenz_des_VfL_Wolfsburg_%28cropped%29.JPG/120px-Felix_Magath_bei_einer_Pressekonferenz_des_VfL_Wolfsburg_%28cropped%29.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q153293",
+      "beruf": "Kugelstoßer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/David_Storl_Novi_Sad_2009.JPG/120px-David_Storl_Novi_Sad_2009.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q1758",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Björn Dreyer (footballer, born 1977)",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Bj%C3%B6rn_Dreyer_(footballer%2C_born_1977)",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Sabina Jeschke",
+      "alter": 58,
+      "geburtsjahr": 1968,
+      "beruf": "German Computer Scientist",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Sabina_Jeschke_%28Ausschnitt%29.jpg/330px-Sabina_Jeschke_%28Ausschnitt%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sabina_Jeschke",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
