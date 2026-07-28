@@ -1,42 +1,42 @@
 {
-  "datum": "27.07.2026",
-  "generiert": "2026-07-27T04:29:08Z",
+  "datum": "28.07.2026",
+  "generiert": "2026-07-28T03:53:34Z",
   "geburtstage": [
     {
-      "name": "Hansi Müller",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Hansi_M%C3%BCller.jpg/120px-Hansi_M%C3%BCller.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q62098",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Emile Smith Rowe",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "English Footballer (Born 2000)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Emile_Smith_Rowe.jpg/330px-Emile_Smith_Rowe.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Emile_Smith_Rowe",
+      "nationalitaet": null
     },
     {
-      "name": "David Storl",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Kugelstoßer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/David_Storl_Novi_Sad_2009.JPG/120px-David_Storl_Novi_Sad_2009.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q1758",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "GloRilla",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "American Rapper (Born 1999)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Glorilla_in_a_2023_interview_%28cropped%29.png/330px-Glorilla_in_a_2023_interview_%28cropped%29.png",
+      "wikidata": "https://en.wikipedia.org/wiki/GloRilla",
+      "nationalitaet": null
     },
     {
-      "name": "Björn Dreyer (footballer, born 1977)",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Bj%C3%B6rn_Dreyer_(footballer%2C_born_1977)",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Harriet Dart",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "British Tennis Player (Born 1996)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Dart_RGQ23.jpg/330px-Dart_RGQ23.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Harriet_Dart",
+      "nationalitaet": null
     },
     {
-      "name": "Sabina Jeschke",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "German Computer Scientist",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Sabina_Jeschke_%28Ausschnitt%29.jpg/330px-Sabina_Jeschke_%28Ausschnitt%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sabina_Jeschke",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Hyojung",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "South Korean Singer (Born 1994)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Hyojung_in_January_2026.png/330px-Hyojung_in_January_2026.png",
+      "wikidata": "https://en.wikipedia.org/wiki/Hyojung",
+      "nationalitaet": null
     }
   ]
 }
