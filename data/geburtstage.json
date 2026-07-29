@@ -1,41 +1,41 @@
 {
-  "datum": "28.07.2026",
-  "generiert": "2026-07-28T03:53:34Z",
+  "datum": "29.07.2026",
+  "generiert": "2026-07-29T03:56:46Z",
   "geburtstage": [
     {
-      "name": "Emile Smith Rowe",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "English Footballer (Born 2000)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Emile_Smith_Rowe.jpg/330px-Emile_Smith_Rowe.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Emile_Smith_Rowe",
-      "nationalitaet": null
+      "name": "Hans-Holger Albrecht",
+      "alter": 63,
+      "geburtsjahr": 1963,
+      "beruf": "German Businessman (Born 1963)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-Holger_Albrecht",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "GloRilla",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "American Rapper (Born 1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Glorilla_in_a_2023_interview_%28cropped%29.png/330px-Glorilla_in_a_2023_interview_%28cropped%29.png",
-      "wikidata": "https://en.wikipedia.org/wiki/GloRilla",
-      "nationalitaet": null
+      "name": "Frank Neubarth",
+      "alter": 64,
+      "geburtsjahr": 1962,
+      "beruf": "German Footballer (Born 1962)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Frank_Neubarth",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Harriet Dart",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "British Tennis Player (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Dart_RGQ23.jpg/330px-Dart_RGQ23.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Harriet_Dart",
-      "nationalitaet": null
+      "name": "Aleksei Tammiste",
+      "alter": 80,
+      "geburtsjahr": 1946,
+      "beruf": "Estonian Basketball Player",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Aleksei_Tammiste",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Hyojung",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "South Korean Singer (Born 1994)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Hyojung_in_January_2026.png/330px-Hyojung_in_January_2026.png",
-      "wikidata": "https://en.wikipedia.org/wiki/Hyojung",
+      "name": "Mirjam Björklund",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Swedish Tennis Player (Born 1998)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Bjorklund_WMQ23_%2853062204863%29.jpg/330px-Bjorklund_WMQ23_%2853062204863%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Mirjam_Bj%C3%B6rklund",
       "nationalitaet": null
     }
   ]
