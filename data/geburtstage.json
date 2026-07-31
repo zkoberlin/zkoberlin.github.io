@@ -1,42 +1,42 @@
 {
-  "datum": "30.07.2026",
-  "generiert": "2026-07-30T03:48:39Z",
+  "datum": "31.07.2026",
+  "generiert": "2026-07-31T04:15:05Z",
   "geburtstage": [
     {
-      "name": "Jürgen Klinsmann",
+      "name": "C. C. Catch",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Austria_vs._USA_2013-11-19_%28066%29_-_J%C3%BCrgen_Klinsmann_%28cropped%29.jpg/120px-Austria_vs._USA_2013-11-19_%28066%29_-_J%C3%BCrgen_Klinsmann_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q57079",
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/CCCatch_ChartShow1.jpg/120px-CCCatch_ChartShow1.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q75851",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Kevin Volland",
+      "name": "Michael Jung",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Kevin-Volland-August2018.jpg/120px-Kevin-Volland-August2018.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q129810",
+      "beruf": "Sportler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Michael_Jung%2C_Medal_ceremony%2C_EM_Vielseitigkeit_2011.JPG/120px-Michael_Jung%2C_Medal_ceremony%2C_EM_Vielseitigkeit_2011.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q77560",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Anton Fink",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Professional Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Anton_Fink.jpg/330px-Anton_Fink.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Anton_Fink",
+      "name": "Geraldine Chaplin",
+      "alter": 82,
+      "geburtsjahr": 1944,
+      "beruf": "American-Born Actress (Born 1944)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Geraldine_Chaplin%2C_Berlinale_2023.jpg/330px-Geraldine_Chaplin%2C_Berlinale_2023.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Geraldine_Chaplin",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Joey King",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "American Actress (Born 1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Guests_at_the_2026_Met_Gala_072_%28Joey_King%29.jpg/330px-Guests_at_the_2026_Met_Gala_072_%28Joey_King%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Joey_King",
-      "nationalitaet": null
+      "name": "Carl Friedrich Goerdeler",
+      "alter": 142,
+      "geburtsjahr": 1884,
+      "beruf": "German Politician (1884–1945)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Bundesarchiv_Bild_146-1993-069-06%2C_Carl_Friedrich_Goerdeler.jpg/330px-Bundesarchiv_Bild_146-1993-069-06%2C_Carl_Friedrich_Goerdeler.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Carl_Friedrich_Goerdeler",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
