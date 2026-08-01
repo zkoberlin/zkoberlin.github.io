@@ -1,41 +1,41 @@
 {
-  "datum": "31.07.2026",
-  "generiert": "2026-07-31T04:15:05Z",
+  "datum": "01.08.2026",
+  "generiert": "2026-08-01T04:14:31Z",
   "geburtstage": [
     {
-      "name": "C. C. Catch",
+      "name": "Bastian Schweinsteiger",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/CCCatch_ChartShow1.jpg/120px-CCCatch_ChartShow1.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q75851",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Re-publica_23_-_Tag_3_%2852957826298%29_%28cropped%29.jpg/120px-Re-publica_23_-_Tag_3_%2852957826298%29_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q44298",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Michael Jung",
+      "name": "Marco Buschmann",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Sportler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Michael_Jung%2C_Medal_ceremony%2C_EM_Vielseitigkeit_2011.JPG/120px-Michael_Jung%2C_Medal_ceremony%2C_EM_Vielseitigkeit_2011.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q77560",
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Marco_Buschmann.jpg/120px-Marco_Buschmann.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q1893672",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Geraldine Chaplin",
-      "alter": 82,
-      "geburtsjahr": 1944,
-      "beruf": "American-Born Actress (Born 1944)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Geraldine_Chaplin%2C_Berlinale_2023.jpg/330px-Geraldine_Chaplin%2C_Berlinale_2023.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Geraldine_Chaplin",
+      "name": "Christofer Heimeroth",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "German Footballer (Born 1981)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Christopher_Heimeroth.jpg/330px-Christopher_Heimeroth.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Christofer_Heimeroth",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Carl Friedrich Goerdeler",
-      "alter": 142,
-      "geburtsjahr": 1884,
-      "beruf": "German Politician (1884–1945)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Bundesarchiv_Bild_146-1993-069-06%2C_Carl_Friedrich_Goerdeler.jpg/330px-Bundesarchiv_Bild_146-1993-069-06%2C_Carl_Friedrich_Goerdeler.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Carl_Friedrich_Goerdeler",
+      "name": "Sam Mendes",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "British Filmmaker And Stage Director (Born 1965)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Sam_Mendes_in_2022-2.jpg/330px-Sam_Mendes_in_2022-2.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sam_Mendes",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
