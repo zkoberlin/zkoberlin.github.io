@@ -1,42 +1,42 @@
 {
-  "datum": "02.08.2026",
-  "generiert": "2026-08-02T04:17:34Z",
+  "datum": "03.08.2026",
+  "generiert": "2026-08-03T04:22:18Z",
   "geburtstage": [
     {
-      "name": "Stefan Effenberg",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": null,
-      "wikidata": "https://www.wikidata.org/wiki/Q44522",
+      "name": "Gesa Felicitas Krause",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "German Steeplechase Runner",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/2018_DM_Leichtathletik_-_3000_Meter_Hindernislauf_Frauen_-_Gesa_Felicitas_Krause_-_by_2eight_-_DSC9145.jpg/330px-2018_DM_Leichtathletik_-_3000_Meter_Hindernislauf_Frauen_-_Gesa_Felicitas_Krause_-_by_2eight_-_DSC9145.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Gesa_Felicitas_Krause",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Kati Wilhelm",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Biathlet",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/2018-12-13_Pressekonferenz_zur_Vorbereitung_des_Biathlon-Weltcups_und_der_Umbenennung_der_Ski-Arena_StP_7404_LR10_by_Stepro.jpg/120px-2018-12-13_Pressekonferenz_zur_Vorbereitung_des_Biathlon-Weltcups_und_der_Umbenennung_der_Ski-Arena_StP_7404_LR10_by_Stepro.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q77136",
+      "name": "Sven Ulreich",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "German Footballer (Born 1988)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/2022_Sven_Ulreich_%28cropped%29.jpg/330px-2022_Sven_Ulreich_%28cropped%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Sven_Ulreich",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ivica Banović",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "Croatian Footballer (Born 1980)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Banovi%C4%87%2C_Ivica_CB_13-14_WP.JPG/330px-Banovi%C4%87%2C_Ivica_CB_13-14_WP.JPG",
-      "wikidata": "https://en.wikipedia.org/wiki/Ivica_Banovi%C4%87",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Brahim Díaz",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Morocco International Footballer (Born 1999)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Brahim_Diaz_Morocco_v_Norway_7_June_2026-36_%28cropped_3-4%29.jpg/330px-Brahim_Diaz_Morocco_v_Norway_7_June_2026-36_%28cropped_3-4%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Brahim_D%C3%ADaz",
+      "nationalitaet": null
     },
     {
-      "name": "Frank Biela",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "German Racing Driver (Born 1964)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Frank_Biela_2006_EMS.jpg/330px-Frank_Biela_2006_EMS.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Frank_Biela",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Yoo Yeon-jung",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "South Korean Singer (Born 1999)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/170617_%EC%9C%A0%EC%97%B0%EC%A0%95_%EB%AF%B8%EB%8B%88%ED%8C%AC%EB%AF%B8%ED%8C%85_%281%29.jpg/330px-170617_%EC%9C%A0%EC%97%B0%EC%A0%95_%EB%AF%B8%EB%8B%88%ED%8C%AC%EB%AF%B8%ED%8C%85_%281%29.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Yoo_Yeon-jung",
+      "nationalitaet": null
     }
   ]
 }
