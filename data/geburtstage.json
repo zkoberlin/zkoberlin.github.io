@@ -1,42 +1,42 @@
 {
-  "datum": "03.08.2026",
-  "generiert": "2026-08-03T04:22:18Z",
+  "datum": "04.08.2026",
+  "generiert": "2026-08-04T03:56:13Z",
   "geburtstage": [
     {
-      "name": "Gesa Felicitas Krause",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "German Steeplechase Runner",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/2018_DM_Leichtathletik_-_3000_Meter_Hindernislauf_Frauen_-_Gesa_Felicitas_Krause_-_by_2eight_-_DSC9145.jpg/330px-2018_DM_Leichtathletik_-_3000_Meter_Hindernislauf_Frauen_-_Gesa_Felicitas_Krause_-_by_2eight_-_DSC9145.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Gesa_Felicitas_Krause",
+      "name": "Michael Skibbe",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "German Footballer And Manager (Born 1965)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Michael_Skibbe_in_Moscow.jpg/330px-Michael_Skibbe_in_Moscow.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Skibbe",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Sven Ulreich",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "German Footballer (Born 1988)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/2022_Sven_Ulreich_%28cropped%29.jpg/330px-2022_Sven_Ulreich_%28cropped%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Sven_Ulreich",
+      "name": "Klaus Schulze",
+      "alter": 79,
+      "geburtsjahr": 1947,
+      "beruf": "German Composer And Musician (1947–2022)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Klaus_Schulze_01.jpg/330px-Klaus_Schulze_01.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Klaus_Schulze",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Brahim Díaz",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Morocco International Footballer (Born 1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Brahim_Diaz_Morocco_v_Norway_7_June_2026-36_%28cropped_3-4%29.jpg/330px-Brahim_Diaz_Morocco_v_Norway_7_June_2026-36_%28cropped_3-4%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Brahim_D%C3%ADaz",
-      "nationalitaet": null
+      "name": "Barbara Saß-Viehweger",
+      "alter": 83,
+      "geburtsjahr": 1943,
+      "beruf": "German Politician (Born 1943)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Barbara.Sass-Viehweger.2017.jpg/330px-Barbara.Sass-Viehweger.2017.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Barbara_Sa%C3%9F-Viehweger",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Yoo Yeon-jung",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "South Korean Singer (Born 1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/170617_%EC%9C%A0%EC%97%B0%EC%A0%95_%EB%AF%B8%EB%8B%88%ED%8C%AC%EB%AF%B8%ED%8C%85_%281%29.jpg/330px-170617_%EC%9C%A0%EC%97%B0%EC%A0%95_%EB%AF%B8%EB%8B%88%ED%8C%AC%EB%AF%B8%ED%8C%85_%281%29.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Yoo_Yeon-jung",
-      "nationalitaet": null
+      "name": "Hans-Walter Eigenbrodt",
+      "alter": 91,
+      "geburtsjahr": 1935,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-Walter_Eigenbrodt",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
