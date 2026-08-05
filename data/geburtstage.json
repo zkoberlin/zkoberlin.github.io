@@ -1,41 +1,41 @@
 {
-  "datum": "04.08.2026",
-  "generiert": "2026-08-04T03:56:13Z",
+  "datum": "05.08.2026",
+  "generiert": "2026-08-05T03:51:24Z",
   "geburtstage": [
     {
-      "name": "Michael Skibbe",
-      "alter": 61,
-      "geburtsjahr": 1965,
-      "beruf": "German Footballer And Manager (Born 1965)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Michael_Skibbe_in_Moscow.jpg/330px-Michael_Skibbe_in_Moscow.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Skibbe",
+      "name": "Helene Fischer",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Helene_Fischer_2016.jpg/120px-Helene_Fischer_2016.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q236549",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Klaus Schulze",
-      "alter": 79,
-      "geburtsjahr": 1947,
-      "beruf": "German Composer And Musician (1947–2022)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Klaus_Schulze_01.jpg/330px-Klaus_Schulze_01.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Klaus_Schulze",
+      "name": "Helga Seidler",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Footballspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Helga_Seidler_cropped.jpg/120px-Helga_Seidler_cropped.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q463355",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Barbara Saß-Viehweger",
-      "alter": 83,
-      "geburtsjahr": 1943,
-      "beruf": "German Politician (Born 1943)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Barbara.Sass-Viehweger.2017.jpg/330px-Barbara.Sass-Viehweger.2017.jpg",
-      "wikidata": "https://en.wikipedia.org/wiki/Barbara_Sa%C3%9F-Viehweger",
+      "name": "Maik Franz",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "German Footballer (Born 1981)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Maik_Franz.jpg/330px-Maik_Franz.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Maik_Franz",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Hans-Walter Eigenbrodt",
+      "name": "Michael Ballhaus",
       "alter": 91,
       "geburtsjahr": 1935,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Hans-Walter_Eigenbrodt",
+      "beruf": "German Cinematographer (1935–2017)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Michael_Ballhaus.4676.jpg/330px-Michael_Ballhaus.4676.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Ballhaus",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
