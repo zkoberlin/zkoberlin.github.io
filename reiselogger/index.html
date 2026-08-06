@@ -2,6 +2,9 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>WELTLOG</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
@@ -58,7 +61,7 @@
 [data-theme="light"] ::selection{color:#fff;}
 
 *{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+html,body{margin:0;padding:0;overflow-x:hidden;}
 body{
   background:radial-gradient(ellipse at top,var(--bg-grad-top) 0%, var(--bg) 55%);
   transition:background .2s;
@@ -67,6 +70,7 @@ body{
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
 }
 ::selection{background:var(--gold);color:#241a05;}
 a{color:var(--teal);}
@@ -89,6 +93,7 @@ a{color:var(--teal);}
   background:var(--topbar-bg);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border-soft);
+  padding-top:env(safe-area-inset-top);
 }
 .topbar-inner{
   max-width:1120px;margin:0 auto;padding:14px 20px;
@@ -269,12 +274,12 @@ a{color:var(--teal);}
 }
 #worldSvg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
 #worldSvg:active{cursor:grabbing;}
-.country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;}
+.country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;vector-effect:non-scaling-stroke;}
 .country.visited{fill:var(--teal);fill-opacity:0.55;}
-.city-dot{fill:var(--gold);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:r .1s;}
+.city-dot{fill:var(--gold);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
 .city-dot:hover{fill-opacity:0.85;}
 .city-dot.selected{fill:var(--rose);stroke-width:1.5;}
-.home-mark{fill:none;stroke:var(--rose);stroke-width:1.6;}
+.home-mark{fill:none;stroke:var(--rose);stroke-width:1.6;vector-effect:non-scaling-stroke;}
 .map-controls{
   position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
 }
@@ -538,10 +543,11 @@ tr:last-child td{border-bottom:none;}
 
 /* ---------- Toast ---------- */
 .toast{
-  position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+  position:fixed;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);
   background:var(--panel-alt);border:1px solid var(--gold-dim);color:var(--text);
   padding:11px 18px;border-radius:100px;font-size:12.5px;box-shadow:var(--shadow);
   opacity:0;pointer-events:none;transition:all .25s;z-index:200;
+  max-width:calc(100vw - 32px);text-align:center;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -558,6 +564,59 @@ tr:last-child td{border-bottom:none;}
   border-top-color:var(--gold);animation:spin 0.8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg);}}
+
+/* ============================================================
+   Mobile-Optimierung (iPhone & schmale Screens)
+   ============================================================ */
+@media (max-width:700px){
+  /* iOS zoomt beim Fokussieren eines Feldes automatisch rein, wenn die
+     Schrift unter 16px liegt — hier gezielt angehoben. */
+  .field input, .field select, .field textarea{font-size:16px;}
+
+  /* Größere, leichter treffbare Tap-Ziele (Apple HIG empfiehlt ~44px) */
+  .icon-btn{width:40px;height:40px;font-size:16px;}
+  .theme-switch button{width:38px;height:38px;font-size:14px;}
+  .home-chip{padding:8px 12px;}
+  .map-controls button{width:36px;height:36px;font-size:16px;}
+  .waypoint-remove{width:40px;height:40px;}
+  .row-actions button{width:32px;height:32px;font-size:13px;}
+  .btn-calc{height:44px;}
+  .mode-opt, .dir-opt, .purpose-chip{padding-top:11px;padding-bottom:11px;}
+  .btn-primary, .btn-secondary, .btn-danger{padding-top:12px;padding-bottom:12px;}
+
+  /* Tabellen -> Karten statt horizontalem Scrollen */
+  .table-wrap{overflow-x:visible;}
+  .responsive-table thead{display:none;}
+  .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td{
+    display:block; width:100%;
+  }
+  .responsive-table tr{
+    border:1px solid var(--border-soft); border-radius:12px;
+    padding:4px 12px; margin-bottom:10px; background:var(--panel-alt);
+  }
+  .responsive-table td{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    padding:9px 0; border-bottom:1px dashed var(--border-soft);
+    white-space:normal; text-align:right;
+  }
+  .responsive-table td:last-child{border-bottom:none;}
+  .responsive-table td:empty{display:none;}
+  .responsive-table td::before{
+    content:attr(data-label); font-family:var(--font-display); font-size:9.5px;
+    text-transform:uppercase; color:var(--text-faint); letter-spacing:0.05em;
+    text-align:left; flex-shrink:0;
+  }
+  .responsive-table td[data-label=""]::before{content:none;}
+  .responsive-table .row-actions{justify-content:flex-end;width:100%;}
+
+  .hero-number{font-size:clamp(36px,11vw,48px);}
+  .boarding-pass, .card{border-radius:14px;}
+}
+
+@supports (padding: max(0px)){
+  .wrap{padding-left:max(20px, env(safe-area-inset-left)); padding-right:max(20px, env(safe-area-inset-right));}
+}
+
 </style>
 </head>
 <body>
@@ -567,7 +626,7 @@ tr:last-child td{border-bottom:none;}
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.6.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.7.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -761,7 +820,7 @@ function getMode(key){
   return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
 }
 
-const APP_VERSION = '1.6.0';
+const APP_VERSION = '1.7.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1333,6 +1392,7 @@ async function initWorldMap(agg){
     .map(c=>({c, ref:findCity(c.city)}))
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
+  const dotRadius = x => 3 + (x.c.visits/maxVisits)*6;
 
   const cityDots = g.append('g').attr('class','city-layer')
     .selectAll('circle')
@@ -1341,7 +1401,7 @@ async function initWorldMap(agg){
     .attr('class', x=> 'city-dot'+(x.c.key===selectedCityKey?' selected':''))
     .attr('cx', x=>projection([x.ref.lon, x.ref.lat])[0])
     .attr('cy', x=>projection([x.ref.lon, x.ref.lat])[1])
-    .attr('r', x=> 3 + (x.c.visits/maxVisits)*6)
+    .attr('r', dotRadius)
     .on('click', (event, x)=>{
       selectedCityKey = x.c.key;
       cityDots.attr('class', xx=> 'city-dot'+(xx.c.key===selectedCityKey?' selected':''));
@@ -1351,7 +1411,13 @@ async function initWorldMap(agg){
 
   const zoom = d3.zoom()
     .scaleExtent([1, 10])
-    .on('zoom', (event)=>{ g.attr('transform', event.transform); });
+    .on('zoom', (event)=>{
+      g.attr('transform', event.transform);
+      // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
+      // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
+      const k = event.transform.k;
+      cityDots.attr('r', x => Math.max(1.6, dotRadius(x)/k));
+    });
   svg.call(zoom);
 
   const zoomInBtn = document.getElementById('zoomInBtn');
@@ -1781,17 +1847,17 @@ function renderCitiesTable(agg){
     return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
   }
 
-  let html = '<div class="table-wrap"><table><thead><tr>';
+  let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
   html += th('Stadt','city')+th('Land','country')+th('Besuche','visits')+th('Gesamtdistanz','totalKm')+'<th>Letzter Besuch</th>';
   html += '</tr></thead><tbody>';
   cities.forEach(c=>{
     const lastVisit = c.dates.slice().sort().reverse()[0];
     html += '<tr>';
-    html += '<td><div class="cell-city">'+flagImg(c.cc,20)+'<span>'+c.city+'</span></div></td>';
-    html += '<td>'+c.country+'</td>';
-    html += '<td class="mono">'+c.visits+'</td>';
-    html += '<td class="mono">'+fmtKm(c.totalKm)+'</td>';
-    html += '<td>'+fmtDate(lastVisit)+'</td>';
+    html += '<td data-label="Stadt"><div class="cell-city">'+flagImg(c.cc,20)+'<span>'+c.city+'</span></div></td>';
+    html += '<td data-label="Land">'+c.country+'</td>';
+    html += '<td class="mono" data-label="Besuche">'+c.visits+'</td>';
+    html += '<td class="mono" data-label="Gesamtdistanz">'+fmtKm(c.totalKm)+'</td>';
+    html += '<td data-label="Letzter Besuch">'+fmtDate(lastVisit)+'</td>';
     html += '</tr>';
   });
   html += '</tbody></table></div>';
@@ -1819,7 +1885,7 @@ function renderLog(root){
     html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
   } else {
     const sorted = trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
-    html += '<div class="table-wrap"><table><thead><tr>';
+    html += '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
     html += '<th>Zeitraum</th><th>Von</th><th>Nach</th><th>Verkehrsmittel</th><th>Distanz</th><th>Grund</th><th></th>';
     html += '</tr></thead><tbody>';
     sorted.forEach(t=>{
@@ -1837,13 +1903,13 @@ function renderLog(root){
       const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
       const pLbl = purposeLabel(t);
       html += '<tr>';
-      html += '<td>'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
-      html += '<td>'+(t.fromCity||'–')+'</td>';
-      html += '<td><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
-      html += '<td>'+modeCell+'</td>';
-      html += '<td class="mono">'+distCell+'</td>';
-      html += '<td>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-      html += '<td><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+      html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
+      html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
+      html += '<td data-label="Nach"><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+      html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
+      html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
+      html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+      html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
       html += '</tr>';
     });
     html += '</tbody></table></div>';
