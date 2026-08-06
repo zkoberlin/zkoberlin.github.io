@@ -1,0 +1,1854 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>WELTLOG</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#0E1526;
+  --bg-soft:#111a30;
+  --panel:#161F38;
+  --panel-alt:#1C2749;
+  --border:#2B3658;
+  --border-soft:#212c4d;
+  --gold:#E8A23D;
+  --gold-dim:#8a6a35;
+  --teal:#4FD9C7;
+  --rose:#E8607A;
+  --green:#8BD17C;
+  --text:#F1EEE4;
+  --text-dim:#97A0BE;
+  --text-faint:#5c6690;
+  --radius:16px;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-body:'Inter',sans-serif;
+  --shadow: 0 8px 30px rgba(0,0,0,0.35);
+  --bg-grad-top:#131c34;
+  --topbar-bg: rgba(14,21,38,0.86);
+  --bus:#8B9CF5;
+}
+
+[data-theme="light"]{
+  --bg:#EEF1F7;
+  --bg-grad-top:#ffffff;
+  --bg-soft:#E9EDF5;
+  --panel:#FFFFFF;
+  --panel-alt:#F3F5FA;
+  --border:#C7CFE2;
+  --border-soft:#D7DDEA;
+  --gold:#A8690F;
+  --gold-dim:#c98f3f;
+  --teal:#0C7A6D;
+  --rose:#B8324F;
+  --green:#357A2C;
+  --text:#161C33;
+  --text-dim:#4C5678;
+  --text-faint:#6B7594;
+  --shadow: 0 8px 24px rgba(30,40,70,0.12);
+  --topbar-bg: rgba(255,255,255,0.88);
+  --bus:#4356C7;
+}
+:root, [data-theme="dark"]{ color-scheme: dark; }
+[data-theme="light"]{ color-scheme: light; }
+[data-theme="light"] input, [data-theme="light"] select, [data-theme="light"] textarea{background:#fff;}
+[data-theme="light"] .mode-opt, [data-theme="light"] .dir-opt, [data-theme="light"] .purpose-chip{background:#fff;}
+[data-theme="light"] ::selection{color:#fff;}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:radial-gradient(ellipse at top,var(--bg-grad-top) 0%, var(--bg) 55%);
+  transition:background .2s;
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+::selection{background:var(--gold);color:#241a05;}
+a{color:var(--teal);}
+
+:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 80px;}
+
+/* ---------- Topbar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  background:var(--topbar-bg);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-soft);
+}
+.topbar-inner{
+  max-width:1120px;margin:0 auto;padding:14px 20px;
+  display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap;
+}
+@media(max-width:480px){
+  .topbar-inner{padding:12px 16px;gap:8px;}
+  .top-actions{width:100%;justify-content:space-between;}
+  .brand-text p{display:none;}
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:conic-gradient(from 220deg, var(--gold), var(--rose), var(--teal), var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;box-shadow:0 0 0 1px rgba(255,255,255,0.08) inset;
+  flex-shrink:0;
+}
+.brand-text h1{
+  font-family:var(--font-display);font-size:18px;font-weight:700;
+  letter-spacing:0.06em;margin:0;color:var(--text);
+}
+.brand-text p{margin:0;font-size:11px;color:var(--text-dim);letter-spacing:0.03em;}
+.top-actions{display:flex;align-items:center;gap:10px;}
+.home-chip{
+  display:flex;align-items:center;gap:6px;
+  font-size:12.5px;color:var(--text-dim);
+  background:var(--panel);border:1px solid var(--border);
+  padding:6px 10px;border-radius:100px;
+  cursor:pointer;
+}
+.home-chip img{width:16px;height:12px;border-radius:2px;object-fit:cover;}
+.home-chip:hover{border-color:var(--gold-dim);color:var(--text);}
+.icon-btn{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--panel);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;color:var(--text-dim);
+}
+.icon-btn:hover{color:var(--text);border-color:var(--gold-dim);}
+
+.version-pill{
+  font-family:var(--font-mono);font-size:10px;font-weight:500;
+  color:var(--text-faint);background:var(--bg-soft);
+  border:1px solid var(--border-soft);border-radius:100px;
+  padding:2px 8px;margin-left:8px;letter-spacing:0.02em;cursor:default;
+  vertical-align:middle;
+}
+
+.theme-switch{
+  display:flex;background:var(--panel);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;
+}
+.theme-switch button{
+  width:32px;height:34px;background:transparent;border:none;cursor:pointer;
+  font-size:13px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;
+  border-left:1px solid var(--border);
+}
+.theme-switch button:first-child{border-left:none;}
+.theme-switch button:hover{color:var(--text);}
+.theme-switch button.active{background:var(--gold);color:#241a05;}
+
+.info-strip{
+  max-width:1120px;margin:0 auto;padding:9px 20px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:11.5px;color:var(--text-faint);
+  border-top:1px dashed var(--border-soft);
+}
+.info-strip span{color:var(--text-dim);}
+.info-strip img{width:14px;height:10px;border-radius:2px;object-fit:cover;vertical-align:middle;margin-right:2px;}
+
+/* ---------- Tabs ---------- */
+.tabs{
+  display:flex;gap:4px;overflow-x:auto;
+  padding:14px 0 0;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{
+  font-family:var(--font-display);
+  font-size:12.5px;font-weight:600;letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  background:transparent;border:none;
+  padding:10px 14px 12px;
+  cursor:pointer;white-space:nowrap;
+  border-bottom:2.5px solid transparent;
+  transition:color .15s;
+}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{
+  color:var(--gold);
+  border-bottom:2.5px dashed var(--gold);
+}
+.tab-panel{display:none;padding-top:26px;animation:fadein .25s ease;}
+.tab-panel.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.card-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.card-head h2{
+  font-family:var(--font-display);font-size:15px;font-weight:600;
+  letter-spacing:0.04em;text-transform:uppercase;color:var(--text);margin:0;
+}
+.card-head .sub{font-size:12px;color:var(--text-faint);}
+
+/* ---------- Hero ---------- */
+.hero{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-bottom:20px;
+}
+@media(max-width:760px){.hero{grid-template-columns:1fr;}}
+.hero-total{
+  background:linear-gradient(160deg, var(--panel-alt), var(--panel));
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius);
+  padding:26px 26px 22px;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.hero-total::after{
+  content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+  background:radial-gradient(circle, rgba(232,162,61,0.16), transparent 70%);
+}
+.hero-eyebrow{
+  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);
+  font-family:var(--font-display);font-weight:600;
+}
+.hero-number{
+  font-family:var(--font-mono);font-weight:700;
+  font-size:clamp(42px,7vw,64px);line-height:1;margin:10px 0 4px;
+  color:var(--text);font-variant-numeric:tabular-nums;
+  letter-spacing:-0.01em;
+}
+.hero-number span{font-size:0.4em;color:var(--gold);margin-left:6px;font-weight:600;}
+.hero-meta{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;}
+.hero-meta div{font-size:12.5px;color:var(--text-dim);}
+.hero-meta b{color:var(--text);font-family:var(--font-mono);font-weight:600;}
+.hero-direction{display:flex;gap:14px;margin-top:2px;flex-wrap:wrap;}
+.hero-direction div{font-size:11.5px;color:var(--text-faint);}
+.hero-direction b{color:var(--text-dim);font-family:var(--font-mono);font-weight:500;}
+.hero-compare{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.compare-chip{
+  background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:10px;
+  padding:8px 12px;display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--text-dim);
+  cursor:default;min-width:152px;flex:1 1 152px;
+}
+.compare-chip .cc-main{display:flex;align-items:center;gap:6px;}
+.compare-chip .cv{font-family:var(--font-mono);font-weight:700;color:var(--text);font-size:13px;}
+.compare-chip .cc-sub{font-size:10.5px;color:var(--text-faint);padding-left:21px;}
+
+.mode-stubs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:560px) and (max-width:760px){.mode-stubs{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:1020px){.mode-stubs{grid-template-columns:repeat(3,1fr);}}
+.stub{
+  background:var(--panel-alt);border:1px solid var(--border-soft);
+  border-left:3px solid var(--stub-color, var(--gold));
+  border-radius:12px;padding:14px 14px;
+  display:flex;flex-direction:column;gap:2px;
+}
+.stub .icon{font-size:18px;}
+.stub .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+.stub .val{font-family:var(--font-mono);font-weight:600;font-size:19px;color:var(--text);font-variant-numeric:tabular-nums;}
+
+/* ---------- Map ---------- */
+.map-wrap{
+  position:relative;width:100%;aspect-ratio:1.9/1;
+  border-radius:12px;overflow:hidden;
+  background:var(--bg-soft);
+  border:1px solid var(--border-soft);
+}
+#worldSvg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
+#worldSvg:active{cursor:grabbing;}
+.country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;}
+.country.visited{fill:var(--teal);fill-opacity:0.55;}
+.city-dot{fill:var(--gold);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:r .1s;}
+.city-dot:hover{fill-opacity:0.85;}
+.city-dot.selected{fill:var(--rose);stroke-width:1.5;}
+.home-mark{fill:none;stroke:var(--rose);stroke-width:1.6;}
+.map-controls{
+  position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
+}
+.map-controls button{
+  width:30px;height:30px;border-radius:8px;background:var(--panel);border:1px solid var(--border);
+  color:var(--text-dim);font-size:15px;cursor:pointer;font-family:var(--font-mono);
+  box-shadow:var(--shadow);
+}
+.map-controls button:hover{color:var(--text);border-color:var(--gold-dim);}
+.map-loading{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  gap:8px;color:var(--text-faint);font-size:12.5px;background:var(--bg-soft);z-index:4;
+}
+.map-loading .spinner{width:18px;height:18px;border-width:2px;}
+.map-error{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  text-align:center;padding:20px;color:var(--text-faint);font-size:12.5px;background:var(--bg-soft);z-index:4;
+}
+.map-attrib{font-size:10.5px;color:var(--text-faint);margin-top:8px;text-align:right;}
+.map-attrib a{color:var(--text-faint);}
+
+.city-detail{
+  margin-top:14px;background:var(--panel-alt);border:1px solid var(--border-soft);
+  border-radius:12px;padding:16px;
+}
+.city-detail-empty{color:var(--text-faint);font-size:13px;text-align:center;padding:10px 0;}
+.city-detail-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.city-detail-head img{width:26px;height:19px;border-radius:3px;object-fit:cover;}
+.city-detail-head h3{margin:0;font-family:var(--font-display);font-size:16px;}
+.city-detail-head span{font-size:12px;color:var(--text-dim);}
+.city-detail-stats{display:flex;gap:20px;margin-bottom:12px;flex-wrap:wrap;}
+.city-detail-stats div{font-size:12px;color:var(--text-dim);}
+.city-detail-stats b{color:var(--text);font-family:var(--font-mono);}
+.visit-chip-list{display:flex;flex-wrap:wrap;gap:6px;}
+.visit-chip{
+  font-size:11.5px;background:var(--panel);border:1px solid var(--border);
+  padding:4px 9px;border-radius:100px;color:var(--text-dim);
+  display:flex;align-items:center;gap:5px;
+}
+
+/* ---------- Countries grid ---------- */
+.countries-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;
+}
+.country-card{
+  background:var(--panel-alt);border:1px solid var(--border-soft);
+  border-radius:12px;padding:14px;cursor:pointer;
+}
+.country-card:hover{border-color:var(--gold-dim);}
+.country-top{display:flex;align-items:center;gap:10px;}
+.country-top img{width:28px;height:20px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.country-top h4{margin:0;font-size:14px;font-weight:600;}
+.country-stats{display:flex;gap:14px;margin-top:8px;font-size:11.5px;color:var(--text-dim);}
+.country-stats b{color:var(--gold);font-family:var(--font-mono);}
+.country-cities{
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);
+  display:none;font-size:12px;color:var(--text-dim);
+}
+.country-card.open .country-cities{display:block;}
+.country-cities div{display:flex;justify-content:space-between;padding:3px 0;}
+.country-cities b{color:var(--text);font-family:var(--font-mono);font-weight:500;}
+
+/* ---------- Tables ---------- */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{
+  text-align:left;font-family:var(--font-display);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:0.05em;color:var(--text-dim);
+  padding:8px 10px;border-bottom:1px solid var(--border);
+  cursor:pointer;white-space:nowrap;user-select:none;
+}
+th:hover{color:var(--gold);}
+th.sorted::after{content:' ▾';color:var(--gold);}
+th.sorted.asc::after{content:' ▴';}
+td{padding:9px 10px;border-bottom:1px solid var(--border-soft);vertical-align:middle;white-space:nowrap;}
+tr:last-child td{border-bottom:none;}
+.cell-city{display:flex;align-items:center;gap:8px;}
+.cell-city img{width:20px;height:14px;border-radius:2px;object-fit:cover;}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
+.mode-badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;
+  padding:3px 8px;border-radius:100px;background:var(--panel-alt);
+  border:1px solid var(--border);
+}
+.row-actions{display:flex;gap:6px;}
+.row-actions button{
+  background:transparent;border:1px solid var(--border);border-radius:7px;
+  width:26px;height:26px;cursor:pointer;color:var(--text-dim);font-size:12px;
+}
+.row-actions button:hover{border-color:var(--gold-dim);color:var(--text);}
+
+.empty-state{
+  text-align:center;padding:36px 20px;color:var(--text-faint);font-size:13.5px;
+}
+.empty-state .big{font-size:26px;margin-bottom:8px;}
+
+/* ---------- Boarding pass form ---------- */
+.boarding-pass{
+  background:linear-gradient(155deg, var(--panel-alt), var(--panel));
+  border:1px solid var(--border-soft);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1fr 190px;
+  position:relative;
+  margin-bottom:20px;
+}
+@media(max-width:680px){.boarding-pass{grid-template-columns:1fr;}}
+.bp-main{padding:22px 22px 20px;}
+.bp-title{
+  font-family:var(--font-display);font-weight:700;font-size:16px;
+  text-transform:uppercase;letter-spacing:0.05em;margin:0 0 4px;
+}
+.bp-sub{font-size:12px;color:var(--text-dim);margin:0 0 18px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:520px){.field-row{grid-template-columns:1fr;}}
+.field label{
+  display:block;font-size:11px;color:var(--text-dim);text-transform:uppercase;
+  letter-spacing:0.05em;margin-bottom:6px;font-family:var(--font-display);font-weight:600;
+}
+.field input, .field select, .field textarea{
+  width:100%;background:var(--bg-soft);border:1px solid var(--border);
+  border-radius:9px;padding:9px 11px;color:var(--text);font-family:var(--font-body);
+  font-size:13.5px;min-height:38px;
+}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--gold-dim);}
+.field input[type="date"]{
+  border:1.5px solid var(--gold);
+  padding:8px 10px;
+}
+.field input[type="date"]:focus{border-color:var(--teal);}
+.field .hint{font-size:11px;color:var(--text-faint);margin-top:5px;}
+.field textarea{resize:vertical;min-height:44px;}
+
+.mode-toggle{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+@media(max-width:600px){.mode-toggle{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:420px){.mode-toggle{grid-template-columns:repeat(2,1fr);}}
+.mode-opt{
+  background:var(--bg-soft);border:1px solid var(--border);border-radius:9px;
+  padding:9px 4px;text-align:center;cursor:pointer;font-size:11.5px;color:var(--text-dim);
+}
+.mode-opt .ic{display:block;font-size:18px;margin-bottom:3px;}
+.mode-opt.active{background:var(--panel);border-color:var(--mode-color);color:var(--text);box-shadow:0 0 0 1px var(--mode-color) inset;}
+
+.direction-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.dir-opt{
+  background:var(--bg-soft);border:1px solid var(--border);border-radius:9px;
+  padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;color:var(--text-dim);
+}
+.dir-opt.active{background:var(--panel);border-color:var(--teal);color:var(--text);box-shadow:0 0 0 1px var(--teal) inset;}
+
+.waypoint-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.waypoint-num{
+  width:22px;height:22px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:10.5px;color:var(--text-dim);
+  font-family:var(--font-mono);flex-shrink:0;
+}
+.waypoint-row input{flex:1;min-width:0;}
+.waypoint-remove{
+  width:36px;height:36px;flex-shrink:0;border-radius:9px;background:var(--bg-soft);
+  border:1px solid var(--border);color:var(--text-dim);cursor:pointer;font-size:14px;
+}
+.waypoint-remove:hover{border-color:var(--rose);color:var(--rose);}
+.btn-add-waypoint{
+  background:var(--bg-soft);border:1px dashed var(--border);color:var(--text-dim);
+  border-radius:9px;padding:9px 14px;font-size:12.5px;cursor:pointer;width:100%;margin-top:2px;
+}
+.btn-add-waypoint:hover{border-color:var(--teal);color:var(--teal);}
+
+.purpose-toggle{display:flex;flex-wrap:wrap;gap:8px;}
+.purpose-chip{
+  background:var(--bg-soft);border:1px solid var(--border);border-radius:100px;
+  padding:8px 14px;font-size:12.5px;color:var(--text-dim);cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+}
+.purpose-chip.active{background:var(--panel);border-color:var(--gold);color:var(--text);box-shadow:0 0 0 1px var(--gold) inset;}
+
+.purpose-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.purpose-card{
+  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:12px;padding:12px 14px;
+}
+.purpose-card .pc-top{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);}
+.purpose-card .pc-stats{margin-top:6px;font-size:11.5px;color:var(--text-dim);display:flex;gap:12px;}
+.purpose-card .pc-stats b{color:var(--gold);font-family:var(--font-mono);}
+.stopover-chip{background:var(--panel);border-style:dashed;}
+
+.dist-row{display:flex;gap:10px;align-items:flex-end;}
+.dist-row .field{flex:1;}
+.btn-calc{
+  background:var(--bg-soft);border:1px solid var(--border);color:var(--text-dim);
+  border-radius:9px;padding:9px 12px;font-size:12px;cursor:pointer;white-space:nowrap;height:38px;
+}
+.btn-calc:hover{border-color:var(--teal);color:var(--teal);}
+
+.bp-submit-row{display:flex;align-items:center;gap:12px;margin-top:6px;}
+.btn-primary{
+  background:var(--gold);color:#241a05;border:none;border-radius:10px;
+  padding:11px 20px;font-family:var(--font-display);font-weight:700;font-size:13px;
+  letter-spacing:0.03em;text-transform:uppercase;cursor:pointer;
+}
+.btn-primary:hover{filter:brightness(1.08);}
+.btn-secondary{
+  background:transparent;border:1px solid var(--border);color:var(--text-dim);
+  border-radius:10px;padding:11px 16px;font-size:12.5px;cursor:pointer;
+}
+
+.bp-stub{
+  border-left:2px dashed var(--border);
+  position:relative;
+  padding:22px 16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:8px;
+}
+.bp-stub::before, .bp-stub::after{
+  content:'';position:absolute;width:20px;height:20px;background:var(--bg);
+  border-radius:50%;left:-11px;
+}
+.bp-stub::before{top:-10px;}
+.bp-stub::after{bottom:-10px;}
+.bp-stub .stub-ic{font-size:30px;}
+.bp-stub .stub-km{font-family:var(--font-mono);font-weight:700;font-size:22px;color:var(--gold);}
+.bp-stub .stub-lbl{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;}
+.stub-return-wrap{border-top:1px dashed var(--border);margin-top:8px;padding-top:8px;width:100%;}
+.stub-return-wrap .stub-km-sm{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--teal);}
+.stub-return-wrap .stub-lbl-sm{font-size:9.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;}
+.stub-return-wrap .stub-total{font-size:11px;color:var(--text-faint);margin-top:4px;}
+.stub-total b{color:var(--text);font-family:var(--font-mono);}
+.barcode{
+  margin-top:10px;width:100%;height:22px;
+  background:repeating-linear-gradient(90deg, var(--text-faint) 0 2px, transparent 2px 4px, var(--text-faint) 4px 5px, transparent 5px 9px);
+  opacity:0.4;
+}
+
+/* ---------- Modal ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(6,10,20,0.7);
+  display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+}
+.modal-backdrop.open{display:flex;}
+.modal{
+  background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius);
+  padding:22px;width:100%;max-width:380px;box-shadow:var(--shadow);
+}
+.modal h3{margin:0 0 14px;font-family:var(--font-display);font-size:15px;text-transform:uppercase;letter-spacing:0.04em;}
+.modal-actions{display:flex;gap:10px;margin-top:16px;justify-content:flex-end;}
+.danger-zone{margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);}
+.danger-zone p{font-size:11.5px;color:var(--text-faint);margin:0 0 8px;}
+.btn-danger{
+  background:transparent;border:1px solid var(--rose);color:var(--rose);
+  border-radius:9px;padding:8px 14px;font-size:12px;cursor:pointer;
+}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--panel-alt);border:1px solid var(--gold-dim);color:var(--text);
+  padding:11px 18px;border-radius:100px;font-size:12.5px;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:all .25s;z-index:200;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.footer-note{
+  text-align:center;font-size:11px;color:var(--text-faint);margin-top:30px;line-height:1.7;
+}
+
+.loading-screen{
+  min-height:60vh;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:10px;color:var(--text-faint);font-size:13px;
+}
+.spinner{
+  width:26px;height:26px;border-radius:50%;border:2.5px solid var(--border);
+  border-top-color:var(--gold);animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">🧭</div>
+      <div class="brand-text">
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.5.0</span></h1>
+        <p>Dein persönliches Reise-Logbuch</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="theme-switch" id="themeSwitch">
+        <button data-theme-choice="light" title="Heller Modus">☀️</button>
+        <button data-theme-choice="dark" title="Dunkler Modus">🌙</button>
+        <button data-theme-choice="auto" title="Automatisch (Systemeinstellung)">🖥️</button>
+      </div>
+      <div class="home-chip" id="homeChip" title="Heimatort festlegen">🏠 <span id="homeChipText">Heimatort festlegen</span></div>
+      <button class="icon-btn" id="settingsBtn" title="Einstellungen">⚙️</button>
+    </div>
+  </div>
+  <div class="info-strip">
+    <div>📅 <span id="currentDateText">–</span></div>
+    <div>📍 <span id="currentLocationText">Standort wird ermittelt …</span></div>
+  </div>
+  <div class="wrap" style="padding-top:0;">
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="dashboard">Übersicht</button>
+      <button class="tab-btn" data-tab="add">Neue Reise</button>
+      <button class="tab-btn" data-tab="places">Länder &amp; Städte</button>
+      <button class="tab-btn" data-tab="log">Alle Reisen</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="appRoot">
+  <div class="loading-screen"><div class="spinner"></div>Lade deine Reisedaten …</div>
+</div>
+
+<div class="modal-backdrop" id="settingsModal">
+  <div class="modal">
+    <h3>Einstellungen</h3>
+    <div class="field" style="margin-bottom:14px;">
+      <label for="homeInput">Heimatort (Standard-Ausgangspunkt)</label>
+      <input type="text" id="homeInput" list="cityDatalist" placeholder="z. B. Vilnius (Litauen)">
+      <div class="hint">Wird als Standard für „Von" bei neuen Reisen vorgeschlagen.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="settingsCancel">Abbrechen</button>
+      <button class="btn-primary" id="settingsSave">Speichern</button>
+    </div>
+    <div class="danger-zone">
+      <p>Alle erfassten Reisen unwiderruflich löschen.</p>
+      <button class="btn-danger" id="resetAllBtn">Alle Daten löschen</button>
+    </div>
+  </div>
+</div>
+
+<datalist id="cityDatalist"></datalist>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+/* ============================================================
+   WELTLOG — persönlicher Reise-Tracker
+   ============================================================ */
+
+/* ---------- Städte-Datenbank ---------- */
+const RAW_CITIES = [
+["Berlin","Deutschland","de",52.52,13.405,"BER"],
+["München","Deutschland","de",48.1351,11.5820,"MUC"],
+["Frankfurt am Main","Deutschland","de",50.1109,8.6821,"FRA"],
+["Hamburg","Deutschland","de",53.5511,9.9937,"HAM"],
+["Köln","Deutschland","de",50.9375,6.9603,"CGN"],
+["Wien","Österreich","at",48.2082,16.3738,"VIE"],
+["Zürich","Schweiz","ch",47.3769,8.5417,"ZRH"],
+["Genf","Schweiz","ch",46.2044,6.1432,"GVA"],
+["Paris","Frankreich","fr",48.8566,2.3522,"CDG"],
+["Nizza","Frankreich","fr",43.7102,7.2620,"NCE"],
+["London","Vereinigtes Königreich","gb",51.5074,-0.1278,"LHR"],
+["Edinburgh","Vereinigtes Königreich","gb",55.9533,-3.1883,"EDI"],
+["Dublin","Irland","ie",53.3498,-6.2603,"DUB"],
+["Amsterdam","Niederlande","nl",52.3676,4.9041,"AMS"],
+["Brüssel","Belgien","be",50.8503,4.3517,"BRU"],
+["Madrid","Spanien","es",40.4168,-3.7038,"MAD"],
+["Barcelona","Spanien","es",41.3874,2.1686,"BCN"],
+["Lissabon","Portugal","pt",38.7223,-9.1393,"LIS"],
+["Rom","Italien","it",41.9028,12.4964,"FCO"],
+["Mailand","Italien","it",45.4642,9.1900,"MXP"],
+["Venedig","Italien","it",45.4408,12.3155,"VCE"],
+["Athen","Griechenland","gr",37.9838,23.7275,"ATH"],
+["Kopenhagen","Dänemark","dk",55.6761,12.5683,"CPH"],
+["Stockholm","Schweden","se",59.3293,18.0686,"ARN"],
+["Oslo","Norwegen","no",59.9139,10.7522,"OSL"],
+["Helsinki","Finnland","fi",60.1699,24.9384,"HEL"],
+["Reykjavik","Island","is",64.1466,-21.9426,"KEF"],
+["Warschau","Polen","pl",52.2297,21.0122,"WAW"],
+["Krakau","Polen","pl",50.0647,19.9450,"KRK"],
+["Prag","Tschechien","cz",50.0755,14.4378,"PRG"],
+["Budapest","Ungarn","hu",47.4979,19.0402,"BUD"],
+["Bukarest","Rumänien","ro",44.4268,26.1025,"OTP"],
+["Istanbul","Türkei","tr",41.0082,28.9784,"IST"],
+["Vilnius","Litauen","lt",54.6872,25.2797,"VNO"],
+["Riga","Lettland","lv",56.9496,24.1052,"RIX"],
+["Tallinn","Estland","ee",59.4370,24.7536,"TLL"],
+["New York","USA","us",40.7128,-74.0060,"JFK"],
+["Los Angeles","USA","us",34.0522,-118.2437,"LAX"],
+["Chicago","USA","us",41.8781,-87.6298,"ORD"],
+["San Francisco","USA","us",37.7749,-122.4194,"SFO"],
+["Miami","USA","us",25.7617,-80.1918,"MIA"],
+["Toronto","Kanada","ca",43.6532,-79.3832,"YYZ"],
+["Vancouver","Kanada","ca",49.2827,-123.1207,"YVR"],
+["Montreal","Kanada","ca",45.5017,-73.5673,"YUL"],
+["Mexiko-Stadt","Mexiko","mx",19.4326,-99.1332,"MEX"],
+["Cancún","Mexiko","mx",21.1619,-86.8515,"CUN"],
+["São Paulo","Brasilien","br",-23.5505,-46.6333,"GRU"],
+["Rio de Janeiro","Brasilien","br",-22.9068,-43.1729,"GIG"],
+["Buenos Aires","Argentinien","ar",-34.6037,-58.3816,"EZE"],
+["Santiago de Chile","Chile","cl",-33.4489,-70.6693,"SCL"],
+["Lima","Peru","pe",-12.0464,-77.0428,"LIM"],
+["Bogotá","Kolumbien","co",4.7110,-74.0721,"BOG"],
+["Kairo","Ägypten","eg",30.0444,31.2357,"CAI"],
+["Kapstadt","Südafrika","za",-33.9249,18.4241,"CPT"],
+["Johannesburg","Südafrika","za",-26.2041,28.0473,"JNB"],
+["Nairobi","Kenia","ke",-1.2921,36.8219,"NBO"],
+["Marrakesch","Marokko","ma",31.6295,-7.9811,"RAK"],
+["Tunis","Tunesien","tn",36.8065,10.1815,"TUN"],
+["Dubai","Vereinigte Arabische Emirate","ae",25.2048,55.2708,"DXB"],
+["Abu Dhabi","Vereinigte Arabische Emirate","ae",24.4539,54.3773,"AUH"],
+["Doha","Katar","qa",25.2854,51.5310,"DOH"],
+["Tel Aviv","Israel","il",32.0853,34.7818,"TLV"],
+["Delhi","Indien","in",28.7041,77.1025,"DEL"],
+["Mumbai","Indien","in",19.0760,72.8777,"BOM"],
+["Bangkok","Thailand","th",13.7563,100.5018,"BKK"],
+["Singapur","Singapur","sg",1.3521,103.8198,"SIN"],
+["Kuala Lumpur","Malaysia","my",3.1390,101.6869,"KUL"],
+["Jakarta","Indonesien","id",-6.2088,106.8456,"CGK"],
+["Bali (Denpasar)","Indonesien","id",-8.3405,115.0920,"DPS"],
+["Manila","Philippinen","ph",14.5995,120.9842,"MNL"],
+["Hongkong","Hongkong","hk",22.3193,114.1694,"HKG"],
+["Peking","China","cn",39.9042,116.4074,"PEK"],
+["Shanghai","China","cn",31.2304,121.4737,"PVG"],
+["Seoul","Südkorea","kr",37.5665,126.9780,"ICN"],
+["Tokio","Japan","jp",35.6762,139.6503,"HND"],
+["Osaka","Japan","jp",34.6937,135.5023,"KIX"],
+["Sydney","Australien","au",-33.8688,151.2093,"SYD"],
+["Melbourne","Australien","au",-37.8136,144.9631,"MEL"],
+["Auckland","Neuseeland","nz",-36.8485,174.7633,"AKL"]
+];
+
+const CITY_DB = RAW_CITIES.map(([n,c,cc,lat,lon,ia])=>({
+  n,c,cc,lat,lon,ia,
+  key:n+'|'+c,
+  label:n+' ('+c+')'
+}));
+
+/* ISO-3166-1 alpha-2 -> numerisch, zum Abgleich mit der world-atlas TopoJSON (Feature-IDs) */
+const COUNTRY_NUMERIC = {
+  de:276, at:40, ch:756, fr:250, gb:826, ie:372, nl:528, be:56, es:724, pt:620,
+  it:380, gr:300, dk:208, se:752, no:578, fi:246, is:352, pl:616, cz:203, hu:348,
+  ro:642, tr:792, lt:440, lv:428, ee:233, us:840, ca:124, mx:484, br:76, ar:32,
+  cl:152, pe:604, co:170, eg:818, za:710, ke:404, ma:504, tn:788, ae:784, qa:634,
+  il:376, in:356, th:764, sg:702, my:458, id:360, ph:608, hk:344, cn:156, kr:410,
+  jp:392, au:36, nz:554
+};
+let WORLD_TOPOLOGY_CACHE = null;
+
+const MODES = {
+  plane:{label:'Flugzeug',icon:'✈️',color:'var(--gold)',factor:1.0},
+  car:{label:'Auto',icon:'🚗',color:'var(--rose)',factor:1.3},
+  train:{label:'Zug',icon:'🚆',color:'var(--teal)',factor:1.25},
+  bus:{label:'Bus',icon:'🚌',color:'var(--bus)',factor:1.25},
+  bike:{label:'Mit Rad',icon:'🚴',color:'var(--green)',factor:1.15}
+};
+const MODE_ORDER = ['plane','car','train','bus','bike'];
+function getMode(key){
+  return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
+}
+
+const APP_VERSION = '1.5.0';
+/* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
+const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
+const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
+const MARS_DISTANCE_KM = 225000000;     // ø Entfernung Erde–Mars (variiert stark: ~54,6–401 Mio. km)
+
+const PURPOSE_META = {
+  football:{label:'Fußballspiel',icon:'⚽'},
+  friends:{label:'Freunde',icon:'🧑‍🤝‍🧑'},
+  business:{label:'Business',icon:'💼'},
+  vacation:{label:'Urlaub',icon:'🏖️'},
+  concert:{label:'Konzert',icon:'🎵'},
+  run:{label:'Lauf-Event',icon:'🏃'},
+  custom:{label:'Sonstiges',icon:'🏷️'}
+};
+const PURPOSE_ORDER = ['football','friends','business','vacation','concert','run','custom'];
+function purposeIcon(key){ return (PURPOSE_META[key]&&PURPOSE_META[key].icon)||'➖'; }
+function purposeLabel(t){
+  if(!t.purpose) return null;
+  if(t.purpose==='custom') return t.purposeCustom ? t.purposeCustom : 'Sonstiges';
+  return PURPOSE_META[t.purpose] ? PURPOSE_META[t.purpose].label : t.purpose;
+}
+
+/* ---------- State ---------- */
+let trips = [];
+let settings = {home:null, theme:'dark'};
+let currentTab = 'dashboard';
+let editingId = null;
+let selectedCityKey = null;
+let citySort = {key:'totalKm', dir:'desc'};
+
+/* ---------- Helpers ---------- */
+function uid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+
+function findCity(str){
+  if(!str) return null;
+  const s = str.trim().toLowerCase();
+  let m = CITY_DB.find(c=>c.label.toLowerCase()===s);
+  if(m) return m;
+  m = CITY_DB.find(c=>c.n.toLowerCase()===s);
+  return m||null;
+}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371, toRad=d=>d*Math.PI/180;
+  const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function computeDistance(fromStr,toStr,mode){
+  const a=findCity(fromStr), b=findCity(toStr);
+  if(!a||!b) return null;
+  const beeline = haversine(a.lat,a.lon,b.lat,b.lon);
+  const factor = getMode(mode).factor||1.15;
+  return Math.round(beeline*factor);
+}
+
+/* Berechnet die Distanz einer Route über mehrere Punkte (z. B. Von -> Zwischenstopp -> Nach).
+   Die Zwischenstopps fließen NUR in diese Distanzberechnung ein — sie werden nicht als
+   eigenständig besuchte Orte gezählt. */
+function computeMultiLegDistance(cityNames, mode){
+  const resolved = cityNames.map(n=>findCity(n));
+  if(resolved.some(r=>!r)) return null;
+  let beeline = 0;
+  for(let i=0;i<resolved.length-1;i++){
+    beeline += haversine(resolved[i].lat, resolved[i].lon, resolved[i+1].lat, resolved[i+1].lon);
+  }
+  const factor = getMode(mode).factor||1.15;
+  return Math.round(beeline*factor);
+}
+
+function flagImg(cc,size){
+  size=size||24;
+  if(!cc) return '<span style="font-size:'+(size*0.8)+'px;">🌍</span>';
+  return '<img src="https://flagcdn.com/w'+size+'/'+cc.toLowerCase()+'.png" alt="" '+
+    'onerror="this.outerHTML=\'<span style=&quot;font-size:'+(size*0.8)+'px;&quot;>🌍</span>\'">';
+}
+
+function fmtKm(n){
+  if(n==null||isNaN(n)) return '–';
+  return Math.round(n).toLocaleString('de-DE')+' km';
+}
+function fmtNum(n){return Math.round(n).toLocaleString('de-DE');}
+
+function fmtDate(d){
+  if(!d) return '';
+  const parts=d.split('-');
+  if(parts.length!==3) return d;
+  return parts[2]+'.'+parts[1]+'.'+parts[0];
+}
+function fmtRange(from,to){
+  if(!from) return '–';
+  if(!to || to===from) return 'am '+fmtDate(from);
+  return fmtDate(from)+' – '+fmtDate(to);
+}
+
+/* ---------- Theme (hell / dunkel / automatisch) ---------- */
+const themeMQ = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+function applyTheme(){
+  const choice = settings.theme || 'dark';
+  const effective = choice==='auto'
+    ? ((themeMQ && themeMQ.matches) ? 'dark' : 'light')
+    : choice;
+  document.documentElement.setAttribute('data-theme', effective);
+  document.querySelectorAll('#themeSwitch button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.themeChoice===choice);
+  });
+}
+if(themeMQ && themeMQ.addEventListener){
+  themeMQ.addEventListener('change', ()=>{ if(settings.theme==='auto') applyTheme(); });
+}
+
+/* ---------- Datum & Standort ---------- */
+function renderCurrentDate(){
+  const el = document.getElementById('currentDateText');
+  if(!el) return;
+  const now = new Date();
+  el.textContent = now.toLocaleDateString('de-DE',{weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+}
+
+function fallbackLocation(){
+  const el = document.getElementById('currentLocationText');
+  if(!el) return;
+  if(settings.home){
+    const hc = findCity(settings.home);
+    el.innerHTML = (hc?flagImg(hc.cc,16):'')+' '+(hc?hc.n:settings.home)+' <span style="opacity:.7">(Heimatort)</span>';
+  } else {
+    el.textContent = 'Standort nicht verfügbar';
+  }
+}
+
+function detectLocation(){
+  const el = document.getElementById('currentLocationText');
+  if(!el) return;
+  if(!navigator.geolocation){ fallbackLocation(); return; }
+  navigator.geolocation.getCurrentPosition(
+    async (pos)=>{
+      try{
+        const {latitude,longitude} = pos.coords;
+        const resp = await fetch('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+latitude+'&longitude='+longitude+'&localityLanguage=de');
+        const data = await resp.json();
+        const city = data.city || data.locality || data.principalSubdivision || '';
+        const country = data.countryName || '';
+        const cc = (data.countryCode||'').toLowerCase();
+        if(city||country){
+          el.innerHTML = (cc?flagImg(cc,16):'')+' '+[city,country].filter(Boolean).join(', ');
+        } else {
+          fallbackLocation();
+        }
+      }catch(e){ fallbackLocation(); }
+    },
+    ()=>{ fallbackLocation(); },
+    {timeout:4000, maximumAge:600000}
+  );
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function animateNumber(el,target,suffix){
+  suffix=suffix||'';
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || target===0){ el.textContent=fmtNum(target)+suffix; return; }
+  const start=performance.now(), dur=900;
+  function step(now){
+    const p=Math.min(1,(now-start)/dur);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=fmtNum(target*eased)+suffix;
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---------- Storage ---------- */
+function migrateTrip(t){
+  let m = t;
+  if(t.outMode===undefined){
+    const oldMode = t.mode==='walk' ? 'bike' : (t.mode||'plane');
+    m = Object.assign({}, t, {
+      direction: t.roundTrip ? 'roundtrip' : 'oneway',
+      outMode: oldMode,
+      outDistanceKm: t.distanceKm||0,
+      returnMode: t.roundTrip ? oldMode : null,
+      returnDistanceKm: t.roundTrip ? (t.distanceKm||0) : null
+    });
+  }
+  if(m.outWaypoints===undefined){
+    // ältere Version hatte ein gemeinsames 'waypoints'-Feld (galt nur für den Hinweg)
+    m = Object.assign({}, m, {outWaypoints: m.waypoints||[], returnWaypoints:[]});
+  }
+  if(m.purpose===undefined) m = Object.assign({}, m, {purpose:null, purposeCustom:''});
+  return m;
+}
+
+async function loadData(){
+  try{
+    const t = await window.storage.get('trips', false);
+    trips = t ? JSON.parse(t.value) : [];
+  }catch(e){ trips = []; }
+  trips = trips.map(migrateTrip);
+  try{
+    const s = await window.storage.get('settings', false);
+    settings = s ? JSON.parse(s.value) : {home:null, theme:'dark'};
+  }catch(e){ settings = {home:null, theme:'dark'}; }
+  if(!settings.theme) settings.theme = 'dark';
+  applyTheme();
+  renderCurrentDate();
+  detectLocation();
+  renderAll();
+}
+async function saveTrips(){
+  try{
+    const r = await window.storage.set('trips', JSON.stringify(trips), false);
+    if(!r) console.error('Speichern der Reisen fehlgeschlagen');
+  }catch(e){ console.error('Storage-Fehler (trips):', e); }
+}
+async function saveSettings(){
+  try{
+    const r = await window.storage.set('settings', JSON.stringify(settings), false);
+    if(!r) console.error('Speichern der Einstellungen fehlgeschlagen');
+  }catch(e){ console.error('Storage-Fehler (settings):', e); }
+}
+
+/* ---------- Aggregation ---------- */
+/* Jede Reise hat einen Hinweg (outMode/outDistanceKm) und, falls direction==='roundtrip',
+   einen unabhängigen Rückweg (returnMode/returnDistanceKm) — z. B. Hinweg mit dem Rad,
+   Rückweg mit dem Zug. Beide können Verkehrsmittel UND Distanz unterschiedlich haben. */
+function tripOut(t){ return t.outDistanceKm||0; }
+function tripReturn(t){ return t.direction==='roundtrip' ? (t.returnDistanceKm||0) : 0; }
+function tripTotal(t){ return tripOut(t)+tripReturn(t); }
+
+function aggregate(){
+  let totalOut=0, totalReturn=0;
+  const perMode = {};
+  MODE_ORDER.forEach(m=>perMode[m]=0);
+
+  const cityMap = new Map();
+  const countryMap = new Map();
+  const purposeMap = new Map();
+
+  function registerCityVisit(cityName, country, cc, km, dateFrom, visitRecord){
+    const ckey=cityName+'|'+country;
+    if(!cityMap.has(ckey)){
+      cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[]});
+    }
+    const c=cityMap.get(ckey);
+    c.visits++; c.totalKm+=km; c.dates.push(dateFrom); c.trips.push(visitRecord);
+
+    if(!countryMap.has(country)){
+      countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
+    }
+    const co=countryMap.get(country);
+    co.visits++; co.totalKm+=km; co.cities.add(cityName);
+    return c;
+  }
+
+  trips.forEach(t=>{
+    const out=tripOut(t), ret=tripReturn(t), tot=out+ret;
+    totalOut+=out; totalReturn+=ret;
+    perMode[t.outMode]=(perMode[t.outMode]||0)+out;
+    if(t.direction==='roundtrip'){
+      perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
+    }
+
+    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
+    mainCity.outKm += out; mainCity.returnKm += ret;
+
+    const pLabel = purposeLabel(t);
+    const pKey = pLabel || 'Ohne Angabe';
+    const pIcon = t.purpose ? purposeIcon(t.purpose) : '➖';
+    if(!purposeMap.has(pKey)) purposeMap.set(pKey,{label:pKey, icon:pIcon, count:0, totalKm:0});
+    const pu = purposeMap.get(pKey);
+    pu.count++; pu.totalKm+=tot;
+  });
+
+  return {
+    totalKm: totalOut+totalReturn,
+    totalOut, totalReturn,
+    perMode,
+    cities:[...cityMap.values()],
+    countries:[...countryMap.values()],
+    purposes:[...purposeMap.values()]
+  };
+}
+
+/* ---------- Distanzvergleiche ---------- */
+function compareToReference(km, refKm){
+  if(!km) return {ratioText:'–', remainingText:'noch '+fmtKm(refKm), exceeded:false};
+  const ratio = km/refKm;
+  if(ratio>=1){
+    return {
+      ratioText: ratio.toLocaleString('de-DE',{maximumFractionDigits:2,minimumFractionDigits:0})+'×',
+      remainingText:'',
+      exceeded:true
+    };
+  }
+  const pct = ratio*100;
+  const dec = pct<0.01 ? 4 : (pct<1 ? 2 : 1);
+  return {
+    ratioText: pct.toLocaleString('de-DE',{maximumFractionDigits:dec,minimumFractionDigits:0})+'%',
+    remainingText: 'noch '+fmtKm(refKm-km),
+    exceeded:false
+  };
+}
+
+/* ---------- Render: Dashboard ---------- */
+function renderDashboard(root){
+  const agg = aggregate();
+  const cityCount = agg.cities.length;
+  const countryCount = agg.countries.length;
+
+  let html = '';
+  html += '<div class="hero">';
+  html += '  <div class="hero-total">';
+  html += '    <div class="hero-eyebrow">Gesamtstrecke — Hin- &amp; Rückwege</div>';
+  html += '    <div class="hero-number" id="heroNumber">0<span>km</span></div>';
+  html += '    <div class="hero-direction">';
+  html += '      <div>Hinweg gesamt <b>'+fmtKm(agg.totalOut)+'</b></div>';
+  html += '      <div>Rückweg gesamt <b>'+fmtKm(agg.totalReturn)+'</b></div>';
+  html += '    </div>';
+  html += '    <div class="hero-meta">';
+  html += '      <div><b>'+countryCount+'</b> Länder</div>';
+  html += '      <div><b>'+cityCount+'</b> Städte</div>';
+  html += '      <div><b>'+trips.length+'</b> Reisen</div>';
+  html += '    </div>';
+  const cmpEarth = compareToReference(agg.totalKm, EARTH_CIRCUMFERENCE_KM);
+  const cmpMoon = compareToReference(agg.totalKm, MOON_DISTANCE_KM);
+  const cmpMars = compareToReference(agg.totalKm, MARS_DISTANCE_KM);
+  html += '    <div class="hero-compare">';
+  html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+'"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+'"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung)"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
+  html += '    </div>';
+  html += '  </div>';
+  html += '  <div class="mode-stubs">';
+  MODE_ORDER.forEach(m=>{
+    const mo=getMode(m);
+    html += '<div class="stub" style="--stub-color:'+mo.color+'">';
+    html += '  <div class="icon">'+mo.icon+'</div>';
+    html += '  <div class="val" data-mode-val="'+m+'">0 km</div>';
+    html += '  <div class="label">'+mo.label+'</div>';
+    html += '</div>';
+  });
+  html += '  </div>';
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Weltkarte</h2><span class="sub">Zoomen &amp; verschieben, Punkt anklicken für Details</span></div>';
+  html += '  <div class="map-wrap" id="mapWrap">';
+  html += '    <svg id="worldSvg"></svg>';
+  html += '    <div class="map-controls">';
+  html += '      <button type="button" id="zoomInBtn" title="Vergrößern">+</button>';
+  html += '      <button type="button" id="zoomOutBtn" title="Verkleinern">−</button>';
+  html += '      <button type="button" id="zoomResetBtn" title="Zurücksetzen">⟲</button>';
+  html += '    </div>';
+  html += '    <div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div>';
+  html += '    <div class="map-error" id="mapError">Karte konnte nicht geladen werden (keine Verbindung?). Städte &amp; Länder findest du vollständig im Tab „Länder &amp; Städte".</div>';
+  html += '  </div>';
+  html += '  <div class="map-attrib">Kartengrundlage: <a href="https://github.com/topojson/world-atlas" target="_blank" rel="noopener">world-atlas</a> / Natural Earth · Flaggen: flagcdn.com</div>';
+  html += '  <div class="city-detail" id="cityDetail"></div>';
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Reisen nach Grund</h2><span class="sub">'+agg.purposes.length+' Kategorien</span></div>';
+  if(trips.length===0){
+    html += '<div class="empty-state"><div class="big">🏷️</div>Noch keine Reisen erfasst.</div>';
+  } else {
+    const sortedPurposes = agg.purposes.slice().sort((a,b)=>b.totalKm-a.totalKm);
+    html += '<div class="purpose-grid">';
+    sortedPurposes.forEach(p=>{
+      html += '<div class="purpose-card">';
+      html += '  <div class="pc-top">'+p.icon+' '+p.label+'</div>';
+      html += '  <div class="pc-stats"><span><b>'+p.count+'</b> Reisen</span><span><b>'+fmtKm(p.totalKm)+'</b></span></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+
+  root.innerHTML = html;
+
+  MODE_ORDER.forEach(m=>{
+    const el = root.querySelector('[data-mode-val="'+m+'"]');
+    animateNumber(el, agg.perMode[m]||0, ' km');
+  });
+  animateNumber(document.getElementById('heroNumber').firstChild ? document.getElementById('heroNumber') : document.getElementById('heroNumber'), agg.totalKm, '');
+  // rebuild hero number with unit span preserved
+  const heroEl = document.getElementById('heroNumber');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    heroEl.innerHTML = fmtNum(agg.totalKm)+'<span>km</span>';
+  } else {
+    const start=performance.now(), dur=900, target=agg.totalKm;
+    (function step(now){
+      const p=Math.min(1,(now-start)/dur);
+      const eased=1-Math.pow(1-p,3);
+      heroEl.innerHTML = fmtNum(target*eased)+'<span>km</span>';
+      if(p<1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  initWorldMap(agg);
+  renderCityDetail(agg);
+}
+
+async function initWorldMap(agg){
+  const wrap = document.getElementById('mapWrap');
+  const svgEl = document.getElementById('worldSvg');
+  const loadingEl = document.getElementById('mapLoading');
+  const errorEl = document.getElementById('mapError');
+  if(!wrap || !svgEl) return;
+
+  if(typeof d3==='undefined' || typeof topojson==='undefined'){
+    loadingEl.style.display='none';
+    errorEl.style.display='flex';
+    return;
+  }
+
+  if(!WORLD_TOPOLOGY_CACHE){ loadingEl.style.display='flex'; } else { loadingEl.style.display='none'; }
+  errorEl.style.display='none';
+
+  try{
+    if(!WORLD_TOPOLOGY_CACHE){
+      const resp = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json');
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      WORLD_TOPOLOGY_CACHE = await resp.json();
+    }
+  }catch(e){
+    loadingEl.style.display='none';
+    errorEl.style.display='flex';
+    return;
+  }
+  loadingEl.style.display='none';
+
+  // Falls der Nutzer inzwischen den Tab gewechselt hat, ist das SVG evtl. nicht mehr im DOM
+  if(!document.getElementById('worldSvg')) return;
+
+  const rect = wrap.getBoundingClientRect();
+  const width = rect.width || 600;
+  const height = rect.height || Math.round(width/1.9);
+
+  const svg = d3.select('#worldSvg').attr('viewBox','0 0 '+width+' '+height);
+  svg.selectAll('*').remove();
+
+  const countries = topojson.feature(WORLD_TOPOLOGY_CACHE, WORLD_TOPOLOGY_CACHE.objects.countries).features;
+  const projection = d3.geoNaturalEarth1().fitSize([width, height], {type:'FeatureCollection', features:countries});
+  const path = d3.geoPath(projection);
+
+  const visitedIds = new Set(
+    agg.countries.map(c=>COUNTRY_NUMERIC[(c.cc||'').toLowerCase()]).filter(v=>v!==undefined)
+  );
+
+  const g = svg.append('g');
+
+  g.append('g').attr('class','countries-layer')
+    .selectAll('path')
+    .data(countries)
+    .join('path')
+    .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited':''))
+    .attr('d', path);
+
+  if(settings.home){
+    const hc = findCity(settings.home);
+    if(hc){
+      const p = projection([hc.lon, hc.lat]);
+      if(p){
+        g.append('rect').attr('class','home-mark')
+          .attr('x',p[0]-5).attr('y',p[1]-5).attr('width',10).attr('height',10)
+          .attr('transform','rotate(45 '+p[0]+' '+p[1]+')');
+      }
+    }
+  }
+
+  const cityData = agg.cities
+    .map(c=>({c, ref:findCity(c.city)}))
+    .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
+  const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
+
+  const cityDots = g.append('g').attr('class','city-layer')
+    .selectAll('circle')
+    .data(cityData, x=>x.c.key)
+    .join('circle')
+    .attr('class', x=> 'city-dot'+(x.c.key===selectedCityKey?' selected':''))
+    .attr('cx', x=>projection([x.ref.lon, x.ref.lat])[0])
+    .attr('cy', x=>projection([x.ref.lon, x.ref.lat])[1])
+    .attr('r', x=> 3 + (x.c.visits/maxVisits)*6)
+    .on('click', (event, x)=>{
+      selectedCityKey = x.c.key;
+      cityDots.attr('class', xx=> 'city-dot'+(xx.c.key===selectedCityKey?' selected':''));
+      renderCityDetail(agg);
+    });
+  cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
+
+  const zoom = d3.zoom()
+    .scaleExtent([1, 10])
+    .on('zoom', (event)=>{ g.attr('transform', event.transform); });
+  svg.call(zoom);
+
+  const zoomInBtn = document.getElementById('zoomInBtn');
+  const zoomOutBtn = document.getElementById('zoomOutBtn');
+  const zoomResetBtn = document.getElementById('zoomResetBtn');
+  if(zoomInBtn) zoomInBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1.6);
+  if(zoomOutBtn) zoomOutBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1/1.6);
+  if(zoomResetBtn) zoomResetBtn.onclick = ()=> svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+}
+
+function renderCityDetail(agg){
+  const box = document.getElementById('cityDetail');
+  if(!box) return;
+  const c = agg.cities.find(x=>x.key===selectedCityKey);
+  if(!c){
+    box.innerHTML = '<div class="city-detail-empty">Wähle eine Stadt auf der Karte, um Details zu sehen.</div>';
+    return;
+  }
+  let html = '';
+  html += '<div class="city-detail-head">'+flagImg(c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
+  html += '<div class="city-detail-stats">';
+  html += '<div>Besuche<br><b>'+c.visits+'</b></div>';
+  html += '<div>Gesamtdistanz<br><b>'+fmtKm(c.totalKm)+'</b></div>';
+  html += '<div>Hinweg gesamt<br><b>'+fmtKm(c.outKm)+'</b></div>';
+  html += '<div>Rückweg gesamt<br><b>'+fmtKm(c.returnKm)+'</b></div>';
+  html += '</div>';
+  html += '<div class="visit-chip-list">';
+  c.trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'')).forEach(t=>{
+    const outMo=getMode(t.outMode);
+    let distText = outMo.icon+' '+fmtKm(t.outDistanceKm);
+    if((t.outWaypoints||[]).length) distText += ' (via '+t.outWaypoints.join(', ')+')';
+    if(t.direction==='roundtrip'){
+      const retMo=getMode(t.returnMode);
+      let retText = retMo.icon+' '+fmtKm(t.returnDistanceKm);
+      if((t.returnWaypoints||[]).length) retText += ' (via '+t.returnWaypoints.join(', ')+')';
+      distText += ' · '+retText+' = '+fmtKm(tripTotal(t));
+    }
+    const pLbl = purposeLabel(t);
+    html += '<div class="visit-chip">'+fmtRange(t.dateFrom,t.dateTo)+' · '+distText+(pLbl?' · '+purposeIcon(t.purpose)+' '+pLbl:'')+'</div>';
+  });
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+/* ---------- Render: Add Trip (Boarding Pass) ---------- */
+function buildWaypointRowsHTML(legKey, waypointsArr){
+  return waypointsArr.map((wp,idx)=>(
+    '<div class="waypoint-row" data-leg="'+legKey+'" data-idx="'+idx+'">'+
+    '<span class="waypoint-num">'+(idx+1)+'</span>'+
+    '<input type="text" list="cityDatalist" placeholder="Zwischenstopp-Stadt" data-leg="'+legKey+'" data-wp-idx="'+idx+'" value="'+(wp||'').replace(/"/g,'&quot;')+'">'+
+    '<button type="button" class="waypoint-remove" data-leg="'+legKey+'" data-remove-idx="'+idx+'" title="Entfernen">✕</button>'+
+    '</div>'
+  )).join('');
+}
+
+function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
+  let h = '<div class="leg-block" data-leg="'+legKey+'">';
+  h += '  <div class="field" style="margin-bottom:14px;">';
+  h += '    <label>Verkehrsmittel ('+legLabel+')</label>';
+  h += '    <div class="mode-toggle">';
+  MODE_ORDER.forEach(m=>{
+    const mo=getMode(m);
+    const active = mode===m ? ' active':'';
+    h += '<div class="mode-opt'+active+'" data-mode="'+m+'" style="--mode-color:'+mo.color+'"><span class="ic">'+mo.icon+'</span>'+mo.label+'</div>';
+  });
+  h += '    </div>';
+  h += '  </div>';
+  h += '  <div class="field" style="margin-bottom:12px;">';
+  h += '    <label>Zwischenstopps '+legLabel+' (optional)</label>';
+  h += '    <div class="waypoints-list" data-leg="'+legKey+'">'+buildWaypointRowsHTML(legKey, waypointsArr)+'</div>';
+  h += '    <button type="button" class="btn-add-waypoint" data-add-waypoint-leg="'+legKey+'">+ Zwischenstopp ('+legLabel+')</button>';
+  h += '    <div class="hint">Zählt nicht als eigener Besuch — beeinflusst nur die berechnete Distanz dieser Teilstrecke.</div>';
+  h += '  </div>';
+  h += '  <div class="field" style="margin-bottom:6px;">';
+  h += '    <label for="fldDist_'+legKey+'">Distanz '+legLabel+' (km)</label>';
+  h += '    <div class="dist-row">';
+  h += '      <div class="field" style="margin:0;"><input type="number" id="fldDist_'+legKey+'" min="0" step="1" placeholder="km" value="'+(distVal||'')+'"></div>';
+  h += '      <button type="button" class="btn-calc" data-calc-leg="'+legKey+'">🔄 Berechnen</button>';
+  h += '    </div>';
+  h += '    <div class="hint" id="distHint_'+legKey+'">Luftlinie × Aufschlag je nach Verkehrsmittel (Flug ≈ 1.0×, Zug/Bus ≈ 1.25×, Auto ≈ 1.3×, Rad ≈ 1.15×). Mit Zwischenstopps: Summe der Teilstrecken.</div>';
+  h += '  </div>';
+  h += '</div>';
+  return h;
+}
+
+function renderAdd(root){
+  const t = editingId ? trips.find(x=>x.id===editingId) : null;
+  const homeVal = t ? t.fromCity : (settings.home || '');
+
+  let html = '';
+  html += '<div class="boarding-pass">';
+  html += '  <div class="bp-main">';
+  html += '    <p class="bp-title">'+(t?'Reise bearbeiten':'Neue Reise erfassen')+'</p>';
+  html += '    <p class="bp-sub">Trag Start, Ziel und Zeitraum ein. Hinweg und Rückweg können unterschiedliche Verkehrsmittel haben — z. B. mit dem Rad hin, mit dem Zug zurück.</p>';
+  html += '    <form id="tripForm">';
+  html += '      <div class="field-row">';
+  html += '        <div class="field"><label for="fldFrom">Von</label><input type="text" id="fldFrom" list="cityDatalist" placeholder="Ausgangsstadt" value="'+(homeVal||'').replace(/"/g,'&quot;')+'"></div>';
+  html += '        <div class="field"><label for="fldTo">Nach</label><input type="text" id="fldTo" list="cityDatalist" placeholder="Zielstadt" required value="'+(t?t.city.replace(/"/g,'&quot;'):'')+'"></div>';
+  html += '      </div>';
+  html += '      <div class="field" style="margin-bottom:14px;">';
+  html += '        <label>Fahrtrichtung</label>';
+  html += '        <div class="direction-toggle" id="directionToggle">';
+  html += '          <div class="dir-opt'+(t&&t.direction==='oneway'?' active':'')+'" data-dir="oneway">→ Nur Hinweg</div>';
+  html += '          <div class="dir-opt'+(t&&t.direction==='roundtrip'?' active':'')+'" data-dir="roundtrip">⇄ Hin- und Rückweg</div>';
+  html += '        </div>';
+  html += '      </div>';
+  html += '      <div id="legsContainer"></div>';
+  html += '      <div class="field" style="margin-bottom:14px;">';
+  html += '        <label>Grund (optional)</label>';
+  html += '        <div class="purpose-toggle" id="purposeToggle">';
+  PURPOSE_ORDER.forEach(pk=>{
+    const meta = PURPOSE_META[pk];
+    const active = (t&&t.purpose===pk) ? ' active':'';
+    html += '<div class="purpose-chip'+active+'" data-purpose="'+pk+'">'+meta.icon+' '+meta.label+'</div>';
+  });
+  html += '        </div>';
+  html += '        <input type="text" id="fldPurposeCustom" placeholder="Eigener Grund …" style="margin-top:8px;display:'+(t&&t.purpose==='custom'?'block':'none')+';" value="'+(t&&t.purposeCustom?t.purposeCustom.replace(/"/g,'&quot;'):'')+'">';
+  html += '      </div>';
+  html += '      <div class="field-row">';
+  html += '        <div class="field"><label for="fldFromDate">Zeitraum von</label><input type="date" id="fldFromDate" required value="'+(t?t.dateFrom:'')+'"></div>';
+  html += '        <div class="field"><label for="fldToDate">Zeitraum bis (optional)</label><input type="date" id="fldToDate" value="'+(t?(t.dateTo||''):'')+'"></div>';
+  html += '      </div>';
+  html += '      <div class="field" id="flightField" style="margin-bottom:14px;display:none;">';
+  html += '        <label for="fldFlightNo">Flugnummer(n) (optional)</label>';
+  html += '        <input type="text" id="fldFlightNo" placeholder="z. B. LH1234" value="'+(t&&t.flightNumber?t.flightNumber.replace(/"/g,'&quot;'):'')+'">';
+  html += '        <div class="hint">Eine Live-Anbindung an Flugdaten ist in dieser App nicht möglich — die Distanz wird über die Flughafenkoordinaten berechnet.</div>';
+  html += '      </div>';
+  html += '      <div class="field" style="margin-bottom:16px;">';
+  html += '        <label for="fldNotes">Notizen (optional)</label>';
+  html += '        <textarea id="fldNotes" placeholder="z. B. Anlass der Reise">'+(t&&t.notes?t.notes:'')+'</textarea>';
+  html += '      </div>';
+  html += '      <div class="bp-submit-row">';
+  html += '        <button type="submit" class="btn-primary">'+(t?'Änderungen speichern':'Reise hinzufügen')+'</button>';
+  if(t) html += '<button type="button" class="btn-secondary" id="cancelEdit">Abbrechen</button>';
+  html += '      </div>';
+  html += '    </form>';
+  html += '  </div>';
+  html += '  <div class="bp-stub">';
+  html += '    <div id="bpStubContent"></div>';
+  html += '    <div class="barcode"></div>';
+  html += '  </div>';
+  html += '</div>';
+
+  root.innerHTML = html;
+
+  let direction = t ? t.direction : null;
+  let outMode = t ? t.outMode : 'plane';
+  let returnMode = t ? (t.returnMode || 'plane') : 'plane';
+  let outWaypoints = t ? (t.outWaypoints||[]).slice() : [];
+  let returnWaypoints = t ? (t.returnWaypoints||[]).slice() : [];
+  let purpose = t ? (t.purpose||null) : null;
+
+  const purposeToggle = document.getElementById('purposeToggle');
+  purposeToggle.addEventListener('click',(e)=>{
+    const chip = e.target.closest('.purpose-chip');
+    if(!chip) return;
+    const key = chip.dataset.purpose;
+    if(purpose===key){
+      purpose = null;
+      chip.classList.remove('active');
+    } else {
+      purpose = key;
+      purposeToggle.querySelectorAll('.purpose-chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+    document.getElementById('fldPurposeCustom').style.display = purpose==='custom' ? 'block':'none';
+  });
+
+  function updateFlightField(){
+    const show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
+    document.getElementById('flightField').style.display = show ? 'block':'none';
+  }
+
+  function updateStub(){
+    const stub = document.getElementById('bpStubContent');
+    if(!direction){
+      stub.innerHTML = '<div class="stub-ic">❔</div><div class="stub-lbl" style="margin-top:6px;">Erst Fahrtrichtung wählen</div>';
+      return;
+    }
+    const outInput = document.getElementById('fldDist_out');
+    const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
+    let h = '';
+    h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
+    h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
+    h += '<div class="stub-lbl">km Hinweg</div>';
+    if(direction==='roundtrip'){
+      const retInput = document.getElementById('fldDist_return');
+      const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
+      h += '<div class="stub-return-wrap">';
+      h += '  <div class="stub-ic" style="font-size:22px;">'+getMode(returnMode).icon+'</div>';
+      h += '  <div class="stub-km-sm">'+(retVal?fmtNum(retVal):'—')+'</div>';
+      h += '  <div class="stub-lbl-sm">km Rückweg</div>';
+      h += '  <div class="stub-total">Gesamt <b>'+fmtKm(outVal+retVal)+'</b></div>';
+      h += '</div>';
+    }
+    stub.innerHTML = h;
+  }
+
+  function tryAutoCalc(legKey){
+    const from=document.getElementById('fldFrom').value;
+    const to=document.getElementById('fldTo').value;
+    const mode = legKey==='out' ? outMode : returnMode;
+    const wps = (legKey==='out' ? outWaypoints : returnWaypoints).map(w=>w.trim()).filter(Boolean);
+    const chain = legKey==='out' ? [from, ...wps, to] : [to, ...wps, from];
+    const d = computeMultiLegDistance(chain, mode);
+    const distInput = document.getElementById('fldDist_'+legKey);
+    const hint = document.getElementById('distHint_'+legKey);
+    if(!distInput) return;
+    if(d!=null){
+      distInput.value = d;
+      hint.textContent = wps.length
+        ? 'Automatisch berechnet über '+wps.length+' Zwischenstopp(s): Summe der Teilstrecken × Aufschlag für "'+getMode(mode).label+'". Überschreibbar.'
+        : 'Automatisch berechnet: Luftlinie × Aufschlag für "'+getMode(mode).label+'". Überschreibbar.';
+    } else {
+      hint.textContent = 'Mindestens eine Stadt der Route wurde nicht in der Datenbank gefunden — bitte Distanz manuell eintragen.';
+    }
+    updateStub();
+  }
+
+  function renderLegsContainer(){
+    const container = document.getElementById('legsContainer');
+    if(!direction){
+      container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst auswählen: nur Hinweg oder Hin- und Rückweg — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
+      updateFlightField();
+      updateStub();
+      return;
+    }
+    let h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
+    if(direction==='roundtrip'){
+      h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+    }
+    container.innerHTML = h;
+    updateFlightField();
+    updateStub();
+  }
+
+  document.getElementById('legsContainer').addEventListener('click',(e)=>{
+    const modeOpt = e.target.closest('.mode-opt');
+    if(modeOpt){
+      const legBlock = modeOpt.closest('.leg-block');
+      const legKey = legBlock.dataset.leg;
+      if(legKey==='out') outMode = modeOpt.dataset.mode; else returnMode = modeOpt.dataset.mode;
+      legBlock.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('active'));
+      modeOpt.classList.add('active');
+      tryAutoCalc(legKey);
+      updateFlightField();
+      return;
+    }
+    const addWpBtn = e.target.closest('[data-add-waypoint-leg]');
+    if(addWpBtn){
+      const legKey = addWpBtn.dataset.addWaypointLeg;
+      (legKey==='out'?outWaypoints:returnWaypoints).push('');
+      renderLegsContainer();
+      return;
+    }
+    const rmWpBtn = e.target.closest('.waypoint-remove');
+    if(rmWpBtn){
+      const legKey = rmWpBtn.dataset.leg;
+      (legKey==='out'?outWaypoints:returnWaypoints).splice(parseInt(rmWpBtn.dataset.removeIdx,10),1);
+      renderLegsContainer();
+      tryAutoCalc(legKey);
+      return;
+    }
+    const calcBtn = e.target.closest('[data-calc-leg]');
+    if(calcBtn){ tryAutoCalc(calcBtn.dataset.calcLeg); }
+  });
+  document.getElementById('legsContainer').addEventListener('input',(e)=>{
+    if(e.target.matches('input[type="number"]')){ updateStub(); return; }
+    const wpInput = e.target.closest('[data-wp-idx]');
+    if(wpInput){
+      const legKey = wpInput.dataset.leg;
+      (legKey==='out'?outWaypoints:returnWaypoints)[parseInt(wpInput.dataset.wpIdx,10)] = wpInput.value;
+    }
+  });
+  document.getElementById('legsContainer').addEventListener('change',(e)=>{
+    const wpInput = e.target.closest('[data-wp-idx]');
+    if(wpInput){ tryAutoCalc(wpInput.dataset.leg); }
+  });
+
+  const directionToggle = document.getElementById('directionToggle');
+  directionToggle.querySelectorAll('.dir-opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      direction = opt.dataset.dir;
+      directionToggle.querySelectorAll('.dir-opt').forEach(o=>o.classList.remove('active'));
+      opt.classList.add('active');
+      renderLegsContainer();
+    });
+  });
+
+  ['fldFrom','fldTo'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', ()=>{
+      ['out','return'].forEach(legKey=>{
+        if(document.getElementById('fldDist_'+legKey)) tryAutoCalc(legKey);
+      });
+    });
+  });
+
+  if(document.getElementById('cancelEdit')){
+    document.getElementById('cancelEdit').addEventListener('click',()=>{
+      editingId=null; switchTab('log');
+    });
+  }
+
+  renderLegsContainer();
+
+  document.getElementById('tripForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const toVal = document.getElementById('fldTo').value.trim();
+    if(!toVal){ showToast('Bitte eine Zielstadt eintragen.'); return; }
+    const fromVal = document.getElementById('fldFrom').value.trim();
+    const dateFrom = document.getElementById('fldFromDate').value;
+    if(!dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
+    if(!direction){ showToast('Bitte wähle: Nur Hinweg oder Hin- und Rückweg.'); return; }
+
+    const outDistInput = document.getElementById('fldDist_out');
+    const outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
+    if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
+
+    let returnDistVal = null;
+    if(direction==='roundtrip'){
+      const retDistInput = document.getElementById('fldDist_return');
+      returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
+      if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+    }
+
+    const toCity = findCity(toVal);
+    const cityName = toCity ? toCity.n : toVal;
+    const countryName = toCity ? toCity.c : (t ? t.country : 'Unbekannt');
+    const cc = toCity ? toCity.cc : (t ? t.cityCC : '');
+
+    const trip = {
+      id: t ? t.id : uid(),
+      fromCity: fromVal,
+      city: cityName,
+      country: countryName,
+      cityCC: cc,
+      outWaypoints: outWaypoints.map(w=>w.trim()).filter(Boolean),
+      returnWaypoints: direction==='roundtrip' ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
+      direction: direction,
+      outMode: outMode,
+      outDistanceKm: Math.round(outDistVal),
+      returnMode: direction==='roundtrip' ? returnMode : null,
+      returnDistanceKm: direction==='roundtrip' ? Math.round(returnDistVal) : null,
+      dateFrom: dateFrom,
+      dateTo: document.getElementById('fldToDate').value || dateFrom,
+      purpose: purpose,
+      purposeCustom: purpose==='custom' ? document.getElementById('fldPurposeCustom').value.trim() : '',
+      flightNumber: document.getElementById('fldFlightNo') ? document.getElementById('fldFlightNo').value.trim() : '',
+      notes: document.getElementById('fldNotes').value.trim(),
+      createdAt: t ? t.createdAt : Date.now()
+    };
+
+    if(t){
+      const idx = trips.findIndex(x=>x.id===t.id);
+      trips[idx]=trip;
+      showToast('Reise aktualisiert.');
+    } else {
+      trips.push(trip);
+      showToast('Reise hinzugefügt — willkommen in '+cityName+'!');
+    }
+    trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||''));
+    editingId = null;
+    await saveTrips();
+    switchTab('dashboard');
+  });
+}
+
+/* ---------- Render: Places (Länder & Städte) ---------- */
+function renderPlaces(root){
+  const agg = aggregate();
+  let html = '';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Länder</h2><span class="sub">'+agg.countries.length+' besucht</span></div>';
+  if(agg.countries.length===0){
+    html += '<div class="empty-state"><div class="big">🗺️</div>Noch keine Länder erfasst. Trag deine erste Reise ein.</div>';
+  } else {
+    const sortedCountries = agg.countries.slice().sort((a,b)=>b.totalKm-a.totalKm);
+    html += '<div class="countries-grid">';
+    sortedCountries.forEach(c=>{
+      html += '<div class="country-card" data-country="'+c.key.replace(/"/g,'&quot;')+'">';
+      html += '  <div class="country-top">'+flagImg(c.cc,32)+'<h4>'+c.country+'</h4></div>';
+      html += '  <div class="country-stats"><span><b>'+c.cities.size+'</b> Städte</span><span><b>'+c.visits+'</b> Besuche</span><span><b>'+fmtKm(c.totalKm)+'</b></span></div>';
+      html += '  <div class="country-cities">';
+      agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
+        html += '<div><span>'+ci.city+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
+      });
+      html += '  </div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Städte</h2><span class="sub">'+agg.cities.length+' besucht</span></div>';
+  if(agg.cities.length===0){
+    html += '<div class="empty-state"><div class="big">🏙️</div>Noch keine Städte erfasst.</div>';
+  } else {
+    html += renderCitiesTable(agg);
+  }
+  html += '</div>';
+
+  root.innerHTML = html;
+
+  root.querySelectorAll('.country-card').forEach(card=>{
+    card.addEventListener('click',()=>card.classList.toggle('open'));
+  });
+  attachCityTableSort(root, agg);
+}
+
+function renderCitiesTable(agg){
+  const cities = agg.cities.slice();
+  const {key,dir} = citySort;
+  cities.sort((a,b)=>{
+    let va,vb;
+    if(key==='city'){va=a.city;vb=b.city;}
+    else if(key==='country'){va=a.country;vb=b.country;}
+    else if(key==='visits'){va=a.visits;vb=b.visits;}
+    else {va=a.totalKm;vb=b.totalKm;}
+    if(typeof va==='string') return dir==='asc'? va.localeCompare(vb) : vb.localeCompare(va);
+    return dir==='asc'? va-vb : vb-va;
+  });
+
+  function th(label,k){
+    const sortedCls = citySort.key===k ? ' sorted'+(citySort.dir==='asc'?' asc':'') : '';
+    return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
+  }
+
+  let html = '<div class="table-wrap"><table><thead><tr>';
+  html += th('Stadt','city')+th('Land','country')+th('Besuche','visits')+th('Gesamtdistanz','totalKm')+'<th>Letzter Besuch</th>';
+  html += '</tr></thead><tbody>';
+  cities.forEach(c=>{
+    const lastVisit = c.dates.slice().sort().reverse()[0];
+    html += '<tr>';
+    html += '<td><div class="cell-city">'+flagImg(c.cc,20)+'<span>'+c.city+'</span></div></td>';
+    html += '<td>'+c.country+'</td>';
+    html += '<td class="mono">'+c.visits+'</td>';
+    html += '<td class="mono">'+fmtKm(c.totalKm)+'</td>';
+    html += '<td>'+fmtDate(lastVisit)+'</td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function attachCityTableSort(root, agg){
+  root.querySelectorAll('th[data-sort]').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const k = th.dataset.sort;
+      if(citySort.key===k){ citySort.dir = citySort.dir==='asc'?'desc':'asc'; }
+      else { citySort = {key:k, dir: k==='city'||k==='country' ? 'asc':'desc'}; }
+      const tableWrap = th.closest('.card').querySelector('.table-wrap');
+      tableWrap.outerHTML = renderCitiesTable(agg);
+      attachCityTableSort(root, agg);
+    });
+  });
+}
+
+/* ---------- Render: Log (alle Reisen) ---------- */
+function renderLog(root){
+  let html = '<div class="card">';
+  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
+  if(trips.length===0){
+    html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
+  } else {
+    const sorted = trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
+    html += '<div class="table-wrap"><table><thead><tr>';
+    html += '<th>Zeitraum</th><th>Von</th><th>Nach</th><th>Verkehrsmittel</th><th>Distanz</th><th>Grund</th><th></th>';
+    html += '</tr></thead><tbody>';
+    sorted.forEach(t=>{
+      const outMo = getMode(t.outMode);
+      let modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span>';
+      let distCell = fmtKm(t.outDistanceKm);
+      if(t.direction==='roundtrip'){
+        const retMo = getMode(t.returnMode);
+        modeCell += ' <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
+        distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
+      }
+      const wpParts = [];
+      if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
+      if((t.returnWaypoints||[]).length) wpParts.push('Rück via '+t.returnWaypoints.join(', '));
+      const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
+      const pLbl = purposeLabel(t);
+      html += '<tr>';
+      html += '<td>'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
+      html += '<td>'+(t.fromCity||'–')+'</td>';
+      html += '<td><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+      html += '<td>'+modeCell+'</td>';
+      html += '<td class="mono">'+distCell+'</td>';
+      html += '<td>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+      html += '<td><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+  html += '</div>';
+  root.innerHTML = html;
+
+  root.querySelectorAll('[data-edit]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      editingId = btn.dataset.edit;
+      switchTab('add');
+    });
+  });
+  root.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const trip = trips.find(t=>t.id===btn.dataset.del);
+      if(!trip) return;
+      if(!confirm('Reise nach '+trip.city+' ('+fmtRange(trip.dateFrom,trip.dateTo)+') wirklich löschen?')) return;
+      trips = trips.filter(t=>t.id!==btn.dataset.del);
+      await saveTrips();
+      renderLog(document.getElementById('appRoot').querySelector('#panel-log') || root);
+      renderAll();
+      showToast('Reise gelöscht.');
+    });
+  });
+}
+
+/* ---------- Tabs / master render ---------- */
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
+  const panel = document.getElementById('panel-'+tab);
+  if(tab==='dashboard') renderDashboard(panel);
+  if(tab==='add') renderAdd(panel);
+  if(tab==='places') renderPlaces(panel);
+  if(tab==='log') renderLog(panel);
+  window.scrollTo({top:0,behavior:'instant' in window ? 'instant':'auto'});
+}
+
+function renderAll(){
+  const root = document.getElementById('appRoot');
+  root.innerHTML =
+    '<div class="tab-panel" id="panel-dashboard"></div>'+
+    '<div class="tab-panel" id="panel-add"></div>'+
+    '<div class="tab-panel" id="panel-places"></div>'+
+    '<div class="tab-panel" id="panel-log"></div>'+
+    '<div class="footer-note">Deine Reisedaten werden lokal in diesem Artefakt gespeichert.<br>Distanzen sind Luftlinien-Näherungen — für exakte Werte kannst du sie jederzeit manuell anpassen.</div>';
+  updateHomeChip();
+  switchTab(currentTab);
+}
+
+function updateHomeChip(){
+  const chipText = document.getElementById('homeChipText');
+  if(settings.home){
+    const hc = findCity(settings.home);
+    chipText.textContent = hc ? hc.n : settings.home;
+  } else {
+    chipText.textContent = 'Heimatort festlegen';
+  }
+}
+
+/* ---------- Datalist ---------- */
+function populateDatalist(){
+  const dl = document.getElementById('cityDatalist');
+  dl.innerHTML = CITY_DB.map(c=>'<option value="'+c.label.replace(/"/g,'&quot;')+'">').join('');
+}
+
+/* ---------- Settings modal ---------- */
+function openSettings(){
+  document.getElementById('homeInput').value = settings.home || '';
+  document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettings(){
+  document.getElementById('settingsModal').classList.remove('open');
+}
+
+document.getElementById('homeChip').addEventListener('click', openSettings);
+document.getElementById('settingsBtn').addEventListener('click', openSettings);
+document.getElementById('settingsCancel').addEventListener('click', closeSettings);
+document.getElementById('settingsModal').addEventListener('click',(e)=>{
+  if(e.target.id==='settingsModal') closeSettings();
+});
+document.getElementById('settingsSave').addEventListener('click', async ()=>{
+  const val = document.getElementById('homeInput').value.trim();
+  settings.home = val || null;
+  await saveSettings();
+  updateHomeChip();
+  closeSettings();
+  renderAll();
+  showToast('Heimatort gespeichert.');
+});
+document.getElementById('resetAllBtn').addEventListener('click', async ()=>{
+  if(!confirm('Wirklich ALLE Reisedaten unwiderruflich löschen?')) return;
+  trips = [];
+  settings = {home:null, theme:settings.theme||'dark'};
+  await saveTrips();
+  await saveSettings();
+  closeSettings();
+  applyTheme();
+  renderAll();
+  showToast('Alle Daten gelöscht.');
+});
+
+document.getElementById('themeSwitch').addEventListener('click', async (e)=>{
+  const btn = e.target.closest('button[data-theme-choice]');
+  if(!btn) return;
+  settings.theme = btn.dataset.themeChoice;
+  applyTheme();
+  await saveSettings();
+});
+
+document.getElementById('tabs').addEventListener('click',(e)=>{
+  const btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  editingId = null;
+  switchTab(btn.dataset.tab);
+});
+
+/* ---------- Init ---------- */
+document.getElementById('versionPill').textContent = 'v'+APP_VERSION;
+populateDatalist();
+loadData();
+</script>
+</body>
+</html>
