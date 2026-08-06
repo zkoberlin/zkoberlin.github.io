@@ -1,42 +1,42 @@
 {
-  "datum": "05.08.2026",
-  "generiert": "2026-08-05T03:51:24Z",
+  "datum": "06.08.2026",
+  "generiert": "2026-08-06T03:56:28Z",
   "geburtstage": [
     {
-      "name": "Helene Fischer",
+      "name": "Roman Weidenfeller",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Helene_Fischer_2016.jpg/120px-Helene_Fischer_2016.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q236549",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Suboti%C4%87%2C_Kehl_%26_Weidenfeller_2012-07-04_001_%28cropped%29.jpg/120px-Suboti%C4%87%2C_Kehl_%26_Weidenfeller_2012-07-04_001_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q154397",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Helga Seidler",
+      "name": "Amin Younes",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Footballspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Helga_Seidler_cropped.jpg/120px-Helga_Seidler_cropped.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q463355",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Rostov-Ajax_%28Younes%29.jpg/120px-Rostov-Ajax_%28Younes%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q471403",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Maik Franz",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "German Footballer (Born 1981)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Maik_Franz.jpg/330px-Maik_Franz.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Maik_Franz",
+      "name": "Travis Reed",
+      "alter": 47,
+      "geburtsjahr": 1979,
+      "beruf": "American Basketball Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Travis_Reed%2C_2007_%28cropped%29.jpg/330px-Travis_Reed%2C_2007_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Travis_Reed",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Michael Ballhaus",
-      "alter": 91,
-      "geburtsjahr": 1935,
-      "beruf": "German Cinematographer (1935–2017)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Michael_Ballhaus.4676.jpg/330px-Michael_Ballhaus.4676.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Ballhaus",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Nessa Barrett",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "American Singer-Songwriter And Media Personality (Born 2002)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Nessa_Barrett_Irving_Plaza.jpg/330px-Nessa_Barrett_Irving_Plaza.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nessa_Barrett",
+      "nationalitaet": null
     }
   ]
 }
