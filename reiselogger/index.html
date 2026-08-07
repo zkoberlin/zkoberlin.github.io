@@ -807,7 +807,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.3</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.4</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1074,7 +1074,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.3';
+const APP_VERSION = '1.19.4';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1176,6 +1176,13 @@ async function loadCustomCities(){
 async function saveCustomCities(){
   try{ await window.storage.set('customCities', JSON.stringify(customCities), false); }
   catch(e){ console.error('Storage-Fehler (customCities):', e); }
+  // Gelernte Städte sind sonst nur auf diesem Gerät bekannt — ohne Cloud-Abgleich
+  // fehlen sie auf anderen Geräten (z. B. Handy löst eine Stadt auf, Desktop weiß
+  // nichts davon und zeigt sie deshalb nicht auf der Karte).
+  if(syncEnabled() && dataReady){
+    try{ await syncPush('customCities', customCities); }
+    catch(e){ console.error('Cloud-Sync (customCities) fehlgeschlagen:', e); }
+  }
 }
 
 function haversine(lat1,lon1,lat2,lon2){
@@ -1460,8 +1467,20 @@ async function saveSyncConfig(){
    Überschreiben von Cloud-Daten mit einem leeren/unfertigen lokalen Stand geführt. */
 let dataReady = false;
 
+/* Führt zwei Listen gelernter Städte zusammen (dedupliziert nach Stadtname) —
+   damit weder lokale noch Cloud-seitig gelernte Städte beim Abgleich verloren gehen. */
+function mergeCustomCityLists(localList, cloudList){
+  const map = new Map();
+  (localList||[]).concat(cloudList||[]).forEach(c=>{
+    if(!c || !c.n) return;
+    const key = c.n.trim().toLowerCase();
+    if(!map.has(key)) map.set(key, c);
+  });
+  return [...map.values()];
+}
+
 async function runCloudSync(){
-  const [cloudTrips, cloudSettings] = await Promise.all([syncPull('trips'), syncPull('settings')]);
+  const [cloudTrips, cloudSettings, cloudCustomCities] = await Promise.all([syncPull('trips'), syncPull('settings'), syncPull('customCities')]);
   let pulledTrips = false;
   if(cloudTrips && cloudTrips.length){
     trips = cloudTrips.map(migrateTrip);
@@ -1476,6 +1495,15 @@ async function runCloudSync(){
   } else {
     await syncPush('settings', settings);
   }
+  // Gelernte Städte (customCities) zusammenführen statt einfach zu überschreiben —
+  // sonst gehen auf einem Gerät gelernte Städte beim Sync mit einem anderen Gerät verloren.
+  const mergedCustomCities = mergeCustomCityLists(customCities, Array.isArray(cloudCustomCities) ? cloudCustomCities : []);
+  if(mergedCustomCities.length !== customCities.length){
+    customCities = mergedCustomCities;
+    try{ await window.storage.set('customCities', JSON.stringify(customCities), false); }catch(e){ console.error('Lokaler Cache (customCities) konnte nicht aktualisiert werden:', e); }
+    populateDatalist();
+  }
+  await syncPush('customCities', mergedCustomCities);
   dataReady = true;
   return {pulledTrips};
 }
@@ -1979,6 +2007,10 @@ async function initWorldMap(agg){
   const rect = wrap.getBoundingClientRect();
   const width = rect.width || 600;
   const height = rect.height || Math.round(width/1.9);
+  // Punktgröße relativ zur tatsächlichen Kartenbreite skalieren — sonst wirkt ein
+  // fester Radius auf einem schmalen Handy-Bildschirm viel größer als auf Desktop,
+  // weil die SVG-Koordinaten 1:1 der gemessenen Container-Breite entsprechen.
+  const rScale = Math.max(0.55, Math.min(1, width/700));
 
   const svg = d3.select('#worldSvg').attr('viewBox','0 0 '+width+' '+height);
   svg.selectAll('*').remove();
@@ -2001,13 +2033,14 @@ async function initWorldMap(agg){
     .attr('d', path);
 
   let homeDot = null;
+  const homeRadius = 3 * rScale;
   if(settings.home){
     const hc = findCity(settings.home);
     if(hc){
       const p = projection([hc.lon, hc.lat]);
       if(p){
         homeDot = g.append('circle').attr('class','home-dot')
-          .attr('cx',p[0]).attr('cy',p[1]).attr('r',3);
+          .attr('cx',p[0]).attr('cy',p[1]).attr('r',homeRadius);
         homeDot.append('title').text(hc.n+' — Heimatort');
       }
     }
@@ -2018,7 +2051,7 @@ async function initWorldMap(agg){
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
   // Kleinere Punkte, damit auch ohne Reinzoomen einzelne Städte klar unterscheidbar bleiben.
-  const dotRadius = x => 2 + (x.c.visits/maxVisits)*2.5;
+  const dotRadius = x => (2 + (x.c.visits/maxVisits)*2.5) * rScale;
 
   const cityDots = g.append('g').attr('class','city-layer')
     .selectAll('circle')
@@ -2069,8 +2102,8 @@ async function initWorldMap(agg){
       // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
       // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
       const k = event.transform.k;
-      cityDots.attr('r', x => Math.max(1.1, dotRadius(x)/k));
-      if(homeDot) homeDot.attr('r', Math.max(1.4, 3/k));
+      cityDots.attr('r', x => Math.max(1.1*rScale, dotRadius(x)/k));
+      if(homeDot) homeDot.attr('r', Math.max(1.4*rScale, homeRadius/k));
     });
   svg.call(zoom);
 
