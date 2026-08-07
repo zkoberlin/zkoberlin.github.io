@@ -245,12 +245,16 @@ a{color:var(--teal);}
   letter-spacing:-0.01em;
 }
 .hero-number span{font-size:0.4em;color:var(--gold);margin-left:6px;font-weight:600;}
+.hero-total-sub{font-size:11.5px;color:var(--text-faint);margin:-2px 0 2px;}
+.hero-total-sub b{color:var(--text-dim);font-family:var(--font-mono);font-weight:600;}
 .hero-meta{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;}
 .hero-meta div{font-size:12.5px;color:var(--text-dim);}
 .hero-meta b{color:var(--text);font-family:var(--font-mono);font-weight:600;}
+.hero-sub-all{font-size:10.5px;color:var(--text-faint);font-weight:400;margin-left:2px;}
 .hero-direction{display:flex;gap:14px;margin-top:2px;flex-wrap:wrap;}
 .hero-direction div{font-size:11.5px;color:var(--text-faint);}
 .hero-direction b{color:var(--text-dim);font-family:var(--font-mono);font-weight:500;}
+.compare-chip .cc-sub-year{font-size:10.5px;color:var(--gold);padding-left:21px;font-weight:600;}
 .hero-compare{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
 .compare-chip{
   background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:10px;
@@ -791,7 +795,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.18.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1058,7 +1062,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.18.0';
+const APP_VERSION = '1.19.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1630,10 +1634,11 @@ function aggregateYears(){
   trips.forEach(t=>{
     const year = (t.dateFrom||'').slice(0,4);
     if(!/^\d{4}$/.test(year)) return;
-    if(!map.has(year)) map.set(year,{year:year, total:0, perMode:{}});
+    if(!map.has(year)) map.set(year,{year:year, total:0, totalOut:0, totalReturn:0, perMode:{}});
     const y = map.get(year);
     const out = tripOut(t), ret = tripReturn(t);
     y.total += out+ret;
+    y.totalOut += out; y.totalReturn += ret;
     if(t.direction!=='returnonly'){
       y.perMode[t.outMode] = (y.perMode[t.outMode]||0)+out;
     }
@@ -1642,6 +1647,23 @@ function aggregateYears(){
     }
   });
   return [...map.values()].sort((a,b)=>b.year.localeCompare(a.year));
+}
+
+/* Länder/Städte/Reisen-Anzahl für ein einzelnes Kalenderjahr (Heimatort ausgeschlossen,
+   gleiche Logik wie aggregate() — nur auf ein Jahr eingeschränkt) */
+function aggregateYearCounts(year){
+  const cityKeys = new Set();
+  const countryKeys = new Set();
+  let tripCount = 0;
+  trips.forEach(t=>{
+    if((t.dateFrom||'').slice(0,4)!==year) return;
+    tripCount++;
+    if(!isHomeCity(t.city)){
+      cityKeys.add(t.city+'|'+t.country);
+      countryKeys.add(t.country);
+    }
+  });
+  return {cityCount:cityKeys.size, countryCount:countryKeys.size, tripCount};
 }
 
 const MONTH_NAMES = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
@@ -1813,38 +1835,41 @@ function renderDashboard(root){
   const currentYearKm = aggregateYears().find(y=>y.year===currentYear);
   const currentYearTotalKm = currentYearKm ? currentYearKm.total : 0;
 
+  const yc = aggregateYearCounts(currentYear);
+  const currentYearOut = currentYearKm ? currentYearKm.totalOut : 0;
+  const currentYearReturn = currentYearKm ? currentYearKm.totalReturn : 0;
+
   let html = '';
   const lastEntryTs = fmtLastEntryTimestamp(lastEntryCreatedAt());
-  if(trips.length){
+  if(trips.length && lastEntryTs){
     html += '<div class="dashboard-meta-row">';
-    if(lastEntryTs){
-      html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
-    }
-    html += '<div class="last-entry-note">📅 '+currentYear+' bisher: '+fmtKm(currentYearTotalKm)+'</div>';
+    html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
     html += '</div>';
   }
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
-  html += '    <div class="hero-eyebrow">Gesamtstrecke — Hin- &amp; Rückwege</div>';
+  html += '    <div class="hero-eyebrow">'+currentYear+' — Stand aktuelles Jahr</div>';
   html += '    <div class="hero-number" id="heroNumber">0<span>km</span></div>';
+  html += '    <div class="hero-total-sub">Gesamt seit Beginn: <b>'+fmtKm(agg.totalKm)+'</b></div>';
   html += '    <div class="hero-direction">';
-  html += '      <div>Hinweg gesamt <b>'+fmtKm(agg.totalOut)+'</b></div>';
-  html += '      <div>Rückweg gesamt <b>'+fmtKm(agg.totalReturn)+'</b></div>';
+  html += '      <div>Hinweg <b>'+fmtKm(currentYearOut)+'</b><span class="hero-sub-all">(gesamt '+fmtKm(agg.totalOut)+')</span></div>';
+  html += '      <div>Rückweg <b>'+fmtKm(currentYearReturn)+'</b><span class="hero-sub-all">(gesamt '+fmtKm(agg.totalReturn)+')</span></div>';
   html += '    </div>';
   html += '    <div class="hero-meta">';
-  html += '      <div><b>'+countryCount+'</b> Länder</div>';
-  html += '      <div><b>'+cityCount+'</b> Städte</div>';
-  html += '      <div><b>'+trips.length+'</b> Reisen</div>';
+  html += '      <div><b>'+yc.countryCount+'</b> Länder<span class="hero-sub-all">('+countryCount+' gesamt)</span></div>';
+  html += '      <div><b>'+yc.cityCount+'</b> Städte<span class="hero-sub-all">('+cityCount+' gesamt)</span></div>';
+  html += '      <div><b>'+yc.tripCount+'</b> Reisen<span class="hero-sub-all">('+trips.length+' gesamt)</span></div>';
   html += '    </div>';
   const cmpEarth = compareToReference(agg.totalKm, EARTH_CIRCUMFERENCE_KM);
   const cmpMoon = compareToReference(agg.totalKm, MOON_DISTANCE_KM);
   const cmpMars = compareToReference(agg.totalKm, MARS_DISTANCE_KM);
+  const cmpEarthYear = compareToReference(currentYearTotalKm, EARTH_CIRCUMFERENCE_KM);
   const currentYearCO2 = yearCO2Kg(currentYear);
   const cmpCO2 = compareCO2(currentYearCO2, GERMAN_AVG_CO2_KG_PER_YEAR);
   html += '    <div class="hero-compare">';
-  html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+'"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+'"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung)"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'<div class="cc-sub-year">'+currentYear+': '+cmpEarthYear.ratioText+'</div></div>';
+  html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung) · Gesamtdistanz"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div></div>';
   html += '    </div>';
   html += '  </div>';
@@ -1885,14 +1910,13 @@ function renderDashboard(root){
     const el = root.querySelector('[data-mode-val="'+m+'"]');
     animateNumber(el, agg.perMode[m]||0, ' km');
   });
-  animateNumber(document.getElementById('heroNumber').firstChild ? document.getElementById('heroNumber') : document.getElementById('heroNumber'), agg.totalKm, '');
-  // rebuild hero number with unit span preserved
+  // rebuild hero number with unit span preserved (zeigt das aktuelle Jahr prominent)
   const heroEl = document.getElementById('heroNumber');
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce){
-    heroEl.innerHTML = fmtNum(agg.totalKm)+'<span>km</span>';
+    heroEl.innerHTML = fmtNum(currentYearTotalKm)+'<span>km</span>';
   } else {
-    const start=performance.now(), dur=900, target=agg.totalKm;
+    const start=performance.now(), dur=900, target=currentYearTotalKm;
     (function step(now){
       const p=Math.min(1,(now-start)/dur);
       const eased=1-Math.pow(1-p,3);
