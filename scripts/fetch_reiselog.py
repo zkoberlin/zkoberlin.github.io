@@ -34,7 +34,17 @@ def fetch_trips():
         )
     req = urllib.request.Request(
         WORKER_URL + "/api/trips",
-        headers={"Authorization": f"Bearer {TOKEN}"},
+        headers={
+            "Authorization": f"Bearer {TOKEN}",
+            "Accept": "application/json",
+            # *.workers.dev blockt standardmaessig bot-artige User-Agents wie
+            # "Python-urllib/3.x" mit 403 (kommt von Cloudflare, nicht vom Worker-Code
+            # selbst - der kennt nur 401/404/400/500). Ein browser-aehnlicher UA umgeht das.
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+            ),
+        },
     )
     delays = [0, 20, 40, 60]  # Retry-Logik bei 429, wie im Pipeline-Standardpattern
     last_err = None
