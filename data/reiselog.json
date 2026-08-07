@@ -1,10 +1,10 @@
 {
-  "totalKm": 0,
-  "countries": 0,
-  "cities": 0,
-  "trips": 0,
-  "earthLaps": 0,
-  "yearStart": null,
-  "yearEnd": null,
-  "updated_at": null
+  "totalKm": 656,
+  "countries": 1,
+  "cities": 1,
+  "trips": 1,
+  "earthLaps": 0.02,
+  "yearStart": "2026",
+  "yearEnd": "2026",
+  "updated_at": "2026-08-07T07:15:16.209632+00:00"
 }
