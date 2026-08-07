@@ -36,7 +36,7 @@
   /* Feste Kartenfarben (unabhängig vom Hell-/Dunkel-Modus) — bleiben auf der
      Weltkarte immer gut sichtbar, statt im Hell-Modus ins Dunkle abzudriften. */
   --map-city:#3FB6F0;
-  --map-home:#F5B93D;
+  --map-home:#FF9640;
 }
 
 [data-theme="light"]{
@@ -298,7 +298,7 @@ a{color:var(--teal);}
 .city-dot{fill:var(--map-city);stroke:var(--panel);stroke-width:0.8;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
 .city-dot:hover{fill-opacity:0.8;}
 .city-dot.selected{fill:var(--rose);stroke-width:1.3;}
-.home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1.1;cursor:default;vector-effect:non-scaling-stroke;}
+.home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1;vector-effect:non-scaling-stroke;}
 .map-controls{
   position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
 }
@@ -375,6 +375,14 @@ th.sorted.asc::after{content:' ▴';}
 td{padding:9px 10px;border-bottom:1px solid var(--border-soft);vertical-align:middle;white-space:nowrap;}
 tr:last-child td{border-bottom:none;}
 .cell-city{display:flex;align-items:center;gap:8px;}
+.city-retry-btn{
+  background:none;border:1px solid var(--border-soft);border-radius:100px;
+  width:22px;height:22px;padding:0;font-size:11px;line-height:1;cursor:pointer;
+  color:var(--text-dim);display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.city-retry-btn:hover{border-color:var(--gold-dim);color:var(--text);}
+.city-retry-btn:disabled{opacity:0.5;cursor:default;}
 .cell-city img{width:20px;height:14px;border-radius:2px;object-fit:cover;}
 .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
 .mode-badge{
@@ -799,7 +807,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.2</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.3</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1066,7 +1074,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.2';
+const APP_VERSION = '1.19.3';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1992,14 +2000,15 @@ async function initWorldMap(agg){
     .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited':''))
     .attr('d', path);
 
+  let homeDot = null;
   if(settings.home){
     const hc = findCity(settings.home);
     if(hc){
       const p = projection([hc.lon, hc.lat]);
       if(p){
-        g.append('circle').attr('class','home-dot')
-          .attr('cx',p[0]).attr('cy',p[1]).attr('r',4.5)
-          .append('title').text(hc.n+' — Heimatort');
+        homeDot = g.append('circle').attr('class','home-dot')
+          .attr('cx',p[0]).attr('cy',p[1]).attr('r',3);
+        homeDot.append('title').text(hc.n+' — Heimatort');
       }
     }
   }
@@ -2061,6 +2070,7 @@ async function initWorldMap(agg){
       // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
       const k = event.transform.k;
       cityDots.attr('r', x => Math.max(1.1, dotRadius(x)/k));
+      if(homeDot) homeDot.attr('r', Math.max(1.4, 3/k));
     });
   svg.call(zoom);
 
@@ -2968,8 +2978,11 @@ function renderCitiesTable(agg){
   html += '</tr></thead><tbody>';
   cities.forEach(c=>{
     const lastVisit = c.dates.slice().sort().reverse()[0];
+    const onMap = !!findCity(c.city);
     html += '<tr>';
-    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span></div></td>';
+    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span>'+
+      (onMap ? '' : ' <button type="button" class="city-retry-btn" data-city="'+c.city.replace(/"/g,'&quot;')+'" title="Fehlt auf der Karte — Koordinaten erneut suchen">📍</button>')+
+      '</div></td>';
     html += '<td data-label="Land">'+c.country+'</td>';
     html += '<td class="mono" data-label="Besuche">'+c.visits+'</td>';
     html += '<td class="mono" data-label="Gesamtdistanz">'+fmtKm(c.totalKm)+'</td>';
@@ -2978,6 +2991,39 @@ function renderCitiesTable(agg){
   });
   html += '</tbody></table></div>';
   return html;
+}
+
+/* Manuelles Nachauflösen einer Stadt, die (noch) nicht auf der Karte erscheint —
+   z. B. per Klick auf den 📍-Button in der Städte-Tabelle. Fragt Nominatim direkt
+   (statt resolveCity), damit bei abweichendem Ergebnis erst nachgefragt werden kann. */
+async function retryCityGeocode(cityName, btn){
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try{
+    const info = await geocodeCity(cityName);
+    if(!info){
+      showToast('„'+cityName+'“ wurde nicht gefunden. Bitte Schreibweise prüfen.');
+      btn.disabled = false; btn.textContent = original;
+      return;
+    }
+    const typed = cityName.trim().toLowerCase();
+    const found = info.n.trim().toLowerCase();
+    if(found !== typed){
+      const ok = confirm('Meintest du „'+info.n+'“ ('+info.c+')?\n\nÜbernehmen, um die Stadt auf der Karte zu ergänzen.');
+      if(!ok){ btn.disabled = false; btn.textContent = original; return; }
+    }
+    customCities.push(info);
+    await saveCustomCities();
+    populateDatalist();
+    unresolvableCityNames.delete(cityName);
+    showToast('„'+cityName+'“ ergänzt und gespeichert.');
+    if(currentTab==='stats') switchTab('stats');
+  }catch(e){
+    console.error('Nachauflösung fehlgeschlagen:', e);
+    showToast('Fehler bei der Suche. Bitte später erneut versuchen.');
+    btn.disabled = false; btn.textContent = original;
+  }
 }
 
 function attachCityTableSort(root, agg){
@@ -2989,6 +3035,12 @@ function attachCityTableSort(root, agg){
       const tableWrap = th.closest('.card').querySelector('.table-wrap');
       tableWrap.outerHTML = renderCitiesTable(agg);
       attachCityTableSort(root, agg);
+    });
+  });
+  root.querySelectorAll('.city-retry-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      retryCityGeocode(btn.dataset.city, btn);
     });
   });
 }
