@@ -33,6 +33,10 @@
   --bg-grad-top:#131c34;
   --topbar-bg: rgba(14,21,38,0.86);
   --bus:#8B9CF5;
+  /* Feste Kartenfarben (unabhängig vom Hell-/Dunkel-Modus) — bleiben auf der
+     Weltkarte immer gut sichtbar, statt im Hell-Modus ins Dunkle abzudriften. */
+  --map-city:#3FB6F0;
+  --map-home:#F5B93D;
 }
 
 [data-theme="light"]{
@@ -291,10 +295,10 @@ a{color:var(--teal);}
 #worldSvg:active{cursor:grabbing;}
 .country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;vector-effect:non-scaling-stroke;}
 .country.visited{fill:var(--teal);fill-opacity:0.55;}
-.city-dot{fill:var(--gold);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
-.city-dot:hover{fill-opacity:0.85;}
-.city-dot.selected{fill:var(--rose);stroke-width:1.5;}
-.home-mark{fill:none;stroke:var(--rose);stroke-width:1.6;vector-effect:non-scaling-stroke;}
+.city-dot{fill:var(--map-city);stroke:var(--panel);stroke-width:0.8;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
+.city-dot:hover{fill-opacity:0.8;}
+.city-dot.selected{fill:var(--rose);stroke-width:1.3;}
+.home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1.1;cursor:default;vector-effect:non-scaling-stroke;}
 .map-controls{
   position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
 }
@@ -795,7 +799,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.1</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1062,7 +1066,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.0';
+const APP_VERSION = '1.19.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1099,6 +1103,9 @@ let co2ChartRange = 'year';
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
    werden lokal gemerkt, damit sie beim nächsten Mal sofort (ohne erneute Abfrage) gefunden werden. */
 let customCities = [];
+// Städtenamen, für die eine Nachauflösung (Geokodierung) bereits erfolglos versucht wurde —
+// verhindert wiederholte Anfragen bei jedem Karten-Rendern, wenn eine Stadt nicht auffindbar ist.
+const unresolvableCityNames = new Set();
 
 /* ---------- Helpers ---------- */
 function uid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
@@ -1961,6 +1968,19 @@ async function initWorldMap(agg){
   // Falls der Nutzer inzwischen den Tab gewechselt hat, ist das SVG evtl. nicht mehr im DOM
   if(!document.getElementById('worldSvg')) return;
 
+  // Für einige (ältere) Reisen konnte die Zielstadt beim Speichern evtl. nicht
+  // aufgelöst werden (z. B. Geokodierung damals offline/fehlgeschlagen) — sie
+  // tauchen dann zwar in Statistik/Log auf, fehlen aber auf der Karte, weil
+  // keine Koordinaten hinterlegt sind. Wird hier nachgeholt, damit wirklich
+  // JEDE besuchte Stadt als Punkt erscheint. Läuft VOR dem Neuzeichnen, damit
+  // die bisherige Karte währenddessen sichtbar bleibt statt kurz leer zu sein.
+  const unresolvedCities = agg.cities.filter(c=>!findCity(c.city) && !unresolvableCityNames.has(c.city));
+  for(const c of unresolvedCities){
+    const resolved = await resolveCity(c.city);
+    if(!resolved) unresolvableCityNames.add(c.city);
+  }
+  if(!document.getElementById('worldSvg')) return;
+
   const rect = wrap.getBoundingClientRect();
   const width = rect.width || 600;
   const height = rect.height || Math.round(width/1.9);
@@ -1990,9 +2010,9 @@ async function initWorldMap(agg){
     if(hc){
       const p = projection([hc.lon, hc.lat]);
       if(p){
-        g.append('rect').attr('class','home-mark')
-          .attr('x',p[0]-5).attr('y',p[1]-5).attr('width',10).attr('height',10)
-          .attr('transform','rotate(45 '+p[0]+' '+p[1]+')');
+        g.append('circle').attr('class','home-dot')
+          .attr('cx',p[0]).attr('cy',p[1]).attr('r',4.5)
+          .append('title').text(hc.n+' — Heimatort');
       }
     }
   }
@@ -2001,7 +2021,8 @@ async function initWorldMap(agg){
     .map(c=>({c, ref:findCity(c.city)}))
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
-  const dotRadius = x => 3 + (x.c.visits/maxVisits)*6;
+  // Kleinere Punkte, damit auch ohne Reinzoomen einzelne Städte klar unterscheidbar bleiben.
+  const dotRadius = x => 2 + (x.c.visits/maxVisits)*2.5;
 
   const cityDots = g.append('g').attr('class','city-layer')
     .selectAll('circle')
@@ -2025,7 +2046,7 @@ async function initWorldMap(agg){
       // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
       // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
       const k = event.transform.k;
-      cityDots.attr('r', x => Math.max(1.6, dotRadius(x)/k));
+      cityDots.attr('r', x => Math.max(1.1, dotRadius(x)/k));
     });
   svg.call(zoom);
 
