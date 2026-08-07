@@ -274,6 +274,7 @@ a{color:var(--teal);}
 .stub .icon{font-size:18px;}
 .stub .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
 .stub .val{font-family:var(--font-mono);font-weight:600;font-size:19px;color:var(--text);font-variant-numeric:tabular-nums;}
+.stub .val-year{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-top:2px;}
 
 /* ---------- Map ---------- */
 .map-wrap{
@@ -435,7 +436,8 @@ tr:last-child td{border-bottom:none;}
 .mode-opt .ic{display:block;font-size:18px;margin-bottom:3px;}
 .mode-opt.active{background:var(--panel);border-color:var(--mode-color);color:var(--text);box-shadow:0 0 0 1px var(--mode-color) inset;}
 
-.direction-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.direction-toggle{display:flex;flex-wrap:wrap;gap:8px;}
+.direction-toggle .dir-opt{flex:1 1 150px;}
 .dir-opt{
   background:var(--bg-soft);border:1px solid var(--border);border-radius:9px;
   padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;color:var(--text-dim);
@@ -526,10 +528,13 @@ tr:last-child td{border-bottom:none;}
 /* ---------- Statistiken: CO2-Verlauf ---------- */
 .co2-chart-total{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
 .co2-chart-total b{color:var(--text);font-family:var(--font-mono);}
-.co2-chart{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:6px;}
-.co2-chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
-.co2-chart-bar{width:100%;max-width:26px;border-radius:4px 4px 0 0;background:var(--gold);min-height:1px;transition:height .4s ease;}
-.co2-chart-label{margin-top:6px;font-size:9.5px;color:var(--text-faint);white-space:nowrap;}
+.co2-line-chart{width:100%;display:block;}
+.co2-line-axis{stroke:var(--border);stroke-width:1;}
+.co2-line-area{fill:var(--gold);opacity:0.09;}
+.co2-line-path{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+.co2-line-dot{fill:var(--panel);stroke:var(--gold);stroke-width:2;}
+.co2-line-value{font-size:10.5px;fill:var(--text-dim);text-anchor:middle;font-family:var(--font-mono);}
+.co2-line-xlabel{font-size:10px;fill:var(--text-faint);text-anchor:middle;}
 
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
 .record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
@@ -786,7 +791,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.17.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.18.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1053,7 +1058,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.17.0';
+const APP_VERSION = '1.18.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1516,19 +1521,28 @@ async function saveSettings(){
 }
 
 /* ---------- Aggregation ---------- */
-/* Jede Reise hat einen Hinweg (outMode/outDistanceKm) und, falls direction==='roundtrip',
-   einen unabhängigen Rückweg (returnMode/returnDistanceKm) — z. B. Hinweg mit dem Rad,
-   Rückweg mit dem Zug. Beide können Verkehrsmittel UND Distanz unterschiedlich haben. */
-function tripOut(t){ return t.outDistanceKm||0; }
-function tripReturn(t){ return t.direction==='roundtrip' ? (t.returnDistanceKm||0) : 0; }
+/* Jede Reise hat einen Hinweg (outMode/outDistanceKm) und, je nach direction, zusätzlich
+   oder stattdessen einen unabhängigen Rückweg (returnMode/returnDistanceKm):
+   'oneway' → nur Hinweg-Felder befüllt · 'roundtrip' → beide Felder unabhängig befüllt
+   (z. B. Hinweg mit dem Rad, Rückweg mit dem Zug) · 'returnonly' → nur Rückweg-Felder
+   befüllt (Hinweg-Felder bleiben leer), z. B. wenn nur der Rückweg erfasst werden soll. */
+function tripOut(t){ return t.direction==='returnonly' ? 0 : (t.outDistanceKm||0); }
+function tripReturn(t){ return (t.direction==='roundtrip'||t.direction==='returnonly') ? (t.returnDistanceKm||0) : 0; }
 function tripTotal(t){ return tripOut(t)+tripReturn(t); }
+/* Liefert das "eine" erfasste Teilstück einer Reise ohne zwei unabhängige Teilstücke
+   (also 'oneway' oder 'returnonly') — bei 'roundtrip' gibt es zwei eigenständige
+   Teilstücke, dafür ist diese Funktion nicht gedacht (dort direkt out- bzw. return-Felder verwenden). */
+function primaryLeg(t){
+  if(t.direction==='returnonly') return {mode:t.returnMode, distanceKm:t.returnDistanceKm, waypoints:t.returnWaypoints||[]};
+  return {mode:t.outMode, distanceKm:t.outDistanceKm, waypoints:t.outWaypoints||[]};
+}
 
 /* Geschätzter CO2e-Ausstoß einer Reise in kg — Hin- und Rückweg jeweils mit dem Faktor
    ihres eigenen Verkehrsmittels (siehe CO2_FACTORS). Fallback 150 g/Pkm für unbekannte Modi. */
 function tripCO2Kg(t){
   const outFactor = CO2_FACTORS[t.outMode] != null ? CO2_FACTORS[t.outMode] : 150;
   let kg = (tripOut(t)*outFactor)/1000;
-  if(t.direction==='roundtrip'){
+  if(t.direction==='roundtrip' || t.direction==='returnonly'){
     const retFactor = CO2_FACTORS[t.returnMode] != null ? CO2_FACTORS[t.returnMode] : 150;
     kg += (tripReturn(t)*retFactor)/1000;
   }
@@ -1577,8 +1591,10 @@ function aggregate(){
   trips.forEach(t=>{
     const out=tripOut(t), ret=tripReturn(t), tot=out+ret;
     totalOut+=out; totalReturn+=ret;
-    perMode[t.outMode]=(perMode[t.outMode]||0)+out;
-    if(t.direction==='roundtrip'){
+    if(t.direction!=='returnonly'){
+      perMode[t.outMode]=(perMode[t.outMode]||0)+out;
+    }
+    if(t.direction==='roundtrip' || t.direction==='returnonly'){
       perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
     }
 
@@ -1618,8 +1634,10 @@ function aggregateYears(){
     const y = map.get(year);
     const out = tripOut(t), ret = tripReturn(t);
     y.total += out+ret;
-    y.perMode[t.outMode] = (y.perMode[t.outMode]||0)+out;
-    if(t.direction==='roundtrip'){
+    if(t.direction!=='returnonly'){
+      y.perMode[t.outMode] = (y.perMode[t.outMode]||0)+out;
+    }
+    if(t.direction==='roundtrip' || t.direction==='returnonly'){
       y.perMode[t.returnMode] = (y.perMode[t.returnMode]||0)+ret;
     }
   });
@@ -1664,12 +1682,23 @@ function aggregateDiscoveries(){
 
 /* Persönliche Rekorde: weiteste Einzelreise (größte Hinweg-Distanz zu einem Ziel),
    längste Reisedauer, meiste Länder in einem Kalenderjahr */
+/* Städte, die bewusst von bestimmten "Rekord"-Auswertungen ausgeschlossen werden (auf
+   Nutzerwunsch) — z. B. weil ein langer Aufenthalt aus besonderem Anlass (Evakuierung o. Ä.)
+   sonst fälschlich als "längste Reise" auftauchen würde. */
+const RECORD_EXCLUDE_LONGEST = ['Grindavik'];
+
 function computeRecords(){
   if(trips.length===0) return null;
 
-  const farthest = trips.slice().sort((a,b)=>tripOut(b)-tripOut(a))[0];
+  /* "Weiteste Einzelreise": bei roundtrip zählt die Hinweg-Distanz zum Ziel, bei
+     oneway/returnonly die Distanz des einen erfassten Teilstücks. */
+  function legKmForFarthest(t){
+    return t.direction==='roundtrip' ? (t.outDistanceKm||0) : (primaryLeg(t).distanceKm||0);
+  }
+  const farthest = trips.slice().sort((a,b)=>legKmForFarthest(b)-legKmForFarthest(a))[0];
 
-  const withDuration = trips.map(t=>{
+  const durationCandidates = trips.filter(t=>!RECORD_EXCLUDE_LONGEST.includes(t.city));
+  const withDuration = durationCandidates.map(t=>{
     const from = t.dateFrom ? new Date(t.dateFrom) : null;
     const to = t.dateTo ? new Date(t.dateTo) : from;
     const days = (from && to) ? Math.round((to-from)/86400000)+1 : 1;
@@ -1690,7 +1719,7 @@ function computeRecords(){
   });
 
   return {
-    farthest: farthest ? {trip:farthest, km:tripOut(farthest)} : null,
+    farthest: farthest ? {trip:farthest, km:legKmForFarthest(farthest)} : null,
     longest: longest ? {trip:longest.trip, days:longest.days} : null,
     bestYear: bestYear ? {year:bestYear, count:bestCount} : null
   };
@@ -1700,7 +1729,10 @@ function computeRecords(){
 function computeCO2Extremes(){
   if(trips.length===0) return null;
   const sorted = trips.slice().sort((a,b)=>tripCO2Kg(b)-tripCO2Kg(a));
-  return { most: sorted[0], least: sorted[sorted.length-1] };
+  return {
+    most: sorted.slice(0,3),
+    least: sorted.slice(-3).reverse()
+  };
 }
 
 /* CO2-Verlauf, gruppiert je nach gewähltem Zeitraum:
@@ -1820,10 +1852,12 @@ function renderDashboard(root){
   const sortedModeOrder = MODE_ORDER.slice().sort((a,b)=>(agg.perMode[b]||0)-(agg.perMode[a]||0));
   sortedModeOrder.forEach(m=>{
     const mo=getMode(m);
+    const yearVal = currentYearKm ? (currentYearKm.perMode[m]||0) : 0;
     html += '<div class="stub" style="--stub-color:'+mo.color+'">';
     html += '  <div class="icon">'+mo.icon+'</div>';
     html += '  <div class="val" data-mode-val="'+m+'">0 km</div>';
     html += '  <div class="label">'+mo.label+'</div>';
+    html += '  <div class="val-year">'+currentYear+': '+fmtKm(yearVal)+'</div>';
     html += '</div>';
   });
   html += '  </div>';
@@ -1997,14 +2031,21 @@ function renderCityDetail(agg){
   html += '</div>';
   html += '<div class="visit-chip-list">';
   c.trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'')).forEach(t=>{
-    const outMo=getMode(t.outMode);
-    let distText = outMo.icon+' '+fmtKm(t.outDistanceKm);
-    if((t.outWaypoints||[]).length) distText += ' (via '+t.outWaypoints.join(', ')+')';
+    let distText;
     if(t.direction==='roundtrip'){
+      const outMo=getMode(t.outMode);
+      let outText = outMo.icon+' '+fmtKm(t.outDistanceKm);
+      if((t.outWaypoints||[]).length) outText += ' (via '+t.outWaypoints.join(', ')+')';
       const retMo=getMode(t.returnMode);
       let retText = retMo.icon+' '+fmtKm(t.returnDistanceKm);
       if((t.returnWaypoints||[]).length) retText += ' (via '+t.returnWaypoints.join(', ')+')';
-      distText += ' · '+retText+' = '+fmtKm(tripTotal(t));
+      distText = outText+' · '+retText+' = '+fmtKm(tripTotal(t));
+    } else {
+      const leg = primaryLeg(t);
+      const mo = getMode(leg.mode);
+      distText = mo.icon+' '+fmtKm(leg.distanceKm);
+      if(leg.waypoints.length) distText += ' (via '+leg.waypoints.join(', ')+')';
+      if(t.direction==='returnonly') distText += ' (nur Rückweg)';
     }
     const pLbl = purposeLabel(t);
     html += '<div class="visit-chip">'+fmtRange(t.dateFrom,t.dateTo)+' · '+distText+(pLbl?' · '+purposeIcon(t.purpose)+' '+pLbl:'')+'</div>';
@@ -2077,6 +2118,7 @@ function renderAdd(root){
   html += '        <label>Fahrtrichtung</label>';
   html += '        <div class="direction-toggle" id="directionToggle">';
   html += '          <div class="dir-opt'+(t&&t.direction==='oneway'?' active':'')+'" data-dir="oneway">→ Nur Hinweg</div>';
+  html += '          <div class="dir-opt'+(t&&t.direction==='returnonly'?' active':'')+'" data-dir="returnonly">← Nur Rückweg</div>';
   html += '          <div class="dir-opt'+(t&&t.direction==='roundtrip'?' active':'')+'" data-dir="roundtrip">⇄ Hin- und Rückweg</div>';
   html += '        </div>';
   html += '      </div>';
@@ -2176,7 +2218,7 @@ function renderAdd(root){
   })();
 
   let direction = t ? t.direction : null;
-  let outMode = t ? t.outMode : 'plane';
+  let outMode = t ? (t.outMode || 'plane') : 'plane';
   let returnMode = t ? (t.returnMode || 'plane') : 'plane';
   let outWaypoints = t ? (t.outWaypoints||[]).slice() : [];
   let returnWaypoints = t ? (t.returnWaypoints||[]).slice() : [];
@@ -2199,7 +2241,9 @@ function renderAdd(root){
   });
 
   function updateFlightField(){
-    const show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
+    let show;
+    if(direction==='returnonly') show = returnMode==='plane';
+    else show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
     document.getElementById('flightField').style.display = show ? 'block':'none';
   }
 
@@ -2209,21 +2253,29 @@ function renderAdd(root){
       stub.innerHTML = '<div class="stub-ic">❔</div><div class="stub-lbl" style="margin-top:6px;">Erst Fahrtrichtung wählen</div>';
       return;
     }
-    const outInput = document.getElementById('fldDist_out');
-    const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
     let h = '';
-    h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
-    h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
-    h += '<div class="stub-lbl">km Hinweg</div>';
-    if(direction==='roundtrip'){
+    if(direction==='returnonly'){
       const retInput = document.getElementById('fldDist_return');
       const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
-      h += '<div class="stub-return-wrap">';
-      h += '  <div class="stub-ic" style="font-size:22px;">'+getMode(returnMode).icon+'</div>';
-      h += '  <div class="stub-km-sm">'+(retVal?fmtNum(retVal):'—')+'</div>';
-      h += '  <div class="stub-lbl-sm">km Rückweg</div>';
-      h += '  <div class="stub-total">Gesamt <b>'+fmtKm(outVal+retVal)+'</b></div>';
-      h += '</div>';
+      h += '<div class="stub-ic">'+getMode(returnMode).icon+'</div>';
+      h += '<div class="stub-km">'+(retVal?fmtNum(retVal):'—')+'</div>';
+      h += '<div class="stub-lbl">km Rückweg</div>';
+    } else {
+      const outInput = document.getElementById('fldDist_out');
+      const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
+      h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
+      h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
+      h += '<div class="stub-lbl">km Hinweg</div>';
+      if(direction==='roundtrip'){
+        const retInput = document.getElementById('fldDist_return');
+        const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
+        h += '<div class="stub-return-wrap">';
+        h += '  <div class="stub-ic" style="font-size:22px;">'+getMode(returnMode).icon+'</div>';
+        h += '  <div class="stub-km-sm">'+(retVal?fmtNum(retVal):'—')+'</div>';
+        h += '  <div class="stub-lbl-sm">km Rückweg</div>';
+        h += '  <div class="stub-total">Gesamt <b>'+fmtKm(outVal+retVal)+'</b></div>';
+        h += '</div>';
+      }
     }
     stub.innerHTML = h;
   }
@@ -2269,14 +2321,19 @@ function renderAdd(root){
   function renderLegsContainer(){
     const container = document.getElementById('legsContainer');
     if(!direction){
-      container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst auswählen: nur Hinweg oder Hin- und Rückweg — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
+      container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst die Fahrtrichtung wählen — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
       updateFlightField();
       updateStub();
       return;
     }
-    let h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
-    if(direction==='roundtrip'){
-      h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+    let h = '';
+    if(direction==='returnonly'){
+      h = buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+    } else {
+      h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
+      if(direction==='roundtrip'){
+        h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+      }
     }
     container.innerHTML = h;
     updateFlightField();
@@ -2379,17 +2436,22 @@ function renderAdd(root){
     const fromVal = document.getElementById('fldFrom').value.trim();
     const dateFrom = document.getElementById('fldFromDate').value;
     if(!dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
-    if(!direction){ showToast('Bitte wähle: Nur Hinweg oder Hin- und Rückweg.'); return; }
+    if(!direction){ showToast('Bitte wähle eine Fahrtrichtung.'); return; }
 
-    const outDistInput = document.getElementById('fldDist_out');
-    const outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
-    if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
-
-    let returnDistVal = null;
-    if(direction==='roundtrip'){
+    let outDistVal = null, returnDistVal = null;
+    if(direction==='returnonly'){
       const retDistInput = document.getElementById('fldDist_return');
       returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
       if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+    } else {
+      const outDistInput = document.getElementById('fldDist_out');
+      outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
+      if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
+      if(direction==='roundtrip'){
+        const retDistInput = document.getElementById('fldDist_return');
+        returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
+        if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+      }
     }
 
     // Letzter Versuch, die Zielstadt aufzulösen, falls das noch nicht geschehen ist
@@ -2420,13 +2482,13 @@ function renderAdd(root){
       city: cityName,
       country: countryName,
       cityCC: cc,
-      outWaypoints: outWaypoints.map(w=>w.trim()).filter(Boolean),
-      returnWaypoints: direction==='roundtrip' ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
+      outWaypoints: direction==='returnonly' ? [] : outWaypoints.map(w=>w.trim()).filter(Boolean),
+      returnWaypoints: (direction==='roundtrip'||direction==='returnonly') ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
       direction: direction,
-      outMode: outMode,
-      outDistanceKm: Math.round(outDistVal),
-      returnMode: direction==='roundtrip' ? returnMode : null,
-      returnDistanceKm: direction==='roundtrip' ? Math.round(returnDistVal) : null,
+      outMode: direction==='returnonly' ? null : outMode,
+      outDistanceKm: direction==='returnonly' ? null : Math.round(outDistVal),
+      returnMode: (direction==='roundtrip'||direction==='returnonly') ? returnMode : null,
+      returnDistanceKm: (direction==='roundtrip'||direction==='returnonly') ? Math.round(returnDistVal) : null,
       dateFrom: dateFrom,
       dateTo: document.getElementById('fldToDate').value || dateFrom,
       purpose: purpose,
@@ -2591,21 +2653,40 @@ function renderStats(root){
   html += '  </div>';
   html += '</div>';
 
-  /* CO2-Extremwerte: Reise mit dem höchsten bzw. niedrigsten CO2-Ausstoß, mit Distanz */
+  /* CO2-Extremwerte: die 3 Reisen mit dem höchsten bzw. niedrigsten CO2-Ausstoß, mit Distanz */
   const co2Extremes = computeCO2Extremes();
-  html += '<div class="card">';
-  html += '  <div class="card-head"><h2>CO2-Extremwerte</h2><span class="sub">meiste &amp; wenigste Emission pro Reise</span></div>';
-  html += '  <div class="record-grid">';
-  if(co2Extremes.most){
-    const t = co2Extremes.most;
-    html += '    <div class="record-card"><div class="rc-icon">🔥</div><div class="rc-value">'+fmtKg(tripCO2Kg(t))+'</div><div class="rc-label">Meiste CO2-Emission</div><div class="rc-detail">'+cityIcon(t.city,t.country,t.cityCC,16)+' '+t.city+' · '+fmtKm(tripTotal(t))+' · '+fmtDate(t.dateFrom)+'</div></div>';
-  }
-  if(co2Extremes.least){
-    const t = co2Extremes.least;
-    html += '    <div class="record-card"><div class="rc-icon">🌱</div><div class="rc-value">'+fmtKg(tripCO2Kg(t))+'</div><div class="rc-label">Wenigste CO2-Emission</div><div class="rc-detail">'+cityIcon(t.city,t.country,t.cityCC,16)+' '+t.city+' · '+fmtKm(tripTotal(t))+' · '+fmtDate(t.dateFrom)+'</div></div>';
-  }
+  html += '<div class="stats-grid-2">';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>🔥 Meiste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="top-list">';
+  const maxMostCO2 = co2Extremes.most.length ? tripCO2Kg(co2Extremes.most[0]) : 1;
+  co2Extremes.most.forEach((tr,i)=>{
+    const val = tripCO2Kg(tr);
+    const pct = Math.max(6, Math.round((val/maxMostCO2)*100));
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
+    html += topListItemHTML(i, name, valHtml, pct);
+  });
+  html += '    </div>';
   html += '  </div>';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>🌱 Wenigste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="top-list">';
+  const maxLeastCO2 = Math.max(1, ...co2Extremes.least.map(tr=>tripCO2Kg(tr)));
+  co2Extremes.least.forEach((tr,i)=>{
+    const val = tripCO2Kg(tr);
+    const pct = Math.max(6, Math.round((val/maxLeastCO2)*100));
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
+    html += topListItemHTML(i, name, valHtml, pct);
+  });
+  html += '    </div>';
+  html += '  </div>';
+
   html += '</div>';
+
 
   /* CO2-Verlauf, filterbar nach Zeitraum */
   html += '<div class="card">';
@@ -2675,10 +2756,17 @@ function renderStats(root){
   });
 }
 
+/* Kompakte Wertbeschriftung für die Datenpunkte im Liniendiagramm (wenig Platz pro Punkt) */
+function fmtKgCompact(n){
+  if(!n) return '0';
+  if(n>=1000) return (n/1000).toLocaleString('de-DE',{maximumFractionDigits:1})+'t';
+  return Math.round(n).toLocaleString('de-DE')+'kg';
+}
+
 function renderCO2Chart(){
-  const barsEl = document.getElementById('co2ChartBars');
+  const chartEl = document.getElementById('co2ChartBars');
   const totalEl = document.getElementById('co2ChartTotal');
-  if(!barsEl || !totalEl) return;
+  if(!chartEl || !totalEl) return;
 
   const rangeLabels = {month:'diesen Monat', year:'dieses Jahr', lastyear:'letztes Jahr', all:'insgesamt'};
   const buckets = co2BucketsForFilter(co2ChartRange);
@@ -2686,23 +2774,48 @@ function renderCO2Chart(){
   totalEl.innerHTML = 'Summe '+(rangeLabels[co2ChartRange]||'')+': <b>'+fmtKg(total)+'</b>';
 
   if(buckets.length===0 || total===0){
-    barsEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">📉</div>Für diesen Zeitraum liegen keine Daten vor.</div>';
+    chartEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">📉</div>Für diesen Zeitraum liegen keine Daten vor.</div>';
     return;
   }
 
-  const maxVal = Math.max(...buckets.map(b=>b.value));
-  const showLabelEvery = buckets.length>15 ? Math.ceil(buckets.length/15) : 1;
-  let html = '<div class="co2-chart">';
-  buckets.forEach((b,i)=>{
-    const pct = b.value>0 ? Math.max(3, Math.round((b.value/maxVal)*100)) : 0;
-    const labelText = (i % showLabelEvery === 0) ? b.label : '';
-    html += '<div class="co2-chart-bar-wrap" title="'+b.label+': '+fmtKg(b.value)+'">';
-    html += '  <div class="co2-chart-bar" style="height:'+pct+'%"></div>';
-    html += '  <div class="co2-chart-label">'+labelText+'</div>';
-    html += '</div>';
+  /* Breite in echten Pixeln messen statt fix zu skalieren, damit SVG-Text (Werte, Achse)
+     bei jeder Kartengröße lesbar bleibt, statt mit dem viewBox verzerrt zu werden. */
+  const W = Math.max(260, Math.round(chartEl.clientWidth || (chartEl.parentElement&&chartEl.parentElement.clientWidth) || 600));
+  const H = 210;
+  const padL = 14, padR = 14, padTop = 30, padBottom = 28;
+  const n = buckets.length;
+  const maxVal = Math.max(...buckets.map(b=>b.value), 0.0001);
+  const plotW = W - padL - padR;
+  const plotH = H - padTop - padBottom;
+  const stepX = n>1 ? plotW/(n-1) : 0;
+
+  const pts = buckets.map((b,i)=>{
+    const x = n>1 ? padL + i*stepX : padL + plotW/2;
+    const y = padTop + (1 - (b.value/maxVal)) * plotH;
+    return {x, y, val:b.value, label:b.label};
   });
-  html += '</div>';
-  barsEl.innerHTML = html;
+
+  const pathD = pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+  const areaD = pathD+' L'+pts[pts.length-1].x.toFixed(1)+' '+(H-padBottom)+' L'+pts[0].x.toFixed(1)+' '+(H-padBottom)+' Z';
+
+  const showLabelEvery = n>15 ? Math.ceil(n/15) : 1;
+  const valueFontSize = n>20 ? 9 : (n>10 ? 10 : 11);
+
+  let svg = '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" class="co2-line-chart">';
+  svg += '<line x1="'+padL+'" y1="'+(H-padBottom)+'" x2="'+(W-padR)+'" y2="'+(H-padBottom)+'" class="co2-line-axis"/>';
+  svg += '<path d="'+areaD+'" class="co2-line-area"/>';
+  svg += '<path d="'+pathD+'" class="co2-line-path"/>';
+  pts.forEach((p,i)=>{
+    svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.2" class="co2-line-dot"><title>'+p.label+': '+fmtKg(p.val)+'</title></circle>';
+    if(p.val>0){
+      svg += '<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-9).toFixed(1)+'" class="co2-line-value" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
+    }
+    if(i % showLabelEvery === 0){
+      svg += '<text x="'+p.x.toFixed(1)+'" y="'+(H-padBottom+16)+'" class="co2-line-xlabel">'+p.label+'</text>';
+    }
+  });
+  svg += '</svg>';
+  chartEl.innerHTML = svg;
 }
 
 function renderStatsYearList(years){
@@ -2844,17 +2957,22 @@ function renderLogTable(){
   html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂','co2')+'<th>Grund</th><th></th>';
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
-    const outMo = getMode(t.outMode);
-    let modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span>';
-    let distCell = fmtKm(t.outDistanceKm);
+    let modeCell, distCell;
     if(t.direction==='roundtrip'){
+      const outMo = getMode(t.outMode);
       const retMo = getMode(t.returnMode);
-      modeCell += ' <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
+      modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span> <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
       distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
+    } else {
+      const leg = primaryLeg(t);
+      const mo = getMode(leg.mode);
+      modeCell = '<span class="mode-badge">'+mo.icon+' '+mo.label+'</span>';
+      distCell = fmtKm(leg.distanceKm);
+      if(t.direction==='returnonly') distCell += '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">(nur Rückweg)</div>';
     }
     const wpParts = [];
     if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
-    if((t.returnWaypoints||[]).length) wpParts.push('Rück via '+t.returnWaypoints.join(', '));
+    if((t.returnWaypoints||[]).length) wpParts.push((t.direction==='returnonly'?'Rückweg via ':'Rück via ')+t.returnWaypoints.join(', '));
     const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
     const pLbl = purposeLabel(t);
     html += '<tr>';
