@@ -819,7 +819,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.6</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.7</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1086,7 +1086,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.6';
+const APP_VERSION = '1.19.7';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2026,6 +2026,13 @@ async function initWorldMap(agg){
   loadingEl.style.display='none';
 
   // Falls der Nutzer inzwischen den Tab gewechselt hat, ist das SVG evtl. nicht mehr im DOM
+  if(!document.getElementById('worldSvg')) return;
+
+  // Sicherstellen, dass der Tab-Wechsel vom Browser bereits layoutet wurde, BEVOR die
+  // Breite gemessen wird — sonst liefert getBoundingClientRect() manchmal 0 (z. B. direkt
+  // nach dem Sichtbarmachen des Tabs), der 600px-Fallback greift, und auf einem schmalen
+  // Handy-Bildschirm wirken die Punkte dadurch "manchmal" viel zu groß.
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   if(!document.getElementById('worldSvg')) return;
 
   const rect = wrap.getBoundingClientRect();
