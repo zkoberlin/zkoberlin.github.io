@@ -359,6 +359,7 @@ a{color:var(--teal);}
 .country-card.open .country-cities{display:block;}
 .country-cities div{display:flex;justify-content:space-between;padding:3px 0;}
 .country-cities b{color:var(--text);font-family:var(--font-mono);font-weight:500;}
+.country-city-meta{color:var(--text-faint);font-size:11px;}
 
 /* ---------- Tables ---------- */
 .table-wrap{overflow-x:auto;}
@@ -562,6 +563,15 @@ tr:last-child td{border-bottom:none;}
 /* ---------- Statistiken: CO2-Verlauf ---------- */
 .co2-chart-total{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
 .co2-chart-total b{color:var(--text);font-family:var(--font-mono);}
+.co2-legend{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;}
+.co2-legend-item{
+  display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-dim);
+  cursor:pointer;background:none;border:none;padding:0;font-family:var(--font-body);opacity:0.5;
+}
+.co2-legend-item.active{opacity:1;color:var(--text);}
+.co2-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.co2-legend-dot.total{background:var(--gold);}
+.co2-legend-dot.avg{background:var(--teal);}
 .co2-line-chart{width:100%;display:block;}
 .co2-line-axis{stroke:var(--border);stroke-width:1;}
 .co2-line-area{fill:var(--gold);opacity:0.09;}
@@ -569,6 +579,10 @@ tr:last-child td{border-bottom:none;}
 .co2-line-dot{fill:var(--panel);stroke:var(--gold);stroke-width:2;}
 .co2-line-value{font-size:10.5px;fill:var(--text-dim);text-anchor:middle;font-family:var(--font-mono);}
 .co2-line-xlabel{font-size:10px;fill:var(--text-faint);text-anchor:middle;}
+.co2-line-area-avg{fill:var(--teal);opacity:0.09;}
+.co2-line-path-avg{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:5 4;}
+.co2-line-dot-avg{fill:var(--panel);stroke:var(--teal);stroke-width:2;}
+.co2-line-value-avg{font-size:10.5px;fill:var(--teal);text-anchor:middle;font-family:var(--font-mono);}
 
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
 .record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
@@ -830,7 +844,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.20.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.21.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1097,7 +1111,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.20.0';
+const APP_VERSION = '1.21.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1131,6 +1145,9 @@ let logSort = {key:'dateFrom', dir:'desc'};
 let logCityFilter = '';
 let statsYearMode = 'all';
 let co2ChartRange = 'year';
+let discoveryTrendExpanded = false;
+let co2ChartShowTotal = true;
+let co2ChartShowAvg = true;
 
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
    werden lokal gemerkt, damit sie beim nächsten Mal sofort (ohne erneute Abfrage) gefunden werden. */
@@ -1620,6 +1637,22 @@ function primaryLeg(t){
   return {mode:t.outMode, distanceKm:t.outDistanceKm, waypoints:t.outWaypoints||[]};
 }
 
+/* Häufigstes Verkehrsmittel für eine Stadt (über alle Besuche hinweg, jeweils die
+   "primäre" Fahrtrichtung je Reise) — z. B. für die Anzeige "Köln ×4 🚌" bei Länder & Städte. */
+function mostUsedModeForCity(cityRecord){
+  const counts = {};
+  (cityRecord.trips||[]).forEach(t=>{
+    const m = primaryLeg(t).mode;
+    if(!m) return;
+    counts[m] = (counts[m]||0)+1;
+  });
+  let bestMode = null, bestCount = 0;
+  Object.keys(counts).forEach(m=>{
+    if(counts[m]>bestCount){ bestCount = counts[m]; bestMode = m; }
+  });
+  return bestMode ? {mode:bestMode, count:bestCount} : null;
+}
+
 /* Geschätzter CO2e-Ausstoß einer Reise in kg — Hin- und Rückweg jeweils mit dem Faktor
    ihres eigenen Verkehrsmittels (siehe CO2_FACTORS). Fallback 150 g/Pkm für unbekannte Modi. */
 function tripCO2Kg(t){
@@ -1838,7 +1871,8 @@ function computeCO2Extremes(){
 
 /* CO2-Verlauf, gruppiert je nach gewähltem Zeitraum:
    'month' → Tage des laufenden Monats, 'year'/'lastyear' → Monate des jeweiligen Jahres,
-   'all' → alle Jahre mit Daten. Liefert [{label, value}], value = kg CO2 je Bucket. */
+   'all' → alle Jahre mit Daten. Liefert [{label, value, count}], value = kg CO2 je Bucket,
+   count = Anzahl Reisen je Bucket (für den Ø-CO2-pro-Reise-Graphen). */
 function co2BucketsForFilter(filter){
   const now = new Date();
   if(filter==='month'){
@@ -1846,22 +1880,22 @@ function co2BucketsForFilter(filter){
     const ym = y+'-'+String(m+1).padStart(2,'0');
     const daysInMonth = new Date(y, m+1, 0).getDate();
     const buckets = [];
-    for(let d=1; d<=daysInMonth; d++) buckets.push({label:String(d), value:0});
+    for(let d=1; d<=daysInMonth; d++) buckets.push({label:String(d), value:0, count:0});
     trips.forEach(t=>{
       if((t.dateFrom||'').slice(0,7)===ym){
         const day = parseInt((t.dateFrom||'').slice(8,10),10);
-        if(buckets[day-1]) buckets[day-1].value += tripCO2Kg(t);
+        if(buckets[day-1]){ buckets[day-1].value += tripCO2Kg(t); buckets[day-1].count++; }
       }
     });
     return buckets;
   }
   if(filter==='year' || filter==='lastyear'){
     const y = filter==='year' ? now.getFullYear() : now.getFullYear()-1;
-    const buckets = MONTH_NAMES.map(name=>({label:name.slice(0,3), value:0}));
+    const buckets = MONTH_NAMES.map(name=>({label:name.slice(0,3), value:0, count:0}));
     trips.forEach(t=>{
       if((t.dateFrom||'').slice(0,4)===String(y)){
         const mm = parseInt((t.dateFrom||'').slice(5,7),10);
-        if(mm>=1 && mm<=12) buckets[mm-1].value += tripCO2Kg(t);
+        if(mm>=1 && mm<=12){ buckets[mm-1].value += tripCO2Kg(t); buckets[mm-1].count++; }
       }
     });
     return buckets;
@@ -1869,7 +1903,11 @@ function co2BucketsForFilter(filter){
   // 'all' — alle Jahre mit erfassten Reisen, chronologisch
   const yearsSet = new Set();
   trips.forEach(t=>{ const y=(t.dateFrom||'').slice(0,4); if(/^\d{4}$/.test(y)) yearsSet.add(y); });
-  return [...yearsSet].sort().map(y=>({label:y, value:yearCO2Kg(y)}));
+  return [...yearsSet].sort().map(y=>({
+    label:y,
+    value: yearCO2Kg(y),
+    count: trips.reduce((s,t)=> (t.dateFrom||'').slice(0,4)===y ? s+1 : s, 0)
+  }));
 }
 
 /* ---------- Distanzvergleiche ---------- */
@@ -2775,13 +2813,18 @@ function renderStats(root){
   /* Saisonmuster: Reisen &amp; Kilometer je Kalendermonat */
   const months = aggregateMonths();
   const maxMonthKm = Math.max(1, ...months.map(m=>m.km));
+  // Die Summen laufen über ALLE Jahre — bei mehreren erfassten Jahren würde ein Monat sonst
+  // nur wirken "wichtiger", weil mehr Jahre einfließen. Der Ø-Wert pro Jahr macht die
+  // Saisonalität vergleichbar, unabhängig davon wie viele Jahre schon erfasst sind.
+  const yearsWithData = new Set(trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(y=>/^\d{4}$/.test(y))).size || 1;
   html += '<div class="card">';
-  html += '  <div class="card-head"><h2>Saisonmuster</h2><span class="sub">Reisen nach Monat, über alle Jahre</span></div>';
+  html += '  <div class="card-head"><h2>Saisonmuster</h2><span class="sub">Reisen nach Monat, über alle Jahre · Ø pro Jahr ('+yearsWithData+' '+(yearsWithData===1?'Jahr':'Jahre')+')</span></div>';
   html += '  <div class="top-list">';
   months.forEach((m,i)=>{
     const pct = m.km>0 ? Math.max(6, Math.round((m.km/maxMonthKm)*100)) : 0;
     const name = '<span>'+m.name+'</span>';
-    const val = m.trips>0 ? '<b>'+m.trips+'</b> '+(m.trips===1?'Reise':'Reisen')+' · '+fmtKm(m.km) : '<span style="color:var(--text-faint);">–</span>';
+    const avgKm = m.km / yearsWithData;
+    const val = m.trips>0 ? '<b>'+m.trips+'</b> '+(m.trips===1?'Reise':'Reisen')+' · '+fmtKm(m.km)+' <span style="color:var(--text-faint);">(Ø '+fmtKm(avgKm)+'/Jahr)</span>' : '<span style="color:var(--text-faint);">–</span>';
     html += topListItemHTML(i, name, val, pct, {plain:true});
   });
   html += '  </div>';
@@ -2850,26 +2893,39 @@ function renderStats(root){
   html += '    <div class="mode-filter-chip'+(co2ChartRange==='lastyear'?' active':'')+'" data-co2-range="lastyear">Letztes Jahr</div>';
   html += '    <div class="mode-filter-chip'+(co2ChartRange==='all'?' active':'')+'" data-co2-range="all">Gesamt</div>';
   html += '  </div>';
+  html += '  <div class="co2-legend" id="co2ChartLegend">';
+  html += '    <button type="button" class="co2-legend-item'+(co2ChartShowTotal?' active':'')+'" data-co2-series="total"><span class="co2-legend-dot total"></span>Gesamt-Emission</button>';
+  html += '    <button type="button" class="co2-legend-item'+(co2ChartShowAvg?' active':'')+'" data-co2-series="avg"><span class="co2-legend-dot avg"></span>Ø pro Reise</button>';
+  html += '  </div>';
   html += '  <div id="co2ChartTotal" class="co2-chart-total"></div>';
   html += '  <div id="co2ChartBars"></div>';
   html += '</div>';
 
-  /* Entdecker-Trend: neue Länder/Städte je Jahr */
-  const discoveries = aggregateDiscoveries();
+  /* Entdecker-Trend: neue Länder/Städte je Jahr — neueste zuerst; standardmäßig nur die
+     letzten 5 Jahre, Rest über "mehr anzeigen" aufklappbar (bei vielen erfassten Jahren
+     sonst eine sehr lange Liste). */
+  const discoveriesDesc = aggregateDiscoveries().slice().reverse();
+  const DISCOVERY_COLLAPSED_COUNT = 5;
+  const discoveriesVisible = discoveryTrendExpanded ? discoveriesDesc : discoveriesDesc.slice(0, DISCOVERY_COLLAPSED_COUNT);
+  const discoveriesHidden = discoveriesDesc.length - discoveriesVisible.length;
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr</span></div>';
-  if(discoveries.length===0){
+  if(discoveriesDesc.length===0){
     html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Daten vorhanden.</div>';
   } else {
-    const maxNewCities = Math.max(1, ...discoveries.map(d=>d.newCities));
-    html += '  <div class="top-list">';
-    discoveries.forEach((d,i)=>{
+    const maxNewCities = Math.max(1, ...discoveriesDesc.map(d=>d.newCities));
+    html += '  <div class="top-list" id="discoveryTrendList">';
+    discoveriesVisible.forEach((d,i)=>{
       const pct = Math.max(6, Math.round((d.newCities/maxNewCities)*100));
       const name = '<span>'+d.year+'</span>';
       const val = '<b>'+d.newCountries+'</b> neue '+(d.newCountries===1?'Land':'Länder')+' · <b>'+d.newCities+'</b> neue '+(d.newCities===1?'Stadt':'Städte');
       html += topListItemHTML(i, name, val, pct, {plain:true});
     });
     html += '  </div>';
+    if(discoveriesHidden>0 || discoveryTrendExpanded){
+      html += '  <button type="button" class="btn-secondary" id="discoveryTrendToggle" style="margin-top:12px;width:100%;">'+
+        (discoveryTrendExpanded ? 'Weniger anzeigen ▲' : (discoveriesHidden+' weitere Jahre anzeigen ▼'))+'</button>';
+    }
   }
   html += '</div>';
 
@@ -2907,6 +2963,22 @@ function renderStats(root){
       renderCO2Chart();
     });
   });
+  root.querySelectorAll('#co2ChartLegend [data-co2-series]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.dataset.co2Series==='total') co2ChartShowTotal = !co2ChartShowTotal;
+      else co2ChartShowAvg = !co2ChartShowAvg;
+      btn.classList.toggle('active', btn.dataset.co2Series==='total' ? co2ChartShowTotal : co2ChartShowAvg);
+      renderCO2Chart();
+    });
+  });
+
+  const discoveryToggleBtn = document.getElementById('discoveryTrendToggle');
+  if(discoveryToggleBtn){
+    discoveryToggleBtn.addEventListener('click', ()=>{
+      discoveryTrendExpanded = !discoveryTrendExpanded;
+      renderStats(root);
+    });
+  }
 }
 
 /* Kompakte Wertbeschriftung für die Datenpunkte im Liniendiagramm (wenig Platz pro Punkt) */
@@ -2924,10 +2996,18 @@ function renderCO2Chart(){
   const rangeLabels = {month:'diesen Monat', year:'dieses Jahr', lastyear:'letztes Jahr', all:'insgesamt'};
   const buckets = co2BucketsForFilter(co2ChartRange);
   const total = buckets.reduce((s,b)=>s+b.value,0);
-  totalEl.innerHTML = 'Summe '+(rangeLabels[co2ChartRange]||'')+': <b>'+fmtKg(total)+'</b>';
+  const tripCount = buckets.reduce((s,b)=>s+b.count,0);
+  const avgPerTrip = tripCount>0 ? total/tripCount : 0;
+  totalEl.innerHTML = 'Summe '+(rangeLabels[co2ChartRange]||'')+': <b>'+fmtKg(total)+'</b>'+
+    (tripCount>0 ? ' · Ø pro Reise: <b>'+fmtKg(avgPerTrip)+'</b> ('+tripCount+' '+(tripCount===1?'Reise':'Reisen')+')' : '');
 
   if(buckets.length===0 || total===0){
     chartEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">📉</div>Für diesen Zeitraum liegen keine Daten vor.</div>';
+    return;
+  }
+
+  if(!co2ChartShowTotal && !co2ChartShowAvg){
+    chartEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">👁️</div>Kein Graph ausgewählt — oben mindestens einen aktivieren.</div>';
     return;
   }
 
@@ -2937,34 +3017,64 @@ function renderCO2Chart(){
   const H = 210;
   const padL = 14, padR = 14, padTop = 30, padBottom = 28;
   const n = buckets.length;
-  const maxVal = Math.max(...buckets.map(b=>b.value), 0.0001);
   const plotW = W - padL - padR;
   const plotH = H - padTop - padBottom;
   const stepX = n>1 ? plotW/(n-1) : 0;
-
-  const pts = buckets.map((b,i)=>{
-    const x = n>1 ? padL + i*stepX : padL + plotW/2;
-    const y = padTop + (1 - (b.value/maxVal)) * plotH;
-    return {x, y, val:b.value, label:b.label};
-  });
-
-  const pathD = pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
-  const areaD = pathD+' L'+pts[pts.length-1].x.toFixed(1)+' '+(H-padBottom)+' L'+pts[0].x.toFixed(1)+' '+(H-padBottom)+' Z';
+  const xAt = i => n>1 ? padL + i*stepX : padL + plotW/2;
 
   const showLabelEvery = n>15 ? Math.ceil(n/15) : 1;
   const valueFontSize = n>20 ? 9 : (n>10 ? 10 : 11);
 
+  /* Jede Serie wird unabhängig auf ihr eigenes Maximum normiert (0..plotH) — Gesamt- und
+     Ø-Werte liegen oft in sehr unterschiedlichen Größenordnungen, eine gemeinsame Skala
+     würde die kleinere Serie sonst optisch fast auf null zusammenquetschen. Die exakten
+     Werte bleiben über Punktbeschriftung/Tooltip trotzdem ablesbar. */
+  function buildSeries(getVal){
+    const maxVal = Math.max(...buckets.map(getVal), 0.0001);
+    return buckets.map((b,i)=>({
+      x: xAt(i),
+      y: padTop + (1 - (getVal(b)/maxVal)) * plotH,
+      val: getVal(b),
+      label: b.label
+    }));
+  }
+  const totalPts = buildSeries(b=>b.value);
+  const avgPts = buildSeries(b=> b.count>0 ? b.value/b.count : 0);
+
+  function pathFor(pts){ return pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '); }
+  function areaFor(pts){
+    const d = pathFor(pts);
+    return d+' L'+pts[pts.length-1].x.toFixed(1)+' '+(H-padBottom)+' L'+pts[0].x.toFixed(1)+' '+(H-padBottom)+' Z';
+  }
+
   let svg = '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" class="co2-line-chart">';
   svg += '<line x1="'+padL+'" y1="'+(H-padBottom)+'" x2="'+(W-padR)+'" y2="'+(H-padBottom)+'" class="co2-line-axis"/>';
-  svg += '<path d="'+areaD+'" class="co2-line-area"/>';
-  svg += '<path d="'+pathD+'" class="co2-line-path"/>';
-  pts.forEach((p,i)=>{
-    svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.2" class="co2-line-dot"><title>'+p.label+': '+fmtKg(p.val)+'</title></circle>';
-    if(p.val>0){
-      svg += '<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-9).toFixed(1)+'" class="co2-line-value" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
-    }
+
+  if(co2ChartShowTotal){
+    svg += '<path d="'+areaFor(totalPts)+'" class="co2-line-area"/>';
+    svg += '<path d="'+pathFor(totalPts)+'" class="co2-line-path"/>';
+    totalPts.forEach(p=>{
+      svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.2" class="co2-line-dot"><title>'+p.label+': '+fmtKg(p.val)+' gesamt</title></circle>';
+      if(p.val>0){
+        svg += '<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-9).toFixed(1)+'" class="co2-line-value" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
+      }
+    });
+  }
+  if(co2ChartShowAvg){
+    svg += '<path d="'+areaFor(avgPts)+'" class="co2-line-area-avg"/>';
+    svg += '<path d="'+pathFor(avgPts)+'" class="co2-line-path-avg"/>';
+    avgPts.forEach(p=>{
+      svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.2" class="co2-line-dot-avg"><title>'+p.label+': Ø '+fmtKg(p.val)+' pro Reise</title></circle>';
+      if(p.val>0){
+        const dy = co2ChartShowTotal ? Math.max(11,p.y-9)+11 : Math.max(11,p.y-9);
+        svg += '<text x="'+p.x.toFixed(1)+'" y="'+dy.toFixed(1)+'" class="co2-line-value-avg" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
+      }
+    });
+  }
+  // X-Achsenbeschriftung anhand der Bucket-Labels (unabhängig davon, welche Serie(n) sichtbar sind)
+  buckets.forEach((b,i)=>{
     if(i % showLabelEvery === 0){
-      svg += '<text x="'+p.x.toFixed(1)+'" y="'+(H-padBottom+16)+'" class="co2-line-xlabel">'+p.label+'</text>';
+      svg += '<text x="'+xAt(i).toFixed(1)+'" y="'+(H-padBottom+16)+'" class="co2-line-xlabel">'+b.label+'</text>';
     }
   });
   svg += '</svg>';
@@ -3013,7 +3123,9 @@ function renderPlaces(root){
       html += '  <div class="country-stats"><span><b>'+c.cities.size+'</b> Städte</span><span><b>'+c.visits+'</b> Besuche</span><span><b>'+fmtKm(c.totalKm)+'</b></span></div>';
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
-        html += '<div><span>'+ci.city+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
+        const topMode = mostUsedModeForCity(ci);
+        const modeHtml = topMode ? ' <span class="country-city-meta">×'+ci.visits+' '+getMode(topMode.mode).icon+'</span>' : ' <span class="country-city-meta">×'+ci.visits+'</span>';
+        html += '<div><span>'+ci.city+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
       });
       html += '  </div>';
       html += '</div>';
