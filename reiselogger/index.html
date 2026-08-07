@@ -523,6 +523,14 @@ tr:last-child td{border-bottom:none;}
   box-shadow:0 0 0 1px var(--chip-color,var(--gold)) inset;
 }
 
+/* ---------- Statistiken: CO2-Verlauf ---------- */
+.co2-chart-total{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+.co2-chart-total b{color:var(--text);font-family:var(--font-mono);}
+.co2-chart{display:flex;align-items:flex-end;gap:3px;height:150px;padding-top:6px;}
+.co2-chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0;}
+.co2-chart-bar{width:100%;max-width:26px;border-radius:4px 4px 0 0;background:var(--gold);min-height:1px;transition:height .4s ease;}
+.co2-chart-label{margin-top:6px;font-size:9.5px;color:var(--text-faint);white-space:nowrap;}
+
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
 .record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
 .record-card{
@@ -778,7 +786,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.16.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.17.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1045,7 +1053,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.16.0';
+const APP_VERSION = '1.17.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1077,6 +1085,7 @@ let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
 let logSort = {key:'dateFrom', dir:'desc'};
 let statsYearMode = 'all';
+let co2ChartRange = 'year';
 
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
    werden lokal gemerkt, damit sie beim nächsten Mal sofort (ohne erneute Abfrage) gefunden werden. */
@@ -1225,8 +1234,8 @@ function fmtKm(n){
 }
 function fmtKg(n){
   if(n==null||isNaN(n)) return '–';
-  if(n>=1000) return (n/1000).toLocaleString('de-DE',{maximumFractionDigits:1,minimumFractionDigits:0})+' t CO₂e';
-  return Math.round(n).toLocaleString('de-DE')+' kg CO₂e';
+  if(n>=1000) return (n/1000).toLocaleString('de-DE',{maximumFractionDigits:1,minimumFractionDigits:0})+' t CO₂';
+  return Math.round(n).toLocaleString('de-DE')+' kg CO₂';
 }
 function fmtNum(n){return Math.round(n).toLocaleString('de-DE');}
 
@@ -1687,6 +1696,49 @@ function computeRecords(){
   };
 }
 
+/* Reise mit der höchsten bzw. niedrigsten geschätzten CO2-Emission (gepaart mit ihrer Distanz) */
+function computeCO2Extremes(){
+  if(trips.length===0) return null;
+  const sorted = trips.slice().sort((a,b)=>tripCO2Kg(b)-tripCO2Kg(a));
+  return { most: sorted[0], least: sorted[sorted.length-1] };
+}
+
+/* CO2-Verlauf, gruppiert je nach gewähltem Zeitraum:
+   'month' → Tage des laufenden Monats, 'year'/'lastyear' → Monate des jeweiligen Jahres,
+   'all' → alle Jahre mit Daten. Liefert [{label, value}], value = kg CO2 je Bucket. */
+function co2BucketsForFilter(filter){
+  const now = new Date();
+  if(filter==='month'){
+    const y = now.getFullYear(), m = now.getMonth();
+    const ym = y+'-'+String(m+1).padStart(2,'0');
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const buckets = [];
+    for(let d=1; d<=daysInMonth; d++) buckets.push({label:String(d), value:0});
+    trips.forEach(t=>{
+      if((t.dateFrom||'').slice(0,7)===ym){
+        const day = parseInt((t.dateFrom||'').slice(8,10),10);
+        if(buckets[day-1]) buckets[day-1].value += tripCO2Kg(t);
+      }
+    });
+    return buckets;
+  }
+  if(filter==='year' || filter==='lastyear'){
+    const y = filter==='year' ? now.getFullYear() : now.getFullYear()-1;
+    const buckets = MONTH_NAMES.map(name=>({label:name.slice(0,3), value:0}));
+    trips.forEach(t=>{
+      if((t.dateFrom||'').slice(0,4)===String(y)){
+        const mm = parseInt((t.dateFrom||'').slice(5,7),10);
+        if(mm>=1 && mm<=12) buckets[mm-1].value += tripCO2Kg(t);
+      }
+    });
+    return buckets;
+  }
+  // 'all' — alle Jahre mit erfassten Reisen, chronologisch
+  const yearsSet = new Set();
+  trips.forEach(t=>{ const y=(t.dateFrom||'').slice(0,4); if(/^\d{4}$/.test(y)) yearsSet.add(y); });
+  return [...yearsSet].sort().map(y=>({label:y, value:yearCO2Kg(y)}));
+}
+
 /* ---------- Distanzvergleiche ---------- */
 function compareToReference(km, refKm){
   if(!km) return {ratioText:'–', remainingText:'noch '+fmtKm(refKm), exceeded:false};
@@ -1761,7 +1813,7 @@ function renderDashboard(root){
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+'"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+'"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung)"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' CO₂e in '+currentYear+'</div></div>';
+  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div></div>';
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
@@ -2539,6 +2591,35 @@ function renderStats(root){
   html += '  </div>';
   html += '</div>';
 
+  /* CO2-Extremwerte: Reise mit dem höchsten bzw. niedrigsten CO2-Ausstoß, mit Distanz */
+  const co2Extremes = computeCO2Extremes();
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>CO2-Extremwerte</h2><span class="sub">meiste &amp; wenigste Emission pro Reise</span></div>';
+  html += '  <div class="record-grid">';
+  if(co2Extremes.most){
+    const t = co2Extremes.most;
+    html += '    <div class="record-card"><div class="rc-icon">🔥</div><div class="rc-value">'+fmtKg(tripCO2Kg(t))+'</div><div class="rc-label">Meiste CO2-Emission</div><div class="rc-detail">'+cityIcon(t.city,t.country,t.cityCC,16)+' '+t.city+' · '+fmtKm(tripTotal(t))+' · '+fmtDate(t.dateFrom)+'</div></div>';
+  }
+  if(co2Extremes.least){
+    const t = co2Extremes.least;
+    html += '    <div class="record-card"><div class="rc-icon">🌱</div><div class="rc-value">'+fmtKg(tripCO2Kg(t))+'</div><div class="rc-label">Wenigste CO2-Emission</div><div class="rc-detail">'+cityIcon(t.city,t.country,t.cityCC,16)+' '+t.city+' · '+fmtKm(tripTotal(t))+' · '+fmtDate(t.dateFrom)+'</div></div>';
+  }
+  html += '  </div>';
+  html += '</div>';
+
+  /* CO2-Verlauf, filterbar nach Zeitraum */
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>CO2-Verlauf</h2><span class="sub">Emissionen über die Zeit</span></div>';
+  html += '  <div class="mode-filter-toggle" id="co2ChartFilter">';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='month'?' active':'')+'" data-co2-range="month">Aktueller Monat</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='year'?' active':'')+'" data-co2-range="year">Aktuelles Jahr</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='lastyear'?' active':'')+'" data-co2-range="lastyear">Letztes Jahr</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='all'?' active':'')+'" data-co2-range="all">Gesamt</div>';
+  html += '  </div>';
+  html += '  <div id="co2ChartTotal" class="co2-chart-total"></div>';
+  html += '  <div id="co2ChartBars"></div>';
+  html += '</div>';
+
   /* Entdecker-Trend: neue Länder/Städte je Jahr */
   const discoveries = aggregateDiscoveries();
   html += '<div class="card">';
@@ -2583,6 +2664,45 @@ function renderStats(root){
       renderStatsYearList(years);
     });
   });
+
+  renderCO2Chart();
+  root.querySelectorAll('#co2ChartFilter [data-co2-range]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      co2ChartRange = chip.dataset.co2Range;
+      root.querySelectorAll('#co2ChartFilter [data-co2-range]').forEach(c=>c.classList.toggle('active', c.dataset.co2Range===co2ChartRange));
+      renderCO2Chart();
+    });
+  });
+}
+
+function renderCO2Chart(){
+  const barsEl = document.getElementById('co2ChartBars');
+  const totalEl = document.getElementById('co2ChartTotal');
+  if(!barsEl || !totalEl) return;
+
+  const rangeLabels = {month:'diesen Monat', year:'dieses Jahr', lastyear:'letztes Jahr', all:'insgesamt'};
+  const buckets = co2BucketsForFilter(co2ChartRange);
+  const total = buckets.reduce((s,b)=>s+b.value,0);
+  totalEl.innerHTML = 'Summe '+(rangeLabels[co2ChartRange]||'')+': <b>'+fmtKg(total)+'</b>';
+
+  if(buckets.length===0 || total===0){
+    barsEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">📉</div>Für diesen Zeitraum liegen keine Daten vor.</div>';
+    return;
+  }
+
+  const maxVal = Math.max(...buckets.map(b=>b.value));
+  const showLabelEvery = buckets.length>15 ? Math.ceil(buckets.length/15) : 1;
+  let html = '<div class="co2-chart">';
+  buckets.forEach((b,i)=>{
+    const pct = b.value>0 ? Math.max(3, Math.round((b.value/maxVal)*100)) : 0;
+    const labelText = (i % showLabelEvery === 0) ? b.label : '';
+    html += '<div class="co2-chart-bar-wrap" title="'+b.label+': '+fmtKg(b.value)+'">';
+    html += '  <div class="co2-chart-bar" style="height:'+pct+'%"></div>';
+    html += '  <div class="co2-chart-label">'+labelText+'</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  barsEl.innerHTML = html;
 }
 
 function renderStatsYearList(years){
@@ -2721,7 +2841,7 @@ function renderLogTable(){
   }
 
   let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
-  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂e','co2')+'<th>Grund</th><th></th>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂','co2')+'<th>Grund</th><th></th>';
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
     const outMo = getMode(t.outMode);
@@ -2743,7 +2863,7 @@ function renderLogTable(){
     html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
     html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
     html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
-    html += '<td class="mono" data-label="CO₂e">'+fmtKg(tripCO2Kg(t))+'</td>';
+    html += '<td class="mono" data-label="CO₂">'+fmtKg(tripCO2Kg(t))+'</td>';
     html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
     html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
