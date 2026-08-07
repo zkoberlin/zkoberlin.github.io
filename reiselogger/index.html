@@ -127,6 +127,15 @@ a{color:var(--teal);}
   cursor:pointer;
 }
 .home-chip img{width:16px;height:12px;border-radius:2px;object-fit:cover;}
+.flag-ico{display:inline-block;line-height:1;vertical-align:middle;}
+.flag-badge{
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border-radius:11px;background:var(--bg-soft);border:1px solid var(--border-soft);
+  line-height:1;
+}
+.coa-badge{padding:6px;}
+.coa-badge img{width:100%;height:100%;object-fit:contain;}
+.city-coa{object-fit:contain;vertical-align:middle;display:inline-block;}
 .home-chip:hover{border-color:var(--gold-dim);color:var(--text);}
 .icon-btn{
   width:34px;height:34px;border-radius:10px;
@@ -265,6 +274,7 @@ a{color:var(--teal);}
 .stub .icon{font-size:18px;}
 .stub .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
 .stub .val{font-family:var(--font-mono);font-weight:600;font-size:19px;color:var(--text);font-variant-numeric:tabular-nums;}
+.stub .val-year{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-top:2px;}
 
 /* ---------- Map ---------- */
 .map-wrap{
@@ -277,10 +287,10 @@ a{color:var(--teal);}
 #worldSvg:active{cursor:grabbing;}
 .country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;vector-effect:non-scaling-stroke;}
 .country.visited{fill:var(--teal);fill-opacity:0.55;}
-.city-dot{fill:var(--teal);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
+.city-dot{fill:var(--gold);stroke:var(--panel);stroke-width:1;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
 .city-dot:hover{fill-opacity:0.85;}
 .city-dot.selected{fill:var(--rose);stroke-width:1.5;}
-.home-mark{fill:var(--gold);stroke:var(--panel);stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none;}
+.home-mark{fill:none;stroke:var(--rose);stroke-width:1.6;vector-effect:non-scaling-stroke;}
 .map-controls{
   position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
 }
@@ -330,8 +340,7 @@ a{color:var(--teal);}
   border-radius:12px;padding:14px;cursor:pointer;
 }
 .country-card:hover{border-color:var(--gold-dim);}
-.country-top{display:flex;align-items:center;gap:10px;}
-.country-top img{width:28px;height:20px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.country-top{display:flex;align-items:center;gap:12px;}
 .country-top h4{margin:0;font-size:14px;font-weight:600;}
 .country-stats{display:flex;gap:14px;margin-top:8px;font-size:11.5px;color:var(--text-dim);}
 .country-stats b{color:var(--gold);font-family:var(--font-mono);}
@@ -427,7 +436,8 @@ tr:last-child td{border-bottom:none;}
 .mode-opt .ic{display:block;font-size:18px;margin-bottom:3px;}
 .mode-opt.active{background:var(--panel);border-color:var(--mode-color);color:var(--text);box-shadow:0 0 0 1px var(--mode-color) inset;}
 
-.direction-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.direction-toggle{display:flex;flex-wrap:wrap;gap:8px;}
+.direction-toggle .dir-opt{flex:1 1 150px;}
 .dir-opt{
   background:var(--bg-soft);border:1px solid var(--border);border-radius:9px;
   padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;color:var(--text-dim);
@@ -467,6 +477,89 @@ tr:last-child td{border-bottom:none;}
 .purpose-card .pc-top{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);}
 .purpose-card .pc-stats{margin-top:6px;font-size:11.5px;color:var(--text-dim);display:flex;gap:12px;}
 .purpose-card .pc-stats b{color:var(--gold);font-family:var(--font-mono);}
+
+/* ---------- Letzter Eintrag / Jahres-Kilometer (dezente Hinweise, Übersicht) ---------- */
+.dashboard-meta-row{
+  display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;
+  margin:-4px 0 14px;
+}
+.last-entry-note{
+  display:flex;align-items:center;gap:6px;
+  font-size:11.5px;color:var(--text-faint);
+}
+
+/* ---------- Statistiken: Top-Listen ---------- */
+.stats-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.stats-grid-2 .card{margin-bottom:0;}
+@media(max-width:760px){.stats-grid-2{grid-template-columns:1fr;gap:0;}}
+
+.top-list{display:flex;flex-direction:column;gap:12px;}
+.top-item{display:flex;align-items:center;gap:11px;}
+.top-rank{
+  width:23px;height:23px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:11px;font-weight:600;
+  background:var(--bg-soft);border:1px solid var(--border);color:var(--text-dim);
+}
+.top-rank.r1{border-color:var(--gold);color:var(--gold);}
+.top-rank.r2{border-color:var(--text-dim);color:var(--text-dim);}
+.top-rank.r3{border-color:var(--gold-dim);color:var(--gold-dim);}
+.top-main{flex:1;min-width:0;}
+.top-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px;}
+.top-name{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text);min-width:0;overflow:hidden;}
+.top-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.top-name img{width:18px;height:13px;border-radius:2px;object-fit:cover;flex-shrink:0;}
+.top-value{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;flex-shrink:0;}
+.top-value b{color:var(--text);font-weight:600;}
+.top-bar-track{height:6px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;}
+.top-bar-fill{height:100%;border-radius:100px;background:var(--gold);transition:width .5s ease;}
+
+.mode-filter-toggle{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.mode-filter-chip{
+  background:var(--bg-soft);border:1px solid var(--border);border-radius:100px;
+  padding:7px 13px;font-size:12px;color:var(--text-dim);cursor:pointer;
+  display:flex;align-items:center;gap:6px;user-select:none;
+}
+.mode-filter-chip.active{
+  background:var(--panel);border-color:var(--chip-color,var(--gold));color:var(--text);
+  box-shadow:0 0 0 1px var(--chip-color,var(--gold)) inset;
+}
+
+/* ---------- Statistiken: CO2-Verlauf ---------- */
+.co2-chart-total{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+.co2-chart-total b{color:var(--text);font-family:var(--font-mono);}
+.co2-line-chart{width:100%;display:block;}
+.co2-line-axis{stroke:var(--border);stroke-width:1;}
+.co2-line-area{fill:var(--gold);opacity:0.09;}
+.co2-line-path{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+.co2-line-dot{fill:var(--panel);stroke:var(--gold);stroke-width:2;}
+.co2-line-value{font-size:10.5px;fill:var(--text-dim);text-anchor:middle;font-family:var(--font-mono);}
+.co2-line-xlabel{font-size:10px;fill:var(--text-faint);text-anchor:middle;}
+
+/* ---------- Statistiken: Persönliche Rekorde ---------- */
+.record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.record-card{
+  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:12px;
+  padding:16px;
+}
+.record-card .rc-icon{font-size:19px;margin-bottom:8px;}
+.record-card .rc-value{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--gold);line-height:1.2;}
+.record-card .rc-label{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+.record-card .rc-detail{font-size:12px;color:var(--text-faint);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);}
+
+/* ---------- Statistiken: Verkehrsmittel-Ring-Chart ---------- */
+.ring-chart-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;padding:4px 0;}
+.ring-chart{width:148px;height:148px;border-radius:50%;position:relative;flex-shrink:0;}
+.ring-chart-center{
+  position:absolute;inset:24px;background:var(--panel);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;
+}
+.ring-chart-center .rc-total{font-family:var(--font-mono);font-weight:700;font-size:14.5px;color:var(--text);}
+.ring-chart-center .rc-total span{display:block;font-size:9px;font-weight:500;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px;}
+.ring-legend{display:flex;flex-direction:column;gap:9px;min-width:170px;}
+.ring-legend-item{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text-dim);}
+.ring-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.ring-legend-item b{color:var(--text);font-family:var(--font-mono);font-weight:600;margin-left:auto;padding-left:14px;white-space:nowrap;}
 .stopover-chip{background:var(--panel);border-style:dashed;}
 
 .dist-row{display:flex;gap:10px;align-items:flex-end;}
@@ -698,7 +791,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.11.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.18.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -911,6 +1004,29 @@ const CITY_DB = RAW_CITIES.map(([n,c,cc,lat,lon,ia])=>({
   label:n+' ('+c+')'
 }));
 
+/* Kuratierte Liste: Städte, für die ein echtes Stadtwappen (statt der Länderflagge) gezeigt wird.
+   Jede Datei wurde einzeln recherchiert (aktuelle Wikidata-"coat of arms image"-Angabe bzw.
+   meistverwendete Version auf Wikimedia Commons), Schlüssel exakt wie CITY_DB.key ("Stadt|Land").
+   Alle anderen Städte (z. B. Tokio, New York — dort ist "Wappen" im europäischen Sinn unüblich oder
+   nicht eindeutig kuratiert) fallen automatisch auf die Länderflagge zurück. Liste bei Bedarf
+   einfach um weitere Städte ergänzen (Dateiname 1:1 wie auf commons.wikimedia.org/wiki/File:...). */
+const CITY_COAT_OF_ARMS = {
+  'Berlin|Deutschland': 'DEU Berlin COA.svg',
+  'München|Deutschland': 'DEU München COA.svg',
+  'Hamburg|Deutschland': 'DEU Hamburg COA.svg',
+  'Köln|Deutschland': 'DEU Koeln COA.svg',
+  'Frankfurt am Main|Deutschland': 'DEU Frankfurt am Main COA.svg',
+  'Wien|Österreich': 'Wien Wappen.svg',
+  'Zürich|Schweiz': 'Wappen Zürich matt.svg',
+  'Paris|Frankreich': 'Grandes Armes de Paris.svg',
+  'London|Vereinigtes Königreich': 'Coat of Arms of The City of London.svg'
+};
+/* Special:FilePath löst den Dateinamen serverseitig auf (kein manuelles MD5-Hashing des
+   Wikimedia-Pfads nötig) und liefert wahlweise eine skalierte PNG-Vorschau der SVG-Datei. */
+function coatOfArmsUrl(filename, pxWidth){
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(filename)+'?width='+pxWidth;
+}
+
 /* ISO-3166-1 alpha-2 -> numerisch, zum Abgleich mit der world-atlas TopoJSON (Feature-IDs) */
 const COUNTRY_NUMERIC = {
   de:276, at:40, ch:756, fr:250, gb:826, ie:372, nl:528, be:56, es:724, pt:620,
@@ -934,7 +1050,15 @@ function getMode(key){
   return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
 }
 
-const APP_VERSION = '1.11.1';
+/* CO2e-Richtwerte in Gramm pro Personenkilometer (Umweltbundesamt/TREMOD-Durchschnittswerte,
+   Kurz-/Mittelstrecke Flug ~230, Pkw-Durchschnitt inkl. E-Autos ~164, Bahn-Fernverkehr ~35,
+   Fernbus ~30, Rad praktisch 0). Reale Werte schwanken je nach Auslastung, Antrieb und Strommix
+   spürbar — das sind grobe, aber realistische Orientierungswerte. */
+const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
+/* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
+const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
+
+const APP_VERSION = '1.18.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -964,6 +1088,9 @@ let currentTab = 'dashboard';
 let editingId = null;
 let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
+let logSort = {key:'dateFrom', dir:'desc'};
+let statsYearMode = 'all';
+let co2ChartRange = 'year';
 
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
    werden lokal gemerkt, damit sie beim nächsten Mal sofort (ohne erneute Abfrage) gefunden werden. */
@@ -1061,16 +1188,59 @@ function computeMultiLegDistance(cityNames, mode){
   return Math.round(beeline*factor);
 }
 
+/* Länderflaggen als Unicode-Emoji statt externer Bilder — die bisherige Lösung lud PNGs von
+   flagcdn.com nach, was je nach Netzwerk/Browser fehlschlagen kann (siehe Screenshot: überall
+   nur der 🌍-Fallback). Emoji-Flaggen brauchen keine externe Anfrage und funktionieren immer. */
+function flagEmoji(cc){
+  if(!cc || cc.length!==2) return '🌍';
+  const upper = cc.toUpperCase();
+  const points = [...upper].map(ch=>127397+ch.charCodeAt(0));
+  return String.fromCodePoint(...points);
+}
 function flagImg(cc,size){
-  size=size||24;
-  if(!cc) return '<span style="font-size:'+(size*0.8)+'px;">🌍</span>';
-  return '<img src="https://flagcdn.com/w'+size+'/'+cc.toLowerCase()+'.png" alt="" '+
-    'onerror="this.outerHTML=\'<span style=&quot;font-size:'+(size*0.8)+'px;&quot;>🌍</span>\'">';
+  size = size||24;
+  return '<span class="flag-ico" style="font-size:'+Math.round(size*0.86)+'px;">'+flagEmoji(cc)+'</span>';
+}
+/* Größere, freistehende Flaggen-Kachel — eigenes, ruhigeres Design für die Länder-Übersicht */
+function flagBadge(cc,size){
+  size = size||44;
+  return '<div class="flag-badge" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.5)+'px;">'+flagEmoji(cc)+'</div>';
+}
+
+/* Kleines, inline verwendbares Stadt-Icon: zeigt das kuratierte Wappen, falls vorhanden,
+   sonst die Länderflagge. Schlägt das Wappen-Bild fehl (Datei umbenannt/entfernt, keine
+   Verbindung …), springt onerror automatisch auf die zuverlässige Flaggen-Emoji zurück —
+   es bleibt also nie ein kaputtes Bild stehen. */
+function cityIcon(cityName, country, cc, size){
+  size = size||24;
+  const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
+  if(!file) return flagImg(cc, size);
+  const url = coatOfArmsUrl(file, Math.max(80, Math.round(size*3)));
+  const fallback = flagImg(cc, size).replace(/"/g,'&quot;');
+  return '<img class="city-coa" src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" '+
+    'style="height:'+size+'px;width:auto;max-width:'+Math.round(size*1.4)+'px;" loading="lazy" '+
+    'onerror="this.outerHTML=\''+fallback+'\'">';
+}
+/* Größere Wappen-Kachel im selben Design wie flagBadge — für die prominente Stadt-Detailansicht */
+function cityBadge(cityName, country, cc, size){
+  size = size||44;
+  const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
+  if(!file) return flagBadge(cc, size);
+  const url = coatOfArmsUrl(file, Math.max(120, size*3));
+  const fallbackEmoji = flagEmoji(cc);
+  return '<div class="flag-badge coa-badge" style="width:'+size+'px;height:'+size+'px;">'+
+    '<img src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" loading="lazy" '+
+    'onerror="this.outerHTML=\''+fallbackEmoji+'\'"></div>';
 }
 
 function fmtKm(n){
   if(n==null||isNaN(n)) return '–';
   return Math.round(n).toLocaleString('de-DE')+' km';
+}
+function fmtKg(n){
+  if(n==null||isNaN(n)) return '–';
+  if(n>=1000) return (n/1000).toLocaleString('de-DE',{maximumFractionDigits:1,minimumFractionDigits:0})+' t CO₂';
+  return Math.round(n).toLocaleString('de-DE')+' kg CO₂';
 }
 function fmtNum(n){return Math.round(n).toLocaleString('de-DE');}
 
@@ -1084,6 +1254,24 @@ function fmtRange(from,to){
   if(!from) return '–';
   if(!to || to===from) return 'am '+fmtDate(from);
   return fmtDate(from)+' – '+fmtDate(to);
+}
+
+/* Letzter Eintrag: liefert den neuesten createdAt-Zeitstempel aller Reisen (0, falls keiner vorhanden) */
+function lastEntryCreatedAt(){
+  return trips.reduce((max,t)=>Math.max(max, t.createdAt||0), 0);
+}
+function fmtLastEntryTimestamp(ms){
+  if(!ms) return null;
+  const d = new Date(ms);
+  if(isNaN(d.getTime())) return null;
+  const now = new Date();
+  const time = d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  const sameDay = d.toDateString()===now.toDateString();
+  if(sameDay) return 'heute, '+time+' Uhr';
+  const yesterday = new Date(now); yesterday.setDate(yesterday.getDate()-1);
+  if(d.toDateString()===yesterday.toDateString()) return 'gestern, '+time+' Uhr';
+  const dateStr = d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year: d.getFullYear()!==now.getFullYear() ? 'numeric' : undefined});
+  return dateStr+', '+time+' Uhr';
 }
 
 /* ---------- Theme (hell / dunkel / automatisch) ---------- */
@@ -1333,12 +1521,47 @@ async function saveSettings(){
 }
 
 /* ---------- Aggregation ---------- */
-/* Jede Reise hat einen Hinweg (outMode/outDistanceKm) und, falls direction==='roundtrip',
-   einen unabhängigen Rückweg (returnMode/returnDistanceKm) — z. B. Hinweg mit dem Rad,
-   Rückweg mit dem Zug. Beide können Verkehrsmittel UND Distanz unterschiedlich haben. */
-function tripOut(t){ return t.outDistanceKm||0; }
-function tripReturn(t){ return t.direction==='roundtrip' ? (t.returnDistanceKm||0) : 0; }
+/* Jede Reise hat einen Hinweg (outMode/outDistanceKm) und, je nach direction, zusätzlich
+   oder stattdessen einen unabhängigen Rückweg (returnMode/returnDistanceKm):
+   'oneway' → nur Hinweg-Felder befüllt · 'roundtrip' → beide Felder unabhängig befüllt
+   (z. B. Hinweg mit dem Rad, Rückweg mit dem Zug) · 'returnonly' → nur Rückweg-Felder
+   befüllt (Hinweg-Felder bleiben leer), z. B. wenn nur der Rückweg erfasst werden soll. */
+function tripOut(t){ return t.direction==='returnonly' ? 0 : (t.outDistanceKm||0); }
+function tripReturn(t){ return (t.direction==='roundtrip'||t.direction==='returnonly') ? (t.returnDistanceKm||0) : 0; }
 function tripTotal(t){ return tripOut(t)+tripReturn(t); }
+/* Liefert das "eine" erfasste Teilstück einer Reise ohne zwei unabhängige Teilstücke
+   (also 'oneway' oder 'returnonly') — bei 'roundtrip' gibt es zwei eigenständige
+   Teilstücke, dafür ist diese Funktion nicht gedacht (dort direkt out- bzw. return-Felder verwenden). */
+function primaryLeg(t){
+  if(t.direction==='returnonly') return {mode:t.returnMode, distanceKm:t.returnDistanceKm, waypoints:t.returnWaypoints||[]};
+  return {mode:t.outMode, distanceKm:t.outDistanceKm, waypoints:t.outWaypoints||[]};
+}
+
+/* Geschätzter CO2e-Ausstoß einer Reise in kg — Hin- und Rückweg jeweils mit dem Faktor
+   ihres eigenen Verkehrsmittels (siehe CO2_FACTORS). Fallback 150 g/Pkm für unbekannte Modi. */
+function tripCO2Kg(t){
+  const outFactor = CO2_FACTORS[t.outMode] != null ? CO2_FACTORS[t.outMode] : 150;
+  let kg = (tripOut(t)*outFactor)/1000;
+  if(t.direction==='roundtrip' || t.direction==='returnonly'){
+    const retFactor = CO2_FACTORS[t.returnMode] != null ? CO2_FACTORS[t.returnMode] : 150;
+    kg += (tripReturn(t)*retFactor)/1000;
+  }
+  return kg;
+}
+function totalCO2Kg(){ return trips.reduce((s,t)=>s+tripCO2Kg(t),0); }
+function yearCO2Kg(year){
+  return trips.reduce((s,t)=> (t.dateFrom||'').slice(0,4)===year ? s+tripCO2Kg(t) : s, 0);
+}
+
+/* Prüft, ob ein Stadtname dem hinterlegten Heimatort entspricht. Reisen "nach Hause"
+   (z. B. ein separat erfasster Rückflug) sollen nicht als besuchter Ort mitgezählt werden —
+   die zurückgelegten Kilometer, das Verkehrsmittel und der CO2-Wert bleiben davon unberührt. */
+function isHomeCity(cityName){
+  if(!cityName || !settings.home) return false;
+  const hc = findCity(settings.home);
+  const homeName = hc ? hc.n : settings.home.split('(')[0].trim();
+  return !!homeName && cityName.trim().toLowerCase()===homeName.trim().toLowerCase();
+}
 
 function aggregate(){
   let totalOut=0, totalReturn=0;
@@ -1368,13 +1591,19 @@ function aggregate(){
   trips.forEach(t=>{
     const out=tripOut(t), ret=tripReturn(t), tot=out+ret;
     totalOut+=out; totalReturn+=ret;
-    perMode[t.outMode]=(perMode[t.outMode]||0)+out;
-    if(t.direction==='roundtrip'){
+    if(t.direction!=='returnonly'){
+      perMode[t.outMode]=(perMode[t.outMode]||0)+out;
+    }
+    if(t.direction==='roundtrip' || t.direction==='returnonly'){
       perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
     }
 
-    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
-    mainCity.outKm += out; mainCity.returnKm += ret;
+    /* Heimatort zählt nicht als besuchter Ort — die Strecke/CO2 bleibt trotzdem
+       in den Gesamtwerten (oben) enthalten, sie wurde ja wirklich zurückgelegt. */
+    if(!isHomeCity(t.city)){
+      const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
+      mainCity.outKm += out; mainCity.returnKm += ret;
+    }
 
     const pLabel = purposeLabel(t);
     const pKey = pLabel || 'Ohne Angabe';
@@ -1392,6 +1621,154 @@ function aggregate(){
     countries:[...countryMap.values()],
     purposes:[...purposeMap.values()]
   };
+}
+
+/* Kilometer pro Kalenderjahr, zusätzlich aufgeschlüsselt je Verkehrsmittel
+   (Hin- und Rückweg zählen unabhängig, je nach ihrem eigenen Verkehrsmittel) */
+function aggregateYears(){
+  const map = new Map();
+  trips.forEach(t=>{
+    const year = (t.dateFrom||'').slice(0,4);
+    if(!/^\d{4}$/.test(year)) return;
+    if(!map.has(year)) map.set(year,{year:year, total:0, perMode:{}});
+    const y = map.get(year);
+    const out = tripOut(t), ret = tripReturn(t);
+    y.total += out+ret;
+    if(t.direction!=='returnonly'){
+      y.perMode[t.outMode] = (y.perMode[t.outMode]||0)+out;
+    }
+    if(t.direction==='roundtrip' || t.direction==='returnonly'){
+      y.perMode[t.returnMode] = (y.perMode[t.returnMode]||0)+ret;
+    }
+  });
+  return [...map.values()].sort((a,b)=>b.year.localeCompare(a.year));
+}
+
+const MONTH_NAMES = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+/* Saisonmuster: Reisen &amp; Kilometer je Kalendermonat, über alle Jahre hinweg summiert
+   (Monat aus dateFrom; bei mehrtägigen Reisen zählt der Startmonat) */
+function aggregateMonths(){
+  const arr = MONTH_NAMES.map((name,i)=>({month:i+1, name, trips:0, km:0}));
+  trips.forEach(t=>{
+    const mm = parseInt((t.dateFrom||'').slice(5,7),10);
+    if(!mm || mm<1 || mm>12) return;
+    arr[mm-1].trips++;
+    arr[mm-1].km += tripTotal(t);
+  });
+  return arr;
+}
+
+/* Entdecker-Trend: wie viele Länder/Städte wurden in welchem Jahr zum ERSTEN Mal besucht
+   (chronologisch aufsteigend, zeigt ob das "Entdecker-Tempo" zu- oder abnimmt) */
+function aggregateDiscoveries(){
+  const cityFirstYear = new Map();
+  const countryFirstYear = new Map();
+  trips.slice().sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'')).forEach(t=>{
+    const year = (t.dateFrom||'').slice(0,4);
+    if(!/^\d{4}$/.test(year)) return;
+    const ckey = t.city+'|'+t.country;
+    if(!cityFirstYear.has(ckey)) cityFirstYear.set(ckey, year);
+    if(!countryFirstYear.has(t.country)) countryFirstYear.set(t.country, year);
+  });
+  const yearMap = new Map();
+  function bump(year, key){
+    if(!yearMap.has(year)) yearMap.set(year, {year, newCities:0, newCountries:0});
+    yearMap.get(year)[key]++;
+  }
+  cityFirstYear.forEach((year)=>bump(year,'newCities'));
+  countryFirstYear.forEach((year)=>bump(year,'newCountries'));
+  return [...yearMap.values()].sort((a,b)=>a.year.localeCompare(b.year));
+}
+
+/* Persönliche Rekorde: weiteste Einzelreise (größte Hinweg-Distanz zu einem Ziel),
+   längste Reisedauer, meiste Länder in einem Kalenderjahr */
+/* Städte, die bewusst von bestimmten "Rekord"-Auswertungen ausgeschlossen werden (auf
+   Nutzerwunsch) — z. B. weil ein langer Aufenthalt aus besonderem Anlass (Evakuierung o. Ä.)
+   sonst fälschlich als "längste Reise" auftauchen würde. */
+const RECORD_EXCLUDE_LONGEST = ['Grindavik'];
+
+function computeRecords(){
+  if(trips.length===0) return null;
+
+  /* "Weiteste Einzelreise": bei roundtrip zählt die Hinweg-Distanz zum Ziel, bei
+     oneway/returnonly die Distanz des einen erfassten Teilstücks. */
+  function legKmForFarthest(t){
+    return t.direction==='roundtrip' ? (t.outDistanceKm||0) : (primaryLeg(t).distanceKm||0);
+  }
+  const farthest = trips.slice().sort((a,b)=>legKmForFarthest(b)-legKmForFarthest(a))[0];
+
+  const durationCandidates = trips.filter(t=>!RECORD_EXCLUDE_LONGEST.includes(t.city));
+  const withDuration = durationCandidates.map(t=>{
+    const from = t.dateFrom ? new Date(t.dateFrom) : null;
+    const to = t.dateTo ? new Date(t.dateTo) : from;
+    const days = (from && to) ? Math.round((to-from)/86400000)+1 : 1;
+    return {trip:t, days:Math.max(1,days)};
+  }).sort((a,b)=>b.days-a.days);
+  const longest = withDuration[0];
+
+  const countriesByYear = new Map();
+  trips.forEach(t=>{
+    const year = (t.dateFrom||'').slice(0,4);
+    if(!/^\d{4}$/.test(year)) return;
+    if(!countriesByYear.has(year)) countriesByYear.set(year, new Set());
+    countriesByYear.get(year).add(t.country);
+  });
+  let bestYear = null, bestCount = 0;
+  countriesByYear.forEach((set,year)=>{
+    if(set.size>bestCount){ bestCount=set.size; bestYear=year; }
+  });
+
+  return {
+    farthest: farthest ? {trip:farthest, km:legKmForFarthest(farthest)} : null,
+    longest: longest ? {trip:longest.trip, days:longest.days} : null,
+    bestYear: bestYear ? {year:bestYear, count:bestCount} : null
+  };
+}
+
+/* Reise mit der höchsten bzw. niedrigsten geschätzten CO2-Emission (gepaart mit ihrer Distanz) */
+function computeCO2Extremes(){
+  if(trips.length===0) return null;
+  const sorted = trips.slice().sort((a,b)=>tripCO2Kg(b)-tripCO2Kg(a));
+  return {
+    most: sorted.slice(0,3),
+    least: sorted.slice(-3).reverse()
+  };
+}
+
+/* CO2-Verlauf, gruppiert je nach gewähltem Zeitraum:
+   'month' → Tage des laufenden Monats, 'year'/'lastyear' → Monate des jeweiligen Jahres,
+   'all' → alle Jahre mit Daten. Liefert [{label, value}], value = kg CO2 je Bucket. */
+function co2BucketsForFilter(filter){
+  const now = new Date();
+  if(filter==='month'){
+    const y = now.getFullYear(), m = now.getMonth();
+    const ym = y+'-'+String(m+1).padStart(2,'0');
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+    const buckets = [];
+    for(let d=1; d<=daysInMonth; d++) buckets.push({label:String(d), value:0});
+    trips.forEach(t=>{
+      if((t.dateFrom||'').slice(0,7)===ym){
+        const day = parseInt((t.dateFrom||'').slice(8,10),10);
+        if(buckets[day-1]) buckets[day-1].value += tripCO2Kg(t);
+      }
+    });
+    return buckets;
+  }
+  if(filter==='year' || filter==='lastyear'){
+    const y = filter==='year' ? now.getFullYear() : now.getFullYear()-1;
+    const buckets = MONTH_NAMES.map(name=>({label:name.slice(0,3), value:0}));
+    trips.forEach(t=>{
+      if((t.dateFrom||'').slice(0,4)===String(y)){
+        const mm = parseInt((t.dateFrom||'').slice(5,7),10);
+        if(mm>=1 && mm<=12) buckets[mm-1].value += tripCO2Kg(t);
+      }
+    });
+    return buckets;
+  }
+  // 'all' — alle Jahre mit erfassten Reisen, chronologisch
+  const yearsSet = new Set();
+  trips.forEach(t=>{ const y=(t.dateFrom||'').slice(0,4); if(/^\d{4}$/.test(y)) yearsSet.add(y); });
+  return [...yearsSet].sort().map(y=>({label:y, value:yearCO2Kg(y)}));
 }
 
 /* ---------- Distanzvergleiche ---------- */
@@ -1414,13 +1791,38 @@ function compareToReference(km, refKm){
   };
 }
 
+/* CO2-Vergleich zum ø Jahres-Fußabdruck eines Bundesbürgers — gleiche Logik wie
+   compareToReference, aber ohne "noch X km"-Resttext (kg/t lässt sich nicht so knackig ausdrücken) */
+function compareCO2(kg, refKg){
+  if(!kg) return {ratioText:'–', exceeded:false};
+  const ratio = kg/refKg;
+  if(ratio>=1){
+    return {ratioText: ratio.toLocaleString('de-DE',{maximumFractionDigits:2,minimumFractionDigits:0})+'×', exceeded:true};
+  }
+  const pct = ratio*100;
+  const dec = pct<1 ? 2 : 1;
+  return {ratioText: pct.toLocaleString('de-DE',{maximumFractionDigits:dec,minimumFractionDigits:0})+'%', exceeded:false};
+}
+
 /* ---------- Render: Dashboard ---------- */
 function renderDashboard(root){
   const agg = aggregate();
   const cityCount = agg.cities.length;
   const countryCount = agg.countries.length;
+  const currentYear = String(new Date().getFullYear());
+  const currentYearKm = aggregateYears().find(y=>y.year===currentYear);
+  const currentYearTotalKm = currentYearKm ? currentYearKm.total : 0;
 
   let html = '';
+  const lastEntryTs = fmtLastEntryTimestamp(lastEntryCreatedAt());
+  if(trips.length){
+    html += '<div class="dashboard-meta-row">';
+    if(lastEntryTs){
+      html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
+    }
+    html += '<div class="last-entry-note">📅 '+currentYear+' bisher: '+fmtKm(currentYearTotalKm)+'</div>';
+    html += '</div>';
+  }
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
   html += '    <div class="hero-eyebrow">Gesamtstrecke — Hin- &amp; Rückwege</div>';
@@ -1437,20 +1839,25 @@ function renderDashboard(root){
   const cmpEarth = compareToReference(agg.totalKm, EARTH_CIRCUMFERENCE_KM);
   const cmpMoon = compareToReference(agg.totalKm, MOON_DISTANCE_KM);
   const cmpMars = compareToReference(agg.totalKm, MARS_DISTANCE_KM);
+  const currentYearCO2 = yearCO2Kg(currentYear);
+  const cmpCO2 = compareCO2(currentYearCO2, GERMAN_AVG_CO2_KG_PER_YEAR);
   html += '    <div class="hero-compare">';
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+'"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+'"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung)"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div></div>';
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
   const sortedModeOrder = MODE_ORDER.slice().sort((a,b)=>(agg.perMode[b]||0)-(agg.perMode[a]||0));
   sortedModeOrder.forEach(m=>{
     const mo=getMode(m);
+    const yearVal = currentYearKm ? (currentYearKm.perMode[m]||0) : 0;
     html += '<div class="stub" style="--stub-color:'+mo.color+'">';
     html += '  <div class="icon">'+mo.icon+'</div>';
     html += '  <div class="val" data-mode-val="'+m+'">0 km</div>';
     html += '  <div class="label">'+mo.label+'</div>';
+    html += '  <div class="val-year">'+currentYear+': '+fmtKm(yearVal)+'</div>';
     html += '</div>';
   });
   html += '  </div>';
@@ -1554,16 +1961,14 @@ async function initWorldMap(agg){
     .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited':''))
     .attr('d', path);
 
-  const HOME_DOT_RADIUS = 3.6;
-  let homeMark = null;
   if(settings.home){
     const hc = findCity(settings.home);
     if(hc){
       const p = projection([hc.lon, hc.lat]);
       if(p){
-        homeMark = g.append('circle').attr('class','home-mark')
-          .attr('cx',p[0]).attr('cy',p[1]).attr('r',HOME_DOT_RADIUS);
-        homeMark.append('title').text(hc.n+' — Heimatort');
+        g.append('rect').attr('class','home-mark')
+          .attr('x',p[0]-5).attr('y',p[1]-5).attr('width',10).attr('height',10)
+          .attr('transform','rotate(45 '+p[0]+' '+p[1]+')');
       }
     }
   }
@@ -1572,7 +1977,7 @@ async function initWorldMap(agg){
     .map(c=>({c, ref:findCity(c.city)}))
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
-  const dotRadius = x => 1.8 + (x.c.visits/maxVisits)*3.2;
+  const dotRadius = x => 3 + (x.c.visits/maxVisits)*6;
 
   const cityDots = g.append('g').attr('class','city-layer')
     .selectAll('circle')
@@ -1596,8 +2001,7 @@ async function initWorldMap(agg){
       // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
       // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
       const k = event.transform.k;
-      cityDots.attr('r', x => Math.max(1, dotRadius(x)/k));
-      if(homeMark) homeMark.attr('r', Math.max(1.2, HOME_DOT_RADIUS/k));
+      cityDots.attr('r', x => Math.max(1.6, dotRadius(x)/k));
     });
   svg.call(zoom);
 
@@ -1618,7 +2022,7 @@ function renderCityDetail(agg){
     return;
   }
   let html = '';
-  html += '<div class="city-detail-head">'+flagImg(c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
+  html += '<div class="city-detail-head">'+cityBadge(c.city,c.country,c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
   html += '<div class="city-detail-stats">';
   html += '<div>Besuche<br><b>'+c.visits+'</b></div>';
   html += '<div>Gesamtdistanz<br><b>'+fmtKm(c.totalKm)+'</b></div>';
@@ -1627,14 +2031,21 @@ function renderCityDetail(agg){
   html += '</div>';
   html += '<div class="visit-chip-list">';
   c.trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'')).forEach(t=>{
-    const outMo=getMode(t.outMode);
-    let distText = outMo.icon+' '+fmtKm(t.outDistanceKm);
-    if((t.outWaypoints||[]).length) distText += ' (via '+t.outWaypoints.join(', ')+')';
+    let distText;
     if(t.direction==='roundtrip'){
+      const outMo=getMode(t.outMode);
+      let outText = outMo.icon+' '+fmtKm(t.outDistanceKm);
+      if((t.outWaypoints||[]).length) outText += ' (via '+t.outWaypoints.join(', ')+')';
       const retMo=getMode(t.returnMode);
       let retText = retMo.icon+' '+fmtKm(t.returnDistanceKm);
       if((t.returnWaypoints||[]).length) retText += ' (via '+t.returnWaypoints.join(', ')+')';
-      distText += ' · '+retText+' = '+fmtKm(tripTotal(t));
+      distText = outText+' · '+retText+' = '+fmtKm(tripTotal(t));
+    } else {
+      const leg = primaryLeg(t);
+      const mo = getMode(leg.mode);
+      distText = mo.icon+' '+fmtKm(leg.distanceKm);
+      if(leg.waypoints.length) distText += ' (via '+leg.waypoints.join(', ')+')';
+      if(t.direction==='returnonly') distText += ' (nur Rückweg)';
     }
     const pLbl = purposeLabel(t);
     html += '<div class="visit-chip">'+fmtRange(t.dateFrom,t.dateTo)+' · '+distText+(pLbl?' · '+purposeIcon(t.purpose)+' '+pLbl:'')+'</div>';
@@ -1707,6 +2118,7 @@ function renderAdd(root){
   html += '        <label>Fahrtrichtung</label>';
   html += '        <div class="direction-toggle" id="directionToggle">';
   html += '          <div class="dir-opt'+(t&&t.direction==='oneway'?' active':'')+'" data-dir="oneway">→ Nur Hinweg</div>';
+  html += '          <div class="dir-opt'+(t&&t.direction==='returnonly'?' active':'')+'" data-dir="returnonly">← Nur Rückweg</div>';
   html += '          <div class="dir-opt'+(t&&t.direction==='roundtrip'?' active':'')+'" data-dir="roundtrip">⇄ Hin- und Rückweg</div>';
   html += '        </div>';
   html += '      </div>';
@@ -1806,7 +2218,7 @@ function renderAdd(root){
   })();
 
   let direction = t ? t.direction : null;
-  let outMode = t ? t.outMode : 'plane';
+  let outMode = t ? (t.outMode || 'plane') : 'plane';
   let returnMode = t ? (t.returnMode || 'plane') : 'plane';
   let outWaypoints = t ? (t.outWaypoints||[]).slice() : [];
   let returnWaypoints = t ? (t.returnWaypoints||[]).slice() : [];
@@ -1829,7 +2241,9 @@ function renderAdd(root){
   });
 
   function updateFlightField(){
-    const show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
+    let show;
+    if(direction==='returnonly') show = returnMode==='plane';
+    else show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
     document.getElementById('flightField').style.display = show ? 'block':'none';
   }
 
@@ -1839,21 +2253,29 @@ function renderAdd(root){
       stub.innerHTML = '<div class="stub-ic">❔</div><div class="stub-lbl" style="margin-top:6px;">Erst Fahrtrichtung wählen</div>';
       return;
     }
-    const outInput = document.getElementById('fldDist_out');
-    const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
     let h = '';
-    h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
-    h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
-    h += '<div class="stub-lbl">km Hinweg</div>';
-    if(direction==='roundtrip'){
+    if(direction==='returnonly'){
       const retInput = document.getElementById('fldDist_return');
       const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
-      h += '<div class="stub-return-wrap">';
-      h += '  <div class="stub-ic" style="font-size:22px;">'+getMode(returnMode).icon+'</div>';
-      h += '  <div class="stub-km-sm">'+(retVal?fmtNum(retVal):'—')+'</div>';
-      h += '  <div class="stub-lbl-sm">km Rückweg</div>';
-      h += '  <div class="stub-total">Gesamt <b>'+fmtKm(outVal+retVal)+'</b></div>';
-      h += '</div>';
+      h += '<div class="stub-ic">'+getMode(returnMode).icon+'</div>';
+      h += '<div class="stub-km">'+(retVal?fmtNum(retVal):'—')+'</div>';
+      h += '<div class="stub-lbl">km Rückweg</div>';
+    } else {
+      const outInput = document.getElementById('fldDist_out');
+      const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
+      h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
+      h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
+      h += '<div class="stub-lbl">km Hinweg</div>';
+      if(direction==='roundtrip'){
+        const retInput = document.getElementById('fldDist_return');
+        const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
+        h += '<div class="stub-return-wrap">';
+        h += '  <div class="stub-ic" style="font-size:22px;">'+getMode(returnMode).icon+'</div>';
+        h += '  <div class="stub-km-sm">'+(retVal?fmtNum(retVal):'—')+'</div>';
+        h += '  <div class="stub-lbl-sm">km Rückweg</div>';
+        h += '  <div class="stub-total">Gesamt <b>'+fmtKm(outVal+retVal)+'</b></div>';
+        h += '</div>';
+      }
     }
     stub.innerHTML = h;
   }
@@ -1899,14 +2321,19 @@ function renderAdd(root){
   function renderLegsContainer(){
     const container = document.getElementById('legsContainer');
     if(!direction){
-      container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst auswählen: nur Hinweg oder Hin- und Rückweg — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
+      container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst die Fahrtrichtung wählen — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
       updateFlightField();
       updateStub();
       return;
     }
-    let h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
-    if(direction==='roundtrip'){
-      h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+    let h = '';
+    if(direction==='returnonly'){
+      h = buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+    } else {
+      h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
+      if(direction==='roundtrip'){
+        h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+      }
     }
     container.innerHTML = h;
     updateFlightField();
@@ -2009,17 +2436,22 @@ function renderAdd(root){
     const fromVal = document.getElementById('fldFrom').value.trim();
     const dateFrom = document.getElementById('fldFromDate').value;
     if(!dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
-    if(!direction){ showToast('Bitte wähle: Nur Hinweg oder Hin- und Rückweg.'); return; }
+    if(!direction){ showToast('Bitte wähle eine Fahrtrichtung.'); return; }
 
-    const outDistInput = document.getElementById('fldDist_out');
-    const outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
-    if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
-
-    let returnDistVal = null;
-    if(direction==='roundtrip'){
+    let outDistVal = null, returnDistVal = null;
+    if(direction==='returnonly'){
       const retDistInput = document.getElementById('fldDist_return');
       returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
       if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+    } else {
+      const outDistInput = document.getElementById('fldDist_out');
+      outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
+      if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
+      if(direction==='roundtrip'){
+        const retDistInput = document.getElementById('fldDist_return');
+        returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
+        if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+      }
     }
 
     // Letzter Versuch, die Zielstadt aufzulösen, falls das noch nicht geschehen ist
@@ -2050,13 +2482,13 @@ function renderAdd(root){
       city: cityName,
       country: countryName,
       cityCC: cc,
-      outWaypoints: outWaypoints.map(w=>w.trim()).filter(Boolean),
-      returnWaypoints: direction==='roundtrip' ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
+      outWaypoints: direction==='returnonly' ? [] : outWaypoints.map(w=>w.trim()).filter(Boolean),
+      returnWaypoints: (direction==='roundtrip'||direction==='returnonly') ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
       direction: direction,
-      outMode: outMode,
-      outDistanceKm: Math.round(outDistVal),
-      returnMode: direction==='roundtrip' ? returnMode : null,
-      returnDistanceKm: direction==='roundtrip' ? Math.round(returnDistVal) : null,
+      outMode: direction==='returnonly' ? null : outMode,
+      outDistanceKm: direction==='returnonly' ? null : Math.round(outDistVal),
+      returnMode: (direction==='roundtrip'||direction==='returnonly') ? returnMode : null,
+      returnDistanceKm: (direction==='roundtrip'||direction==='returnonly') ? Math.round(returnDistVal) : null,
       dateFrom: dateFrom,
       dateTo: document.getElementById('fldToDate').value || dateFrom,
       purpose: purpose,
@@ -2083,28 +2515,332 @@ function renderAdd(root){
 
 /* ---------- Render: Places (Länder & Städte) ---------- */
 /* ---------- Render: Statistiken ---------- */
+function rankClass(i){ return i===0?' r1':i===1?' r2':i===2?' r3':''; }
+
+function topListItemHTML(i, nameHTML, valueHTML, pct, opts){
+  opts = opts || {};
+  const rc = opts.plain ? '' : rankClass(i);
+  const label = opts.label!=null ? opts.label : (i+1);
+  let h = '<div class="top-item">';
+  h += '  <div class="top-rank'+rc+'">'+label+'</div>';
+  h += '  <div class="top-main">';
+  h += '    <div class="top-row"><div class="top-name">'+nameHTML+'</div><div class="top-value">'+valueHTML+'</div></div>';
+  h += '    <div class="top-bar-track"><div class="top-bar-fill" style="width:'+pct+'%"></div></div>';
+  h += '  </div>';
+  h += '</div>';
+  return h;
+}
+
 function renderStats(root){
   const agg = aggregate();
   let html = '';
 
-  html += '<div class="card">';
-  html += '  <div class="card-head"><h2>Reisen nach Grund</h2><span class="sub">'+agg.purposes.length+' Kategorien</span></div>';
   if(trips.length===0){
-    html += '<div class="empty-state"><div class="big">🏷️</div>Noch keine Reisen erfasst.</div>';
+    html += '<div class="card"><div class="empty-state"><div class="big">📊</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, erscheinen hier deine Auswertungen.</div></div>';
+    root.innerHTML = html;
+    return;
+  }
+
+  /* Top 5 Städte & Top 5 Länder, jeweils nach Anzahl Besuche */
+  const topCities = agg.cities.slice().sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
+  const topCountries = agg.countries.slice().sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
+  const maxCityVisits = topCities.length ? topCities[0].visits : 1;
+  const maxCountryVisits = topCountries.length ? topCountries[0].visits : 1;
+
+  html += '<div class="stats-grid-2">';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>Top 5 Städte</h2><span class="sub">nach Besuchen</span></div>';
+  html += '    <div class="top-list">';
+  topCities.forEach((c,i)=>{
+    const pct = Math.max(6, Math.round((c.visits/maxCityVisits)*100));
+    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>';
+    const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
+    html += topListItemHTML(i, name, val, pct);
+  });
+  html += '    </div>';
+  html += '  </div>';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>Top 5 Länder</h2><span class="sub">nach Besuchen</span></div>';
+  html += '    <div class="top-list">';
+  topCountries.forEach((c,i)=>{
+    const pct = Math.max(6, Math.round((c.visits/maxCountryVisits)*100));
+    const name = flagImg(c.cc,18)+'<span>'+c.country+'</span>';
+    const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
+    html += topListItemHTML(i, name, val, pct);
+  });
+  html += '    </div>';
+  html += '  </div>';
+
+  html += '</div>';
+
+  /* Top 5 Jahre nach Gesamtkilometern, filterbar nach Verkehrsmittel */
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Top 5 Jahre</h2><span class="sub">nach gereisten Kilometern</span></div>';
+  html += '  <div class="mode-filter-toggle" id="statsYearFilter">';
+  html += '    <div class="mode-filter-chip'+(statsYearMode==='all'?' active':'')+'" data-year-mode="all">🌐 Alle</div>';
+  MODE_ORDER.forEach(m=>{
+    const mo = getMode(m);
+    html += '    <div class="mode-filter-chip'+(statsYearMode===m?' active':'')+'" data-year-mode="'+m+'" style="--chip-color:'+mo.color+'">'+mo.icon+' '+mo.label+'</div>';
+  });
+  html += '  </div>';
+  html += '  <div class="top-list" id="statsYearList"></div>';
+  html += '</div>';
+
+  /* Verkehrsmittel-Verteilung als Ring-Chart (Anteile an der Gesamtstrecke) */
+  const modeEntries = MODE_ORDER.map(m=>({m:m, km:agg.perMode[m]||0})).filter(e=>e.km>0);
+  const modeTotal = modeEntries.reduce((s,e)=>s+e.km,0);
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Verkehrsmittel-Verteilung</h2><span class="sub">Anteil an der Gesamtstrecke</span></div>';
+  if(modeTotal===0){
+    html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Kilometer erfasst.</div>';
   } else {
-    const sortedPurposes = agg.purposes.slice().sort((a,b)=>b.totalKm-a.totalKm);
-    html += '<div class="purpose-grid">';
-    sortedPurposes.forEach(p=>{
-      html += '<div class="purpose-card">';
-      html += '  <div class="pc-top">'+p.icon+' '+p.label+'</div>';
-      html += '  <div class="pc-stats"><span><b>'+p.count+'</b> Reisen</span><span><b>'+fmtKm(p.totalKm)+'</b></span></div>';
-      html += '</div>';
+    let cum = 0;
+    const stops = [];
+    modeEntries.forEach(e=>{
+      const mo = getMode(e.m);
+      const pct = (e.km/modeTotal)*100;
+      stops.push(mo.color+' '+cum.toFixed(2)+'% '+(cum+pct).toFixed(2)+'%');
+      cum += pct;
     });
-    html += '</div>';
+    html += '  <div class="ring-chart-wrap">';
+    html += '    <div class="ring-chart" style="background:conic-gradient('+stops.join(', ')+')">';
+    html += '      <div class="ring-chart-center"><div class="rc-total">'+fmtKm(modeTotal)+'<span>gesamt</span></div></div>';
+    html += '    </div>';
+    html += '    <div class="ring-legend">';
+    modeEntries.slice().sort((a,b)=>b.km-a.km).forEach(e=>{
+      const mo = getMode(e.m);
+      const pct = Math.round((e.km/modeTotal)*100);
+      html += '      <div class="ring-legend-item"><div class="ring-legend-dot" style="background:'+mo.color+'"></div>'+mo.icon+' '+mo.label+'<b>'+pct+' %</b></div>';
+    });
+    html += '    </div>';
+    html += '  </div>';
   }
   html += '</div>';
 
+  /* Saisonmuster: Reisen &amp; Kilometer je Kalendermonat */
+  const months = aggregateMonths();
+  const maxMonthKm = Math.max(1, ...months.map(m=>m.km));
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Saisonmuster</h2><span class="sub">Reisen nach Monat, über alle Jahre</span></div>';
+  html += '  <div class="top-list">';
+  months.forEach((m,i)=>{
+    const pct = m.km>0 ? Math.max(6, Math.round((m.km/maxMonthKm)*100)) : 0;
+    const name = '<span>'+m.name+'</span>';
+    const val = m.trips>0 ? '<b>'+m.trips+'</b> '+(m.trips===1?'Reise':'Reisen')+' · '+fmtKm(m.km) : '<span style="color:var(--text-faint);">–</span>';
+    html += topListItemHTML(i, name, val, pct, {plain:true});
+  });
+  html += '  </div>';
+  html += '</div>';
+
+  /* Persönliche Rekorde */
+  const records = computeRecords();
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Persönliche Rekorde</h2></div>';
+  html += '  <div class="record-grid">';
+  if(records.farthest){
+    const rt = records.farthest.trip;
+    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtDate(rt.dateFrom)+'</div></div>';
+  }
+  if(records.longest){
+    const rt = records.longest.trip;
+    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
+  }
+  if(records.bestYear){
+    html += '    <div class="record-card"><div class="rc-icon">🌍</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
+  }
+  html += '  </div>';
+  html += '</div>';
+
+  /* CO2-Extremwerte: die 3 Reisen mit dem höchsten bzw. niedrigsten CO2-Ausstoß, mit Distanz */
+  const co2Extremes = computeCO2Extremes();
+  html += '<div class="stats-grid-2">';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>🔥 Meiste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="top-list">';
+  const maxMostCO2 = co2Extremes.most.length ? tripCO2Kg(co2Extremes.most[0]) : 1;
+  co2Extremes.most.forEach((tr,i)=>{
+    const val = tripCO2Kg(tr);
+    const pct = Math.max(6, Math.round((val/maxMostCO2)*100));
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
+    html += topListItemHTML(i, name, valHtml, pct);
+  });
+  html += '    </div>';
+  html += '  </div>';
+
+  html += '  <div class="card">';
+  html += '    <div class="card-head"><h2>🌱 Wenigste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="top-list">';
+  const maxLeastCO2 = Math.max(1, ...co2Extremes.least.map(tr=>tripCO2Kg(tr)));
+  co2Extremes.least.forEach((tr,i)=>{
+    const val = tripCO2Kg(tr);
+    const pct = Math.max(6, Math.round((val/maxLeastCO2)*100));
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
+    html += topListItemHTML(i, name, valHtml, pct);
+  });
+  html += '    </div>';
+  html += '  </div>';
+
+  html += '</div>';
+
+
+  /* CO2-Verlauf, filterbar nach Zeitraum */
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>CO2-Verlauf</h2><span class="sub">Emissionen über die Zeit</span></div>';
+  html += '  <div class="mode-filter-toggle" id="co2ChartFilter">';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='month'?' active':'')+'" data-co2-range="month">Aktueller Monat</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='year'?' active':'')+'" data-co2-range="year">Aktuelles Jahr</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='lastyear'?' active':'')+'" data-co2-range="lastyear">Letztes Jahr</div>';
+  html += '    <div class="mode-filter-chip'+(co2ChartRange==='all'?' active':'')+'" data-co2-range="all">Gesamt</div>';
+  html += '  </div>';
+  html += '  <div id="co2ChartTotal" class="co2-chart-total"></div>';
+  html += '  <div id="co2ChartBars"></div>';
+  html += '</div>';
+
+  /* Entdecker-Trend: neue Länder/Städte je Jahr */
+  const discoveries = aggregateDiscoveries();
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr</span></div>';
+  if(discoveries.length===0){
+    html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Daten vorhanden.</div>';
+  } else {
+    const maxNewCities = Math.max(1, ...discoveries.map(d=>d.newCities));
+    html += '  <div class="top-list">';
+    discoveries.forEach((d,i)=>{
+      const pct = Math.max(6, Math.round((d.newCities/maxNewCities)*100));
+      const name = '<span>'+d.year+'</span>';
+      const val = '<b>'+d.newCountries+'</b> neue '+(d.newCountries===1?'Land':'Länder')+' · <b>'+d.newCities+'</b> neue '+(d.newCities===1?'Stadt':'Städte');
+      html += topListItemHTML(i, name, val, pct, {plain:true});
+    });
+    html += '  </div>';
+  }
+  html += '</div>';
+
+  /* Bestehende Auswertung: Reisen nach Grund */
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Reisen nach Grund</h2><span class="sub">'+agg.purposes.length+' Kategorien</span></div>';
+  const sortedPurposes = agg.purposes.slice().sort((a,b)=>b.totalKm-a.totalKm);
+  html += '<div class="purpose-grid">';
+  sortedPurposes.forEach(p=>{
+    html += '<div class="purpose-card">';
+    html += '  <div class="pc-top">'+p.icon+' '+p.label+'</div>';
+    html += '  <div class="pc-stats"><span><b>'+p.count+'</b> Reisen</span><span><b>'+fmtKm(p.totalKm)+'</b></span></div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '</div>';
+
   root.innerHTML = html;
+
+  const years = aggregateYears();
+  renderStatsYearList(years);
+  root.querySelectorAll('#statsYearFilter [data-year-mode]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      statsYearMode = chip.dataset.yearMode;
+      root.querySelectorAll('#statsYearFilter [data-year-mode]').forEach(c=>c.classList.toggle('active', c.dataset.yearMode===statsYearMode));
+      renderStatsYearList(years);
+    });
+  });
+
+  renderCO2Chart();
+  root.querySelectorAll('#co2ChartFilter [data-co2-range]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      co2ChartRange = chip.dataset.co2Range;
+      root.querySelectorAll('#co2ChartFilter [data-co2-range]').forEach(c=>c.classList.toggle('active', c.dataset.co2Range===co2ChartRange));
+      renderCO2Chart();
+    });
+  });
+}
+
+/* Kompakte Wertbeschriftung für die Datenpunkte im Liniendiagramm (wenig Platz pro Punkt) */
+function fmtKgCompact(n){
+  if(!n) return '0';
+  if(n>=1000) return (n/1000).toLocaleString('de-DE',{maximumFractionDigits:1})+'t';
+  return Math.round(n).toLocaleString('de-DE')+'kg';
+}
+
+function renderCO2Chart(){
+  const chartEl = document.getElementById('co2ChartBars');
+  const totalEl = document.getElementById('co2ChartTotal');
+  if(!chartEl || !totalEl) return;
+
+  const rangeLabels = {month:'diesen Monat', year:'dieses Jahr', lastyear:'letztes Jahr', all:'insgesamt'};
+  const buckets = co2BucketsForFilter(co2ChartRange);
+  const total = buckets.reduce((s,b)=>s+b.value,0);
+  totalEl.innerHTML = 'Summe '+(rangeLabels[co2ChartRange]||'')+': <b>'+fmtKg(total)+'</b>';
+
+  if(buckets.length===0 || total===0){
+    chartEl.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">📉</div>Für diesen Zeitraum liegen keine Daten vor.</div>';
+    return;
+  }
+
+  /* Breite in echten Pixeln messen statt fix zu skalieren, damit SVG-Text (Werte, Achse)
+     bei jeder Kartengröße lesbar bleibt, statt mit dem viewBox verzerrt zu werden. */
+  const W = Math.max(260, Math.round(chartEl.clientWidth || (chartEl.parentElement&&chartEl.parentElement.clientWidth) || 600));
+  const H = 210;
+  const padL = 14, padR = 14, padTop = 30, padBottom = 28;
+  const n = buckets.length;
+  const maxVal = Math.max(...buckets.map(b=>b.value), 0.0001);
+  const plotW = W - padL - padR;
+  const plotH = H - padTop - padBottom;
+  const stepX = n>1 ? plotW/(n-1) : 0;
+
+  const pts = buckets.map((b,i)=>{
+    const x = n>1 ? padL + i*stepX : padL + plotW/2;
+    const y = padTop + (1 - (b.value/maxVal)) * plotH;
+    return {x, y, val:b.value, label:b.label};
+  });
+
+  const pathD = pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+  const areaD = pathD+' L'+pts[pts.length-1].x.toFixed(1)+' '+(H-padBottom)+' L'+pts[0].x.toFixed(1)+' '+(H-padBottom)+' Z';
+
+  const showLabelEvery = n>15 ? Math.ceil(n/15) : 1;
+  const valueFontSize = n>20 ? 9 : (n>10 ? 10 : 11);
+
+  let svg = '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" class="co2-line-chart">';
+  svg += '<line x1="'+padL+'" y1="'+(H-padBottom)+'" x2="'+(W-padR)+'" y2="'+(H-padBottom)+'" class="co2-line-axis"/>';
+  svg += '<path d="'+areaD+'" class="co2-line-area"/>';
+  svg += '<path d="'+pathD+'" class="co2-line-path"/>';
+  pts.forEach((p,i)=>{
+    svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3.2" class="co2-line-dot"><title>'+p.label+': '+fmtKg(p.val)+'</title></circle>';
+    if(p.val>0){
+      svg += '<text x="'+p.x.toFixed(1)+'" y="'+Math.max(11,p.y-9).toFixed(1)+'" class="co2-line-value" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
+    }
+    if(i % showLabelEvery === 0){
+      svg += '<text x="'+p.x.toFixed(1)+'" y="'+(H-padBottom+16)+'" class="co2-line-xlabel">'+p.label+'</text>';
+    }
+  });
+  svg += '</svg>';
+  chartEl.innerHTML = svg;
+}
+
+function renderStatsYearList(years){
+  const el = document.getElementById('statsYearList');
+  if(!el) return;
+  const mode = statsYearMode;
+  const computed = years
+    .map(y=>({year:y.year, value: mode==='all' ? y.total : (y.perMode[mode]||0)}))
+    .filter(y=>y.value>0)
+    .sort((a,b)=> b.value-a.value || b.year.localeCompare(a.year))
+    .slice(0,5);
+
+  if(computed.length===0){
+    el.innerHTML = '<div class="empty-state" style="padding:20px 10px;"><div class="big">🗓️</div>Für dieses Verkehrsmittel liegen noch keine Kilometer vor.</div>';
+    return;
+  }
+  const maxVal = computed[0].value;
+  let html = '';
+  computed.forEach((y,i)=>{
+    const pct = Math.max(6, Math.round((y.value/maxVal)*100));
+    const name = '<span>'+y.year+'</span>';
+    const val = '<b>'+fmtKm(y.value)+'</b>';
+    html += topListItemHTML(i, name, val, pct);
+  });
+  el.innerHTML = html;
 }
 
 function renderPlaces(root){
@@ -2120,7 +2856,7 @@ function renderPlaces(root){
     html += '<div class="countries-grid">';
     sortedCountries.forEach(c=>{
       html += '<div class="country-card" data-country="'+c.key.replace(/"/g,'&quot;')+'">';
-      html += '  <div class="country-top">'+flagImg(c.cc,32)+'<h4>'+c.country+'</h4></div>';
+      html += '  <div class="country-top">'+flagBadge(c.cc,42)+'<h4>'+c.country+'</h4></div>';
       html += '  <div class="country-stats"><span><b>'+c.cities.size+'</b> Städte</span><span><b>'+c.visits+'</b> Besuche</span><span><b>'+fmtKm(c.totalKm)+'</b></span></div>';
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
@@ -2174,7 +2910,7 @@ function renderCitiesTable(agg){
   cities.forEach(c=>{
     const lastVisit = c.dates.slice().sort().reverse()[0];
     html += '<tr>';
-    html += '<td data-label="Stadt"><div class="cell-city">'+flagImg(c.cc,20)+'<span>'+c.city+'</span></div></td>';
+    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span></div></td>';
     html += '<td data-label="Land">'+c.country+'</td>';
     html += '<td class="mono" data-label="Besuche">'+c.visits+'</td>';
     html += '<td class="mono" data-label="Gesamtdistanz">'+fmtKm(c.totalKm)+'</td>';
@@ -2199,45 +2935,62 @@ function attachCityTableSort(root, agg){
 }
 
 /* ---------- Render: Log (alle Reisen) ---------- */
-function renderLog(root){
-  let html = '<div class="card">';
-  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
-  if(trips.length===0){
-    html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
-  } else {
-    const sorted = trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
-    html += '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
-    html += '<th>Zeitraum</th><th>Von</th><th>Nach</th><th>Verkehrsmittel</th><th>Distanz</th><th>Grund</th><th></th>';
-    html += '</tr></thead><tbody>';
-    sorted.forEach(t=>{
-      const outMo = getMode(t.outMode);
-      let modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span>';
-      let distCell = fmtKm(t.outDistanceKm);
-      if(t.direction==='roundtrip'){
-        const retMo = getMode(t.returnMode);
-        modeCell += ' <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
-        distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
-      }
-      const wpParts = [];
-      if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
-      if((t.returnWaypoints||[]).length) wpParts.push('Rück via '+t.returnWaypoints.join(', '));
-      const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
-      const pLbl = purposeLabel(t);
-      html += '<tr>';
-      html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
-      html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
-      html += '<td data-label="Nach"><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
-      html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
-      html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
-      html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-      html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
-      html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-  }
-  html += '</div>';
-  root.innerHTML = html;
+function renderLogTable(){
+  const sorted = trips.slice().sort((a,b)=>{
+    const {key,dir} = logSort;
+    let va,vb;
+    if(key==='dateFrom'){ va=a.dateFrom||''; vb=b.dateFrom||''; }
+    else if(key==='fromCity'){ va=a.fromCity||''; vb=b.fromCity||''; }
+    else if(key==='city'){ va=a.city||''; vb=b.city||''; }
+    else if(key==='co2'){ va=tripCO2Kg(a); vb=tripCO2Kg(b); }
+    else { va=tripTotal(a); vb=tripTotal(b); }
+    if(typeof va==='string') return dir==='asc'? va.localeCompare(vb) : vb.localeCompare(va);
+    return dir==='asc'? va-vb : vb-va;
+  });
 
+  function th(label,k){
+    const sortedCls = logSort.key===k ? ' sorted'+(logSort.dir==='asc'?' asc':'') : '';
+    return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
+  }
+
+  let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂','co2')+'<th>Grund</th><th></th>';
+  html += '</tr></thead><tbody>';
+  sorted.forEach(t=>{
+    let modeCell, distCell;
+    if(t.direction==='roundtrip'){
+      const outMo = getMode(t.outMode);
+      const retMo = getMode(t.returnMode);
+      modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span> <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
+      distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
+    } else {
+      const leg = primaryLeg(t);
+      const mo = getMode(leg.mode);
+      modeCell = '<span class="mode-badge">'+mo.icon+' '+mo.label+'</span>';
+      distCell = fmtKm(leg.distanceKm);
+      if(t.direction==='returnonly') distCell += '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">(nur Rückweg)</div>';
+    }
+    const wpParts = [];
+    if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
+    if((t.returnWaypoints||[]).length) wpParts.push((t.direction==='returnonly'?'Rückweg via ':'Rück via ')+t.returnWaypoints.join(', '));
+    const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
+    const pLbl = purposeLabel(t);
+    html += '<tr>';
+    html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
+    html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
+    html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+    html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
+    html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
+    html += '<td class="mono" data-label="CO₂">'+fmtKg(tripCO2Kg(t))+'</td>';
+    html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+    html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function attachLogRowActions(root){
   root.querySelectorAll('[data-edit]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       editingId = btn.dataset.edit;
@@ -2256,6 +3009,37 @@ function renderLog(root){
       showToast('Reise gelöscht.');
     });
   });
+}
+
+function attachLogTableSort(root){
+  root.querySelectorAll('th[data-sort]').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const k = th.dataset.sort;
+      if(logSort.key===k){ logSort.dir = logSort.dir==='asc'?'desc':'asc'; }
+      else { logSort = {key:k, dir: (k==='fromCity'||k==='city') ? 'asc':'desc'}; }
+      const tableWrap = th.closest('.card').querySelector('.table-wrap');
+      tableWrap.outerHTML = renderLogTable();
+      attachLogTableSort(root);
+      attachLogRowActions(root);
+    });
+  });
+}
+
+function renderLog(root){
+  let html = '<div class="card">';
+  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
+  if(trips.length===0){
+    html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
+  } else {
+    html += renderLogTable();
+  }
+  html += '</div>';
+  root.innerHTML = html;
+
+  if(trips.length>0){
+    attachLogTableSort(root);
+    attachLogRowActions(root);
+  }
 }
 
 /* ---------- Tabs / master render ---------- */
