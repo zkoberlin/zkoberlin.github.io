@@ -133,6 +133,9 @@ a{color:var(--teal);}
   border-radius:11px;background:var(--bg-soft);border:1px solid var(--border-soft);
   line-height:1;
 }
+.coa-badge{padding:6px;}
+.coa-badge img{width:100%;height:100%;object-fit:contain;}
+.city-coa{object-fit:contain;vertical-align:middle;display:inline-block;}
 .home-chip:hover{border-color:var(--gold-dim);color:var(--text);}
 .icon-btn{
   width:34px;height:34px;border-radius:10px;
@@ -775,7 +778,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.15.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.16.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -988,6 +991,29 @@ const CITY_DB = RAW_CITIES.map(([n,c,cc,lat,lon,ia])=>({
   label:n+' ('+c+')'
 }));
 
+/* Kuratierte Liste: Städte, für die ein echtes Stadtwappen (statt der Länderflagge) gezeigt wird.
+   Jede Datei wurde einzeln recherchiert (aktuelle Wikidata-"coat of arms image"-Angabe bzw.
+   meistverwendete Version auf Wikimedia Commons), Schlüssel exakt wie CITY_DB.key ("Stadt|Land").
+   Alle anderen Städte (z. B. Tokio, New York — dort ist "Wappen" im europäischen Sinn unüblich oder
+   nicht eindeutig kuratiert) fallen automatisch auf die Länderflagge zurück. Liste bei Bedarf
+   einfach um weitere Städte ergänzen (Dateiname 1:1 wie auf commons.wikimedia.org/wiki/File:...). */
+const CITY_COAT_OF_ARMS = {
+  'Berlin|Deutschland': 'DEU Berlin COA.svg',
+  'München|Deutschland': 'DEU München COA.svg',
+  'Hamburg|Deutschland': 'DEU Hamburg COA.svg',
+  'Köln|Deutschland': 'DEU Koeln COA.svg',
+  'Frankfurt am Main|Deutschland': 'DEU Frankfurt am Main COA.svg',
+  'Wien|Österreich': 'Wien Wappen.svg',
+  'Zürich|Schweiz': 'Wappen Zürich matt.svg',
+  'Paris|Frankreich': 'Grandes Armes de Paris.svg',
+  'London|Vereinigtes Königreich': 'Coat of Arms of The City of London.svg'
+};
+/* Special:FilePath löst den Dateinamen serverseitig auf (kein manuelles MD5-Hashing des
+   Wikimedia-Pfads nötig) und liefert wahlweise eine skalierte PNG-Vorschau der SVG-Datei. */
+function coatOfArmsUrl(filename, pxWidth){
+  return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(filename)+'?width='+pxWidth;
+}
+
 /* ISO-3166-1 alpha-2 -> numerisch, zum Abgleich mit der world-atlas TopoJSON (Feature-IDs) */
 const COUNTRY_NUMERIC = {
   de:276, at:40, ch:756, fr:250, gb:826, ie:372, nl:528, be:56, es:724, pt:620,
@@ -1019,7 +1045,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.15.0';
+const APP_VERSION = '1.16.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1165,6 +1191,32 @@ function flagImg(cc,size){
 function flagBadge(cc,size){
   size = size||44;
   return '<div class="flag-badge" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.5)+'px;">'+flagEmoji(cc)+'</div>';
+}
+
+/* Kleines, inline verwendbares Stadt-Icon: zeigt das kuratierte Wappen, falls vorhanden,
+   sonst die Länderflagge. Schlägt das Wappen-Bild fehl (Datei umbenannt/entfernt, keine
+   Verbindung …), springt onerror automatisch auf die zuverlässige Flaggen-Emoji zurück —
+   es bleibt also nie ein kaputtes Bild stehen. */
+function cityIcon(cityName, country, cc, size){
+  size = size||24;
+  const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
+  if(!file) return flagImg(cc, size);
+  const url = coatOfArmsUrl(file, Math.max(80, Math.round(size*3)));
+  const fallback = flagImg(cc, size).replace(/"/g,'&quot;');
+  return '<img class="city-coa" src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" '+
+    'style="height:'+size+'px;width:auto;max-width:'+Math.round(size*1.4)+'px;" loading="lazy" '+
+    'onerror="this.outerHTML=\''+fallback+'\'">';
+}
+/* Größere Wappen-Kachel im selben Design wie flagBadge — für die prominente Stadt-Detailansicht */
+function cityBadge(cityName, country, cc, size){
+  size = size||44;
+  const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
+  if(!file) return flagBadge(cc, size);
+  const url = coatOfArmsUrl(file, Math.max(120, size*3));
+  const fallbackEmoji = flagEmoji(cc);
+  return '<div class="flag-badge coa-badge" style="width:'+size+'px;height:'+size+'px;">'+
+    '<img src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" loading="lazy" '+
+    'onerror="this.outerHTML=\''+fallbackEmoji+'\'"></div>';
 }
 
 function fmtKm(n){
@@ -1884,7 +1936,7 @@ function renderCityDetail(agg){
     return;
   }
   let html = '';
-  html += '<div class="city-detail-head">'+flagImg(c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
+  html += '<div class="city-detail-head">'+cityBadge(c.city,c.country,c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
   html += '<div class="city-detail-stats">';
   html += '<div>Besuche<br><b>'+c.visits+'</b></div>';
   html += '<div>Gesamtdistanz<br><b>'+fmtKm(c.totalKm)+'</b></div>';
@@ -2388,7 +2440,7 @@ function renderStats(root){
   html += '    <div class="top-list">';
   topCities.forEach((c,i)=>{
     const pct = Math.max(6, Math.round((c.visits/maxCityVisits)*100));
-    const name = flagImg(c.cc,18)+'<span>'+c.city+'</span>';
+    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>';
     const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
     html += topListItemHTML(i, name, val, pct);
   });
@@ -2475,11 +2527,11 @@ function renderStats(root){
   html += '  <div class="record-grid">';
   if(records.farthest){
     const rt = records.farthest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+flagImg(rt.cityCC,16)+' '+rt.city+' · '+fmtDate(rt.dateFrom)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtDate(rt.dateFrom)+'</div></div>';
   }
   if(records.longest){
     const rt = records.longest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+flagImg(rt.cityCC,16)+' '+rt.city+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
   }
   if(records.bestYear){
     html += '    <div class="record-card"><div class="rc-icon">🌍</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
@@ -2625,7 +2677,7 @@ function renderCitiesTable(agg){
   cities.forEach(c=>{
     const lastVisit = c.dates.slice().sort().reverse()[0];
     html += '<tr>';
-    html += '<td data-label="Stadt"><div class="cell-city">'+flagImg(c.cc,20)+'<span>'+c.city+'</span></div></td>';
+    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span></div></td>';
     html += '<td data-label="Land">'+c.country+'</td>';
     html += '<td class="mono" data-label="Besuche">'+c.visits+'</td>';
     html += '<td class="mono" data-label="Gesamtdistanz">'+fmtKm(c.totalKm)+'</td>';
@@ -2688,7 +2740,7 @@ function renderLogTable(){
     html += '<tr>';
     html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
-    html += '<td data-label="Nach"><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+    html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
     html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
     html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
     html += '<td class="mono" data-label="CO₂e">'+fmtKg(tripCO2Kg(t))+'</td>';
