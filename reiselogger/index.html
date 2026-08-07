@@ -127,6 +127,12 @@ a{color:var(--teal);}
   cursor:pointer;
 }
 .home-chip img{width:16px;height:12px;border-radius:2px;object-fit:cover;}
+.flag-ico{display:inline-block;line-height:1;vertical-align:middle;}
+.flag-badge{
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border-radius:11px;background:var(--bg-soft);border:1px solid var(--border-soft);
+  line-height:1;
+}
 .home-chip:hover{border-color:var(--gold-dim);color:var(--text);}
 .icon-btn{
   width:34px;height:34px;border-radius:10px;
@@ -330,8 +336,7 @@ a{color:var(--teal);}
   border-radius:12px;padding:14px;cursor:pointer;
 }
 .country-card:hover{border-color:var(--gold-dim);}
-.country-top{display:flex;align-items:center;gap:10px;}
-.country-top img{width:28px;height:20px;border-radius:3px;object-fit:cover;flex-shrink:0;}
+.country-top{display:flex;align-items:center;gap:12px;}
 .country-top h4{margin:0;font-size:14px;font-weight:600;}
 .country-stats{display:flex;gap:14px;margin-top:8px;font-size:11.5px;color:var(--text-dim);}
 .country-stats b{color:var(--gold);font-family:var(--font-mono);}
@@ -767,7 +772,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.13.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.14.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1011,7 +1016,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.13.0';
+const APP_VERSION = '1.14.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1139,11 +1144,23 @@ function computeMultiLegDistance(cityNames, mode){
   return Math.round(beeline*factor);
 }
 
+/* Länderflaggen als Unicode-Emoji statt externer Bilder — die bisherige Lösung lud PNGs von
+   flagcdn.com nach, was je nach Netzwerk/Browser fehlschlagen kann (siehe Screenshot: überall
+   nur der 🌍-Fallback). Emoji-Flaggen brauchen keine externe Anfrage und funktionieren immer. */
+function flagEmoji(cc){
+  if(!cc || cc.length!==2) return '🌍';
+  const upper = cc.toUpperCase();
+  const points = [...upper].map(ch=>127397+ch.charCodeAt(0));
+  return String.fromCodePoint(...points);
+}
 function flagImg(cc,size){
-  size=size||24;
-  if(!cc) return '<span style="font-size:'+(size*0.8)+'px;">🌍</span>';
-  return '<img src="https://flagcdn.com/w'+size+'/'+cc.toLowerCase()+'.png" alt="" '+
-    'onerror="this.outerHTML=\'<span style=&quot;font-size:'+(size*0.8)+'px;&quot;>🌍</span>\'">';
+  size = size||24;
+  return '<span class="flag-ico" style="font-size:'+Math.round(size*0.86)+'px;">'+flagEmoji(cc)+'</span>';
+}
+/* Größere, freistehende Flaggen-Kachel — eigenes, ruhigeres Design für die Länder-Übersicht */
+function flagBadge(cc,size){
+  size = size||44;
+  return '<div class="flag-badge" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*0.5)+'px;">'+flagEmoji(cc)+'</div>';
 }
 
 function fmtKm(n){
@@ -1454,6 +1471,16 @@ function tripCO2Kg(t){
 }
 function totalCO2Kg(){ return trips.reduce((s,t)=>s+tripCO2Kg(t),0); }
 
+/* Prüft, ob ein Stadtname dem hinterlegten Heimatort entspricht. Reisen "nach Hause"
+   (z. B. ein separat erfasster Rückflug) sollen nicht als besuchter Ort mitgezählt werden —
+   die zurückgelegten Kilometer, das Verkehrsmittel und der CO2-Wert bleiben davon unberührt. */
+function isHomeCity(cityName){
+  if(!cityName || !settings.home) return false;
+  const hc = findCity(settings.home);
+  const homeName = hc ? hc.n : settings.home.split('(')[0].trim();
+  return !!homeName && cityName.trim().toLowerCase()===homeName.trim().toLowerCase();
+}
+
 function aggregate(){
   let totalOut=0, totalReturn=0;
   const perMode = {};
@@ -1487,8 +1514,12 @@ function aggregate(){
       perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
     }
 
-    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
-    mainCity.outKm += out; mainCity.returnKm += ret;
+    /* Heimatort zählt nicht als besuchter Ort — die Strecke/CO2 bleibt trotzdem
+       in den Gesamtwerten (oben) enthalten, sie wurde ja wirklich zurückgelegt. */
+    if(!isHomeCity(t.city)){
+      const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
+      mainCity.outKm += out; mainCity.returnKm += ret;
+    }
 
     const pLabel = purposeLabel(t);
     const pKey = pLabel || 'Ohne Angabe';
@@ -2525,7 +2556,7 @@ function renderPlaces(root){
     html += '<div class="countries-grid">';
     sortedCountries.forEach(c=>{
       html += '<div class="country-card" data-country="'+c.key.replace(/"/g,'&quot;')+'">';
-      html += '  <div class="country-top">'+flagImg(c.cc,32)+'<h4>'+c.country+'</h4></div>';
+      html += '  <div class="country-top">'+flagBadge(c.cc,42)+'<h4>'+c.country+'</h4></div>';
       html += '  <div class="country-stats"><span><b>'+c.cities.size+'</b> Städte</span><span><b>'+c.visits+'</b> Besuche</span><span><b>'+fmtKm(c.totalKm)+'</b></span></div>';
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
