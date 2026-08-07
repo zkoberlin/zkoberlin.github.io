@@ -807,7 +807,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.4</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.5</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1074,7 +1074,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.4';
+const APP_VERSION = '1.19.5';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1480,7 +1480,11 @@ function mergeCustomCityLists(localList, cloudList){
 }
 
 async function runCloudSync(){
-  const [cloudTrips, cloudSettings, cloudCustomCities] = await Promise.all([syncPull('trips'), syncPull('settings'), syncPull('customCities')]);
+  // Reisen & Einstellungen bleiben bewusst in einem eigenen, unabhängigen Block:
+  // Schlägt der (optionale) Sync gelernter Städte fehl, darf das NIE verhindern,
+  // dass Reisen/Einstellungen geladen werden — sonst zeigt die App fälschlich
+  // "alles leer", obwohl in der Cloud Daten liegen.
+  const [cloudTrips, cloudSettings] = await Promise.all([syncPull('trips'), syncPull('settings')]);
   let pulledTrips = false;
   if(cloudTrips && cloudTrips.length){
     trips = cloudTrips.map(migrateTrip);
@@ -1495,16 +1499,24 @@ async function runCloudSync(){
   } else {
     await syncPush('settings', settings);
   }
-  // Gelernte Städte (customCities) zusammenführen statt einfach zu überschreiben —
-  // sonst gehen auf einem Gerät gelernte Städte beim Sync mit einem anderen Gerät verloren.
-  const mergedCustomCities = mergeCustomCityLists(customCities, Array.isArray(cloudCustomCities) ? cloudCustomCities : []);
-  if(mergedCustomCities.length !== customCities.length){
-    customCities = mergedCustomCities;
-    try{ await window.storage.set('customCities', JSON.stringify(customCities), false); }catch(e){ console.error('Lokaler Cache (customCities) konnte nicht aktualisiert werden:', e); }
-    populateDatalist();
-  }
-  await syncPush('customCities', mergedCustomCities);
   dataReady = true;
+
+  // Gelernte Städte (customCities) separat abgleichen — rein optional/best effort.
+  // Ein Fehler hier (z. B. weil der Worker den Schlüssel noch nicht kennt) wird
+  // abgefangen und geloggt, beeinflusst aber Reisen/Einstellungen nicht mehr.
+  try{
+    const cloudCustomCities = await syncPull('customCities');
+    const mergedCustomCities = mergeCustomCityLists(customCities, Array.isArray(cloudCustomCities) ? cloudCustomCities : []);
+    if(mergedCustomCities.length !== customCities.length){
+      customCities = mergedCustomCities;
+      try{ await window.storage.set('customCities', JSON.stringify(customCities), false); }catch(e){ console.error('Lokaler Cache (customCities) konnte nicht aktualisiert werden:', e); }
+      populateDatalist();
+    }
+    await syncPush('customCities', mergedCustomCities);
+  }catch(e){
+    console.error('Cloud-Sync (customCities) fehlgeschlagen — Reisen/Einstellungen davon nicht betroffen:', e);
+  }
+
   return {pulledTrips};
 }
 
