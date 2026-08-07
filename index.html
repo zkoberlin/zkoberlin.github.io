@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="logo_dark.PNG">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul · Hub</title><!-- v5.12.3 -->
+<title>Paul · Hub</title><!-- v5.13.0 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
@@ -279,6 +279,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* Glow borders on hover */
 .acard.fin:hover{border-color:var(--green-b);box-shadow:0 0 0 2px var(--green-l),var(--sh-h);}
 .acard.kal:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
+.acard.travel:hover{border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
 .mini.weather:hover{border-color:rgba(255,149,0,.35);box-shadow:0 0 0 2px rgba(255,149,0,.12),var(--sh-h);}
 .mini.date:hover{border-color:rgba(175,82,222,.35);box-shadow:0 0 0 2px rgba(175,82,222,.12),var(--sh-h);}
 .alma-big:hover{border-color:var(--orange-b)!important;box-shadow:0 0 0 2px var(--orange-l),var(--sh-h)!important;}
@@ -370,14 +371,25 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;}
 .acard.fin{border-color:rgba(52,199,89,.28);}
 .acard.kal{border-color:rgba(0,113,227,.28);}
+.acard.travel{border-color:rgba(249,115,22,.28);}
 .acard.fin:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--green-b);}
 .acard.kal:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--blue-b);}
+.acard.travel:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--orange-b);}
+.travel-hero{padding:0 15px 10px;}
+.travel-hero-num{font-size:26px;font-weight:700;letter-spacing:-.5px;font-variant-numeric:tabular-nums;color:var(--t);}
+.travel-hero-sub{font-size:11px;color:var(--t2);margin-top:2px;}
+.travel-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 15px 14px;}
+.travel-stat{background:var(--card2);border-radius:var(--r3);padding:8px 6px;text-align:center;}
+.travel-stat-ico{font-size:14px;margin-bottom:2px;}
+.travel-stat-val{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);}
+.travel-stat-lbl{font-size:8.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px;}
 .acard:active{transform:scale(.98);}
 
 .a-top{padding:15px 15px 10px;display:flex;align-items:flex-start;justify-content:space-between;}
 .a-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
 .a-icon.g{background:var(--green-l);}
 .a-icon.b{background:var(--blue-l);}
+.a-icon.o{background:var(--orange-l);}
 .a-status{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;}
 .a-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);animation:pulse 2s infinite;}
 .a-name{font-size:14px;font-weight:700;letter-spacing:-.3px;padding:0 15px 3px;}
@@ -1798,7 +1810,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.12.3
+      <div style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v5.13.0
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -1989,6 +2001,35 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
       </div>
     </div>
 </div>
+
+<!-- ═══════════════ REISELOGGER ═══════════════ -->
+<div class="sec">🧭 Reiselogger</div>
+<a class="acard travel hcard" id="travelCard" href="https://zkoberlin.github.io/reiselogger/" target="_blank" rel="noopener">
+  <div class="a-top">
+    <div class="a-icon o">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="var(--orange)" stroke="var(--orange)"/>
+      </svg>
+    </div>
+    <div class="a-status">Aktiv</div>
+  </div>
+  <div class="a-name">Reiselogger</div>
+  <div class="a-desc" id="travelDesc">Lädt…</div>
+
+  <div class="travel-hero">
+    <div class="travel-hero-num" id="travelHeroNum">– km</div>
+    <div class="travel-hero-sub" id="travelHeroSub">Gesamtstrecke</div>
+  </div>
+
+  <div class="travel-stats">
+    <div class="travel-stat"><div class="travel-stat-ico">🌍</div><div class="travel-stat-val" id="travelCountries">–</div><div class="travel-stat-lbl">Länder</div></div>
+    <div class="travel-stat"><div class="travel-stat-ico">🏙️</div><div class="travel-stat-val" id="travelCities">–</div><div class="travel-stat-lbl">Städte</div></div>
+    <div class="travel-stat"><div class="travel-stat-ico">🔁</div><div class="travel-stat-val" id="travelLaps">–</div><div class="travel-stat-lbl">Erdumrund.</div></div>
+  </div>
+
+  <div class="a-footer"><span id="travelUpdated">–</span><span>→</span></div>
+</a>
 
 <!-- ═══════════════ ALKOHOL TRACKER ═══════════════ -->
 <div id="csBodyAtk" class="atk-outer">
@@ -3707,6 +3748,50 @@ function loadAlma(evs){
     }
   }catch(e){console.log('Alma error:',e);}
 }
+
+// ── REISELOGGER — via data/reiselog.json (GitHub Action, siehe scripts/fetch_reiselog.py) ──
+async function loadTravel(){
+  const descEl=document.getElementById('travelDesc');
+  const numEl=document.getElementById('travelHeroNum');
+  const subEl=document.getElementById('travelHeroSub');
+  const koEl=document.getElementById('travelCountries');
+  const stEl=document.getElementById('travelCities');
+  const laEl=document.getElementById('travelLaps');
+  const updEl=document.getElementById('travelUpdated');
+  try{
+    const r=await fetch('data/reiselog.json',{signal:AbortSignal.timeout(6000)});
+    if(!r.ok){
+      const hint=r.status===404?'data/reiselog.json fehlt – GitHub Action einrichten':'JSON nicht erreichbar ('+r.status+')';
+      throw new Error(hint);
+    }
+    const d=await r.json();
+    if(!d.trips){
+      descEl.textContent='Noch keine Reisen erfasst';
+      numEl.textContent='0 km';
+      subEl.textContent='Gesamtstrecke';
+      koEl.textContent='0'; stEl.textContent='0'; laEl.textContent='0×';
+      updEl.textContent='–';
+      return;
+    }
+    descEl.textContent=d.trips+' Reisen weltweit erfasst';
+    numEl.textContent=Number(d.totalKm||0).toLocaleString('de-DE')+' km';
+    subEl.textContent='Gesamtstrecke · '+(d.yearStart||'–')+'–'+(d.yearEnd||'–');
+    koEl.textContent=d.countries||0;
+    stEl.textContent=d.cities||0;
+    laEl.textContent=Number(d.earthLaps||0).toLocaleString('de-DE',{maximumFractionDigits:1,minimumFractionDigits:1})+'×';
+    if(d.updated_at){
+      const upd=new Date(d.updated_at);
+      updEl.textContent='Stand: '+upd.getDate()+'.'+(upd.getMonth()+1)+'. · '+String(upd.getHours()).padStart(2,'0')+':'+String(upd.getMinutes()).padStart(2,'0')+' Uhr';
+    } else {
+      updEl.textContent='–';
+    }
+  }catch(e){
+    console.warn('Reiselogger error:',e);
+    descEl.textContent='⚠️ '+e.message;
+    numEl.textContent='– km';
+  }
+}
+loadTravel();
 
 // ── UNION BERLIN v5.2.0 — via data/union.json ──
 async function loadUnion(){
