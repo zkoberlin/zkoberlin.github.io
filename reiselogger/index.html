@@ -363,6 +363,13 @@ a{color:var(--teal);}
 /* ---------- Tables ---------- */
 .table-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
+/* Aktions-Spalte (Bearbeiten/Löschen) bleibt beim horizontalen Scrollen sichtbar —
+   bei vielen Spalten (Zeitraum, Von, Nach, Verkehrsmittel, Distanz, CO2, Grund)
+   rutschte sie auf Desktop sonst außer Sicht, wenn man nicht extra scrollt. */
+.responsive-table td:last-child, .responsive-table th:last-child{
+  position:sticky; right:0; background:var(--panel);
+  box-shadow:-6px 0 6px -6px rgba(0,0,0,0.3);
+}
 th{
   text-align:left;font-family:var(--font-display);font-size:10.5px;
   text-transform:uppercase;letter-spacing:0.05em;color:var(--text-dim);
@@ -731,6 +738,11 @@ tr:last-child td{border-bottom:none;}
   }
   .responsive-table td[data-label=""]::before{content:none;}
   .responsive-table .row-actions{justify-content:flex-end;width:100%;}
+  /* Sticky-Aktionsspalte ist nur bei horizontalem Scrollen (Desktop) sinnvoll —
+     im mobilen Karten-Layout stört position:sticky nur. */
+  .responsive-table td:last-child, .responsive-table th:last-child{
+    position:static; box-shadow:none;
+  }
 
   .hero-number{font-size:clamp(36px,11vw,48px);}
   .boarding-pass, .card{border-radius:14px;}
@@ -807,7 +819,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.5</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.6</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1074,7 +1086,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.5';
+const APP_VERSION = '1.19.6';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2045,7 +2057,7 @@ async function initWorldMap(agg){
     .attr('d', path);
 
   let homeDot = null;
-  const homeRadius = 3 * rScale;
+  const homeRadius = 2.4 * rScale;
   if(settings.home){
     const hc = findCity(settings.home);
     if(hc){
@@ -2063,16 +2075,24 @@ async function initWorldMap(agg){
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
   // Kleinere Punkte, damit auch ohne Reinzoomen einzelne Städte klar unterscheidbar bleiben.
-  const dotRadius = x => (2 + (x.c.visits/maxVisits)*2.5) * rScale;
+  // Untergrenze sorgt dafür, dass Punkte auch bei rScale<1 (schmale Bildschirme) noch
+  // gut sichtbar/anklickbar bleiben.
+  const dotRadius = x => Math.max(1.3, (1.6 + (x.c.visits/maxVisits)*1.6) * rScale);
+
+  // Größere Punkte zuerst zeichnen, kleinere danach — so liegen bei eng
+  // beieinanderliegenden Städten die kleineren (seltener besuchten) Punkte oben
+  // und bleiben klickbar, statt komplett unter einem großen Nachbarn zu verschwinden.
+  const sortedCityData = cityData.slice().sort((a,b)=> b.c.visits - a.c.visits);
 
   const cityDots = g.append('g').attr('class','city-layer')
     .selectAll('circle')
-    .data(cityData, x=>x.c.key)
+    .data(sortedCityData, x=>x.c.key)
     .join('circle')
     .attr('class', x=> 'city-dot'+(x.c.key===selectedCityKey?' selected':''))
     .attr('cx', x=>projection([x.ref.lon, x.ref.lat])[0])
     .attr('cy', x=>projection([x.ref.lon, x.ref.lat])[1])
     .attr('r', dotRadius)
+    .on('mouseenter', function(){ d3.select(this).raise(); })
     .on('click', (event, x)=>{
       selectedCityKey = x.c.key;
       cityDots.attr('class', xx=> 'city-dot'+(xx.c.key===selectedCityKey?' selected':''));
