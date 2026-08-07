@@ -473,11 +473,14 @@ tr:last-child td{border-bottom:none;}
 .purpose-card .pc-stats{margin-top:6px;font-size:11.5px;color:var(--text-dim);display:flex;gap:12px;}
 .purpose-card .pc-stats b{color:var(--gold);font-family:var(--font-mono);}
 
-/* ---------- Letzter Eintrag (dezenter Hinweis, Übersicht) ---------- */
+/* ---------- Letzter Eintrag / Jahres-Kilometer (dezente Hinweise, Übersicht) ---------- */
+.dashboard-meta-row{
+  display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;
+  margin:-4px 0 14px;
+}
 .last-entry-note{
   display:flex;align-items:center;gap:6px;
   font-size:11.5px;color:var(--text-faint);
-  margin:-4px 0 14px;
 }
 
 /* ---------- Statistiken: Top-Listen ---------- */
@@ -772,7 +775,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.14.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.15.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1016,7 +1019,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.14.0';
+const APP_VERSION = '1.15.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1046,6 +1049,7 @@ let currentTab = 'dashboard';
 let editingId = null;
 let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
+let logSort = {key:'dateFrom', dir:'desc'};
 let statsYearMode = 'all';
 
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
@@ -1470,6 +1474,9 @@ function tripCO2Kg(t){
   return kg;
 }
 function totalCO2Kg(){ return trips.reduce((s,t)=>s+tripCO2Kg(t),0); }
+function yearCO2Kg(year){
+  return trips.reduce((s,t)=> (t.dateFrom||'').slice(0,4)===year ? s+tripCO2Kg(t) : s, 0);
+}
 
 /* Prüft, ob ein Stadtname dem hinterlegten Heimatort entspricht. Reisen "nach Hause"
    (z. B. ein separat erfasster Rückflug) sollen nicht als besuchter Ort mitgezählt werden —
@@ -1666,11 +1673,19 @@ function renderDashboard(root){
   const agg = aggregate();
   const cityCount = agg.cities.length;
   const countryCount = agg.countries.length;
+  const currentYear = String(new Date().getFullYear());
+  const currentYearKm = aggregateYears().find(y=>y.year===currentYear);
+  const currentYearTotalKm = currentYearKm ? currentYearKm.total : 0;
 
   let html = '';
   const lastEntryTs = fmtLastEntryTimestamp(lastEntryCreatedAt());
-  if(lastEntryTs){
-    html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
+  if(trips.length){
+    html += '<div class="dashboard-meta-row">';
+    if(lastEntryTs){
+      html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
+    }
+    html += '<div class="last-entry-note">📅 '+currentYear+' bisher: '+fmtKm(currentYearTotalKm)+'</div>';
+    html += '</div>';
   }
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
@@ -1688,13 +1703,13 @@ function renderDashboard(root){
   const cmpEarth = compareToReference(agg.totalKm, EARTH_CIRCUMFERENCE_KM);
   const cmpMoon = compareToReference(agg.totalKm, MOON_DISTANCE_KM);
   const cmpMars = compareToReference(agg.totalKm, MARS_DISTANCE_KM);
-  const co2Total = totalCO2Kg();
-  const cmpCO2 = compareCO2(co2Total, GERMAN_AVG_CO2_KG_PER_YEAR);
+  const currentYearCO2 = yearCO2Kg(currentYear);
+  const cmpCO2 = compareCO2(currentYearCO2, GERMAN_AVG_CO2_KG_PER_YEAR);
   html += '    <div class="hero-compare">';
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+'"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+'"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung)"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(co2Total)+' CO₂e insgesamt</div></div>';
+  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' CO₂e in '+currentYear+'</div></div>';
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
@@ -2635,46 +2650,57 @@ function attachCityTableSort(root, agg){
 }
 
 /* ---------- Render: Log (alle Reisen) ---------- */
-function renderLog(root){
-  let html = '<div class="card">';
-  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
-  if(trips.length===0){
-    html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
-  } else {
-    const sorted = trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
-    html += '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
-    html += '<th>Zeitraum</th><th>Von</th><th>Nach</th><th>Verkehrsmittel</th><th>Distanz</th><th>CO₂e</th><th>Grund</th><th></th>';
-    html += '</tr></thead><tbody>';
-    sorted.forEach(t=>{
-      const outMo = getMode(t.outMode);
-      let modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span>';
-      let distCell = fmtKm(t.outDistanceKm);
-      if(t.direction==='roundtrip'){
-        const retMo = getMode(t.returnMode);
-        modeCell += ' <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
-        distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
-      }
-      const wpParts = [];
-      if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
-      if((t.returnWaypoints||[]).length) wpParts.push('Rück via '+t.returnWaypoints.join(', '));
-      const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
-      const pLbl = purposeLabel(t);
-      html += '<tr>';
-      html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
-      html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
-      html += '<td data-label="Nach"><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
-      html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
-      html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
-      html += '<td class="mono" data-label="CO₂e">'+fmtKg(tripCO2Kg(t))+'</td>';
-      html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-      html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
-      html += '</tr>';
-    });
-    html += '</tbody></table></div>';
-  }
-  html += '</div>';
-  root.innerHTML = html;
+function renderLogTable(){
+  const sorted = trips.slice().sort((a,b)=>{
+    const {key,dir} = logSort;
+    let va,vb;
+    if(key==='dateFrom'){ va=a.dateFrom||''; vb=b.dateFrom||''; }
+    else if(key==='fromCity'){ va=a.fromCity||''; vb=b.fromCity||''; }
+    else if(key==='city'){ va=a.city||''; vb=b.city||''; }
+    else if(key==='co2'){ va=tripCO2Kg(a); vb=tripCO2Kg(b); }
+    else { va=tripTotal(a); vb=tripTotal(b); }
+    if(typeof va==='string') return dir==='asc'? va.localeCompare(vb) : vb.localeCompare(va);
+    return dir==='asc'? va-vb : vb-va;
+  });
 
+  function th(label,k){
+    const sortedCls = logSort.key===k ? ' sorted'+(logSort.dir==='asc'?' asc':'') : '';
+    return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
+  }
+
+  let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂e','co2')+'<th>Grund</th><th></th>';
+  html += '</tr></thead><tbody>';
+  sorted.forEach(t=>{
+    const outMo = getMode(t.outMode);
+    let modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span>';
+    let distCell = fmtKm(t.outDistanceKm);
+    if(t.direction==='roundtrip'){
+      const retMo = getMode(t.returnMode);
+      modeCell += ' <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
+      distCell = fmtKm(tripTotal(t))+'<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">('+outMo.icon+' '+fmtKm(t.outDistanceKm)+' + '+retMo.icon+' '+fmtKm(t.returnDistanceKm)+')</div>';
+    }
+    const wpParts = [];
+    if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
+    if((t.returnWaypoints||[]).length) wpParts.push('Rück via '+t.returnWaypoints.join(', '));
+    const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
+    const pLbl = purposeLabel(t);
+    html += '<tr>';
+    html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
+    html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
+    html += '<td data-label="Nach"><div class="cell-city">'+flagImg(t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+    html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
+    html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
+    html += '<td class="mono" data-label="CO₂e">'+fmtKg(tripCO2Kg(t))+'</td>';
+    html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+    html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function attachLogRowActions(root){
   root.querySelectorAll('[data-edit]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       editingId = btn.dataset.edit;
@@ -2693,6 +2719,37 @@ function renderLog(root){
       showToast('Reise gelöscht.');
     });
   });
+}
+
+function attachLogTableSort(root){
+  root.querySelectorAll('th[data-sort]').forEach(th=>{
+    th.addEventListener('click',()=>{
+      const k = th.dataset.sort;
+      if(logSort.key===k){ logSort.dir = logSort.dir==='asc'?'desc':'asc'; }
+      else { logSort = {key:k, dir: (k==='fromCity'||k==='city') ? 'asc':'desc'}; }
+      const tableWrap = th.closest('.card').querySelector('.table-wrap');
+      tableWrap.outerHTML = renderLogTable();
+      attachLogTableSort(root);
+      attachLogRowActions(root);
+    });
+  });
+}
+
+function renderLog(root){
+  let html = '<div class="card">';
+  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
+  if(trips.length===0){
+    html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
+  } else {
+    html += renderLogTable();
+  }
+  html += '</div>';
+  root.innerHTML = html;
+
+  if(trips.length>0){
+    attachLogTableSort(root);
+    attachLogRowActions(root);
+  }
 }
 
 /* ---------- Tabs / master render ---------- */
