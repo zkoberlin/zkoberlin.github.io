@@ -626,7 +626,7 @@ tr:last-child td{border-bottom:none;}
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.7.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.7.1</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -820,7 +820,7 @@ function getMode(key){
   return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
 }
 
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '1.7.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1022,9 +1022,13 @@ function migrateTrip(t){
 }
 
 /* ---------- Cloud-Sync (eigener Cloudflare Worker) ---------- */
-/* syncConfig bleibt bewusst rein lokal (nicht Teil von "settings") — jedes Gerät
-   braucht Worker-URL + Token einmalig manuell, um die Verbindung überhaupt herzustellen. */
-let syncConfig = {url:'', token:''};
+/* Fest hinterlegt, damit die App unabhängig von der (nicht immer zuverlässigen)
+   lokalen Browser-Speicherung sofort funktioniert und nichts neu eingegeben werden muss.
+   Über die Einstellungen weiterhin überschreibbar (z. B. für einen anderen Worker/Token). */
+const DEFAULT_SYNC_URL = 'https://weltlog-sync.paul-bendzko.workers.dev';
+const DEFAULT_SYNC_TOKEN = '12345asfdge64536dfagszehdgagez48277';
+
+let syncConfig = {url:DEFAULT_SYNC_URL, token:DEFAULT_SYNC_TOKEN};
 
 function syncEnabled(){ return !!(syncConfig.url && syncConfig.token); }
 
@@ -1055,10 +1059,16 @@ async function syncPush(key, data){
 }
 
 async function loadSyncConfig(){
+  let stored = null;
   try{
     const s = await window.storage.get('syncConfig', false);
-    syncConfig = s ? JSON.parse(s.value) : {url:'', token:''};
-  }catch(e){ syncConfig = {url:'', token:''}; }
+    stored = s ? JSON.parse(s.value) : null;
+  }catch(e){ stored = null; }
+  // Ein gespeicherter, individuell gesetzter Wert hat Vorrang; ansonsten Standard-Zugangsdaten.
+  syncConfig = {
+    url: (stored && stored.url) ? stored.url : DEFAULT_SYNC_URL,
+    token: (stored && stored.token) ? stored.token : DEFAULT_SYNC_TOKEN
+  };
 }
 async function saveSyncConfig(){
   try{
@@ -1069,6 +1079,11 @@ async function saveSyncConfig(){
 /* Lädt bestehende Cloud-Daten (falls vorhanden) und übernimmt sie lokal;
    ist die Cloud noch leer, wird stattdessen der aktuelle lokale Stand hochgeladen (Erstbefüllung).
    So kann dasselbe Sync-Ziel gefahrlos von mehreren Geräten aus verwendet werden. */
+/* Verhindert, dass die App Daten in die Cloud schreibt, bevor der erste Abgleich
+   nachweislich erfolgreich war — genau das hat vorher zum versehentlichen
+   Überschreiben von Cloud-Daten mit einem leeren/unfertigen lokalen Stand geführt. */
+let dataReady = false;
+
 async function runCloudSync(){
   const [cloudTrips, cloudSettings] = await Promise.all([syncPull('trips'), syncPull('settings')]);
   let pulledTrips = false;
@@ -1085,17 +1100,20 @@ async function runCloudSync(){
   } else {
     await syncPush('settings', settings);
   }
+  dataReady = true;
   return {pulledTrips};
 }
 
 /* Beim Start: falls Cloud-Sync konfiguriert ist, automatisch abgleichen. */
 async function initialCloudSync(){
-  if(!syncEnabled()) return;
+  if(!syncEnabled()){ dataReady = true; return; }
   try{
     await runCloudSync();
   }catch(e){
     console.error('Cloud-Sync (Start) fehlgeschlagen:', e);
-    showToast('⚠️ Cloud-Sync nicht erreichbar — lokaler Stand wird verwendet.');
+    showToast('⚠️ Cloud-Sync nicht erreichbar — Änderungen werden erst nach erfolgreicher Verbindung hochgeladen.');
+    // dataReady bleibt bewusst false: erst nach erfolgreichem Abgleich darf wieder
+    // in die Cloud geschrieben werden, sonst könnten unvollständige Daten überschreiben.
   }
 }
 
@@ -1122,9 +1140,12 @@ async function saveTrips(){
     const r = await window.storage.set('trips', JSON.stringify(trips), false);
     if(!r) console.error('Speichern der Reisen fehlgeschlagen');
   }catch(e){ console.error('Storage-Fehler (trips):', e); }
-  if(syncEnabled()){
+  if(syncEnabled() && dataReady){
     try{ await syncPush('trips', trips); }
     catch(e){ console.error('Cloud-Sync (trips) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.'); }
+  } else if(syncEnabled() && !dataReady){
+    console.warn('Cloud-Push übersprungen: noch keine erfolgreiche Erstsynchronisierung.');
+    showToast('⚠️ Noch nicht mit der Cloud verbunden — „Jetzt synchronisieren" in den Einstellungen versuchen.');
   }
 }
 async function saveSettings(){
@@ -1132,9 +1153,11 @@ async function saveSettings(){
     const r = await window.storage.set('settings', JSON.stringify(settings), false);
     if(!r) console.error('Speichern der Einstellungen fehlgeschlagen');
   }catch(e){ console.error('Storage-Fehler (settings):', e); }
-  if(syncEnabled()){
+  if(syncEnabled() && dataReady){
     try{ await syncPush('settings', settings); }
     catch(e){ console.error('Cloud-Sync (settings) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.'); }
+  } else if(syncEnabled() && !dataReady){
+    console.warn('Cloud-Push übersprungen: noch keine erfolgreiche Erstsynchronisierung.');
   }
 }
 
