@@ -404,6 +404,17 @@ tr:last-child td{border-bottom:none;}
 }
 .row-actions button:hover{border-color:var(--gold-dim);color:var(--text);}
 
+.log-filter-row{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+.log-search-input{
+  flex:1;min-width:180px;background:var(--bg-soft);border:1px solid var(--border);
+  border-radius:9px;padding:9px 11px;color:var(--text);font-family:var(--font-body);
+  font-size:13.5px;min-height:38px;
+}
+.log-search-input:focus{border-color:var(--gold-dim);}
+.log-filter-reset{white-space:nowrap;padding:9px 14px;font-size:12px;flex-shrink:0;}
+.log-city-link{cursor:pointer;}
+.log-city-link:hover{color:var(--gold);text-decoration:underline;text-decoration-style:dotted;}
+
 .empty-state{
   text-align:center;padding:36px 20px;color:var(--text-faint);font-size:13.5px;
 }
@@ -819,7 +830,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.19.7</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.20.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1086,7 +1097,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.19.7';
+const APP_VERSION = '1.20.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1117,6 +1128,7 @@ let editingId = null;
 let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
 let logSort = {key:'dateFrom', dir:'desc'};
+let logCityFilter = '';
 let statsYearMode = 'all';
 let co2ChartRange = 'year';
 
@@ -3119,7 +3131,12 @@ function attachCityTableSort(root, agg){
 
 /* ---------- Render: Log (alle Reisen) ---------- */
 function renderLogTable(){
-  const sorted = trips.slice().sort((a,b)=>{
+  const q = logCityFilter.trim().toLowerCase();
+  const filtered = q
+    ? trips.filter(t => (t.city||'').toLowerCase().includes(q) || (t.fromCity||'').toLowerCase().includes(q))
+    : trips.slice();
+
+  const sorted = filtered.sort((a,b)=>{
     const {key,dir} = logSort;
     let va,vb;
     if(key==='dateFrom'){ va=a.dateFrom||''; vb=b.dateFrom||''; }
@@ -3134,6 +3151,10 @@ function renderLogTable(){
   function th(label,k){
     const sortedCls = logSort.key===k ? ' sorted'+(logSort.dir==='asc'?' asc':'') : '';
     return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
+  }
+
+  if(sorted.length===0){
+    return '<div class="empty-state"><div class="big">🔍</div>Keine Reisen für „'+logCityFilter.replace(/</g,'&lt;')+'" gefunden.</div>';
   }
 
   let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
@@ -3158,10 +3179,12 @@ function renderLogTable(){
     if((t.returnWaypoints||[]).length) wpParts.push((t.direction==='returnonly'?'Rückweg via ':'Rück via ')+t.returnWaypoints.join(', '));
     const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
     const pLbl = purposeLabel(t);
+    const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
+    const cityEsc = (t.city||'').replace(/"/g,'&quot;');
     html += '<tr>';
     html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
-    html += '<td data-label="Von">'+(t.fromCity||'–')+'</td>';
-    html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span>'+t.city+'</span></div>'+wpNote+'</td>';
+    html += '<td data-label="Von">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
+    html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+t.city+'</span></div>'+wpNote+'</td>';
     html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
     html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
     html += '<td class="mono" data-label="CO₂">'+fmtKg(tripCO2Kg(t))+'</td>';
@@ -3192,6 +3215,12 @@ function attachLogRowActions(root){
       showToast('Reise gelöscht.');
     });
   });
+  root.querySelectorAll('.log-city-link').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      logCityFilter = el.dataset.cityFilter || '';
+      renderLog(root);
+    });
+  });
 }
 
 function attachLogTableSort(root){
@@ -3209,8 +3238,21 @@ function attachLogTableSort(root){
 }
 
 function renderLog(root){
+  const filteredCount = logCityFilter.trim()
+    ? trips.filter(t => (t.city||'').toLowerCase().includes(logCityFilter.trim().toLowerCase()) || (t.fromCity||'').toLowerCase().includes(logCityFilter.trim().toLowerCase())).length
+    : trips.length;
+  const countLabel = logCityFilter.trim() ? (filteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
+
   let html = '<div class="card">';
-  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+trips.length+' Einträge</span></div>';
+  html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+countLabel+'</span></div>';
+  if(trips.length>0){
+    html += '<div class="log-filter-row">';
+    html += '  <input type="text" id="logCitySearch" class="log-search-input" placeholder="🔍 Nach Stadt suchen (Von oder Nach) …" value="'+logCityFilter.replace(/"/g,'&quot;')+'">';
+    if(logCityFilter.trim()){
+      html += '  <button type="button" id="logFilterReset" class="btn-secondary log-filter-reset">Zurücksetzen ✕</button>';
+    }
+    html += '</div>';
+  }
   if(trips.length===0){
     html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
   } else {
@@ -3222,6 +3264,37 @@ function renderLog(root){
   if(trips.length>0){
     attachLogTableSort(root);
     attachLogRowActions(root);
+    const searchInput = document.getElementById('logCitySearch');
+    if(searchInput){
+      searchInput.addEventListener('input', ()=>{
+        logCityFilter = searchInput.value;
+        const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
+        const countEl = root.querySelector('.card-head .sub');
+        const newFilteredCount = logCityFilter.trim()
+          ? trips.filter(t => (t.city||'').toLowerCase().includes(logCityFilter.trim().toLowerCase()) || (t.fromCity||'').toLowerCase().includes(logCityFilter.trim().toLowerCase())).length
+          : trips.length;
+        if(countEl) countEl.textContent = logCityFilter.trim() ? (newFilteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
+        if(tableWrap) tableWrap.outerHTML = renderLogTable();
+        attachLogTableSort(root);
+        attachLogRowActions(root);
+        // Reset-Button je nach Filterstatus ein-/ausblenden, ohne das Suchfeld selbst neu zu rendern (sonst verliert es den Fokus während des Tippens).
+        const filterRow = root.querySelector('.log-filter-row');
+        const existingResetBtn = document.getElementById('logFilterReset');
+        if(logCityFilter.trim() && !existingResetBtn && filterRow){
+          const btn = document.createElement('button');
+          btn.type = 'button'; btn.id = 'logFilterReset'; btn.className = 'btn-secondary log-filter-reset';
+          btn.textContent = 'Zurücksetzen ✕';
+          btn.addEventListener('click', ()=>{ logCityFilter=''; renderLog(root); });
+          filterRow.appendChild(btn);
+        } else if(!logCityFilter.trim() && existingResetBtn){
+          existingResetBtn.remove();
+        }
+      });
+    }
+    const resetBtn = document.getElementById('logFilterReset');
+    if(resetBtn){
+      resetBtn.addEventListener('click', ()=>{ logCityFilter=''; renderLog(root); });
+    }
   }
 }
 
