@@ -588,10 +588,11 @@ tr:last-child td{border-bottom:none;}
 .top-bar-fill{height:100%;border-radius:100px;background:var(--bar-accent);transition:width .5s ease;}
 .waypoint-dot{
   display:inline-block; width:7px; height:7px; border-radius:50%;
-  background:var(--bar-accent); margin-left:6px; flex-shrink:0;
+  background:var(--gold); margin-left:6px; flex-shrink:0;
   box-shadow:0 0 0 1.5px var(--panel-alt);
   vertical-align:middle;
 }
+.capital-name{color:var(--gold);}
 
 .discovery-row{cursor:pointer;}
 .discovery-row:hover .top-name span{color:var(--bar-accent);}
@@ -1347,7 +1348,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.26.0';
+const APP_VERSION = '1.27.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1558,6 +1559,17 @@ function cityBadge(cityName, country, cc, size){
    Zwischenstopp besucht wurden — funktioniert per CSS-Variable in Hell- wie Dunkelmodus. */
 function waypointDot(){
   return '<span class="waypoint-dot" title="Auch als Zwischenstopp besucht"></span>';
+}
+
+/* Stadtname als HTML-Text: Hauptstädte (Abgleich gegen COUNTRY_CAPITAL) werden golden
+   hervorgehoben, alle anderen Städte unverändert als Klartext ausgegeben. cc = ISO
+   alpha-2 Ländercode der Stadt (Groß-/Kleinschreibung egal). */
+function cityNameHTML(cityName, cc){
+  const esc = String(cityName||'');
+  if(isCapitalVisit((cc||'').toLowerCase(), cityName)){
+    return '<span class="capital-name" title="Hauptstadt">'+esc+'</span>';
+  }
+  return esc;
 }
 
 function fmtKm(n){
@@ -2870,6 +2882,9 @@ function renderDashboard(root){
     html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
     html += '</div>';
   }
+  if(trips.length){
+    html += levelTileHTML(computeBadgesView());
+  }
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
   html += '    <div class="hero-eyebrow">'+currentYear+' — Stand aktuelles Jahr</div>';
@@ -3176,7 +3191,7 @@ function renderCityDetail(agg){
     return;
   }
   let html = '';
-  html += '<div class="city-detail-head">'+cityBadge(c.city,c.country,c.cc,40)+'<div><h3>'+c.city+'</h3><span>'+c.country+'</span></div></div>';
+  html += '<div class="city-detail-head">'+cityBadge(c.city,c.country,c.cc,40)+'<div><h3>'+cityNameHTML(c.city,c.cc)+'</h3><span>'+c.country+'</span></div></div>';
   html += '<div class="city-detail-stats">';
   html += '<div>Besuche<br><b>'+c.visits+'</b></div>';
   html += '<div>Gesamtdistanz<br><b>'+fmtKm(c.totalKm)+'</b></div>';
@@ -3874,11 +3889,11 @@ function renderStats(root){
   html += '  <div class="record-grid">';
   if(records.farthest){
     const rt = records.farthest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtDate(rt.dateFrom)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtDate(rt.dateFrom)+'</div></div>';
   }
   if(records.longest){
     const rt = records.longest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+rt.city+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
   }
   if(records.bestYear){
     html += '    <div class="record-card"><div class="rc-icon">🌍</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
@@ -3893,7 +3908,7 @@ function renderStats(root){
   }
   const mostVisitedCity = agg.cities.slice().sort((a,b)=>b.visits-a.visits)[0];
   if(mostVisitedCity){
-    html += '    <div class="record-card"><div class="rc-icon">🏙️</div><div class="rc-value">'+mostVisitedCity.visits+' '+(mostVisitedCity.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchte Stadt</div><div class="rc-detail">'+cityIcon(mostVisitedCity.city,mostVisitedCity.country,mostVisitedCity.cc,16)+' '+mostVisitedCity.city+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">🏙️</div><div class="rc-value">'+mostVisitedCity.visits+' '+(mostVisitedCity.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchte Stadt</div><div class="rc-detail">'+cityIcon(mostVisitedCity.city,mostVisitedCity.country,mostVisitedCity.cc,16)+' '+cityNameHTML(mostVisitedCity.city,mostVisitedCity.cc)+'</div></div>';
   }
   const mostVisitedCountry = agg.countries.filter(c=>!homeCountry || c.country!==homeCountry).slice().sort((a,b)=>b.visits-a.visits)[0];
   if(mostVisitedCountry){
@@ -3913,7 +3928,7 @@ function renderStats(root){
   co2Extremes.most.forEach((tr,i)=>{
     const val = tripCO2Kg(tr);
     const pct = Math.max(6, Math.round((val/maxMostCO2)*100));
-    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+cityNameHTML(tr.city,tr.cityCC)+'</span>';
     const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
     html += topListItemHTML(i, name, valHtml, pct);
   });
@@ -3927,7 +3942,7 @@ function renderStats(root){
   co2Extremes.least.forEach((tr,i)=>{
     const val = tripCO2Kg(tr);
     const pct = Math.max(6, Math.round((val/maxLeastCO2)*100));
-    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+tr.city+'</span>';
+    const name = cityIcon(tr.city,tr.country,tr.cityCC,18)+'<span>'+cityNameHTML(tr.city,tr.cityCC)+'</span>';
     const valHtml = '<b>'+fmtKg(val)+'</b> · '+fmtKm(tripTotal(tr));
     html += topListItemHTML(i, name, valHtml, pct);
   });
@@ -4158,38 +4173,10 @@ function renderCO2Chart(){
   chartEl.innerHTML = svg;
 }
 
-/* ---------- Badges-Tab ---------- */
-function badgeCardHTML(a){
-  const cls = 'badge-card '+(a.unlocked ? 'unlocked' : 'locked');
-  const pct = Math.max(a.unlocked?100:2, Math.round((a.progress/a.target)*100));
-  let html = '<div class="'+cls+'">';
-  html += '  <div class="badge-icon">'+a.icon+'</div>';
-  html += '  <div class="badge-body">';
-  html += '    <div class="badge-name">'+a.name+'</div>';
-  html += '    <div class="badge-desc">'+a.description+'</div>';
-  html += '    <div class="badge-progress-track"><div class="badge-progress-fill" style="width:'+pct+'%"></div></div>';
-  if(a.unlocked){
-    html += '    <div class="badge-meta"><span class="badge-progress-label">Freigeschaltet</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
-    if(a.unlockedAt) html += '    <div class="badge-date">am '+fmtDate(a.unlockedAt)+'</div>';
-  } else {
-    html += '    <div class="badge-meta"><span class="badge-progress-label">'+fmtNum(a.progress)+' / '+fmtNum(a.target)+'</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
-  }
-  html += '  </div>';
-  html += '</div>';
-  return html;
-}
-
-function renderBadges(root){
-  if(trips.length===0){
-    root.innerHTML = '<div class="card"><div class="empty-state"><div class="big">🏅</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, sammelst du hier Auszeichnungen und Level.</div></div>';
-    return;
-  }
-
-  const view = computeBadgesView();
+/* ---------- Level-Kachel (Dashboard: oberhalb der Jahres-Übersicht) ---------- */
+function levelTileHTML(view){
   const li = view.levelInfo;
-  let html = '';
-
-  html += '<div class="level-hero">';
+  let html = '<div class="level-hero">';
   html += '  <div class="level-hero-top">';
   html += '    <div class="level-hero-badge">';
   html += '      <div class="level-hero-num">'+li.level+'</div>';
@@ -4215,8 +4202,40 @@ function renderBadges(root){
     html += '  </div>';
   }
   html += '</div>';
+  return html;
+}
 
-  html += '<div class="badge-section-head"><h3>🏅 Freigeschaltet</h3><span class="sub">'+view.unlocked.length+' · neueste zuerst</span></div>';
+/* ---------- Badges-Tab ---------- */
+function badgeCardHTML(a){
+  const cls = 'badge-card '+(a.unlocked ? 'unlocked' : 'locked');
+  const pct = Math.max(a.unlocked?100:2, Math.round((a.progress/a.target)*100));
+  let html = '<div class="'+cls+'">';
+  html += '  <div class="badge-icon">'+a.icon+'</div>';
+  html += '  <div class="badge-body">';
+  html += '    <div class="badge-name">'+a.name+'</div>';
+  html += '    <div class="badge-desc">'+a.description+'</div>';
+  html += '    <div class="badge-progress-track"><div class="badge-progress-fill" style="width:'+pct+'%"></div></div>';
+  if(a.unlocked){
+    html += '    <div class="badge-meta"><span class="badge-progress-label">Freigeschaltet</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
+    if(a.unlockedAt) html += '    <div class="badge-date">am '+fmtDate(a.unlockedAt)+'</div>';
+  } else {
+    html += '    <div class="badge-meta"><span class="badge-progress-label">'+fmtNum(a.progress)+' / '+fmtNum(a.target)+'</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
+  }
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+
+function renderBadges(root){
+  if(trips.length===0){
+    root.innerHTML = '<div class="card"><div class="empty-state"><div class="big">🏅</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, sammelst du hier Auszeichnungen.</div></div>';
+    return;
+  }
+
+  const view = computeBadgesView();
+  let html = '';
+
+  html += '<div class="badge-section-head" style="margin-top:0;"><h3>🏅 Freigeschaltet</h3><span class="sub">'+view.unlocked.length+' · neueste zuerst</span></div>';
   if(view.unlocked.length===0){
     html += '<div class="card"><div class="empty-state" style="padding:20px 10px;"><div class="big">🔒</div>Noch keine Auszeichnung freigeschaltet — leg los!</div></div>';
   } else {
@@ -4272,7 +4291,7 @@ function renderTopCitiesList(agg){
   let html = '';
   top.forEach((c,i)=>{
     const pct = Math.max(6, Math.round((c.visits/maxVisits)*100));
-    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>'+(c.viaWaypoint?waypointDot():'');
+    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+cityNameHTML(c.city,c.cc)+'</span>'+(c.viaWaypoint?waypointDot():'');
     const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
     html += topListItemHTML(i, name, val, pct);
   });
@@ -4333,7 +4352,7 @@ function renderDiscoveryList(discoveriesAll){
         html += '<div class="discovery-detail-group"><span class="ddg-label">Länder</span>'+d.countries.map(c=>flagImg(c.cc,15)+' '+c.country).join(', ')+'</div>';
       }
       if(d.cities.length){
-        html += '<div class="discovery-detail-group"><span class="ddg-label">Städte</span>'+d.cities.map(c=>cityIcon(c.city,c.country,c.cc,15)+' '+c.city).join(', ')+'</div>';
+        html += '<div class="discovery-detail-group"><span class="ddg-label">Städte</span>'+d.cities.map(c=>cityIcon(c.city,c.country,c.cc,15)+' '+cityNameHTML(c.city,c.cc)).join(', ')+'</div>';
       }
       html += '</div>';
     }
@@ -4419,7 +4438,7 @@ function renderCitiesTable(agg){
     const lastVisit = c.dates.slice().sort().reverse()[0];
     const onMap = !!findCity(c.city);
     html += '<tr>';
-    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span>'+(c.viaWaypoint?waypointDot():'')+
+    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+cityNameHTML(c.city,c.cc)+'</span>'+(c.viaWaypoint?waypointDot():'')+
       (onMap ? '' : ' <button type="button" class="city-retry-btn" data-city="'+c.city.replace(/"/g,'&quot;')+'" title="Fehlt auf der Karte — Koordinaten erneut suchen">📍</button>')+
       '</div></td>';
     html += '<td data-label="Land">'+c.country+'</td>';
@@ -4555,7 +4574,7 @@ function renderLogTable(){
     html += '<tr class="log-row">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
-    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+t.city+'</span></div>'+wpNote+'<span class="log-row-toggle">▾</span></td>';
+    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpNote+'<span class="log-row-toggle">▾</span></td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="CO₂">'+(t.cityOnly ? '<span style="color:var(--text-faint);">–</span>' : fmtKg(tripCO2Kg(t)))+'</td>';
