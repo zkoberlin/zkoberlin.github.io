@@ -1198,7 +1198,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.24.0';
+const APP_VERSION = '1.24.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1332,9 +1332,7 @@ function computeDistance(fromStr,toStr,mode){
   return Math.round(beeline*factor);
 }
 
-/* Berechnet die Distanz einer Route über mehrere Punkte (z. B. Von -> Zwischenstopp -> Nach).
-   Die Zwischenstopps fließen NUR in diese Distanzberechnung ein — sie werden nicht als
-   eigenständig besuchte Orte gezählt. */
+/* Berechnet die Distanz einer Route über mehrere Punkte (z. B. Von -> Zwischenstopp -> Nach). */
 function computeMultiLegDistance(cityNames, mode){
   const resolved = cityNames.map(n=>findCity(n));
   if(resolved.some(r=>!r)) return null;
@@ -1344,6 +1342,22 @@ function computeMultiLegDistance(cityNames, mode){
   }
   const factor = getMode(mode).factor||1.15;
   return Math.round(beeline*factor);
+}
+
+/* Wie computeMultiLegDistance, liefert aber die einzelnen Teilstrecken statt nur der
+   Summe — jeweils mit dem Aufschlag des gewählten Verkehrsmittels dieser Teilstrecke.
+   Wird verwendet, um Zwischenstopps eine realistische Kilometer-Zuordnung zu geben
+   (siehe aggregate() / registerLegWaypoints), statt sie mit 0 km zu zählen. */
+function computeMultiLegSegments(cityNames, mode){
+  const resolved = cityNames.map(n=>findCity(n));
+  if(resolved.some(r=>!r)) return null;
+  const factor = getMode(mode).factor||1.15;
+  const segments = [];
+  for(let i=0;i<resolved.length-1;i++){
+    const beeline = haversine(resolved[i].lat, resolved[i].lon, resolved[i+1].lat, resolved[i+1].lon);
+    segments.push(Math.round(beeline*factor));
+  }
+  return segments;
 }
 
 /* Länderflaggen als Unicode-Emoji statt externer Bilder — die bisherige Lösung lud PNGs von
@@ -1817,18 +1831,26 @@ function aggregate(){
   }
 
   /* Zwischenstopps zählen ebenfalls als besuchte Orte (Karte, Länder & Städte, Top 5,
-     Entdecker-Trend) — aber ohne eigene Kilometer-/CO2-Zuordnung, die stecken bereits
-     in der Gesamtdistanz der Reise (eine genaue Aufteilung je Teilstrecke ist dafür
-     nicht nötig). Nur bereits lokal auflösbare Namen (CITY_DB + gelernte Städte) werden
-     hier gezählt; noch unbekannte Zwischenstopp-Namen löst die Karte im Hintergrund
-     per Geokodierung auf (siehe renderMap) — danach tauchen sie automatisch mit auf. */
-  function registerWaypointVisits(names, dateFrom, visitRecord){
-    (names||[]).forEach(wpName=>{
-      const name = (wpName||'').trim();
-      if(!name || isHomeCity(name)) return;
-      const wp = findCity(name);
+     Entdecker-Trend) — mit einer geschätzten Kilometer-Zuordnung: die Teilstrecke von
+     der jeweils vorherigen Station bis zum Zwischenstopp, berechnet aus Luftlinie ×
+     Aufschlag des für diese Teilstrecke gewählten Verkehrsmittels (gleiche Methode wie
+     der "🔄 Berechnen"-Button im Formular). Das ist eine Schätzung, keine exakte Messung
+     — reicht aber, um Zwischenstopps nicht pauschal mit 0 km zu führen. Lässt sich eine
+     Station der Route nicht auflösen, fällt die Zuordnung für diese Teilstrecke auf 0 km
+     zurück, der Ort zählt aber trotzdem als besuchter Ort. Nur bereits lokal auflösbare
+     Zwischenstopp-Namen werden hier gezählt; noch unbekannte löst die Karte im
+     Hintergrund per Geokodierung auf (siehe renderMap) — danach tauchen sie automatisch
+     mit auf. */
+  function registerLegWaypoints(fromName, waypointNames, toName, mode, dateFrom, visitRecord){
+    const wps = (waypointNames||[]).map(w=>(w||'').trim()).filter(Boolean);
+    if(!wps.length) return;
+    const segments = computeMultiLegSegments([fromName, ...wps, toName], mode);
+    wps.forEach((wpName, idx)=>{
+      if(isHomeCity(wpName)) return;
+      const wp = findCity(wpName);
       if(!wp) return;
-      registerCityVisit(wp.n, wp.c, wp.cc, 0, dateFrom, visitRecord);
+      const segKm = segments ? segments[idx] : 0;
+      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, visitRecord);
     });
   }
 
@@ -1848,8 +1870,12 @@ function aggregate(){
       const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t);
       mainCity.outKm += out; mainCity.returnKm += ret;
     }
-    registerWaypointVisits(t.outWaypoints, t.dateFrom, t);
-    registerWaypointVisits(t.returnWaypoints, t.dateFrom, t);
+    if(t.direction!=='returnonly'){
+      registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t);
+    }
+    if(t.direction==='roundtrip' || t.direction==='returnonly'){
+      registerLegWaypoints(t.city, t.returnWaypoints, t.fromCity, t.returnMode, t.dateFrom, t);
+    }
 
     const pLabel = purposeLabel(t);
     const pKey = pLabel || 'Ohne Angabe';
