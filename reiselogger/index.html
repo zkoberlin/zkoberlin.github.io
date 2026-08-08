@@ -651,6 +651,62 @@ tr:last-child td{border-bottom:none;}
 .record-card .rc-label{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
 .record-card .rc-detail{font-size:12px;color:var(--text-faint);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);}
 
+/* ---------- Badges-Tab: Level-Anzeige ---------- */
+.level-hero{
+  background:linear-gradient(155deg, var(--panel-alt), var(--panel));
+  border:1px solid var(--border-soft); border-radius:var(--radius);
+  padding:20px 22px; margin-bottom:16px;
+}
+.level-hero-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.level-hero-badge{display:flex;align-items:center;gap:12px;}
+.level-hero-num{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  background:var(--bg-soft);border:1.5px solid var(--bar-accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:700;font-size:17px;color:var(--bar-accent);
+}
+.level-hero-title{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--text);}
+.level-hero-sub{font-size:11.5px;color:var(--text-faint);margin-top:2px;}
+.level-hero-points{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);text-align:right;}
+.level-hero-points b{color:var(--gold);}
+.level-hero-track{height:9px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:14px;}
+.level-hero-fill{height:100%;border-radius:100px;background:linear-gradient(90deg, var(--bar-accent), var(--gold));transition:width .5s ease;}
+.level-hero-next{font-size:11.5px;color:var(--text-faint);margin-top:7px;text-align:right;}
+.level-hero-maxed{font-size:11.5px;color:var(--gold);margin-top:7px;text-align:right;}
+
+.last-badge-strip{
+  display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:16px;
+  border-top:1px dashed var(--border);
+}
+.last-badge-icon{font-size:24px;flex-shrink:0;}
+.last-badge-text .lb-label{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em;}
+.last-badge-text .lb-name{font-size:13.5px;color:var(--text);font-weight:600;margin-top:1px;}
+.last-badge-text .lb-date{font-size:11.5px;color:var(--text-dim);margin-top:1px;}
+
+/* ---------- Badges-Tab: Auszeichnungs-Grid ---------- */
+.badge-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 0 12px;}
+.badge-section-head h3{font-family:var(--font-display);font-size:14.5px;font-weight:600;color:var(--text);}
+.badge-section-head .sub{font-size:11.5px;color:var(--text-faint);}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+.badge-card{
+  background:var(--panel-alt); border:1px solid var(--border-soft); border-radius:12px;
+  padding:13px 14px; display:flex; gap:11px; align-items:flex-start;
+}
+.badge-card.locked{opacity:0.55;}
+.badge-card.locked .badge-icon{filter:grayscale(1);opacity:0.6;}
+.badge-icon{font-size:22px;line-height:1;flex-shrink:0;margin-top:1px;}
+.badge-body{flex:1;min-width:0;}
+.badge-name{font-size:13px;font-weight:600;color:var(--text);}
+.badge-desc{font-size:11.5px;color:var(--text-faint);margin-top:2px;line-height:1.4;}
+.badge-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;}
+.badge-bonus{font-family:var(--font-mono);font-size:10.5px;color:var(--gold);white-space:nowrap;}
+.badge-card.locked .badge-bonus{color:var(--text-dim);}
+.badge-progress-track{height:5px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:7px;}
+.badge-progress-fill{height:100%;border-radius:100px;background:var(--bar-accent);}
+.badge-card.unlocked .badge-progress-fill{background:var(--gold);}
+.badge-progress-label{font-size:10px;color:var(--text-faint);margin-top:4px;font-family:var(--font-mono);}
+.badge-date{font-size:10px;color:var(--text-faint);margin-top:4px;}
+
 /* ---------- Statistiken: Verkehrsmittel-Ring-Chart ---------- */
 .ring-chart-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap;justify-content:center;padding:4px 0;}
 .ring-chart{width:148px;height:148px;border-radius:50%;position:relative;flex-shrink:0;}
@@ -940,6 +996,7 @@ span.flatpickr-weekday{
       <button class="tab-btn" data-tab="places">Länder &amp; Städte</button>
       <button class="tab-btn" data-tab="log">Alle Reisen</button>
       <button class="tab-btn" data-tab="stats">Statistiken</button>
+      <button class="tab-btn" data-tab="badges">Badges</button>
     </div>
   </div>
 </div>
@@ -1184,6 +1241,92 @@ const COUNTRY_NUMERIC = {
 };
 let WORLD_TOPOLOGY_CACHE = null;
 
+/* ---------- Kontinent-Zuordnung & Länder-Gruppen (für Gamification: Achievements, Kontinent-Statistik) ---------- */
+/* ISO alpha-2 -> Kontinent-Kürzel. Folgt größtenteils dem UN-Geoschema. Einige Länder liegen
+   geografisch auf zwei Kontinenten (Russland, Türkei, Kasachstan, Zypern, Georgien, Armenien,
+   Aserbaidschan) — hier wurde jeweils die in Reise-Kontexten gebräuchlichste Zuordnung gewählt.
+   Bei Bedarf hier einfach anpassen, alle Auswertungen greifen dynamisch auf diese Tabelle zu. */
+const CONTINENTS = {
+  EU:{label:'Europa', icon:'🇪🇺'}, AF:{label:'Afrika', icon:'🌍'}, AS:{label:'Asien', icon:'🌏'},
+  NA:{label:'Nordamerika', icon:'🌎'}, SA:{label:'Südamerika', icon:'🌎'},
+  OC:{label:'Ozeanien', icon:'🏝️'}, AN:{label:'Antarktis', icon:'🧊'}
+};
+const COUNTRY_CONTINENT = {
+  ad:'EU', ae:'AS', af:'AS', ag:'NA', ai:'NA', al:'EU', am:'AS', ao:'AF', aq:'AN', ar:'SA',
+  as:'OC', at:'EU', au:'OC', aw:'NA', ax:'EU', az:'AS', ba:'EU', bb:'NA', bd:'AS', be:'EU',
+  bf:'AF', bg:'EU', bh:'AS', bi:'AF', bj:'AF', bl:'NA', bm:'NA', bn:'AS', bo:'SA', br:'SA',
+  bs:'NA', bt:'AS', bv:'AN', bw:'AF', by:'EU', bz:'NA', ca:'NA', cc:'OC', cd:'AF', cf:'AF',
+  cg:'AF', ch:'EU', ci:'AF', ck:'OC', cl:'SA', cm:'AF', cn:'AS', co:'SA', cr:'NA', cu:'NA',
+  cv:'AF', cw:'NA', cx:'OC', cy:'EU', cz:'EU', de:'EU', dj:'AF', dk:'EU', dm:'NA', do:'NA',
+  dz:'AF', ec:'SA', ee:'EU', eg:'AF', eh:'AF', er:'AF', es:'EU', et:'AF', fi:'EU', fj:'OC',
+  fk:'SA', fm:'OC', fo:'EU', fr:'EU', ga:'AF', gb:'EU', gd:'NA', ge:'AS', gf:'SA', gg:'EU',
+  gh:'AF', gi:'EU', gl:'NA', gm:'AF', gn:'AF', gp:'NA', gq:'AF', gr:'EU', gs:'AN', gt:'NA',
+  gu:'OC', gw:'AF', gy:'SA', hk:'AS', hm:'AN', hn:'NA', hr:'EU', ht:'NA', hu:'EU', id:'AS',
+  ie:'EU', il:'AS', im:'EU', in:'AS', io:'AS', iq:'AS', ir:'AS', is:'EU', it:'EU', je:'EU',
+  jm:'NA', jo:'AS', jp:'AS', ke:'AF', kg:'AS', kh:'AS', ki:'OC', km:'AF', kn:'NA', kp:'AS',
+  kr:'AS', kw:'AS', ky:'NA', kz:'AS', la:'AS', lb:'AS', lc:'NA', li:'EU', lk:'AS', lr:'AF',
+  ls:'AF', lt:'EU', lu:'EU', lv:'EU', ly:'AF', ma:'AF', mc:'EU', md:'EU', me:'EU', mf:'NA',
+  mg:'AF', mh:'OC', mk:'EU', ml:'AF', mm:'AS', mn:'AS', mo:'AS', mp:'OC', mq:'NA', mr:'AF',
+  ms:'NA', mt:'EU', mu:'AF', mv:'AS', mw:'AF', mx:'NA', my:'AS', mz:'AF', na:'AF', nc:'OC',
+  ne:'AF', nf:'OC', ng:'AF', ni:'NA', nl:'EU', no:'EU', np:'AS', nr:'OC', nu:'OC', nz:'OC',
+  om:'AS', pa:'NA', pe:'SA', pf:'OC', pg:'OC', ph:'AS', pk:'AS', pl:'EU', pm:'NA', pn:'OC',
+  pr:'NA', ps:'AS', pt:'EU', pw:'OC', py:'SA', qa:'AS', re:'AF', ro:'EU', rs:'EU', ru:'EU',
+  rw:'AF', sa:'AS', sb:'OC', sc:'AF', sd:'AF', se:'EU', sg:'AS', sh:'AF', si:'EU', sj:'EU',
+  sk:'EU', sl:'AF', sm:'EU', sn:'AF', so:'AF', sr:'SA', ss:'AF', st:'AF', sv:'NA', sx:'NA',
+  sy:'AS', sz:'AF', tc:'NA', td:'AF', tf:'AN', tg:'AF', th:'AS', tj:'AS', tk:'OC', tl:'AS',
+  tm:'AS', tn:'AF', to:'OC', tr:'AS', tt:'NA', tv:'OC', tw:'AS', tz:'AF', ua:'EU', ug:'AF',
+  um:'OC', us:'NA', uy:'SA', uz:'AS', va:'EU', vc:'NA', ve:'SA', vg:'NA', vi:'NA', vn:'AS',
+  vu:'OC', wf:'OC', ws:'OC', ye:'AS', yt:'AF', za:'AF', zm:'AF', zw:'AF'
+};
+function getContinent(cc){
+  const c = (cc||'').toLowerCase();
+  return COUNTRY_CONTINENT[c] || null;
+}
+function continentInfo(code){ return code ? CONTINENTS[code] : null; }
+
+/* Hauptstädte je Ländercode (deutsche Schreibweise, wie in CITY_DB/Geokodierung üblich) —
+   für die Hauptstadt-Achievements. Deckt die gängigsten Reiseziele ab; fehlt ein Land, wird
+   das Hauptstadt-Achievement für diese Stadt schlicht nicht ausgelöst (kein Fehlerfall). */
+const COUNTRY_CAPITAL = {
+  ad:'Andorra la Vella', ae:'Abu Dhabi', af:'Kabul', ag:'St. John\'s', al:'Tirana', am:'Jerewan',
+  ao:'Luanda', ar:'Buenos Aires', at:'Wien', au:'Canberra', az:'Baku', ba:'Sarajevo', bb:'Bridgetown',
+  bd:'Dhaka', be:'Brüssel', bf:'Ouagadougou', bg:'Sofia', bh:'Manama', bi:'Gitega', bj:'Porto-Novo',
+  bn:'Bandar Seri Begawan', bo:'Sucre', br:'Brasília', bs:'Nassau', bt:'Thimphu', bw:'Gaborone',
+  by:'Minsk', bz:'Belmopan', ca:'Ottawa', cd:'Kinshasa', cf:'Bangui', cg:'Brazzaville', ch:'Bern',
+  ci:'Yamoussoukro', cl:'Santiago', cm:'Yaoundé', cn:'Peking', co:'Bogotá', cr:'San José', cu:'Havanna',
+  cv:'Praia', cy:'Nikosia', cz:'Prag', de:'Berlin', dj:'Dschibuti', dk:'Kopenhagen', dm:'Roseau',
+  do:'Santo Domingo', dz:'Algier', ec:'Quito', ee:'Tallinn', eg:'Kairo', er:'Asmara', es:'Madrid',
+  et:'Addis Abeba', fi:'Helsinki', fj:'Suva', fm:'Palikir', fr:'Paris', ga:'Libreville', gb:'London',
+  gd:'St. George\'s', ge:'Tiflis', gh:'Accra', gm:'Banjul', gn:'Conakry', gq:'Malabo', gr:'Athen',
+  gt:'Guatemala-Stadt', gw:'Bissau', gy:'Georgetown', hn:'Tegucigalpa', hr:'Zagreb', ht:'Port-au-Prince',
+  hu:'Budapest', id:'Jakarta', ie:'Dublin', il:'Jerusalem', in:'Neu-Delhi', iq:'Bagdad', ir:'Teheran',
+  is:'Reykjavik', it:'Rom', jm:'Kingston', jo:'Amman', jp:'Tokio', ke:'Nairobi', kg:'Bischkek',
+  kh:'Phnom Penh', ki:'Tarawa', km:'Moroni', kn:'Basseterre', kp:'Pjöngjang', kr:'Seoul', kw:'Kuwait-Stadt',
+  kz:'Astana', la:'Vientiane', lb:'Beirut', lc:'Castries', li:'Vaduz', lk:'Colombo', lr:'Monrovia',
+  ls:'Maseru', lt:'Vilnius', lu:'Luxemburg', lv:'Riga', ly:'Tripolis', ma:'Rabat', mc:'Monaco',
+  md:'Chișinău', me:'Podgorica', mg:'Antananarivo', mh:'Majuro', mk:'Skopje', ml:'Bamako', mm:'Naypyidaw',
+  mn:'Ulaanbaatar', mr:'Nouakchott', mt:'Valletta', mu:'Port Louis', mv:'Malé', mw:'Lilongwe', mx:'Mexiko-Stadt',
+  my:'Kuala Lumpur', mz:'Maputo', na:'Windhoek', ne:'Niamey', ng:'Abuja', ni:'Managua', nl:'Amsterdam',
+  no:'Oslo', np:'Kathmandu', nr:'Yaren', nz:'Wellington', om:'Maskat', pa:'Panama-Stadt', pe:'Lima',
+  pg:'Port Moresby', ph:'Manila', pk:'Islamabad', pl:'Warschau', pt:'Lissabon', pw:'Ngerulmud',
+  py:'Asunción', qa:'Doha', ro:'Bukarest', rs:'Belgrad', ru:'Moskau', rw:'Kigali', sa:'Riad',
+  sb:'Honiara', sc:'Victoria', sd:'Khartum', se:'Stockholm', sg:'Singapur', si:'Ljubljana', sk:'Bratislava',
+  sl:'Freetown', sm:'San Marino', sn:'Dakar', so:'Mogadischu', sr:'Paramaribo', ss:'Juba', st:'São Tomé',
+  sv:'San Salvador', sy:'Damaskus', sz:'Mbabane', td:'N\'Djamena', tg:'Lomé', th:'Bangkok', tj:'Duschanbe',
+  tl:'Dili', tm:'Aşgabat', tn:'Tunis', to:'Nukuʻalofa', tr:'Ankara', tt:'Port of Spain', tv:'Funafuti',
+  tz:'Dodoma', ua:'Kiew', ug:'Kampala', us:'Washington', uy:'Montevideo', uz:'Taschkent', va:'Vatikanstadt',
+  vc:'Kingstown', ve:'Caracas', vn:'Hanoi', vu:'Port Vila', ws:'Apia', ye:'Sanaa', za:'Pretoria',
+  zm:'Lusaka', zw:'Harare'
+};
+
+/* Feste Länder-Gruppen für Spezial-Achievements (ISO alpha-2, klein) */
+const NEIGHBOR_DE_CC = ['dk','pl','cz','at','ch','fr','lu','be','nl'];
+const BALTIC_CC = ['lt','lv','ee'];
+const SCANDINAVIA_CC = ['dk','se','no','fi'];
+const G7_CC = ['us','gb','fr','de','it','ca','jp'];
+const G20_CC = ['ar','au','br','ca','cn','fr','de','in','id','it','jp','mx','ru','sa','za','kr','tr','gb','us'];
+const EU_CC = ['at','be','bg','hr','cy','cz','dk','ee','fi','fr','de','gr','hu','ie','it','lv','lt','lu','mt','nl','pl','pt','ro','sk','si','es','se'];
+
 const MODES = {
   plane:{label:'Flugzeug',icon:'✈️',color:'var(--gold)',factor:1.0},
   car:{label:'Auto',icon:'🚗',color:'var(--rose)',factor:1.3},
@@ -1204,7 +1347,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.25.1';
+const APP_VERSION = '1.26.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2082,6 +2225,545 @@ function computeRecords(){
     bestCO2Year
   };
 }
+
+/* ============================================================
+   GAMIFICATION: Level & Auszeichnungen
+   ============================================================
+   Punktelogik: Punkte gibt es primär für ECHTE ENTDECKUNG (neue Stadt / neues Land /
+   neue Hauptstadt / neuer Kontinent), nicht für Wiederholungen (dort nur 1 Punkt) — das
+   Level soll Welterkundung widerspiegeln, nicht Vielfliegerei zu bereits bekannten Orten.
+   Freigeschaltete Meilenstein-Auszeichnungen bringen zusätzlich ihren eigenen Bonus.
+   Alles wird bei jedem Aufruf live aus `trips` berechnet — keine eigene Sync-/Speicher-
+   Struktur, damit Punktestand/Level/Achievements nie von den echten Reisedaten abweichen
+   können (siehe Absprache: Option 1, rein berechnet). */
+
+const LEVELS = [
+  {level:1, title:'Newbie', from:0},
+  {level:2, title:'Wochenendausflügler', from:50},
+  {level:3, title:'Reiselustig', from:150},
+  {level:4, title:'Grenzgänger', from:350},
+  {level:5, title:'Vielgereist', from:700},
+  {level:6, title:'Kontinentalreisender', from:1250},
+  {level:7, title:'Globetrotter', from:2200},
+  {level:8, title:'Weltenbummler', from:3800},
+  {level:9, title:'Weltreisender', from:6000},
+  {level:10, title:'Legende der Landkarte', from:9000}
+];
+function levelForPoints(points){
+  let current = LEVELS[0];
+  for(const l of LEVELS){ if(points>=l.from) current=l; else break; }
+  const idx = LEVELS.indexOf(current);
+  const next = LEVELS[idx+1] || null;
+  return {
+    level: current.level, title: current.title, from: current.from, points,
+    next: next ? {level:next.level, title:next.title, from:next.from} : null,
+    progressToNext: next ? Math.min(1, Math.max(0,(points-current.from)/(next.from-current.from))) : 1,
+    pointsToNext: next ? Math.max(0, next.from-points) : 0
+  };
+}
+
+/* Sammelt alle "Besuchs-Ereignisse" (Hauptziel + auflösbare Zwischenstopps, Heimatort
+   ausgeschlossen), chronologisch sortiert — Basis für Punkteberechnung und mehrere
+   Achievement-Auswertungen. Bewusst separat von aggregateDiscoveries() gehalten (dort
+   liegt der Fokus auf "erstes Jahr", hier auf der chronologischen Reihenfolge selbst). */
+function collectVisitEvents(){
+  const events = [];
+  trips.forEach(t=>{
+    if(!isHomeCity(t.city)) events.push({city:t.city, country:t.country, cc:(t.cityCC||'').toLowerCase(), dateFrom:t.dateFrom});
+    (t.outWaypoints||[]).concat(t.returnWaypoints||[]).forEach(w=>{
+      const name=(w||'').trim();
+      if(!name || isHomeCity(name)) return;
+      const wp = findCity(name);
+      if(!wp) return;
+      events.push({city:wp.n, country:wp.c, cc:(wp.cc||'').toLowerCase(), dateFrom:t.dateFrom});
+    });
+  });
+  events.sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||''));
+  return events;
+}
+
+function isCapitalVisit(cc, cityName){
+  if(!cc || !cityName) return false;
+  const cap = COUNTRY_CAPITAL[cc];
+  return !!cap && cap.toLowerCase()===cityName.trim().toLowerCase();
+}
+
+/* Reine Entdeckungs-/Wiederholungs-Punkte, chronologisch über alle Besuchs-Ereignisse. */
+function computeDiscoveryPoints(){
+  const seenCities = new Set(), seenCountries = new Set(), seenContinents = new Set();
+  let points = 0;
+  collectVisitEvents().forEach(ev=>{
+    const ckey = ev.city+'|'+ev.country;
+    const newCity = !seenCities.has(ckey);
+    const newCountry = !seenCountries.has(ev.country);
+    const continent = getContinent(ev.cc);
+    const newContinent = !!continent && !seenContinents.has(continent);
+    if(newCity){
+      points += 10;
+      if(newCountry) points += 40;
+      if(isCapitalVisit(ev.cc, ev.city)) points += 15;
+      if(newContinent) points += 150;
+    } else {
+      points += 1;
+    }
+    seenCities.add(ckey); seenCountries.add(ev.country);
+    if(continent) seenContinents.add(continent);
+  });
+  return points;
+}
+
+/* Längste Serie aufeinanderfolgender Kalenderjahre, in denen `test(discoveryYear)` zutrifft.
+   `discoveries` ist die (nach Jahr aufsteigend sortierte) Rückgabe von aggregateDiscoveries(). */
+function longestYearStreak(discoveries, test){
+  let longest=0, current=0, prevYear=null;
+  discoveries.forEach(d=>{
+    const y = parseInt(d.year,10);
+    const contiguous = prevYear!==null && y===prevYear+1;
+    if(test(d)){
+      current = contiguous ? current+1 : 1;
+      longest = Math.max(longest, current);
+    } else {
+      current = 0;
+    }
+    prevYear = y;
+  });
+  return longest;
+}
+
+function dateRangeIncludesMonthDay(t, mmdd){
+  if(!t.dateFrom) return false;
+  const from = new Date(t.dateFrom+'T00:00:00');
+  const to = t.dateTo ? new Date(t.dateTo+'T00:00:00') : from;
+  if(isNaN(from) || isNaN(to)) return false;
+  const days = Math.round((to-from)/86400000);
+  if(days<0 || days>366) return false;
+  for(let i=0;i<=days;i++){
+    const d = new Date(from); d.setDate(d.getDate()+i);
+    const md = String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(md===mmdd) return true;
+  }
+  return false;
+}
+function tripDurationDays(t){
+  if(!t.dateFrom) return 1;
+  const from = new Date(t.dateFrom+'T00:00:00');
+  const to = t.dateTo ? new Date(t.dateTo+'T00:00:00') : from;
+  if(isNaN(from)||isNaN(to)) return 1;
+  return Math.max(1, Math.round((to-from)/86400000)+1);
+}
+function isPalindromeDate(dateStr){
+  if(!dateStr) return false;
+  const m = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return false;
+  const ddmmyyyy = m[3]+m[2]+m[1];
+  return ddmmyyyy === ddmmyyyy.split('').reverse().join('');
+}
+
+/* Zentrale Berechnung: liefert alle Auszeichnungen mit Fortschritt/Freischaltstatus,
+   sowie Gesamtpunktestand und Level. Wird u. a. vom neuen "Auszeichnungen"-Tab konsumiert. */
+function computeAchievements(){
+  const list = [];
+  function add(id, category, name, icon, description, target, value, bonus){
+    const v = value===true ? 1 : (value===false ? 0 : value);
+    list.push({
+      id, category, name, icon, description,
+      target, progress: Math.min(v, target), unlocked: v>=target, bonus
+    });
+  }
+  /* Fügt eine ganze Tier-Serie auf einmal hinzu, alle mit demselben `value`. */
+  function addTiers(category, tiers, value){
+    tiers.forEach(t=> add(t.id, category, t.name, t.icon, t.desc, t.target, value, t.bonus));
+  }
+
+  const agg = aggregate();
+  const discoveriesAsc = aggregateDiscoveries(); // bereits aufsteigend nach Jahr sortiert
+  const records = trips.length ? computeRecords() : null;
+  const yearsDesc = aggregateYears();
+  const yearsAsc = yearsDesc.slice().sort((a,b)=>a.year.localeCompare(b.year));
+
+  /* ---- Grundlegende Kennzahlen ---- */
+  const countryCcByName = new Map();
+  agg.countries.forEach(c=>countryCcByName.set(c.country, (c.cc||'').toLowerCase()));
+  const visitedCountryCcSet = new Set([...countryCcByName.values()].filter(Boolean));
+  const continentsVisited = new Set();
+  visitedCountryCcSet.forEach(cc=>{ const cont=getContinent(cc); if(cont) continentsVisited.add(cont); });
+
+  const capitalsVisitedCount = agg.cities.filter(c=>isCapitalVisit((c.cc||'').toLowerCase(), c.city)).length;
+  const maxCitiesInOneCountry = agg.countries.reduce((max,c)=>Math.max(max, c.cities.size), 0);
+  const maxCityRepeatVisits = agg.cities.reduce((max,c)=>Math.max(max, c.visits), 0);
+
+  function countInGroup(group){ return group.filter(cc=>visitedCountryCcSet.has(cc)).length; }
+
+  /* ---- Streaks & Jahres-Auswertungen ---- */
+  const cityStreak = longestYearStreak(discoveriesAsc, d=>d.newCities>0);
+  const countryStreak = longestYearStreak(discoveriesAsc, d=>d.newCountries>0);
+  const maxNewCitiesYear = discoveriesAsc.reduce((max,d)=>Math.max(max,d.newCities||0), 0);
+
+  const monthsByYear = new Map();
+  trips.forEach(t=>{
+    const y=(t.dateFrom||'').slice(0,4), m=(t.dateFrom||'').slice(5,7);
+    if(!/^\d{4}$/.test(y) || !/^\d{2}$/.test(m)) return;
+    if(!monthsByYear.has(y)) monthsByYear.set(y, new Set());
+    monthsByYear.get(y).add(m);
+  });
+  const allMonthsYearAchieved = [...monthsByYear.values()].some(s=>s.size>=12);
+
+  let yearsSinceFirst = 0;
+  const firstDateStr = trips.reduce((min,t)=>{
+    if(!t.dateFrom) return min;
+    return (!min || t.dateFrom<min) ? t.dateFrom : min;
+  }, null);
+  if(firstDateStr){
+    const first = new Date(firstDateStr+'T00:00:00');
+    const now = new Date();
+    yearsSinceFirst = now.getFullYear()-first.getFullYear() - ((now.getMonth()<first.getMonth() || (now.getMonth()===first.getMonth() && now.getDate()<first.getDate())) ? 1 : 0);
+    yearsSinceFirst = Math.max(0, yearsSinceFirst);
+  }
+
+  /* ---- Distanz ---- */
+  const totalKm = agg.totalKm;
+  const earthLaps = EARTH_CIRCUMFERENCE_KM ? totalKm/EARTH_CIRCUMFERENCE_KM : 0;
+  const longestSingleTripKm = records && records.farthest ? records.farthest.km : 0;
+  const maxYearKm = yearsAsc.reduce((max,y)=>Math.max(max,y.total), 0);
+
+  /* ---- Verkehrsmittel ---- */
+  const modesUsed = new Set();
+  trips.forEach(t=>{
+    if(t.direction!=='returnonly' && t.outMode) modesUsed.add(t.outMode);
+    if((t.direction==='roundtrip'||t.direction==='returnonly') && t.returnMode) modesUsed.add(t.returnMode);
+  });
+  const flightFreeYear = yearsAsc.some(y=>y.total>0 && !(y.perMode.plane>0));
+
+  /* ---- CO2 ---- */
+  const co2FreeTripsCount = trips.filter(t=>!t.cityOnly && (tripOut(t)+tripReturn(t))>0 && tripCO2Kg(t)===0).length;
+  const co2ByYearAsc = yearsAsc.map(y=>({year:y.year, co2:yearCO2Kg(y.year), km:y.total}));
+  const co2RecordImproved = (()=>{
+    const withTravel = co2ByYearAsc.filter(e=>e.km>0);
+    if(withTravel.length<2) return false;
+    const minEntry = withTravel.reduce((m,e)=>e.co2<m.co2?e:m, withTravel[0]);
+    return minEntry.year !== withTravel[0].year;
+  })();
+  const co2BelowAverage = co2ByYearAsc.some(e=>e.km>0 && e.co2>0 && e.co2<GERMAN_AVG_CO2_KG_PER_YEAR);
+  const co2EfficiencyImproved = (()=>{
+    const ratios = co2ByYearAsc.filter(e=>e.km>0).map(e=>({year:e.year, ratio: e.co2>0 ? e.km/e.co2 : Infinity}));
+    if(ratios.length<2) return false;
+    const maxEntry = ratios.reduce((m,e)=>e.ratio>m.ratio?e:m, ratios[0]);
+    return maxEntry.year !== ratios[0].year;
+  })();
+
+  /* ---- Kalender / Besonderes ---- */
+  const silvesterTrip = trips.some(t=>dateRangeIncludesMonthDay(t,'12-31')||dateRangeIncludesMonthDay(t,'01-01'));
+  const weihnachtenTrip = trips.some(t=>dateRangeIncludesMonthDay(t,'12-24'));
+  const weekendTripsCount = trips.filter(t=>{
+    if(!t.dateFrom || t.cityOnly || isHomeCity(t.city)) return false;
+    const days = tripDurationDays(t);
+    if(days>3) return false;
+    const dow = new Date(t.dateFrom+'T00:00:00').getDay(); // 0=So,5=Fr,6=Sa
+    return dow===5||dow===6||dow===0;
+  }).length;
+  const longestTripDays = trips.reduce((max,t)=> t.cityOnly ? max : Math.max(max, tripDurationDays(t)), 0);
+
+  const reunionAfterYear = (()=>{
+    return agg.cities.some(c=>{
+      const dates = c.dates.filter(Boolean).slice().sort();
+      for(let i=1;i<dates.length;i++){
+        const diffDays = Math.round((new Date(dates[i])-new Date(dates[i-1]))/86400000);
+        if(Math.abs(diffDays-365)<=3) return true;
+      }
+      return false;
+    });
+  })();
+  const anniversaryTrip = (()=>{
+    if(!firstDateStr) return false;
+    const firstMD = firstDateStr.slice(5,10);
+    return trips.some(t=> t.dateFrom && t.dateFrom!==firstDateStr && t.dateFrom.slice(5,10)===firstMD);
+  })();
+  const palindromeTrip = trips.some(t=>isPalindromeDate(t.dateFrom)||isPalindromeDate(t.dateTo));
+  const grindavikVisited = trips.some(t=> t.city==='Grindavik' || (t.outWaypoints||[]).includes('Grindavik') || (t.returnWaypoints||[]).includes('Grindavik'));
+  const tagesausflugCount = trips.filter(t=> t.direction==='roundtrip' && t.dateFrom && (!t.dateTo || t.dateTo===t.dateFrom)).length;
+
+  /* ================= A. Länder ================= */
+  addTiers('LAND', [
+    {id:'LAND-01',name:'Erstes Ausland',icon:'🌍',desc:'Die erste Reise außerhalb Deutschlands',target:1,bonus:20},
+    {id:'LAND-02',name:'Länder-Sammler I',icon:'🌍',desc:'2 verschiedene Länder besucht',target:2,bonus:10},
+    {id:'LAND-03',name:'Länder-Sammler II',icon:'🌍',desc:'3 Länder',target:3,bonus:10},
+    {id:'LAND-04',name:'Länder-Sammler III',icon:'🌍',desc:'5 Länder',target:5,bonus:15},
+    {id:'LAND-05',name:'Länder-Sammler IV',icon:'🌎',desc:'8 Länder',target:8,bonus:15},
+    {id:'LAND-06',name:'Länder-Sammler V',icon:'🌎',desc:'12 Länder',target:12,bonus:20},
+    {id:'LAND-07',name:'Länder-Sammler VI',icon:'🌎',desc:'16 Länder',target:16,bonus:20},
+    {id:'LAND-08',name:'Länder-Sammler VII',icon:'🌏',desc:'20 Länder',target:20,bonus:25},
+    {id:'LAND-09',name:'Länder-Sammler VIII',icon:'🌏',desc:'25 Länder',target:25,bonus:30},
+    {id:'LAND-10',name:'Länder-Sammler IX',icon:'🌏',desc:'30 Länder',target:30,bonus:35},
+    {id:'LAND-11',name:'Länder-Sammler X',icon:'🗺️',desc:'40 Länder',target:40,bonus:45},
+    {id:'LAND-12',name:'Länder-Sammler XI',icon:'🗺️',desc:'50 Länder',target:50,bonus:60},
+    {id:'LAND-13',name:'Länder-Sammler XII',icon:'🗺️',desc:'60 Länder',target:60,bonus:75},
+    {id:'LAND-14',name:'Länder-Sammler XIII',icon:'🏆',desc:'75 Länder',target:75,bonus:100},
+    {id:'LAND-15',name:'Länder-Sammler XIV',icon:'🏆',desc:'100 Länder',target:100,bonus:150}
+  ], agg.countries.length);
+
+  const continentBadges = [
+    {code:'EU', id:'LAND-16', name:'Europa entdeckt', icon:'🇪🇺', bonus:20},
+    {code:'AF', id:'LAND-17', name:'Afrika entdeckt', icon:'🌍', bonus:30},
+    {code:'AS', id:'LAND-18', name:'Asien entdeckt', icon:'🌏', bonus:30},
+    {code:'NA', id:'LAND-19', name:'Nordamerika entdeckt', icon:'🌎', bonus:30},
+    {code:'SA', id:'LAND-20', name:'Südamerika entdeckt', icon:'🌎', bonus:30},
+    {code:'OC', id:'LAND-21', name:'Ozeanien entdeckt', icon:'🏝️', bonus:40},
+    {code:'AN', id:'LAND-22', name:'Antarktis betreten', icon:'🧊', bonus:100}
+  ];
+  continentBadges.forEach(cb=>{
+    add(cb.id,'LAND',cb.name,cb.icon,'Erstes Land auf dem Kontinent '+CONTINENTS[cb.code].label,1,continentsVisited.has(cb.code),cb.bonus);
+  });
+  add('LAND-23','LAND','Weltenbürger','🌐','Alle 7 Kontinente bereist',7,continentsVisited.size,150);
+  add('LAND-24','LAND','Nachbarschaft komplett','🤝','Alle 9 direkten Nachbarländer Deutschlands besucht',NEIGHBOR_DE_CC.length,countInGroup(NEIGHBOR_DE_CC),50);
+  addTiers('LAND',[
+    {id:'LAND-25',name:'EU-Kenner I',icon:'🇪🇺',desc:'5 EU-Länder besucht',target:5,bonus:15},
+    {id:'LAND-26',name:'EU-Kenner II',icon:'🇪🇺',desc:'10 EU-Länder besucht',target:10,bonus:25},
+    {id:'LAND-27',name:'EU-Kenner III',icon:'🇪🇺',desc:'15 EU-Länder besucht',target:15,bonus:35},
+    {id:'LAND-28',name:'EU-Kenner IV',icon:'🇪🇺',desc:'20 EU-Länder besucht',target:20,bonus:45}
+  ], countInGroup(EU_CC));
+  add('LAND-29','LAND','EU-Komplettist','🇪🇺','Alle 27 EU-Länder besucht',EU_CC.length,countInGroup(EU_CC),100);
+
+  /* ================= B. Städte ================= */
+  addTiers('STADT',[
+    {id:'STADT-01',name:'Erste Stadt',icon:'🏙️',desc:'Die erste erfasste Reise',target:1,bonus:5},
+    {id:'STADT-02',name:'Städte-Sammler I',icon:'🏙️',desc:'5 Städte besucht',target:5,bonus:10},
+    {id:'STADT-03',name:'Städte-Sammler II',icon:'🏙️',desc:'10 Städte',target:10,bonus:15},
+    {id:'STADT-04',name:'Städte-Sammler III',icon:'🏙️',desc:'20 Städte',target:20,bonus:20},
+    {id:'STADT-05',name:'Städte-Sammler IV',icon:'🏙️',desc:'30 Städte',target:30,bonus:25},
+    {id:'STADT-06',name:'Städte-Sammler V',icon:'🌆',desc:'50 Städte',target:50,bonus:35},
+    {id:'STADT-07',name:'Städte-Sammler VI',icon:'🌆',desc:'75 Städte',target:75,bonus:50},
+    {id:'STADT-08',name:'Städte-Sammler VII',icon:'🌆',desc:'100 Städte',target:100,bonus:75},
+    {id:'STADT-09',name:'Städte-Sammler VIII',icon:'🏆',desc:'150 Städte',target:150,bonus:110},
+    {id:'STADT-10',name:'Städte-Sammler IX',icon:'🏆',desc:'200 Städte',target:200,bonus:150}
+  ], agg.cities.length);
+  addTiers('STADT',[
+    {id:'STADT-11',name:'Hauptstadt-Jäger I',icon:'🏛️',desc:'1 Hauptstadt besucht',target:1,bonus:10},
+    {id:'STADT-12',name:'Hauptstadt-Jäger II',icon:'🏛️',desc:'5 Hauptstädte',target:5,bonus:20},
+    {id:'STADT-13',name:'Hauptstadt-Jäger III',icon:'🏛️',desc:'10 Hauptstädte',target:10,bonus:35},
+    {id:'STADT-14',name:'Hauptstadt-Jäger IV',icon:'🏛️',desc:'15 Hauptstädte',target:15,bonus:50},
+    {id:'STADT-15',name:'Hauptstadt-Jäger V',icon:'🏛️',desc:'20 Hauptstädte',target:20,bonus:65},
+    {id:'STADT-16',name:'Hauptstadt-Jäger VI',icon:'👑',desc:'25 Hauptstädte',target:25,bonus:85}
+  ], capitalsVisitedCount);
+  addTiers('STADT',[
+    {id:'STADT-17',name:'Regionalkenner I',icon:'📍',desc:'5 Städte in einem einzigen Land',target:5,bonus:15},
+    {id:'STADT-18',name:'Regionalkenner II',icon:'📍',desc:'10 Städte in einem einzigen Land',target:10,bonus:25},
+    {id:'STADT-19',name:'Regionalkenner III',icon:'📍',desc:'15 Städte in einem einzigen Land',target:15,bonus:35},
+    {id:'STADT-20',name:'Regionalkenner IV',icon:'📍',desc:'20 Städte in einem einzigen Land',target:20,bonus:50}
+  ], maxCitiesInOneCountry);
+  addTiers('STADT',[
+    {id:'STADT-21',name:'Stammgast I',icon:'🔁',desc:'Eine Stadt 3× besucht',target:3,bonus:10},
+    {id:'STADT-22',name:'Stammgast II',icon:'🔁',desc:'Eine Stadt 5× besucht',target:5,bonus:20},
+    {id:'STADT-23',name:'Stammgast III',icon:'🔁',desc:'Eine Stadt 10× besucht',target:10,bonus:40}
+  ], maxCityRepeatVisits);
+
+  /* ================= C. Kontinuität / Streaks ================= */
+  addTiers('STREAK',[
+    {id:'STREAK-01',name:'Treue Entdeckerin I',icon:'📅',desc:'2 Jahre in Folge mind. 1 neue Stadt',target:2,bonus:15},
+    {id:'STREAK-02',name:'Treue Entdeckerin II',icon:'📅',desc:'3 Jahre in Folge mind. 1 neue Stadt',target:3,bonus:25},
+    {id:'STREAK-03',name:'Treue Entdeckerin III',icon:'📅',desc:'5 Jahre in Folge mind. 1 neue Stadt',target:5,bonus:45},
+    {id:'STREAK-04',name:'Treue Entdeckerin IV',icon:'📅',desc:'8 Jahre in Folge mind. 1 neue Stadt',target:8,bonus:75},
+    {id:'STREAK-05',name:'Treue Entdeckerin V',icon:'📅',desc:'10 Jahre in Folge mind. 1 neue Stadt',target:10,bonus:100}
+  ], cityStreak);
+  addTiers('STREAK',[
+    {id:'STREAK-06',name:'Länder-Streak I',icon:'🗓️',desc:'2 Jahre in Folge mind. 1 neues Land',target:2,bonus:20},
+    {id:'STREAK-07',name:'Länder-Streak II',icon:'🗓️',desc:'3 Jahre in Folge mind. 1 neues Land',target:3,bonus:35},
+    {id:'STREAK-08',name:'Länder-Streak III',icon:'🗓️',desc:'5 Jahre in Folge mind. 1 neues Land',target:5,bonus:60},
+    {id:'STREAK-09',name:'Länder-Streak IV',icon:'🗓️',desc:'8 Jahre in Folge mind. 1 neues Land',target:8,bonus:100},
+    {id:'STREAK-10',name:'Länder-Streak V',icon:'🗓️',desc:'10 Jahre in Folge mind. 1 neues Land',target:10,bonus:130}
+  ], countryStreak);
+  addTiers('STREAK',[
+    {id:'STREAK-11',name:'Starkes Jahr I',icon:'⚡',desc:'5 neue Städte in einem Kalenderjahr',target:5,bonus:20},
+    {id:'STREAK-12',name:'Starkes Jahr II',icon:'⚡',desc:'10 neue Städte in einem Kalenderjahr',target:10,bonus:35},
+    {id:'STREAK-13',name:'Starkes Jahr III',icon:'⚡',desc:'15 neue Städte in einem Kalenderjahr',target:15,bonus:50},
+    {id:'STREAK-14',name:'Starkes Jahr IV',icon:'⚡',desc:'20 neue Städte in einem Kalenderjahr',target:20,bonus:70}
+  ], maxNewCitiesYear);
+  add('STREAK-15','STREAK','Jahres-Komplettist','🎯','In jedem der 12 Monate eines Jahres mind. 1 Reise',1,allMonthsYearAchieved,60);
+  addTiers('STREAK',[
+    {id:'STREAK-16',name:'Ein Jahr dabei',icon:'🕰️',desc:'1 Jahr seit der ersten erfassten Reise',target:1,bonus:10},
+    {id:'STREAK-17',name:'Drei Jahre dabei',icon:'🕰️',desc:'3 Jahre seit der ersten erfassten Reise',target:3,bonus:25},
+    {id:'STREAK-18',name:'Fünf Jahre dabei',icon:'🕰️',desc:'5 Jahre seit der ersten erfassten Reise',target:5,bonus:45},
+    {id:'STREAK-19',name:'Zehn Jahre dabei',icon:'🕰️',desc:'10 Jahre seit der ersten erfassten Reise',target:10,bonus:100}
+  ], yearsSinceFirst);
+
+  /* ================= D. Distanz ================= */
+  addTiers('DIST',[
+    {id:'DIST-01',name:'Erste 1.000',icon:'📏',desc:'1.000 km Gesamtstrecke',target:1000,bonus:10},
+    {id:'DIST-02',name:'5.000er-Marke',icon:'📏',desc:'5.000 km Gesamtstrecke',target:5000,bonus:15},
+    {id:'DIST-03',name:'10.000er-Marke',icon:'📏',desc:'10.000 km Gesamtstrecke',target:10000,bonus:20},
+    {id:'DIST-04',name:'25.000er-Marke',icon:'📏',desc:'25.000 km Gesamtstrecke',target:25000,bonus:30},
+    {id:'DIST-05',name:'50.000er-Marke',icon:'📏',desc:'50.000 km Gesamtstrecke',target:50000,bonus:45},
+    {id:'DIST-06',name:'100.000er-Marke',icon:'🚀',desc:'100.000 km Gesamtstrecke',target:100000,bonus:65},
+    {id:'DIST-07',name:'250.000er-Marke',icon:'🚀',desc:'250.000 km Gesamtstrecke',target:250000,bonus:90},
+    {id:'DIST-08',name:'500.000er-Marke',icon:'🚀',desc:'500.000 km Gesamtstrecke',target:500000,bonus:120},
+    {id:'DIST-09',name:'Millionärin der Kilometer',icon:'🚀',desc:'1.000.000 km Gesamtstrecke',target:1000000,bonus:200}
+  ], totalKm);
+  addTiers('DIST',[
+    {id:'DIST-10',name:'Um die Welt I',icon:'🌐',desc:'1× die Erde umrundet (Streckensumme)',target:1,bonus:25},
+    {id:'DIST-11',name:'Um die Welt II',icon:'🌐',desc:'2× die Erde umrundet',target:2,bonus:45},
+    {id:'DIST-12',name:'Um die Welt III',icon:'🌐',desc:'5× die Erde umrundet',target:5,bonus:80},
+    {id:'DIST-13',name:'Um die Welt IV',icon:'🌐',desc:'10× die Erde umrundet',target:10,bonus:130}
+  ], earthLaps);
+  add('DIST-14','DIST','Mondlandung','🌕','Strecke bis zum Mond zurückgelegt',MOON_DISTANCE_KM,totalKm,100);
+  add('DIST-15','DIST','Mission Mars','🔴','Strecke bis zum Mars (Ø) zurückgelegt',MARS_DISTANCE_KM,totalKm,250);
+  addTiers('DIST',[
+    {id:'DIST-16',name:'Weite Reise I',icon:'✈️',desc:'Eine Einzelreise über 1.000 km',target:1000,bonus:10},
+    {id:'DIST-17',name:'Weite Reise II',icon:'✈️',desc:'Eine Einzelreise über 5.000 km',target:5000,bonus:25},
+    {id:'DIST-18',name:'Weite Reise III',icon:'✈️',desc:'Eine Einzelreise über 10.000 km',target:10000,bonus:45}
+  ], longestSingleTripKm);
+  addTiers('DIST',[
+    {id:'DIST-19',name:'Starkes Reisejahr I',icon:'📊',desc:'5.000 km in einem Kalenderjahr',target:5000,bonus:15},
+    {id:'DIST-20',name:'Starkes Reisejahr II',icon:'📊',desc:'10.000 km in einem Kalenderjahr',target:10000,bonus:25},
+    {id:'DIST-21',name:'Starkes Reisejahr III',icon:'📊',desc:'20.000 km in einem Kalenderjahr',target:20000,bonus:40},
+    {id:'DIST-22',name:'Starkes Reisejahr IV',icon:'📊',desc:'30.000 km in einem Kalenderjahr',target:30000,bonus:55}
+  ], maxYearKm);
+
+  /* ================= E. Verkehrsmittel ================= */
+  const modeFirstDefs = [
+    {id:'MODE-01',mode:'car',name:'Erste Autofahrt',icon:'🚗'},
+    {id:'MODE-02',mode:'train',name:'Erste Zugfahrt',icon:'🚆'},
+    {id:'MODE-03',mode:'plane',name:'Erster Flug',icon:'✈️'},
+    {id:'MODE-04',mode:'bus',name:'Erste Busfahrt',icon:'🚌'},
+    {id:'MODE-05',mode:'bike',name:'Erste Radtour',icon:'🚴'}
+  ];
+  modeFirstDefs.forEach(m=>{
+    add(m.id,'MODE',m.name,m.icon,'Erste Reise mit '+(m.mode==='car'?'dem Auto':m.mode==='train'?'dem Zug':m.mode==='plane'?'dem Flugzeug':m.mode==='bus'?'dem Bus':'dem Rad'),1,modesUsed.has(m.mode),5);
+  });
+  addTiers('MODE',[
+    {id:'MODE-06',name:'Vielfahrer I (Auto)',icon:'🚗',desc:'1.000 km mit dem Auto',target:1000,bonus:10},
+    {id:'MODE-07',name:'Vielfahrer II (Auto)',icon:'🚗',desc:'5.000 km mit dem Auto',target:5000,bonus:20},
+    {id:'MODE-08',name:'Vielfahrer III (Auto)',icon:'🚗',desc:'15.000 km mit dem Auto',target:15000,bonus:35}
+  ], agg.perMode.car||0);
+  addTiers('MODE',[
+    {id:'MODE-09',name:'Bahnfan I',icon:'🚆',desc:'1.000 km mit dem Zug',target:1000,bonus:10},
+    {id:'MODE-10',name:'Bahnfan II',icon:'🚆',desc:'5.000 km mit dem Zug',target:5000,bonus:20},
+    {id:'MODE-11',name:'Bahnfan III',icon:'🚆',desc:'15.000 km mit dem Zug',target:15000,bonus:35}
+  ], agg.perMode.train||0);
+  addTiers('MODE',[
+    {id:'MODE-12',name:'Vielflieger I',icon:'✈️',desc:'5.000 km mit dem Flugzeug',target:5000,bonus:15},
+    {id:'MODE-13',name:'Vielflieger II',icon:'✈️',desc:'20.000 km mit dem Flugzeug',target:20000,bonus:30},
+    {id:'MODE-14',name:'Vielflieger III',icon:'✈️',desc:'50.000 km mit dem Flugzeug',target:50000,bonus:55}
+  ], agg.perMode.plane||0);
+  addTiers('MODE',[
+    {id:'MODE-15',name:'Busreisende I',icon:'🚌',desc:'1.000 km mit dem Bus',target:1000,bonus:10},
+    {id:'MODE-16',name:'Busreisende II',icon:'🚌',desc:'5.000 km mit dem Bus',target:5000,bonus:20}
+  ], agg.perMode.bus||0);
+  addTiers('MODE',[
+    {id:'MODE-17',name:'Radlerin I',icon:'🚴',desc:'100 km mit dem Rad',target:100,bonus:10},
+    {id:'MODE-18',name:'Radlerin II',icon:'🚴',desc:'500 km mit dem Rad',target:500,bonus:20},
+    {id:'MODE-19',name:'Radlerin III',icon:'🚴',desc:'2.000 km mit dem Rad',target:2000,bonus:40}
+  ], agg.perMode.bike||0);
+  add('MODE-20','MODE','Alleskönnerin','🎫','Alle 5 Verkehrsmittel mindestens einmal genutzt',MODE_ORDER.length,modesUsed.size,25);
+  add('MODE-21','MODE','Fliegerfreies Jahr','🌱','Ein Kalenderjahr komplett ohne Flugreise (bei ≥1 Reise)',1,flightFreeYear,30);
+
+  /* ================= F. CO2 ================= */
+  add('CO2-01','CO2','Grüner Rekord','🌿','Persönlichen CO2-ärmsten-Jahr-Rekord übertroffen',1,co2RecordImproved,25);
+  add('CO2-02','CO2','Unter dem Durchschnitt','🌱','Ein Jahr mit weniger CO2 als der deutsche Durchschnitt (10,4 t)',1,co2BelowAverage,20);
+  addTiers('CO2',[
+    {id:'CO2-03',name:'Klimafreundlich I',icon:'🍃',desc:'3 CO2-freie Reisen (mit dem Rad)',target:3,bonus:10},
+    {id:'CO2-04',name:'Klimafreundlich II',icon:'🍃',desc:'5 CO2-freie Reisen',target:5,bonus:20},
+    {id:'CO2-05',name:'Klimafreundlich III',icon:'🍃',desc:'10 CO2-freie Reisen',target:10,bonus:35}
+  ], co2FreeTripsCount);
+  add('CO2-06','CO2','Effizienz-Rekord','♻️','Bestes km-pro-kg-CO2-Verhältnis eines Jahres übertroffen',1,co2EfficiencyImproved,25);
+
+  /* ================= G. Kalender & Besonderes ================= */
+  add('SPEC-01','SPEC','Auftakt','🎬','Die allererste Reise überhaupt erfasst',1,trips.length>0,10);
+  add('SPEC-02','SPEC','Silvesterreise','🎆','Eine Reise am 31.12. oder 01.01.',1,silvesterTrip,15);
+  add('SPEC-03','SPEC','Weihnachtsreise','🎄','Eine Reise am 24.12.',1,weihnachtenTrip,15);
+  addTiers('SPEC',[
+    {id:'SPEC-04',name:'Wochenendausflügler I',icon:'🧳',desc:'5 Wochenendtrips (1–2 Tage, Fr–So)',target:5,bonus:15},
+    {id:'SPEC-05',name:'Wochenendausflügler II',icon:'🧳',desc:'10 Wochenendtrips',target:10,bonus:25},
+    {id:'SPEC-06',name:'Wochenendausflügler III',icon:'🧳',desc:'20 Wochenendtrips',target:20,bonus:40}
+  ], weekendTripsCount);
+  addTiers('SPEC',[
+    {id:'SPEC-07',name:'Langzeitreise I',icon:'🎒',desc:'Eine Reise über mind. 7 Tage',target:7,bonus:15},
+    {id:'SPEC-08',name:'Langzeitreise II',icon:'🎒',desc:'Eine Reise über mind. 14 Tage',target:14,bonus:30},
+    {id:'SPEC-09',name:'Langzeitreise III',icon:'🎒',desc:'Eine Reise über mind. 30 Tage',target:30,bonus:55}
+  ], longestTripDays);
+  add('SPEC-10','SPEC','Wiedersehen','🔄','Dieselbe Stadt exakt 1 Jahr (±3 Tage) nach dem letzten Besuch erneut besucht',1,reunionAfterYear,15);
+  add('SPEC-11','SPEC','Jahrestag','🎂','Eine Reise am Jahrestag der allerersten erfassten Reise',1,anniversaryTrip,15);
+  add('SPEC-12','SPEC','Datums-Palindrom','🔢','Reise mit einem palindromischen Datum (z. B. 02.02.2020)',1,palindromeTrip,20);
+  add('SPEC-13','SPEC','Grindavik','🌋','Grindavik besucht – zählt bewusst nicht für „Längste Reise"',1,grindavikVisited,15);
+  add('SPEC-14','SPEC','Baltikum komplett','🇱🇹','Litauen, Lettland und Estland alle besucht',BALTIC_CC.length,countInGroup(BALTIC_CC),30);
+  add('SPEC-15','SPEC','Skandinavien komplett','🇸🇪','Dänemark, Schweden, Norwegen, Finnland alle besucht',SCANDINAVIA_CC.length,countInGroup(SCANDINAVIA_CC),40);
+  add('SPEC-16','SPEC','G7 komplett','🏛️','Alle G7-Länder besucht',G7_CC.length,countInGroup(G7_CC),60);
+  add('SPEC-17','SPEC','G20 komplett','🌐','Alle G20-Länder besucht (inkl. EU als Block ausgenommen)',G20_CC.length,countInGroup(G20_CC),130);
+  addTiers('SPEC',[
+    {id:'SPEC-18',name:'Vielreisende I',icon:'🧾',desc:'50 Reisen insgesamt erfasst',target:50,bonus:20},
+    {id:'SPEC-19',name:'Vielreisende II',icon:'🧾',desc:'100 Reisen insgesamt erfasst',target:100,bonus:40},
+    {id:'SPEC-20',name:'Vielreisende III',icon:'🧾',desc:'250 Reisen insgesamt erfasst',target:250,bonus:90}
+  ], trips.length);
+  add('SPEC-21','SPEC','Tagesausflug','☀️','Hin- und Rückweg am selben Tag erfasst',1,tagesausflugCount>0,10);
+
+  /* ---- Gesamtpunktestand: Entdeckungspunkte + Boni aller freigeschalteten Auszeichnungen ---- */
+  const achievementBonusPoints = list.reduce((s,a)=>s+(a.unlocked?a.bonus:0),0);
+  const totalPoints = computeDiscoveryPoints() + achievementBonusPoints;
+
+  return {
+    achievements: list,
+    unlockedCount: list.filter(a=>a.unlocked).length,
+    totalCount: list.length,
+    totalPoints,
+    levelInfo: levelForPoints(totalPoints)
+  };
+}
+
+/* Ermittelt für jede Auszeichnung das Datum der ERSTEN Freischaltung, indem die Reisen
+   chronologisch (nach eindeutigem dateFrom gruppiert) "durchgespielt" werden: bei jedem
+   Schritt wird computeAchievements() auf den bis dahin bekannten Reisen ausgeführt und
+   verglichen, welche IDs neu hinzugekommen sind. Rein aus den Trips abgeleitet, keine
+   eigene Speicherung nötig (siehe Absprache: alles live berechnet). Reisen ohne Datum
+   (z. B. "nur Stadt merken"-Einträge) können hier nicht chronologisch verortet werden —
+   für Auszeichnungen, die einzig durch solche Reisen ausgelöst werden, bleibt das
+   Freischalt-Datum dann unbekannt (null), was die UI als "irgendwann" behandelt.
+   Performance: O(eindeutige Daten × Reisen) — für ein persönliches Reise-Log unproblematisch. */
+function computeAchievementUnlockDates(){
+  const originalTrips = trips;
+  const dates = [...new Set(originalTrips.filter(t=>t.dateFrom).map(t=>t.dateFrom))].sort();
+  const unlockDates = {};
+  let prevUnlocked = new Set();
+  try{
+    dates.forEach(d=>{
+      trips = originalTrips.filter(t=>t.dateFrom && t.dateFrom<=d);
+      const snap = computeAchievements();
+      snap.achievements.forEach(a=>{
+        if(a.unlocked && !prevUnlocked.has(a.id)) unlockDates[a.id] = d;
+      });
+      prevUnlocked = new Set(snap.achievements.filter(a=>a.unlocked).map(a=>a.id));
+    });
+  } finally {
+    trips = originalTrips;
+  }
+  return unlockDates;
+}
+
+/* Bündelt computeAchievements() + Freischalt-Daten für den Badges-Tab: freigeschaltete
+   Auszeichnungen (neueste zuerst) und gesperrte (größter Fortschritt zuerst). */
+function computeBadgesView(){
+  const base = computeAchievements();
+  const unlockDates = base.unlockedCount>0 ? computeAchievementUnlockDates() : {};
+  const withDates = base.achievements.map(a=>Object.assign({}, a, {unlockedAt: unlockDates[a.id]||null}));
+
+  const unlocked = withDates.filter(a=>a.unlocked).sort((a,b)=>{
+    if(a.unlockedAt && b.unlockedAt) return b.unlockedAt.localeCompare(a.unlockedAt);
+    if(a.unlockedAt) return -1;
+    if(b.unlockedAt) return 1;
+    return 0;
+  });
+  const locked = withDates.filter(a=>!a.unlocked).sort((a,b)=>{
+    const ra = a.progress/a.target, rb = b.progress/b.target;
+    return rb-ra;
+  });
+
+  return {
+    unlocked, locked,
+    totalPoints: base.totalPoints,
+    levelInfo: base.levelInfo,
+    unlockedCount: base.unlockedCount,
+    totalCount: base.totalCount,
+    lastUnlocked: unlocked.length ? unlocked[0] : null
+  };
+}
+
 
 /* Reise mit der höchsten bzw. niedrigsten geschätzten CO2-Emission (gepaart mit ihrer Distanz) */
 function computeCO2Extremes(){
@@ -3476,6 +4158,77 @@ function renderCO2Chart(){
   chartEl.innerHTML = svg;
 }
 
+/* ---------- Badges-Tab ---------- */
+function badgeCardHTML(a){
+  const cls = 'badge-card '+(a.unlocked ? 'unlocked' : 'locked');
+  const pct = Math.max(a.unlocked?100:2, Math.round((a.progress/a.target)*100));
+  let html = '<div class="'+cls+'">';
+  html += '  <div class="badge-icon">'+a.icon+'</div>';
+  html += '  <div class="badge-body">';
+  html += '    <div class="badge-name">'+a.name+'</div>';
+  html += '    <div class="badge-desc">'+a.description+'</div>';
+  html += '    <div class="badge-progress-track"><div class="badge-progress-fill" style="width:'+pct+'%"></div></div>';
+  if(a.unlocked){
+    html += '    <div class="badge-meta"><span class="badge-progress-label">Freigeschaltet</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
+    if(a.unlockedAt) html += '    <div class="badge-date">am '+fmtDate(a.unlockedAt)+'</div>';
+  } else {
+    html += '    <div class="badge-meta"><span class="badge-progress-label">'+fmtNum(a.progress)+' / '+fmtNum(a.target)+'</span><span class="badge-bonus">+'+a.bonus+' Pkt.</span></div>';
+  }
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+
+function renderBadges(root){
+  if(trips.length===0){
+    root.innerHTML = '<div class="card"><div class="empty-state"><div class="big">🏅</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, sammelst du hier Auszeichnungen und Level.</div></div>';
+    return;
+  }
+
+  const view = computeBadgesView();
+  const li = view.levelInfo;
+  let html = '';
+
+  html += '<div class="level-hero">';
+  html += '  <div class="level-hero-top">';
+  html += '    <div class="level-hero-badge">';
+  html += '      <div class="level-hero-num">'+li.level+'</div>';
+  html += '      <div><div class="level-hero-title">'+li.title+'</div><div class="level-hero-sub">'+view.unlockedCount+' von '+view.totalCount+' Auszeichnungen freigeschaltet</div></div>';
+  html += '    </div>';
+  html += '    <div class="level-hero-points">'+fmtNum(view.totalPoints)+' <span style="color:var(--text-faint);">Punkte</span></div>';
+  html += '  </div>';
+  html += '  <div class="level-hero-track"><div class="level-hero-fill" style="width:'+Math.round(li.progressToNext*100)+'%"></div></div>';
+  if(li.next){
+    html += '  <div class="level-hero-next">noch '+fmtNum(li.pointsToNext)+' Punkte bis „'+li.next.title+'" (Level '+li.next.level+')</div>';
+  } else {
+    html += '  <div class="level-hero-maxed">🏆 Höchstes Level erreicht</div>';
+  }
+  if(view.lastUnlocked){
+    const lb = view.lastUnlocked;
+    html += '  <div class="last-badge-strip">';
+    html += '    <div class="last-badge-icon">'+lb.icon+'</div>';
+    html += '    <div class="last-badge-text">';
+    html += '      <div class="lb-label">Zuletzt freigeschaltet</div>';
+    html += '      <div class="lb-name">'+lb.name+'</div>';
+    if(lb.unlockedAt) html += '      <div class="lb-date">am '+fmtDate(lb.unlockedAt)+'</div>';
+    html += '    </div>';
+    html += '  </div>';
+  }
+  html += '</div>';
+
+  html += '<div class="badge-section-head"><h3>🏅 Freigeschaltet</h3><span class="sub">'+view.unlocked.length+' · neueste zuerst</span></div>';
+  if(view.unlocked.length===0){
+    html += '<div class="card"><div class="empty-state" style="padding:20px 10px;"><div class="big">🔒</div>Noch keine Auszeichnung freigeschaltet — leg los!</div></div>';
+  } else {
+    html += '<div class="badge-grid">'+view.unlocked.map(badgeCardHTML).join('')+'</div>';
+  }
+
+  html += '<div class="badge-section-head"><h3>🔒 In Arbeit</h3><span class="sub">'+view.locked.length+' · größter Fortschritt zuerst</span></div>';
+  html += '<div class="badge-grid">'+view.locked.map(badgeCardHTML).join('')+'</div>';
+
+  root.innerHTML = html;
+}
+
 function renderStatsYearList(years){
   const el = document.getElementById('statsYearList');
   if(!el) return;
@@ -3770,7 +4523,7 @@ function renderLogTable(){
   }
 
   let html = '<div class="table-wrap"><table class="responsive-table"><thead><tr>';
-  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂','co2')+'<th>Grund</th><th></th>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehrsmittel</th>'+th('Distanz','distance')+th('CO₂','co2')+'<th>Grund</th><th>Kontinent</th><th></th>';
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
     let modeCell, distCell;
@@ -3796,6 +4549,9 @@ function renderLogTable(){
     const pLbl = purposeLabel(t);
     const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
     const cityEsc = (t.city||'').replace(/"/g,'&quot;');
+    const contCode = getContinent((t.cityCC||'').toLowerCase());
+    const contInfo = continentInfo(contCode);
+    const contCell = contInfo ? contInfo.icon+' '+contInfo.label : '<span style="color:var(--text-faint);">–</span>';
     html += '<tr class="log-row">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
@@ -3804,6 +4560,7 @@ function renderLogTable(){
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="CO₂">'+(t.cityOnly ? '<span style="color:var(--text-faint);">–</span>' : fmtKg(tripCO2Kg(t)))+'</td>';
     html += '<td data-label="Grund" class="log-cell-secondary">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+    html += '<td data-label="Kontinent" class="log-cell-secondary">'+contCell+'</td>';
     html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
   });
@@ -3933,6 +4690,7 @@ function switchTab(tab){
   if(tab==='places') renderPlaces(panel);
   if(tab==='log') renderLog(panel);
   if(tab==='stats') renderStats(panel);
+  if(tab==='badges') renderBadges(panel);
   window.scrollTo({top:0,behavior:'instant' in window ? 'instant':'auto'});
 }
 
@@ -3944,6 +4702,7 @@ function renderAll(){
     '<div class="tab-panel" id="panel-places"></div>'+
     '<div class="tab-panel" id="panel-log"></div>'+
     '<div class="tab-panel" id="panel-stats"></div>'+
+    '<div class="tab-panel" id="panel-badges"></div>'+
     '<div class="footer-note">Deine Reisedaten werden lokal in diesem Artefakt gespeichert.<br>Distanzen sind Luftlinien-Näherungen — für exakte Werte kannst du sie jederzeit manuell anpassen.</div>';
   updateHomeChip();
   switchTab(currentTab);
