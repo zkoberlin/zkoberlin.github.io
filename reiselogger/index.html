@@ -460,6 +460,40 @@ tr:last-child td{border-bottom:none;}
 .field .hint{font-size:11px;color:var(--text-faint);margin-top:5px;}
 .field textarea{resize:vertical;min-height:44px;}
 
+.field-row.with-swap{grid-template-columns:1fr auto 1fr;align-items:end;}
+@media(max-width:520px){.field-row.with-swap{grid-template-columns:1fr;}}
+.btn-swap-cities{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:var(--bg-soft);color:var(--text-dim);font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform .18s ease, border-color .15s ease, color .15s ease;
+}
+.btn-swap-cities:hover{border-color:var(--gold-dim);color:var(--text);transform:rotate(180deg);}
+@media(max-width:520px){.btn-swap-cities{width:100%;border-radius:9px;margin:-4px 0 2px;}}
+
+.input-clear-wrap{position:relative;}
+.input-clear-wrap input{padding-right:30px;}
+.input-clear-btn{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;border:none;background:none;color:var(--text-faint);
+  font-size:12px;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.input-clear-btn:hover{color:var(--text);background:var(--panel-alt);}
+
+.checkbox-field{display:flex;align-items:flex-start;}
+.checkbox-label{
+  display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--text-dim);
+  cursor:pointer;line-height:1.4;
+}
+.checkbox-label input[type="checkbox"]{
+  width:16px;height:16px;margin-top:1px;flex-shrink:0;accent-color:var(--gold);cursor:pointer;
+}
+
+.city-only-badge{
+  display:inline-block;font-size:11.5px;color:var(--text-faint);
+  border:1px dashed var(--border-soft);border-radius:7px;padding:2px 7px;
+}
+
 .mode-toggle{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 @media(max-width:600px){.mode-toggle{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:420px){
@@ -782,6 +816,18 @@ tr:last-child td{border-bottom:none;}
   .responsive-table td:last-child, .responsive-table th:last-child{
     position:static; box-shadow:none;
   }
+
+  /* Minimale Zeile mobil: nur Kernangaben sichtbar, Details erst nach Antippen */
+  .responsive-table .log-cell-secondary{display:none;}
+  .responsive-table tr.expanded .log-cell-secondary{display:flex;}
+  .responsive-table tr.log-row{cursor:pointer;}
+  .log-row-toggle{
+    font-size:11px;color:var(--text-faint);margin-left:6px;
+    transition:transform .15s ease; flex-shrink:0;
+  }
+  .responsive-table tr.expanded .log-row-toggle{transform:rotate(180deg);}
+  .responsive-table td.log-cell-primary[data-label="Nach"]{justify-content:flex-start;gap:8px;}
+  .responsive-table td.log-cell-primary[data-label="Nach"] .cell-city{flex:1;}
 
   .hero-number{font-size:clamp(36px,11vw,48px);}
   .boarding-pass, .card{border-radius:14px;}
@@ -1125,7 +1171,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.22.0';
+const APP_VERSION = '1.23.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1682,6 +1728,19 @@ function tripCO2Kg(t){
   }
   return kg;
 }
+/* Findet Reisen, deren Zeitraum sich mit [dateFrom, dateTo] überschneidet (ein exakt
+   gleicher Tag zählt ebenfalls als Überschneidung). excludeId schließt beim Bearbeiten
+   die aktuell bearbeitete Reise selbst aus. ISO-Datumsstrings (yyyy-mm-dd) lassen sich
+   direkt als Strings vergleichen. */
+function findOverlappingTrips(dateFrom, dateTo, excludeId){
+  const to = dateTo || dateFrom;
+  return trips.filter(o=>{
+    if(excludeId && o.id===excludeId) return false;
+    if(!o.dateFrom) return false;
+    const oTo = o.dateTo || o.dateFrom;
+    return dateFrom <= oTo && to >= o.dateFrom;
+  });
+}
 function totalCO2Kg(){ return trips.reduce((s,t)=>s+tripCO2Kg(t),0); }
 function yearCO2Kg(year){
   return trips.reduce((s,t)=> (t.dateFrom||'').slice(0,4)===year ? s+tripCO2Kg(t) : s, 0);
@@ -1733,10 +1792,10 @@ function aggregate(){
   trips.forEach(t=>{
     const out=tripOut(t), ret=tripReturn(t), tot=out+ret;
     totalOut+=out; totalReturn+=ret;
-    if(t.direction!=='returnonly'){
+    if(t.direction!=='returnonly' && t.outMode){
       perMode[t.outMode]=(perMode[t.outMode]||0)+out;
     }
-    if(t.direction==='roundtrip' || t.direction==='returnonly'){
+    if((t.direction==='roundtrip' || t.direction==='returnonly') && t.returnMode){
       perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
     }
 
@@ -1854,13 +1913,15 @@ function computeRecords(){
   if(trips.length===0) return null;
 
   /* "Weiteste Einzelreise": bei roundtrip zählt die Hinweg-Distanz zum Ziel, bei
-     oneway/returnonly die Distanz des einen erfassten Teilstücks. */
+     oneway/returnonly die Distanz des einen erfassten Teilstücks. "Nur besucht"-Einträge
+     (ohne Distanz) zählen hier nicht mit. */
   function legKmForFarthest(t){
     return t.direction==='roundtrip' ? (t.outDistanceKm||0) : (primaryLeg(t).distanceKm||0);
   }
-  const farthest = trips.slice().sort((a,b)=>legKmForFarthest(b)-legKmForFarthest(a))[0];
+  const farthestCandidates = trips.filter(t=>!t.cityOnly);
+  const farthest = farthestCandidates.slice().sort((a,b)=>legKmForFarthest(b)-legKmForFarthest(a))[0];
 
-  const durationCandidates = trips.filter(t=>!RECORD_EXCLUDE_LONGEST.includes(t.city));
+  const durationCandidates = trips.filter(t=>!RECORD_EXCLUDE_LONGEST.includes(t.city) && !t.cityOnly);
   const withDuration = durationCandidates.map(t=>{
     const from = t.dateFrom ? new Date(t.dateFrom) : null;
     const to = t.dateTo ? new Date(t.dateTo) : from;
@@ -1911,8 +1972,9 @@ function computeRecords(){
 
 /* Reise mit der höchsten bzw. niedrigsten geschätzten CO2-Emission (gepaart mit ihrer Distanz) */
 function computeCO2Extremes(){
-  if(trips.length===0) return null;
-  const sorted = trips.slice().sort((a,b)=>tripCO2Kg(b)-tripCO2Kg(a));
+  const candidates = trips.filter(t=>!t.cityOnly);
+  if(candidates.length===0) return null;
+  const sorted = candidates.slice().sort((a,b)=>tripCO2Kg(b)-tripCO2Kg(a));
   return {
     most: sorted.slice(0,3),
     least: sorted.slice(-3).reverse()
@@ -2246,12 +2308,25 @@ async function initWorldMap(agg){
     });
   svg.call(zoom);
 
+  // Standard-Ansicht: statt der kompletten Weltkarte direkt auf Europa eingezoomt
+  // (Heimatregion) — berechnet aus der Pixel-Bounding-Box eines groben Europa-Rechtecks
+  // (Island/Portugal bis zum Ural, Nordkap bis Mittelmeer) innerhalb der aktuellen Projektion.
+  const europeBBox = {type:'Polygon', coordinates:[[[-25,72],[45,72],[45,34],[-25,34],[-25,72]]]};
+  const eb = path.bounds(europeBBox);
+  const ebW = eb[1][0]-eb[0][0], ebH = eb[1][1]-eb[0][1];
+  const europeScale = Math.max(1, Math.min(10, 0.92*Math.min(width/ebW, height/ebH)));
+  const ebCx = (eb[0][0]+eb[1][0])/2, ebCy = (eb[0][1]+eb[1][1])/2;
+  const europeTransform = d3.zoomIdentity
+    .translate(width/2 - europeScale*ebCx, height/2 - europeScale*ebCy)
+    .scale(europeScale);
+  svg.call(zoom.transform, europeTransform);
+
   const zoomInBtn = document.getElementById('zoomInBtn');
   const zoomOutBtn = document.getElementById('zoomOutBtn');
   const zoomResetBtn = document.getElementById('zoomResetBtn');
   if(zoomInBtn) zoomInBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1.6);
   if(zoomOutBtn) zoomOutBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1/1.6);
-  if(zoomResetBtn) zoomResetBtn.onclick = ()=> svg.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+  if(zoomResetBtn) zoomResetBtn.onclick = ()=> svg.transition().duration(300).call(zoom.transform, europeTransform);
 }
 
 function renderCityDetail(agg){
@@ -2273,7 +2348,9 @@ function renderCityDetail(agg){
   html += '<div class="visit-chip-list">';
   c.trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'')).forEach(t=>{
     let distText;
-    if(t.direction==='roundtrip'){
+    if(t.cityOnly){
+      distText = '📍 nur besucht';
+    } else if(t.direction==='roundtrip'){
       const outMo=getMode(t.outMode);
       let outText = outMo.icon+' '+fmtKm(t.outDistanceKm);
       if((t.outWaypoints||[]).length) outText += ' (via '+t.outWaypoints.join(', ')+')';
@@ -2346,9 +2423,13 @@ function renderAdd(root){
   html += '    <p class="bp-title">'+(t?'Reise bearbeiten':'Neue Reise erfassen')+'</p>';
   html += '    <p class="bp-sub">Trag Start, Ziel und Zeitraum ein. Hinweg und Rückweg können unterschiedliche Verkehrsmittel haben — z. B. mit dem Rad hin, mit dem Zug zurück.</p>';
   html += '    <form id="tripForm">';
-  html += '      <div class="field-row">';
-  html += '        <div class="field"><label for="fldFrom">Von</label><input type="text" id="fldFrom" list="cityDatalist" placeholder="Ausgangsstadt" value="'+(homeVal||'').replace(/"/g,'&quot;')+'"></div>';
+  html += '      <div class="field-row with-swap">';
+  html += '        <div class="field"><label for="fldFrom">Von</label><div class="input-clear-wrap"><input type="text" id="fldFrom" list="cityDatalist" placeholder="Ausgangsstadt" value="'+(homeVal||'').replace(/"/g,'&quot;')+'"><button type="button" class="input-clear-btn" id="fldFromClear" title="Von leeren">✕</button></div></div>';
+  html += '        <button type="button" class="btn-swap-cities" id="swapCitiesBtn" title="Von und Nach tauschen">⇄</button>';
   html += '        <div class="field"><label for="fldTo">Nach</label><input type="text" id="fldTo" list="cityDatalist" placeholder="Zielstadt" required value="'+(t?t.city.replace(/"/g,'&quot;'):'')+'"></div>';
+  html += '      </div>';
+  html += '      <div class="field checkbox-field" style="margin-bottom:14px;">';
+  html += '        <label class="checkbox-label"><input type="checkbox" id="fldCityOnly"'+(t&&t.cityOnly?' checked':'')+'> Nur Stadt merken (ohne Distanz/Verkehrsmittel — für Reisen, an die ich mich nur noch grob erinnere)</label>';
   html += '      </div>';
   html += '      <div class="field" id="manualCountryField" style="margin-bottom:14px;display:none;">';
   html += '        <label for="fldManualCountry">Land der Zielstadt</label>';
@@ -2465,6 +2546,41 @@ function renderAdd(root){
   let returnWaypoints = t ? (t.returnWaypoints||[]).slice() : [];
   let purpose = t ? (t.purpose||null) : null;
 
+  /* Von leeren + Von/Nach tauschen */
+  const fldFromClearBtn = document.getElementById('fldFromClear');
+  if(fldFromClearBtn) fldFromClearBtn.addEventListener('click', ()=>{
+    const el = document.getElementById('fldFrom');
+    el.value = ''; el.focus();
+  });
+  const swapCitiesBtn = document.getElementById('swapCitiesBtn');
+  if(swapCitiesBtn) swapCitiesBtn.addEventListener('click', ()=>{
+    const fromEl = document.getElementById('fldFrom'), toEl = document.getElementById('fldTo');
+    const tmp = fromEl.value; fromEl.value = toEl.value; toEl.value = tmp;
+  });
+
+  /* "Nur Stadt merken": blendet Fahrtrichtung/Distanz/Flugnummer aus und macht den
+     Zeitraum optional — für Reisen, an die man sich nur noch grob (Stadt, evtl. Monat/Jahr)
+     erinnert, ohne Distanz/CO2/Verkehrsmittel-Details. */
+  const cityOnlyBox = document.getElementById('fldCityOnly');
+  function updateCityOnlyVisibility(){
+    const on = cityOnlyBox && cityOnlyBox.checked;
+    const directionField = document.getElementById('directionToggle').closest('.field');
+    if(directionField) directionField.style.display = on ? 'none' : '';
+    document.getElementById('legsContainer').style.display = on ? 'none' : '';
+    const dateHint = document.querySelector('#dateRangeWrap .hint');
+    const dateInput = document.getElementById('fldDateRange');
+    if(on){
+      dateInput.removeAttribute('required');
+      if(dateHint) dateHint.textContent = 'Optional — Monat/Jahr reicht, wenn du dich an den genauen Tag nicht mehr erinnerst.';
+      document.getElementById('flightField').style.display = 'none';
+    } else {
+      dateInput.setAttribute('required','required');
+      if(dateHint) dateHint.textContent = 'Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.';
+      updateFlightField();
+    }
+  }
+  if(cityOnlyBox) cityOnlyBox.addEventListener('change', ()=>{ updateCityOnlyVisibility(); if(typeof updateStub==='function') updateStub(); });
+
   const purposeToggle = document.getElementById('purposeToggle');
   purposeToggle.addEventListener('click',(e)=>{
     const chip = e.target.closest('.purpose-chip');
@@ -2490,6 +2606,10 @@ function renderAdd(root){
 
   function updateStub(){
     const stub = document.getElementById('bpStubContent');
+    if(cityOnlyBox && cityOnlyBox.checked){
+      stub.innerHTML = '<div class="stub-ic">📍</div><div class="stub-lbl" style="margin-top:6px;">Nur besucht — ohne Distanz</div>';
+      return;
+    }
     if(!direction){
       stub.innerHTML = '<div class="stub-ic">❔</div><div class="stub-lbl" style="margin-top:6px;">Erst Fahrtrichtung wählen</div>';
       return;
@@ -2669,29 +2789,50 @@ function renderAdd(root){
 
   renderLegsContainer();
   updateToCityFallback();
+  updateCityOnlyVisibility();
 
   document.getElementById('tripForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
     const toVal = document.getElementById('fldTo').value.trim();
     if(!toVal){ showToast('Bitte eine Zielstadt eintragen.'); return; }
     const fromVal = document.getElementById('fldFrom').value.trim();
+    const cityOnly = !!(cityOnlyBox && cityOnlyBox.checked);
     const dateFrom = document.getElementById('fldFromDate').value;
-    if(!dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
-    if(!direction){ showToast('Bitte wähle eine Fahrtrichtung.'); return; }
+    if(!cityOnly && !dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
+    if(!cityOnly && !direction){ showToast('Bitte wähle eine Fahrtrichtung.'); return; }
 
     let outDistVal = null, returnDistVal = null;
-    if(direction==='returnonly'){
-      const retDistInput = document.getElementById('fldDist_return');
-      returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
-      if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
-    } else {
-      const outDistInput = document.getElementById('fldDist_out');
-      outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
-      if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
-      if(direction==='roundtrip'){
+    if(!cityOnly){
+      if(direction==='returnonly'){
         const retDistInput = document.getElementById('fldDist_return');
         returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
         if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+      } else {
+        const outDistInput = document.getElementById('fldDist_out');
+        outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
+        if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
+        if(direction==='roundtrip'){
+          const retDistInput = document.getElementById('fldDist_return');
+          returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
+          if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+        }
+      }
+    }
+
+    const dateTo = dateFrom ? (document.getElementById('fldToDate').value || dateFrom) : '';
+
+    // Überschneidungs-/Duplikat-Check: gibt es für diesen Zeitraum (oder exakten Tag)
+    // bereits eine andere Reise? Falls ja, vor dem Anlegen/Speichern nachfragen.
+    if(dateFrom){
+      const overlaps = findOverlappingTrips(dateFrom, dateTo, t ? t.id : null);
+      if(overlaps.length){
+        const list = overlaps.map(o=>'• '+o.city+' ('+fmtRange(o.dateFrom,o.dateTo)+')').join('\n');
+        const verb = t ? 'speichern' : 'anlegen';
+        const proceed = confirm(
+          'Für diesen Zeitraum gibt es bereits '+(overlaps.length===1?'eine Reise':overlaps.length+' Reisen')+':\n\n'+
+          list+'\n\nTrotzdem '+verb+'?'
+        );
+        if(!proceed) return;
       }
     }
 
@@ -2719,22 +2860,23 @@ function renderAdd(root){
 
     const trip = {
       id: t ? t.id : uid(),
-      fromCity: fromVal,
+      fromCity: cityOnly ? '' : fromVal,
       city: cityName,
       country: countryName,
       cityCC: cc,
-      outWaypoints: direction==='returnonly' ? [] : outWaypoints.map(w=>w.trim()).filter(Boolean),
-      returnWaypoints: (direction==='roundtrip'||direction==='returnonly') ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
-      direction: direction,
-      outMode: direction==='returnonly' ? null : outMode,
-      outDistanceKm: direction==='returnonly' ? null : Math.round(outDistVal),
-      returnMode: (direction==='roundtrip'||direction==='returnonly') ? returnMode : null,
-      returnDistanceKm: (direction==='roundtrip'||direction==='returnonly') ? Math.round(returnDistVal) : null,
+      cityOnly: cityOnly,
+      outWaypoints: (cityOnly||direction==='returnonly') ? [] : outWaypoints.map(w=>w.trim()).filter(Boolean),
+      returnWaypoints: (!cityOnly && (direction==='roundtrip'||direction==='returnonly')) ? returnWaypoints.map(w=>w.trim()).filter(Boolean) : [],
+      direction: cityOnly ? null : direction,
+      outMode: (cityOnly||direction==='returnonly') ? null : outMode,
+      outDistanceKm: (cityOnly||direction==='returnonly') ? null : Math.round(outDistVal),
+      returnMode: (!cityOnly && (direction==='roundtrip'||direction==='returnonly')) ? returnMode : null,
+      returnDistanceKm: (!cityOnly && (direction==='roundtrip'||direction==='returnonly')) ? Math.round(returnDistVal) : null,
       dateFrom: dateFrom,
-      dateTo: document.getElementById('fldToDate').value || dateFrom,
+      dateTo: dateTo,
       purpose: purpose,
       purposeCustom: purpose==='custom' ? document.getElementById('fldPurposeCustom').value.trim() : '',
-      flightNumber: document.getElementById('fldFlightNo') ? document.getElementById('fldFlightNo').value.trim() : '',
+      flightNumber: (!cityOnly && document.getElementById('fldFlightNo')) ? document.getElementById('fldFlightNo').value.trim() : '',
       notes: document.getElementById('fldNotes').value.trim(),
       createdAt: t ? t.createdAt : Date.now()
     };
@@ -3458,7 +3600,10 @@ function renderLogTable(){
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
     let modeCell, distCell;
-    if(t.direction==='roundtrip'){
+    if(t.cityOnly){
+      modeCell = '<span class="city-only-badge">📍 nur besucht</span>';
+      distCell = '<span style="color:var(--text-faint);">–</span>';
+    } else if(t.direction==='roundtrip'){
       const outMo = getMode(t.outMode);
       const retMo = getMode(t.returnMode);
       modeCell = '<span class="mode-badge">'+outMo.icon+' '+outMo.label+'</span> <span class="mode-badge">'+retMo.icon+' '+retMo.label+'</span>';
@@ -3477,15 +3622,15 @@ function renderLogTable(){
     const pLbl = purposeLabel(t);
     const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
     const cityEsc = (t.city||'').replace(/"/g,'&quot;');
-    html += '<tr>';
-    html += '<td data-label="Zeitraum">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
-    html += '<td data-label="Von">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
-    html += '<td data-label="Nach"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+t.city+'</span></div>'+wpNote+'</td>';
-    html += '<td data-label="Verkehrsmittel">'+modeCell+'</td>';
-    html += '<td class="mono" data-label="Distanz">'+distCell+'</td>';
-    html += '<td class="mono" data-label="CO₂">'+fmtKg(tripCO2Kg(t))+'</td>';
-    html += '<td data-label="Grund">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-    html += '<td data-label=""><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '<tr class="log-row">';
+    html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
+    html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
+    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+t.city+'</span></div>'+wpNote+'<span class="log-row-toggle">▾</span></td>';
+    html += '<td data-label="Verkehrsmittel" class="log-cell-secondary">'+modeCell+'</td>';
+    html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
+    html += '<td class="mono log-cell-secondary" data-label="CO₂">'+(t.cityOnly ? '<span style="color:var(--text-faint);">–</span>' : fmtKg(tripCO2Kg(t)))+'</td>';
+    html += '<td data-label="Grund" class="log-cell-secondary">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
+    html += '<td data-label="" class="log-cell-primary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
   });
   html += '</tbody></table></div>';
@@ -3512,9 +3657,18 @@ function attachLogRowActions(root){
     });
   });
   root.querySelectorAll('.log-city-link').forEach(el=>{
-    el.addEventListener('click', ()=>{
+    el.addEventListener('click', (e)=>{
+      e.stopPropagation();
       logCityFilter = el.dataset.cityFilter || '';
       renderLog(root);
+    });
+  });
+  // Mobil: Zeile antippen klappt die Detailspalten (Von, Verkehrsmittel, Distanz,
+  // CO2, Grund) auf/zu — auf Desktop sind sie ohnehin immer sichtbar (Tabellenlayout).
+  root.querySelectorAll('tr.log-row').forEach(tr=>{
+    tr.addEventListener('click', (e)=>{
+      if(e.target.closest('.row-actions') || e.target.closest('.log-city-link')) return;
+      tr.classList.toggle('expanded');
     });
   });
 }
