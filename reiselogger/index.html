@@ -22,6 +22,7 @@
   --teal:#4FD9C7;
   --rose:#E8607A;
   --green:#8BD17C;
+  --bar-accent:#9B7FE8;
   --text:#F1EEE4;
   --text-dim:#97A0BE;
   --text-faint:#5c6690;
@@ -52,6 +53,7 @@
   --teal:#0C7A6D;
   --rose:#B8324F;
   --green:#357A2C;
+  --bar-accent:#6D4FC7;
   --text:#161C33;
   --text-dim:#4C5678;
   --text-faint:#6B7594;
@@ -547,7 +549,19 @@ tr:last-child td{border-bottom:none;}
 .top-value{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;flex-shrink:0;}
 .top-value b{color:var(--text);font-weight:600;}
 .top-bar-track{height:6px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;}
-.top-bar-fill{height:100%;border-radius:100px;background:var(--gold);transition:width .5s ease;}
+.top-bar-fill{height:100%;border-radius:100px;background:var(--bar-accent);transition:width .5s ease;}
+
+.discovery-row{cursor:pointer;}
+.discovery-row:hover .top-name span{color:var(--bar-accent);}
+.discovery-caret{margin-left:8px;color:var(--text-faint);font-size:9px;}
+.discovery-detail{
+  margin:-4px 0 2px 34px;padding:9px 12px;background:var(--bg-soft);border:1px solid var(--border-soft);
+  border-radius:10px;font-size:12px;color:var(--text-dim);display:flex;flex-direction:column;gap:6px;
+}
+.discovery-detail-group{display:flex;flex-wrap:wrap;align-items:center;gap:5px;line-height:1.9;}
+.discovery-detail-group .ddg-label{color:var(--text-faint);font-size:10.5px;text-transform:uppercase;letter-spacing:0.04em;margin-right:2px;}
+.discovery-detail-group img{width:15px;height:11px;border-radius:2px;object-fit:cover;vertical-align:-1px;}
+.stats-home-note{display:flex;align-items:center;gap:5px;}
 
 .mode-filter-toggle{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
 .mode-filter-chip{
@@ -844,7 +858,7 @@ span.flatpickr-weekday{
     <div class="brand">
       <div class="brand-mark">🧭</div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.21.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.22.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1111,7 +1125,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.21.0';
+const APP_VERSION = '1.22.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1145,6 +1159,10 @@ let logSort = {key:'dateFrom', dir:'desc'};
 let logCityFilter = '';
 let statsYearMode = 'all';
 let co2ChartRange = 'year';
+let statsCityScope = 'all';
+let discoverySortMode = 'year';
+let expandedDiscoveryYears = new Set();
+let seasonSortMode = 'calendar';
 let discoveryTrendExpanded = false;
 let co2ChartShowTotal = true;
 let co2ChartShowAvg = true;
@@ -1672,6 +1690,14 @@ function yearCO2Kg(year){
 /* Prüft, ob ein Stadtname dem hinterlegten Heimatort entspricht. Reisen "nach Hause"
    (z. B. ein separat erfasster Rückflug) sollen nicht als besuchter Ort mitgezählt werden —
    die zurückgelegten Kilometer, das Verkehrsmittel und der CO2-Wert bleiben davon unberührt. */
+/* Land des Heimatorts, dynamisch aus settings.home ermittelt (nicht hartkodiert) —
+   wird u. a. für die National/International-Auswertung und den Länder-Ausschluss
+   in den Statistiken verwendet. */
+function getHomeCountry(){
+  if(!settings.home) return null;
+  const hc = findCity(settings.home);
+  return hc ? hc.c : null;
+}
 function isHomeCity(cityName){
   if(!cityName || !settings.home) return false;
   const hc = findCity(settings.home);
@@ -1795,22 +1821,25 @@ function aggregateMonths(){
 /* Entdecker-Trend: wie viele Länder/Städte wurden in welchem Jahr zum ERSTEN Mal besucht
    (chronologisch aufsteigend, zeigt ob das "Entdecker-Tempo" zu- oder abnimmt) */
 function aggregateDiscoveries(){
+  /* Heimatort zählt an keiner Stelle der App als besuchter Ort (siehe isHomeCity) —
+     das galt hier bislang nicht: ein Berlin-Eintrag hätte fälschlich als "neue Stadt"
+     gezählt. Für Konsistenz mit den übrigen Auswertungen jetzt ausgeschlossen. */
   const cityFirstYear = new Map();
   const countryFirstYear = new Map();
-  trips.slice().sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'')).forEach(t=>{
+  trips.slice().filter(t=>!isHomeCity(t.city)).sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'')).forEach(t=>{
     const year = (t.dateFrom||'').slice(0,4);
     if(!/^\d{4}$/.test(year)) return;
     const ckey = t.city+'|'+t.country;
-    if(!cityFirstYear.has(ckey)) cityFirstYear.set(ckey, year);
-    if(!countryFirstYear.has(t.country)) countryFirstYear.set(t.country, year);
+    if(!cityFirstYear.has(ckey)) cityFirstYear.set(ckey, {year, city:t.city, country:t.country, cc:t.cityCC});
+    if(!countryFirstYear.has(t.country)) countryFirstYear.set(t.country, {year, country:t.country, cc:t.cityCC});
   });
   const yearMap = new Map();
-  function bump(year, key){
-    if(!yearMap.has(year)) yearMap.set(year, {year, newCities:0, newCountries:0});
-    yearMap.get(year)[key]++;
+  function ensureYear(year){
+    if(!yearMap.has(year)) yearMap.set(year, {year, newCities:0, newCountries:0, cities:[], countries:[]});
+    return yearMap.get(year);
   }
-  cityFirstYear.forEach((year)=>bump(year,'newCities'));
-  countryFirstYear.forEach((year)=>bump(year,'newCountries'));
+  cityFirstYear.forEach((info)=>{ const y=ensureYear(info.year); y.newCities++; y.cities.push(info); });
+  countryFirstYear.forEach((info)=>{ const y=ensureYear(info.year); y.newCountries++; y.countries.push(info); });
   return [...yearMap.values()].sort((a,b)=>a.year.localeCompare(b.year));
 }
 
@@ -1852,10 +1881,31 @@ function computeRecords(){
     if(set.size>bestCount){ bestCount=set.size; bestYear=year; }
   });
 
+  /* Meiste neue Städte in einem Jahr */
+  const discoveries = aggregateDiscoveries();
+  let mostNewCitiesYear = null;
+  discoveries.forEach(d=>{
+    if(!mostNewCitiesYear || d.newCities>mostNewCitiesYear.newCities) mostNewCitiesYear = d;
+  });
+
+  /* CO2-freundlichstes Jahr: höchstes Verhältnis gereister km je kg CO2e — also insgesamt
+     die längste Strecke bei möglichst geringem Ausstoß. Jahre ganz ohne CO2 (z. B. nur Rad)
+     ergeben ein unendliches Verhältnis und gewinnen zurecht automatisch. */
+  const years = aggregateYears();
+  let bestCO2Year = null, bestRatio = -1;
+  years.forEach(y=>{
+    if(y.total<=0) return;
+    const co2 = yearCO2Kg(y.year);
+    const ratio = co2>0 ? y.total/co2 : Infinity;
+    if(ratio>bestRatio){ bestRatio=ratio; bestCO2Year={year:y.year, km:y.total, co2Kg:co2, ratio}; }
+  });
+
   return {
     farthest: farthest ? {trip:farthest, km:legKmForFarthest(farthest)} : null,
     longest: longest ? {trip:longest.trip, days:longest.days} : null,
-    bestYear: bestYear ? {year:bestYear, count:bestCount} : null
+    bestYear: bestYear ? {year:bestYear, count:bestCount} : null,
+    mostNewCitiesYear: mostNewCitiesYear ? {year:mostNewCitiesYear.year, newCities:mostNewCitiesYear.newCities} : null,
+    bestCO2Year
   };
 }
 
@@ -2732,35 +2782,46 @@ function renderStats(root){
     return;
   }
 
-  /* Top 5 Städte & Top 5 Länder, jeweils nach Anzahl Besuche */
-  const topCities = agg.cities.slice().sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
-  const topCountries = agg.countries.slice().sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
-  const maxCityVisits = topCities.length ? topCities[0].visits : 1;
+  /* Top 5 Städte (mit National/International-Filter) & Top 5 Länder (ohne Heimatland,
+     das stattdessen separat in der Kachel-Kopfzeile ausgewiesen wird) */
+  const homeCountry = getHomeCountry();
+  const topCountries = agg.countries.filter(c=>!homeCountry || c.country!==homeCountry).sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
+  const homeCountryEntry = homeCountry ? agg.countries.find(c=>c.country===homeCountry) : null;
   const maxCountryVisits = topCountries.length ? topCountries[0].visits : 1;
 
   html += '<div class="stats-grid-2">';
 
   html += '  <div class="card">';
   html += '    <div class="card-head"><h2>Top 5 Städte</h2><span class="sub">nach Besuchen</span></div>';
-  html += '    <div class="top-list">';
-  topCities.forEach((c,i)=>{
-    const pct = Math.max(6, Math.round((c.visits/maxCityVisits)*100));
-    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>';
-    const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
-    html += topListItemHTML(i, name, val, pct);
-  });
-  html += '    </div>';
+  if(homeCountry){
+    html += '    <div class="mode-filter-toggle" id="statsCityScopeFilter">';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='all'?' active':'')+'" data-city-scope="all">🌐 Alle</div>';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='national'?' active':'')+'" data-city-scope="national">🏠 National</div>';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='international'?' active':'')+'" data-city-scope="international">✈️ International</div>';
+    html += '    </div>';
+  }
+  html += '    <div class="top-list" id="topCitiesList"></div>';
   html += '  </div>';
 
   html += '  <div class="card">';
-  html += '    <div class="card-head"><h2>Top 5 Länder</h2><span class="sub">nach Besuchen</span></div>';
+  html += '    <div class="card-head"><h2>Top 5 Länder</h2>';
+  if(homeCountryEntry){
+    html += '<span class="sub stats-home-note">🏠 '+homeCountryEntry.country+': '+homeCountryEntry.visits+' '+(homeCountryEntry.visits===1?'Besuch':'Besuche')+' · '+fmtKm(homeCountryEntry.totalKm)+'</span>';
+  } else {
+    html += '<span class="sub">nach Besuchen</span>';
+  }
+  html += '  </div>';
   html += '    <div class="top-list">';
-  topCountries.forEach((c,i)=>{
-    const pct = Math.max(6, Math.round((c.visits/maxCountryVisits)*100));
-    const name = flagImg(c.cc,18)+'<span>'+c.country+'</span>';
-    const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
-    html += topListItemHTML(i, name, val, pct);
-  });
+  if(topCountries.length===0){
+    html += '<div class="empty-state" style="padding:14px 6px;"><div class="big">🌍</div>Noch keine weiteren Länder erfasst.</div>';
+  } else {
+    topCountries.forEach((c,i)=>{
+      const pct = Math.max(6, Math.round((c.visits/maxCountryVisits)*100));
+      const name = flagImg(c.cc,18)+'<span>'+c.country+'</span>';
+      const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
+      html += topListItemHTML(i, name, val, pct);
+    });
+  }
   html += '    </div>';
   html += '  </div>';
 
@@ -2810,24 +2871,20 @@ function renderStats(root){
   }
   html += '</div>';
 
-  /* Saisonmuster: Reisen &amp; Kilometer je Kalendermonat */
+  /* Saisonmuster: Reisen &amp; Kilometer je Kalendermonat, sortierbar */
   const months = aggregateMonths();
-  const maxMonthKm = Math.max(1, ...months.map(m=>m.km));
   // Die Summen laufen über ALLE Jahre — bei mehreren erfassten Jahren würde ein Monat sonst
   // nur wirken "wichtiger", weil mehr Jahre einfließen. Der Ø-Wert pro Jahr macht die
   // Saisonalität vergleichbar, unabhängig davon wie viele Jahre schon erfasst sind.
   const yearsWithData = new Set(trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(y=>/^\d{4}$/.test(y))).size || 1;
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Saisonmuster</h2><span class="sub">Reisen nach Monat, über alle Jahre · Ø pro Jahr ('+yearsWithData+' '+(yearsWithData===1?'Jahr':'Jahre')+')</span></div>';
-  html += '  <div class="top-list">';
-  months.forEach((m,i)=>{
-    const pct = m.km>0 ? Math.max(6, Math.round((m.km/maxMonthKm)*100)) : 0;
-    const name = '<span>'+m.name+'</span>';
-    const avgKm = m.km / yearsWithData;
-    const val = m.trips>0 ? '<b>'+m.trips+'</b> '+(m.trips===1?'Reise':'Reisen')+' · '+fmtKm(m.km)+' <span style="color:var(--text-faint);">(Ø '+fmtKm(avgKm)+'/Jahr)</span>' : '<span style="color:var(--text-faint);">–</span>';
-    html += topListItemHTML(i, name, val, pct, {plain:true});
-  });
+  html += '  <div class="mode-filter-toggle" id="seasonSortFilter">';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='calendar'?' active':'')+'" data-season-sort="calendar">📅 Kalender</div>';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='trips'?' active':'')+'" data-season-sort="trips">🔢 Meiste Reisen</div>';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='km'?' active':'')+'" data-season-sort="km">📏 Meiste km</div>';
   html += '  </div>';
+  html += '  <div class="top-list" id="seasonList"></div>';
   html += '</div>';
 
   /* Persönliche Rekorde */
@@ -2845,6 +2902,14 @@ function renderStats(root){
   }
   if(records.bestYear){
     html += '    <div class="record-card"><div class="rc-icon">🌍</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
+  }
+  if(records.mostNewCitiesYear){
+    html += '    <div class="record-card"><div class="rc-icon">🧭</div><div class="rc-value">'+records.mostNewCitiesYear.newCities+' '+(records.mostNewCitiesYear.newCities===1?'neue Stadt':'neue Städte')+'</div><div class="rc-label">Meiste neue Städte</div><div class="rc-detail">im Jahr '+records.mostNewCitiesYear.year+'</div></div>';
+  }
+  if(records.bestCO2Year){
+    const r = records.bestCO2Year;
+    const ratioText = r.ratio===Infinity ? 'emissionsfrei' : (Math.round(r.ratio).toLocaleString('de-DE')+' km/kg CO₂');
+    html += '    <div class="record-card"><div class="rc-icon">🌿</div><div class="rc-value">'+r.year+'</div><div class="rc-label">CO2-freundlichstes Jahr</div><div class="rc-detail">'+fmtKm(r.km)+' bei '+fmtKg(r.co2Kg)+' · '+ratioText+'</div></div>';
   }
   html += '  </div>';
   html += '</div>';
@@ -2901,30 +2966,26 @@ function renderStats(root){
   html += '  <div id="co2ChartBars"></div>';
   html += '</div>';
 
-  /* Entdecker-Trend: neue Länder/Städte je Jahr — neueste zuerst; standardmäßig nur die
-     letzten 5 Jahre, Rest über "mehr anzeigen" aufklappbar (bei vielen erfassten Jahren
-     sonst eine sehr lange Liste). */
-  const discoveriesDesc = aggregateDiscoveries().slice().reverse();
+  /* Entdecker-Trend: neue Länder/Städte je Jahr — sortierbar (Jahr/Städte/Land),
+     jede Zeile aufklappbar für die konkret neu entdeckten Orte. Bei vielen erfassten
+     Jahren bleibt die Liste standardmäßig auf die "wichtigsten" Jahre begrenzt,
+     Rest über "mehr anzeigen" aufklappbar (sonst eine sehr lange Liste). */
+  const discoveriesAll = aggregateDiscoveries();
   const DISCOVERY_COLLAPSED_COUNT = 5;
-  const discoveriesVisible = discoveryTrendExpanded ? discoveriesDesc : discoveriesDesc.slice(0, DISCOVERY_COLLAPSED_COUNT);
-  const discoveriesHidden = discoveriesDesc.length - discoveriesVisible.length;
   html += '<div class="card">';
-  html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr</span></div>';
-  if(discoveriesDesc.length===0){
+  html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr · antippen für Details</span></div>';
+  if(discoveriesAll.length===0){
     html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Daten vorhanden.</div>';
   } else {
-    const maxNewCities = Math.max(1, ...discoveriesDesc.map(d=>d.newCities));
-    html += '  <div class="top-list" id="discoveryTrendList">';
-    discoveriesVisible.forEach((d,i)=>{
-      const pct = Math.max(6, Math.round((d.newCities/maxNewCities)*100));
-      const name = '<span>'+d.year+'</span>';
-      const val = '<b>'+d.newCountries+'</b> neue '+(d.newCountries===1?'Land':'Länder')+' · <b>'+d.newCities+'</b> neue '+(d.newCities===1?'Stadt':'Städte');
-      html += topListItemHTML(i, name, val, pct, {plain:true});
-    });
+    html += '  <div class="mode-filter-toggle" id="discoverySortFilter">';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='year'?' active':'')+'" data-discovery-sort="year">📅 Jahr</div>';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='cities'?' active':'')+'" data-discovery-sort="cities">🏙️ Anzahl Städte</div>';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='countries'?' active':'')+'" data-discovery-sort="countries">🌍 Anzahl Land</div>';
     html += '  </div>';
-    if(discoveriesHidden>0 || discoveryTrendExpanded){
+    html += '  <div class="top-list" id="discoveryTrendList"></div>';
+    if(discoveriesAll.length>DISCOVERY_COLLAPSED_COUNT || discoveryTrendExpanded){
       html += '  <button type="button" class="btn-secondary" id="discoveryTrendToggle" style="margin-top:12px;width:100%;">'+
-        (discoveryTrendExpanded ? 'Weniger anzeigen ▲' : (discoveriesHidden+' weitere Jahre anzeigen ▼'))+'</button>';
+        (discoveryTrendExpanded ? 'Weniger anzeigen ▲' : ((discoveriesAll.length-DISCOVERY_COLLAPSED_COUNT)+' weitere Jahre anzeigen ▼'))+'</button>';
     }
   }
   html += '</div>';
@@ -2945,6 +3006,15 @@ function renderStats(root){
 
   root.innerHTML = html;
 
+  renderTopCitiesList(agg);
+  root.querySelectorAll('#statsCityScopeFilter [data-city-scope]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      statsCityScope = chip.dataset.cityScope;
+      root.querySelectorAll('#statsCityScopeFilter [data-city-scope]').forEach(c=>c.classList.toggle('active', c.dataset.cityScope===statsCityScope));
+      renderTopCitiesList(agg);
+    });
+  });
+
   const years = aggregateYears();
   renderStatsYearList(years);
   root.querySelectorAll('#statsYearFilter [data-year-mode]').forEach(chip=>{
@@ -2952,6 +3022,15 @@ function renderStats(root){
       statsYearMode = chip.dataset.yearMode;
       root.querySelectorAll('#statsYearFilter [data-year-mode]').forEach(c=>c.classList.toggle('active', c.dataset.yearMode===statsYearMode));
       renderStatsYearList(years);
+    });
+  });
+
+  renderSeasonList(months);
+  root.querySelectorAll('#seasonSortFilter [data-season-sort]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      seasonSortMode = chip.dataset.seasonSort;
+      root.querySelectorAll('#seasonSortFilter [data-season-sort]').forEach(c=>c.classList.toggle('active', c.dataset.seasonSort===seasonSortMode));
+      renderSeasonList(months);
     });
   });
 
@@ -2972,6 +3051,16 @@ function renderStats(root){
     });
   });
 
+  if(discoveriesAll.length){
+    renderDiscoveryList(discoveriesAll);
+    root.querySelectorAll('#discoverySortFilter [data-discovery-sort]').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        discoverySortMode = chip.dataset.discoverySort;
+        root.querySelectorAll('#discoverySortFilter [data-discovery-sort]').forEach(c=>c.classList.toggle('active', c.dataset.discoverySort===discoverySortMode));
+        renderDiscoveryList(discoveriesAll);
+      });
+    });
+  }
   const discoveryToggleBtn = document.getElementById('discoveryTrendToggle');
   if(discoveryToggleBtn){
     discoveryToggleBtn.addEventListener('click', ()=>{
@@ -3104,6 +3193,101 @@ function renderStatsYearList(years){
     html += topListItemHTML(i, name, val, pct);
   });
   el.innerHTML = html;
+}
+
+/* Top 5 Städte, gefiltert nach National (Heimatland) / International / Alle */
+function renderTopCitiesList(agg){
+  const el = document.getElementById('topCitiesList');
+  if(!el) return;
+  const homeCountry = getHomeCountry();
+  let pool = agg.cities;
+  if(statsCityScope==='national') pool = pool.filter(c=>homeCountry && c.country===homeCountry);
+  else if(statsCityScope==='international') pool = pool.filter(c=>!homeCountry || c.country!==homeCountry);
+
+  const top = pool.slice().sort((a,b)=>b.visits-a.visits || b.totalKm-a.totalKm).slice(0,5);
+  if(top.length===0){
+    el.innerHTML = '<div class="empty-state" style="padding:14px 6px;"><div class="big">🏙️</div>Keine Städte in dieser Auswahl.</div>';
+    return;
+  }
+  const maxVisits = top[0].visits;
+  let html = '';
+  top.forEach((c,i)=>{
+    const pct = Math.max(6, Math.round((c.visits/maxVisits)*100));
+    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>';
+    const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
+    html += topListItemHTML(i, name, val, pct);
+  });
+  el.innerHTML = html;
+}
+
+/* Saisonmuster, sortierbar nach Kalendermonat, meisten Reisen oder meisten km */
+function renderSeasonList(months){
+  const el = document.getElementById('seasonList');
+  if(!el) return;
+  const yearsWithData = new Set(trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(y=>/^\d{4}$/.test(y))).size || 1;
+  let list = months.slice();
+  if(seasonSortMode==='trips') list.sort((a,b)=> b.trips-a.trips || a.month-b.month);
+  else if(seasonSortMode==='km') list.sort((a,b)=> b.km-a.km || a.month-b.month);
+  else list.sort((a,b)=> a.month-b.month);
+
+  const maxMonthKm = Math.max(1, ...months.map(m=>m.km));
+  let html = '';
+  list.forEach((m,i)=>{
+    const pct = m.km>0 ? Math.max(6, Math.round((m.km/maxMonthKm)*100)) : 0;
+    const name = '<span>'+m.name+'</span>';
+    const avgKm = m.km / yearsWithData;
+    const val = m.trips>0 ? '<b>'+m.trips+'</b> '+(m.trips===1?'Reise':'Reisen')+' · '+fmtKm(m.km)+' <span style="color:var(--text-faint);">(Ø '+fmtKm(avgKm)+'/Jahr)</span>' : '<span style="color:var(--text-faint);">–</span>';
+    html += topListItemHTML(i, name, val, pct, {plain:true});
+  });
+  el.innerHTML = html;
+}
+
+/* Entdecker-Trend: sortierbar nach Jahr (neueste zuerst)/Städten/Ländern, respektiert
+   den Einklapp-Zustand (discoveryTrendExpanded), jede Zeile aufklappbar mit den konkret
+   neu entdeckten Städten & Ländern des jeweiligen Jahres */
+function renderDiscoveryList(discoveriesAll){
+  const el = document.getElementById('discoveryTrendList');
+  if(!el) return;
+  let list = discoveriesAll.slice();
+  if(discoverySortMode==='cities') list.sort((a,b)=> b.newCities-a.newCities || b.year.localeCompare(a.year));
+  else if(discoverySortMode==='countries') list.sort((a,b)=> b.newCountries-a.newCountries || b.year.localeCompare(a.year));
+  else list.sort((a,b)=> b.year.localeCompare(a.year));
+
+  const DISCOVERY_COLLAPSED_COUNT = 5;
+  const visible = discoveryTrendExpanded ? list : list.slice(0, DISCOVERY_COLLAPSED_COUNT);
+
+  const maxNewCities = Math.max(1, ...discoveriesAll.map(d=>d.newCities));
+  let html = '';
+  visible.forEach((d)=>{
+    const pct = Math.max(6, Math.round((d.newCities/maxNewCities)*100));
+    const expanded = expandedDiscoveryYears.has(d.year);
+    html += '<div class="top-item discovery-row" data-year="'+d.year+'">';
+    html += '  <div class="top-rank">'+d.year+'</div>';
+    html += '  <div class="top-main">';
+    html += '    <div class="top-row"><div class="top-name"><span>'+d.year+'</span></div><div class="top-value"><b>'+d.newCountries+'</b> neue '+(d.newCountries===1?'Land':'Länder')+' · <b>'+d.newCities+'</b> neue '+(d.newCities===1?'Stadt':'Städte')+'<span class="discovery-caret">'+(expanded?'▲':'▼')+'</span></div></div>';
+    html += '    <div class="top-bar-track"><div class="top-bar-fill" style="width:'+pct+'%"></div></div>';
+    html += '  </div>';
+    html += '</div>';
+    if(expanded){
+      html += '<div class="discovery-detail">';
+      if(d.countries.length){
+        html += '<div class="discovery-detail-group"><span class="ddg-label">Länder</span>'+d.countries.map(c=>flagImg(c.cc,15)+' '+c.country).join(', ')+'</div>';
+      }
+      if(d.cities.length){
+        html += '<div class="discovery-detail-group"><span class="ddg-label">Städte</span>'+d.cities.map(c=>cityIcon(c.city,c.country,c.cc,15)+' '+c.city).join(', ')+'</div>';
+      }
+      html += '</div>';
+    }
+  });
+  el.innerHTML = html;
+
+  el.querySelectorAll('.discovery-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const y = row.dataset.year;
+      if(expandedDiscoveryYears.has(y)) expandedDiscoveryYears.delete(y); else expandedDiscoveryYears.add(y);
+      renderDiscoveryList(discoveriesAll);
+    });
+  });
 }
 
 function renderPlaces(root){
