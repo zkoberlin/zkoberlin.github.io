@@ -586,6 +586,12 @@ tr:last-child td{border-bottom:none;}
 .top-value b{color:var(--text);font-weight:600;}
 .top-bar-track{height:6px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;}
 .top-bar-fill{height:100%;border-radius:100px;background:var(--bar-accent);transition:width .5s ease;}
+.waypoint-dot{
+  display:inline-block; width:7px; height:7px; border-radius:50%;
+  background:var(--bar-accent); margin-left:6px; flex-shrink:0;
+  box-shadow:0 0 0 1.5px var(--panel-alt);
+  vertical-align:middle;
+}
 
 .discovery-row{cursor:pointer;}
 .discovery-row:hover .top-name span{color:var(--bar-accent);}
@@ -1198,7 +1204,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.24.1';
+const APP_VERSION = '1.25.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1403,6 +1409,12 @@ function cityBadge(cityName, country, cc, size){
   return '<div class="flag-badge coa-badge" style="width:'+size+'px;height:'+size+'px;">'+
     '<img src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" loading="lazy" '+
     'onerror="this.outerHTML=\''+fallbackEmoji+'\'"></div>';
+}
+
+/* Kleiner farbiger Punkt hinter dem Stadtnamen, markiert Städte, die (auch/nur) als
+   Zwischenstopp besucht wurden — funktioniert per CSS-Variable in Hell- wie Dunkelmodus. */
+function waypointDot(){
+  return '<span class="waypoint-dot" title="Auch als Zwischenstopp besucht"></span>';
 }
 
 function fmtKm(n){
@@ -1814,13 +1826,14 @@ function aggregate(){
   const countryMap = new Map();
   const purposeMap = new Map();
 
-  function registerCityVisit(cityName, country, cc, km, dateFrom, visitRecord){
+  function registerCityVisit(cityName, country, cc, km, dateFrom, visitRecord, isWaypoint){
     const ckey=cityName+'|'+country;
     if(!cityMap.has(ckey)){
-      cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[]});
+      cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[],viaWaypoint:false});
     }
     const c=cityMap.get(ckey);
     c.visits++; c.totalKm+=km; c.dates.push(dateFrom); c.trips.push(visitRecord);
+    if(isWaypoint) c.viaWaypoint = true;
 
     if(!countryMap.has(country)){
       countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
@@ -1850,7 +1863,7 @@ function aggregate(){
       const wp = findCity(wpName);
       if(!wp) return;
       const segKm = segments ? segments[idx] : 0;
-      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, visitRecord);
+      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, visitRecord, true);
     });
   }
 
@@ -2197,7 +2210,13 @@ function renderDashboard(root){
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
-  const sortedModeOrder = MODE_ORDER.slice().sort((a,b)=>(agg.perMode[b]||0)-(agg.perMode[a]||0));
+  // Sortiert nach dem aktuellen Jahr (dem prominent angezeigten Wert), nicht nach der
+  // Gesamtstrecke — Kacheln richten sich damit nach dem, was optisch im Vordergrund steht.
+  const sortedModeOrder = MODE_ORDER.slice().sort((a,b)=>{
+    const ay = currentYearKm ? (currentYearKm.perMode[a]||0) : 0;
+    const by = currentYearKm ? (currentYearKm.perMode[b]||0) : 0;
+    return (by-ay) || ((agg.perMode[b]||0)-(agg.perMode[a]||0));
+  });
   sortedModeOrder.forEach(m=>{
     const mo=getMode(m);
     const totalVal = agg.perMode[m]||0;
@@ -3494,7 +3513,7 @@ function renderTopCitiesList(agg){
   let html = '';
   top.forEach((c,i)=>{
     const pct = Math.max(6, Math.round((c.visits/maxVisits)*100));
-    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>';
+    const name = cityIcon(c.city,c.country,c.cc,18)+'<span>'+c.city+'</span>'+(c.viaWaypoint?waypointDot():'');
     const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
     html += topListItemHTML(i, name, val, pct);
   });
@@ -3590,7 +3609,7 @@ function renderPlaces(root){
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
         const topMode = mostUsedModeForCity(ci);
         const modeHtml = topMode ? ' <span class="country-city-meta">×'+ci.visits+' '+getMode(topMode.mode).icon+'</span>' : ' <span class="country-city-meta">×'+ci.visits+'</span>';
-        html += '<div><span>'+ci.city+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
+        html += '<div><span>'+ci.city+(ci.viaWaypoint?waypointDot():'')+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
       });
       html += '  </div>';
       html += '</div>';
@@ -3641,7 +3660,7 @@ function renderCitiesTable(agg){
     const lastVisit = c.dates.slice().sort().reverse()[0];
     const onMap = !!findCity(c.city);
     html += '<tr>';
-    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span>'+
+    html += '<td data-label="Stadt"><div class="cell-city">'+cityIcon(c.city,c.country,c.cc,20)+'<span>'+c.city+'</span>'+(c.viaWaypoint?waypointDot():'')+
       (onMap ? '' : ' <button type="button" class="city-retry-btn" data-city="'+c.city.replace(/"/g,'&quot;')+'" title="Fehlt auf der Karte — Koordinaten erneut suchen">📍</button>')+
       '</div></td>';
     html += '<td data-label="Land">'+c.country+'</td>';
@@ -3707,10 +3726,20 @@ function attachCityTableSort(root, agg){
 }
 
 /* ---------- Render: Log (alle Reisen) ---------- */
+/* Prüft, ob eine Reise zum Suchbegriff passt — durchsucht Von, Nach UND alle
+   Zwischenstopps (Hin- wie Rückweg), nicht nur die beiden Hauptstädte. */
+function tripMatchesLogFilter(t, q){
+  if(!q) return true;
+  if((t.city||'').toLowerCase().includes(q)) return true;
+  if((t.fromCity||'').toLowerCase().includes(q)) return true;
+  if((t.outWaypoints||[]).some(w=>(w||'').toLowerCase().includes(q))) return true;
+  if((t.returnWaypoints||[]).some(w=>(w||'').toLowerCase().includes(q))) return true;
+  return false;
+}
 function renderLogTable(){
   const q = logCityFilter.trim().toLowerCase();
   const filtered = q
-    ? trips.filter(t => (t.city||'').toLowerCase().includes(q) || (t.fromCity||'').toLowerCase().includes(q))
+    ? trips.filter(t => tripMatchesLogFilter(t, q))
     : trips.slice();
 
   const sorted = filtered.sort((a,b)=>{
@@ -3828,7 +3857,7 @@ function attachLogTableSort(root){
 
 function renderLog(root){
   const filteredCount = logCityFilter.trim()
-    ? trips.filter(t => (t.city||'').toLowerCase().includes(logCityFilter.trim().toLowerCase()) || (t.fromCity||'').toLowerCase().includes(logCityFilter.trim().toLowerCase())).length
+    ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
     : trips.length;
   const countLabel = logCityFilter.trim() ? (filteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
 
@@ -3836,7 +3865,7 @@ function renderLog(root){
   html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+countLabel+'</span></div>';
   if(trips.length>0){
     html += '<div class="log-filter-row">';
-    html += '  <input type="text" id="logCitySearch" class="log-search-input" placeholder="🔍 Nach Stadt suchen (Von oder Nach) …" value="'+logCityFilter.replace(/"/g,'&quot;')+'">';
+    html += '  <input type="text" id="logCitySearch" class="log-search-input" placeholder="🔍 Stadt suchen (Von, Nach, Zwischenstopps) …" value="'+logCityFilter.replace(/"/g,'&quot;')+'">';
     if(logCityFilter.trim()){
       html += '  <button type="button" id="logFilterReset" class="btn-secondary log-filter-reset">Zurücksetzen ✕</button>';
     }
@@ -3860,7 +3889,7 @@ function renderLog(root){
         const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
         const countEl = root.querySelector('.card-head .sub');
         const newFilteredCount = logCityFilter.trim()
-          ? trips.filter(t => (t.city||'').toLowerCase().includes(logCityFilter.trim().toLowerCase()) || (t.fromCity||'').toLowerCase().includes(logCityFilter.trim().toLowerCase())).length
+          ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
           : trips.length;
         if(countEl) countEl.textContent = logCityFilter.trim() ? (newFilteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
         if(tableWrap) tableWrap.outerHTML = renderLogTable();
