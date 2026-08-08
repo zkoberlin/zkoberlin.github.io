@@ -1,41 +1,41 @@
 {
-  "datum": "07.08.2026",
-  "generiert": "2026-08-07T03:42:16Z",
+  "datum": "08.08.2026",
+  "generiert": "2026-08-08T02:47:46Z",
   "geburtstage": [
     {
-      "name": "Sigfried Held",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Siggi_Held.jpg/120px-Siggi_Held.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q509178",
+      "name": "Parker Kligerman",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "American Racing Driver (Born 1990)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Parker_kligerman_%2853643881049%29_%28cropped%29.jpg/330px-Parker_kligerman_%2853643881049%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Parker_Kligerman",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Paul Biedermann",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schwimmer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Paul_Biedermann_1.jpg/120px-Paul_Biedermann_1.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q60275",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Rouven Sattelmaier",
+      "name": "Tatjana Maria",
       "alter": 39,
       "geburtsjahr": 1987,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Rouven_Kai_Sattelmaier_in_Saint-Petersburg._18_May_2011.png/330px-Rouven_Kai_Sattelmaier_in_Saint-Petersburg._18_May_2011.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rouven_Sattelmaier",
+      "beruf": "German Tennis Player (Born 1987)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Maria_WM17_%289%29_%2836050715511%29.jpg/330px-Maria_WM17_%289%29_%2836050715511%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tatjana_Maria",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Carsten Busch",
+      "name": "Sabine Klaschka",
       "alter": 46,
       "geburtsjahr": 1980,
-      "beruf": "German Footballer",
+      "beruf": "German Tennis Player",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Carsten_Busch",
+      "wikidata": "https://en.wikipedia.org/wiki/Sabine_Klaschka",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Ulrich Maly",
+      "alter": 66,
+      "geburtsjahr": 1960,
+      "beruf": "German Politician (Born 1960)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/OB_Uli_Maly_2012.jpg/330px-OB_Uli_Maly_2012.jpg",
+      "wikidata": "https://en.wikipedia.org/wiki/Ulrich_Maly",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
