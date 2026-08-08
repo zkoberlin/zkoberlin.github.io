@@ -1348,7 +1348,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.27.1';
+const APP_VERSION = '1.27.2';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -4190,14 +4190,15 @@ function levelTileHTML(view){
   } else {
     html += '  <div class="level-hero-maxed">🏆 Höchstes Level erreicht</div>';
   }
-  if(view.lastUnlocked){
-    const lb = view.lastUnlocked;
+  const lb = view.lastUnlocked;
+  const lbRecent = lb && lb.unlockedAt && ((Date.now() - new Date(lb.unlockedAt+'T00:00:00').getTime())/86400000) <= 3;
+  if(lbRecent){
     html += '  <div class="last-badge-strip">';
     html += '    <div class="last-badge-icon">'+lb.icon+'</div>';
     html += '    <div class="last-badge-text">';
     html += '      <div class="lb-label">Zuletzt freigeschaltet</div>';
     html += '      <div class="lb-name">'+lb.name+'</div>';
-    if(lb.unlockedAt) html += '      <div class="lb-date">am '+fmtDate(lb.unlockedAt)+'</div>';
+    html += '      <div class="lb-date">am '+fmtDate(lb.unlockedAt)+'</div>';
     html += '    </div>';
     html += '  </div>';
   }
@@ -4387,7 +4388,7 @@ function renderPlaces(root){
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
         const topMode = mostUsedModeForCity(ci);
         const modeHtml = topMode ? ' <span class="country-city-meta">×'+ci.visits+' '+getMode(topMode.mode).icon+'</span>' : ' <span class="country-city-meta">×'+ci.visits+'</span>';
-        html += '<div><span>'+ci.city+(ci.viaWaypoint?waypointDot():'')+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
+        html += '<div><span>'+cityNameHTML(ci.city,ci.cc)+(ci.viaWaypoint?waypointDot():'')+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
       });
       html += '  </div>';
       html += '</div>';
