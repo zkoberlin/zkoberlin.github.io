@@ -282,6 +282,7 @@ a{color:var(--teal);}
   display:flex;flex-direction:column;gap:2px;
 }
 .stub .icon{font-size:18px;}
+.stub .eyebrow{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em;margin-top:6px;}
 .stub .label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
 .stub .val{font-family:var(--font-mono);font-weight:600;font-size:19px;color:var(--text);font-variant-numeric:tabular-nums;}
 .stub .val-year{font-family:var(--font-mono);font-size:11px;color:var(--text-faint);margin-top:2px;}
@@ -385,6 +386,7 @@ th.sorted.asc::after{content:' ▴';}
 td{padding:9px 10px;border-bottom:1px solid var(--border-soft);vertical-align:middle;white-space:nowrap;}
 tr:last-child td{border-bottom:none;}
 .cell-city{display:flex;align-items:center;gap:8px;}
+.log-row-toggle{display:none;}
 .city-retry-btn{
   background:none;border:1px solid var(--border-soft);border-radius:100px;
   width:22px;height:22px;padding:0;font-size:11px;line-height:1;cursor:pointer;
@@ -822,7 +824,7 @@ tr:last-child td{border-bottom:none;}
   .responsive-table tr.expanded .log-cell-secondary{display:flex;}
   .responsive-table tr.log-row{cursor:pointer;}
   .log-row-toggle{
-    font-size:11px;color:var(--text-faint);margin-left:6px;
+    display:inline-block; font-size:11px;color:var(--text-faint);margin-left:6px;
     transition:transform .15s ease; flex-shrink:0;
   }
   .responsive-table tr.expanded .log-row-toggle{transform:rotate(180deg);}
@@ -1171,7 +1173,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.23.0';
+const APP_VERSION = '1.23.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2106,12 +2108,13 @@ function renderDashboard(root){
   const sortedModeOrder = MODE_ORDER.slice().sort((a,b)=>(agg.perMode[b]||0)-(agg.perMode[a]||0));
   sortedModeOrder.forEach(m=>{
     const mo=getMode(m);
-    const yearVal = currentYearKm ? (currentYearKm.perMode[m]||0) : 0;
+    const totalVal = agg.perMode[m]||0;
     html += '<div class="stub" style="--stub-color:'+mo.color+'">';
     html += '  <div class="icon">'+mo.icon+'</div>';
+    html += '  <div class="eyebrow">'+currentYear+'</div>';
     html += '  <div class="val" data-mode-val="'+m+'">0 km</div>';
     html += '  <div class="label">'+mo.label+'</div>';
-    html += '  <div class="val-year">'+currentYear+': '+fmtKm(yearVal)+'</div>';
+    html += '  <div class="val-year">Gesamt: '+fmtKm(totalVal)+'</div>';
     html += '</div>';
   });
   html += '  </div>';
@@ -2137,7 +2140,8 @@ function renderDashboard(root){
 
   MODE_ORDER.forEach(m=>{
     const el = root.querySelector('[data-mode-val="'+m+'"]');
-    animateNumber(el, agg.perMode[m]||0, ' km');
+    const yearVal = currentYearKm ? (currentYearKm.perMode[m]||0) : 0;
+    animateNumber(el, yearVal, ' km');
   });
   // rebuild hero number with unit span preserved (zeigt das aktuelle Jahr prominent)
   const heroEl = document.getElementById('heroNumber');
@@ -2303,8 +2307,11 @@ async function initWorldMap(agg){
       // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
       // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
       const k = event.transform.k;
-      cityDots.attr('r', x => Math.max(1.1*rScale, dotRadius(x)/k));
-      if(homeDot) homeDot.attr('r', Math.max(1.4*rScale, homeRadius/k));
+      // Beim Reinzoomen sollen die Punkte spürbar kleiner werden (nicht nur proportional
+      // mitschrumpfen) — daher zusätzlicher Schrumpf-Faktor und eine deutlich niedrigere
+      // Untergrenze als bisher, damit bei starkem Zoom wirklich winzige Punkte übrig bleiben.
+      cityDots.attr('r', x => Math.max(0.45*rScale, dotRadius(x)/(k*1.3)));
+      if(homeDot) homeDot.attr('r', Math.max(0.6*rScale, homeRadius/(k*1.3)));
     });
   svg.call(zoom);
 
@@ -3053,6 +3060,14 @@ function renderStats(root){
     const ratioText = r.ratio===Infinity ? 'emissionsfrei' : (Math.round(r.ratio).toLocaleString('de-DE')+' km/kg CO₂');
     html += '    <div class="record-card"><div class="rc-icon">🌿</div><div class="rc-value">'+r.year+'</div><div class="rc-label">CO2-freundlichstes Jahr</div><div class="rc-detail">'+fmtKm(r.km)+' bei '+fmtKg(r.co2Kg)+' · '+ratioText+'</div></div>';
   }
+  const mostVisitedCity = agg.cities.slice().sort((a,b)=>b.visits-a.visits)[0];
+  if(mostVisitedCity){
+    html += '    <div class="record-card"><div class="rc-icon">🏙️</div><div class="rc-value">'+mostVisitedCity.visits+' '+(mostVisitedCity.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchte Stadt</div><div class="rc-detail">'+cityIcon(mostVisitedCity.city,mostVisitedCity.country,mostVisitedCity.cc,16)+' '+mostVisitedCity.city+'</div></div>';
+  }
+  const mostVisitedCountry = agg.countries.filter(c=>!homeCountry || c.country!==homeCountry).slice().sort((a,b)=>b.visits-a.visits)[0];
+  if(mostVisitedCountry){
+    html += '    <div class="record-card"><div class="rc-icon">🏳️</div><div class="rc-value">'+mostVisitedCountry.visits+' '+(mostVisitedCountry.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchtes Land</div><div class="rc-detail">'+flagImg(mostVisitedCountry.cc,16)+' '+mostVisitedCountry.country+'</div></div>';
+  }
   html += '  </div>';
   html += '</div>';
 
@@ -3630,7 +3645,7 @@ function renderLogTable(){
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="CO₂">'+(t.cityOnly ? '<span style="color:var(--text-faint);">–</span>' : fmtKg(tripCO2Kg(t)))+'</td>';
     html += '<td data-label="Grund" class="log-cell-secondary">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-    html += '<td data-label="" class="log-cell-primary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
   });
   html += '</tbody></table></div>';
