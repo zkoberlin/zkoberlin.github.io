@@ -1348,7 +1348,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.27.2';
+const APP_VERSION = '1.28.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1972,6 +1972,31 @@ function isHomeCity(cityName){
   return !!homeName && cityName.trim().toLowerCase()===homeName.trim().toLowerCase();
 }
 
+/* Zählt, wie viele NICHT überlappende Besuchs-"Gruppen" in einer Liste von Zeiträumen
+   stecken (Sweep-Line-Merge auf sortierten Intervallen). Überlappende Reisen zum selben
+   Ziel (siehe WELTLOG-Regel: echte Datums-Überschneidung, keine bloße Angrenzung) zählen
+   dadurch als EIN Besuch, unabhängig davon, wie viele einzelne Reise-Einträge betroffen
+   sind. Nur für Städte-Besuchszählungen genutzt (Top 5 Städte, Länder&Städte-Tab, Karte,
+   Rekorde) — Länder-Besuchszählungen und alle km/CO2/Verkehrsmittel-Auswertungen bleiben
+   bewusst unverändert und zählen weiterhin jede Reise einzeln (Nutzer-Entscheidung). */
+function countOverlapDedupedVisits(ranges){
+  if(!ranges.length) return 0;
+  const sorted = ranges.slice().sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||''));
+  let groups = 0, curEnd = null;
+  sorted.forEach(r=>{
+    const from = r.dateFrom||'';
+    const to = r.dateTo || from;
+    /* Strikt "<": ein Start am selben Tag, an dem der vorherige Zeitraum endet, gilt als
+       Anschluss/Angrenzung, nicht als echte Überschneidung (Nutzer-Entscheidung). */
+    if(curEnd===null || from >= curEnd){
+      groups++; curEnd = to;
+    } else if(to > curEnd){
+      curEnd = to;
+    }
+  });
+  return groups;
+}
+
 function aggregate(){
   let totalOut=0, totalReturn=0;
   const perMode = {};
@@ -1981,13 +2006,14 @@ function aggregate(){
   const countryMap = new Map();
   const purposeMap = new Map();
 
-  function registerCityVisit(cityName, country, cc, km, dateFrom, visitRecord, isWaypoint, visitMode){
+  function registerCityVisit(cityName, country, cc, km, dateFrom, dateTo, visitRecord, isWaypoint, visitMode){
     const ckey=cityName+'|'+country;
     if(!cityMap.has(ckey)){
-      cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[],viaWaypoint:false,modeCounts:{}});
+      cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[],viaWaypoint:false,modeCounts:{},_visitRanges:[]});
     }
     const c=cityMap.get(ckey);
-    c.visits++; c.totalKm+=km; c.dates.push(dateFrom); c.trips.push(visitRecord);
+    c.totalKm+=km; c.dates.push(dateFrom); c.trips.push(visitRecord);
+    c._visitRanges.push({dateFrom, dateTo: dateTo||dateFrom});
     if(isWaypoint) c.viaWaypoint = true;
     if(visitMode) c.modeCounts[visitMode] = (c.modeCounts[visitMode]||0)+1;
 
@@ -2012,7 +2038,7 @@ function aggregate(){
      mit auf. Das übergebene "mode" ist das tatsächliche Verkehrsmittel DIESER Teilstrecke
      (Hin- oder Rückweg) — wichtig für eine korrekte "meistgenutztes Verkehrsmittel"-Anzeige,
      siehe mostUsedModeForCity(). */
-  function registerLegWaypoints(fromName, waypointNames, toName, mode, dateFrom, visitRecord){
+  function registerLegWaypoints(fromName, waypointNames, toName, mode, dateFrom, dateTo, visitRecord){
     const wps = (waypointNames||[]).map(w=>(w||'').trim()).filter(Boolean);
     if(!wps.length) return;
     const segments = computeMultiLegSegments([fromName, ...wps, toName], mode);
@@ -2021,7 +2047,7 @@ function aggregate(){
       const wp = findCity(wpName);
       if(!wp) return;
       const segKm = segments ? segments[idx] : 0;
-      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, visitRecord, true, mode);
+      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, dateTo, visitRecord, true, mode);
     });
   }
 
@@ -2041,14 +2067,14 @@ function aggregate(){
        Rückweg") — dessen Verkehrsmittel zählt hier für "meistgenutztes Verkehrsmittel". */
     if(!isHomeCity(t.city)){
       const mainMode = t.direction==='returnonly' ? t.returnMode : t.outMode;
-      const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t, false, mainMode);
+      const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t.dateTo, t, false, mainMode);
       mainCity.outKm += out; mainCity.returnKm += ret;
     }
     if(t.direction!=='returnonly'){
-      registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t);
+      registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t.dateTo, t);
     }
     if(t.direction==='roundtrip' || t.direction==='returnonly'){
-      registerLegWaypoints(t.city, t.returnWaypoints, t.fromCity, t.returnMode, t.dateFrom, t);
+      registerLegWaypoints(t.city, t.returnWaypoints, t.fromCity, t.returnMode, t.dateFrom, t.dateTo, t);
     }
 
     const pLabel = purposeLabel(t);
@@ -2057,6 +2083,15 @@ function aggregate(){
     if(!purposeMap.has(pKey)) purposeMap.set(pKey,{label:pKey, icon:pIcon, count:0, totalKm:0});
     const pu = purposeMap.get(pKey);
     pu.count++; pu.totalKm+=tot;
+  });
+
+  /* Städte-Besuchszählung final aus den gesammelten Zeiträumen ableiten: überlappende
+     Reisen zum selben Ziel (echte Datums-Überschneidung) zählen als EIN Besuch (siehe
+     countOverlapDedupedVisits). km/Verkehrsmittel oben bleiben unberührt — die zählen
+     weiterhin jede Reise einzeln. */
+  cityMap.forEach(c=>{
+    c.visits = countOverlapDedupedVisits(c._visitRanges);
+    delete c._visitRanges;
   });
 
   return {
