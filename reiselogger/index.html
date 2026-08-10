@@ -393,7 +393,6 @@ th.sorted.asc::after{content:' ▴';}
 td{padding:9px 10px;border-bottom:1px solid var(--border-soft);vertical-align:middle;white-space:nowrap;}
 tr:last-child td{border-bottom:none;}
 .cell-city{display:flex;align-items:center;gap:8px;}
-.log-row-toggle{display:none;}
 .city-retry-btn{
   background:none;border:1px solid var(--border-soft);border-radius:100px;
   width:22px;height:22px;padding:0;font-size:11px;line-height:1;cursor:pointer;
@@ -411,6 +410,18 @@ tr:last-child td{border-bottom:none;}
 }
 .mode-emoji{font-size:16px;cursor:default;margin-right:3px;}
 .log-cell-mode{white-space:nowrap;}
+.wp-badge{
+  display:inline-block;font-size:10px;color:var(--text-faint);background:var(--bg-soft);
+  border:1px solid var(--border-soft);border-radius:100px;padding:1px 7px;margin-top:2px;
+}
+.log-row-toggle{display:inline-block;margin-left:6px;color:var(--text-faint);transition:transform .15s;font-size:11px;}
+tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
+.log-detail-row td{background:var(--bg-soft);}
+.log-detail-grid{
+  display:flex;flex-wrap:wrap;gap:10px 24px;padding:6px 4px;font-size:12px;
+}
+.log-detail-item{display:flex;flex-direction:column;gap:2px;min-width:120px;}
+.log-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);font-family:var(--font-display);}
 /* Kompaktere Tabelle für "Alle Reisen" — schmalere Zellen/Schrift, damit mehr
    Spalten auf Desktop-Breite passen. */
 .log-table th{padding:7px 8px;font-size:10px;}
@@ -424,8 +435,6 @@ tr:last-child td{border-bottom:none;}
 
 .log-filter-row{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
 .log-col-toggle-row{display:flex;gap:14px;align-items:center;margin-bottom:14px;flex-wrap:wrap;font-size:12px;color:var(--text-dim);}
-.log-col-toggle-row label{display:flex;align-items:center;gap:5px;cursor:pointer;user-select:none;}
-.log-col-toggle-row input[type="checkbox"]{accent-color:var(--gold);cursor:pointer;}
 .log-sort-sep{color:var(--border);}
 .log-sort-select{
   background:var(--bg-soft);border:1px solid var(--border);border-radius:7px;
@@ -1410,7 +1419,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.30.0';
+const APP_VERSION = '1.30.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1443,10 +1452,10 @@ let citySort = {key:'totalKm', dir:'desc'};
 let countrySort = 'km';
 let logSort = {key:'dateFrom', dir:'desc'};
 let logCityFilter = '';
-/* Ausblendbare Spalten in der "Alle Reisen"-Tabelle — bleiben trotz Ausblendung
-   weiterhin durchsuchbar (tripMatchesLogFilter) und über das Sortier-Dropdown
-   sortierbar (nicht nur per Klick auf die — dann ja unsichtbare — Kopfzelle). */
-let logColVisibility = {co2:true, purpose:true, continent:true};
+/* CO2, Grund und Kontinent werden in der "Alle Reisen"-Tabelle nie als eigene Spalte
+   angezeigt (macht die Tabelle sonst zu breit) — nur in der ausklappbaren Detailzeile
+   pro Reise. Bleiben trotzdem jederzeit durchsuchbar (tripMatchesLogFilter) und über
+   das Sortier-Dropdown sortierbar. */
 const LOG_SORT_FIELDS = [
   {key:'dateFrom', label:'Zeitraum'},
   {key:'fromCity', label:'Von'},
@@ -4798,16 +4807,8 @@ function renderLogTable(){
     return '<div class="empty-state"><div class="big">🔍</div>Keine Reisen für „'+logCityFilter.replace(/</g,'&lt;')+'" gefunden.</div>';
   }
 
-  const showCO2 = logColVisibility.co2;
-  const showPurpose = logColVisibility.purpose;
-  const showContinent = logColVisibility.continent;
-
   let html = '<div class="table-wrap"><table class="responsive-table log-table"><thead><tr>';
-  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehr</th>'+th('Distanz','distance');
-  if(showCO2) html += th('CO₂','co2');
-  if(showPurpose) html += th('Grund','purpose');
-  if(showContinent) html += th('Kontinent','continent');
-  html += '<th></th>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehr</th>'+th('Distanz','distance')+'<th></th>';
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
     let modeCell, distCell;
@@ -4829,24 +4830,31 @@ function renderLogTable(){
     const wpParts = [];
     if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
     if((t.returnWaypoints||[]).length) wpParts.push((t.direction==='returnonly'?'Rückweg via ':'Rück via ')+t.returnWaypoints.join(', '));
-    const wpNote = wpParts.length ? '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">'+wpParts.join(' · ')+'</div>' : '';
+    const wpCount = (t.outWaypoints||[]).length + (t.returnWaypoints||[]).length;
+    const wpBadge = wpCount>0 ? '<div class="wp-badge">'+wpCount+' '+(wpCount===1?'Stopp':'Stopps')+'</div>' : '';
     const pLbl = purposeLabel(t);
     const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
     const cityEsc = (t.city||'').replace(/"/g,'&quot;');
     const contCode = getContinent((t.cityCC||'').toLowerCase());
     const contInfo = continentInfo(contCode);
     const contCell = contInfo ? contInfo.icon+' '+contInfo.label : '<span style="color:var(--text-faint);">–</span>';
-    html += '<tr class="log-row">';
+    const hasDetail = wpCount>0 || !t.cityOnly || pLbl || contInfo;
+    html += '<tr class="log-row" data-trip-row="'+t.id+'">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
-    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpNote+'<span class="log-row-toggle">▾</span></td>';
+    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+(hasDetail?'<span class="log-row-toggle">▾</span>':'')+'</td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary log-cell-mode">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
-    if(showCO2) html += '<td class="mono log-cell-secondary" data-label="CO₂">'+(t.cityOnly ? '<span style="color:var(--text-faint);">–</span>' : fmtKg(tripCO2Kg(t)))+'</td>';
-    if(showPurpose) html += '<td data-label="Grund" class="log-cell-secondary">'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'<span style="color:var(--text-faint);">–</span>')+'</td>';
-    if(showContinent) html += '<td data-label="Kontinent" class="log-cell-secondary">'+contCell+'</td>';
     html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
+    if(hasDetail){
+      html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="6" data-label=""><div class="log-detail-grid">';
+      if(wpParts.length) html += '<div class="log-detail-item"><span class="log-detail-label">Zwischenstopps</span><span>'+wpParts.join(' · ')+'</span></div>';
+      if(!t.cityOnly) html += '<div class="log-detail-item"><span class="log-detail-label">CO₂</span><span>'+fmtKg(tripCO2Kg(t))+'</span></div>';
+      html += '<div class="log-detail-item"><span class="log-detail-label">Grund</span><span>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'–')+'</span></div>';
+      html += '<div class="log-detail-item"><span class="log-detail-label">Kontinent</span><span>'+contCell+'</span></div>';
+      html += '</div></td></tr>';
+    }
   });
   html += '</tbody></table></div>';
   return html;
@@ -4878,12 +4886,18 @@ function attachLogRowActions(root){
       renderLog(root);
     });
   });
-  // Mobil: Zeile antippen klappt die Detailspalten (Von, Verkehrsmittel, Distanz,
-  // CO2, Grund) auf/zu — auf Desktop sind sie ohnehin immer sichtbar (Tabellenlayout).
+  // Zeile antippen/klicken: auf Mobil klappt es die Detailspalten (Von, Verkehrsmittel,
+  // Distanz) auf/zu, auf Desktop sind diese ohnehin sichtbar. Zusätzlich (Mobil & Desktop)
+  // klappt es die separate Detailzeile auf (Zwischenstopps, CO2, Grund, Kontinent) —
+  // die wird nie als eigene Spalte angezeigt, sondern nur hier bei Bedarf.
   root.querySelectorAll('tr.log-row').forEach(tr=>{
     tr.addEventListener('click', (e)=>{
       if(e.target.closest('.row-actions') || e.target.closest('.log-city-link')) return;
       tr.classList.toggle('expanded');
+      const detailRow = root.querySelector('tr.log-detail-row[data-detail-for="'+tr.dataset.tripRow+'"]');
+      if(detailRow){
+        detailRow.style.display = detailRow.style.display==='none' ? 'table-row' : 'none';
+      }
     });
   });
 }
@@ -4922,11 +4936,6 @@ function renderLog(root){
     }
     html += '</div>';
     html += '<div class="log-col-toggle-row">';
-    html += '  <span>Spalten:</span>';
-    html += '  <label><input type="checkbox" data-log-col="co2"'+(logColVisibility.co2?' checked':'')+'> CO₂</label>';
-    html += '  <label><input type="checkbox" data-log-col="purpose"'+(logColVisibility.purpose?' checked':'')+'> Grund</label>';
-    html += '  <label><input type="checkbox" data-log-col="continent"'+(logColVisibility.continent?' checked':'')+'> Kontinent</label>';
-    html += '  <span class="log-sort-sep">·</span>';
     html += '  <span>Sortieren:</span>';
     html += '  <select id="logSortSelect" class="log-sort-select">';
     LOG_SORT_FIELDS.forEach(f=>{
@@ -4978,15 +4987,6 @@ function renderLog(root){
     if(resetBtn){
       resetBtn.addEventListener('click', ()=>{ logCityFilter=''; renderLog(root); });
     }
-    root.querySelectorAll('[data-log-col]').forEach(cb=>{
-      cb.addEventListener('change', ()=>{
-        logColVisibility[cb.dataset.logCol] = cb.checked;
-        const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
-        if(tableWrap) tableWrap.outerHTML = renderLogTable();
-        attachLogTableSort(root);
-        attachLogRowActions(root);
-      });
-    });
     const sortSelect = document.getElementById('logSortSelect');
     if(sortSelect){
       sortSelect.addEventListener('change', ()=>{
