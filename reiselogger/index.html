@@ -1480,7 +1480,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.32.0';
+const APP_VERSION = '1.32.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2505,19 +2505,28 @@ function computeRecords(){
    Freigeschaltete Meilenstein-Auszeichnungen bringen zusätzlich ihren eigenen Bonus.
    Alles wird bei jedem Aufruf live aus `trips` berechnet — keine eigene Sync-/Speicher-
    Struktur, damit Punktestand/Level/Achievements nie von den echten Reisedaten abweichen
-   können (siehe Absprache: Option 1, rein berechnet). */
+   können (siehe Absprache: Option 1, rein berechnet).
+
+   Schwellen (Stand nach Rebalancing, siehe Absprache): mit 191 Achievements (davon viele
+   "Mengen"-Achievements wie Städte-/Länder-Sammler-Tiers, Streaks, Distanz-Tiers, die schon
+   bei aktivem regionalem Reisen ohne große geografische Breite zusammenkommen) lag der
+   maximale Achievement-Bonus-Pool bei ~7.430 Punkten — das drückte den Punktestand bei
+   vielreisenden, aber geografisch eher regional unterwegsigen Profilen zu früh in hohe
+   Level wie "Weltreisender". Die Schwellen wurden daher spürbar angehoben, mit dem größten
+   relativen Abstand in den mittleren Stufen (5–9), damit die Level-Titel eher zur
+   tatsächlichen geografischen Breite (Länder/Kontinente) passen als zur reinen Reise-Menge. */
 
 const LEVELS = [
   {level:1, title:'Newbie', from:0},
-  {level:2, title:'Wochenendausflügler', from:50},
-  {level:3, title:'Reiselustig', from:150},
-  {level:4, title:'Grenzgänger', from:350},
-  {level:5, title:'Vielgereist', from:700},
-  {level:6, title:'Kontinentalreisender', from:1250},
-  {level:7, title:'Globetrotter', from:2200},
-  {level:8, title:'Weltenbummler', from:3800},
-  {level:9, title:'Weltreisender', from:6000},
-  {level:10, title:'Legende der Landkarte', from:9000}
+  {level:2, title:'Wochenendausflügler', from:100},
+  {level:3, title:'Reiselustig', from:300},
+  {level:4, title:'Grenzgänger', from:700},
+  {level:5, title:'Vielgereist', from:1400},
+  {level:6, title:'Kontinentalreisender', from:2600},
+  {level:7, title:'Globetrotter', from:4500},
+  {level:8, title:'Weltenbummler', from:7000},
+  {level:9, title:'Weltreisender', from:10500},
+  {level:10, title:'Legende der Landkarte', from:14000}
 ];
 function levelForPoints(points){
   let current = LEVELS[0];
@@ -3054,9 +3063,9 @@ function computeAchievements(){
     {id:'STREAK-19',name:'Zehn Jahre dabei',icon:'🕰️',desc:'10 Jahre seit der ersten erfassten Reise',target:10,bonus:100}
   ], yearsSinceFirst);
   addTiers('STREAK',[
-    {id:'STREAK-20',name:'Reisejahr I',icon:'📈',desc:'5 Reisen in einem Kalenderjahr',target:5,bonus:15},
-    {id:'STREAK-21',name:'Reisejahr II',icon:'📈',desc:'15 Reisen in einem Kalenderjahr',target:15,bonus:30},
-    {id:'STREAK-22',name:'Reisejahr III',icon:'📈',desc:'30 Reisen in einem Kalenderjahr',target:30,bonus:55}
+    {id:'STREAK-20',name:'Reisejahr I',icon:'📈',desc:'5 Reisen in einem Kalenderjahr',target:5,bonus:10},
+    {id:'STREAK-21',name:'Reisejahr II',icon:'📈',desc:'15 Reisen in einem Kalenderjahr',target:15,bonus:20},
+    {id:'STREAK-22',name:'Reisejahr III',icon:'📈',desc:'30 Reisen in einem Kalenderjahr',target:30,bonus:35}
   ], maxTripsInYear);
   add('STREAK-23','STREAK','Lückenlos','🧩','Kein Kalenderjahr ohne Reise seit der ersten erfassten Reise',1,noGapYears,40);
   add('STREAK-24','STREAK','Doppel-Streak','🔗','Städte- UND Länder-Streak gleichzeitig mind. 3 Jahre in Folge',1,doubleStreak,35);
@@ -3190,19 +3199,19 @@ function computeAchievements(){
   add('SPEC-26','SPEC','Vier Jahreszeiten','🍁','In jeder der 4 Jahreszeiten mindestens einmal gereist',1,allFourSeasons,30);
   add('SPEC-27','SPEC','Freitag der 13.','🖤','Eine Reise, deren Zeitraum einen Freitag den 13. einschließt',1,friday13Trip,20);
   addTiers('SPEC',[
-    {id:'SPEC-28',name:'Wochenstart-Reisende',icon:'🌅',desc:'5 Reisen mit Start an einem Montag',target:5,bonus:15}
+    {id:'SPEC-28',name:'Wochenstart-Reisende',icon:'🌅',desc:'5 Reisen mit Start an einem Montag',target:5,bonus:8}
   ], mondayStartCount);
   addTiers('SPEC',[
-    {id:'SPEC-29',name:'Wochenmitte-Flucht',icon:'🌆',desc:'5 Reisen mit Start an einem Mittwoch',target:5,bonus:15}
+    {id:'SPEC-29',name:'Wochenmitte-Flucht',icon:'🌆',desc:'5 Reisen mit Start an einem Mittwoch',target:5,bonus:8}
   ], wednesdayStartCount);
   addTiers('SPEC',[
-    {id:'SPEC-30',name:'Kurztrip-Königin',icon:'⏱️',desc:'10 Reisen mit genau 1 Tag Dauer',target:10,bonus:20}
+    {id:'SPEC-30',name:'Kurztrip-Königin',icon:'⏱️',desc:'10 Reisen mit genau 1 Tag Dauer',target:10,bonus:12}
   ], oneDayTripsCount);
   addTiers('SPEC',[
-    {id:'SPEC-31',name:'Monatsstart',icon:'🗓️',desc:'5 Reisen, die am 1. eines Monats beginnen',target:5,bonus:15}
+    {id:'SPEC-31',name:'Monatsstart',icon:'🗓️',desc:'5 Reisen, die am 1. eines Monats beginnen',target:5,bonus:8}
   ], monthStartCount);
   addTiers('SPEC',[
-    {id:'SPEC-32',name:'Monatsende',icon:'🗓️',desc:'5 Reisen, die am letzten Tag eines Monats enden',target:5,bonus:15}
+    {id:'SPEC-32',name:'Monatsende',icon:'🗓️',desc:'5 Reisen, die am letzten Tag eines Monats enden',target:5,bonus:8}
   ], monthEndCount);
   add('SPEC-33','SPEC','Schnapszahl-Datum','🔢','Reise mit einem Datum, bei dem Tag und Monat übereinstimmen (z. B. 11.11.)',1,schnapszahlTrip,15);
   add('SPEC-34','SPEC','Zwei-Trips-Woche','🗂️','Zwei unterschiedliche Reisen mit Start in derselben Kalenderwoche',1,sameWeekTripPair,20);
