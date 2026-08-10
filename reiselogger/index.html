@@ -1480,7 +1480,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.31.2';
+const APP_VERSION = '1.32.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1510,6 +1510,11 @@ let trips = [];
 let settings = {home:null, theme:'dark'};
 let currentTab = 'dashboard';
 let editingId = null;
+/* Vorbefüllung für "Reise duplizieren": eine Kopie der Werte einer bestehenden Reise
+   (Von/Nach/Verkehrsmittel/Distanz/Zeitraum/Grund/...), die das Formular als NEUE Reise
+   vorausfüllt (nicht als Bearbeitung — editingId bleibt dabei null). Wird beim Absenden
+   oder Abbrechen des Formulars sowie beim Tab-Wechsel wieder zurückgesetzt. */
+let duplicateSource = null;
 let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
 let countrySort = 'km';
@@ -3815,33 +3820,38 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
 
 function renderAdd(root){
   const t = editingId ? trips.find(x=>x.id===editingId) : null;
-  const homeVal = t ? t.fromCity : (settings.home || '');
+  /* prefill liefert die Werte fürs Vorausfüllen der Formularfelder — bei einer echten
+     Bearbeitung (t) oder beim Duplizieren (duplicateSource) identisch behandelt.
+     Ob am Ende überschrieben oder neu angelegt wird, entscheidet weiterhin allein `t`
+     (siehe Submit-Handler unten) — duplicateSource führt NIE zu einem Überschreiben. */
+  const prefill = t || duplicateSource;
+  const homeVal = prefill ? prefill.fromCity : (settings.home || '');
 
   let html = '';
   html += '<div class="boarding-pass">';
   html += '  <div class="bp-main">';
-  html += '    <p class="bp-title">'+(t?'Reise bearbeiten':'Neue Reise erfassen')+'</p>';
+  html += '    <p class="bp-title">'+(t?'Reise bearbeiten':(duplicateSource?'Reise duplizieren':'Neue Reise erfassen'))+'</p>';
   html += '    <p class="bp-sub">Trag Start, Ziel und Zeitraum ein. Hinweg und Rückweg können unterschiedliche Verkehrsmittel haben — z. B. mit dem Rad hin, mit dem Zug zurück.</p>';
   html += '    <form id="tripForm">';
   html += '      <div class="field-row with-swap">';
   html += '        <div class="field"><label for="fldFrom">Von</label><div class="input-clear-wrap"><input type="text" id="fldFrom" list="cityDatalist" placeholder="Ausgangsstadt" value="'+(homeVal||'').replace(/"/g,'&quot;')+'"><button type="button" class="input-clear-btn" id="fldFromClear" title="Von leeren">✕</button></div></div>';
   html += '        <button type="button" class="btn-swap-cities" id="swapCitiesBtn" title="Von und Nach tauschen">⇄</button>';
-  html += '        <div class="field"><label for="fldTo">Nach</label><input type="text" id="fldTo" list="cityDatalist" placeholder="Zielstadt" required value="'+(t?t.city.replace(/"/g,'&quot;'):'')+'"></div>';
+  html += '        <div class="field"><label for="fldTo">Nach</label><input type="text" id="fldTo" list="cityDatalist" placeholder="Zielstadt" required value="'+(prefill?prefill.city.replace(/"/g,'&quot;'):'')+'"></div>';
   html += '      </div>';
   html += '      <div class="field checkbox-field" style="margin-bottom:14px;">';
-  html += '        <label class="checkbox-label"><input type="checkbox" id="fldCityOnly"'+(t&&t.cityOnly?' checked':'')+'> Nur Stadt merken (ohne Distanz/Verkehrsmittel — für Reisen, an die ich mich nur noch grob erinnere)</label>';
+  html += '        <label class="checkbox-label"><input type="checkbox" id="fldCityOnly"'+(prefill&&prefill.cityOnly?' checked':'')+'> Nur Stadt merken (ohne Distanz/Verkehrsmittel — für Reisen, an die ich mich nur noch grob erinnere)</label>';
   html += '      </div>';
   html += '      <div class="field" id="manualCountryField" style="margin-bottom:14px;display:none;">';
   html += '        <label for="fldManualCountry">Land der Zielstadt</label>';
-  html += '        <input type="text" id="fldManualCountry" placeholder="z. B. Island" value="'+(t&&!findCity(t.city)&&t.country!=='Unbekannt'?t.country.replace(/"/g,'&quot;'):'')+'">';
+  html += '        <input type="text" id="fldManualCountry" placeholder="z. B. Island" value="'+(prefill&&!findCity(prefill.city)&&prefill.country!=='Unbekannt'?prefill.country.replace(/"/g,'&quot;'):'')+'">';
   html += '        <div class="hint">Die Zielstadt wurde nicht automatisch gefunden — trag hier das Land ein, damit sie korrekt einsortiert wird (Flagge wird automatisch gesucht).</div>';
   html += '      </div>';
   html += '      <div class="field" style="margin-bottom:14px;">';
   html += '        <label>Fahrtrichtung</label>';
   html += '        <div class="direction-toggle" id="directionToggle">';
-  html += '          <div class="dir-opt'+(t&&t.direction==='oneway'?' active':'')+'" data-dir="oneway">→ Nur Hinweg</div>';
-  html += '          <div class="dir-opt'+(t&&t.direction==='returnonly'?' active':'')+'" data-dir="returnonly">← Nur Rückweg</div>';
-  html += '          <div class="dir-opt'+(t&&t.direction==='roundtrip'?' active':'')+'" data-dir="roundtrip">⇄ Hin- und Rückweg</div>';
+  html += '          <div class="dir-opt'+(prefill&&prefill.direction==='oneway'?' active':'')+'" data-dir="oneway">→ Nur Hinweg</div>';
+  html += '          <div class="dir-opt'+(prefill&&prefill.direction==='returnonly'?' active':'')+'" data-dir="returnonly">← Nur Rückweg</div>';
+  html += '          <div class="dir-opt'+(prefill&&prefill.direction==='roundtrip'?' active':'')+'" data-dir="roundtrip">⇄ Hin- und Rückweg</div>';
   html += '        </div>';
   html += '      </div>';
   html += '      <div id="legsContainer"></div>';
@@ -3850,32 +3860,32 @@ function renderAdd(root){
   html += '        <div class="purpose-toggle" id="purposeToggle">';
   PURPOSE_ORDER.forEach(pk=>{
     const meta = PURPOSE_META[pk];
-    const active = (t&&t.purpose===pk) ? ' active':'';
+    const active = (prefill&&prefill.purpose===pk) ? ' active':'';
     html += '<div class="purpose-chip'+active+'" data-purpose="'+pk+'">'+meta.icon+' '+meta.label+'</div>';
   });
   html += '        </div>';
-  html += '        <input type="text" id="fldPurposeCustom" placeholder="Eigener Grund …" style="margin-top:8px;display:'+(t&&t.purpose==='custom'?'block':'none')+';" value="'+(t&&t.purposeCustom?t.purposeCustom.replace(/"/g,'&quot;'):'')+'">';
+  html += '        <input type="text" id="fldPurposeCustom" placeholder="Eigener Grund …" style="margin-top:8px;display:'+(prefill&&prefill.purpose==='custom'?'block':'none')+';" value="'+(prefill&&prefill.purposeCustom?prefill.purposeCustom.replace(/"/g,'&quot;'):'')+'">';
   html += '      </div>';
   html += '      <div class="field date-range-field" id="dateRangeWrap" style="margin-bottom:14px;">';
   html += '        <label for="fldDateRange">Zeitraum</label>';
   html += '        <input type="text" id="fldDateRange" placeholder="Datum wählen …" readonly required>';
   html += '        <button type="button" class="date-range-clear" id="dateRangeClear" title="Zurücksetzen">✕</button>';
-  html += '        <input type="hidden" id="fldFromDate" value="'+(t?t.dateFrom:'')+'">';
-  html += '        <input type="hidden" id="fldToDate" value="'+(t?(t.dateTo||''):'')+'">';
-  html += '        <div class="hint">Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.</div>';
+  html += '        <input type="hidden" id="fldFromDate" value="'+(prefill?prefill.dateFrom:'')+'">';
+  html += '        <input type="hidden" id="fldToDate" value="'+(prefill?(prefill.dateTo||''):'')+'">';
+  html += '        <div class="hint">Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.'+(duplicateSource?' Beim Duplizieren ist das ursprüngliche Datum vorausgefüllt — hier einfach anpassen.':'')+'</div>';
   html += '      </div>';
   html += '      <div class="field" id="flightField" style="margin-bottom:14px;display:none;">';
   html += '        <label for="fldFlightNo">Flugnummer(n) (optional)</label>';
-  html += '        <input type="text" id="fldFlightNo" placeholder="z. B. LH1234" value="'+(t&&t.flightNumber?t.flightNumber.replace(/"/g,'&quot;'):'')+'">';
+  html += '        <input type="text" id="fldFlightNo" placeholder="z. B. LH1234" value="'+(prefill&&prefill.flightNumber?prefill.flightNumber.replace(/"/g,'&quot;'):'')+'">';
   html += '        <div class="hint">Eine Live-Anbindung an Flugdaten ist in dieser App nicht möglich — die Distanz wird über die Flughafenkoordinaten berechnet.</div>';
   html += '      </div>';
   html += '      <div class="field" style="margin-bottom:16px;">';
   html += '        <label for="fldNotes">Notizen (optional)</label>';
-  html += '        <textarea id="fldNotes" placeholder="z. B. Anlass der Reise">'+(t&&t.notes?t.notes:'')+'</textarea>';
+  html += '        <textarea id="fldNotes" placeholder="z. B. Anlass der Reise">'+(prefill&&prefill.notes?prefill.notes:'')+'</textarea>';
   html += '      </div>';
   html += '      <div class="bp-submit-row">';
   html += '        <button type="submit" class="btn-primary">'+(t?'Änderungen speichern':'Reise hinzufügen')+'</button>';
-  if(t) html += '<button type="button" class="btn-secondary" id="cancelEdit">Abbrechen</button>';
+  if(t || duplicateSource) html += '<button type="button" class="btn-secondary" id="cancelEdit">Abbrechen</button>';
   html += '      </div>';
   html += '    </form>';
   html += '  </div>';
@@ -3906,8 +3916,8 @@ function renderAdd(root){
       return new Date(parts[0], parts[1]-1, parts[2]);
     }
 
-    const initialFrom = t ? t.dateFrom : '';
-    const initialTo = t && t.dateTo && t.dateTo!==t.dateFrom ? t.dateTo : '';
+    const initialFrom = prefill ? prefill.dateFrom : '';
+    const initialTo = prefill && prefill.dateTo && prefill.dateTo!==prefill.dateFrom ? prefill.dateTo : '';
     const defaultDate = [initialFrom, initialTo].filter(Boolean).map(isoToDate);
 
     const deLocale = (typeof flatpickr.l10ns!=='undefined' && flatpickr.l10ns.de)
@@ -3939,12 +3949,12 @@ function renderAdd(root){
     });
   })();
 
-  let direction = t ? t.direction : null;
-  let outMode = t ? (t.outMode || 'plane') : 'plane';
-  let returnMode = t ? (t.returnMode || 'plane') : 'plane';
-  let outWaypoints = t ? (t.outWaypoints||[]).slice() : [];
-  let returnWaypoints = t ? (t.returnWaypoints||[]).slice() : [];
-  let purpose = t ? (t.purpose||null) : null;
+  let direction = prefill ? prefill.direction : null;
+  let outMode = prefill ? (prefill.outMode || 'plane') : 'plane';
+  let returnMode = prefill ? (prefill.returnMode || 'plane') : 'plane';
+  let outWaypoints = prefill ? (prefill.outWaypoints||[]).slice() : [];
+  let returnWaypoints = prefill ? (prefill.returnWaypoints||[]).slice() : [];
+  let purpose = prefill ? (prefill.purpose||null) : null;
 
   /* Von leeren + Von/Nach tauschen */
   const fldFromClearBtn = document.getElementById('fldFromClear');
@@ -4089,11 +4099,11 @@ function renderAdd(root){
     }
     let h = '';
     if(direction==='returnonly'){
-      h = buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+      h = buildLegBlockHTML('return','Rückweg', returnMode, prefill?prefill.returnDistanceKm:'', returnWaypoints);
     } else {
-      h = buildLegBlockHTML('out','Hinweg', outMode, t?t.outDistanceKm:'', outWaypoints);
+      h = buildLegBlockHTML('out','Hinweg', outMode, prefill?prefill.outDistanceKm:'', outWaypoints);
       if(direction==='roundtrip'){
-        h += buildLegBlockHTML('return','Rückweg', returnMode, t?t.returnDistanceKm:'', returnWaypoints);
+        h += buildLegBlockHTML('return','Rückweg', returnMode, prefill?prefill.returnDistanceKm:'', returnWaypoints);
       }
     }
     container.innerHTML = h;
@@ -4164,7 +4174,7 @@ function renderAdd(root){
 
   if(document.getElementById('cancelEdit')){
     document.getElementById('cancelEdit').addEventListener('click',()=>{
-      editingId=null; switchTab('log');
+      editingId=null; duplicateSource=null; switchTab('log');
     });
   }
 
@@ -4253,8 +4263,8 @@ function renderAdd(root){
         countryName = manualInput.value.trim();
         cc = '';
       } else {
-        countryName = t ? t.country : 'Unbekannt';
-        cc = t ? t.cityCC : '';
+        countryName = t ? t.country : (duplicateSource ? duplicateSource.country : 'Unbekannt');
+        cc = t ? t.cityCC : (duplicateSource ? duplicateSource.cityCC : '');
       }
     }
 
@@ -4291,6 +4301,7 @@ function renderAdd(root){
     }
     trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||''));
     editingId = null;
+    duplicateSource = null;
     await saveTrips();
     switchTab('dashboard');
   });
@@ -5172,7 +5183,7 @@ function renderLogTable(){
     html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+(hasDetail?'<span class="log-row-toggle">▾</span>':'')+'</td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary log-cell-mode">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
-    html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-duplicate="'+t.id+'" title="Duplizieren">📋</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
     if(hasDetail){
       html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="6" data-label=""><div class="log-detail-grid">';
@@ -5191,7 +5202,20 @@ function attachLogRowActions(root){
   root.querySelectorAll('[data-edit]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       editingId = btn.dataset.edit;
+      duplicateSource = null;
       switchTab('add');
+    });
+  });
+  root.querySelectorAll('[data-duplicate]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const original = trips.find(x=>x.id===btn.dataset.duplicate);
+      if(!original) return;
+      // Flache Kopie reicht: Arrays (Waypoints) werden in renderAdd() ohnehin per
+      // .slice() übernommen, bevor der Nutzer sie im Formular verändert.
+      duplicateSource = Object.assign({}, original);
+      editingId = null;
+      switchTab('add');
+      showToast('Reise dupliziert — Grund und Datum kannst du jetzt anpassen.');
     });
   });
   root.querySelectorAll('[data-del]').forEach(btn=>{
@@ -5671,6 +5695,7 @@ document.getElementById('tabs').addEventListener('click',(e)=>{
   const btn = e.target.closest('.tab-btn');
   if(!btn) return;
   editingId = null;
+  duplicateSource = null;
   switchTab(btn.dataset.tab);
 });
 
