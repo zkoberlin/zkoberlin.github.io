@@ -38,6 +38,7 @@
      Weltkarte immer gut sichtbar, statt im Hell-Modus ins Dunkle abzudriften. */
   --map-city:#3FB6F0;
   --map-home:#FF9640;
+  --map-bucket:#C77DFF;
 }
 
 [data-theme="light"]{
@@ -298,10 +299,16 @@ a{color:var(--teal);}
 #worldSvg:active{cursor:grabbing;}
 .country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;vector-effect:non-scaling-stroke;}
 .country.visited{fill:var(--teal);fill-opacity:0.55;}
+.country.bucket-wish{fill:var(--map-bucket);fill-opacity:0.35;}
 .city-dot{fill:var(--map-city);stroke:var(--panel);stroke-width:0.8;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
 .city-dot:hover{fill-opacity:0.8;}
 .city-dot.selected{fill:var(--rose);stroke-width:1.3;}
 .home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1;vector-effect:non-scaling-stroke;}
+.bucket-city-dot{fill:var(--map-bucket);stroke:var(--panel);stroke-width:0.8;cursor:pointer;vector-effect:non-scaling-stroke;}
+.bucket-city-flag{font-size:11px;pointer-events:none;user-select:none;}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim);margin-top:8px;align-items:center;}
+.map-legend-item{display:flex;align-items:center;gap:5px;}
+.map-legend-swatch{width:10px;height:10px;border-radius:3px;display:inline-block;}
 .map-controls{
   position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
 }
@@ -715,7 +722,14 @@ tr:last-child td{border-bottom:none;}
 .badge-name{font-size:13px;font-weight:600;color:var(--text);}
 .badge-desc{font-size:11.5px;color:var(--text-faint);margin-top:2px;line-height:1.4;}
 .badge-missing{font-size:10.5px;color:var(--teal);margin-top:4px;line-height:1.4;}
-.badge-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;}
+
+/* ---------- Bucket-Liste ---------- */
+.bucket-type-tag{font-size:9.5px;color:var(--text-faint);border:1px solid var(--border-soft);border-radius:100px;padding:1px 7px;margin-left:4px;text-transform:uppercase;letter-spacing:0.03em;}
+.bucket-sub{color:var(--text-faint);font-size:11.5px;margin-left:4px;}
+.bucket-priority-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);}
+.bucket-priority-hoch{color:var(--rose);border-color:var(--rose);}
+.bucket-priority-mittel{color:var(--gold);border-color:var(--gold-dim);}
+.bucket-priority-niedrig{color:var(--text-dim);}.badge-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;}
 .badge-bonus{font-family:var(--font-mono);font-size:10.5px;color:var(--gold);white-space:nowrap;}
 .badge-card.locked .badge-bonus{color:var(--text-dim);}
 .badge-progress-track{height:5px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:7px;}
@@ -1014,6 +1028,7 @@ span.flatpickr-weekday{
       <button class="tab-btn" data-tab="log">Alle Reisen</button>
       <button class="tab-btn" data-tab="stats">Statistiken</button>
       <button class="tab-btn" data-tab="badges">Badges</button>
+      <button class="tab-btn" data-tab="bucket">Bucket-Liste</button>
     </div>
   </div>
 </div>
@@ -1098,6 +1113,7 @@ span.flatpickr-weekday{
 </div>
 
 <datalist id="cityDatalist"></datalist>
+<datalist id="countryDatalist"></datalist>
 
 <div class="toast" id="toast"></div>
 
@@ -1205,6 +1221,29 @@ const CITY_DB = RAW_CITIES.map(([n,c,cc,lat,lon,ia])=>({
 const CC_TO_COUNTRY_NAME = {};
 CITY_DB.forEach(c=>{ const cc=(c.cc||'').toLowerCase(); if(cc && !CC_TO_COUNTRY_NAME[cc]) CC_TO_COUNTRY_NAME[cc]=c.c; });
 function countryNameForCC(cc){ return CC_TO_COUNTRY_NAME[(cc||'').toLowerCase()] || (cc||'').toUpperCase(); }
+
+/* Liste aller aus CITY_DB bekannten Länder (Name + Ländercode), alphabetisch —
+   Grundlage für die Land-Auswahl in der Bucket-Liste (Wunsch "ganzes Land", ohne
+   dass dafür erst eine konkrete Stadt bekannt sein muss). */
+const COUNTRY_LIST = (()=>{
+  const map = new Map();
+  CITY_DB.forEach(c=>{ if(c.c && c.cc && !map.has(c.c)) map.set(c.c, (c.cc||'').toLowerCase()); });
+  return [...map.entries()].map(([name,cc])=>({name, cc})).sort((a,b)=>a.name.localeCompare(b.name,'de'));
+})();
+function findCountryByName(name){
+  if(!name || !name.trim()) return null;
+  const s = name.trim().toLowerCase();
+  return COUNTRY_LIST.find(c=>c.name.toLowerCase()===s) || null;
+}
+/* Wie resolveCity(): erst lokal (COUNTRY_LIST), sonst per Geokodierung (Nominatim) —
+   für Länder, die noch in keiner erfassten Reise als Ziel vorkommen. */
+async function resolveCountry(name){
+  const local = findCountryByName(name);
+  if(local) return local;
+  const geocoded = await geocodeCity(name);
+  if(geocoded && geocoded.c && geocoded.cc) return {name: geocoded.c, cc: geocoded.cc};
+  return null;
+}
 
 /* Kuratierte Liste: Städte, für die ein echtes Stadtwappen (statt der Länderflagge) gezeigt wird.
    Jede Datei wurde einzeln recherchiert (aktuelle Wikidata-"coat of arms image"-Angabe bzw.
@@ -1371,7 +1410,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.29.0';
+const APP_VERSION = '1.30.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1433,6 +1472,16 @@ let customCities = [];
 // Städtenamen, für die eine Nachauflösung (Geokodierung) bereits erfolglos versucht wurde —
 // verhindert wiederholte Anfragen bei jedem Karten-Rendern, wenn eine Stadt nicht auffindbar ist.
 const unresolvableCityNames = new Set();
+
+/* Bucket-Liste: Städte/Länder-Wünsche (noch nicht besucht). Jeder Eintrag:
+   {id, type:'city'|'country', name, country, cc, lat, lon, continent, priority, createdAt}
+   — bei type 'country' ist name===country und lat/lon sind null (ganzes Land eingefärbt,
+   kein einzelner Punkt). Sehnsucht-Priorität: 'hoch' | 'mittel' | 'niedrig'. */
+let bucketList = [];
+const BUCKET_PRIORITY_RANK = {hoch:3, mittel:2, niedrig:1};
+const BUCKET_PRIORITY_META = {
+  hoch:{label:'Hoch', icon:'🔥'}, mittel:{label:'Mittel', icon:'✨'}, niedrig:{label:'Niedrig', icon:'💭'}
+};
 
 /* ---------- Helpers ---------- */
 function uid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
@@ -1502,6 +1551,34 @@ async function saveCustomCities(){
     try{ await syncPush('customCities', customCities); }
     catch(e){ console.error('Cloud-Sync (customCities) fehlgeschlagen:', e); }
   }
+}
+
+async function loadBucketList(){
+  try{
+    const s = await window.storage.get('bucketList', false);
+    bucketList = s ? JSON.parse(s.value) : [];
+  }catch(e){ bucketList = []; }
+}
+async function saveBucketList(){
+  try{ await window.storage.set('bucketList', JSON.stringify(bucketList), false); }
+  catch(e){ console.error('Storage-Fehler (bucketList):', e); }
+  // Isoliert wie bei customCities: ein fehlschlagender Bucket-Liste-Sync darf
+  // Reisen/Einstellungen nie blockieren (siehe runCloudSync()).
+  if(syncEnabled() && dataReady){
+    try{ await syncPush('bucketList', bucketList); }
+    catch(e){ console.error('Cloud-Sync (bucketList) fehlgeschlagen:', e); }
+  }
+}
+/* Führt zwei Bucket-Listen zusammen (dedupliziert nach id) — analog zu
+   mergeCustomCityLists(), damit weder lokale noch Cloud-seitige Einträge beim
+   Abgleich verloren gehen. */
+function mergeBucketLists(localList, cloudList){
+  const map = new Map();
+  (localList||[]).concat(cloudList||[]).forEach(b=>{
+    if(!b || !b.id) return;
+    if(!map.has(b.id)) map.set(b.id, b);
+  });
+  return [...map.values()];
 }
 
 function haversine(lat1,lon1,lat2,lon2){
@@ -1867,6 +1944,20 @@ async function runCloudSync(){
     console.error('Cloud-Sync (customCities) fehlgeschlagen — Reisen/Einstellungen davon nicht betroffen:', e);
   }
 
+  // Bucket-Liste separat abgleichen — ebenfalls rein optional/best effort, analog
+  // zu customCities (siehe Kommentar oben).
+  try{
+    const cloudBucketList = await syncPull('bucketList');
+    const mergedBucketList = mergeBucketLists(bucketList, Array.isArray(cloudBucketList) ? cloudBucketList : []);
+    if(mergedBucketList.length !== bucketList.length){
+      bucketList = mergedBucketList;
+      try{ await window.storage.set('bucketList', JSON.stringify(bucketList), false); }catch(e){ console.error('Lokaler Cache (bucketList) konnte nicht aktualisiert werden:', e); }
+    }
+    await syncPush('bucketList', mergedBucketList);
+  }catch(e){
+    console.error('Cloud-Sync (bucketList) fehlgeschlagen — Reisen/Einstellungen davon nicht betroffen:', e);
+  }
+
   return {pulledTrips};
 }
 
@@ -1886,6 +1977,7 @@ async function initialCloudSync(){
 async function loadData(){
   await loadSyncConfig();
   await loadCustomCities();
+  await loadBucketList();
   try{
     const t = await window.storage.get('trips', false);
     trips = t ? JSON.parse(t.value) : [];
@@ -3029,6 +3121,12 @@ function renderDashboard(root){
   html += '    <div class="map-error" id="mapError">Karte konnte nicht geladen werden (keine Verbindung?). Städte &amp; Länder findest du vollständig im Tab „Länder &amp; Städte".</div>';
   html += '  </div>';
   html += '  <div class="map-attrib">Kartengrundlage: <a href="https://github.com/topojson/world-atlas" target="_blank" rel="noopener">world-atlas</a> / Natural Earth · Flaggen: flagcdn.com</div>';
+  html += '  <div class="map-legend">';
+  html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--teal)"></span>Besucht</div>';
+  if(bucketList.length){
+    html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--map-bucket)"></span>Wunschliste 🚩</div>';
+  }
+  html += '  </div>';
   html += '  <div class="city-detail" id="cityDetail"></div>';
   html += '</div>';
 
@@ -3115,6 +3213,14 @@ async function initWorldMap(agg){
   const visitedIds = new Set(
     agg.countries.map(c=>COUNTRY_NUMERIC[(c.cc||'').toLowerCase()]).filter(v=>v!==undefined)
   );
+  // Bucket-Liste-Länderwünsche — nur einfärben, wenn das Land noch nicht besucht ist
+  // (sonst würde die Wunsch-Farbe die "besucht"-Farbe verdecken, obwohl das Land ja
+  // schon erreicht wurde).
+  const bucketCountryIds = new Set(
+    bucketList.filter(b=>b.type==='country')
+      .map(b=>COUNTRY_NUMERIC[(b.cc||'').toLowerCase()])
+      .filter(v=>v!==undefined && !visitedIds.has(v))
+  );
 
   const g = svg.append('g');
 
@@ -3122,7 +3228,7 @@ async function initWorldMap(agg){
     .selectAll('path')
     .data(countries)
     .join('path')
-    .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited':''))
+    .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited': bucketCountryIds.has(Number(d.id)) ? ' bucket-wish':''))
     .attr('d', path);
 
   let homeDot = null;
@@ -3168,6 +3274,29 @@ async function initWorldMap(agg){
       renderCityDetail(agg);
     });
   cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
+
+  // Bucket-Liste-Städtewünsche: kleiner Punkt in eigener Farbe + Fähnchen-Symbol,
+  // klar unterscheidbar von tatsächlich besuchten Städten (city-dot).
+  const bucketCityData = bucketList
+    .filter(b=>b.type==='city' && typeof b.lat==='number' && typeof b.lon==='number')
+    .map(b=>({b, p:projection([b.lon, b.lat])}))
+    .filter(x=>x.p);
+  const bucketRadius = Math.max(1.1, 1.4*rScale);
+  const bucketLayer = g.append('g').attr('class','bucket-city-layer');
+  const bucketDots = bucketLayer.selectAll('circle')
+    .data(bucketCityData, x=>x.b.id)
+    .join('circle')
+    .attr('class','bucket-city-dot')
+    .attr('cx', x=>x.p[0]).attr('cy', x=>x.p[1])
+    .attr('r', bucketRadius);
+  bucketDots.append('title').text(x=>x.b.name+' — Wunschliste ('+(BUCKET_PRIORITY_META[x.b.priority]||BUCKET_PRIORITY_META.mittel).label+')');
+  bucketLayer.selectAll('text.bucket-city-flag')
+    .data(bucketCityData, x=>x.b.id)
+    .join('text')
+    .attr('class','bucket-city-flag')
+    .attr('x', x=>x.p[0]+bucketRadius+1.5)
+    .attr('y', x=>x.p[1]-bucketRadius)
+    .text('🚩');
 
   // Für einige (ältere) Reisen konnte die Zielstadt beim Speichern evtl. nicht
   // aufgelöst werden (z. B. Geokodierung damals offline/fehlgeschlagen) — sie
@@ -4896,6 +5025,7 @@ function switchTab(tab){
   if(tab==='log') renderLog(panel);
   if(tab==='stats') renderStats(panel);
   if(tab==='badges') renderBadges(panel);
+  if(tab==='bucket') renderBucketList(panel);
   window.scrollTo({top:0,behavior:'instant' in window ? 'instant':'auto'});
 }
 
@@ -4908,6 +5038,7 @@ function renderAll(){
     '<div class="tab-panel" id="panel-log"></div>'+
     '<div class="tab-panel" id="panel-stats"></div>'+
     '<div class="tab-panel" id="panel-badges"></div>'+
+    '<div class="tab-panel" id="panel-bucket"></div>'+
     '<div class="footer-note">Deine Reisedaten werden lokal in diesem Artefakt gespeichert.<br>Distanzen sind Luftlinien-Näherungen — für exakte Werte kannst du sie jederzeit manuell anpassen.</div>';
   updateHomeChip();
   switchTab(currentTab);
@@ -4923,11 +5054,184 @@ function updateHomeChip(){
   }
 }
 
-/* ---------- Datalist ---------- */
+/* ---------- Bucket-Liste ---------- */
+let bucketFormType = 'city';
+let bucketSort = {key:'priority', dir:'desc'};
+let bucketAddBusy = false;
+
+function bucketSortLabelFor(b){
+  if(b.type==='country') return b.country;
+  return b.name;
+}
+function sortBucketList(list, sort){
+  const arr = list.slice();
+  const {key,dir} = sort;
+  arr.sort((a,b)=>{
+    let va,vb;
+    if(key==='priority'){ va=BUCKET_PRIORITY_RANK[a.priority]||0; vb=BUCKET_PRIORITY_RANK[b.priority]||0; }
+    else if(key==='continent'){ va=continentInfo(a.continent)?continentInfo(a.continent).label:''; vb=continentInfo(b.continent)?continentInfo(b.continent).label:''; }
+    else if(key==='type'){ va=a.type; vb=b.type; }
+    else if(key==='country'){ va=a.country||''; vb=b.country||''; }
+    else if(key==='name-desc'){ va=bucketSortLabelFor(b); vb=bucketSortLabelFor(a); return va.localeCompare(vb,'de'); }
+    else { va=bucketSortLabelFor(a); vb=bucketSortLabelFor(b); }
+    if(typeof va==='string') return dir==='asc'? va.localeCompare(vb,'de') : vb.localeCompare(va,'de');
+    return dir==='asc'? va-vb : vb-va;
+  });
+  return arr;
+}
+const BUCKET_SORT_OPTIONS = [
+  {key:'priority', dir:'desc', label:'🔥 Sehnsucht'},
+  {key:'name', dir:'asc', label:'A–Z'},
+  {key:'name', dir:'desc', label:'Z–A'},
+  {key:'continent', dir:'asc', label:'🌍 Kontinent'}
+];
+
+function bucketEntryRowHTML(b){
+  const prio = BUCKET_PRIORITY_META[b.priority] || BUCKET_PRIORITY_META.mittel;
+  const ci = continentInfo(b.continent);
+  const contLabel = ci ? ci.icon+' '+ci.label : '<span style="color:var(--text-faint);">–</span>';
+  let placeHTML;
+  if(b.type==='country'){
+    placeHTML = flagImg(b.cc,20)+' <b>'+b.country+'</b> <span class="bucket-type-tag">Land</span>';
+  } else {
+    placeHTML = cityIcon(b.name,b.country,b.cc,20)+' <b>'+b.name+'</b> <span class="bucket-sub">'+(b.country||'')+'</span>';
+  }
+  return '<tr>'+
+    '<td data-label="Ort"><div class="cell-city">'+placeHTML+'</div></td>'+
+    '<td data-label="Kontinent">'+contLabel+'</td>'+
+    '<td data-label="Sehnsucht"><span class="bucket-priority-badge bucket-priority-'+b.priority+'">'+prio.icon+' '+prio.label+'</span></td>'+
+    '<td data-label=""><div class="row-actions"><button type="button" data-bucket-del="'+b.id+'" title="Entfernen">🗑️</button></div></td>'+
+    '</tr>';
+}
+
+function renderBucketList(root){
+  let html = '';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Neuer Wunsch</h2><span class="sub">Stadt oder Land, das du noch bereisen möchtest</span></div>';
+  html += '  <div class="mode-filter-toggle" id="bucketTypeToggle">';
+  html += '    <div class="mode-filter-chip'+(bucketFormType==='city'?' active':'')+'" data-bucket-type="city">🏙️ Stadt</div>';
+  html += '    <div class="mode-filter-chip'+(bucketFormType==='country'?' active':'')+'" data-bucket-type="country">🌍 Land</div>';
+  html += '  </div>';
+  html += '  <div class="field-row">';
+  html += '    <div class="field"><label for="bucketNameInput">'+(bucketFormType==='city'?'Stadt':'Land')+'</label><input type="text" id="bucketNameInput" list="'+(bucketFormType==='city'?'cityDatalist':'countryDatalist')+'" placeholder="'+(bucketFormType==='city'?'z. B. Kyoto (Japan)':'z. B. Neuseeland')+'"></div>';
+  html += '    <div class="field"><label for="bucketPrioritySelect">Sehnsucht</label><select id="bucketPrioritySelect"><option value="hoch">🔥 Hoch</option><option value="mittel" selected>✨ Mittel</option><option value="niedrig">💭 Niedrig</option></select></div>';
+  html += '  </div>';
+  html += '  <button type="button" id="bucketAddBtn" class="btn-primary">'+(bucketAddBusy?'…':'+ Zur Wunschliste hinzufügen')+'</button>';
+  html += '  <div class="hint" id="bucketAddHint"></div>';
+  html += '</div>';
+
+  html += '<div class="card">';
+  html += '  <div class="card-head"><h2>Wunschliste</h2><span class="sub">'+bucketList.length+' '+(bucketList.length===1?'Eintrag':'Einträge')+'</span></div>';
+  if(bucketList.length===0){
+    html += '<div class="empty-state"><div class="big">🧳</div>Noch keine Wünsche erfasst. Trag oben deine erste Traum-Destination ein.</div>';
+  } else {
+    html += '  <div class="mode-filter-toggle" id="bucketSortFilter">';
+    BUCKET_SORT_OPTIONS.forEach((o,i)=>{
+      const active = bucketSort.key===o.key && bucketSort.dir===o.dir;
+      html += '    <div class="mode-filter-chip'+(active?' active':'')+'" data-bucket-sort-idx="'+i+'">'+o.label+'</div>';
+    });
+    html += '  </div>';
+    const sorted = sortBucketList(bucketList, bucketSort);
+    html += '  <div class="table-wrap"><table class="responsive-table"><thead><tr><th>Ort</th><th>Kontinent</th><th>Sehnsucht</th><th></th></tr></thead><tbody>';
+    sorted.forEach(b=>{ html += bucketEntryRowHTML(b); });
+    html += '  </tbody></table></div>';
+  }
+  html += '</div>';
+
+  root.innerHTML = html;
+
+  root.querySelectorAll('#bucketTypeToggle [data-bucket-type]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      bucketFormType = chip.dataset.bucketType;
+      renderBucketList(root);
+    });
+  });
+  root.querySelectorAll('#bucketSortFilter [data-bucket-sort-idx]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      const o = BUCKET_SORT_OPTIONS[parseInt(chip.dataset.bucketSortIdx,10)];
+      bucketSort = {key:o.key, dir:o.dir};
+      renderBucketList(root);
+    });
+  });
+  root.querySelectorAll('[data-bucket-del]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      bucketList = bucketList.filter(b=>b.id!==btn.dataset.bucketDel);
+      await saveBucketList();
+      renderBucketList(root);
+    });
+  });
+  const addBtn = document.getElementById('bucketAddBtn');
+  if(addBtn){
+    addBtn.addEventListener('click', ()=> handleBucketAdd(root));
+  }
+  const nameInput = document.getElementById('bucketNameInput');
+  if(nameInput){
+    nameInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); handleBucketAdd(root); } });
+  }
+}
+
+async function handleBucketAdd(root){
+  if(bucketAddBusy) return;
+  const nameInput = document.getElementById('bucketNameInput');
+  const prioSelect = document.getElementById('bucketPrioritySelect');
+  const hintEl = document.getElementById('bucketAddHint');
+  const rawName = (nameInput ? nameInput.value : '').trim();
+  const priority = prioSelect ? prioSelect.value : 'mittel';
+  if(!rawName){
+    if(hintEl) hintEl.textContent = 'Bitte einen Namen eingeben.';
+    return;
+  }
+  bucketAddBusy = true;
+  const addBtn = document.getElementById('bucketAddBtn');
+  if(addBtn) addBtn.textContent = '…';
+  if(hintEl) hintEl.textContent = '';
+  try{
+    if(bucketFormType==='country'){
+      const resolved = await resolveCountry(rawName);
+      if(!resolved){
+        if(hintEl) hintEl.textContent = '„'+rawName+'“ konnte nicht gefunden werden. Bitte Schreibweise prüfen.';
+        return;
+      }
+      // Kein Doppel-Eintrag für dasselbe Land.
+      if(bucketList.some(b=>b.type==='country' && b.cc===resolved.cc)){
+        if(hintEl) hintEl.textContent = resolved.name+' steht schon auf der Wunschliste.';
+        return;
+      }
+      bucketList.push({
+        id: uid(), type:'country', name:resolved.name, country:resolved.name, cc:resolved.cc,
+        lat:null, lon:null, continent:getContinent(resolved.cc), priority, createdAt:new Date().toISOString()
+      });
+    } else {
+      const resolved = await resolveCity(rawName);
+      if(!resolved){
+        if(hintEl) hintEl.textContent = '„'+rawName+'“ konnte nicht gefunden werden. Bitte Schreibweise prüfen.';
+        return;
+      }
+      if(bucketList.some(b=>b.type==='city' && b.name===resolved.n && b.country===resolved.c)){
+        if(hintEl) hintEl.textContent = resolved.n+' steht schon auf der Wunschliste.';
+        return;
+      }
+      bucketList.push({
+        id: uid(), type:'city', name:resolved.n, country:resolved.c, cc:(resolved.cc||'').toLowerCase(),
+        lat:resolved.lat, lon:resolved.lon, continent:getContinent((resolved.cc||'').toLowerCase()), priority, createdAt:new Date().toISOString()
+      });
+    }
+    await saveBucketList();
+    showToast('Zur Wunschliste hinzugefügt.');
+    renderBucketList(root);
+  } finally {
+    bucketAddBusy = false;
+  }
+}
+
+
 function populateDatalist(){
   const dl = document.getElementById('cityDatalist');
   const all = CITY_DB.concat(customCities);
   dl.innerHTML = all.map(c=>'<option value="'+c.label.replace(/"/g,'&quot;')+'">').join('');
+  const cdl = document.getElementById('countryDatalist');
+  if(cdl) cdl.innerHTML = COUNTRY_LIST.map(c=>'<option value="'+c.name.replace(/"/g,'&quot;')+'">').join('');
 }
 
 /* ---------- Settings modal ---------- */
