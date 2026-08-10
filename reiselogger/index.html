@@ -39,6 +39,7 @@
   --map-city:#3FB6F0;
   --map-home:#FF9640;
   --map-bucket:#C77DFF;
+  --map-bucket-dot:#E63946;
 }
 
 [data-theme="light"]{
@@ -304,7 +305,7 @@ a{color:var(--teal);}
 .city-dot:hover{fill-opacity:0.8;}
 .city-dot.selected{fill:var(--rose);stroke-width:1.3;}
 .home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1;vector-effect:non-scaling-stroke;}
-.bucket-city-flag{font-size:14px;pointer-events:none;user-select:none;paint-order:stroke;}
+.bucket-city-dot{fill:var(--map-bucket-dot);stroke:var(--panel);stroke-width:0.8;cursor:pointer;vector-effect:non-scaling-stroke;}
 .map-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim);margin-top:8px;align-items:center;}
 .map-legend-item{display:flex;align-items:center;gap:5px;}
 .map-legend-swatch{width:10px;height:10px;border-radius:3px;display:inline-block;}
@@ -1479,7 +1480,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.31.1';
+const APP_VERSION = '1.31.2';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -3461,7 +3462,8 @@ function renderDashboard(root){
   html += '  <div class="map-legend">';
   html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--teal)"></span>Besucht</div>';
   if(bucketList.length){
-    html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--map-bucket)"></span>Wunschliste 🚩</div>';
+    html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--map-bucket)"></span>Wunschland</div>';
+    html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--map-bucket-dot);border-radius:50%;"></span>Wunschstadt</div>';
   }
   html += '  </div>';
   html += '  <div class="city-detail" id="cityDetail"></div>';
@@ -3613,23 +3615,23 @@ async function initWorldMap(agg){
     });
   cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
 
-  // Bucket-Liste-Städtewünsche: nur das Fähnchen-Symbol (kein eigener Punkt mehr) —
-  // das zugehörige Land wird stattdessen oben mit der Wunschlisten-Farbe eingefärbt.
+  // Bucket-Liste-Städtewünsche: roter Punkt in derselben Größe wie ein normaler
+  // (einmalig besuchter) Städte-Punkt — klar unterscheidbar von "besucht" (Kartenfarbe
+  // --map-city), aber gleiches Größengefühl statt eines auffälligen Symbols.
   const bucketCityData = bucketList
     .filter(b=>b.type==='city' && typeof b.lat==='number' && typeof b.lon==='number')
     .map(b=>({b, p:projection([b.lon, b.lat])}))
     .filter(x=>x.p);
+  const bucketDotRadius = dotRadius({c:{visits:1}});
   const bucketLayer = g.append('g').attr('class','bucket-city-layer');
-  const bucketFlags = bucketLayer.selectAll('text.bucket-city-flag')
+  const bucketDots = bucketLayer.selectAll('circle.bucket-city-dot')
     .data(bucketCityData, x=>x.b.id)
-    .join('text')
-    .attr('class','bucket-city-flag')
-    .attr('x', x=>x.p[0])
-    .attr('y', x=>x.p[1])
-    .attr('text-anchor','middle')
-    .attr('dominant-baseline','central')
-    .text('🚩');
-  bucketFlags.append('title').text(x=>x.b.name+' — Wunschliste ('+(BUCKET_PRIORITY_META[x.b.priority]||BUCKET_PRIORITY_META.mittel).label+')');
+    .join('circle')
+    .attr('class','bucket-city-dot')
+    .attr('cx', x=>x.p[0])
+    .attr('cy', x=>x.p[1])
+    .attr('r', bucketDotRadius);
+  bucketDots.append('title').text(x=>x.b.name+' — Wunschliste ('+(BUCKET_PRIORITY_META[x.b.priority]||BUCKET_PRIORITY_META.mittel).label+')');
 
 
   // Für einige (ältere) Reisen konnte die Zielstadt beim Speichern evtl. nicht
