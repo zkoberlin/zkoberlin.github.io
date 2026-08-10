@@ -1,42 +1,42 @@
 {
-  "datum": "09.08.2026",
-  "generiert": "2026-08-09T02:55:14Z",
+  "datum": "10.08.2026",
+  "generiert": "2026-08-10T03:04:22Z",
   "geburtstage": [
     {
-      "name": "Sanya Lopez",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Filipino Actress (Born 1996)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Sanya_Lopez_06.jpg/330px-Sanya_Lopez_06.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sanya_Lopez",
+      "name": "Hansi Kürsch",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Komponist/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Hansi_K%C3%BCrsch_Blind_Guardian_-_2024215204633_2024-08-02_Wacken_-_Sven_-_1D_X_MK_II_-_1989_-_AK8I4699_%28cropped%29.jpg/120px-Hansi_K%C3%BCrsch_Blind_Guardian_-_2024215204633_2024-08-02_Wacken_-_Sven_-_1D_X_MK_II_-_1989_-_AK8I4699_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q57752",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "İshak Doğan",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "Turkish Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ishak_Do%C4%9Fan.JPG/330px-Ishak_Do%C4%9Fan.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0shak_Do%C4%9Fan",
+      "name": "Emine Sevgi Özdamar",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Emine_Sevgi_%C3%96zdamar_2021_02.jpg/120px-Emine_Sevgi_%C3%96zdamar_2021_02.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q446415",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Michael Lerchl",
-      "alter": 40,
-      "geburtsjahr": 1986,
-      "beruf": "German Footballer",
+      "name": "İlhan Mansız",
+      "alter": 51,
+      "geburtsjahr": 1975,
+      "beruf": "Turkish Footballer (B. 1975)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/2013_Nebelhorn_Trophy_Ilhan_MANSIZ_IMG_5900_%28cropped%29.JPG/330px-2013_Nebelhorn_Trophy_Ilhan_MANSIZ_IMG_5900_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0lhan_Mans%C4%B1z",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Peter Endrulat",
+      "alter": 72,
+      "geburtsjahr": 1954,
+      "beruf": "German Footballer (Born 1954)",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Lerchl",
+      "wikidata": "https://en.wikipedia.org/wiki/Peter_Endrulat",
       "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Victoria Jiménez Kasintseva",
-      "alter": 21,
-      "geburtsjahr": 2005,
-      "beruf": "Andorran Tennis Player (Born 2005)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Jimenez_Kasintseva_WMQ23_%2853061704296%29.jpg/330px-Jimenez_Kasintseva_WMQ23_%2853061704296%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Victoria_Jim%C3%A9nez_Kasintseva",
-      "nationalitaet": null
     }
   ]
 }
