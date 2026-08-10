@@ -1348,7 +1348,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.28.0';
+const APP_VERSION = '1.28.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2002,6 +2002,15 @@ function aggregate(){
   const perMode = {};
   MODE_ORDER.forEach(m=>perMode[m]=0);
 
+  /* Heimatland (Deutschland) zählt an keiner Stelle als "besuchtes Land" — auch nicht,
+     wenn eine Reise innerhalb Deutschlands zu einer anderen Stadt als dem Heimatort
+     führt (z. B. München). Die Stadt selbst zählt in diesem Fall trotzdem ganz normal
+     als besuchter Ort (Top 5 Städte, Städte-Tabelle, Karte) — nur die Länder-Zählung
+     (Länder-Tab, Länder-Gesamtzahl, "meistbesuchtes Land") blendet Deutschland aus.
+     Siehe Nutzer-Entscheidung: Land-Statistiken ohne Heimatland, Städte-Statistiken
+     unverändert. */
+  const homeCountry = getHomeCountry();
+
   const cityMap = new Map();
   const countryMap = new Map();
   const purposeMap = new Map();
@@ -2017,11 +2026,13 @@ function aggregate(){
     if(isWaypoint) c.viaWaypoint = true;
     if(visitMode) c.modeCounts[visitMode] = (c.modeCounts[visitMode]||0)+1;
 
-    if(!countryMap.has(country)){
-      countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
+    if(country !== homeCountry){
+      if(!countryMap.has(country)){
+        countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
+      }
+      const co=countryMap.get(country);
+      co.visits++; co.totalKm+=km; co.cities.add(cityName);
     }
-    const co=countryMap.get(country);
-    co.visits++; co.totalKm+=km; co.cities.add(cityName);
     return c;
   }
 
@@ -2128,15 +2139,18 @@ function aggregateYears(){
 
 /* Länder/Städte/Reisen-Anzahl für ein einzelnes Kalenderjahr (Heimatort ausgeschlossen,
    gleiche Logik wie aggregate() — nur auf ein Jahr eingeschränkt). Zwischenstopps zählen
-   mit, sofern ihr Name lokal auflösbar ist (siehe aggregate()). */
+   mit, sofern ihr Name lokal auflösbar ist (siehe aggregate()). Heimatland zählt nie als
+   besuchtes Land (siehe aggregate()) — Städte innerhalb Deutschlands zählen weiterhin
+   normal als besuchte Orte. */
 function aggregateYearCounts(year){
+  const homeCountry = getHomeCountry();
   const cityKeys = new Set();
   const countryKeys = new Set();
   let tripCount = 0;
   function addPlace(name, country){
     if(!name || isHomeCity(name)) return;
     cityKeys.add(name+'|'+country);
-    countryKeys.add(country);
+    if(country !== homeCountry) countryKeys.add(country);
   }
   trips.forEach(t=>{
     if((t.dateFrom||'').slice(0,4)!==year) return;
@@ -2174,7 +2188,10 @@ function aggregateDiscoveries(){
      gezählt. Für Konsistenz mit den übrigen Auswertungen jetzt ausgeschlossen.
      Zwischenstopps zählen ebenfalls als eigene "Besuche" (siehe aggregate()), daher
      werden hier alle Ereignisse — Hauptziel + auflösbare Zwischenstopps — gesammelt
-     und gemeinsam chronologisch sortiert, bevor das jeweils erste Jahr ermittelt wird. */
+     und gemeinsam chronologisch sortiert, bevor das jeweils erste Jahr ermittelt wird.
+     Heimatland zählt nie als "neu entdecktes Land" (siehe aggregate()) — eine neue Stadt
+     innerhalb Deutschlands zählt aber weiterhin als "neu entdeckte Stadt". */
+  const homeCountry = getHomeCountry();
   const cityFirstYear = new Map();
   const countryFirstYear = new Map();
   const events = [];
@@ -2193,7 +2210,7 @@ function aggregateDiscoveries(){
     if(!/^\d{4}$/.test(year)) return;
     const ckey = ev.city+'|'+ev.country;
     if(!cityFirstYear.has(ckey)) cityFirstYear.set(ckey, {year, city:ev.city, country:ev.country, cc:ev.cc});
-    if(!countryFirstYear.has(ev.country)) countryFirstYear.set(ev.country, {year, country:ev.country, cc:ev.cc});
+    if(ev.country!==homeCountry && !countryFirstYear.has(ev.country)) countryFirstYear.set(ev.country, {year, country:ev.country, cc:ev.cc});
   });
   const yearMap = new Map();
   function ensureYear(year){
@@ -2233,12 +2250,14 @@ function computeRecords(){
   }).sort((a,b)=>b.days-a.days);
   const longest = withDuration[0];
 
+  /* "Meiste Länder in einem Jahr": Heimatland zählt nie mit (siehe aggregate()). */
+  const homeCountryForRecords = getHomeCountry();
   const countriesByYear = new Map();
   trips.forEach(t=>{
     const year = (t.dateFrom||'').slice(0,4);
     if(!/^\d{4}$/.test(year)) return;
     if(!countriesByYear.has(year)) countriesByYear.set(year, new Set());
-    countriesByYear.get(year).add(t.country);
+    if(t.country && t.country!==homeCountryForRecords) countriesByYear.get(year).add(t.country);
   });
   let bestYear = null, bestCount = 0;
   countriesByYear.forEach((set,year)=>{
