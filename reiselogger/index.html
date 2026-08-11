@@ -225,6 +225,20 @@ a{color:var(--teal);}
   width:16px;height:16px;color:var(--text-faint);pointer-events:none;
 }
 
+.bottom-tabs{
+  display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;
+  background:var(--panel);border-top:1px solid var(--gold-dim);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+  justify-content:space-around;align-items:center;
+}
+.bottom-tab-btn{
+  background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--text-faint);font-size:10px;font-family:var(--font-body);cursor:pointer;
+  padding:4px 8px;flex:1;
+}
+.bottom-tab-btn .bt-icon{font-size:19px;line-height:1;}
+.bottom-tab-btn.active{color:var(--gold);}
+
 /* ---------- Cards ---------- */
 .card{
   background:var(--panel);
@@ -465,14 +479,100 @@ tr:last-child td{border-bottom:none;}
 .log-detail-item-sub{font-size:10.5px;color:var(--text-faint);margin-top:1px;}
 .log-detail-footer{display:flex;}
 .log-detail-footer button{
-  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:13px 4px;font-size:12.5px;color:var(--text-dim);background:transparent;
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  padding:11px 2px;font-size:10.5px;color:var(--text-dim);background:transparent;
   border:none;border-right:1px solid var(--border-soft);cursor:pointer;font-family:var(--font-body);
+  min-width:0;
 }
 .log-detail-footer button:last-child{border-right:none;}
 .log-detail-footer button:hover{background:var(--bg-soft);color:var(--text);}
-.log-detail-footer-icon{font-size:14px;}
+.log-detail-footer-icon{font-size:16px;}
 .log-detail-footer-danger{color:var(--rose)!important;}
+
+/* ---------- Trip-Karten (Mobile "Alle Reisen") & Detailseite ---------- */
+.trip-cards-list{display:flex;flex-direction:column;gap:12px;}
+.trip-card{
+  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:16px;
+  overflow:hidden;cursor:pointer;transition:border-color .15s ease;
+}
+.trip-card:hover{border-color:var(--gold-dim);}
+.trip-card-icon{display:flex;gap:12px;padding:12px;}
+.tc-thumb-icon{
+  width:56px;height:56px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;align-self:flex-start;
+}
+.tc-body{flex:1;min-width:0;}
+.trip-card-icon .tc-body{display:flex;flex-direction:column;gap:8px;}
+.tc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.tc-date-plain{font-size:11.5px;color:var(--text-faint);}
+.tc-date-badge{
+  font-size:11px;color:#fff;background:rgba(0,0,0,0.45);border-radius:100px;padding:4px 10px;
+  backdrop-filter:blur(2px);
+}
+.tc-menu-btn{
+  background:rgba(0,0,0,0.3);border:none;color:var(--text-dim);width:26px;height:26px;border-radius:50%;
+  cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+}
+.trip-card-icon .tc-menu-btn{background:transparent;color:var(--text-faint);}
+.tc-route{display:flex;align-items:center;gap:8px;}
+.tc-city{display:flex;flex-direction:column;min-width:0;}
+.tc-city.right{align-items:flex-end;text-align:right;}
+.tc-city b{font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-country{font-size:10.5px;color:var(--text-faint);white-space:nowrap;}
+.tc-route-line{flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.tc-route-line.light .mode-emoji{filter:drop-shadow(0 1px 2px rgba(0,0,0,0.6));}
+.tc-stats{display:flex;}
+.tc-stat{flex:1;text-align:center;min-width:0;}
+.tc-stat:not(:last-child){border-right:1px solid var(--border-soft);}
+.tc-stat-icon{display:block;font-size:14px;margin-bottom:2px;}
+.tc-stat b{display:block;font-size:12px;color:var(--gold);font-family:var(--font-mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-stat b.tc-stat-transport{font-family:var(--font-body);font-weight:600;font-size:11px;}
+.tc-stat small{display:block;font-size:9.5px;color:var(--text-faint);margin-top:1px;}
+.tc-badges{display:flex;align-items:center;gap:6px;}
+.tc-badge{font-size:10px;color:var(--text-faint);background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:100px;padding:2px 8px;}
+.tc-chevron{margin-left:auto;color:var(--text-faint);font-size:16px;}
+.tc-chevron.hidden{display:none;}
+
+.trip-card-photo{display:flex;flex-direction:column;}
+.tc-photo{
+  height:130px;background-size:cover;background-position:center;position:relative;
+  display:flex;flex-direction:column;justify-content:space-between;padding:10px 12px;
+}
+.trip-card-photo.hero .tc-photo{height:190px;}
+.tc-photo::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.05) 35%,rgba(0,0,0,0.65) 100%);
+}
+.tc-photo-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;}
+.tc-photo-route{position:relative;z-index:1;display:flex;align-items:flex-end;gap:8px;}
+.tc-photo-city{display:flex;flex-direction:column;min-width:0;}
+.tc-photo-city.right{align-items:flex-end;text-align:right;}
+.tc-photo-city b{font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-photo-city span{font-size:10.5px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.6);}
+.trip-card-photo .tc-body{padding:12px;display:flex;flex-direction:column;gap:8px;}
+
+.trip-detail-page{display:flex;flex-direction:column;gap:14px;}
+.tdp-header{display:flex;align-items:center;justify-content:space-between;}
+.tdp-header h3{margin:0;font-size:15px;font-family:var(--font-display);}
+.tdp-back, .tdp-menu{
+  width:36px;height:36px;border-radius:50%;background:var(--panel-alt);border:1px solid var(--gold-dim);
+  color:var(--text-dim);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.tdp-hero{
+  height:220px;border-radius:16px;background-size:cover;background-position:center;position:relative;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:14px;overflow:hidden;
+}
+.tdp-hero.placeholder{background:var(--panel-alt);border:1px solid var(--border-soft);align-items:center;justify-content:center;}
+.tdp-hero-placeholder-icon{font-size:40px;opacity:0.5;}
+.tdp-hero:not(.placeholder)::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.7) 100%);
+}
+.tdp-hero-overlay{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-self:stretch;}
+.tdp-hero.placeholder .tdp-hero-overlay{position:absolute;bottom:14px;left:14px;right:14px;}
+.tdp-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-faint);padding:0 4px;}
+.tdp-footer b{color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-weight:500;}
+
 
 /* ---------- Reise-Fotos ---------- */
 .log-photos{}
@@ -1019,6 +1119,11 @@ tr:last-child td{border-bottom:none;}
   .tabs{display:none;}
   .tabs-mobile{display:block;}
 
+  /* Untere Tab-Leiste (Reisen/Statistiken/Karte/Profil) — nur Mobile, Desktop behält
+     die bestehende obere Navigation. */
+  .bottom-tabs{display:flex;}
+  body{padding-bottom:70px;}
+
   /* iOS zoomt beim Fokussieren eines Feldes automatisch rein, wenn die
      Schrift unter 16px liegt — hier gezielt angehoben. */
   .field input, .field select, .field textarea{font-size:16px;}
@@ -1205,6 +1310,13 @@ span.flatpickr-weekday{
 <div class="wrap" id="appRoot">
   <div class="loading-screen"><div class="spinner"></div>Lade deine Reisedaten …</div>
 </div>
+
+<nav class="bottom-tabs" id="bottomTabs">
+  <button class="bottom-tab-btn active" data-bottom-tab="log"><span class="bt-icon">🧳</span><span>Reisen</span></button>
+  <button class="bottom-tab-btn" data-bottom-tab="stats"><span class="bt-icon">📊</span><span>Statistiken</span></button>
+  <button class="bottom-tab-btn" data-bottom-tab="dashboard"><span class="bt-icon">🗺️</span><span>Karte</span></button>
+  <button class="bottom-tab-btn" data-bottom-tab="profile"><span class="bt-icon">👤</span><span>Profil</span></button>
+</nav>
 
 <div class="modal-backdrop" id="settingsModal">
   <div class="modal modal-wide">
@@ -1694,11 +1806,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.39.0';
+const APP_VERSION = '1.40.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.40.0', tier:'🔴', title:'Karten-Ansicht, Detailseite & Teilen (Mobile)', items:[
+    'Untere Tab-Leiste auf Mobile: Reisen / Statistiken / Karte / Profil — Desktop behält die bestehende Navigation.',
+    '"Alle Reisen" auf Mobile komplett neu als Karten-Liste statt Tabelle (Design-Vorlage 3): Route mit Flagge/Verkehrsmittel-Icon, 3 Statistik-Felder (Reisedauer/Distanz/Transport — berücksichtigt alle Verkehrsmittel-Kombinationen wie Hin-/Rückflug, gemischte Verkehrsmittel, nur Rückweg), Stopp-/Foto-Badges.',
+    'Reisen MIT hochgeladenem Foto bekommen eine Foto-Karte, die aktuellste davon groß/prominent (Design-Vorlage 4) — Reisen ohne Foto bleiben bei der Icon-Karte, keine automatisch geladenen Platzhalterbilder.',
+    'Neue Detailseite pro Reise mit Titelbild (oder Platzhalter ohne Foto) — Design-Vorlage 5.',
+    'Teilen-Button: nutzt die native Share-Funktion des Geräts (iOS/Android/Desktop), mit Zwischenablage-Fallback. Teilt eine Text-Zusammenfassung (kein Link zu einer Einzelreise-Seite, da WELTLOG dafür keine eigenen URLs hat).',
+    'Desktop bleibt bei der bestehenden Tabellen-Ansicht mit Ausklapp-Zeile.'
+  ]},
   {v:'1.39.0', tier:'🟡', title:'Profil, Rekord-Kacheln & Länder-Karten neu gestaltet', items:[
     'Neue Profil-Sektion in den Einstellungen: Name/Spitzname, Geburtsort, Alter.',
     '"Was ist neu?" jetzt direkt unter dem Heimatort in den Einstellungen (statt ganz unten).',
@@ -2485,9 +2605,11 @@ async function addPhotosToTrip(tripId, fileList, root){
     }
   }
   await saveTrips();
-  if(root){
+  if(viewingTripId===tripId && root){
+    renderTripDetailPage(tripId, root);
+  } else if(root){
     const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
-    if(tableWrap) tableWrap.outerHTML = renderLogTable();
+    if(tableWrap) tableWrap.outerHTML = renderLogTableFromSorted(getFilteredSortedTrips());
     attachLogTableSort(root);
     attachLogRowActions(root);
     const detailRow = root.querySelector('tr.log-detail-row[data-detail-for="'+tripId+'"]');
@@ -2502,9 +2624,11 @@ async function deletePhotoFromTrip(tripId, photoId, root){
   if(!trip || !trip.photos) return;
   trip.photos = trip.photos.filter(p=>p.id!==photoId);
   await saveTrips();
-  if(root){
+  if(viewingTripId===tripId && root){
+    renderTripDetailPage(tripId, root);
+  } else if(root){
     const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
-    if(tableWrap) tableWrap.outerHTML = renderLogTable();
+    if(tableWrap) tableWrap.outerHTML = renderLogTableFromSorted(getFilteredSortedTrips());
     attachLogTableSort(root);
     attachLogRowActions(root);
     const detailRow = root.querySelector('tr.log-detail-row[data-detail-for="'+tripId+'"]');
@@ -5854,6 +5978,7 @@ function detailCardHTML(t){
   html += '  <div class="log-detail-section">'+photoFeedHTML(t)+'</div>';
   html += '  <div class="log-detail-footer">';
   html += '    <button type="button" data-edit="'+t.id+'"><span class="log-detail-footer-icon">✏️</span>Ändern</button>';
+  html += '    <button type="button" data-share="'+t.id+'"><span class="log-detail-footer-icon">📤</span>Teilen</button>';
   html += '    <button type="button" data-duplicate="'+t.id+'"><span class="log-detail-footer-icon">📋</span>Duplizieren</button>';
   html += '    <button type="button" class="log-detail-footer-danger" data-del="'+t.id+'"><span class="log-detail-footer-icon">🗑️</span>Entfernen</button>';
   html += '  </div>';
@@ -5861,7 +5986,139 @@ function detailCardHTML(t){
   return html;
 }
 
-function renderLogTable(){
+/* ---------- Karten-Ansicht "Alle Reisen" (Mobile) & Detailseite ---------- */
+/* Reisen MIT echtem Foto bekommen eine Foto-Karte (die aktuellste davon groß/"hero"),
+   Reisen OHNE Foto bleiben bei der Icon-Karte — keine automatisch geladenen/generischen
+   Stadtbilder für fotolose Reisen (Nutzer-Entscheidung). */
+let viewingTripId = null;
+
+function tripCardStatsHTML(t){
+  const durationLabel = t.cityOnly ? '–' : (tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage'));
+  const distLabel = t.cityOnly ? '–' : fmtKm(tripTotal(t));
+  return '<div class="tc-stats">'+
+    '<div class="tc-stat"><span class="tc-stat-icon">🕐</span><b>'+durationLabel+'</b><small>Reisedauer</small></div>'+
+    '<div class="tc-stat"><span class="tc-stat-icon">📏</span><b>'+distLabel+'</b><small>Distanz</small></div>'+
+    '<div class="tc-stat"><span class="tc-stat-icon">'+tripTransportIconsHTML(t)+'</span><b class="tc-stat-transport">'+tripTransportLabel(t)+'</b><small>Transport</small></div>'+
+  '</div>';
+}
+function tripCardBadgesHTML(t){
+  const wpCount = (t.outWaypoints||[]).length + (t.returnWaypoints||[]).length;
+  let html = '<div class="tc-badges">';
+  if(wpCount>0) html += '<span class="tc-badge">'+wpCount+' '+(wpCount===1?'Stopp':'Stopps')+'</span>';
+  html += '<span class="tc-badge">📷 '+((t.photos||[]).length)+'</span>';
+  html += '<span class="tc-chevron">›</span>';
+  html += '</div>';
+  return html;
+}
+function tripCardRouteHTML(t){
+  return '<div class="tc-route">'+
+    '<div class="tc-city"><b>'+(t.fromCity||'?')+'</b><span class="tc-country">'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>'+
+    '<div class="tc-route-line">'+tripTransportIconsHTML(t)+'</div>'+
+    '<div class="tc-city right"><b>'+cityNameHTML(t.city,t.cityCC)+'</b><span class="tc-country">'+t.country+' '+flagImg(t.cityCC,13)+'</span></div>'+
+  '</div>';
+}
+function tripCardHTML(t, isHero){
+  const hasPhoto = t.photos && t.photos.length;
+  const dateLabel = fmtRange(t.dateFrom,t.dateTo);
+  if(hasPhoto){
+    const photoUrl = t.photos[0].data;
+    let html = '<div class="trip-card trip-card-photo'+(isHero?' hero':'')+'" data-trip-card="'+t.id+'">';
+    html += '  <div class="tc-photo" style="background-image:url(&quot;'+photoUrl+'&quot;)">';
+    html += '    <div class="tc-photo-top"><span class="tc-date-badge">📅 '+dateLabel+'</span><button type="button" class="tc-menu-btn" data-trip-menu="'+t.id+'">⋯</button></div>';
+    html += '    <div class="tc-photo-route">';
+    html += '      <div class="tc-photo-city"><b>'+(t.fromCity||'?')+'</b><span>'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>';
+    html += '      <div class="tc-route-line light">'+tripTransportIconsHTML(t)+'</div>';
+    html += '      <div class="tc-photo-city right"><b>'+t.city+'</b><span>'+t.country+' '+flagImg(t.cityCC,12)+'</span></div>';
+    html += '    </div>';
+    html += '  </div>';
+    html += '  <div class="tc-body">'+tripCardStatsHTML(t)+tripCardBadgesHTML(t)+'</div>';
+    html += '</div>';
+    return html;
+  }
+  let html = '<div class="trip-card trip-card-icon" data-trip-card="'+t.id+'">';
+  html += '  <div class="tc-thumb-icon"><span>🧳</span></div>';
+  html += '  <div class="tc-body">';
+  html += '    <div class="tc-top"><span class="tc-date-plain">📅 '+dateLabel+'</span><button type="button" class="tc-menu-btn" data-trip-menu="'+t.id+'">⋯</button></div>';
+  html += tripCardRouteHTML(t);
+  html += tripCardStatsHTML(t);
+  html += tripCardBadgesHTML(t);
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+function renderLogCards(sortedTrips){
+  if(!sortedTrips.length){
+    return '<div class="empty-state"><div class="big">🔍</div>Keine Reisen für „'+logCityFilter.replace(/</g,'&lt;')+'" gefunden.</div>';
+  }
+  let heroAssigned = false;
+  let html = '<div class="trip-cards-list">';
+  sortedTrips.forEach(t=>{
+    const hasPhoto = t.photos && t.photos.length;
+    const isHero = hasPhoto && !heroAssigned;
+    if(isHero) heroAssigned = true;
+    html += tripCardHTML(t, isHero);
+  });
+  html += '</div>';
+  return html;
+}
+function attachLogCardActions(root){
+  root.querySelectorAll('[data-trip-card]').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if(e.target.closest('[data-trip-menu]')) return;
+      viewingTripId = card.dataset.tripCard;
+      renderLog(root.closest('.tab-panel') || root);
+    });
+  });
+  root.querySelectorAll('[data-trip-menu]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      viewingTripId = btn.dataset.tripMenu;
+      renderLog(root.closest('.tab-panel') || root);
+    });
+  });
+}
+
+/* Detailseite einer einzelnen Reise (Design "Titelbild + Sektionen") — ersetzt den
+   Panel-Inhalt komplett (kein Modal), mit Zurück-Pfeil zur Liste. Nutzt dieselbe
+   detailCardHTML() wie die Desktop-Ausklapp-Zeile für Details/Fotos/Aktionen, damit
+   beide Ansichten inhaltlich immer synchron bleiben. */
+function renderTripDetailPage(tripId, root){
+  const t = trips.find(x=>x.id===tripId);
+  if(!t){ viewingTripId=null; renderLog(root); return; }
+  const hasPhoto = t.photos && t.photos.length;
+  let html = '<div class="trip-detail-page">';
+  html += '  <div class="tdp-header">';
+  html += '    <button type="button" class="tdp-back" id="tdpBackBtn">←</button>';
+  html += '    <h3>Reise</h3>';
+  html += '    <button type="button" class="tdp-menu" data-share="'+t.id+'" title="Teilen">📤</button>';
+  html += '  </div>';
+  html += '  <div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
+  if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">🧳</span>';
+  html += '    <div class="tdp-hero-overlay">';
+  html += '      <span class="tc-date-badge">📅 '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
+  html += '      <div class="tc-photo-route">';
+  html += '        <div class="tc-photo-city"><b>'+(t.fromCity||'?')+'</b><span>'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>';
+  html += '        <div class="tc-route-line light">'+tripTransportIconsHTML(t)+'</div>';
+  html += '        <div class="tc-photo-city right"><b>'+t.city+'</b><span>'+t.country+' '+flagImg(t.cityCC,12)+'</span></div>';
+  html += '      </div>';
+  html += tripCardBadgesHTML(t).replace('tc-chevron','tc-chevron hidden');
+  html += '    </div>';
+  html += '  </div>';
+  html += '  <div class="card"><div class="card-head"><h2>Reise auf einen Blick</h2></div>'+tripCardStatsHTML(t)+'</div>';
+  html += detailCardHTML(t);
+  html += '  <div class="tdp-footer">';
+  html += '    <span>Erstellt</span><b>'+(t.createdAt?fmtDate(new Date(t.createdAt).toISOString().slice(0,10)):'–')+'</b>';
+  html += '  </div>';
+  html += '</div>';
+  root.innerHTML = html;
+  document.getElementById('tdpBackBtn').addEventListener('click', ()=>{
+    viewingTripId = null;
+    renderLog(root);
+  });
+  attachLogRowActions(root);
+}
+
+function getFilteredSortedTrips(){
   const q = logCityFilter.trim().toLowerCase();
   const filtered = q
     ? trips.filter(t => tripMatchesLogFilter(t, q))
@@ -5870,7 +6127,7 @@ function renderLogTable(){
   function purposeSortLabel(t){ return purposeLabel(t) || ''; }
   function continentSortLabel(t){ const ci = continentInfo(getContinent((t.cityCC||'').toLowerCase())); return ci ? ci.label : ''; }
 
-  const sorted = filtered.sort((a,b)=>{
+  return filtered.sort((a,b)=>{
     const {key,dir} = logSort;
     let va,vb;
     if(key==='dateFrom'){ va=a.dateFrom||''; vb=b.dateFrom||''; }
@@ -5883,7 +6140,20 @@ function renderLogTable(){
     if(typeof va==='string') return dir==='asc'? va.localeCompare(vb) : vb.localeCompare(va);
     return dir==='asc'? va-vb : vb-va;
   });
+}
+function isMobileViewport(){ return window.innerWidth<=700; }
+/* Rendert je nach Viewport entweder die Karten-Ansicht (Mobile, Design 3/4) oder die
+   Tabelle (Desktop) — beide nutzen dieselben gefilterten/sortierten Reisen. */
+function renderLogResults(){
+  const sorted = getFilteredSortedTrips();
+  return isMobileViewport() ? renderLogCards(sorted) : renderLogTableFromSorted(sorted);
+}
+function attachLogResultActions(root){
+  if(isMobileViewport()){ attachLogCardActions(root); }
+  else { attachLogTableSort(root); attachLogRowActions(root); }
+}
 
+function renderLogTableFromSorted(sorted){
   function th(label,k){
     const sortedCls = logSort.key===k ? ' sorted'+(logSort.dir==='asc'?' asc':'') : '';
     return '<th class="'+sortedCls+'" data-sort="'+k+'">'+label+'</th>';
@@ -5934,6 +6204,57 @@ function renderLogTable(){
   return html;
 }
 
+/* Kompakter Transport-Text für Karten-/Detailansicht — berücksichtigt alle
+   Kombinationen: gleiches Verkehrsmittel hin+zurück, unterschiedliche Verkehrsmittel,
+   nur Hin- oder nur Rückweg, reine "Stadt gemerkt"-Einträge ohne Reise. */
+function tripTransportLabel(t){
+  if(t.cityOnly) return 'Nur besucht';
+  if(t.direction==='roundtrip'){
+    if(t.outMode===t.returnMode){
+      const map = {plane:'Hin- & Rückflug', train:'Hin- & Rückfahrt (Zug)', car:'Hin- & Rückfahrt (Auto)', bus:'Hin- & Rückfahrt (Bus)', bike:'Hin- & Rücktour (Rad)'};
+      return map[t.outMode] || 'Hin- & Rückweg';
+    }
+    return getMode(t.outMode).label+' hin · '+getMode(t.returnMode).label+' zurück';
+  }
+  if(t.direction==='returnonly') return 'Nur Rückweg · '+getMode(t.returnMode).label;
+  const mo = getMode(t.outMode);
+  return t.outMode==='plane' ? 'Direktflug' : mo.label;
+}
+function tripTransportIconsHTML(t){
+  if(t.cityOnly) return '<span class="mode-emoji" title="Nur besucht">📍</span>';
+  if(t.direction==='roundtrip'){
+    const outMo = getMode(t.outMode), retMo = getMode(t.returnMode);
+    if(t.outMode===t.returnMode) return '<span class="mode-emoji" title="'+outMo.label+'">'+outMo.icon+'</span>';
+    return '<span class="mode-emoji" title="Hinweg: '+outMo.label+'">'+outMo.icon+'</span><span class="mode-emoji" title="Rückweg: '+retMo.label+'">'+retMo.icon+'</span>';
+  }
+  const mode = t.direction==='returnonly' ? t.returnMode : t.outMode;
+  const mo = getMode(mode);
+  return '<span class="mode-emoji" title="'+mo.label+'">'+mo.icon+'</span>';
+}
+
+/* Teilen: nutzt die native Web-Share-API (öffnet den systemeigenen Teilen-Dialog auf
+   iOS/Android/Desktop), mit Zwischenablage-Fallback für Browser ohne Unterstützung.
+   WELTLOG ist eine reine Client-App ohne aufrufbare Einzelreise-URLs — geteilt wird
+   daher eine Text-Zusammenfassung, kein direkter Link zur Reise. */
+async function shareTrip(tripId){
+  const t = trips.find(x=>x.id===tripId);
+  if(!t) return;
+  const parts = [t.fromCity ? (t.fromCity+' → '+t.city) : t.city, fmtRange(t.dateFrom,t.dateTo)];
+  if(!t.cityOnly) parts.push(fmtKm(tripTotal(t))+' · '+tripTransportLabel(t));
+  const text = parts.join(' · ')+'\n\nGeloggt mit WELTLOG 🧭';
+  if(navigator.share){
+    try{ await navigator.share({title:'WELTLOG — '+t.city, text}); }
+    catch(e){ /* Nutzer hat abgebrochen — kein Fehler */ }
+  } else if(navigator.clipboard){
+    try{
+      await navigator.clipboard.writeText(text);
+      showToast('In die Zwischenablage kopiert (Teilen wird hier nicht unterstützt).');
+    }catch(e){ showToast('Teilen wird auf diesem Gerät nicht unterstützt.'); }
+  } else {
+    showToast('Teilen wird auf diesem Gerät nicht unterstützt.');
+  }
+}
+
 function attachLogRowActions(root){
   root.querySelectorAll('[data-edit]').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -5941,6 +6262,9 @@ function attachLogRowActions(root){
       duplicateSource = null;
       switchTab('add');
     });
+  });
+  root.querySelectorAll('[data-share]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); shareTrip(btn.dataset.share); });
   });
   root.querySelectorAll('[data-duplicate]').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -6017,10 +6341,9 @@ function attachLogTableSort(root){
       const k = th.dataset.sort;
       if(logSort.key===k){ logSort.dir = logSort.dir==='asc'?'desc':'asc'; }
       else { logSort = {key:k, dir: (k==='fromCity'||k==='city') ? 'asc':'desc'}; }
-      const tableWrap = th.closest('.card').querySelector('.table-wrap');
-      tableWrap.outerHTML = renderLogTable();
-      attachLogTableSort(root);
-      attachLogRowActions(root);
+      const wrap = document.getElementById('logResultsWrap');
+      if(wrap) wrap.innerHTML = renderLogResults();
+      attachLogResultActions(root);
       const sortSelect = document.getElementById('logSortSelect');
       if(sortSelect) sortSelect.value = logSort.key;
       const dirBtn = document.getElementById('logSortDirBtn');
@@ -6030,6 +6353,10 @@ function attachLogTableSort(root){
 }
 
 function renderLog(root){
+  if(viewingTripId){
+    renderTripDetailPage(viewingTripId, root);
+    return;
+  }
   const filteredCount = logCityFilter.trim()
     ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
     : trips.length;
@@ -6057,27 +6384,25 @@ function renderLog(root){
   if(trips.length===0){
     html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
   } else {
-    html += renderLogTable();
+    html += '<div id="logResultsWrap">'+renderLogResults()+'</div>';
   }
   html += '</div>';
   root.innerHTML = html;
 
   if(trips.length>0){
-    attachLogTableSort(root);
-    attachLogRowActions(root);
+    attachLogResultActions(root);
     const searchInput = document.getElementById('logCitySearch');
     if(searchInput){
       searchInput.addEventListener('input', ()=>{
         logCityFilter = searchInput.value;
-        const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
+        const wrap = document.getElementById('logResultsWrap');
         const countEl = root.querySelector('.card-head .sub');
         const newFilteredCount = logCityFilter.trim()
           ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
           : trips.length;
         if(countEl) countEl.textContent = logCityFilter.trim() ? (newFilteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
-        if(tableWrap) tableWrap.outerHTML = renderLogTable();
-        attachLogTableSort(root);
-        attachLogRowActions(root);
+        if(wrap) wrap.innerHTML = renderLogResults();
+        attachLogResultActions(root);
         // Reset-Button je nach Filterstatus ein-/ausblenden, ohne das Suchfeld selbst neu zu rendern (sonst verliert es den Fokus während des Tippens).
         const filterRow = root.querySelector('.log-filter-row');
         const existingResetBtn = document.getElementById('logFilterReset');
@@ -6100,10 +6425,9 @@ function renderLog(root){
     if(sortSelect){
       sortSelect.addEventListener('change', ()=>{
         logSort = {key:sortSelect.value, dir: (sortSelect.value==='fromCity'||sortSelect.value==='city') ? 'asc':'desc'};
-        const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
-        if(tableWrap) tableWrap.outerHTML = renderLogTable();
-        attachLogTableSort(root);
-        attachLogRowActions(root);
+        const wrap = document.getElementById('logResultsWrap');
+        if(wrap) wrap.innerHTML = renderLogResults();
+        attachLogResultActions(root);
         const dirBtn = document.getElementById('logSortDirBtn');
         if(dirBtn) dirBtn.textContent = logSort.dir==='asc' ? '▴ Aufsteigend' : '▾ Absteigend';
       });
@@ -6113,10 +6437,9 @@ function renderLog(root){
       sortDirBtn.addEventListener('click', ()=>{
         logSort.dir = logSort.dir==='asc' ? 'desc' : 'asc';
         sortDirBtn.textContent = logSort.dir==='asc' ? '▴ Aufsteigend' : '▾ Absteigend';
-        const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
-        if(tableWrap) tableWrap.outerHTML = renderLogTable();
-        attachLogTableSort(root);
-        attachLogRowActions(root);
+        const wrap = document.getElementById('logResultsWrap');
+        if(wrap) wrap.innerHTML = renderLogResults();
+        attachLogResultActions(root);
       });
     }
   }
@@ -6131,6 +6454,13 @@ function switchTab(tab){
   // lassen, statt sie auf einen nicht existierenden Options-Wert zu setzen (leere Anzeige).
   if(mobileSelect && mobileSelect.querySelector('option[value="'+tab+'"]') && mobileSelect.value!==tab){
     mobileSelect.value = tab;
+  }
+  // Untere Tab-Leiste (Mobile) synchron halten — "dashboard" entspricht dort "Karte",
+  // "places"/"badges"/"bucket"/"add" haben keine eigene untere Kachel (weiterhin über
+  // das Dropdown erreichbar) und lassen die Leiste daher unverändert.
+  const bottomTabMap = {dashboard:'dashboard', log:'log', stats:'stats'};
+  if(bottomTabMap[tab]){
+    document.querySelectorAll('.bottom-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.bottomTab===bottomTabMap[tab]));
   }
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
   const panel = document.getElementById('panel-'+tab);
@@ -6501,6 +6831,15 @@ document.getElementById('newTripBtn').addEventListener('click',()=>{
   editingId = null;
   duplicateSource = null;
   switchTab('add');
+});
+document.getElementById('bottomTabs').addEventListener('click',(e)=>{
+  const btn = e.target.closest('.bottom-tab-btn');
+  if(!btn) return;
+  const tab = btn.dataset.bottomTab;
+  if(tab==='profile'){ openSettings(); return; }
+  editingId = null;
+  duplicateSource = null;
+  switchTab(tab);
 });
 
 /* ---------- Init ---------- */
