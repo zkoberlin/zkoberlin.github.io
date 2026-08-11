@@ -724,6 +724,7 @@ tr:last-child td{border-bottom:none;}
 .co2-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .co2-legend-dot.total{background:var(--gold);}
 .co2-legend-dot.avg{background:var(--teal);}
+.co2-legend-dot.avgde{background:var(--rose);}
 .co2-line-chart{width:100%;display:block;}
 .co2-line-axis{stroke:var(--border);stroke-width:1;}
 .co2-line-area{fill:var(--gold);opacity:0.09;}
@@ -735,6 +736,8 @@ tr:last-child td{border-bottom:none;}
 .co2-line-path-avg{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:5 4;}
 .co2-line-dot-avg{fill:var(--panel);stroke:var(--teal);stroke-width:2;}
 .co2-line-value-avg{font-size:10.5px;fill:var(--teal);text-anchor:middle;font-family:var(--font-mono);}
+.co2-line-ref{stroke:var(--rose);stroke-width:1.5;stroke-dasharray:3 4;opacity:0.8;}
+.co2-line-ref-label{font-size:9.5px;fill:var(--rose);font-family:var(--font-mono);}
 
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
 .record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
@@ -1588,7 +1591,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
    fairen Vergleich mit den eigenen Reise-Emissionen zählt nur der Mobilitäts-Anteil. */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 2000;
 
-const APP_VERSION = '1.35.2';
+const APP_VERSION = '1.36.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1650,6 +1653,7 @@ let seasonSortMode = 'calendar';
 let discoveryTrendExpanded = false;
 let co2ChartShowTotal = true;
 let co2ChartShowAvg = true;
+let co2ChartShowAvgDE = false;
 
 /* Städte, die nicht in CITY_DB stehen, aber erfolgreich per Geokodierung aufgelöst wurden —
    werden lokal gemerkt, damit sie beim nächsten Mal sofort (ohne erneute Abfrage) gefunden werden. */
@@ -3667,6 +3671,16 @@ function co2BucketsForFilter(filter){
   }));
 }
 
+/* Ø-Mobilitäts-CO2 eines Bundesbürgers (GERMAN_AVG_CO2_KG_PER_YEAR), herunter-
+   gebrochen auf die Größe EINES Buckets im gewählten Zeitraum — für die Vergleichs-
+   linie im CO2-Verlauf. "month": pro Tag (Jahreswert / 365,25), "year"/"lastyear":
+   pro Monat (Jahreswert / 12), "all": pro Jahr (Bucket ist bereits ein Jahr, 1:1). */
+function co2ReferenceKgPerBucket(filter){
+  if(filter==='month') return GERMAN_AVG_CO2_KG_PER_YEAR/365.25;
+  if(filter==='year' || filter==='lastyear') return GERMAN_AVG_CO2_KG_PER_YEAR/12;
+  return GERMAN_AVG_CO2_KG_PER_YEAR;
+}
+
 /* ---------- Distanzvergleiche ---------- */
 function compareToReference(km, refKm){
   if(!km) return {ratioText:'–', remainingText:'noch '+fmtKm(refKm), exceeded:false};
@@ -4854,6 +4868,7 @@ function renderStats(root){
   html += '  <div class="co2-legend" id="co2ChartLegend">';
   html += '    <button type="button" class="co2-legend-item'+(co2ChartShowTotal?' active':'')+'" data-co2-series="total"><span class="co2-legend-dot total"></span>Gesamt-Emission</button>';
   html += '    <button type="button" class="co2-legend-item'+(co2ChartShowAvg?' active':'')+'" data-co2-series="avg"><span class="co2-legend-dot avg"></span>Ø pro Reise</button>';
+  html += '    <button type="button" class="co2-legend-item'+(co2ChartShowAvgDE?' active':'')+'" data-co2-series="avgde"><span class="co2-legend-dot avgde"></span>Ø Bundesbürger (Mobilität)</button>';
   html += '  </div>';
   html += '  <div id="co2ChartTotal" class="co2-chart-total"></div>';
   html += '  <div id="co2ChartBars"></div>';
@@ -4938,8 +4953,10 @@ function renderStats(root){
   root.querySelectorAll('#co2ChartLegend [data-co2-series]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       if(btn.dataset.co2Series==='total') co2ChartShowTotal = !co2ChartShowTotal;
-      else co2ChartShowAvg = !co2ChartShowAvg;
-      btn.classList.toggle('active', btn.dataset.co2Series==='total' ? co2ChartShowTotal : co2ChartShowAvg);
+      else if(btn.dataset.co2Series==='avg') co2ChartShowAvg = !co2ChartShowAvg;
+      else co2ChartShowAvgDE = !co2ChartShowAvgDE;
+      const isActive = btn.dataset.co2Series==='total' ? co2ChartShowTotal : (btn.dataset.co2Series==='avg' ? co2ChartShowAvg : co2ChartShowAvgDE);
+      btn.classList.toggle('active', isActive);
       renderCO2Chart();
     });
   });
@@ -5007,21 +5024,31 @@ function renderCO2Chart(){
   const showLabelEvery = n>15 ? Math.ceil(n/15) : 1;
   const valueFontSize = n>20 ? 9 : (n>10 ? 10 : 11);
 
+  // Ø-Bundesbürger-Referenzlinie (Mobilität) — nur sinnvoll im Vergleich zur
+  // Gesamt-Emission (nicht zum Ø-pro-Reise-Wert, der stark je Reiseanzahl schwankt).
+  const refPerBucket = co2ChartShowAvgDE ? co2ReferenceKgPerBucket(co2ChartRange) : null;
+
   /* Jede Serie wird unabhängig auf ihr eigenes Maximum normiert (0..plotH) — Gesamt- und
      Ø-Werte liegen oft in sehr unterschiedlichen Größenordnungen, eine gemeinsame Skala
      würde die kleinere Serie sonst optisch fast auf null zusammenquetschen. Die exakten
-     Werte bleiben über Punktbeschriftung/Tooltip trotzdem ablesbar. */
-  function buildSeries(getVal){
-    const maxVal = Math.max(...buckets.map(getVal), 0.0001);
-    return buckets.map((b,i)=>({
-      x: xAt(i),
-      y: padTop + (1 - (getVal(b)/maxVal)) * plotH,
-      val: getVal(b),
-      label: b.label
-    }));
+     Werte bleiben über Punktbeschriftung/Tooltip trotzdem ablesbar. Die Referenzlinie
+     teilt sich die Skala mit der Gesamt-Emission, damit beide direkt vergleichbar bleiben. */
+  function buildSeries(getVal, extraMax){
+    const maxVal = Math.max(...buckets.map(getVal), extraMax||0, 0.0001);
+    return {
+      maxVal,
+      pts: buckets.map((b,i)=>({
+        x: xAt(i),
+        y: padTop + (1 - (getVal(b)/maxVal)) * plotH,
+        val: getVal(b),
+        label: b.label
+      }))
+    };
   }
-  const totalPts = buildSeries(b=>b.value);
-  const avgPts = buildSeries(b=> b.count>0 ? b.value/b.count : 0);
+  const totalSeries = buildSeries(b=>b.value, co2ChartShowTotal ? refPerBucket : null);
+  const avgSeries = buildSeries(b=> b.count>0 ? b.value/b.count : 0);
+  const totalPts = totalSeries.pts;
+  const avgPts = avgSeries.pts;
 
   function pathFor(pts){ return pts.map((p,i)=>(i===0?'M':'L')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' '); }
   function areaFor(pts){
@@ -5052,6 +5079,14 @@ function renderCO2Chart(){
         svg += '<text x="'+p.x.toFixed(1)+'" y="'+dy.toFixed(1)+'" class="co2-line-value-avg" style="font-size:'+valueFontSize+'px;">'+fmtKgCompact(p.val)+'</text>';
       }
     });
+  }
+  if(refPerBucket!==null){
+    // Gestrichelte, flache Vergleichslinie auf derselben Skala wie die Gesamt-Emission —
+    // "wenn du genau den Mobilitäts-Durchschnitt eines Bundesbürgers ausgestoßen hättest,
+    // läge jeder Punkt hier".
+    const refY = padTop + (1 - (refPerBucket/totalSeries.maxVal)) * plotH;
+    svg += '<line x1="'+padL+'" y1="'+refY.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+refY.toFixed(1)+'" class="co2-line-ref"><title>Ø Bundesbürger (Mobilität): '+fmtKg(refPerBucket)+'</title></line>';
+    svg += '<text x="'+(W-padR)+'" y="'+(refY-4).toFixed(1)+'" class="co2-line-ref-label" text-anchor="end">Ø Bundesbürger '+fmtKgCompact(refPerBucket)+'</text>';
   }
   // X-Achsenbeschriftung anhand der Bucket-Labels (unabhängig davon, welche Serie(n) sichtbar sind)
   buckets.forEach((b,i)=>{
