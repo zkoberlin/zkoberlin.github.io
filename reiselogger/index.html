@@ -431,8 +431,11 @@ tr:last-child td{border-bottom:none;}
   display:inline-block;font-size:10px;color:var(--text-faint);background:var(--bg-soft);
   border:1px solid var(--border-soft);border-radius:100px;padding:1px 7px;margin-top:2px;
 }
-.log-row-toggle{display:inline-block;margin-left:6px;color:var(--text-faint);transition:transform .15s;font-size:11px;}
-tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
+.log-photo-badge{
+  display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--text-faint);
+  background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:100px;
+  padding:1px 7px;margin-top:2px;margin-left:6px;flex-shrink:0;
+}
 .log-detail-row td{background:var(--bg-soft);}
 .log-detail-grid{
   display:flex;flex-wrap:wrap;gap:10px 24px;padding:6px 4px;font-size:12px;
@@ -1006,13 +1009,20 @@ tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
   .responsive-table .log-cell-secondary{display:none;}
   .responsive-table tr.expanded .log-cell-secondary{display:flex;}
   .responsive-table tr.log-row{cursor:pointer;}
-  .log-row-toggle{
-    display:inline-block; font-size:11px;color:var(--text-faint);margin-left:6px;
-    transition:transform .15s ease; flex-shrink:0;
-  }
-  .responsive-table tr.expanded .log-row-toggle{transform:rotate(180deg);}
   .responsive-table td.log-cell-primary[data-label="Nach"]{justify-content:flex-start;gap:8px;}
   .responsive-table td.log-cell-primary[data-label="Nach"] .cell-city{flex:1;}
+  /* Aktionsbuttons als klar abgesetzte Fußzeile statt einer unklaren leeren Fläche. */
+  .responsive-table td.log-actions-cell{
+    padding-top:12px;margin-top:2px;border-top:1px solid var(--border-soft);border-bottom:none;
+  }
+  /* Detailzeile (Zwischenstopps/CO2/Grund/Kontinent + Fotos): die generische
+     td{display:flex}-Regel oben würde log-detail-grid und die Foto-Sektion sonst
+     nebeneinander statt sauber untereinander anordnen — hier gezielt aufgehoben. */
+  .responsive-table td.log-detail-cell{
+    display:block; text-align:left;
+  }
+  .responsive-table td.log-detail-cell .log-detail-grid{flex-direction:column;gap:12px;}
+  .responsive-table td.log-detail-cell .log-detail-item{text-align:left;}
 
   .hero-number{font-size:clamp(36px,11vw,48px);}
   .boarding-pass, .card{border-radius:14px;}
@@ -1578,7 +1588,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
    fairen Vergleich mit den eigenen Reise-Emissionen zählt nur der Mobilitäts-Anteil. */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 2000;
 
-const APP_VERSION = '1.35.1';
+const APP_VERSION = '1.35.2';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -5520,17 +5530,19 @@ function renderLogTable(){
     const contCode = getContinent((t.cityCC||'').toLowerCase());
     const contInfo = continentInfo(contCode);
     const contCell = contInfo ? contInfo.icon+' '+contInfo.label : '<span style="color:var(--text-faint);">–</span>';
-    const hasDetail = true; // Foto-Sektion ist jetzt immer vorhanden, egal ob sonst Details existieren
+    const photoBadge = (t.photos && t.photos.length) ? '<span class="log-photo-badge" title="'+t.photos.length+' Foto'+(t.photos.length===1?'':'s')+'">📷 '+t.photos.length+'</span>' : '';
     html += '<tr class="log-row" data-trip-row="'+t.id+'">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
-    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+'<span class="log-row-toggle">▾</span></td>';
+    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+photoBadge+'</td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary log-cell-mode">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
-    html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-duplicate="'+t.id+'" title="Duplizieren">📋</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
+    html += '<td data-label="" class="log-cell-secondary log-actions-cell"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-duplicate="'+t.id+'" title="Duplizieren">📋</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
-    if(hasDetail){
-      html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="6" data-label=""><div class="log-detail-grid">';
+    // Detailzeile existiert jetzt immer (wegen der Foto-Sektion, die auch ohne
+    // Zwischenstopps/Grund/Kontinent relevant ist).
+    {
+      html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="6" data-label="" class="log-detail-cell"><div class="log-detail-grid">';
       if(wpParts.length) html += '<div class="log-detail-item"><span class="log-detail-label">Zwischenstopps</span><span>'+wpParts.join(' · ')+'</span></div>';
       if(!t.cityOnly) html += '<div class="log-detail-item"><span class="log-detail-label">CO₂</span><span>'+fmtKg(tripCO2Kg(t))+'</span></div>';
       html += '<div class="log-detail-item"><span class="log-detail-label">Grund</span><span>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'–')+'</span></div>';
