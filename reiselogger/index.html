@@ -147,12 +147,12 @@ a{color:var(--teal);}
 .home-chip:hover{border-color:var(--gold-dim);color:var(--text);}
 .icon-btn{
   width:34px;height:34px;border-radius:10px;
-  background:var(--panel);border:1px solid var(--border);
+  background:var(--panel);border:1px solid var(--gold-dim);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;font-size:15px;color:var(--text-dim);
   text-decoration:none;flex-shrink:0;
 }
-.icon-btn:hover{color:var(--text);border-color:var(--gold-dim);}
+.icon-btn:hover{color:var(--text);border-color:var(--gold);}
 .icon-btn svg{width:16px;height:16px;}
 
 .version-pill{
@@ -216,7 +216,7 @@ a{color:var(--teal);}
 .tabs-mobile-select{
   width:100%;appearance:none;-webkit-appearance:none;
   font-family:var(--font-display);font-size:13.5px;font-weight:600;letter-spacing:0.03em;
-  color:var(--gold);background:var(--panel);border:1px solid var(--border-soft);
+  color:var(--gold);background:var(--panel);border:1px solid var(--gold-dim);
   border-radius:10px;padding:11px 38px 11px 14px;cursor:pointer;
 }
 .tabs-mobile{position:relative;margin:9px 0 2px;}
@@ -368,17 +368,25 @@ a{color:var(--teal);}
 
 /* ---------- Countries grid ---------- */
 .countries-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;
+  display:grid;grid-template-columns:1fr;gap:10px;
 }
+@media (min-width:640px){ .countries-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));} }
 .country-card{
   background:var(--panel-alt);border:1px solid var(--border-soft);
-  border-radius:12px;padding:14px;cursor:pointer;
+  border-radius:14px;padding:14px 16px;cursor:pointer;
 }
 .country-card:hover{border-color:var(--gold-dim);}
 .country-top{display:flex;align-items:center;gap:12px;}
-.country-top h4{margin:0;font-size:14px;font-weight:600;}
-.country-stats{display:flex;gap:14px;margin-top:8px;font-size:11.5px;color:var(--text-dim);}
-.country-stats b{color:var(--gold);font-family:var(--font-mono);}
+.country-top h4{margin:0;font-size:15px;font-weight:600;flex:1;}
+.country-top-chevron{
+  color:var(--text-faint);font-size:15px;flex-shrink:0;transition:transform .15s ease;
+}
+.country-card.open .country-top-chevron{transform:rotate(90deg);}
+.country-stats{display:flex;margin-top:12px;}
+.country-stats .cs-item{flex:1;text-align:center;}
+.country-stats .cs-item:not(:last-child){border-right:1px solid var(--border-soft);}
+.country-stats .cs-value{display:block;font-family:var(--font-mono);font-size:15px;font-weight:700;color:var(--gold);}
+.country-stats .cs-label{display:block;font-size:10px;color:var(--text-faint);margin-top:2px;}
 .country-cities{
   margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);
   display:none;font-size:12px;color:var(--text-dim);
@@ -522,10 +530,11 @@ tr:last-child td{border-bottom:none;}
 .log-col-toggle-row{display:flex;gap:14px;align-items:center;margin-bottom:14px;flex-wrap:wrap;font-size:12px;color:var(--text-dim);}
 .log-sort-sep{color:var(--border);}
 .log-sort-select{
-  background:var(--bg-soft);border:1px solid var(--border);border-radius:7px;
-  padding:5px 8px;color:var(--text);font-family:var(--font-body);font-size:12px;cursor:pointer;
+  background:var(--bg-soft);border:1px solid var(--gold-dim);border-radius:10px;
+  padding:9px 12px;color:var(--text);font-family:var(--font-body);font-size:12.5px;cursor:pointer;
+  height:38px;
 }
-.log-sort-dir-btn{padding:5px 10px;font-size:12px;white-space:nowrap;}
+.log-sort-dir-btn{padding:9px 14px;font-size:12.5px;white-space:nowrap;height:38px;}
 .log-search-input{
   flex:1;min-width:180px;background:var(--bg-soft);border:1px solid var(--border);
   border-radius:9px;padding:9px 11px;color:var(--text);font-family:var(--font-body);
@@ -581,12 +590,12 @@ tr:last-child td{border-bottom:none;}
 .field-row.with-swap{grid-template-columns:1fr auto 1fr;align-items:end;}
 @media(max-width:520px){.field-row.with-swap{grid-template-columns:1fr;}}
 .btn-swap-cities{
-  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--gold-dim);
   background:var(--bg-soft);color:var(--text-dim);font-size:15px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
   transition:transform .18s ease, border-color .15s ease, color .15s ease;
 }
-.btn-swap-cities:hover{border-color:var(--gold-dim);color:var(--text);transform:rotate(180deg);}
+.btn-swap-cities:hover{border-color:var(--gold);color:var(--text);transform:rotate(180deg);}
 @media(max-width:520px){.btn-swap-cities{width:100%;border-radius:9px;margin:-4px 0 2px;}}
 
 .input-clear-wrap{position:relative;}
@@ -762,15 +771,19 @@ tr:last-child td{border-bottom:none;}
 .co2-line-ref-label{font-size:9.5px;fill:var(--rose);font-family:var(--font-mono);}
 
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
-.record-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.record-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (min-width:640px){ .record-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));} }
 .record-card{
-  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:12px;
-  padding:16px;
+  background:var(--panel-alt);border:1px solid var(--gold-dim);border-radius:16px;
+  padding:20px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;
 }
-.record-card .rc-icon{font-size:19px;margin-bottom:8px;}
-.record-card .rc-value{font-family:var(--font-mono);font-size:19px;font-weight:700;color:var(--gold);line-height:1.2;}
-.record-card .rc-label{font-size:10.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
-.record-card .rc-detail{font-size:12px;color:var(--text-faint);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);}
+.record-card .rc-icon{
+  width:52px;height:52px;border-radius:50%;background:var(--panel);border:1px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px;flex-shrink:0;
+}
+.record-card .rc-value{font-family:var(--font-mono);font-size:21px;font-weight:700;color:var(--gold);line-height:1.2;}
+.record-card .rc-label{font-size:11px;color:var(--text-dim);margin-top:5px;line-height:1.35;}
+.record-card .rc-detail{font-size:11.5px;color:var(--text-faint);margin-top:10px;}
 
 /* ---------- Badges-Tab: Level-Anzeige ---------- */
 .level-hero{
@@ -949,8 +962,7 @@ tr:last-child td{border-bottom:none;}
 .sync-actions .btn-secondary{font-size:11.5px;padding:8px 12px;}
 .sync-status{margin-top:10px;font-size:11.5px;color:var(--text-dim);min-height:16px;}
 
-.release-notes-zone{margin-top:18px;padding-top:16px;border-top:1px dashed var(--border);}
-.release-notes-list{
+.release-notes-zone{margin-top:18px;padding-top:16px;border-top:1px dashed var(--border);}.release-notes-list{
   max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
   margin-top:10px;padding-right:2px;
 }
@@ -1197,7 +1209,20 @@ span.flatpickr-weekday{
 <div class="modal-backdrop" id="settingsModal">
   <div class="modal modal-wide">
     <h3>Einstellungen</h3>
-    <div class="field" style="margin-bottom:14px;">
+
+    <div class="profile-zone">
+      <p class="sync-title">👤 Profil</p>
+      <div class="field" style="margin-bottom:10px;">
+        <label for="profileNameInput">Name / Spitzname</label>
+        <input type="text" id="profileNameInput" placeholder="z. B. Paul">
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="profileBirthplaceInput">Geburtsort</label><input type="text" id="profileBirthplaceInput" list="cityDatalist" placeholder="z. B. Schwerin"></div>
+        <div class="field" style="max-width:110px;"><label for="profileAgeInput">Alter</label><input type="number" id="profileAgeInput" min="0" max="120" placeholder="z. B. 34"></div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:14px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--border);">
       <label for="homeInput">Heimatort (Standard-Ausgangspunkt)</label>
       <input type="text" id="homeInput" list="cityDatalist" placeholder="z. B. Vilnius (Litauen)">
       <div class="hint">Wird als Standard für „Von" bei neuen Reisen vorgeschlagen.</div>
@@ -1205,6 +1230,12 @@ span.flatpickr-weekday{
     <div class="modal-actions">
       <button class="btn-secondary" id="settingsCancel">Abbrechen</button>
       <button class="btn-primary" id="settingsSave">Speichern</button>
+    </div>
+
+    <div class="release-notes-zone">
+      <p class="sync-title">🆕 Was ist neu?</p>
+      <p class="sync-desc">Alle Änderungen und Neuerungen, neueste zuerst.</p>
+      <div class="release-notes-list" id="releaseNotesList"></div>
     </div>
 
     <div class="sync-zone">
@@ -1229,12 +1260,6 @@ span.flatpickr-weekday{
     <div class="danger-zone">
       <p>Alle erfassten Reisen unwiderruflich löschen.</p>
       <button class="btn-danger" id="resetAllBtn">Alle Daten löschen</button>
-    </div>
-
-    <div class="release-notes-zone">
-      <p class="sync-title">🆕 Was ist neu?</p>
-      <p class="sync-desc">Alle Änderungen und Neuerungen, neueste zuerst.</p>
-      <div class="release-notes-list" id="releaseNotesList"></div>
     </div>
   </div>
 </div>
@@ -1669,11 +1694,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.38.0';
+const APP_VERSION = '1.39.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.39.0', tier:'🟡', title:'Profil, Rekord-Kacheln & Länder-Karten neu gestaltet', items:[
+    'Neue Profil-Sektion in den Einstellungen: Name/Spitzname, Geburtsort, Alter.',
+    '"Was ist neu?" jetzt direkt unter dem Heimatort in den Einstellungen (statt ganz unten).',
+    'Rekorde-Kacheln zweispaltig mit rundem Icon-Badge (Design-Vorlage 1).',
+    'Länder-Karten überarbeitet: 3-Spalten-Statistik (Städte/Besuche/Entfernung) + Pfeil zum Aufklappen statt Inline-Liste (Design-Vorlage 2).',
+    'Buttons app-weit vereinheitlicht: durchgängig goldene Umrandung, Sortier-Controls in "Alle Reisen" jetzt gleich groß.',
+    'Hinweis: Design-Vorlagen 3–5 (Foto-Karten in "Alle Reisen", Detailseiten-Titelbild, Teilen-Funktion, untere Tab-Leiste auf Mobile) folgen in einem nächsten Schritt.'
+  ]},
   {v:'1.38.0', tier:'🟡', title:'Länder-Logik korrigiert & Release Notes', items:[
     'Ein Land zählt nur noch als besucht, wenn die Reise dorthin von einer Stadt eines ANDEREN Landes aus angetreten wurde (z. B. Berlin→Madrid = Spanien-Besuch). Eine Weiterreise innerhalb desselben Landes (z. B. Sitges→Barcelona, beide Spanien) zählt nicht erneut als Landbesuch — die Stadt selbst aber weiterhin ganz normal. Betrifft Dashboard, Länder & Städte, Entdecker-Trend, Rekorde.',
     'CO2-Vergleichslinie "Ø Bundesbürger (Mobilität)" ist keine gerade Linie mehr — der Mobilitäts-Fußabdruck war über die Jahre nicht konstant (v. a. Corona-Einbruch 2020/2021). Die "Gesamt"-Ansicht im CO2-Verlauf zeigt jetzt den historischen Verlauf.',
@@ -1794,7 +1827,7 @@ function purposeLabel(t){
 
 /* ---------- State ---------- */
 let trips = [];
-let settings = {home:null, theme:'dark'};
+let settings = {home:null, theme:'dark', profileName:'', profileBirthplace:'', profileAge:null};
 let currentTab = 'dashboard';
 let editingId = null;
 /* Vorbefüllung für "Reise duplizieren": eine Kopie der Werte einer bestehenden Reise
@@ -2365,9 +2398,12 @@ async function loadData(){
   trips = trips.map(migrateTrip);
   try{
     const s = await window.storage.get('settings', false);
-    settings = s ? JSON.parse(s.value) : {home:null, theme:'dark'};
-  }catch(e){ settings = {home:null, theme:'dark'}; }
+    settings = s ? JSON.parse(s.value) : {home:null, theme:'dark', profileName:'', profileBirthplace:'', profileAge:null};
+  }catch(e){ settings = {home:null, theme:'dark', profileName:'', profileBirthplace:'', profileAge:null}; }
   if(!settings.theme) settings.theme = 'dark';
+  if(settings.profileName===undefined) settings.profileName = '';
+  if(settings.profileBirthplace===undefined) settings.profileBirthplace = '';
+  if(settings.profileAge===undefined) settings.profileAge = null;
   await initialCloudSync();
   applyTheme();
   renderCurrentDate();
@@ -5611,8 +5647,8 @@ function renderPlaces(root){
     html += '<div class="countries-grid">';
     sortedCountries.forEach(c=>{
       html += '<div class="country-card" data-country="'+c.key.replace(/"/g,'&quot;')+'">';
-      html += '  <div class="country-top">'+flagBadge(c.cc,42)+'<h4>'+c.country+'</h4></div>';
-      html += '  <div class="country-stats"><span><b>'+c.cities.size+'</b> Städte</span><span><b>'+c.visits+'</b> Besuche</span><span><b>'+fmtKm(c.totalKm)+'</b></span></div>';
+      html += '  <div class="country-top">'+flagBadge(c.cc,42)+'<h4>'+c.country+'</h4><span class="country-top-chevron">›</span></div>';
+      html += '  <div class="country-stats"><div class="cs-item"><span class="cs-value">'+c.cities.size+'</span><span class="cs-label">Städte</span></div><div class="cs-item"><span class="cs-value">'+c.visits+'</span><span class="cs-label">Besuche</span></div><div class="cs-item"><span class="cs-value">'+fmtKm(c.totalKm)+'</span><span class="cs-label">Entfernung</span></div></div>';
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
         const topMode = mostUsedModeForCity(ci);
@@ -6319,6 +6355,9 @@ function populateDatalist(){
 /* ---------- Settings modal ---------- */
 function openSettings(){
   document.getElementById('homeInput').value = settings.home || '';
+  document.getElementById('profileNameInput').value = settings.profileName || '';
+  document.getElementById('profileBirthplaceInput').value = settings.profileBirthplace || '';
+  document.getElementById('profileAgeInput').value = settings.profileAge!=null ? settings.profileAge : '';
   document.getElementById('syncUrlInput').value = syncConfig.url || '';
   document.getElementById('syncTokenInput').value = syncConfig.token || '';
   setSyncStatus(syncEnabled() ? 'Cloud-Sync konfiguriert.' : 'Cloud-Sync nicht eingerichtet.', syncEnabled()?'ok':'');
@@ -6368,16 +6407,20 @@ document.getElementById('settingsModal').addEventListener('click',(e)=>{
 document.getElementById('settingsSave').addEventListener('click', async ()=>{
   const val = document.getElementById('homeInput').value.trim();
   settings.home = val || null;
+  settings.profileName = document.getElementById('profileNameInput').value.trim();
+  settings.profileBirthplace = document.getElementById('profileBirthplaceInput').value.trim();
+  const ageVal = document.getElementById('profileAgeInput').value;
+  settings.profileAge = ageVal ? Math.max(0, Math.min(120, parseInt(ageVal,10))) : null;
   await saveSettings();
   updateHomeChip();
   closeSettings();
   renderAll();
-  showToast('Heimatort gespeichert.');
+  showToast('Einstellungen gespeichert.');
 });
 document.getElementById('resetAllBtn').addEventListener('click', async ()=>{
   if(!confirm('Wirklich ALLE Reisedaten unwiderruflich löschen?')) return;
   trips = [];
-  settings = {home:null, theme:settings.theme||'dark'};
+  settings = {home:null, theme:settings.theme||'dark', profileName:'', profileBirthplace:'', profileAge:null};
   await saveTrips();
   await saveSettings();
   closeSettings();
