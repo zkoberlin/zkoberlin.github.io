@@ -1591,7 +1591,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
    fairen Vergleich mit den eigenen Reise-Emissionen zählt nur der Mobilitäts-Anteil. */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 2000;
 
-const APP_VERSION = '1.36.1';
+const APP_VERSION = '1.36.2';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -3965,16 +3965,14 @@ async function initWorldMap(agg){
     });
   cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
 
-  // Bucket-Liste-Städtewünsche: blasser Punkt in der GLEICHEN Größe wie die tatsächlich
-  // angezeigten Städte-Punkte — Durchschnitt der real gerenderten Radien (nicht über die
-  // Besuchs-Skala angenähert, da das je nach Datenlage zu klein/groß ausfallen konnte).
+  // Bucket-Liste-Städtewünsche: blasser Punkt in exakt der gleichen Größe wie ein
+  // normaler Städte-Punkt — keine Berechnung/Annäherung mehr, einfach dieselbe
+  // dotRadius-Funktion mit dem gleichen Basiswert wie die "besuchten" Punkte.
   const bucketCityData = bucketList
     .filter(b=>b.type==='city' && typeof b.lat==='number' && typeof b.lon==='number')
     .map(b=>({b, p:projection([b.lon, b.lat])}))
     .filter(x=>x.p);
-  const bucketDotRadius = cityData.length
-    ? cityData.reduce((sum,x)=>sum+dotRadius(x),0)/cityData.length
-    : dotRadius({c:{visits:1}});
+  const bucketDotRadius = dotRadius({c:{visits:1}});
   const bucketLayer = g.append('g').attr('class','bucket-city-layer');
   const bucketDots = bucketLayer.selectAll('circle.bucket-city-dot')
     .data(bucketCityData, x=>x.b.id)
