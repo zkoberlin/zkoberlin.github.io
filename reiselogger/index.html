@@ -209,6 +209,22 @@ a{color:var(--teal);}
 .tab-panel.active{display:block;}
 @keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 
+/* Mobiles Tab-Dropdown: per Default versteckt (Desktop zeigt die Button-Leiste) —
+   wird erst in der 700px-Breakpoint sichtbar, siehe unten. Ersetzt dort die sonst zu
+   dominante mehrzeilige Button-Reihe durch einen kompakten, nativen Auswahl-Dropdown. */
+.tabs-mobile{display:none;}
+.tabs-mobile-select{
+  width:100%;appearance:none;-webkit-appearance:none;
+  font-family:var(--font-display);font-size:13.5px;font-weight:600;letter-spacing:0.03em;
+  color:var(--gold);background:var(--panel);border:1px solid var(--border-soft);
+  border-radius:10px;padding:11px 38px 11px 14px;cursor:pointer;
+}
+.tabs-mobile{position:relative;margin:9px 0 2px;}
+.tabs-mobile-chevron{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;color:var(--text-faint);pointer-events:none;
+}
+
 /* ---------- Cards ---------- */
 .card{
   background:var(--panel);
@@ -738,7 +754,22 @@ tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
 .bucket-priority-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);}
 .bucket-priority-hoch{color:var(--rose);border-color:var(--rose);}
 .bucket-priority-mittel{color:var(--gold);border-color:var(--gold-dim);}
-.bucket-priority-niedrig{color:var(--text-dim);}.badge-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;}
+.bucket-priority-niedrig{color:var(--text-dim);}
+.bucket-list{display:flex;flex-direction:column;gap:6px;}
+.bucket-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 12px;border:1px solid var(--border-soft);border-radius:10px;background:var(--panel-alt);
+}
+.bucket-row-place{display:flex;align-items:center;gap:8px;min-width:0;flex:1;}
+.bucket-row-name{font-size:13.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bucket-row-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.bucket-row-meta button{
+  background:transparent;border:1px solid var(--border);border-radius:7px;
+  width:26px;height:26px;cursor:pointer;color:var(--text-dim);font-size:12px;
+}
+.bucket-row-meta button:hover{border-color:var(--gold-dim);color:var(--text);}
+.bucket-priority-badge{padding:3px 7px;}
+.badge-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;}
 .badge-bonus{font-family:var(--font-mono);font-size:10.5px;color:var(--gold);white-space:nowrap;}
 .badge-card.locked .badge-bonus{color:var(--text-dim);}
 .badge-progress-track{height:5px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:7px;}
@@ -875,6 +906,11 @@ tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
    Mobile-Optimierung (iPhone & schmale Screens)
    ============================================================ */
 @media (max-width:700px){
+  /* Tab-Leiste ist auf dem iPhone zu präsent (mehrzeilig, viele Buttons) — ersetzt
+     durch ein kompaktes Dropdown, das denselben switchTab()-Mechanismus nutzt. */
+  .tabs{display:none;}
+  .tabs-mobile{display:block;}
+
   /* iOS zoomt beim Fokussieren eines Feldes automatisch rein, wenn die
      Schrift unter 16px liegt — hier gezielt angehoben. */
   .field input, .field select, .field textarea{font-size:16px;}
@@ -1038,6 +1074,18 @@ span.flatpickr-weekday{
       <button class="tab-btn" data-tab="stats">Statistiken</button>
       <button class="tab-btn" data-tab="badges">Badges</button>
       <button class="tab-btn" data-tab="bucket">Bucket-Liste</button>
+    </div>
+    <div class="tabs-mobile" id="tabsMobile">
+      <select id="tabsMobileSelect" class="tabs-mobile-select">
+        <option value="dashboard">🧭 Übersicht</option>
+        <option value="add">➕ Neue Reise</option>
+        <option value="places">🗺️ Länder &amp; Städte</option>
+        <option value="log">📋 Alle Reisen</option>
+        <option value="stats">📊 Statistiken</option>
+        <option value="badges">🏅 Badges</option>
+        <option value="bucket">🧳 Bucket-Liste</option>
+      </select>
+      <svg class="tabs-mobile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
     </div>
   </div>
 </div>
@@ -1480,7 +1528,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.32.1';
+const APP_VERSION = '1.33.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -5377,6 +5425,8 @@ function renderLog(root){
 function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  const mobileSelect = document.getElementById('tabsMobileSelect');
+  if(mobileSelect && mobileSelect.value!==tab) mobileSelect.value = tab;
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
   const panel = document.getElementById('panel-'+tab);
   if(tab==='dashboard') renderDashboard(panel);
@@ -5448,20 +5498,23 @@ const BUCKET_SORT_OPTIONS = [
 
 function bucketEntryRowHTML(b){
   const prio = BUCKET_PRIORITY_META[b.priority] || BUCKET_PRIORITY_META.mittel;
-  const ci = continentInfo(b.continent);
-  const contLabel = ci ? ci.icon+' '+ci.label : '<span style="color:var(--text-faint);">–</span>';
-  let placeHTML;
+  let flagHTML, nameHTML, subHTML;
   if(b.type==='country'){
-    placeHTML = flagImg(b.cc,20)+' <b>'+b.country+'</b> <span class="bucket-type-tag">Land</span>';
+    flagHTML = flagImg(b.cc,22);
+    nameHTML = b.country;
+    subHTML = '<span class="bucket-type-tag">Land</span>';
   } else {
-    placeHTML = cityIcon(b.name,b.country,b.cc,20)+' <b>'+b.name+'</b> <span class="bucket-sub">'+(b.country||'')+'</span>';
+    flagHTML = flagImg(b.cc,22);
+    nameHTML = b.name;
+    subHTML = b.country ? '<span class="bucket-sub">'+b.country+'</span>' : '';
   }
-  return '<tr>'+
-    '<td data-label="Ort"><div class="cell-city">'+placeHTML+'</div></td>'+
-    '<td data-label="Kontinent">'+contLabel+'</td>'+
-    '<td data-label="Sehnsucht"><span class="bucket-priority-badge bucket-priority-'+b.priority+'">'+prio.icon+' '+prio.label+'</span></td>'+
-    '<td data-label=""><div class="row-actions"><button type="button" data-bucket-del="'+b.id+'" title="Entfernen">🗑️</button></div></td>'+
-    '</tr>';
+  return '<div class="bucket-row">'+
+    '<div class="bucket-row-place">'+flagHTML+'<span class="bucket-row-name">'+nameHTML+'</span>'+subHTML+'</div>'+
+    '<div class="bucket-row-meta">'+
+      '<span class="bucket-priority-badge bucket-priority-'+b.priority+'" title="'+prio.label+'">'+prio.icon+'</span>'+
+      '<button type="button" data-bucket-del="'+b.id+'" title="Entfernen">🗑️</button>'+
+    '</div>'+
+  '</div>';
 }
 
 function renderBucketList(root){
@@ -5493,9 +5546,9 @@ function renderBucketList(root){
     });
     html += '  </div>';
     const sorted = sortBucketList(bucketList, bucketSort);
-    html += '  <div class="table-wrap"><table class="responsive-table"><thead><tr><th>Ort</th><th>Kontinent</th><th>Sehnsucht</th><th></th></tr></thead><tbody>';
+    html += '  <div class="bucket-list">';
     sorted.forEach(b=>{ html += bucketEntryRowHTML(b); });
-    html += '  </tbody></table></div>';
+    html += '  </div>';
   }
   html += '</div>';
 
@@ -5706,6 +5759,11 @@ document.getElementById('tabs').addEventListener('click',(e)=>{
   editingId = null;
   duplicateSource = null;
   switchTab(btn.dataset.tab);
+});
+document.getElementById('tabsMobileSelect').addEventListener('change',(e)=>{
+  editingId = null;
+  duplicateSource = null;
+  switchTab(e.target.value);
 });
 
 /* ---------- Init ---------- */
