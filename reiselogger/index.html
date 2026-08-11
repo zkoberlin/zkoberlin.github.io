@@ -484,8 +484,17 @@ tr:last-child td{border-bottom:none;}
 .log-detail-footer-icon{font-size:16px;}
 .log-detail-footer-danger{color:var(--rose)!important;}
 
-/* ---------- Trip-Karten (Mobile "Alle Reisen") & Detailseite ---------- */
+/* ---------- Trip-Karten ("Alle Reisen", jetzt Desktop UND Mobile) & Detailseite ---------- */
 .trip-cards-list{display:flex;flex-direction:column;gap:12px;}
+/* Ab Tablet-/Desktop-Breite: zweispaltiges Raster statt einer einzelnen schmalen
+   Spalte in der Mitte — die große "Hero"-Foto-Karte bleibt volle Breite. */
+@media (min-width:760px){
+  .trip-cards-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+  .trip-cards-list .trip-card-photo.hero{grid-column:1 / -1;}
+}
+@media (min-width:1100px){
+  .trip-cards-list{grid-template-columns:1fr 1fr 1fr;}
+}
 .trip-card{
   background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:16px;
   overflow:hidden;cursor:pointer;transition:border-color .15s ease;
@@ -573,7 +582,7 @@ tr:last-child td{border-bottom:none;}
 .tc-compact-dot{color:var(--text-faint);margin:0 1px;}
 .tc-chevron-side{color:var(--text-faint);font-size:17px;flex-shrink:0;}
 
-.trip-detail-page{display:flex;flex-direction:column;gap:14px;}
+.trip-detail-page{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:0 auto;width:100%;}
 .tdp-header{display:flex;align-items:center;justify-content:space-between;}
 .tdp-header h3{margin:0;font-size:15px;font-family:var(--font-display);}
 .tdp-back, .tdp-menu{
@@ -1066,6 +1075,13 @@ tr:last-child td{border-bottom:none;}
 }
 .modal.modal-wide{max-width:440px;}
 .modal h3{margin:0 0 14px;font-family:var(--font-display);font-size:15px;text-transform:uppercase;letter-spacing:0.04em;}
+.modal-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.modal-header-row h3{margin-bottom:14px;}
+.modal-close-x{
+  width:30px;height:30px;border-radius:50%;background:var(--panel-alt);border:1px solid var(--border-soft);
+  color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.modal-close-x:hover{border-color:var(--gold-dim);color:var(--text);}
 .modal-actions{display:flex;gap:10px;margin-top:16px;justify-content:flex-end;}
 .danger-zone{margin-top:18px;padding-top:14px;border-top:1px dashed var(--border);}
 .danger-zone p{font-size:11.5px;color:var(--text-faint);margin:0 0 8px;}
@@ -1333,10 +1349,18 @@ span.flatpickr-weekday{
 
 <div class="modal-backdrop" id="settingsModal">
   <div class="modal modal-wide">
-    <h3>Einstellungen</h3>
+    <div class="modal-header-row">
+      <h3>Einstellungen</h3>
+      <button type="button" class="modal-close-x" id="settingsCloseX" title="Schließen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
 
     <div class="profile-zone">
-      <p class="sync-title">👤 Profil</p>
+      <p class="sync-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/></svg>
+        Profil
+      </p>
       <div class="field" style="margin-bottom:10px;">
         <label for="profileNameInput">Name / Spitzname</label>
         <input type="text" id="profileNameInput" placeholder="z. B. Paul">
@@ -1801,7 +1825,33 @@ const SVG_ICON_PATHS = {
   sortCities:'<rect x="4" y="9" width="7" height="12" rx="1"/><rect x="13" y="4" width="7" height="17" rx="1"/><path d="M7 13h1M7 17h1M16 8h1M16 12h1M16 16h1"/>',
   sortVisits:'<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>',
   sortAZ:'<path d="M12 19V5"/><path d="M6 11l6-6 6 6"/>',
-  sortZA:'<path d="M12 5v14"/><path d="M18 13l-6 6-6-6"/>'
+  sortZA:'<path d="M12 5v14"/><path d="M18 13l-6 6-6-6"/>',
+  // Bucket-Liste: Kategorie/Priorität
+  bucketCity:'<rect x="4" y="9" width="7" height="12" rx="1"/><rect x="13" y="4" width="7" height="17" rx="1"/><path d="M7 13h1M7 17h1M16 8h1M16 12h1M16 16h1"/>',
+  bucketCountry:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
+  prioHigh:'<path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 3-6 5-10z"/>',
+  prioMedium:'<path d="M12 3l1.2 4.8L18 9l-4.8 1.2L12 15l-1.2-4.8L6 9l4.8-1.2z"/><path d="M19 15l.6 2.4L22 18l-2.4.6L19 21l-.6-2.4L16 18l2.4-.6z"/>',
+  prioLow:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/>',
+  national:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/>',
+  // Grund (Reise-Anlass)
+  purposeBusiness:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12.5h18"/>',
+  purposeVacation:'<path d="M22 12a10 10 0 0 0-20 0z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v2"/><path d="M12 12L3 9.5"/><path d="M12 12l9-2.5"/>',
+  purposeFootball:'<circle cx="12" cy="12" r="9"/><path d="M12 8.2l3.3 2.4-1.2 3.8h-4.2L8.7 10.6z"/><path d="M12 8.2V5.3M15.3 10.6l2-1.2M8.7 10.6l-2-1.2M10.5 14.4L9.3 18M13.5 14.4l1.2 3.6"/>',
+  purposeNone:'<path d="M6 12h12"/>',
+  purposeRun:'<circle cx="15" cy="4.5" r="1.7"/><path d="M9 21l2-5-2.5-2.5 1-4.5 4.5 1 2 3.5 3 1"/><path d="M10.5 13.5l3 1 2 4.5"/>',
+  purposeFriends:'<circle cx="8" cy="7.5" r="2.4"/><path d="M3.8 19a4.2 4.2 0 0 1 8.4 0"/><circle cx="17" cy="8.3" r="2"/><path d="M14.3 19a3.3 3.3 0 0 1 6.4-1.1"/>',
+  purposeOther:'<path d="M12 3h6a2 2 0 0 1 2 2v6a2 2 0 0 1-.6 1.4l-8 8a2 2 0 0 1-2.8 0l-6-6a2 2 0 0 1 0-2.8l8-8A2 2 0 0 1 12 3z"/><circle cx="16.2" cy="7.8" r="1.3"/>',
+  purposeAusflug:'<ellipse cx="6" cy="18" rx="1.6" ry="2.4" transform="rotate(-18 6 18)"/><ellipse cx="10.5" cy="10.5" rx="1.6" ry="2.4" transform="rotate(-18 10.5 10.5)"/><ellipse cx="15" cy="18" rx="1.6" ry="2.4" transform="rotate(18 15 18)"/><ellipse cx="19.5" cy="10.5" rx="1.6" ry="2.4" transform="rotate(18 19.5 10.5)"/>',
+  purposeAlma:'<path d="M12 20s-7-4.4-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9z"/>',
+  // Rekorde
+  recordFarthest:'<path d="M12 2c3 1 5 5 5 9 0 3-2 5-2 5H9s-2-2-2-5c0-4 2-8 5-9z"/><circle cx="12" cy="9" r="1.6"/><path d="M9 16l-2 4M15 16l2 4"/>',
+  recordCompass:'<circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5z"/>',
+  recordTrend:'<path d="M11 20c-4-.3-7-3.4-7-7.6C4 7 9 4 17 4c0 8-4 13-9.5 13.4"/><path d="M4.5 19.5C7 15 10 13 13 12"/>',
+  recordFlag:'<path d="M5 21V4"/><path d="M5 4h13l-3 4 3 4H5"/>',
+  // Nav (nicht mehr für Bottom-Tabs genutzt, aber Statistiken-Icon anderswo brauchbar)
+  navMap:'<path d="M3 6l6-2.5 6 2.5 6-2.5v15l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v15"/><path d="M15 6v15"/>',
+  navProfile:'<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18"/>'
 };
 const SVG_ICON_FILLED = {menu:'<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>'};
 function svgIcon(name, size, color){
@@ -1821,6 +1871,24 @@ function getModeIconHTML(key, size){
   const name = {plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}[key];
   if(!name) return mo.icon;
   return svgIcon(name, size||18, mo.color);
+}
+/* SVG-Variante der Grund-/Zweck-Icons (siehe PURPOSE_META) — die vier ohne eigenes
+   Symbol (Konzert, Turnier, Work & Travel, Trainingslager) teilen sich absichtlich
+   das "Sonstiges"-Icon (kein eigenes Icon im Design-Set vorgesehen). */
+const PURPOSE_ICON_NAME = {
+  business:'purposeBusiness', vacation:'purposeVacation', football:'purposeFootball',
+  run:'purposeRun', friends:'purposeFriends', custom:'purposeOther',
+  ausflug:'purposeAusflug', alma:'purposeAlma'
+};
+function getPurposeIconHTML(key, size, color){
+  const name = PURPOSE_ICON_NAME[key];
+  if(!name) return (PURPOSE_META[key]&&PURPOSE_META[key].icon) || svgIcon('purposeNone', size||16, color||'currentColor');
+  return svgIcon(name, size||16, color||(key==='alma'?'var(--rose)':'currentColor'));
+}
+const BUCKET_PRIORITY_ICON_NAME = {hoch:'prioHigh', mittel:'prioMedium', niedrig:'prioLow'};
+function getPriorityIconHTML(priority, size){
+  const colorMap = {hoch:'var(--rose)', mittel:'var(--gold)', niedrig:'var(--text-faint)'};
+  return svgIcon(BUCKET_PRIORITY_ICON_NAME[priority]||'prioLow', size||14, colorMap[priority]||'currentColor');
 }
 
 /* CO2e-Richtwerte in Gramm pro Personenkilometer (Umweltbundesamt/TREMOD-Durchschnittswerte,
@@ -1866,11 +1934,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.42.0';
+const APP_VERSION = '1.43.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.43.0', tier:'🔴', title:'Icon-Set erweitert, Desktop-Kartenansicht, Settings-X', items:[
+    'Neue Icon-Set-Erweiterung eingebaut: Bucket-Liste (Stadt/Land-Toggle, Sehnsucht-Priorität Hoch/Mittel/Niedrig, National), Grund-Icons (Business, Urlaub, Fußballspiel, Lauf-Event, Family & Friends, Ausflug, Alma, Sonstiges) und Rekorde-Karten in Statistiken — alle als SVG statt Emoji.',
+    'Statistiken-Seite durchgängig umgestellt: Verkehrsmittel-Filter, CO2-Ring-Legende, Jahreszeiten- und Entdecker-Trend-Sortierung, National/International-Umschalter.',
+    'Übersicht-Seite: "Letzter Eintrag"-Uhrsymbol umgestellt (Erde/Mond/Mars/CO2-Vergleichsymbole bleiben Emoji, dafür gibt es im Icon-Set keine Entsprechung).',
+    '"Alle Reisen" nutzt jetzt auch auf Desktop die neue Karten-Ansicht statt der alten Tabelle — inkl. zwei-/dreispaltigem Raster ab Tablet-/Desktop-Breite. Die Detailseite bekommt dabei eine sinnvolle Maximalbreite statt über den ganzen Bildschirm zu laufen.',
+    'Einstellungen-Dialog hat jetzt oben rechts ein X zum Schließen.',
+    'Flaggen bleiben wie gewünscht die einzigen Emoji-Icons in der App.'
+  ]},
   {v:'1.42.0', tier:'🟡', title:'Neues Icon-Set (SVG statt Emoji)', items:[
     'Eigenes dünnes Outline-Icon-Set (24×24-Raster, 1.8px Strichstärke) ersetzt die bisherigen Emoji an den Kernstellen: Trip-Karten (Datum/Reisedauer/Distanz/Fotos/Menü/Pfeil), Verkehrsmittel (Flugzeug/Auto/Zug/Bus/Rad, weiterhin farblich unterschieden), Detailseite (Zurück/Teilen/Stopp-Pin), Aktionsleiste (Ändern/Teilen/Duplizieren/Entfernen) und die Länder-Sortierfilter (km/Städte/Besuche/A–Z/Z–A).',
     'Gilt für Desktop und Mobile gleichermaßen.',
@@ -3048,7 +3124,7 @@ function aggregate(){
 
     const pLabel = purposeLabel(t);
     const pKey = pLabel || 'Ohne Angabe';
-    const pIcon = t.purpose ? purposeIcon(t.purpose) : '➖';
+    const pIcon = t.purpose ? getPurposeIconHTML(t.purpose,16) : svgIcon('purposeNone',16,'var(--text-faint)');
     if(!purposeMap.has(pKey)) purposeMap.set(pKey,{label:pKey, icon:pIcon, count:0, totalKm:0});
     const pu = purposeMap.get(pKey);
     pu.count++; pu.totalKm+=tot;
@@ -4235,7 +4311,7 @@ function renderDashboard(root){
   const lastEntryTs = fmtLastEntryTimestamp(lastEntryCreatedAt());
   if(trips.length && lastEntryTs){
     html += '<div class="dashboard-meta-row">';
-    html += '<div class="last-entry-note">🕓 Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
+    html += '<div class="last-entry-note">'+svgIcon('clock',13,'currentColor')+' Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
     html += '</div>';
   }
   if(trips.length){
@@ -4288,7 +4364,7 @@ function renderDashboard(root){
     const mo=getMode(m);
     const totalVal = agg.perMode[m]||0;
     html += '<div class="stub" style="--stub-color:'+mo.color+'">';
-    html += '  <div class="icon">'+mo.icon+'</div>';
+    html += '  <div class="icon">'+getModeIconHTML(m,26)+'</div>';
     html += '  <div class="eyebrow">'+currentYear+'</div>';
     html += '  <div class="val" data-mode-val="'+m+'">0 km</div>';
     html += '  <div class="label">'+mo.label+'</div>';
@@ -4711,7 +4787,7 @@ function renderAdd(root){
   PURPOSE_ORDER.forEach(pk=>{
     const meta = PURPOSE_META[pk];
     const active = (prefill&&prefill.purpose===pk) ? ' active':'';
-    html += '<div class="purpose-chip'+active+'" data-purpose="'+pk+'">'+meta.icon+' '+meta.label+'</div>';
+    html += '<div class="purpose-chip'+active+'" data-purpose="'+pk+'">'+getPurposeIconHTML(pk,15)+' '+meta.label+'</div>';
   });
   html += '        </div>';
   html += '        <input type="text" id="fldPurposeCustom" placeholder="Eigener Grund …" style="margin-top:8px;display:'+(prefill&&prefill.purpose==='custom'?'block':'none')+';" value="'+(prefill&&prefill.purposeCustom?prefill.purposeCustom.replace(/"/g,'&quot;'):'')+'">';
@@ -5199,9 +5275,9 @@ function renderStats(root){
   html += '    <div class="card-head"><h2>Top 5 Städte</h2><span class="sub">nach Besuchen</span></div>';
   if(homeCountry){
     html += '    <div class="mode-filter-toggle" id="statsCityScopeFilter">';
-    html += '      <div class="mode-filter-chip'+(statsCityScope==='all'?' active':'')+'" data-city-scope="all">🌐 Alle</div>';
-    html += '      <div class="mode-filter-chip'+(statsCityScope==='national'?' active':'')+'" data-city-scope="national">🏠 National</div>';
-    html += '      <div class="mode-filter-chip'+(statsCityScope==='international'?' active':'')+'" data-city-scope="international">✈️ International</div>';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='all'?' active':'')+'" data-city-scope="all">'+svgIcon('bucketCountry',15,'currentColor')+' Alle</div>';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='national'?' active':'')+'" data-city-scope="national">'+svgIcon('national',15,'currentColor')+' National</div>';
+    html += '      <div class="mode-filter-chip'+(statsCityScope==='international'?' active':'')+'" data-city-scope="international">'+svgIcon('plane',15,'currentColor')+' International</div>';
     html += '    </div>';
   }
   html += '    <div class="top-list" id="topCitiesList"></div>';
@@ -5235,10 +5311,10 @@ function renderStats(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Top 5 Jahre</h2><span class="sub">nach gereisten Kilometern</span></div>';
   html += '  <div class="mode-filter-toggle" id="statsYearFilter">';
-  html += '    <div class="mode-filter-chip'+(statsYearMode==='all'?' active':'')+'" data-year-mode="all">🌐 Alle</div>';
+  html += '    <div class="mode-filter-chip'+(statsYearMode==='all'?' active':'')+'" data-year-mode="all">'+svgIcon('bucketCountry',15,'currentColor')+' Alle</div>';
   MODE_ORDER.forEach(m=>{
     const mo = getMode(m);
-    html += '    <div class="mode-filter-chip'+(statsYearMode===m?' active':'')+'" data-year-mode="'+m+'" style="--chip-color:'+mo.color+'">'+mo.icon+' '+mo.label+'</div>';
+    html += '    <div class="mode-filter-chip'+(statsYearMode===m?' active':'')+'" data-year-mode="'+m+'" style="--chip-color:'+mo.color+'">'+getModeIconHTML(m,15)+' '+mo.label+'</div>';
   });
   html += '  </div>';
   html += '  <div class="top-list" id="statsYearList"></div>';
@@ -5268,7 +5344,7 @@ function renderStats(root){
     modeEntries.slice().sort((a,b)=>b.km-a.km).forEach(e=>{
       const mo = getMode(e.m);
       const pct = Math.round((e.km/modeTotal)*100);
-      html += '      <div class="ring-legend-item"><div class="ring-legend-dot" style="background:'+mo.color+'"></div>'+mo.icon+' '+mo.label+'<b>'+pct+' % ('+fmtKm(e.km)+')</b></div>';
+      html += '      <div class="ring-legend-item"><div class="ring-legend-dot" style="background:'+mo.color+'"></div>'+getModeIconHTML(e.m,14)+' '+mo.label+'<b>'+pct+' % ('+fmtKm(e.km)+')</b></div>';
     });
     html += '    </div>';
     html += '  </div>';
@@ -5284,9 +5360,9 @@ function renderStats(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Saisonmuster</h2><span class="sub">Reisen nach Monat, über alle Jahre · Ø pro Jahr ('+yearsWithData+' '+(yearsWithData===1?'Jahr':'Jahre')+')</span></div>';
   html += '  <div class="mode-filter-toggle" id="seasonSortFilter">';
-  html += '    <div class="mode-filter-chip'+(seasonSortMode==='calendar'?' active':'')+'" data-season-sort="calendar">📅 Kalender</div>';
-  html += '    <div class="mode-filter-chip'+(seasonSortMode==='trips'?' active':'')+'" data-season-sort="trips">🔢 Meiste Reisen</div>';
-  html += '    <div class="mode-filter-chip'+(seasonSortMode==='km'?' active':'')+'" data-season-sort="km">📏 Meiste km</div>';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='calendar'?' active':'')+'" data-season-sort="calendar">'+svgIcon('calendar',14,'currentColor')+' Kalender</div>';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='trips'?' active':'')+'" data-season-sort="trips">'+svgIcon('sortVisits',14,'currentColor')+' Meiste Reisen</div>';
+  html += '    <div class="mode-filter-chip'+(seasonSortMode==='km'?' active':'')+'" data-season-sort="km">'+svgIcon('sortKm',14,'currentColor')+' Meiste km</div>';
   html += '  </div>';
   html += '  <div class="top-list" id="seasonList"></div>';
   html += '</div>';
@@ -5298,30 +5374,30 @@ function renderStats(root){
   html += '  <div class="record-grid">';
   if(records.farthest){
     const rt = records.farthest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🚀</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtDate(rt.dateFrom)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordFarthest',22,'var(--gold)')+'</div><div class="rc-value">'+fmtKm(records.farthest.km)+'</div><div class="rc-label">Weiteste Einzelreise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtDate(rt.dateFrom)+'</div></div>';
   }
   if(records.longest){
     const rt = records.longest.trip;
-    html += '    <div class="record-card"><div class="rc-icon">🗓️</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('calendar',22,'var(--gold)')+'</div><div class="rc-value">'+records.longest.days+' '+(records.longest.days===1?'Tag':'Tage')+'</div><div class="rc-label">Längste Reise</div><div class="rc-detail">'+cityIcon(rt.city,rt.country,rt.cityCC,16)+' '+cityNameHTML(rt.city,rt.cityCC)+' · '+fmtRange(rt.dateFrom,rt.dateTo)+'</div></div>';
   }
   if(records.bestYear){
-    html += '    <div class="record-card"><div class="rc-icon">🌍</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('bucketCountry',22,'var(--gold)')+'</div><div class="rc-value">'+records.bestYear.count+' '+(records.bestYear.count===1?'Land':'Länder')+'</div><div class="rc-label">Meiste Länder in einem Jahr</div><div class="rc-detail">im Jahr '+records.bestYear.year+'</div></div>';
   }
   if(records.mostNewCitiesYear){
-    html += '    <div class="record-card"><div class="rc-icon">🧭</div><div class="rc-value">'+records.mostNewCitiesYear.newCities+' '+(records.mostNewCitiesYear.newCities===1?'neue Stadt':'neue Städte')+'</div><div class="rc-label">Meiste neue Städte</div><div class="rc-detail">im Jahr '+records.mostNewCitiesYear.year+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordCompass',22,'var(--gold)')+'</div><div class="rc-value">'+records.mostNewCitiesYear.newCities+' '+(records.mostNewCitiesYear.newCities===1?'neue Stadt':'neue Städte')+'</div><div class="rc-label">Meiste neue Städte</div><div class="rc-detail">im Jahr '+records.mostNewCitiesYear.year+'</div></div>';
   }
   if(records.bestCO2Year){
     const r = records.bestCO2Year;
     const ratioText = r.ratio===Infinity ? 'emissionsfrei' : (Math.round(r.ratio).toLocaleString('de-DE')+' km/kg CO₂');
-    html += '    <div class="record-card"><div class="rc-icon">🌿</div><div class="rc-value">'+r.year+'</div><div class="rc-label">CO2-freundlichstes Jahr</div><div class="rc-detail">'+fmtKm(r.km)+' bei '+fmtKg(r.co2Kg)+' · '+ratioText+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordTrend',22,'var(--green)')+'</div><div class="rc-value">'+r.year+'</div><div class="rc-label">CO2-freundlichstes Jahr</div><div class="rc-detail">'+fmtKm(r.km)+' bei '+fmtKg(r.co2Kg)+' · '+ratioText+'</div></div>';
   }
   const mostVisitedCity = agg.cities.slice().sort((a,b)=>b.visits-a.visits)[0];
   if(mostVisitedCity){
-    html += '    <div class="record-card"><div class="rc-icon">🏙️</div><div class="rc-value">'+mostVisitedCity.visits+' '+(mostVisitedCity.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchte Stadt</div><div class="rc-detail">'+cityIcon(mostVisitedCity.city,mostVisitedCity.country,mostVisitedCity.cc,16)+' '+cityNameHTML(mostVisitedCity.city,mostVisitedCity.cc)+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('sortCities',22,'var(--gold)')+'</div><div class="rc-value">'+mostVisitedCity.visits+' '+(mostVisitedCity.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchte Stadt</div><div class="rc-detail">'+cityIcon(mostVisitedCity.city,mostVisitedCity.country,mostVisitedCity.cc,16)+' '+cityNameHTML(mostVisitedCity.city,mostVisitedCity.cc)+'</div></div>';
   }
   const mostVisitedCountry = agg.countries.filter(c=>!homeCountry || c.country!==homeCountry).slice().sort((a,b)=>b.visits-a.visits)[0];
   if(mostVisitedCountry){
-    html += '    <div class="record-card"><div class="rc-icon">🏳️</div><div class="rc-value">'+mostVisitedCountry.visits+' '+(mostVisitedCountry.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchtes Land</div><div class="rc-detail">'+flagImg(mostVisitedCountry.cc,16)+' '+mostVisitedCountry.country+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordFlag',22,'var(--gold)')+'</div><div class="rc-value">'+mostVisitedCountry.visits+' '+(mostVisitedCountry.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchtes Land</div><div class="rc-detail">'+flagImg(mostVisitedCountry.cc,16)+' '+mostVisitedCountry.country+'</div></div>';
   }
   html += '  </div>';
   html += '</div>';
@@ -5391,9 +5467,9 @@ function renderStats(root){
     html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Daten vorhanden.</div>';
   } else {
     html += '  <div class="mode-filter-toggle" id="discoverySortFilter">';
-    html += '    <div class="mode-filter-chip'+(discoverySortMode==='year'?' active':'')+'" data-discovery-sort="year">📅 Jahr</div>';
-    html += '    <div class="mode-filter-chip'+(discoverySortMode==='cities'?' active':'')+'" data-discovery-sort="cities">🏙️ Anzahl Städte</div>';
-    html += '    <div class="mode-filter-chip'+(discoverySortMode==='countries'?' active':'')+'" data-discovery-sort="countries">🌍 Anzahl Land</div>';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='year'?' active':'')+'" data-discovery-sort="year">'+svgIcon('calendar',14,'currentColor')+' Jahr</div>';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='cities'?' active':'')+'" data-discovery-sort="cities">'+svgIcon('sortCities',14,'currentColor')+' Anzahl Städte</div>';
+    html += '    <div class="mode-filter-chip'+(discoverySortMode==='countries'?' active':'')+'" data-discovery-sort="countries">'+svgIcon('bucketCountry',14,'currentColor')+' Anzahl Land</div>';
     html += '  </div>';
     html += '  <div class="top-list" id="discoveryTrendList"></div>';
     if(discoveriesAll.length>DISCOVERY_COLLAPSED_COUNT || discoveryTrendExpanded){
@@ -6090,7 +6166,7 @@ function detailCardHTML(t){
     items += detailIconItemHTML(svgIcon('stopPin',16,'var(--rose)'), 'Stopp · Rückweg', name);
   });
   if(!t.cityOnly) items += detailIconItemHTML('💨', 'CO₂', fmtKg(tripCO2Kg(t)));
-  items += detailIconItemHTML(pLbl?purposeIcon(t.purpose):'➖', 'Grund', pLbl||'–');
+  items += detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,t.purpose==='alma'?'var(--rose)':'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'), 'Grund', pLbl||'–');
   items += detailIconItemHTML(contInfo?contInfo.icon:'🌐', 'Kontinent', contInfo?contInfo.label:'–');
 
   let html = '<div class="log-detail-card">';
@@ -6314,16 +6390,16 @@ function getFilteredSortedTrips(){
     return dir==='asc'? va-vb : vb-va;
   });
 }
-function isMobileViewport(){ return window.innerWidth<=700; }
-/* Rendert je nach Viewport entweder die Karten-Ansicht (Mobile, Design 3/4) oder die
-   Tabelle (Desktop) — beide nutzen dieselben gefilterten/sortierten Reisen. */
+/* "Alle Reisen" nutzt jetzt einheitlich die Karten-Ansicht auf Desktop UND Mobile
+   (vorher: Tabelle auf Desktop, Karten nur auf Mobile) — siehe Nutzer-Entscheidung.
+   Die Tabellen-Funktionen (renderLogTableFromSorted/attachLogTableSort) bleiben im
+   Code erhalten, werden aber aktuell nirgends mehr aufgerufen. */
 function renderLogResults(){
   const sorted = getFilteredSortedTrips();
-  return isMobileViewport() ? renderLogCards(sorted) : renderLogTableFromSorted(sorted);
+  return renderLogCards(sorted);
 }
 function attachLogResultActions(root){
-  if(isMobileViewport()){ attachLogCardActions(root); }
-  else { attachLogTableSort(root); attachLogRowActions(root); }
+  attachLogCardActions(root);
 }
 
 function renderLogTableFromSorted(sorted){
@@ -6713,7 +6789,7 @@ function bucketEntryRowHTML(b){
   return '<div class="bucket-row">'+
     '<div class="bucket-row-place">'+flagHTML+'<span class="bucket-row-name">'+nameHTML+'</span>'+subHTML+'</div>'+
     '<div class="bucket-row-meta">'+
-      '<span class="bucket-priority-badge bucket-priority-'+b.priority+'" title="'+prio.label+'">'+prio.icon+'</span>'+
+      '<span class="bucket-priority-badge bucket-priority-'+b.priority+'" title="'+prio.label+'">'+getPriorityIconHTML(b.priority,14)+'</span>'+
       '<button type="button" data-bucket-del="'+b.id+'" title="Entfernen">🗑️</button>'+
     '</div>'+
   '</div>';
@@ -6725,8 +6801,8 @@ function renderBucketList(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Neuer Wunsch</h2><span class="sub">Stadt oder Land, das du noch bereisen möchtest</span></div>';
   html += '  <div class="mode-filter-toggle" id="bucketTypeToggle">';
-  html += '    <div class="mode-filter-chip'+(bucketFormType==='city'?' active':'')+'" data-bucket-type="city">🏙️ Stadt</div>';
-  html += '    <div class="mode-filter-chip'+(bucketFormType==='country'?' active':'')+'" data-bucket-type="country">🌍 Land</div>';
+  html += '    <div class="mode-filter-chip'+(bucketFormType==='city'?' active':'')+'" data-bucket-type="city">'+svgIcon('bucketCity',15,'currentColor')+' Stadt</div>';
+  html += '    <div class="mode-filter-chip'+(bucketFormType==='country'?' active':'')+'" data-bucket-type="country">'+svgIcon('bucketCountry',15,'currentColor')+' Land</div>';
   html += '  </div>';
   html += '  <div class="field-row">';
   html += '    <div class="field"><label for="bucketNameInput">'+(bucketFormType==='city'?'Stadt':'Land')+'</label><input type="text" id="bucketNameInput" list="'+(bucketFormType==='city'?'cityDatalist':'countryDatalist')+'" placeholder="'+(bucketFormType==='city'?'z. B. Kyoto (Japan)':'z. B. Neuseeland')+'"></div>';
@@ -6898,6 +6974,7 @@ function readSyncFieldsIntoConfig(){
 document.getElementById('homeChip').addEventListener('click', openSettings);
 document.getElementById('settingsBtn').addEventListener('click', openSettings);
 document.getElementById('settingsCancel').addEventListener('click', closeSettings);
+document.getElementById('settingsCloseX').addEventListener('click', closeSettings);
 document.getElementById('settingsModal').addEventListener('click',(e)=>{
   if(e.target.id==='settingsModal') closeSettings();
 });
