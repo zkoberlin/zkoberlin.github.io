@@ -1052,6 +1052,9 @@ span.flatpickr-weekday{
       <a href="https://zkoberlin.github.io/" target="_blank" rel="noopener" class="icon-btn" title="Zur Startseite">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H9.5v-6h5v6h3a1 1 0 0 0 1-1v-9"/></svg>
       </a>
+      <button class="icon-btn" id="newTripBtn" title="Neue Reise">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
       <div class="theme-switch" id="themeSwitch">
         <button data-theme-choice="light" title="Heller Modus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
         <button data-theme-choice="dark" title="Dunkler Modus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -1068,7 +1071,6 @@ span.flatpickr-weekday{
   <div class="wrap" style="padding-top:0;padding-bottom:0;">
     <div class="tabs" id="tabs">
       <button class="tab-btn active" data-tab="dashboard">Übersicht</button>
-      <button class="tab-btn" data-tab="add">Neue Reise</button>
       <button class="tab-btn" data-tab="places">Länder &amp; Städte</button>
       <button class="tab-btn" data-tab="log">Alle Reisen</button>
       <button class="tab-btn" data-tab="stats">Statistiken</button>
@@ -1078,7 +1080,6 @@ span.flatpickr-weekday{
     <div class="tabs-mobile" id="tabsMobile">
       <select id="tabsMobileSelect" class="tabs-mobile-select">
         <option value="dashboard">🧭 Übersicht</option>
-        <option value="add">➕ Neue Reise</option>
         <option value="places">🗺️ Länder &amp; Städte</option>
         <option value="log">📋 Alle Reisen</option>
         <option value="stats">📊 Statistiken</option>
@@ -1528,7 +1529,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.33.0';
+const APP_VERSION = '1.33.1';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -5426,7 +5427,11 @@ function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   const mobileSelect = document.getElementById('tabsMobileSelect');
-  if(mobileSelect && mobileSelect.value!==tab) mobileSelect.value = tab;
+  // "add" ist kein Dropdown-Eintrag mehr (eigener "+"-Button) — Auswahl dann unverändert
+  // lassen, statt sie auf einen nicht existierenden Options-Wert zu setzen (leere Anzeige).
+  if(mobileSelect && mobileSelect.querySelector('option[value="'+tab+'"]') && mobileSelect.value!==tab){
+    mobileSelect.value = tab;
+  }
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
   const panel = document.getElementById('panel-'+tab);
   if(tab==='dashboard') renderDashboard(panel);
@@ -5764,6 +5769,11 @@ document.getElementById('tabsMobileSelect').addEventListener('change',(e)=>{
   editingId = null;
   duplicateSource = null;
   switchTab(e.target.value);
+});
+document.getElementById('newTripBtn').addEventListener('click',()=>{
+  editingId = null;
+  duplicateSource = null;
+  switchTab('add');
 });
 
 /* ---------- Init ---------- */
