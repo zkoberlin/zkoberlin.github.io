@@ -1,41 +1,41 @@
 {
-  "datum": "10.08.2026",
-  "generiert": "2026-08-10T03:04:22Z",
+  "datum": "11.08.2026",
+  "generiert": "2026-08-11T02:57:30Z",
   "geburtstage": [
     {
-      "name": "Hansi Kürsch",
+      "name": "Jasmin Selberg",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Komponist/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Hansi_K%C3%BCrsch_Blind_Guardian_-_2024215204633_2024-08-02_Wacken_-_Sven_-_1D_X_MK_II_-_1989_-_AK8I4699_%28cropped%29.jpg/120px-Hansi_K%C3%BCrsch_Blind_Guardian_-_2024215204633_2024-08-02_Wacken_-_Sven_-_1D_X_MK_II_-_1989_-_AK8I4699_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q57752",
+      "beruf": "Model",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Jasmin_Selberg_at_the_Puteri_Indonesia_2023_final_coronation.jpg/120px-Jasmin_Selberg_at_the_Puteri_Indonesia_2023_final_coronation.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q115687297",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Emine Sevgi Özdamar",
+      "name": "André Hoffmann",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Emine_Sevgi_%C3%96zdamar_2021_02.jpg/120px-Emine_Sevgi_%C3%96zdamar_2021_02.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q446415",
+      "beruf": "Eisschnellläufer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bundesarchiv_Bild_183-1983-1125-023%2C_Andre_Hoffmann.jpg/120px-Bundesarchiv_Bild_183-1983-1125-023%2C_Andre_Hoffmann.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q519714",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "İlhan Mansız",
-      "alter": 51,
-      "geburtsjahr": 1975,
-      "beruf": "Turkish Footballer (B. 1975)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/2013_Nebelhorn_Trophy_Ilhan_MANSIZ_IMG_5900_%28cropped%29.JPG/330px-2013_Nebelhorn_Trophy_Ilhan_MANSIZ_IMG_5900_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0lhan_Mans%C4%B1z",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Peter Endrulat",
-      "alter": 72,
-      "geburtsjahr": 1954,
-      "beruf": "German Footballer (Born 1954)",
+      "name": "Sebastian Huke",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Peter_Endrulat",
+      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Huke",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Dirk Hannemann",
+      "alter": 56,
+      "geburtsjahr": 1970,
+      "beruf": "German Footballer (Born 1970)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Dirk_Hannemann",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
