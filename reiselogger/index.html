@@ -1529,7 +1529,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.33.1';
+const APP_VERSION = '1.34.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2312,7 +2312,6 @@ function aggregate(){
     if(!wps.length) return;
     const segments = computeMultiLegSegments([fromName, ...wps, toName], mode);
     wps.forEach((wpName, idx)=>{
-      if(isHomeCity(wpName)) return;
       const wp = findCity(wpName);
       if(!wp) return;
       const segKm = segments ? segments[idx] : 0;
@@ -2330,15 +2329,14 @@ function aggregate(){
       perMode[t.returnMode]=(perMode[t.returnMode]||0)+ret;
     }
 
-    /* Heimatort zählt nicht als besuchter Ort — die Strecke/CO2 bleibt trotzdem
-       in den Gesamtwerten (oben) enthalten, sie wurde ja wirklich zurückgelegt.
-       Das Hauptziel wird über den Hinweg erreicht (bzw. den Rückweg bei "nur
-       Rückweg") — dessen Verkehrsmittel zählt hier für "meistgenutztes Verkehrsmittel". */
-    if(!isHomeCity(t.city)){
-      const mainMode = t.direction==='returnonly' ? t.returnMode : t.outMode;
-      const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t.dateTo, t, false, mainMode);
-      mainCity.outKm += out; mainCity.returnKm += ret;
-    }
+    /* Heimatort zählt jetzt genau wie jeder andere Ort als besuchter Ort mit (siehe
+       Nutzer-Entscheidung) — die Strecke/CO2 war ohnehin schon immer in den
+       Gesamtwerten (oben) enthalten. Das Hauptziel wird über den Hinweg erreicht
+       (bzw. den Rückweg bei "nur Rückweg") — dessen Verkehrsmittel zählt hier für
+       "meistgenutztes Verkehrsmittel". */
+    const mainMode = t.direction==='returnonly' ? t.returnMode : t.outMode;
+    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t.dateTo, t, false, mainMode);
+    mainCity.outKm += out; mainCity.returnKm += ret;
     if(t.direction!=='returnonly'){
       registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t.dateTo, t);
     }
@@ -2362,6 +2360,31 @@ function aggregate(){
     c.visits = countOverlapDedupedVisits(c._visitRanges);
     delete c._visitRanges;
   });
+
+  /* Der Heimatort selbst taucht in aller Regel in KEINER Reise als Ziel oder
+     Zwischenstopp auf (er ist ja fast immer nur "Von"-Ort) — trotzdem soll er laut
+     Nutzer-Entscheidung überall als besuchter Ort gelten. Falls oben also noch kein
+     Eintrag für ihn entstanden ist, wird hier ein einzelner "Besuch" ohne Distanz/CO2
+     nachgetragen (0 km, da ja keine echte Reise dorthin stattfand — man wohnt ja
+     bereits dort). Kommt der Heimatort doch einmal echt in einer Reise vor (z. B. eine
+     Rückkehr-Reise), zählt stattdessen der reale, oben bereits erfasste Eintrag. */
+  if(settings.home){
+    const hc = findCity(settings.home);
+    if(hc){
+      const homeKey = hc.n+'|'+hc.c;
+      if(!cityMap.has(homeKey)){
+        cityMap.set(homeKey, {
+          key:homeKey, city:hc.n, country:hc.c, cc:hc.cc, visits:1,
+          totalKm:0, outKm:0, returnKm:0, dates:[], trips:[], viaWaypoint:false,
+          modeCounts:{}, isHome:true
+        });
+      }
+      if(!countryMap.has(hc.c)){
+        countryMap.set(hc.c, {key:hc.c, country:hc.c, cc:hc.cc, visits:0, totalKm:0, cities:new Set(), isHome:true});
+      }
+      countryMap.get(hc.c).cities.add(hc.n);
+    }
+  }
 
   return {
     totalKm: totalOut+totalReturn,
@@ -2705,21 +2728,32 @@ function computeAchievements(){
   }
 
   const agg = aggregate();
+  /* Achievements sollen nur ECHTE Reisetätigkeit belohnen — der synthetische
+     "Heimatort automatisch besucht"-Eintrag (siehe aggregate(), Nutzer-Entscheidung:
+     Heimatort zählt überall als besucht) soll hier NICHT von selbst Achievements
+     freischalten (z. B. "Erste Stadt" oder "Erstes Ausland" allein durchs Wohnen
+     zuhause, ohne je gereist zu sein). Für alle Achievement-Berechnungen unten daher
+     eigene, um den synthetischen Eintrag bereinigte Listen statt agg.cities/
+     agg.countries direkt. Eine ECHTE Reise zum Heimatort (z. B. eine Rückkehr-Reise)
+     zählt hier weiterhin ganz normal mit, da nur der synthetische Eintrag gefiltert
+     wird (siehe isHome-Flag), nicht der Heimatort als solcher. */
+  const achCities = agg.cities.filter(c=>!c.isHome);
+  const achCountries = agg.countries.filter(c=>!c.isHome);
   const discoveriesAsc = aggregateDiscoveries(); // bereits aufsteigend nach Jahr sortiert
   const records = trips.length ? computeRecords() : null;
   const yearsDesc = aggregateYears();
   const yearsAsc = yearsDesc.slice().sort((a,b)=>a.year.localeCompare(b.year));
 
   /* ---- Grundlegende Kennzahlen ---- */
-  const countryCcByName = new Map();
-  agg.countries.forEach(c=>countryCcByName.set(c.country, (c.cc||'').toLowerCase()));
-  const visitedCountryCcSet = new Set([...countryCcByName.values()].filter(Boolean));
+  const achCountryCcByName = new Map();
+  achCountries.forEach(c=>achCountryCcByName.set(c.country, (c.cc||'').toLowerCase()));
+  const visitedCountryCcSet = new Set([...achCountryCcByName.values()].filter(Boolean));
   const continentsVisited = new Set();
   visitedCountryCcSet.forEach(cc=>{ const cont=getContinent(cc); if(cont) continentsVisited.add(cont); });
 
-  const capitalsVisitedCount = agg.cities.filter(c=>isCapitalVisit((c.cc||'').toLowerCase(), c.city)).length;
-  const maxCitiesInOneCountry = agg.countries.reduce((max,c)=>Math.max(max, c.cities.size), 0);
-  const maxCityRepeatVisits = agg.cities.reduce((max,c)=>Math.max(max, c.visits), 0);
+  const capitalsVisitedCount = achCities.filter(c=>isCapitalVisit((c.cc||'').toLowerCase(), c.city)).length;
+  const maxCitiesInOneCountry = achCountries.reduce((max,c)=>Math.max(max, c.cities.size), 0);
+  const maxCityRepeatVisits = achCities.reduce((max,c)=>Math.max(max, c.visits), 0);
 
   function countInGroup(group){ return group.filter(cc=>visitedCountryCcSet.has(cc)).length; }
   /* Liefert die deutschen Ländernamen aller Gruppen-Mitglieder, die noch NICHT besucht
@@ -2799,7 +2833,7 @@ function computeAchievements(){
   const longestTripDays = trips.reduce((max,t)=> t.cityOnly ? max : Math.max(max, tripDurationDays(t)), 0);
 
   const reunionAfterYear = (()=>{
-    return agg.cities.some(c=>{
+    return achCities.some(c=>{
       const dates = c.dates.filter(Boolean).slice().sort();
       for(let i=1;i<dates.length;i++){
         const diffDays = Math.round((new Date(dates[i])-new Date(dates[i-1]))/86400000);
@@ -2820,7 +2854,7 @@ function computeAchievements(){
   /* ---- Neue Kennzahlen (50 zusätzliche Auszeichnungen) ---- */
 
   // Bundesländer & Landeshauptstädte (nur Städte mit cc 'de', siehe germanStateForCityName)
-  const germanCities = agg.cities.filter(c=>(c.cc||'').toLowerCase()==='de');
+  const germanCities = achCities.filter(c=>(c.cc||'').toLowerCase()==='de');
   const visitedStatesSet = new Set(germanCities.map(c=>germanStateForCityName(c.city)).filter(Boolean));
   const missingStates = DE_ALL_STATES.filter(s=>!visitedStatesSet.has(s));
   const visitedCapitalsSet = new Set(germanCities.filter(c=>DE_STATE_CAPITALS.includes(c.city)).map(c=>c.city));
@@ -2830,16 +2864,16 @@ function computeAchievements(){
   const leftHomeState = homeState ? germanCities.some(c=>{ const s=germanStateForCityName(c.city); return s && s!==homeState; }) : false;
 
   // Alphabet & Namens-Spielereien bei Städten
-  const cityStartLetters = new Set(agg.cities.map(c=>(c.city||'').trim().charAt(0).toUpperCase()).filter(l=>/[A-ZÄÖÜ]/.test(l)));
+  const cityStartLetters = new Set(achCities.map(c=>(c.city||'').trim().charAt(0).toUpperCase()).filter(l=>/[A-ZÄÖÜ]/.test(l)));
   const cityNameGroups = new Map();
-  agg.cities.forEach(c=>{
+  achCities.forEach(c=>{
     const key = (c.city||'').trim().toLowerCase();
     if(!cityNameGroups.has(key)) cityNameGroups.set(key, new Set());
     cityNameGroups.get(key).add(c.country);
   });
   const doubleCityNames = [...cityNameGroups.values()].some(countries=>countries.size>1);
-  const umlautCity = agg.cities.some(c=>/[äöüÄÖÜß]/.test(c.city||''));
-  const longNameCity = agg.cities.some(c=>(c.city||'').length>=15);
+  const umlautCity = achCities.some(c=>/[äöüÄÖÜß]/.test(c.city||''));
+  const longNameCity = achCities.some(c=>(c.city||'').length>=15);
 
   // Kleinstaaten & Inselstaaten
   const microStateCount = countInGroup(MICRO_CC);
@@ -3007,7 +3041,7 @@ function computeAchievements(){
     {id:'LAND-13',name:'Länder-Sammler XII',icon:'🗺️',desc:'60 Länder',target:60,bonus:75},
     {id:'LAND-14',name:'Länder-Sammler XIII',icon:'🏆',desc:'75 Länder',target:75,bonus:100},
     {id:'LAND-15',name:'Länder-Sammler XIV',icon:'🏆',desc:'100 Länder',target:100,bonus:150}
-  ], agg.countries.length);
+  ], achCountries.length);
 
   const continentBadges = [
     {code:'EU', id:'LAND-16', name:'Europa entdeckt', icon:'🇪🇺', bonus:20},
@@ -3053,7 +3087,7 @@ function computeAchievements(){
     {id:'STADT-08',name:'Städte-Sammler VII',icon:'🌆',desc:'100 Städte',target:100,bonus:75},
     {id:'STADT-09',name:'Städte-Sammler VIII',icon:'🏆',desc:'150 Städte',target:150,bonus:110},
     {id:'STADT-10',name:'Städte-Sammler IX',icon:'🏆',desc:'200 Städte',target:200,bonus:150}
-  ], agg.cities.length);
+  ], achCities.length);
   addTiers('STADT',[
     {id:'STADT-11',name:'Hauptstadt-Jäger I',icon:'🏛️',desc:'1 Hauptstadt besucht',target:1,bonus:10},
     {id:'STADT-12',name:'Hauptstadt-Jäger II',icon:'🏛️',desc:'5 Hauptstädte',target:5,bonus:20},
@@ -3636,19 +3670,22 @@ async function initWorldMap(agg){
 
   let homeDot = null;
   const homeRadius = 2.4 * rScale;
-  if(settings.home){
-    const hc = findCity(settings.home);
-    if(hc){
-      const p = projection([hc.lon, hc.lat]);
-      if(p){
-        homeDot = g.append('circle').attr('class','home-dot')
-          .attr('cx',p[0]).attr('cy',p[1]).attr('r',homeRadius);
-        homeDot.append('title').text(hc.n+' — Heimatort');
-      }
+  const homeCityRef = settings.home ? findCity(settings.home) : null;
+  if(homeCityRef){
+    const p = projection([homeCityRef.lon, homeCityRef.lat]);
+    if(p){
+      homeDot = g.append('circle').attr('class','home-dot')
+        .attr('cx',p[0]).attr('cy',p[1]).attr('r',homeRadius);
+      homeDot.append('title').text(homeCityRef.n+' — Heimatort');
     }
   }
 
   const cityData = agg.cities
+    // Der Heimatort hat bereits den eigenen, optisch klar abgesetzten homeDot-Marker
+    // oben — ein zusätzlicher normaler city-dot an derselben Koordinate wäre nur ein
+    // störender Doppel-Punkt. Die Statistiken (Top 5, Länder & Städte, Zähler) sind
+    // davon nicht betroffen, die zeigen den Heimatort weiterhin ganz normal.
+    .filter(c=>!(homeCityRef && c.city===homeCityRef.n && c.country===homeCityRef.c))
     .map(c=>({c, ref:findCity(c.city)}))
     .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
