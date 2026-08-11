@@ -757,7 +757,8 @@ tr:last-child td{border-bottom:none;}
 .co2-line-path-avg{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:5 4;}
 .co2-line-dot-avg{fill:var(--panel);stroke:var(--teal);stroke-width:2;}
 .co2-line-value-avg{font-size:10.5px;fill:var(--teal);text-anchor:middle;font-family:var(--font-mono);}
-.co2-line-ref{stroke:var(--rose);stroke-width:1.5;stroke-dasharray:3 4;opacity:0.8;}
+.co2-line-ref{fill:none;stroke:var(--rose);stroke-width:1.5;stroke-dasharray:3 4;opacity:0.8;}
+.co2-line-ref-dot{fill:var(--rose);opacity:0.8;}
 .co2-line-ref-label{font-size:9.5px;fill:var(--rose);font-family:var(--font-mono);}
 
 /* ---------- Statistiken: Persönliche Rekorde ---------- */
@@ -947,6 +948,29 @@ tr:last-child td{border-bottom:none;}
 .sync-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
 .sync-actions .btn-secondary{font-size:11.5px;padding:8px 12px;}
 .sync-status{margin-top:10px;font-size:11.5px;color:var(--text-dim);min-height:16px;}
+
+.release-notes-zone{margin-top:18px;padding-top:16px;border-top:1px dashed var(--border);}
+.release-notes-list{
+  max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;
+  margin-top:10px;padding-right:2px;
+}
+.release-note-entry{
+  padding:10px 12px;border-radius:9px;background:var(--panel-alt);border:1px solid var(--border-soft);
+}
+.release-note-entry.latest{border-color:var(--gold-dim);}
+.release-note-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.release-note-tier{font-size:12px;flex-shrink:0;}
+.release-note-version{
+  font-family:var(--font-mono);font-size:11.5px;color:var(--gold);font-weight:600;flex-shrink:0;
+}
+.release-note-title{font-size:12.5px;color:var(--text);font-weight:600;}
+.release-note-badge{
+  margin-left:auto;font-size:9.5px;text-transform:uppercase;letter-spacing:0.04em;
+  color:var(--gold);border:1px solid var(--gold-dim);border-radius:100px;padding:1px 8px;flex-shrink:0;
+}
+.release-note-items{margin:0;padding-left:18px;}
+.release-note-items li{font-size:11.5px;color:var(--text-dim);line-height:1.55;margin-bottom:3px;}
+.release-note-items li:last-child{margin-bottom:0;}
 .sync-status.ok{color:var(--green);}
 .sync-status.err{color:var(--rose);}
 
@@ -1205,6 +1229,12 @@ span.flatpickr-weekday{
     <div class="danger-zone">
       <p>Alle erfassten Reisen unwiderruflich löschen.</p>
       <button class="btn-danger" id="resetAllBtn">Alle Daten löschen</button>
+    </div>
+
+    <div class="release-notes-zone">
+      <p class="sync-title">🆕 Was ist neu?</p>
+      <p class="sync-desc">Alle Änderungen und Neuerungen, neueste zuerst.</p>
+      <div class="release-notes-list" id="releaseNotesList"></div>
     </div>
   </div>
 </div>
@@ -1602,13 +1632,142 @@ function getMode(key){
    spürbar — das sind grobe, aber realistische Orientierungswerte. */
 const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck durch Mobilität pro Kopf und Jahr in Deutschland — rund 2,0 t CO2e
-   (Anteil "Mobilität" von rund 19–21 % am gesamten Pro-Kopf-Fußabdruck von 10,4 t;
-   Quelle: Umweltbundesamt/BMUV, Stand 2025). Bewusst NICHT der volle 10,4-t-Gesamt-
-   Fußabdruck (der auch Wohnen, Konsum, Ernährung, Strom einschließt) — für einen
-   fairen Vergleich mit den eigenen Reise-Emissionen zählt nur der Mobilitäts-Anteil. */
+   im aktuellen Jahr (Anteil "Mobilität" von rund 19–21 % am gesamten Pro-Kopf-
+   Fußabdruck von 10,4 t; Quelle: Umweltbundesamt/BMUV, Stand 2025). Bewusst NICHT der
+   volle 10,4-t-Gesamt-Fußabdruck (der auch Wohnen, Konsum, Ernährung, Strom
+   einschließt) — für einen fairen Vergleich mit den eigenen Reise-Emissionen zählt nur
+   der Mobilitäts-Anteil. Als Fallback für Jahre außerhalb der Tabelle unten. */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 2000;
 
-const APP_VERSION = '1.37.0';
+/* Der Mobilitäts-Anteil war KEINE Konstante über die Jahre — vor allem die
+   Corona-Pandemie hat die Personenverkehrsleistung 2020 laut Umweltbundesamt um
+   21,2 % einbrechen lassen (Flugverkehr noch deutlich stärker), mit nur langsamer
+   Erholung bis 2022; 2024 lag die Verkehrsleistung laut UBA immer noch 4,1 % unter
+   dem Niveau von 2019. Es gibt keine durchgängige offizielle Jahresreihe für den
+   Mobilitäts-CO2-Anteil speziell — die Werte unten sind daher eine Schätzung auf
+   Basis dieser UBA-Prozentangaben zur Verkehrsleistung, kalibriert auf den zuletzt
+   von DIW/UBA genannten Wert von rund 2,0 t (2023/2024/2025). Nur für die
+   CO2-Verlauf-Vergleichslinie in der "Gesamt"-Ansicht relevant (mehrere Jahre
+   nebeneinander) — für einzelne Jahre/Monate bleibt der Wert innerhalb dieses einen
+   Jahres naturgemäß konstant. */
+const GERMAN_AVG_MOBILITY_CO2_BY_YEAR = {
+  2015:2050, 2016:2060, 2017:2080, 2018:2090, 2019:2100,
+  2020:1650, 2021:1700,
+  2022:1950, 2023:2000, 2024:2000, 2025:2000, 2026:2000
+};
+function co2ReferenceKgForYear(year){
+  const y = parseInt(year,10);
+  if(GERMAN_AVG_MOBILITY_CO2_BY_YEAR[y]!==undefined) return GERMAN_AVG_MOBILITY_CO2_BY_YEAR[y];
+  // Für Jahre außerhalb der Tabelle (früher als 2015 oder später als die letzte
+  // gepflegte Zahl): den jeweils nächstgelegenen bekannten Wert verwenden statt
+  // pauschal auf die aktuelle Konstante zurückzufallen — bleibt so plausibel nah an
+  // der echten historischen Entwicklung.
+  const knownYears = Object.keys(GERMAN_AVG_MOBILITY_CO2_BY_YEAR).map(Number).sort((a,b)=>a-b);
+  if(!knownYears.length) return GERMAN_AVG_CO2_KG_PER_YEAR;
+  if(y<=knownYears[0]) return GERMAN_AVG_MOBILITY_CO2_BY_YEAR[knownYears[0]];
+  if(y>=knownYears[knownYears.length-1]) return GERMAN_AVG_MOBILITY_CO2_BY_YEAR[knownYears[knownYears.length-1]];
+  return GERMAN_AVG_CO2_KG_PER_YEAR;
+}
+
+const APP_VERSION = '1.38.0';
+
+/* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
+   CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
+const RELEASE_NOTES = [
+  {v:'1.38.0', tier:'🟡', title:'Länder-Logik korrigiert & Release Notes', items:[
+    'Ein Land zählt nur noch als besucht, wenn die Reise dorthin von einer Stadt eines ANDEREN Landes aus angetreten wurde (z. B. Berlin→Madrid = Spanien-Besuch). Eine Weiterreise innerhalb desselben Landes (z. B. Sitges→Barcelona, beide Spanien) zählt nicht erneut als Landbesuch — die Stadt selbst aber weiterhin ganz normal. Betrifft Dashboard, Länder & Städte, Entdecker-Trend, Rekorde.',
+    'CO2-Vergleichslinie "Ø Bundesbürger (Mobilität)" ist keine gerade Linie mehr — der Mobilitäts-Fußabdruck war über die Jahre nicht konstant (v. a. Corona-Einbruch 2020/2021). Die "Gesamt"-Ansicht im CO2-Verlauf zeigt jetzt den historischen Verlauf.',
+    'Neuer Bereich "Was ist neu?" unter Einstellungen mit dieser Liste.'
+  ]},
+  {v:'1.37.0', tier:'🟡', title:'Detailansicht komplett neu gestaltet', items:[
+    'Einheitliches Karten-Layout für Desktop UND Mobile bei "Alle Reisen" (vorher unterschiedlich, auf Mobile unsauber): Icon-Raster für Details, eigene Fotos-Sektion, Aktions-Fußzeile (Ändern/Duplizieren/Entfernen) ganz unten statt in der Hauptzeile.',
+    'Zwischenstopps einzeln aufgeführt (Hinweg/Rückweg getrennt) mit dem Reisezeitraum als Zeitkontext.',
+    'Tabelle dadurch eine Spalte schmaler (Aktionen raus aus der Hauptzeile).'
+  ]},
+  {v:'1.36.2', tier:'🟢', title:'Wunschstädte-Punktgröße vereinfacht', items:[
+    'Keine Berechnung mehr für die Punktgröße der Bucket-Listen-Städte auf der Karte — direkt dieselbe Größe wie ein normaler Städte-Punkt.'
+  ]},
+  {v:'1.36.1', tier:'🟢', title:'Wunschstädte-Punktgröße', items:[
+    'Punktgröße auf der Karte am tatsächlichen Durchschnitt der angezeigten Städte-Punkte ausgerichtet (Zwischenschritt, in 1.36.2 weiter vereinfacht).'
+  ]},
+  {v:'1.36.0', tier:'🟡', title:'CO2-Verlauf: Bundesbürger-Vergleich einblendbar', items:[
+    'Neuer dritter Schalter im CO2-Verlauf: "Ø Bundesbürger (Mobilität)" als gestrichelte Vergleichslinie, für jede Zeiteinheit (Monat/Jahr/Gesamt) passend herunter- bzw. hochgerechnet.'
+  ]},
+  {v:'1.35.2', tier:'🟢', title:'Detailansicht-Aufräumarbeiten (Mobile)', items:[
+    'Ursache für unsauberes Mobile-Layout behoben (generische Tabellen-Regel hatte Fotos und Details fälschlich nebeneinander statt untereinander angeordnet).',
+    'Aufklapp-Pfeil (▾) entfernt — Klick auf die Zeile öffnet ja bereits.',
+    'Kleines 📷-Foto-Badge direkt in der Hauptzeile, sichtbar ohne Aufklappen.'
+  ]},
+  {v:'1.35.1', tier:'🟡', title:'CO2-Referenz auf Mobilität umgestellt', items:[
+    'Der Vergleichswert "Ø Bundesbürger" verglich bisher mit dem KOMPLETTEN Pro-Kopf-Fußabdruck (10,4 t, inkl. Wohnen/Konsum/Ernährung/Strom) statt nur mit Mobilität (~2,0 t, ca. 19–21 % davon) — jetzt korrigiert, überall wo der Wert verwendet wird.',
+    'Wunschstädte-Punkte auf blasseres Rosé statt kräftigem Rot umgestellt.'
+  ]},
+  {v:'1.35.0', tier:'🟡', title:'Foto-Upload & CO2-Aufschlüsselung', items:[
+    'Bis zu 5 Fotos pro Reise hochladbar (nativer Foto-Picker, clientseitig komprimiert), mit Notiz pro Foto und Lightbox-Ansicht.',
+    'CO2-Jahresvergleich zeigt jetzt zusätzlich die Aufschlüsselung nach Verkehrsmittel.',
+    'Wunschländer-Farbe auf der Karte von kräftigem Lila auf gedecktes Gold-Orange geändert.'
+  ]},
+  {v:'1.34.0', tier:'🟡', title:'Heimatort zählt überall als besucht', items:[
+    'Der Heimatort (z. B. Berlin) zählt jetzt in Dashboard, Top 5 Städte, Länder & Städte-Tab überall als besuchter Ort — vorher war er dort bewusst ausgeschlossen.',
+    'Achievements/Punkte/Level bleiben davon unberührt (schalten sich nicht allein durchs Wohnen dort frei, nur durch echte Reisetätigkeit).',
+    'Kein doppelter Kartenpunkt am Heimatort (der bestehende Heimat-Marker bleibt der alleinige visuelle Indikator).'
+  ]},
+  {v:'1.33.1', tier:'🟢', title:'"Neue Reise" als eigener Button', items:[
+    '"Neue Reise" aus der Tab-Leiste/dem Mobile-Dropdown entfernt, stattdessen ein "+"-Icon-Button im Header (Desktop & Mobile).'
+  ]},
+  {v:'1.33.0', tier:'🟡', title:'Mobiles Dropdown statt Tab-Leiste', items:[
+    'Auf schmalen Bildschirmen (iPhone) ersetzt ein kompaktes Dropdown die mehrzeilige Tab-Button-Leiste.'
+  ]},
+  {v:'1.32.1', tier:'🟡', title:'Level-System neu kalibriert', items:[
+    'Level-Schwellen deutlich angehoben (z. B. "Weltreisender" von 6.000 auf 10.500 Punkte) — vorher konnte man schon bei überschaubarer geografischer Breite hohe Level erreichen, weil viele Achievements stark mit reiner Reise-Menge statt Welt-Breite skalierten.',
+    'Ein paar reine "Vielreisen ohne geografische Breite"-Achievements abgeschwächt (Wochentag-Muster, Monatsanfang/-ende, Reisen-pro-Jahr).'
+  ]},
+  {v:'1.32.0', tier:'🟡', title:'Reise duplizieren', items:[
+    'Neuer 📋-Button bei jeder Reise: dupliziert alle Werte (Von/Nach/Verkehrsmittel/Distanz/Zwischenstopps) in eine neue Reise, Grund und Datum lassen sich vor dem Speichern anpassen. Original bleibt unangetastet.'
+  ]},
+  {v:'1.31.2', tier:'🟢', title:'Wunschstädte-Marker verfeinert', items:[
+    'Nur noch Fähnchen-Symbol für Wunschstädte auf der Karte (kein zusätzlicher Punkt).'
+  ]},
+  {v:'1.31.1', tier:'🟢', title:'Grund-Kategorien erweitert', items:[
+    '"Freunde" umbenannt in "Family & Friends".',
+    'Neue Kategorien "Ausflug" und "Alma" ergänzt — bestehende Einträge mit diesem Freitext unter "Sonstiges" werden automatisch umgestellt.'
+  ]},
+  {v:'1.31.0', tier:'🔴', title:'50 neue Auszeichnungen', items:[
+    'Neue Kategorie "Deutschland-Spezial": alle 16 Bundesländer, alle 16 Landeshauptstädte (jeweils mit "was fehlt noch"-Anzeige).',
+    'Kleinstaaten, Inselstaaten, Multikontinental-Jahre, Alphabet-Sammlerin, Doppelgänger-Städte, Umlaut-Städte, CO2-Serien, Kalender-Spielereien (Freitag der 13., Schnapszahl-Datum, Jahreszeiten) und mehr — insgesamt 191 Achievements (vorher 141).'
+  ]},
+  {v:'1.30.1', tier:'🟡', title:'"Alle Reisen"-Tabelle überarbeitet', items:[
+    'Zwischenstopps als kompaktes Badge ("3 Stopps") statt ausgeschriebener Liste.',
+    'CO2/Grund/Kontinent nie mehr als eigene Spalte, nur in der ausklappbaren Detailzeile.',
+    'Verkehrsmittel nur noch als Emoji mit Hover-Tooltip, Suche/Sortierung bleiben vollständig erhalten.'
+  ]},
+  {v:'1.30.0', tier:'🟡', title:'Bucket-Liste', items:[
+    'Neuer Tab "Bucket-Liste": Städte oder Länder eintragen, die man noch bereisen möchte, mit Sehnsucht-Priorität (Hoch/Mittel/Niedrig).',
+    'Wunsch-Länder werden auf der Karte eingefärbt, Wunsch-Städte mit eigenem Marker angezeigt.'
+  ]},
+  {v:'1.29.0', tier:'🟡', title:'Diverses Statistik-Feintuning', items:[
+    'Heimatland-Ausschluss auf die Übersicht-Kachel begrenzt (Deutschland zählt in Top 5 Länder/Karte/Statistiken wieder normal).',
+    'Verkehrsmittel-Verteilung zeigt zusätzlich km, CO2-Rekorde zeigen das Datum.',
+    'Badges zeigen "was fehlt noch" bei Gruppen-Achievements, Länder-Sortierung erweitert, Städte-Tabelle nach "Letzter Besuch" sortierbar.'
+  ]},
+  {v:'1.28.1', tier:'🟢', title:'Deutschland-Ausschluss präzisiert', items:[
+    'Deutschland zählt nirgends mehr als "besuchtes Land" bei Reisen innerhalb Deutschlands (Zwischenstand vor 1.29.0).'
+  ]},
+  {v:'1.28.0', tier:'🟡', title:'Überlappende Reisen zum selben Ziel', items:[
+    'Wenn sich zwei Reisen zeitlich echt überschneiden und zum selben Ziel führen, zählt die Stadt nur noch 1× statt mehrfach in den Auswertungen.'
+  ]},
+  {v:'1.27.2', tier:'🔴', title:'Gamification-System', items:[
+    '141 Achievements über 7 Kategorien, 10-Level-Fortschrittssystem, Badges-Tab, Level-Kachel im Dashboard.'
+  ]},
+  {v:'1.1.0', tier:'🟡', title:'Darstellung & Vergleiche', items:[
+    'Hell-/Dunkel-/Automatik-Modus, Kontext-Leiste mit Datum/Standort, Hin- und Rückweg getrennt ausweisbar, Distanzvergleiche (Erdumrundungen, Mond, Mars), Versionsanzeige im Header.'
+  ]},
+  {v:'1.0.0', tier:'🔴', title:'Erste Version von WELTLOG', items:[
+    'Reisen erfassen (Von/Nach, Verkehrsmittel, Zeitraum), automatische Distanzberechnung, Weltkarte mit besuchten Städten, Auswertungen nach Land/Stadt/Verkehrsmittel, lokale Speicherung.'
+  ]}
+];
+
+
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -2516,6 +2675,53 @@ function countOverlapDedupedVisits(ranges){
   return groups;
 }
 
+/* Grenzübertritt-Logik für die Länder-Zählung (Nutzer-Regel): Ein Land gilt nur dann
+   als "besucht", wenn die Reise dorthin von einer Stadt eines ANDEREN Landes aus
+   angetreten wurde — eine Weiterreise innerhalb desselben Landes (z. B. Sitges
+   (Spanien) → Barcelona (Spanien)) zählt NICHT erneut als Spanien-Besuch, wohl aber
+   ganz normal als Besuch der Stadt Barcelona selbst. Bei mehreren Zwischenstopps zählt
+   dabei immer der jeweils VORHERIGE Ort der Route (nicht immer der Ausgangsort der
+   ganzen Reise) — eine Kette über mehrere Länder wird also Sprung für Sprung geprüft.
+   Gibt für Hauptziel und alle Zwischenstopps zurück, ob der jeweilige Sprung dorthin
+   eine Landesgrenze überquert. Betrifft NUR die Länder-Zählung — Städte-Zählung,
+   Kilometer und CO2 bleiben davon komplett unberührt (die zählen immer). */
+function tripBorderCrossings(t){
+  function ctryOf(name){ const c = findCity((name||'').trim()); return c ? c.c : null; }
+  const result = {outWaypointCrossings:[], mainCrossesBorder:true, returnWaypointCrossings:[]};
+  if(t.cityOnly) return result; // kein Von-Ort erfasst -> wie bisher als Besuch werten
+  if(t.direction==='returnonly'){
+    // Hauptziel ist hier der (nicht separat erfasste) Ausgangspunkt der Rückreise,
+    // nicht über einen geloggten Sprung erreicht -> zählt als Besuch.
+    result.mainCrossesBorder = true;
+    let prevCountry = t.country;
+    (t.returnWaypoints||[]).forEach(wp=>{
+      const w = findCity((wp||'').trim());
+      const c = w ? w.c : null;
+      result.returnWaypointCrossings.push(!prevCountry || c!==prevCountry);
+      if(c) prevCountry = c;
+    });
+  } else {
+    let prevCountry = ctryOf(t.fromCity);
+    (t.outWaypoints||[]).forEach(wp=>{
+      const w = findCity((wp||'').trim());
+      const c = w ? w.c : null;
+      result.outWaypointCrossings.push(!prevCountry || c!==prevCountry);
+      if(c) prevCountry = c;
+    });
+    result.mainCrossesBorder = !prevCountry || t.country!==prevCountry;
+    if(t.direction==='roundtrip'){
+      let prevCountry2 = t.country;
+      (t.returnWaypoints||[]).forEach(wp=>{
+        const w = findCity((wp||'').trim());
+        const c = w ? w.c : null;
+        result.returnWaypointCrossings.push(!prevCountry2 || c!==prevCountry2);
+        if(c) prevCountry2 = c;
+      });
+    }
+  }
+  return result;
+}
+
 function aggregate(){
   let totalOut=0, totalReturn=0;
   const perMode = {};
@@ -2525,7 +2731,7 @@ function aggregate(){
   const countryMap = new Map();
   const purposeMap = new Map();
 
-  function registerCityVisit(cityName, country, cc, km, dateFrom, dateTo, visitRecord, isWaypoint, visitMode){
+  function registerCityVisit(cityName, country, cc, km, dateFrom, dateTo, visitRecord, isWaypoint, visitMode, countsCountry){
     const ckey=cityName+'|'+country;
     if(!cityMap.has(ckey)){
       cityMap.set(ckey,{key:ckey,city:cityName,country:country,cc:cc,visits:0,totalKm:0,outKm:0,returnKm:0,dates:[],trips:[],viaWaypoint:false,modeCounts:{},_visitRanges:[]});
@@ -2536,11 +2742,15 @@ function aggregate(){
     if(isWaypoint) c.viaWaypoint = true;
     if(visitMode) c.modeCounts[visitMode] = (c.modeCounts[visitMode]||0)+1;
 
-    if(!countryMap.has(country)){
-      countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
+    // Land zählt nur bei echtem Grenzübertritt (siehe tripBorderCrossings) — Städte
+    // zählen davon unabhängig IMMER (oben bereits geschehen).
+    if(countsCountry!==false){
+      if(!countryMap.has(country)){
+        countryMap.set(country,{key:country,country:country,cc:cc,visits:0,totalKm:0,cities:new Set()});
+      }
+      const co=countryMap.get(country);
+      co.visits++; co.totalKm+=km; co.cities.add(cityName);
     }
-    const co=countryMap.get(country);
-    co.visits++; co.totalKm+=km; co.cities.add(cityName);
     return c;
   }
 
@@ -2556,8 +2766,9 @@ function aggregate(){
      Hintergrund per Geokodierung auf (siehe renderMap) — danach tauchen sie automatisch
      mit auf. Das übergebene "mode" ist das tatsächliche Verkehrsmittel DIESER Teilstrecke
      (Hin- oder Rückweg) — wichtig für eine korrekte "meistgenutztes Verkehrsmittel"-Anzeige,
-     siehe mostUsedModeForCity(). */
-  function registerLegWaypoints(fromName, waypointNames, toName, mode, dateFrom, dateTo, visitRecord){
+     siehe mostUsedModeForCity(). "crossings" gibt parallel zu den Zwischenstopps an, ob
+     der jeweilige Sprung eine Landesgrenze überquert (siehe tripBorderCrossings). */
+  function registerLegWaypoints(fromName, waypointNames, toName, mode, dateFrom, dateTo, visitRecord, crossings){
     const wps = (waypointNames||[]).map(w=>(w||'').trim()).filter(Boolean);
     if(!wps.length) return;
     const segments = computeMultiLegSegments([fromName, ...wps, toName], mode);
@@ -2565,7 +2776,8 @@ function aggregate(){
       const wp = findCity(wpName);
       if(!wp) return;
       const segKm = segments ? segments[idx] : 0;
-      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, dateTo, visitRecord, true, mode);
+      const crosses = crossings ? crossings[idx] : true;
+      registerCityVisit(wp.n, wp.c, wp.cc, segKm||0, dateFrom, dateTo, visitRecord, true, mode, crosses);
     });
   }
 
@@ -2585,13 +2797,14 @@ function aggregate(){
        (bzw. den Rückweg bei "nur Rückweg") — dessen Verkehrsmittel zählt hier für
        "meistgenutztes Verkehrsmittel". */
     const mainMode = t.direction==='returnonly' ? t.returnMode : t.outMode;
-    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t.dateTo, t, false, mainMode);
+    const crossings = tripBorderCrossings(t);
+    const mainCity = registerCityVisit(t.city, t.country, t.cityCC, tot, t.dateFrom, t.dateTo, t, false, mainMode, crossings.mainCrossesBorder);
     mainCity.outKm += out; mainCity.returnKm += ret;
     if(t.direction!=='returnonly'){
-      registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t.dateTo, t);
+      registerLegWaypoints(t.fromCity, t.outWaypoints, t.city, t.outMode, t.dateFrom, t.dateTo, t, crossings.outWaypointCrossings);
     }
     if(t.direction==='roundtrip' || t.direction==='returnonly'){
-      registerLegWaypoints(t.city, t.returnWaypoints, t.fromCity, t.returnMode, t.dateFrom, t.dateTo, t);
+      registerLegWaypoints(t.city, t.returnWaypoints, t.fromCity, t.returnMode, t.dateFrom, t.dateTo, t, crossings.returnWaypointCrossings);
     }
 
     const pLabel = purposeLabel(t);
@@ -2672,26 +2885,35 @@ function aggregateYears(){
    gleiche Logik wie aggregate() — nur auf ein Jahr eingeschränkt). Zwischenstopps zählen
    mit, sofern ihr Name lokal auflösbar ist (siehe aggregate()). Heimatland zählt nie als
    besuchtes Land (siehe aggregate()) — Städte innerhalb Deutschlands zählen weiterhin
-   normal als besuchte Orte. */
+   normal als besuchte Orte. Land zählt außerdem nur bei echtem Grenzübertritt (siehe
+   tripBorderCrossings) — eine Weiterreise innerhalb desselben Landes zählt nicht
+   erneut als Landbesuch, die Stadt selbst aber schon. */
 function aggregateYearCounts(year){
   const homeCountry = getHomeCountry();
   const cityKeys = new Set();
   const countryKeys = new Set();
   let tripCount = 0;
-  function addPlace(name, country){
+  function addPlace(name, country, countsCountry){
     if(!name || isHomeCity(name)) return;
     cityKeys.add(name+'|'+country);
-    if(country !== homeCountry) countryKeys.add(country);
+    if(country !== homeCountry && countsCountry!==false) countryKeys.add(country);
   }
   trips.forEach(t=>{
     if((t.dateFrom||'').slice(0,4)!==year) return;
     tripCount++;
-    addPlace(t.city, t.country);
-    (t.outWaypoints||[]).concat(t.returnWaypoints||[]).forEach(w=>{
+    const crossings = tripBorderCrossings(t);
+    addPlace(t.city, t.country, crossings.mainCrossesBorder);
+    (t.outWaypoints||[]).forEach((w,idx)=>{
       const name = (w||'').trim();
       if(!name) return;
       const wp = findCity(name);
-      if(wp) addPlace(wp.n, wp.c);
+      if(wp) addPlace(wp.n, wp.c, crossings.outWaypointCrossings[idx]);
+    });
+    (t.returnWaypoints||[]).forEach((w,idx)=>{
+      const name = (w||'').trim();
+      if(!name) return;
+      const wp = findCity(name);
+      if(wp) addPlace(wp.n, wp.c, crossings.returnWaypointCrossings[idx]);
     });
   });
   return {cityCount:cityKeys.size, countryCount:countryKeys.size, tripCount};
@@ -2719,18 +2941,28 @@ function aggregateDiscoveries(){
      gezählt. Für Konsistenz mit den übrigen Auswertungen jetzt ausgeschlossen.
      Zwischenstopps zählen ebenfalls als eigene "Besuche" (siehe aggregate()), daher
      werden hier alle Ereignisse — Hauptziel + auflösbare Zwischenstopps — gesammelt
-     und gemeinsam chronologisch sortiert, bevor das jeweils erste Jahr ermittelt wird. */
+     und gemeinsam chronologisch sortiert, bevor das jeweils erste Jahr ermittelt wird.
+     Jedes Ereignis trägt außerdem, ob es eine Landesgrenze überquert (siehe
+     tripBorderCrossings) — nur solche Ereignisse zählen als "neu entdecktes Land". */
   const cityFirstYear = new Map();
   const countryFirstYear = new Map();
   const events = [];
   trips.forEach(t=>{
-    if(!isHomeCity(t.city)) events.push({city:t.city, country:t.country, cc:t.cityCC, dateFrom:t.dateFrom});
-    (t.outWaypoints||[]).concat(t.returnWaypoints||[]).forEach(w=>{
+    const crossings = tripBorderCrossings(t);
+    if(!isHomeCity(t.city)) events.push({city:t.city, country:t.country, cc:t.cityCC, dateFrom:t.dateFrom, crossesBorder:crossings.mainCrossesBorder});
+    (t.outWaypoints||[]).forEach((w,idx)=>{
       const name = (w||'').trim();
       if(!name || isHomeCity(name)) return;
       const wp = findCity(name);
       if(!wp) return;
-      events.push({city:wp.n, country:wp.c, cc:wp.cc, dateFrom:t.dateFrom});
+      events.push({city:wp.n, country:wp.c, cc:wp.cc, dateFrom:t.dateFrom, crossesBorder:crossings.outWaypointCrossings[idx]});
+    });
+    (t.returnWaypoints||[]).forEach((w,idx)=>{
+      const name = (w||'').trim();
+      if(!name || isHomeCity(name)) return;
+      const wp = findCity(name);
+      if(!wp) return;
+      events.push({city:wp.n, country:wp.c, cc:wp.cc, dateFrom:t.dateFrom, crossesBorder:crossings.returnWaypointCrossings[idx]});
     });
   });
   events.sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'')).forEach(ev=>{
@@ -2738,7 +2970,7 @@ function aggregateDiscoveries(){
     if(!/^\d{4}$/.test(year)) return;
     const ckey = ev.city+'|'+ev.country;
     if(!cityFirstYear.has(ckey)) cityFirstYear.set(ckey, {year, city:ev.city, country:ev.country, cc:ev.cc});
-    if(!countryFirstYear.has(ev.country)) countryFirstYear.set(ev.country, {year, country:ev.country, cc:ev.cc});
+    if(ev.crossesBorder && !countryFirstYear.has(ev.country)) countryFirstYear.set(ev.country, {year, country:ev.country, cc:ev.cc});
   });
   const yearMap = new Map();
   function ensureYear(year){
@@ -2783,7 +3015,9 @@ function computeRecords(){
     const year = (t.dateFrom||'').slice(0,4);
     if(!/^\d{4}$/.test(year)) return;
     if(!countriesByYear.has(year)) countriesByYear.set(year, new Set());
-    countriesByYear.get(year).add(t.country);
+    // Land zählt nur bei echtem Grenzübertritt (siehe tripBorderCrossings) — eine
+    // Weiterreise innerhalb desselben Landes zählt nicht erneut als Landbesuch.
+    if(tripBorderCrossings(t).mainCrossesBorder) countriesByYear.get(year).add(t.country);
   });
   let bestYear = null, bestCount = 0;
   countriesByYear.forEach((set,year)=>{
@@ -3062,7 +3296,7 @@ function computeAchievements(){
     const minEntry = withTravel.reduce((m,e)=>e.co2<m.co2?e:m, withTravel[0]);
     return minEntry.year !== withTravel[0].year;
   })();
-  const co2BelowAverage = co2ByYearAsc.some(e=>e.km>0 && e.co2>0 && e.co2<GERMAN_AVG_CO2_KG_PER_YEAR);
+  const co2BelowAverage = co2ByYearAsc.some(e=>e.km>0 && e.co2>0 && e.co2<co2ReferenceKgForYear(e.year));
   const co2EfficiencyImproved = (()=>{
     const ratios = co2ByYearAsc.filter(e=>e.km>0).map(e=>({year:e.year, ratio: e.co2>0 ? e.km/e.co2 : Infinity}));
     if(ratios.length<2) return false;
@@ -3203,7 +3437,7 @@ function computeAchievements(){
   })();
   const co2BelowAvgStreak = longestYearStreak(
     yearsAsc.map(y=>({year:y.year, co2:yearCO2Kg(y.year), km:y.total})),
-    e=>e.km>0 && e.co2>0 && e.co2<GERMAN_AVG_CO2_KG_PER_YEAR
+    e=>e.km>0 && e.co2>0 && e.co2<co2ReferenceKgForYear(e.year)
   );
 
   // Kalender-Spielereien
@@ -3688,14 +3922,28 @@ function co2BucketsForFilter(filter){
   }));
 }
 
-/* Ø-Mobilitäts-CO2 eines Bundesbürgers (GERMAN_AVG_CO2_KG_PER_YEAR), herunter-
-   gebrochen auf die Größe EINES Buckets im gewählten Zeitraum — für die Vergleichs-
-   linie im CO2-Verlauf. "month": pro Tag (Jahreswert / 365,25), "year"/"lastyear":
-   pro Monat (Jahreswert / 12), "all": pro Jahr (Bucket ist bereits ein Jahr, 1:1). */
-function co2ReferenceKgPerBucket(filter){
-  if(filter==='month') return GERMAN_AVG_CO2_KG_PER_YEAR/365.25;
-  if(filter==='year' || filter==='lastyear') return GERMAN_AVG_CO2_KG_PER_YEAR/12;
-  return GERMAN_AVG_CO2_KG_PER_YEAR;
+/* Ø-Mobilitäts-CO2 eines Bundesbürgers, heruntergebrochen auf die Größe EINES Buckets
+   im gewählten Zeitraum — für die Vergleichslinie im CO2-Verlauf. Gibt ein Array
+   parallel zu `buckets` zurück (nicht mehr ein einzelner fester Wert!): der
+   Mobilitäts-Anteil war über die Jahre keine Konstante (siehe
+   GERMAN_AVG_MOBILITY_CO2_BY_YEAR, v. a. Corona-Einbruch 2020/2021) — in der
+   "Gesamt"-Ansicht (mehrere Jahre nebeneinander) bekommt daher jedes Jahr seinen
+   EIGENEN historischen Referenzwert statt einer geraden Linie. "month": pro Tag
+   (Jahreswert des aktuellen Jahres / 365,25), "year"/"lastyear": pro Monat
+   (Jahreswert des jeweiligen Jahres / 12), "all": pro Jahr, je Bucket sein eigenes Jahr. */
+function co2ReferenceSeriesForBuckets(filter, buckets){
+  if(filter==='month'){
+    const y = String(new Date().getFullYear());
+    const perDay = co2ReferenceKgForYear(y)/365.25;
+    return buckets.map(()=>perDay);
+  }
+  if(filter==='year' || filter==='lastyear'){
+    const y = String(filter==='year' ? new Date().getFullYear() : new Date().getFullYear()-1);
+    const perMonth = co2ReferenceKgForYear(y)/12;
+    return buckets.map(()=>perMonth);
+  }
+  // 'all' — jeder Bucket ist bereits ein Jahr (b.label === Jahreszahl)
+  return buckets.map(b=>co2ReferenceKgForYear(b.label));
 }
 
 /* ---------- Distanzvergleiche ---------- */
@@ -3773,7 +4021,8 @@ function renderDashboard(root){
   const cmpMars = compareToReference(agg.totalKm, MARS_DISTANCE_KM);
   const cmpEarthYear = compareToReference(currentYearTotalKm, EARTH_CIRCUMFERENCE_KM);
   const currentYearCO2 = yearCO2Kg(currentYear);
-  const cmpCO2 = compareCO2(currentYearCO2, GERMAN_AVG_CO2_KG_PER_YEAR);
+  const currentYearCO2Ref = co2ReferenceKgForYear(currentYear);
+  const cmpCO2 = compareCO2(currentYearCO2, currentYearCO2Ref);
   const currentYearCO2ByMode = yearCO2ByMode(currentYear);
   const co2ModeBreakdownHTML = MODE_ORDER
     .map(m=>({m, kg:currentYearCO2ByMode[m]||0}))
@@ -3785,7 +4034,7 @@ function renderDashboard(root){
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'<div class="cc-sub-year">'+currentYear+': '+cmpEarthYear.ratioText+'</div></div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung) · Gesamtdistanz"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="Ø Mobilitäts-CO2 pro Kopf &amp; Jahr in Deutschland: rund 2,0 t (Mobilitäts-Anteil von rund 19–21 % am gesamten Pro-Kopf-Fußabdruck von 10,4 t; Quelle: Umweltbundesamt/BMUV) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Mobilitäts-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger (Mobilität) '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div>'+(co2ModeBreakdownHTML?'<div class="cc-sub cc-sub-breakdown">'+co2ModeBreakdownHTML+'</div>':'')+'</div>';
+  html += '      <div class="compare-chip" title="Ø Mobilitäts-CO2 pro Kopf &amp; Jahr in Deutschland '+currentYear+': rund '+fmtKg(currentYearCO2Ref)+' (Mobilitäts-Anteil, kein historisch konstanter Wert — u. a. Corona-bedingt schwankend; Quelle: Umweltbundesamt/DIW) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Mobilitäts-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger (Mobilität) '+fmtKg(currentYearCO2Ref)+'/Jahr</div>'+(co2ModeBreakdownHTML?'<div class="cc-sub cc-sub-breakdown">'+co2ModeBreakdownHTML+'</div>':'')+'</div>';
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
@@ -5043,7 +5292,11 @@ function renderCO2Chart(){
 
   // Ø-Bundesbürger-Referenzlinie (Mobilität) — nur sinnvoll im Vergleich zur
   // Gesamt-Emission (nicht zum Ø-pro-Reise-Wert, der stark je Reiseanzahl schwankt).
-  const refPerBucket = co2ChartShowAvgDE ? co2ReferenceKgPerBucket(co2ChartRange) : null;
+  // Ist KEINE Konstante über die Jahre (siehe co2ReferenceSeriesForBuckets) — in der
+  // "Gesamt"-Ansicht daher eine eigene, ggf. je Jahr unterschiedliche Linie statt einer
+  // geraden Trendlinie.
+  const refSeries = co2ChartShowAvgDE ? co2ReferenceSeriesForBuckets(co2ChartRange, buckets) : null;
+  const refMax = refSeries ? Math.max(...refSeries) : 0;
 
   /* Jede Serie wird unabhängig auf ihr eigenes Maximum normiert (0..plotH) — Gesamt- und
      Ø-Werte liegen oft in sehr unterschiedlichen Größenordnungen, eine gemeinsame Skala
@@ -5062,7 +5315,7 @@ function renderCO2Chart(){
       }))
     };
   }
-  const totalSeries = buildSeries(b=>b.value, co2ChartShowTotal ? refPerBucket : null);
+  const totalSeries = buildSeries(b=>b.value, co2ChartShowTotal ? refMax : null);
   const avgSeries = buildSeries(b=> b.count>0 ? b.value/b.count : 0);
   const totalPts = totalSeries.pts;
   const avgPts = avgSeries.pts;
@@ -5097,13 +5350,21 @@ function renderCO2Chart(){
       }
     });
   }
-  if(refPerBucket!==null){
-    // Gestrichelte, flache Vergleichslinie auf derselben Skala wie die Gesamt-Emission —
-    // "wenn du genau den Mobilitäts-Durchschnitt eines Bundesbürgers ausgestoßen hättest,
-    // läge jeder Punkt hier".
-    const refY = padTop + (1 - (refPerBucket/totalSeries.maxVal)) * plotH;
-    svg += '<line x1="'+padL+'" y1="'+refY.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+refY.toFixed(1)+'" class="co2-line-ref"><title>Ø Bundesbürger (Mobilität): '+fmtKg(refPerBucket)+'</title></line>';
-    svg += '<text x="'+(W-padR)+'" y="'+(refY-4).toFixed(1)+'" class="co2-line-ref-label" text-anchor="end">Ø Bundesbürger '+fmtKgCompact(refPerBucket)+'</text>';
+  if(refSeries!==null){
+    // Gestrichelte Vergleichslinie auf derselben Skala wie die Gesamt-Emission — folgt
+    // dem historischen Mobilitäts-Durchschnitt je Jahr (z. B. Corona-Einbruch 2020/2021
+    // sichtbar), keine gerade Trendlinie über alle Jahre hinweg.
+    const refPts = buckets.map((b,i)=>({
+      x: xAt(i),
+      y: padTop + (1 - (refSeries[i]/totalSeries.maxVal)) * plotH,
+      val: refSeries[i]
+    }));
+    svg += '<path d="'+pathFor(refPts)+'" class="co2-line-ref"/>';
+    const lastRef = refPts[refPts.length-1];
+    svg += '<text x="'+(W-padR)+'" y="'+(lastRef.y-4).toFixed(1)+'" class="co2-line-ref-label" text-anchor="end">Ø Bundesbürger '+fmtKgCompact(lastRef.val)+'</text>';
+    refPts.forEach((p,i)=>{
+      svg += '<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="2" class="co2-line-ref-dot"><title>'+buckets[i].label+': Ø Bundesbürger (Mobilität) '+fmtKg(p.val)+'</title></circle>';
+    });
   }
   // X-Achsenbeschriftung anhand der Bucket-Labels (unabhängig davon, welche Serie(n) sichtbar sind)
   buckets.forEach((b,i)=>{
@@ -6061,7 +6322,27 @@ function openSettings(){
   document.getElementById('syncUrlInput').value = syncConfig.url || '';
   document.getElementById('syncTokenInput').value = syncConfig.token || '';
   setSyncStatus(syncEnabled() ? 'Cloud-Sync konfiguriert.' : 'Cloud-Sync nicht eingerichtet.', syncEnabled()?'ok':'');
+  renderReleaseNotes();
   document.getElementById('settingsModal').classList.add('open');
+}
+function renderReleaseNotes(){
+  const el = document.getElementById('releaseNotesList');
+  if(!el) return;
+  let html = '';
+  RELEASE_NOTES.forEach((r,idx)=>{
+    html += '<div class="release-note-entry'+(idx===0?' latest':'')+'">';
+    html += '  <div class="release-note-head">';
+    html += '    <span class="release-note-tier">'+r.tier+'</span>';
+    html += '    <span class="release-note-version">v'+r.v+'</span>';
+    html += '    <span class="release-note-title">'+r.title+'</span>';
+    if(idx===0) html += '<span class="release-note-badge">Aktuell</span>';
+    html += '  </div>';
+    html += '  <ul class="release-note-items">';
+    r.items.forEach(item=>{ html += '<li>'+item+'</li>'; });
+    html += '  </ul>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
 }
 function closeSettings(){
   document.getElementById('settingsModal').classList.remove('open');
