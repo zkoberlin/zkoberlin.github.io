@@ -38,7 +38,7 @@
      Weltkarte immer gut sichtbar, statt im Hell-Modus ins Dunkle abzudriften. */
   --map-city:#3FB6F0;
   --map-home:#FF9640;
-  --map-bucket:#C77DFF;
+  --map-bucket:#E8B84B;
   --map-bucket-dot:#E63946;
 }
 
@@ -288,6 +288,7 @@ a{color:var(--teal);}
 .compare-chip .cc-main{display:flex;align-items:center;gap:6px;}
 .compare-chip .cv{font-family:var(--font-mono);font-weight:700;color:var(--text);font-size:13px;}
 .compare-chip .cc-sub{font-size:10.5px;color:var(--text-faint);padding-left:21px;}
+.compare-chip .cc-sub-breakdown{font-family:var(--font-mono);color:var(--text-dim);margin-top:1px;}
 
 .mode-stubs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 @media(max-width:559px){.mode-stubs .stub:last-child:nth-child(odd){grid-column:1 / -1;}}
@@ -438,6 +439,50 @@ tr.log-row.expanded .log-row-toggle{transform:rotate(180deg);}
 }
 .log-detail-item{display:flex;flex-direction:column;gap:2px;min-width:120px;}
 .log-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);font-family:var(--font-display);}
+
+/* ---------- Reise-Fotos ---------- */
+.log-photos{padding:2px 4px 8px;}
+.log-photos-label{font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);font-family:var(--font-display);margin-bottom:8px;}
+.log-photos-count{color:var(--text-faint);text-transform:none;letter-spacing:0;font-family:var(--font-mono);}
+.log-photos-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.log-photo-thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;border:1px solid var(--border-soft);flex-shrink:0;}
+.log-photo-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;display:block;}
+.log-photo-del{
+  position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;
+  background:rgba(0,0,0,0.55);color:#fff;border:none;font-size:10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;line-height:1;
+}
+.log-photo-add{
+  width:64px;height:64px;border-radius:8px;border:1.5px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  color:var(--text-faint);font-size:22px;font-weight:300;transition:border-color .15s,color .15s;
+}
+.log-photo-add:hover{border-color:var(--gold-dim);color:var(--gold);}
+
+.photo-lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;}
+.photo-lightbox-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.82);}
+.photo-lightbox-content{
+  position:relative;z-index:1;max-width:92vw;max-height:88vh;display:flex;flex-direction:column;
+  align-items:center;gap:10px;
+}
+.photo-lightbox-content img{max-width:92vw;max-height:74vh;border-radius:10px;object-fit:contain;box-shadow:0 12px 40px rgba(0,0,0,0.5);}
+.photo-lightbox-close{
+  position:absolute;top:-14px;right:-14px;width:32px;height:32px;border-radius:50%;
+  background:var(--panel);border:1px solid var(--border);color:var(--text);font-size:15px;cursor:pointer;
+}
+.photo-lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;
+  background:rgba(20,20,20,0.55);color:#fff;border:none;font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-lightbox-nav.prev{left:-8px;}
+.photo-lightbox-nav.next{right:-8px;}
+.photo-lightbox-footer{display:flex;align-items:center;gap:10px;width:100%;max-width:420px;}
+.photo-lightbox-footer input{
+  flex:1;background:var(--panel);border:1px solid var(--border-soft);border-radius:8px;
+  padding:8px 10px;color:var(--text);font-size:13px;
+}
+.photo-lightbox-count{font-size:11px;color:var(--text-faint);font-family:var(--font-mono);white-space:nowrap;}
 /* Kompaktere Tabelle für "Alle Reisen" — schmalere Zellen/Schrift, damit mehr
    Spalten auf Desktop-Breite passen. */
 .log-table th{padding:7px 8px;font-size:10px;}
@@ -1529,7 +1574,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
 /* ø CO2-Fußabdruck pro Kopf und Jahr in Deutschland — rund 10,4 t CO2e (BMUV/Umweltbundesamt, Stand 2025) */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 10400;
 
-const APP_VERSION = '1.34.0';
+const APP_VERSION = '1.35.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -1968,6 +2013,7 @@ function migrateTrip(t){
     if(normalized==='ausflug') m = Object.assign({}, m, {purpose:'ausflug', purposeCustom:''});
     else if(normalized==='alma') m = Object.assign({}, m, {purpose:'alma', purposeCustom:''});
   }
+  if(m.photos===undefined) m = Object.assign({}, m, {photos:[]});
   return m;
 }
 
@@ -2148,6 +2194,155 @@ async function saveTrips(){
     showToast('⚠️ Noch nicht mit der Cloud verbunden — „Jetzt synchronisieren" in den Einstellungen versuchen.');
   }
 }
+
+/* ---------- Reise-Fotos ---------- */
+/* Max. Anzahl Fotos pro Reise. Fotos liegen als komprimiertes Base64 direkt im
+   Reise-Objekt (kein eigener Datei-Speicher/CDN vorhanden) — werden also bei jedem
+   Speichern mit dem gesamten trips-Array synchronisiert. Die Kompression unten hält
+   die einzelnen Fotos bewusst klein (lange Kante max. 1600px, JPEG ~78%), damit das
+   bei vielen Fotos nicht zu groß/langsam wird — trotzdem: bei SEHR vielen Fotos über
+   viele Reisen hinweg kann der Sync spürbar länger dauern, da immer das komplette
+   Array übertragen wird (keine Einzel-Datei-Uploads). */
+const MAX_PHOTOS_PER_TRIP = 5;
+
+/* Liest eine Bilddatei, skaliert sie auf max. `maxDim` Px lange Kante und kodiert sie
+   als JPEG-Data-URL — reduziert typische Handyfotos (mehrere MB) auf üblicherweise
+   80–250 KB, ohne dass man das auf einem Trip-Thumbnail merkt. */
+function compressImageFile(file, maxDim, quality){
+  maxDim = maxDim || 1600; quality = quality || 0.78;
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Datei konnte nicht gelesen werden.'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('Kein gültiges Bild.'));
+      img.onload = () => {
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if(w<=0 || h<=0){ reject(new Error('Ungültige Bildmaße.')); return; }
+        if(w>h && w>maxDim){ h = Math.round(h*(maxDim/w)); w = maxDim; }
+        else if(h>=w && h>maxDim){ w = Math.round(w*(maxDim/h)); h = maxDim; }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        try{
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        }catch(e){ reject(e); }
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function addPhotosToTrip(tripId, fileList, root){
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip) return;
+  if(!trip.photos) trip.photos = [];
+  const files = Array.from(fileList||[]).filter(f=>f.type && f.type.startsWith('image/'));
+  const slotsLeft = MAX_PHOTOS_PER_TRIP - trip.photos.length;
+  if(slotsLeft<=0){ showToast('Maximal '+MAX_PHOTOS_PER_TRIP+' Fotos pro Reise.'); return; }
+  const toAdd = files.slice(0, slotsLeft);
+  if(files.length>toAdd.length){ showToast('Nur die ersten '+toAdd.length+' Fotos übernommen (max. '+MAX_PHOTOS_PER_TRIP+' pro Reise).'); }
+  showToast('Fotos werden verarbeitet …');
+  for(const file of toAdd){
+    try{
+      const dataUrl = await compressImageFile(file);
+      trip.photos.push({id:uid(), data:dataUrl, note:'', addedAt:new Date().toISOString()});
+    }catch(e){
+      console.error('Foto-Kompression fehlgeschlagen:', e);
+      showToast('⚠️ Ein Foto konnte nicht verarbeitet werden.');
+    }
+  }
+  await saveTrips();
+  if(root){
+    const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
+    if(tableWrap) tableWrap.outerHTML = renderLogTable();
+    attachLogTableSort(root);
+    attachLogRowActions(root);
+    const detailRow = root.querySelector('tr.log-detail-row[data-detail-for="'+tripId+'"]');
+    const mainRow = root.querySelector('tr.log-row[data-trip-row="'+tripId+'"]');
+    if(detailRow){ detailRow.style.display='table-row'; }
+    if(mainRow){ mainRow.classList.add('expanded'); }
+  }
+}
+
+async function deletePhotoFromTrip(tripId, photoId, root){
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip || !trip.photos) return;
+  trip.photos = trip.photos.filter(p=>p.id!==photoId);
+  await saveTrips();
+  if(root){
+    const tableWrap = root.querySelector('.table-wrap') || root.querySelector('.empty-state');
+    if(tableWrap) tableWrap.outerHTML = renderLogTable();
+    attachLogTableSort(root);
+    attachLogRowActions(root);
+    const detailRow = root.querySelector('tr.log-detail-row[data-detail-for="'+tripId+'"]');
+    const mainRow = root.querySelector('tr.log-row[data-trip-row="'+tripId+'"]');
+    if(detailRow){ detailRow.style.display='table-row'; }
+    if(mainRow){ mainRow.classList.add('expanded'); }
+  }
+}
+
+let photoLightboxState = null; // {tripId, index}
+function openPhotoLightbox(tripId, photoId){
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip || !trip.photos || !trip.photos.length) return;
+  const idx = trip.photos.findIndex(p=>p.id===photoId);
+  photoLightboxState = {tripId, index: idx>=0?idx:0};
+  renderPhotoLightbox();
+}
+function closePhotoLightbox(){
+  photoLightboxState = null;
+  const el = document.getElementById('photoLightbox');
+  if(el) el.remove();
+}
+function stepPhotoLightbox(delta){
+  if(!photoLightboxState) return;
+  const trip = trips.find(t=>t.id===photoLightboxState.tripId);
+  if(!trip || !trip.photos.length) return;
+  photoLightboxState.index = (photoLightboxState.index + delta + trip.photos.length) % trip.photos.length;
+  renderPhotoLightbox();
+}
+function renderPhotoLightbox(){
+  if(!photoLightboxState) return;
+  const trip = trips.find(t=>t.id===photoLightboxState.tripId);
+  if(!trip || !trip.photos.length){ closePhotoLightbox(); return; }
+  const photo = trip.photos[photoLightboxState.index];
+  let el = document.getElementById('photoLightbox');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'photoLightbox';
+    el.className = 'photo-lightbox';
+    document.body.appendChild(el);
+  }
+  const multi = trip.photos.length>1;
+  el.innerHTML =
+    '<div class="photo-lightbox-backdrop"></div>'+
+    '<div class="photo-lightbox-content">'+
+    '  <button type="button" class="photo-lightbox-close" title="Schließen">✕</button>'+
+    (multi ? '  <button type="button" class="photo-lightbox-nav prev" title="Vorheriges">‹</button>' : '')+
+    '  <img src="'+photo.data+'" alt="">'+
+    (multi ? '  <button type="button" class="photo-lightbox-nav next" title="Nächstes">›</button>' : '')+
+    '  <div class="photo-lightbox-footer">'+
+    '    <input type="text" id="photoLightboxNote" placeholder="Notiz zu diesem Foto …" value="'+(photo.note||'').replace(/"/g,'&quot;')+'">'+
+    (multi ? '<span class="photo-lightbox-count">'+(photoLightboxState.index+1)+' / '+trip.photos.length+'</span>' : '')+
+    '  </div>'+
+    '</div>';
+  el.querySelector('.photo-lightbox-backdrop').addEventListener('click', closePhotoLightbox);
+  el.querySelector('.photo-lightbox-close').addEventListener('click', closePhotoLightbox);
+  if(multi){
+    el.querySelector('.prev').addEventListener('click', ()=>stepPhotoLightbox(-1));
+    el.querySelector('.next').addEventListener('click', ()=>stepPhotoLightbox(1));
+  }
+  const noteInput = el.querySelector('#photoLightboxNote');
+  noteInput.addEventListener('change', async ()=>{
+    const t = trips.find(x=>x.id===photoLightboxState.tripId);
+    const p = t && t.photos.find(x=>x.id===photo.id);
+    if(p){ p.note = noteInput.value.trim(); await saveTrips(); }
+  });
+}
+
 async function saveSettings(){
   try{
     const r = await window.storage.set('settings', JSON.stringify(settings), false);
@@ -2221,6 +2416,26 @@ function findOverlappingTrips(dateFrom, dateTo, excludeId){
 function totalCO2Kg(){ return trips.reduce((s,t)=>s+tripCO2Kg(t),0); }
 function yearCO2Kg(year){
   return trips.reduce((s,t)=> (t.dateFrom||'').slice(0,4)===year ? s+tripCO2Kg(t) : s, 0);
+}
+/* CO2e-Ausstoß eines Kalenderjahres, aufgeschlüsselt nach Verkehrsmittel — Hin- und
+   Rückweg zählen dabei jeweils mit dem Faktor ihres EIGENEN Verkehrsmittels (nicht
+   pauschal dem der ganzen Reise), damit z. B. "hin Zug, zurück Flug" korrekt beiden
+   Modi zugeordnet wird. */
+function yearCO2ByMode(year){
+  const byMode = {};
+  MODE_ORDER.forEach(m=>byMode[m]=0);
+  trips.forEach(t=>{
+    if((t.dateFrom||'').slice(0,4)!==year) return;
+    const outFactor = CO2_FACTORS[t.outMode] != null ? CO2_FACTORS[t.outMode] : 150;
+    if(t.direction!=='returnonly' && t.outMode){
+      byMode[t.outMode] = (byMode[t.outMode]||0) + (tripOut(t)*outFactor)/1000;
+    }
+    if((t.direction==='roundtrip' || t.direction==='returnonly') && t.returnMode){
+      const retFactor = CO2_FACTORS[t.returnMode] != null ? CO2_FACTORS[t.returnMode] : 150;
+      byMode[t.returnMode] = (byMode[t.returnMode]||0) + (tripReturn(t)*retFactor)/1000;
+    }
+  });
+  return byMode;
 }
 
 /* Prüft, ob ein Stadtname dem hinterlegten Heimatort entspricht. Reisen "nach Hause"
@@ -3514,11 +3729,18 @@ function renderDashboard(root){
   const cmpEarthYear = compareToReference(currentYearTotalKm, EARTH_CIRCUMFERENCE_KM);
   const currentYearCO2 = yearCO2Kg(currentYear);
   const cmpCO2 = compareCO2(currentYearCO2, GERMAN_AVG_CO2_KG_PER_YEAR);
+  const currentYearCO2ByMode = yearCO2ByMode(currentYear);
+  const co2ModeBreakdownHTML = MODE_ORDER
+    .map(m=>({m, kg:currentYearCO2ByMode[m]||0}))
+    .filter(x=>x.kg>0.05)
+    .sort((a,b)=>b.kg-a.kg)
+    .map(x=>getMode(x.m).icon+' '+fmtKg(x.kg))
+    .join(' · ');
   html += '    <div class="hero-compare">';
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'<div class="cc-sub-year">'+currentYear+': '+cmpEarthYear.ratioText+'</div></div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mond ø '+fmtKm(MOON_DISTANCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌕 <span class="cv">'+cmpMoon.ratioText+'</span> Richtung Mond</div>'+(cmpMoon.remainingText?'<div class="cc-sub">'+cmpMoon.remainingText+'</div>':'')+'</div>';
   html += '      <div class="compare-chip" title="Entfernung zum Mars ø '+fmtKm(MARS_DISTANCE_KM)+' (variiert stark je nach Planetenstellung) · Gesamtdistanz"><div class="cc-main">🔴 <span class="cv">'+cmpMars.ratioText+'</span> Richtung Mars</div>'+(cmpMars.remainingText?'<div class="cc-sub">'+cmpMars.remainingText+'</div>':'')+'</div>';
-  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div></div>';
+  html += '      <div class="compare-chip" title="ø CO2-Fußabdruck pro Kopf &amp; Jahr in Deutschland: rund 10,4 t (BMUV/Umweltbundesamt) — verglichen mit deinen Reisen in '+currentYear+'; Richtwerte je Verkehrsmittel, keine exakte Messung"><div class="cc-main">🌱 <span class="cv">'+cmpCO2.ratioText+'</span> Jahres-Fußabdruck</div><div class="cc-sub">'+fmtKg(currentYearCO2)+' in '+currentYear+' · Ø Bundesbürger '+fmtKg(GERMAN_AVG_CO2_KG_PER_YEAR)+'/Jahr</div>'+(co2ModeBreakdownHTML?'<div class="cc-sub cc-sub-breakdown">'+co2ModeBreakdownHTML+'</div>':'')+'</div>';
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="mode-stubs">';
@@ -4383,6 +4605,7 @@ function renderAdd(root){
       purposeCustom: purpose==='custom' ? document.getElementById('fldPurposeCustom').value.trim() : '',
       flightNumber: (!cityOnly && document.getElementById('fldFlightNo')) ? document.getElementById('fldFlightNo').value.trim() : '',
       notes: document.getElementById('fldNotes').value.trim(),
+      photos: t ? (t.photos||[]) : [],
       createdAt: t ? t.createdAt : Date.now()
     };
 
@@ -5208,6 +5431,28 @@ function tripMatchesLogFilter(t, q){
   if(modeLabels.some(l=>l.includes(q))) return true;
   return false;
 }
+function photoFeedHTML(t){
+  const photos = t.photos||[];
+  let html = '<div class="log-photos">';
+  html += '  <div class="log-photos-label">📷 Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
+  html += '  <div class="log-photos-grid">';
+  photos.forEach(p=>{
+    html += '<div class="log-photo-thumb">';
+    html += '  <img src="'+p.data+'" alt="" data-photo-view data-trip="'+t.id+'" data-photo="'+p.id+'">';
+    html += '  <button type="button" class="log-photo-del" data-photo-del data-trip="'+t.id+'" data-photo="'+p.id+'" title="Foto entfernen">✕</button>';
+    html += '</div>';
+  });
+  if(photos.length<MAX_PHOTOS_PER_TRIP){
+    html += '<label class="log-photo-add" title="Foto hinzufügen">';
+    html += '  <span>+</span>';
+    html += '  <input type="file" accept="image/*" multiple data-photo-input data-trip="'+t.id+'" hidden>';
+    html += '</label>';
+  }
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+
 function renderLogTable(){
   const q = logCityFilter.trim().toLowerCase();
   const filtered = q
@@ -5271,11 +5516,11 @@ function renderLogTable(){
     const contCode = getContinent((t.cityCC||'').toLowerCase());
     const contInfo = continentInfo(contCode);
     const contCell = contInfo ? contInfo.icon+' '+contInfo.label : '<span style="color:var(--text-faint);">–</span>';
-    const hasDetail = wpCount>0 || !t.cityOnly || pLbl || contInfo;
+    const hasDetail = true; // Foto-Sektion ist jetzt immer vorhanden, egal ob sonst Details existieren
     html += '<tr class="log-row" data-trip-row="'+t.id+'">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
-    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+(hasDetail?'<span class="log-row-toggle">▾</span>':'')+'</td>';
+    html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+'<span class="log-row-toggle">▾</span></td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary log-cell-mode">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
     html += '<td data-label="" class="log-cell-secondary"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-duplicate="'+t.id+'" title="Duplizieren">📋</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
@@ -5286,7 +5531,7 @@ function renderLogTable(){
       if(!t.cityOnly) html += '<div class="log-detail-item"><span class="log-detail-label">CO₂</span><span>'+fmtKg(tripCO2Kg(t))+'</span></div>';
       html += '<div class="log-detail-item"><span class="log-detail-label">Grund</span><span>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'–')+'</span></div>';
       html += '<div class="log-detail-item"><span class="log-detail-label">Kontinent</span><span>'+contCell+'</span></div>';
-      html += '</div></td></tr>';
+      html += '</div>'+photoFeedHTML(t)+'</td></tr>';
     }
   });
   html += '</tbody></table></div>';
@@ -5306,8 +5551,10 @@ function attachLogRowActions(root){
       const original = trips.find(x=>x.id===btn.dataset.duplicate);
       if(!original) return;
       // Flache Kopie reicht: Arrays (Waypoints) werden in renderAdd() ohnehin per
-      // .slice() übernommen, bevor der Nutzer sie im Formular verändert.
-      duplicateSource = Object.assign({}, original);
+      // .slice() übernommen, bevor der Nutzer sie im Formular verändert. Fotos werden
+      // bewusst NICHT mitkopiert — die gehören zur konkreten (alten) Reise, nicht zur
+      // neuen, sonst tauchen fremde Erinnerungsfotos in einer unverwandten Reise auf.
+      duplicateSource = Object.assign({}, original, {photos:[]});
       editingId = null;
       switchTab('add');
       showToast('Reise dupliziert — Grund und Datum kannst du jetzt anpassen.');
@@ -5330,6 +5577,26 @@ function attachLogRowActions(root){
       e.stopPropagation();
       logCityFilter = el.dataset.cityFilter || '';
       renderLog(root);
+    });
+  });
+  root.querySelectorAll('[data-photo-input]').forEach(input=>{
+    input.addEventListener('change', async (e)=>{
+      const tripId = input.dataset.trip;
+      if(e.target.files && e.target.files.length){
+        await addPhotosToTrip(tripId, e.target.files, root);
+      }
+    });
+  });
+  root.querySelectorAll('[data-photo-del]').forEach(btn=>{
+    btn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      await deletePhotoFromTrip(btn.dataset.trip, btn.dataset.photo, root);
+    });
+  });
+  root.querySelectorAll('img[data-photo-view]').forEach(img=>{
+    img.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openPhotoLightbox(img.dataset.trip, img.dataset.photo);
     });
   });
   // Zeile antippen/klicken: auf Mobil klappt es die Detailspalten (Von, Verkehrsmittel,
