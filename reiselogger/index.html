@@ -450,13 +450,22 @@ tr:last-child td{border-bottom:none;}
 /* Ein einheitliches Karten-Layout für Desktop UND Mobile: Details (Icon-Raster),
    Fotos, Aktions-Fußzeile — jeweils als klar getrennte Sektion, keine frei
    schwebenden Infos mehr. */
-.log-detail-card{display:flex;flex-direction:column;}
+.log-detail-card{
+  display:flex;flex-direction:column;
+  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:20px;
+}
 .log-detail-section{padding:14px 16px;border-bottom:1px solid var(--border-soft);}
 .log-detail-section-label{
   font-size:11.5px;color:var(--text-faint);margin-bottom:10px;font-family:var(--font-display);
   display:flex;align-items:center;gap:5px;
 }
 .log-photos-count{color:var(--text-faint);font-family:var(--font-mono);}
+.log-photos-hint{font-size:10.5px;color:var(--text-faint);margin-top:-4px;margin-bottom:8px;}
+.log-photo-cover-badge{
+  position:absolute;top:2px;left:2px;color:var(--gold);font-size:12px;text-shadow:0 1px 3px rgba(0,0,0,0.7);z-index:1;
+}
+.log-photo-thumb.is-cover{box-shadow:0 0 0 2px var(--gold);}
 .log-detail-icongrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;}
 .log-detail-icongrid-item{display:flex;align-items:flex-start;gap:8px;min-width:0;}
 .log-detail-icon{font-size:16px;line-height:1.3;flex-shrink:0;}
@@ -581,10 +590,14 @@ tr:last-child td{border-bottom:none;}
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.7) 100%);
 }
+.tdp-hero-date{position:absolute;top:14px;left:14px;z-index:2;}
 .tdp-hero-overlay{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-self:stretch;}
 .tdp-hero.placeholder .tdp-hero-overlay{position:absolute;bottom:14px;left:14px;right:14px;}
 .tdp-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-faint);padding:0 4px;}
 .tdp-footer b{color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-weight:500;}
+
+.tc-mini-route{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:6px;font-size:11px;}
+.tc-mini-route-line{width:20px;height:0;border-top:1.5px dashed var(--border);}
 
 
 /* ---------- Reise-Fotos ---------- */
@@ -1191,7 +1204,6 @@ tr:last-child td{border-bottom:none;}
     display:block; text-align:left; padding:0;
   }
   .responsive-table td.log-detail-cell:last-child{border-bottom:none;}
-  .log-detail-icongrid{grid-template-columns:1fr;}
 
   .hero-number{font-size:clamp(36px,11vw,48px);}
   .boarding-pass, .card{border-radius:14px;}
@@ -1807,11 +1819,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.40.1';
+const APP_VERSION = '1.41.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.41.0', tier:'🟡', title:'Detailseite verfeinert & Titelbild wählbar', items:[
+    'Datum auf dem Titelbild jetzt weit oben links, unabhängig von Route/Badges positioniert (statt im unteren Textblock).',
+    '"Details"-Bereich (Zwischenstopp/CO2/Grund/Kontinent) wieder zweispaltig — ein versehentlicher Mobile-Override hatte das auf eine Spalte gezwungen.',
+    '"Reise auf einen Blick": bei Hin- und Rückreisen erscheint jetzt eine kleine Hin/Rück-Routengrafik unter "Transport".',
+    'Details/Fotos/Aktionen jetzt als eigene, klar umrandete Karte (vorher unsichtbare Kartengrenze auf der Detailseite).',
+    'Datum beim Zwischenstopp entfernt — steht ja bereits oben im Titelbild.',
+    'Neu: Titelbild per langem Drücken auf ein Foto festlegen (Foto rutscht an Position 1, wird für Karten-Vorschau und Detailseite verwendet) — mit Stern-Badge beim aktuellen Titelbild.'
+  ]},
   {v:'1.40.1', tier:'🟡', title:'Karten-Feinschliff nach Live-Test', items:[
     'Untere Tab-Leiste wieder entfernt — nahm zu viel Platz weg.',
     'Klammer-Länderangabe ("Berlin (Deutschland)") aus allen Karten-Namen entfernt, da das Land ja schon separat darunter steht.',
@@ -5929,9 +5949,11 @@ function photoFeedHTML(t){
   const photos = t.photos||[];
   let html = '<div class="log-photos">';
   html += '  <div class="log-detail-section-label">📷 Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
+  if(photos.length>1) html += '  <div class="log-photos-hint">Lange auf ein Foto drücken, um es als Titelbild festzulegen.</div>';
   html += '  <div class="log-photos-grid">';
-  photos.forEach(p=>{
-    html += '<div class="log-photo-thumb">';
+  photos.forEach((p,idx)=>{
+    html += '<div class="log-photo-thumb'+(idx===0?' is-cover':'')+'" data-photo-thumb data-trip="'+t.id+'" data-photo="'+p.id+'">';
+    if(idx===0) html += '  <span class="log-photo-cover-badge" title="Aktuelles Titelbild">★</span>';
     html += '  <img src="'+p.data+'" alt="" data-photo-view data-trip="'+t.id+'" data-photo="'+p.id+'">';
     html += '  <button type="button" class="log-photo-del" data-photo-del data-trip="'+t.id+'" data-photo="'+p.id+'" title="Foto entfernen">✕</button>';
     html += '</div>';
@@ -5945,6 +5967,49 @@ function photoFeedHTML(t){
   html += '  </div>';
   html += '</div>';
   return html;
+}
+/* Setzt ein Foto als "Titelbild" der Reise (immer photos[0] — wird für Karten-
+   Vorschau, Detailseiten-Titelbild und Teilen genutzt). Per langem Drücken auf ein
+   Foto im Fotos-Bereich auslösbar (siehe attachPhotoLongPress). */
+async function setCoverPhoto(tripId, photoId, root){
+  const trip = trips.find(t=>t.id===tripId);
+  if(!trip || !trip.photos) return;
+  const idx = trip.photos.findIndex(p=>p.id===photoId);
+  if(idx<=0) return;
+  const [photo] = trip.photos.splice(idx,1);
+  trip.photos.unshift(photo);
+  await saveTrips();
+  showToast('⭐ Titelbild festgelegt.');
+  if(viewingTripId===tripId && root){
+    renderTripDetailPage(tripId, root);
+  } else if(root){
+    const wrap = document.getElementById('logResultsWrap');
+    if(wrap){ wrap.innerHTML = renderLogResults(); attachLogResultActions(root); }
+  }
+}
+/* Long-Press-Erkennung (Touch & Maus) ohne Abhängigkeit von Browser-eigenen
+   Kontextmenü-Events (die auf iOS Safari oft unzuverlässig/inkonsistent feuern). */
+function attachPhotoLongPress(root){
+  root.querySelectorAll('[data-photo-thumb]').forEach(el=>{
+    let timer = null, moved = false;
+    const start = (e)=>{
+      moved = false;
+      timer = setTimeout(()=>{
+        timer = null;
+        if(!moved) setCoverPhoto(el.dataset.trip, el.dataset.photo, root);
+      }, 550);
+    };
+    const cancel = ()=>{ if(timer){ clearTimeout(timer); timer=null; } };
+    const move = ()=>{ moved = true; cancel(); };
+    el.addEventListener('touchstart', start, {passive:true});
+    el.addEventListener('touchend', cancel);
+    el.addEventListener('touchmove', move, {passive:true});
+    el.addEventListener('touchcancel', cancel);
+    el.addEventListener('mousedown', start);
+    el.addEventListener('mouseup', cancel);
+    el.addEventListener('mouseleave', cancel);
+    el.addEventListener('contextmenu', (e)=>e.preventDefault());
+  });
 }
 
 /* Einheitliche Detail-Karte pro Reise — für Desktop UND Mobile identisch (kein
@@ -5964,14 +6029,13 @@ function detailCardHTML(t){
   const pLbl = purposeLabel(t);
   const contCode = getContinent((t.cityCC||'').toLowerCase());
   const contInfo = continentInfo(contCode);
-  const dateCtx = fmtRange(t.dateFrom, t.dateTo);
 
   let items = '';
   (t.outWaypoints||[]).forEach(name=>{
-    items += detailIconItemHTML('📍', 'Stopp · Hinweg', name, dateCtx);
+    items += detailIconItemHTML('📍', 'Stopp · Hinweg', name);
   });
   (t.returnWaypoints||[]).forEach(name=>{
-    items += detailIconItemHTML('📍', 'Stopp · Rückweg', name, dateCtx);
+    items += detailIconItemHTML('📍', 'Stopp · Rückweg', name);
   });
   if(!t.cityOnly) items += detailIconItemHTML('💨', 'CO₂', fmtKg(tripCO2Kg(t)));
   items += detailIconItemHTML(pLbl?purposeIcon(t.purpose):'➖', 'Grund', pLbl||'–');
@@ -6012,6 +6076,22 @@ function tripCardStatsHTML(t){
     '<div class="tc-stat"><span class="tc-stat-icon">🕐</span><b>'+durationLabel+'</b><small>Reisedauer</small></div>'+
     '<div class="tc-stat"><span class="tc-stat-icon">📏</span><b>'+distLabel+'</b><small>Distanz</small></div>'+
     '<div class="tc-stat"><span class="tc-stat-icon">'+tripTransportIconsHTML(t)+'</span><b class="tc-stat-transport">'+tripTransportLabel(t)+'</b><small>Transport</small></div>'+
+  '</div>';
+}
+/* Variante für "Reise auf einen Blick" auf der Detailseite — zusätzlich eine kleine
+   Hin/Rück-Routengrafik unter "Transport" bei Hin- und Rückreisen (siehe Vorlage). */
+function tripOverviewStatsHTML(t){
+  const durationLabel = t.cityOnly ? '–' : (tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage'));
+  const distLabel = t.cityOnly ? '–' : fmtKm(tripTotal(t));
+  let miniRoute = '';
+  if(!t.cityOnly && t.direction==='roundtrip'){
+    const outMo = getMode(t.outMode), retMo = getMode(t.returnMode);
+    miniRoute = '<div class="tc-mini-route"><span>'+outMo.icon+'</span><span class="tc-mini-route-line"></span><span>'+retMo.icon+'</span></div>';
+  }
+  return '<div class="tc-stats">'+
+    '<div class="tc-stat"><span class="tc-stat-icon">🕐</span><b>'+durationLabel+'</b><small>Reisedauer</small></div>'+
+    '<div class="tc-stat"><span class="tc-stat-icon">📏</span><b>'+distLabel+'</b><small>Distanz</small></div>'+
+    '<div class="tc-stat"><span class="tc-stat-icon">'+tripTransportIconsHTML(t)+'</span><b class="tc-stat-transport">'+tripTransportLabel(t)+'</b><small>Transport</small>'+miniRoute+'</div>'+
   '</div>';
 }
 function tripCardBadgesHTML(t){
@@ -6140,13 +6220,13 @@ function renderTripDetailPage(tripId, root){
   html += '  </div>';
   html += '  <div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
   if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">🧳</span>';
+  html += '    <span class="tc-date-badge tdp-hero-date">📅 '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
   html += '    <div class="tdp-hero-overlay">';
-  html += '      <span class="tc-date-badge">📅 '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
   html += tripCardHeroRouteHTML(t);
   html += tripCardBadgesHTML(t).replace('tc-chevron','tc-chevron hidden');
   html += '    </div>';
   html += '  </div>';
-  html += '  <div class="card"><div class="card-head"><h2>Reise auf einen Blick</h2></div>'+tripCardStatsHTML(t)+'</div>';
+  html += '  <div class="card"><div class="card-head"><h2>Reise auf einen Blick</h2></div>'+tripOverviewStatsHTML(t)+'</div>';
   html += detailCardHTML(t);
   html += '  <div class="tdp-footer">';
   html += '    <span>Erstellt</span><b>'+(t.createdAt?fmtDate(new Date(t.createdAt).toISOString().slice(0,10)):'–')+'</b>';
@@ -6361,6 +6441,7 @@ function attachLogRowActions(root){
       openPhotoLightbox(img.dataset.trip, img.dataset.photo);
     });
   });
+  attachPhotoLongPress(root);
   // Zeile antippen/klicken: auf Mobil klappt es die Detailspalten (Von, Verkehrsmittel,
   // Distanz) auf/zu, auf Desktop sind diese ohnehin sichtbar. Zusätzlich (Mobil & Desktop)
   // klappt es die separate Detailzeile auf (Zwischenstopps, CO2, Grund, Kontinent) —
