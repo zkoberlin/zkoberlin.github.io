@@ -436,17 +436,38 @@ tr:last-child td{border-bottom:none;}
   background:var(--bg-soft);border:1px solid var(--border-soft);border-radius:100px;
   padding:1px 7px;margin-top:2px;margin-left:6px;flex-shrink:0;
 }
-.log-detail-row td{background:var(--bg-soft);}
-.log-detail-grid{
-  display:flex;flex-wrap:wrap;gap:10px 24px;padding:6px 4px;font-size:12px;
+.log-detail-row td{background:var(--bg-soft);padding:0;}
+
+/* ---------- Detail-Karte (Zeilen-Ausklappung in "Alle Reisen") ---------- */
+/* Ein einheitliches Karten-Layout für Desktop UND Mobile: Details (Icon-Raster),
+   Fotos, Aktions-Fußzeile — jeweils als klar getrennte Sektion, keine frei
+   schwebenden Infos mehr. */
+.log-detail-card{display:flex;flex-direction:column;}
+.log-detail-section{padding:14px 16px;border-bottom:1px solid var(--border-soft);}
+.log-detail-section-label{
+  font-size:11.5px;color:var(--text-faint);margin-bottom:10px;font-family:var(--font-display);
+  display:flex;align-items:center;gap:5px;
 }
-.log-detail-item{display:flex;flex-direction:column;gap:2px;min-width:120px;}
-.log-detail-label{font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);font-family:var(--font-display);}
+.log-photos-count{color:var(--text-faint);font-family:var(--font-mono);}
+.log-detail-icongrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;}
+.log-detail-icongrid-item{display:flex;align-items:flex-start;gap:8px;min-width:0;}
+.log-detail-icon{font-size:16px;line-height:1.3;flex-shrink:0;}
+.log-detail-item-label{font-size:11px;color:var(--text-faint);}
+.log-detail-item-value{font-size:13.5px;color:var(--text);margin-top:1px;word-break:break-word;}
+.log-detail-item-sub{font-size:10.5px;color:var(--text-faint);margin-top:1px;}
+.log-detail-footer{display:flex;}
+.log-detail-footer button{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:13px 4px;font-size:12.5px;color:var(--text-dim);background:transparent;
+  border:none;border-right:1px solid var(--border-soft);cursor:pointer;font-family:var(--font-body);
+}
+.log-detail-footer button:last-child{border-right:none;}
+.log-detail-footer button:hover{background:var(--bg-soft);color:var(--text);}
+.log-detail-footer-icon{font-size:14px;}
+.log-detail-footer-danger{color:var(--rose)!important;}
 
 /* ---------- Reise-Fotos ---------- */
-.log-photos{padding:2px 4px 8px;}
-.log-photos-label{font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-faint);font-family:var(--font-display);margin-bottom:8px;}
-.log-photos-count{color:var(--text-faint);text-transform:none;letter-spacing:0;font-family:var(--font-mono);}
+.log-photos{}
 .log-photos-grid{display:flex;flex-wrap:wrap;gap:8px;}
 .log-photo-thumb{position:relative;width:64px;height:64px;border-radius:8px;overflow:hidden;border:1px solid var(--border-soft);flex-shrink:0;}
 .log-photo-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;display:block;}
@@ -1014,18 +1035,14 @@ tr:last-child td{border-bottom:none;}
   .responsive-table tr.log-row{cursor:pointer;}
   .responsive-table td.log-cell-primary[data-label="Nach"]{justify-content:flex-start;gap:8px;}
   .responsive-table td.log-cell-primary[data-label="Nach"] .cell-city{flex:1;}
-  /* Aktionsbuttons als klar abgesetzte Fußzeile statt einer unklaren leeren Fläche. */
-  .responsive-table td.log-actions-cell{
-    padding-top:12px;margin-top:2px;border-top:1px solid var(--border-soft);border-bottom:none;
-  }
-  /* Detailzeile (Zwischenstopps/CO2/Grund/Kontinent + Fotos): die generische
-     td{display:flex}-Regel oben würde log-detail-grid und die Foto-Sektion sonst
-     nebeneinander statt sauber untereinander anordnen — hier gezielt aufgehoben. */
+  /* Detail-Karte (Details/Fotos/Aktionen): die generische td{display:flex}-Regel
+     oben würde die Karte sonst falsch ausrichten — hier gezielt aufgehoben, damit
+     dasselbe Karten-Layout wie auf Desktop greift. */
   .responsive-table td.log-detail-cell{
-    display:block; text-align:left;
+    display:block; text-align:left; padding:0;
   }
-  .responsive-table td.log-detail-cell .log-detail-grid{flex-direction:column;gap:12px;}
-  .responsive-table td.log-detail-cell .log-detail-item{text-align:left;}
+  .responsive-table td.log-detail-cell:last-child{border-bottom:none;}
+  .log-detail-icongrid{grid-template-columns:1fr;}
 
   .hero-number{font-size:clamp(36px,11vw,48px);}
   .boarding-pass, .card{border-radius:14px;}
@@ -1591,7 +1608,7 @@ const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
    fairen Vergleich mit den eigenen Reise-Emissionen zählt nur der Mobilitäts-Anteil. */
 const GERMAN_AVG_CO2_KG_PER_YEAR = 2000;
 
-const APP_VERSION = '1.36.2';
+const APP_VERSION = '1.37.0';
 /* Referenzstrecken für die Distanzvergleiche (Näherungswerte) */
 const EARTH_CIRCUMFERENCE_KM = 40075;   // Erdumfang am Äquator
 const MOON_DISTANCE_KM = 384400;        // mittlere Entfernung Erde–Mond
@@ -5483,7 +5500,7 @@ function tripMatchesLogFilter(t, q){
 function photoFeedHTML(t){
   const photos = t.photos||[];
   let html = '<div class="log-photos">';
-  html += '  <div class="log-photos-label">📷 Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
+  html += '  <div class="log-detail-section-label">📷 Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
   html += '  <div class="log-photos-grid">';
   photos.forEach(p=>{
     html += '<div class="log-photo-thumb">';
@@ -5497,6 +5514,51 @@ function photoFeedHTML(t){
     html += '  <input type="file" accept="image/*" multiple data-photo-input data-trip="'+t.id+'" hidden>';
     html += '</label>';
   }
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+
+/* Einheitliche Detail-Karte pro Reise — für Desktop UND Mobile identisch (kein
+   separates Karten-Layout mehr nötig, siehe Nutzer-Wunsch "Design B" mit Icons aus
+   "Design A"): Details-Sektion (2-spaltiges Icon-Raster inkl. je einem Eintrag pro
+   Zwischenstopp mit Reisezeitraum als Kontext, da kein eigenes Datum pro Stopp erfasst
+   wird), Fotos-Sektion, Aktions-Fußzeile (Ändern/Duplizieren/Entfernen). */
+function detailIconItemHTML(icon, label, value, sub){
+  return '<div class="log-detail-icongrid-item">'+
+    '<span class="log-detail-icon">'+icon+'</span>'+
+    '<div><div class="log-detail-item-label">'+label+'</div>'+
+    '<div class="log-detail-item-value">'+value+'</div>'+
+    (sub ? '<div class="log-detail-item-sub">'+sub+'</div>' : '')+
+    '</div></div>';
+}
+function detailCardHTML(t){
+  const pLbl = purposeLabel(t);
+  const contCode = getContinent((t.cityCC||'').toLowerCase());
+  const contInfo = continentInfo(contCode);
+  const dateCtx = fmtRange(t.dateFrom, t.dateTo);
+
+  let items = '';
+  (t.outWaypoints||[]).forEach(name=>{
+    items += detailIconItemHTML('📍', 'Stopp · Hinweg', name, dateCtx);
+  });
+  (t.returnWaypoints||[]).forEach(name=>{
+    items += detailIconItemHTML('📍', 'Stopp · Rückweg', name, dateCtx);
+  });
+  if(!t.cityOnly) items += detailIconItemHTML('💨', 'CO₂', fmtKg(tripCO2Kg(t)));
+  items += detailIconItemHTML(pLbl?purposeIcon(t.purpose):'➖', 'Grund', pLbl||'–');
+  items += detailIconItemHTML(contInfo?contInfo.icon:'🌐', 'Kontinent', contInfo?contInfo.label:'–');
+
+  let html = '<div class="log-detail-card">';
+  html += '  <div class="log-detail-section">';
+  html += '    <div class="log-detail-section-label">Details</div>';
+  html += '    <div class="log-detail-icongrid">'+items+'</div>';
+  html += '  </div>';
+  html += '  <div class="log-detail-section">'+photoFeedHTML(t)+'</div>';
+  html += '  <div class="log-detail-footer">';
+  html += '    <button type="button" data-edit="'+t.id+'"><span class="log-detail-footer-icon">✏️</span>Ändern</button>';
+  html += '    <button type="button" data-duplicate="'+t.id+'"><span class="log-detail-footer-icon">📋</span>Duplizieren</button>';
+  html += '    <button type="button" class="log-detail-footer-danger" data-del="'+t.id+'"><span class="log-detail-footer-icon">🗑️</span>Entfernen</button>';
   html += '  </div>';
   html += '</div>';
   return html;
@@ -5535,7 +5597,7 @@ function renderLogTable(){
   }
 
   let html = '<div class="table-wrap"><table class="responsive-table log-table"><thead><tr>';
-  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehr</th>'+th('Distanz','distance')+'<th></th>';
+  html += th('Zeitraum','dateFrom')+th('Von','fromCity')+th('Nach','city')+'<th>Verkehr</th>'+th('Distanz','distance');
   html += '</tr></thead><tbody>';
   sorted.forEach(t=>{
     let modeCell, distCell;
@@ -5554,17 +5616,10 @@ function renderLogTable(){
       distCell = fmtKm(leg.distanceKm);
       if(t.direction==='returnonly') distCell += '<div style="font-size:10.5px;color:var(--text-faint);font-weight:400;">(nur Rückweg)</div>';
     }
-    const wpParts = [];
-    if((t.outWaypoints||[]).length) wpParts.push('Hin via '+t.outWaypoints.join(', '));
-    if((t.returnWaypoints||[]).length) wpParts.push((t.direction==='returnonly'?'Rückweg via ':'Rück via ')+t.returnWaypoints.join(', '));
     const wpCount = (t.outWaypoints||[]).length + (t.returnWaypoints||[]).length;
     const wpBadge = wpCount>0 ? '<div class="wp-badge">'+wpCount+' '+(wpCount===1?'Stopp':'Stopps')+'</div>' : '';
-    const pLbl = purposeLabel(t);
     const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
     const cityEsc = (t.city||'').replace(/"/g,'&quot;');
-    const contCode = getContinent((t.cityCC||'').toLowerCase());
-    const contInfo = continentInfo(contCode);
-    const contCell = contInfo ? contInfo.icon+' '+contInfo.label : '<span style="color:var(--text-faint);">–</span>';
     const photoBadge = (t.photos && t.photos.length) ? '<span class="log-photo-badge" title="'+t.photos.length+' Foto'+(t.photos.length===1?'':'s')+'">📷 '+t.photos.length+'</span>' : '';
     html += '<tr class="log-row" data-trip-row="'+t.id+'">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
@@ -5572,18 +5627,11 @@ function renderLogTable(){
     html += '<td data-label="Nach" class="log-cell-primary"><div class="cell-city">'+cityIcon(t.city,t.country,t.cityCC,20)+'<span class="log-city-link" data-city-filter="'+cityEsc+'" title="Nach &bdquo;'+cityEsc+'&ldquo; filtern">'+cityNameHTML(t.city,t.cityCC)+'</span></div>'+wpBadge+photoBadge+'</td>';
     html += '<td data-label="Verkehrsmittel" class="log-cell-secondary log-cell-mode">'+modeCell+'</td>';
     html += '<td class="mono log-cell-secondary" data-label="Distanz">'+distCell+'</td>';
-    html += '<td data-label="" class="log-cell-secondary log-actions-cell"><div class="row-actions"><button data-edit="'+t.id+'" title="Bearbeiten">✏️</button><button data-duplicate="'+t.id+'" title="Duplizieren">📋</button><button data-del="'+t.id+'" title="Löschen">🗑️</button></div></td>';
     html += '</tr>';
-    // Detailzeile existiert jetzt immer (wegen der Foto-Sektion, die auch ohne
-    // Zwischenstopps/Grund/Kontinent relevant ist).
-    {
-      html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="6" data-label="" class="log-detail-cell"><div class="log-detail-grid">';
-      if(wpParts.length) html += '<div class="log-detail-item"><span class="log-detail-label">Zwischenstopps</span><span>'+wpParts.join(' · ')+'</span></div>';
-      if(!t.cityOnly) html += '<div class="log-detail-item"><span class="log-detail-label">CO₂</span><span>'+fmtKg(tripCO2Kg(t))+'</span></div>';
-      html += '<div class="log-detail-item"><span class="log-detail-label">Grund</span><span>'+(pLbl?purposeIcon(t.purpose)+' '+pLbl:'–')+'</span></div>';
-      html += '<div class="log-detail-item"><span class="log-detail-label">Kontinent</span><span>'+contCell+'</span></div>';
-      html += '</div>'+photoFeedHTML(t)+'</td></tr>';
-    }
+    // Detailzeile existiert immer (Fotos + Aktionen sind jetzt fest Teil davon, nicht
+    // mehr nur bei Zwischenstopps/Grund/Kontinent) — einheitliches Karten-Layout für
+    // Desktop UND Mobile (siehe detailCardHTML).
+    html += '<tr class="log-detail-row" data-detail-for="'+t.id+'" style="display:none"><td colspan="5" data-label="" class="log-detail-cell">'+detailCardHTML(t)+'</td></tr>';
   });
   html += '</tbody></table></div>';
   return html;
