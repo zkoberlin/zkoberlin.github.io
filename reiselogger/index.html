@@ -225,20 +225,6 @@ a{color:var(--teal);}
   width:16px;height:16px;color:var(--text-faint);pointer-events:none;
 }
 
-.bottom-tabs{
-  display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;
-  background:var(--panel);border-top:1px solid var(--gold-dim);
-  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
-  justify-content:space-around;align-items:center;
-}
-.bottom-tab-btn{
-  background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
-  color:var(--text-faint);font-size:10px;font-family:var(--font-body);cursor:pointer;
-  padding:4px 8px;flex:1;
-}
-.bottom-tab-btn .bt-icon{font-size:19px;line-height:1;}
-.bottom-tab-btn.active{color:var(--gold);}
-
 /* ---------- Cards ---------- */
 .card{
   background:var(--panel);
@@ -496,31 +482,16 @@ tr:last-child td{border-bottom:none;}
   overflow:hidden;cursor:pointer;transition:border-color .15s ease;
 }
 .trip-card:hover{border-color:var(--gold-dim);}
-.trip-card-icon{display:flex;gap:12px;padding:12px;}
-.tc-thumb-icon{
-  width:56px;height:56px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--border-soft);
-  display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;align-self:flex-start;
-}
-.tc-body{flex:1;min-width:0;}
-.trip-card-icon .tc-body{display:flex;flex-direction:column;gap:8px;}
-.tc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.tc-date-plain{font-size:11.5px;color:var(--text-faint);}
+.tc-date-plain{font-size:11px;color:var(--text-faint);}
 .tc-date-badge{
   font-size:11px;color:#fff;background:rgba(0,0,0,0.45);border-radius:100px;padding:4px 10px;
   backdrop-filter:blur(2px);
 }
 .tc-menu-btn{
-  background:rgba(0,0,0,0.3);border:none;color:var(--text-dim);width:26px;height:26px;border-radius:50%;
-  cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.3);border:none;color:var(--text-dim);width:24px;height:24px;border-radius:50%;
+  cursor:pointer;font-size:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
 }
-.trip-card-icon .tc-menu-btn{background:transparent;color:var(--text-faint);}
-.tc-route{display:flex;align-items:center;gap:8px;}
-.tc-city{display:flex;flex-direction:column;min-width:0;}
-.tc-city.right{align-items:flex-end;text-align:right;}
-.tc-city b{font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-country{font-size:10.5px;color:var(--text-faint);white-space:nowrap;}
-.tc-route-line{flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.tc-route-line.light .mode-emoji{filter:drop-shadow(0 1px 2px rgba(0,0,0,0.6));}
+.trip-card-compact .tc-menu-btn{background:transparent;color:var(--text-faint);}
 .tc-stats{display:flex;}
 .tc-stat{flex:1;text-align:center;min-width:0;}
 .tc-stat:not(:last-child){border-right:1px solid var(--border-soft);}
@@ -533,23 +504,65 @@ tr:last-child td{border-bottom:none;}
 .tc-chevron{margin-left:auto;color:var(--text-faint);font-size:16px;}
 .tc-chevron.hidden{display:none;}
 
+/* Gestrichelte Route-Linie mit rundem Verkehrsmittel-Icon (Hero-Karte/Detailseite,
+   größere Variante) bzw. kompakter Variante (normale Karten) — kleine Punkte an
+   beiden Enden markieren Start/Ziel, wie in der Vorlage. */
+.tc-route-line{position:relative;flex:1;min-width:24px;height:26px;}
+.tc-route-line::before{content:'';position:absolute;left:3px;right:3px;top:50%;border-top:1.5px dashed rgba(255,255,255,0.55);}
+.tc-route-line::after{display:none;}
+.tc-route-line:not(.light)::before{border-top-color:var(--border);}
+.tc-route-dot{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:28px;height:28px;border-radius:50%;background:rgba(10,14,28,0.72);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  border:1px solid rgba(255,255,255,0.3);
+}
+.tc-route-line.compact{height:18px;}
+.tc-route-line.compact .tc-route-dot{display:none;}
+.tc-route-line.compact .mode-emoji{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;
+  background:var(--panel-alt);border-radius:50%;padding:2px;
+}
+.tc-route-line.compact:not(.light) .mode-emoji{background:var(--bg-soft);}
+
+/* Hero-Fotokarte (aktuellste Reise mit Foto) */
 .trip-card-photo{display:flex;flex-direction:column;}
 .tc-photo{
-  height:130px;background-size:cover;background-position:center;position:relative;
-  display:flex;flex-direction:column;justify-content:space-between;padding:10px 12px;
+  height:190px;background-size:cover;background-position:center;position:relative;
+  display:flex;flex-direction:column;justify-content:space-between;padding:12px 14px;
 }
-.trip-card-photo.hero .tc-photo{height:190px;}
 .tc-photo::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.05) 35%,rgba(0,0,0,0.65) 100%);
 }
 .tc-photo-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;}
-.tc-photo-route{position:relative;z-index:1;display:flex;align-items:flex-end;gap:8px;}
-.tc-photo-city{display:flex;flex-direction:column;min-width:0;}
+.tc-photo-route{position:relative;z-index:1;display:flex;align-items:flex-start;gap:6px;}
+.tc-photo-city{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .tc-photo-city.right{align-items:flex-end;text-align:right;}
-.tc-photo-city b{font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tc-photo-city span{font-size:10.5px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.6);}
-.trip-card-photo .tc-body{padding:12px;display:flex;flex-direction:column;gap:8px;}
+.tc-photo-city b{font-size:19px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-photo-country{font-size:11.5px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.6);}
+.tc-photo-flag{font-size:14px;margin-top:1px;}
+.trip-card-photo .tc-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
+
+/* Kompakte Karte (alle Reisen außer der Hero-Karte, mit oder ohne Foto-Miniatur) */
+.trip-card-compact{display:flex;align-items:center;gap:12px;padding:12px;}
+.tc-thumb{
+  width:78px;height:78px;border-radius:12px;flex-shrink:0;
+  background-size:cover;background-position:center;
+}
+.tc-thumb-icon{
+  background:var(--bg-soft);border:1px solid var(--border-soft);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+}
+.tc-compact-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
+.tc-compact-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.tc-compact-route{display:flex;align-items:center;gap:6px;}
+.tc-compact-route b{font-size:14.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;}
+.tc-compact-countries{display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-faint);}
+.tc-compact-divider{border-top:1px solid var(--border-soft);margin:2px 0;}
+.tc-compact-stats{font-size:11.5px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-compact-dot{color:var(--text-faint);margin:0 1px;}
+.tc-chevron-side{color:var(--text-faint);font-size:17px;flex-shrink:0;}
 
 .trip-detail-page{display:flex;flex-direction:column;gap:14px;}
 .tdp-header{display:flex;align-items:center;justify-content:space-between;}
@@ -1119,11 +1132,6 @@ tr:last-child td{border-bottom:none;}
   .tabs{display:none;}
   .tabs-mobile{display:block;}
 
-  /* Untere Tab-Leiste (Reisen/Statistiken/Karte/Profil) — nur Mobile, Desktop behält
-     die bestehende obere Navigation. */
-  .bottom-tabs{display:flex;}
-  body{padding-bottom:70px;}
-
   /* iOS zoomt beim Fokussieren eines Feldes automatisch rein, wenn die
      Schrift unter 16px liegt — hier gezielt angehoben. */
   .field input, .field select, .field textarea{font-size:16px;}
@@ -1310,13 +1318,6 @@ span.flatpickr-weekday{
 <div class="wrap" id="appRoot">
   <div class="loading-screen"><div class="spinner"></div>Lade deine Reisedaten …</div>
 </div>
-
-<nav class="bottom-tabs" id="bottomTabs">
-  <button class="bottom-tab-btn active" data-bottom-tab="log"><span class="bt-icon">🧳</span><span>Reisen</span></button>
-  <button class="bottom-tab-btn" data-bottom-tab="stats"><span class="bt-icon">📊</span><span>Statistiken</span></button>
-  <button class="bottom-tab-btn" data-bottom-tab="dashboard"><span class="bt-icon">🗺️</span><span>Karte</span></button>
-  <button class="bottom-tab-btn" data-bottom-tab="profile"><span class="bt-icon">👤</span><span>Profil</span></button>
-</nav>
 
 <div class="modal-backdrop" id="settingsModal">
   <div class="modal modal-wide">
@@ -1806,11 +1807,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.40.0';
+const APP_VERSION = '1.40.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.40.1', tier:'🟡', title:'Karten-Feinschliff nach Live-Test', items:[
+    'Untere Tab-Leiste wieder entfernt — nahm zu viel Platz weg.',
+    'Klammer-Länderangabe ("Berlin (Deutschland)") aus allen Karten-Namen entfernt, da das Land ja schon separat darunter steht.',
+    'Hero-Foto-Karte: Flagge des Startorts ergänzt (vorher nur beim Zielort), Route-Darstellung an die Vorlage angeglichen (Flagge unter dem Land, gestrichelte Linie mit rundem Icon).',
+    'Alle Karten außer der aktuellsten Foto-Karte komplett neu als Kompaktkarte: Miniatur links (Foto oder Koffer-Icon), Route mit dünnerer Linie, Land+Flagge in eigener Zeile, einzeilige Statistik ("7 Tage • 1.986 km • Direktflug") statt der bisherigen 3-Felder-Box, Pfeil rechts.'
+  ]},
   {v:'1.40.0', tier:'🔴', title:'Karten-Ansicht, Detailseite & Teilen (Mobile)', items:[
     'Untere Tab-Leiste auf Mobile: Reisen / Statistiken / Karte / Profil — Desktop behält die bestehende Navigation.',
     '"Alle Reisen" auf Mobile komplett neu als Karten-Liste statt Tabelle (Design-Vorlage 3): Route mit Flagge/Verkehrsmittel-Icon, 3 Statistik-Felder (Reisedauer/Distanz/Transport — berücksichtigt alle Verkehrsmittel-Kombinationen wie Hin-/Rückflug, gemischte Verkehrsmittel, nur Rückweg), Stopp-/Foto-Badges.',
@@ -5992,6 +5999,12 @@ function detailCardHTML(t){
    Stadtbilder für fotolose Reisen (Nutzer-Entscheidung). */
 let viewingTripId = null;
 
+/* "Berlin (Deutschland)" -> "Berlin": das Land steht in den Karten ohnehin schon
+   separat darunter, die Klammer im Namen wäre doppelt (kommt vor allem beim
+   Heimatort-Feld vor, das aus der Autovervollständigung oft inkl. Land übernommen wird). */
+function stripCountrySuffix(name){
+  return (name||'').replace(/\s*\([^)]*\)\s*$/, '').trim();
+}
 function tripCardStatsHTML(t){
   const durationLabel = t.cityOnly ? '–' : (tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage'));
   const distLabel = t.cityOnly ? '–' : fmtKm(tripTotal(t));
@@ -6010,39 +6023,72 @@ function tripCardBadgesHTML(t){
   html += '</div>';
   return html;
 }
-function tripCardRouteHTML(t){
-  return '<div class="tc-route">'+
-    '<div class="tc-city"><b>'+(t.fromCity||'?')+'</b><span class="tc-country">'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>'+
-    '<div class="tc-route-line">'+tripTransportIconsHTML(t)+'</div>'+
-    '<div class="tc-city right"><b>'+cityNameHTML(t.city,t.cityCC)+'</b><span class="tc-country">'+t.country+' '+flagImg(t.cityCC,13)+'</span></div>'+
+/* Route-Zeile für die große "Hero"-Fotokarte: Stadt/Land/Flagge auf beiden Seiten,
+   gestrichelte Linie mit rundem Verkehrsmittel-Icon dazwischen — siehe Vorlage. */
+function tripCardHeroRouteHTML(t){
+  const fromRef = findCity(t.fromCity);
+  const fromName = stripCountrySuffix(t.fromCity)||'?';
+  const fromCountry = fromRef ? fromRef.c : '';
+  const fromFlag = fromRef ? flagImg(fromRef.cc,13) : '';
+  return '<div class="tc-photo-route">'+
+    '<div class="tc-photo-city"><b>'+fromName+'</b><span class="tc-photo-country">'+fromCountry+'</span>'+(fromFlag?'<span class="tc-photo-flag">'+fromFlag+'</span>':'')+'</div>'+
+    '<div class="tc-route-line light"><span class="tc-route-dot">'+tripTransportIconsHTML(t)+'</span></div>'+
+    '<div class="tc-photo-city right"><b>'+stripCountrySuffix(t.city)+'</b><span class="tc-photo-country">'+t.country+'</span><span class="tc-photo-flag">'+flagImg(t.cityCC,13)+'</span></div>'+
   '</div>';
+}
+/* Kompakte Route-Zeile für die "normalen" (nicht-hero) Karten — schmaler, Land+Flagge
+   in einer eigenen Zeile darunter statt daneben, wie in der Vorlage. */
+function tripCardCompactRouteHTML(t){
+  const fromRef = findCity(t.fromCity);
+  const fromName = stripCountrySuffix(t.fromCity)||'?';
+  const fromCountry = fromRef ? fromRef.c : '';
+  const fromFlag = fromRef ? flagImg(fromRef.cc,12) : '';
+  return '<div class="tc-compact-route">'+
+    '<b>'+fromName+'</b>'+
+    '<div class="tc-route-line compact">'+tripTransportIconsHTML(t)+'</div>'+
+    '<b>'+stripCountrySuffix(t.city)+'</b>'+
+  '</div>'+
+  '<div class="tc-compact-countries">'+
+    '<span>'+fromCountry+(fromFlag?' '+fromFlag:'')+'</span>'+
+    '<span>'+t.country+' '+flagImg(t.cityCC,12)+'</span>'+
+  '</div>';
+}
+function tripCardStatsLineHTML(t){
+  const durationLabel = t.cityOnly ? null : (tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage'));
+  const distLabel = t.cityOnly ? null : fmtKm(tripTotal(t));
+  const parts = [durationLabel, distLabel, tripTransportLabel(t)].filter(Boolean);
+  return '<div class="tc-compact-stats">'+parts.join(' <span class="tc-compact-dot">•</span> ')+'</div>';
 }
 function tripCardHTML(t, isHero){
   const hasPhoto = t.photos && t.photos.length;
   const dateLabel = fmtRange(t.dateFrom,t.dateTo);
-  if(hasPhoto){
+
+  if(hasPhoto && isHero){
     const photoUrl = t.photos[0].data;
-    let html = '<div class="trip-card trip-card-photo'+(isHero?' hero':'')+'" data-trip-card="'+t.id+'">';
+    let html = '<div class="trip-card trip-card-photo hero" data-trip-card="'+t.id+'">';
     html += '  <div class="tc-photo" style="background-image:url(&quot;'+photoUrl+'&quot;)">';
     html += '    <div class="tc-photo-top"><span class="tc-date-badge">📅 '+dateLabel+'</span><button type="button" class="tc-menu-btn" data-trip-menu="'+t.id+'">⋯</button></div>';
-    html += '    <div class="tc-photo-route">';
-    html += '      <div class="tc-photo-city"><b>'+(t.fromCity||'?')+'</b><span>'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>';
-    html += '      <div class="tc-route-line light">'+tripTransportIconsHTML(t)+'</div>';
-    html += '      <div class="tc-photo-city right"><b>'+t.city+'</b><span>'+t.country+' '+flagImg(t.cityCC,12)+'</span></div>';
-    html += '    </div>';
+    html += tripCardHeroRouteHTML(t);
     html += '  </div>';
     html += '  <div class="tc-body">'+tripCardStatsHTML(t)+tripCardBadgesHTML(t)+'</div>';
     html += '</div>';
     return html;
   }
-  let html = '<div class="trip-card trip-card-icon" data-trip-card="'+t.id+'">';
-  html += '  <div class="tc-thumb-icon"><span>🧳</span></div>';
-  html += '  <div class="tc-body">';
-  html += '    <div class="tc-top"><span class="tc-date-plain">📅 '+dateLabel+'</span><button type="button" class="tc-menu-btn" data-trip-menu="'+t.id+'">⋯</button></div>';
-  html += tripCardRouteHTML(t);
-  html += tripCardStatsHTML(t);
-  html += tripCardBadgesHTML(t);
+
+  // Kompaktkarte — für alle übrigen Reisen (mit UND ohne Foto): Miniatur links
+  // (Foto, sofern vorhanden, sonst Koffer-Icon), Inhalt rechts, Pfeil ganz rechts.
+  const thumbHTML = hasPhoto
+    ? '<div class="tc-thumb tc-thumb-photo" style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"></div>'
+    : '<div class="tc-thumb tc-thumb-icon"><span>🧳</span></div>';
+  let html = '<div class="trip-card trip-card-compact" data-trip-card="'+t.id+'">';
+  html += thumbHTML;
+  html += '  <div class="tc-compact-body">';
+  html += '    <div class="tc-compact-top"><span class="tc-date-plain">📅 '+dateLabel+'</span><button type="button" class="tc-menu-btn" data-trip-menu="'+t.id+'">⋯</button></div>';
+  html += tripCardCompactRouteHTML(t);
+  html += '    <div class="tc-compact-divider"></div>';
+  html += tripCardStatsLineHTML(t);
   html += '  </div>';
+  html += '  <span class="tc-chevron-side">›</span>';
   html += '</div>';
   return html;
 }
@@ -6096,11 +6142,7 @@ function renderTripDetailPage(tripId, root){
   if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">🧳</span>';
   html += '    <div class="tdp-hero-overlay">';
   html += '      <span class="tc-date-badge">📅 '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
-  html += '      <div class="tc-photo-route">';
-  html += '        <div class="tc-photo-city"><b>'+(t.fromCity||'?')+'</b><span>'+(findCity(t.fromCity)?findCity(t.fromCity).c:'')+'</span></div>';
-  html += '        <div class="tc-route-line light">'+tripTransportIconsHTML(t)+'</div>';
-  html += '        <div class="tc-photo-city right"><b>'+t.city+'</b><span>'+t.country+' '+flagImg(t.cityCC,12)+'</span></div>';
-  html += '      </div>';
+  html += tripCardHeroRouteHTML(t);
   html += tripCardBadgesHTML(t).replace('tc-chevron','tc-chevron hidden');
   html += '    </div>';
   html += '  </div>';
@@ -6454,13 +6496,6 @@ function switchTab(tab){
   // lassen, statt sie auf einen nicht existierenden Options-Wert zu setzen (leere Anzeige).
   if(mobileSelect && mobileSelect.querySelector('option[value="'+tab+'"]') && mobileSelect.value!==tab){
     mobileSelect.value = tab;
-  }
-  // Untere Tab-Leiste (Mobile) synchron halten — "dashboard" entspricht dort "Karte",
-  // "places"/"badges"/"bucket"/"add" haben keine eigene untere Kachel (weiterhin über
-  // das Dropdown erreichbar) und lassen die Leiste daher unverändert.
-  const bottomTabMap = {dashboard:'dashboard', log:'log', stats:'stats'};
-  if(bottomTabMap[tab]){
-    document.querySelectorAll('.bottom-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.bottomTab===bottomTabMap[tab]));
   }
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
   const panel = document.getElementById('panel-'+tab);
@@ -6831,15 +6866,6 @@ document.getElementById('newTripBtn').addEventListener('click',()=>{
   editingId = null;
   duplicateSource = null;
   switchTab('add');
-});
-document.getElementById('bottomTabs').addEventListener('click',(e)=>{
-  const btn = e.target.closest('.bottom-tab-btn');
-  if(!btn) return;
-  const tab = btn.dataset.bottomTab;
-  if(tab==='profile'){ openSettings(); return; }
-  editingId = null;
-  duplicateSource = null;
-  switchTab(tab);
 });
 
 /* ---------- Init ---------- */
