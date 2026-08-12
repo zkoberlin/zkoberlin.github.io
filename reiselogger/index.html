@@ -1922,7 +1922,7 @@ function getPriorityIconHTML(priority, size){
    renderTabDropdown()/attachTabDropdown(). */
 const TAB_MENU_ITEMS = [
   {tab:'dashboard', icon:'tabOverview', color:'var(--green)', label:'Übersicht'},
-  {tab:'places', icon:'continent', color:'var(--teal)', label:'Länder & Städte'},
+  {tab:'places', icon:'continent', color:'var(--teal)', label:'Orte'},
   {tab:'log', icon:'tabLog', color:'var(--text-dim)', label:'Alle Reisen'},
   {tab:'stats', icon:'tabStats', color:'var(--rose)', label:'Statistiken'},
   {tab:'badges', icon:'tabBadges', color:'var(--gold)', label:'Badges'},
@@ -1977,11 +1977,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.47.0';
+const APP_VERSION = '1.47.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.47.1', tier:'🟢', title:'Bottom-Nav-Label gekürzt', items:[
+    '"Länder & Städte" heißt in der unteren Mobile-Navigation jetzt "Orte" — spart Platz. Desktop-Tab bleibt beim ausführlichen Namen.'
+  ]},
   {v:'1.47.0', tier:'🔴', title:'Dropdown durch feste Bottom-Nav ersetzt', items:[
     'Das mobile Tab-Dropdown ist Geschichte — stattdessen jetzt eine feste untere Navigationsleiste mit allen 6 Reitern (Übersicht/Länder & Städte/Alle Reisen/Statistiken/Badges/Bucket-Liste), Icon oben + Label unten, wie in gängigen mobilen Apps.',
     'Aktiver Reiter farbig hervorgehoben (eigene Akzentfarbe je Icon + dezenter Hintergrund-Chip), inaktive neutral.',
