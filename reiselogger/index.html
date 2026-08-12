@@ -1960,11 +1960,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.3';
+const APP_VERSION = '1.44.4';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.4', tier:'🟢', title:'Wunschstädte-Punktgröße endgültig fixiert', items:[
+    'Größe der Wunschstädte-Punkte auf der Karte jetzt fest auf den Basiswert der Punkt-Skala gesetzt (unabhängig von maxVisits) — mathematisch geprüft, dass sie dadurch nie mehr größer als ein echter besuchter Städte-Punkt werden können.'
+  ]},
   {v:'1.44.3', tier:'🟢', title:'Detailseite: Kachel-Look vereinheitlicht', items:[
     'Details/Fotos/Aktionen-Kachel bekommt jetzt denselben kräftig-weißen Hintergrund und dieselbe Schlagschatten-Kante wie "Reise auf einen Blick" oben — vorher wirkte sie flacher/blasser.',
     'Abstand zwischen den Kacheln auf der Detailseite verkleinert — gilt für Mobile und Desktop.'
@@ -4595,14 +4598,15 @@ async function initWorldMap(agg){
     });
   cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
 
-  // Bucket-Liste-Städtewünsche: blasser Punkt in exakt der gleichen Größe wie ein
-  // normaler Städte-Punkt — keine Berechnung/Annäherung mehr, einfach dieselbe
-  // dotRadius-Funktion mit dem gleichen Basiswert wie die "besuchten" Punkte.
+  // Bucket-Liste-Städtewünsche: blasser Punkt, GENAU so groß wie ein normaler
+  // Städte-Punkt — fest auf den Basiswert der dotRadius-Formel gesetzt (1.6*rScale,
+  // der kleinste/Standard-Wert der Skala), komplett unabhängig von maxVisits. So kann
+  // die Größe nie mehr von den Besuchszahlen der eigenen Reisedaten abweichen.
   const bucketCityData = bucketList
     .filter(b=>b.type==='city' && typeof b.lat==='number' && typeof b.lon==='number')
     .map(b=>({b, p:projection([b.lon, b.lat])}))
     .filter(x=>x.p);
-  const bucketDotRadius = dotRadius({c:{visits:1}});
+  const bucketDotRadius = 1.6 * rScale;
   const bucketLayer = g.append('g').attr('class','bucket-city-layer');
   const bucketDots = bucketLayer.selectAll('circle.bucket-city-dot')
     .data(bucketCityData, x=>x.b.id)
