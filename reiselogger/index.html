@@ -1312,13 +1312,24 @@ span.flatpickr-weekday{
         <button data-theme-choice="dark" title="Dunkler Modus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
         <button data-theme-choice="auto" title="Automatisch (Systemeinstellung)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></button>
       </div>
-      <div class="home-chip" id="homeChip" title="Heimatort festlegen">🏠 <span id="homeChipText">Heimatort festlegen</span></div>
-      <button class="icon-btn" id="settingsBtn" title="Einstellungen">⚙️</button>
+      <div class="home-chip" id="homeChip" title="Heimatort festlegen">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/></svg>
+        <span id="homeChipText">Heimatort festlegen</span>
+      </div>
+      <button class="icon-btn" id="settingsBtn" title="Einstellungen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 4v2.2M12 17.8V20M20 12h-2.2M6.2 12H4M17.5 6.5l-1.6 1.6M8.1 15.9l-1.6 1.6M17.5 17.5l-1.6-1.6M8.1 8.1L6.5 6.5"/></svg>
+      </button>
     </div>
   </div>
   <div class="info-strip">
-    <div>📅 <span id="currentDateText">–</span></div>
-    <div>📍 <span id="currentLocationText">Standort wird ermittelt …</span></div>
+    <div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+      <span id="currentDateText">–</span>
+    </div>
+    <div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+      <span id="currentLocationText">Standort wird ermittelt …</span>
+    </div>
   </div>
   <div class="wrap" style="padding-top:0;padding-bottom:0;">
     <div class="tabs" id="tabs">
@@ -1851,7 +1862,15 @@ const SVG_ICON_PATHS = {
   // Nav (nicht mehr für Bottom-Tabs genutzt, aber Statistiken-Icon anderswo brauchbar)
   navMap:'<path d="M3 6l6-2.5 6 2.5 6-2.5v15l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v15"/><path d="M15 6v15"/>',
   navProfile:'<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
-  close:'<path d="M6 6l12 12M18 6L6 18"/>'
+  close:'<path d="M6 6l12 12M18 6L6 18"/>',
+  home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 4v2.2M12 17.8V20M20 12h-2.2M6.2 12H4M17.5 6.5l-1.6 1.6M8.1 15.9l-1.6 1.6M17.5 17.5l-1.6-1.6M8.1 8.1L6.5 6.5"/>',
+  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/>',
+  continent:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
+  flame:'<path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 3-6 5-10z"/>',
+  leaf:'<path d="M11 20c-4-.3-7-3.4-7-7.6C4 7 9 4 17 4c0 8-4 13-9.5 13.4"/><path d="M4.5 19.5C7 15 10 13 13 12"/>',
+  settingsGear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/><path d="M2 21h2.5M1.5 17.5h2"/>'
 };
 const SVG_ICON_FILLED = {menu:'<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>'};
 function svgIcon(name, size, color){
@@ -1890,6 +1909,11 @@ function getPriorityIconHTML(priority, size){
   const colorMap = {hoch:'var(--rose)', mittel:'var(--gold)', niedrig:'var(--text-faint)'};
   return svgIcon(BUCKET_PRIORITY_ICON_NAME[priority]||'prioLow', size||14, colorMap[priority]||'currentColor');
 }
+/* CONTINENTS wurde weiter oben (vor der Icon-Definition) deklariert und nutzte dort
+   noch Emoji — hier nachträglich auf das einheitliche Kontinent-Icon umgestellt
+   (svgIcon() ist erst ab hier sicher aufrufbar, SVG_ICON_PATHS war zuvor noch nicht
+   initialisiert). */
+Object.keys(CONTINENTS).forEach(k=>{ CONTINENTS[k].icon = svgIcon('continent', 14, 'currentColor'); });
 
 /* CO2e-Richtwerte in Gramm pro Personenkilometer (Umweltbundesamt/TREMOD-Durchschnittswerte,
    Kurz-/Mittelstrecke Flug ~230, Pkw-Durchschnitt inkl. E-Autos ~164, Bahn-Fernverkehr ~35,
@@ -1934,11 +1958,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.43.1';
+const APP_VERSION = '1.44.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.0', tier:'🟡', title:'Weitere Icon-Lücken geschlossen', items:[
+    'Header: Kalender-, Standort- und Heimatort-Symbol sowie das Einstellungen-Zahnrad jetzt SVG.',
+    'CO2-Wolke, Kontinent-Symbole (bisher EU-Flagge & Co. als Kontinent-Platzhalter) sowie die Meiste/Wenigste-CO2-Emission-Header (Flamme/Blatt) auf SVG umgestellt — für CO2/Kontinent gab es kein fertiges Icon im Set, daher passende neue Symbole im gleichen Stil ergänzt.',
+    'Fotos-Abschnitt-Label, Top-5-Länder-Heimatland-Hinweis, Bucket-Liste-Sortierfilter und der Papierkorb-Button in der Wunschliste umgestellt.',
+    'Bucket-Liste "Sehnsucht"-Auswahl (Hoch/Mittel/Niedrig) von einem nativen Dropdown auf klickbare Chips umgebaut — HTML-Options-Elemente können technisch keine SVG-Icons anzeigen, nur Text.',
+    'Achievements/Badges bewusst weiterhin unangetastet (folgt später).'
+  ]},
   {v:'1.43.1', tier:'🟢', title:'Schriftfarbe in Trip-Statistiken korrigiert', items:[
     'Werte bei Reisedauer/Distanz/Transport (z. B. "5 Tage", "1.925 km", "Hin- & Rückflug") in "Alle Reisen" und der Detailansicht von Gold auf normale Textfarbe umgestellt — betraf beide Ansichten, da sie dieselbe Komponente teilen.'
   ]},
@@ -5289,7 +5320,7 @@ function renderStats(root){
   html += '  <div class="card">';
   html += '    <div class="card-head"><h2>Top 5 Länder</h2>';
   if(homeCountryEntry){
-    html += '<span class="sub stats-home-note">🏠 '+homeCountryEntry.country+': '+homeCountryEntry.visits+' '+(homeCountryEntry.visits===1?'Besuch':'Besuche')+' · '+fmtKm(homeCountryEntry.totalKm)+'</span>';
+    html += '<span class="sub stats-home-note">'+svgIcon('home',13,'currentColor')+' '+homeCountryEntry.country+': '+homeCountryEntry.visits+' '+(homeCountryEntry.visits===1?'Besuch':'Besuche')+' · '+fmtKm(homeCountryEntry.totalKm)+'</span>';
   } else {
     html += '<span class="sub">nach Besuchen</span>';
   }
@@ -5410,7 +5441,7 @@ function renderStats(root){
   html += '<div class="stats-grid-2">';
 
   html += '  <div class="card">';
-  html += '    <div class="card-head"><h2>🔥 Meiste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="card-head"><h2>'+svgIcon('flame',18,'var(--rose)')+' Meiste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
   html += '    <div class="top-list">';
   const maxMostCO2 = co2Extremes.most.length ? tripCO2Kg(co2Extremes.most[0]) : 1;
   co2Extremes.most.forEach((tr,i)=>{
@@ -5424,7 +5455,7 @@ function renderStats(root){
   html += '  </div>';
 
   html += '  <div class="card">';
-  html += '    <div class="card-head"><h2>🌱 Wenigste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
+  html += '    <div class="card-head"><h2>'+svgIcon('leaf',18,'var(--green)')+' Wenigste CO2-Emission</h2><span class="sub">Top 3 Reisen</span></div>';
   html += '    <div class="top-list">';
   const maxLeastCO2 = Math.max(1, ...co2Extremes.least.map(tr=>tripCO2Kg(tr)));
   co2Extremes.least.forEach((tr,i)=>{
@@ -6079,7 +6110,7 @@ function tripMatchesLogFilter(t, q){
 function photoFeedHTML(t){
   const photos = t.photos||[];
   let html = '<div class="log-photos">';
-  html += '  <div class="log-detail-section-label">📷 Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
+  html += '  <div class="log-detail-section-label">'+svgIcon('photos',15,'currentColor')+' Fotos <span class="log-photos-count">('+photos.length+'/'+MAX_PHOTOS_PER_TRIP+')</span></div>';
   if(photos.length>1) html += '  <div class="log-photos-hint">Lange auf ein Foto drücken, um es als Titelbild festzulegen.</div>';
   html += '  <div class="log-photos-grid">';
   photos.forEach((p,idx)=>{
@@ -6168,7 +6199,7 @@ function detailCardHTML(t){
   (t.returnWaypoints||[]).forEach(name=>{
     items += detailIconItemHTML(svgIcon('stopPin',16,'var(--rose)'), 'Stopp · Rückweg', name);
   });
-  if(!t.cityOnly) items += detailIconItemHTML('💨', 'CO₂', fmtKg(tripCO2Kg(t)));
+  if(!t.cityOnly) items += detailIconItemHTML(svgIcon('co2Cloud',16,'currentColor'), 'CO₂', fmtKg(tripCO2Kg(t)));
   items += detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,t.purpose==='alma'?'var(--rose)':'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'), 'Grund', pLbl||'–');
   items += detailIconItemHTML(contInfo?contInfo.icon:'🌐', 'Kontinent', contInfo?contInfo.label:'–');
 
@@ -6747,6 +6778,7 @@ function updateHomeChip(){
 
 /* ---------- Bucket-Liste ---------- */
 let bucketFormType = 'city';
+let bucketFormPriority = 'mittel';
 let bucketSort = {key:'priority', dir:'desc'};
 let bucketAddBusy = false;
 
@@ -6771,10 +6803,10 @@ function sortBucketList(list, sort){
   return arr;
 }
 const BUCKET_SORT_OPTIONS = [
-  {key:'priority', dir:'desc', label:'🔥 Sehnsucht'},
+  {key:'priority', dir:'desc', label:svgIcon('flame',14,'currentColor')+' Sehnsucht'},
   {key:'name', dir:'asc', label:'A–Z'},
   {key:'name', dir:'desc', label:'Z–A'},
-  {key:'continent', dir:'asc', label:'🌍 Kontinent'}
+  {key:'continent', dir:'asc', label:svgIcon('continent',14,'currentColor')+' Kontinent'}
 ];
 
 function bucketEntryRowHTML(b){
@@ -6793,7 +6825,7 @@ function bucketEntryRowHTML(b){
     '<div class="bucket-row-place">'+flagHTML+'<span class="bucket-row-name">'+nameHTML+'</span>'+subHTML+'</div>'+
     '<div class="bucket-row-meta">'+
       '<span class="bucket-priority-badge bucket-priority-'+b.priority+'" title="'+prio.label+'">'+getPriorityIconHTML(b.priority,14)+'</span>'+
-      '<button type="button" data-bucket-del="'+b.id+'" title="Entfernen">🗑️</button>'+
+      '<button type="button" data-bucket-del="'+b.id+'" title="Entfernen">'+svgIcon('trash',14,'currentColor')+'</button>'+
     '</div>'+
   '</div>';
 }
@@ -6809,7 +6841,14 @@ function renderBucketList(root){
   html += '  </div>';
   html += '  <div class="field-row">';
   html += '    <div class="field"><label for="bucketNameInput">'+(bucketFormType==='city'?'Stadt':'Land')+'</label><input type="text" id="bucketNameInput" list="'+(bucketFormType==='city'?'cityDatalist':'countryDatalist')+'" placeholder="'+(bucketFormType==='city'?'z. B. Kyoto (Japan)':'z. B. Neuseeland')+'"></div>';
-  html += '    <div class="field"><label for="bucketPrioritySelect">Sehnsucht</label><select id="bucketPrioritySelect"><option value="hoch">🔥 Hoch</option><option value="mittel" selected>✨ Mittel</option><option value="niedrig">💭 Niedrig</option></select></div>';
+  html += '  </div>';
+  html += '  <div class="field" style="margin-bottom:14px;">';
+  html += '    <label>Sehnsucht</label>';
+  html += '    <div class="mode-filter-toggle" id="bucketPriorityToggle">';
+  ['hoch','mittel','niedrig'].forEach(p=>{
+    html += '      <div class="mode-filter-chip'+(bucketFormPriority===p?' active':'')+'" data-bucket-priority="'+p+'">'+getPriorityIconHTML(p,14)+' '+(BUCKET_PRIORITY_META[p]?BUCKET_PRIORITY_META[p].label:p)+'</div>';
+  });
+  html += '    </div>';
   html += '  </div>';
   html += '  <button type="button" id="bucketAddBtn" class="btn-primary">'+(bucketAddBusy?'…':'+ Zur Wunschliste hinzufügen')+'</button>';
   html += '  <div class="hint" id="bucketAddHint"></div>';
@@ -6841,6 +6880,12 @@ function renderBucketList(root){
       renderBucketList(root);
     });
   });
+  root.querySelectorAll('#bucketPriorityToggle [data-bucket-priority]').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      bucketFormPriority = chip.dataset.bucketPriority;
+      renderBucketList(root);
+    });
+  });
   root.querySelectorAll('#bucketSortFilter [data-bucket-sort-idx]').forEach(chip=>{
     chip.addEventListener('click',()=>{
       const o = BUCKET_SORT_OPTIONS[parseInt(chip.dataset.bucketSortIdx,10)];
@@ -6868,10 +6913,9 @@ function renderBucketList(root){
 async function handleBucketAdd(root){
   if(bucketAddBusy) return;
   const nameInput = document.getElementById('bucketNameInput');
-  const prioSelect = document.getElementById('bucketPrioritySelect');
   const hintEl = document.getElementById('bucketAddHint');
   const rawName = (nameInput ? nameInput.value : '').trim();
-  const priority = prioSelect ? prioSelect.value : 'mittel';
+  const priority = bucketFormPriority;
   if(!rawName){
     if(hintEl) hintEl.textContent = 'Bitte einen Namen eingeben.';
     return;
