@@ -1317,7 +1317,7 @@ span.flatpickr-weekday{
         <span id="homeChipText">Heimatort festlegen</span>
       </div>
       <button class="icon-btn" id="settingsBtn" title="Einstellungen">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 4v2.2M12 17.8V20M20 12h-2.2M6.2 12H4M17.5 6.5l-1.6 1.6M8.1 15.9l-1.6 1.6M17.5 17.5l-1.6-1.6M8.1 8.1L6.5 6.5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
@@ -1864,7 +1864,7 @@ const SVG_ICON_PATHS = {
   navProfile:'<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
   close:'<path d="M6 6l12 12M18 6L6 18"/>',
   home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/>',
-  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 4v2.2M12 17.8V20M20 12h-2.2M6.2 12H4M17.5 6.5l-1.6 1.6M8.1 15.9l-1.6 1.6M17.5 17.5l-1.6-1.6M8.1 8.1L6.5 6.5"/>',
+  gear:'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/>',
   continent:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
   flame:'<path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 3-6 5-10z"/>',
@@ -1958,11 +1958,15 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.0';
+const APP_VERSION = '1.44.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.1', tier:'🟢', title:'Zahnrad-Icon & Foto-Platzhalter angepasst', items:[
+    'Einstellungen-Zahnrad durch eine "echte" Zahnrad-Form ersetzt (vorher eine Speichen-/Sonnen-Variante).',
+    'Reisen ohne Foto zeigen jetzt das Kamera-Icon als Platzhalter (Kompaktkarte und Detailseiten-Titelbild) statt des Koffer-Symbols.'
+  ]},
   {v:'1.44.0', tier:'🟡', title:'Weitere Icon-Lücken geschlossen', items:[
     'Header: Kalender-, Standort- und Heimatort-Symbol sowie das Einstellungen-Zahnrad jetzt SVG.',
     'CO2-Wolke, Kontinent-Symbole (bisher EU-Flagge & Co. als Kontinent-Platzhalter) sowie die Meiste/Wenigste-CO2-Emission-Header (Flamme/Blatt) auf SVG umgestellt — für CO2/Kontinent gab es kein fertiges Icon im Set, daher passende neue Symbole im gleichen Stil ergänzt.',
@@ -6320,7 +6324,7 @@ function tripCardHTML(t, isHero){
   // (Foto, sofern vorhanden, sonst Koffer-Icon), Inhalt rechts, Pfeil ganz rechts.
   const thumbHTML = hasPhoto
     ? '<div class="tc-thumb tc-thumb-photo" style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"></div>'
-    : '<div class="tc-thumb tc-thumb-icon"><span>🧳</span></div>';
+    : '<div class="tc-thumb tc-thumb-icon"><span>'+svgIcon('photos',26,'currentColor')+'</span></div>';
   let html = '<div class="trip-card trip-card-compact" data-trip-card="'+t.id+'">';
   html += thumbHTML;
   html += '  <div class="tc-compact-body">';
@@ -6380,7 +6384,7 @@ function renderTripDetailPage(tripId, root){
   html += '    <button type="button" class="tdp-menu" data-share="'+t.id+'" title="Teilen">'+svgIcon('share',17,'currentColor')+'</button>';
   html += '  </div>';
   html += '  <div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
-  if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">🧳</span>';
+  if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">'+svgIcon('photos',40,'currentColor')+'</span>';
   html += '    <span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
   html += '    <div class="tdp-hero-overlay">';
   html += tripCardHeroRouteHTML(t);
