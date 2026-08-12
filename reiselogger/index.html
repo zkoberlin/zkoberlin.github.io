@@ -1960,11 +1960,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.5';
+const APP_VERSION = '1.44.6';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.6', tier:'🟢', title:'Echter Bugfix: Wunschstädte-Punktgröße beim Zoom', items:[
+    'Ursache endlich gefunden: Beim Rein-/Rauszoomen der Karte (inkl. der standardmäßig schon aktiven Europa-Ansicht beim Laden) werden besuchte Städte-Punkte und der Heimatort-Punkt extra kompensiert, damit sie nicht mit der Zoomstufe mitwachsen — die Wunschstädte-Punkte fehlten in dieser Kompensation komplett und wuchsen dadurch sichtbar über die anderen Punkte hinaus, obwohl ihr Basis-Radius korrekt gleich war. Jetzt in dieselbe Zoom-Kompensation eingebunden.'
+  ]},
   {v:'1.44.5', tier:'🟢', title:'Letzte Verkehrsmittel-Emoji ersetzt', items:[
     'Die Städte-Liste innerhalb einer aufgeklappten Länder-Karte (Länder & Städte-Tab) zeigte das häufigste Verkehrsmittel je Stadt noch als Emoji — jetzt SVG wie überall sonst.',
     'CO2-Aufschlüsselung nach Verkehrsmittel im Dashboard-Vergleichs-Chip ebenfalls umgestellt.',
@@ -4694,6 +4697,11 @@ async function initWorldMap(agg){
       // Untergrenze als bisher, damit bei starkem Zoom wirklich winzige Punkte übrig bleiben.
       cityDots.attr('r', x => Math.max(0.45*rScale, dotRadius(x)/(k*1.3)));
       if(homeDot) homeDot.attr('r', Math.max(0.6*rScale, homeRadius/(k*1.3)));
+      // BUG-FIX: bucketDots fehlten hier bisher komplett — dadurch wuchsen sie beim
+      // (schon standardmäßig aktiven) Europa-Zoom sichtbar über die anderen Punkte
+      // hinaus, obwohl ihr Radius "eigentlich" gleich groß war. Jetzt exakt gleich
+      // kompensiert wie ein City-Dot mit demselben Basiswert.
+      bucketDots.attr('r', Math.max(0.45*rScale, bucketDotRadius/(k*1.3)));
     });
   svg.call(zoom);
 
