@@ -486,14 +486,13 @@ tr:last-child td{border-bottom:none;}
 
 /* ---------- Trip-Karten ("Alle Reisen", jetzt Desktop UND Mobile) & Detailseite ---------- */
 .trip-cards-list{display:flex;flex-direction:column;gap:12px;}
-/* Ab Tablet-/Desktop-Breite: zweispaltiges Raster statt einer einzelnen schmalen
-   Spalte in der Mitte — die große "Hero"-Foto-Karte bleibt volle Breite. */
+/* Ab Tablet-/Desktop-Breite: zweispaltiges Raster ab dem 2. Eintrag — nur die große
+   "Hero"-Foto-Karte (aktuellste Reise) bleibt volle Breite und damit prominent. */
 @media (min-width:760px){
   .trip-cards-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
-  .trip-cards-list .trip-card-photo.hero{grid-column:1 / -1;}
-}
-@media (min-width:1100px){
-  .trip-cards-list{grid-template-columns:1fr 1fr 1fr;}
+  /* Der erste Eintrag (aktuellste Reise) bleibt immer prominent/volle Breite —
+     unabhängig davon, ob es die große Foto-Karte ist oder eine normale Kompaktkarte. */
+  .trip-cards-list > *:first-child{grid-column:1 / -1;}
 }
 .trip-card{
   background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:16px;
@@ -1958,11 +1957,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.1';
+const APP_VERSION = '1.44.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.2', tier:'🟢', title:'"Alle Reisen"-Kacheln entschlackt', items:[
+    'Transport-Text (z. B. "Hin- & Rückflug") aus der kleinen Kompaktkarten-Statistikzeile entfernt — stand ohnehin schon als Icon in der Routenzeile darüber, wirkte doppelt und zu voll.',
+    'Abgeschnittene, zu lange Stadtnamen zeigen beim Hovern jetzt den vollen Namen als Tooltip.',
+    'Desktop: nur die erste (aktuellste) Reise bleibt prominent über die volle Breite — ab dem zweiten Eintrag jetzt durchgängig zweispaltig, unabhängig davon ob mit oder ohne Foto.'
+  ]},
   {v:'1.44.1', tier:'🟢', title:'Zahnrad-Icon & Foto-Platzhalter angepasst', items:[
     'Einstellungen-Zahnrad durch eine "echte" Zahnrad-Form ersetzt (vorher eine Speichen-/Sonnen-Variante).',
     'Reisen ohne Foto zeigen jetzt das Kamera-Icon als Platzhalter (Kompaktkarte und Detailseiten-Titelbild) statt des Koffer-Symbols.'
@@ -6276,22 +6280,23 @@ function tripCardHeroRouteHTML(t){
   const fromCountry = fromRef ? fromRef.c : '';
   const fromFlag = fromRef ? flagImg(fromRef.cc,13) : '';
   return '<div class="tc-photo-route">'+
-    '<div class="tc-photo-city"><b>'+fromName+'</b><span class="tc-photo-country">'+fromCountry+'</span>'+(fromFlag?'<span class="tc-photo-flag">'+fromFlag+'</span>':'')+'</div>'+
+    '<div class="tc-photo-city"><b title="'+fromName.replace(/"/g,'&quot;')+'">'+fromName+'</b><span class="tc-photo-country">'+fromCountry+'</span>'+(fromFlag?'<span class="tc-photo-flag">'+fromFlag+'</span>':'')+'</div>'+
     '<div class="tc-route-line light"><span class="tc-route-dot">'+tripTransportIconsHTML(t)+'</span></div>'+
-    '<div class="tc-photo-city right"><b>'+stripCountrySuffix(t.city)+'</b><span class="tc-photo-country">'+t.country+'</span><span class="tc-photo-flag">'+flagImg(t.cityCC,13)+'</span></div>'+
+    '<div class="tc-photo-city right"><b title="'+t.city.replace(/"/g,'&quot;')+'">'+stripCountrySuffix(t.city)+'</b><span class="tc-photo-country">'+t.country+'</span><span class="tc-photo-flag">'+flagImg(t.cityCC,13)+'</span></div>'+
   '</div>';
 }
 /* Kompakte Route-Zeile für die "normalen" (nicht-hero) Karten — schmaler, Land+Flagge
-   in einer eigenen Zeile darunter statt daneben, wie in der Vorlage. */
+   in einer eigenen Zeile darunter statt daneben, wie in der Vorlage. title-Attribute
+   auf den Stadtnamen zeigen den vollen Namen beim Hovern, falls per CSS abgeschnitten. */
 function tripCardCompactRouteHTML(t){
   const fromRef = findCity(t.fromCity);
   const fromName = stripCountrySuffix(t.fromCity)||'?';
   const fromCountry = fromRef ? fromRef.c : '';
   const fromFlag = fromRef ? flagImg(fromRef.cc,12) : '';
   return '<div class="tc-compact-route">'+
-    '<b>'+fromName+'</b>'+
+    '<b title="'+fromName.replace(/"/g,'&quot;')+'">'+fromName+'</b>'+
     '<div class="tc-route-line compact">'+tripTransportIconsHTML(t)+'</div>'+
-    '<b>'+stripCountrySuffix(t.city)+'</b>'+
+    '<b title="'+t.city.replace(/"/g,'&quot;')+'">'+stripCountrySuffix(t.city)+'</b>'+
   '</div>'+
   '<div class="tc-compact-countries">'+
     '<span>'+fromCountry+(fromFlag?' '+fromFlag:'')+'</span>'+
@@ -6301,7 +6306,9 @@ function tripCardCompactRouteHTML(t){
 function tripCardStatsLineHTML(t){
   const durationLabel = t.cityOnly ? null : (tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage'));
   const distLabel = t.cityOnly ? null : fmtKm(tripTotal(t));
-  const parts = [durationLabel, distLabel, tripTransportLabel(t)].filter(Boolean);
+  // Das Verkehrsmittel steht schon als Icon in der Routen-Zeile darüber — der
+  // zusätzliche Text ("Hin- & Rückflug" etc.) machte die Kachel zu voll.
+  const parts = [durationLabel, distLabel].filter(Boolean);
   return '<div class="tc-compact-stats">'+parts.join(' <span class="tc-compact-dot">•</span> ')+'</div>';
 }
 function tripCardHTML(t, isHero){
