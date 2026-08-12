@@ -1960,11 +1960,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.4';
+const APP_VERSION = '1.44.5';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.5', tier:'🟢', title:'Letzte Verkehrsmittel-Emoji ersetzt', items:[
+    'Die Städte-Liste innerhalb einer aufgeklappten Länder-Karte (Länder & Städte-Tab) zeigte das häufigste Verkehrsmittel je Stadt noch als Emoji — jetzt SVG wie überall sonst.',
+    'CO2-Aufschlüsselung nach Verkehrsmittel im Dashboard-Vergleichs-Chip ebenfalls umgestellt.',
+    'Kontinent-Icon-Fallback (seltener Fall unbekannter Kontinent-Codes) konsistent auf SVG umgestellt.'
+  ]},
   {v:'1.44.4', tier:'🟢', title:'Wunschstädte-Punktgröße endgültig fixiert', items:[
     'Größe der Wunschstädte-Punkte auf der Karte jetzt fest auf den Basiswert der Punkt-Skala gesetzt (unabhängig von maxVisits) — mathematisch geprüft, dass sie dadurch nie mehr größer als ein echter besuchter Städte-Punkt werden können.'
   ]},
@@ -4395,7 +4400,7 @@ function renderDashboard(root){
     .map(m=>({m, kg:currentYearCO2ByMode[m]||0}))
     .filter(x=>x.kg>0.05)
     .sort((a,b)=>b.kg-a.kg)
-    .map(x=>getMode(x.m).icon+' '+fmtKg(x.kg))
+    .map(x=>getModeIconHTML(x.m,12)+' '+fmtKg(x.kg))
     .join(' · ');
   html += '    <div class="hero-compare">';
   html += '      <div class="compare-chip" title="Erdumfang ø '+fmtKm(EARTH_CIRCUMFERENCE_KM)+' · Gesamtdistanz"><div class="cc-main">🌍 <span class="cv">'+cmpEarth.ratioText+'</span> um die Erde</div>'+(cmpEarth.remainingText?'<div class="cc-sub">'+cmpEarth.remainingText+'</div>':'')+'<div class="cc-sub-year">'+currentYear+': '+cmpEarthYear.ratioText+'</div></div>';
@@ -5984,7 +5989,7 @@ function renderPlaces(root){
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
         const topMode = mostUsedModeForCity(ci);
-        const modeHtml = topMode ? ' <span class="country-city-meta">×'+ci.visits+' '+getMode(topMode.mode).icon+'</span>' : ' <span class="country-city-meta">×'+ci.visits+'</span>';
+        const modeHtml = topMode ? ' <span class="country-city-meta">×'+ci.visits+' '+getModeIconHTML(topMode.mode,13)+'</span>' : ' <span class="country-city-meta">×'+ci.visits+'</span>';
         html += '<div><span>'+cityNameHTML(ci.city,ci.cc)+(ci.viaWaypoint?waypointDot():'')+modeHtml+'</span><b>'+fmtKm(ci.totalKm)+'</b></div>';
       });
       html += '  </div>';
@@ -6220,7 +6225,7 @@ function detailCardHTML(t){
   });
   if(!t.cityOnly) items += detailIconItemHTML(svgIcon('co2Cloud',16,'currentColor'), 'CO₂', fmtKg(tripCO2Kg(t)));
   items += detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,t.purpose==='alma'?'var(--rose)':'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'), 'Grund', pLbl||'–');
-  items += detailIconItemHTML(contInfo?contInfo.icon:'🌐', 'Kontinent', contInfo?contInfo.label:'–');
+  items += detailIconItemHTML(contInfo?contInfo.icon:svgIcon('continent',16,'var(--text-faint)'), 'Kontinent', contInfo?contInfo.label:'–');
 
   let html = '<div class="log-detail-card">';
   html += '  <div class="log-detail-section">';
