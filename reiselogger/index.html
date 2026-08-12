@@ -2003,11 +2003,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.48.1';
+const APP_VERSION = '1.48.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.48.2', tier:'🟢', title:'Echte Ursache für den zu großen Abstand behoben', items:[
+    'Der Abstand nach der obersten (großen Foto-)Karte in "Alle Reisen" war tatsächlich ein Klassennamen-Konflikt: Die Karte teilte sich versehentlich die CSS-Klasse "hero" mit einer ganz anderen Dashboard-Komponente und erbte dadurch deren zusätzliches margin-bottom:20px obendrauf zum normalen Karten-Abstand. Klasse umbenannt, Abstand jetzt überall gleich — auf Mobile und Desktop.'
+  ]},
   {v:'1.48.1', tier:'🟢', title:'Abstand über der ersten Reise-Karte korrigiert', items:[
     'In "Alle Reisen" hatte die oberste Karte (meist die große Foto-Karte) mehr Abstand zur Sortierleiste als die Karten untereinander — jetzt einheitlich.'
   ]},
@@ -6422,7 +6425,7 @@ function tripCardHTML(t, isHero){
 
   if(hasPhoto && isHero){
     const photoUrl = t.photos[0].data;
-    let html = '<div class="trip-card trip-card-photo hero" data-trip-card="'+t.id+'">';
+    let html = '<div class="trip-card trip-card-photo tc-hero" data-trip-card="'+t.id+'">';
     html += '  <div class="tc-photo" style="background-image:url(&quot;'+photoUrl+'&quot;)">';
     html += '    <div class="tc-photo-top"><span class="tc-date-badge">'+svgIcon('calendar',13,'#fff')+' '+dateLabel+'</span></div>';
     html += tripCardHeroRouteHTML(t);
