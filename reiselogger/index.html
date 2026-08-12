@@ -674,7 +674,7 @@ tr:last-child td{border-bottom:none;}
 .row-actions button:hover{border-color:var(--gold-dim);color:var(--text);}
 
 .log-filter-row{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
-.log-col-toggle-row{display:flex;gap:14px;align-items:center;margin-bottom:14px;flex-wrap:wrap;font-size:12px;color:var(--text-dim);}
+.log-col-toggle-row{display:flex;gap:14px;align-items:center;margin-bottom:12px;flex-wrap:wrap;font-size:12px;color:var(--text-dim);}
 .log-sort-sep{color:var(--border);}
 .log-sort-select{
   background:var(--bg-soft);border:1px solid var(--gold-dim);border-radius:10px;
@@ -2003,11 +2003,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.48.0';
+const APP_VERSION = '1.48.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.48.1', tier:'🟢', title:'Abstand über der ersten Reise-Karte korrigiert', items:[
+    'In "Alle Reisen" hatte die oberste Karte (meist die große Foto-Karte) mehr Abstand zur Sortierleiste als die Karten untereinander — jetzt einheitlich.'
+  ]},
   {v:'1.48.0', tier:'🟡', title:'Transport-Anzeige überarbeitet', items:[
     'Neues zweifarbiges Transport-Icon (statt bunt) für die allgemeine Anzeige: "Reise auf einen Blick" in der Detailansicht sowie Karten-/Routen-Badges in "Alle Reisen". Die bunte Hin-/Rückweg-Grafik darunter bleibt wie gewohnt bunt.',
     'Transport-Text bei gemischten Verkehrsmitteln kompakter ("Flug → Zug" statt "Flugzeug hin · Zug zurück") und darf bei Bedarf umbrechen, statt auf Mobile mit "…" abgeschnitten zu werden.',
