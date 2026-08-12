@@ -564,9 +564,9 @@ tr:last-child td{border-bottom:none;}
 }
 .tc-photo-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;}
 .tc-photo-route{position:relative;z-index:1;display:flex;align-items:flex-start;gap:6px;}
-.tc-photo-city{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.tc-photo-city{display:flex;flex-direction:column;gap:2px;min-width:0;max-width:42%;}
 .tc-photo-city.right{align-items:flex-end;text-align:right;}
-.tc-photo-city b{font-size:19px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tc-photo-city b{font-size:19px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:normal;overflow-wrap:break-word;line-height:1.15;}
 .tc-photo-country{font-size:11.5px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.6);}
 .tc-photo-flag{font-size:14px;margin-top:1px;}
 .trip-card-photo .tc-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
@@ -584,7 +584,7 @@ tr:last-child td{border-bottom:none;}
 .tc-compact-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
 .tc-compact-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .tc-compact-route{display:flex;align-items:center;gap:6px;}
-.tc-compact-route b{font-size:14.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;}
+.tc-compact-route b{font-size:14.5px;color:var(--text);white-space:normal;overflow-wrap:break-word;line-height:1.2;flex-shrink:1;max-width:42%;}
 .tc-compact-countries{display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-faint);}
 .tc-compact-divider{border-top:1px solid var(--border-soft);margin:2px 0;}
 .tc-compact-stats{font-size:11.5px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -2003,11 +2003,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.48.2';
+const APP_VERSION = '1.48.3';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.48.3', tier:'🟢', title:'Lange Ortsnamen in "Alle Reisen" nicht mehr abgeschnitten', items:[
+    'Von-/Nach-Namen in der Kartenübersicht wurden bisher einseitig mit "…" abgeschnitten (mal traf es die Von-, mal die Nach-Stadt, je nach Namenslänge). Beide Seiten teilen sich jetzt fair maximal die Hälfte des Platzes, und statt zu kürzen brechen lange Namen bei Bedarf in eine zweite Zeile um — betrifft die große Foto-Karte und die kompakten Karten.'
+  ]},
   {v:'1.48.2', tier:'🟢', title:'Echte Ursache für den zu großen Abstand behoben', items:[
     'Der Abstand nach der obersten (großen Foto-)Karte in "Alle Reisen" war tatsächlich ein Klassennamen-Konflikt: Die Karte teilte sich versehentlich die CSS-Klasse "hero" mit einer ganz anderen Dashboard-Komponente und erbte dadurch deren zusätzliches margin-bottom:20px obendrauf zum normalen Karten-Abstand. Klasse umbenannt, Abstand jetzt überall gleich — auf Mobile und Desktop.'
   ]},
