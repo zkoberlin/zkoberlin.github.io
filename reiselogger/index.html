@@ -245,6 +245,10 @@ a{color:var(--teal);}
 .card-head .sub{font-size:12px;color:var(--text-faint);}
 
 /* ---------- Hero ---------- */
+.greeting-tile{
+  display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--text);
+  margin-bottom:14px;
+}
 .hero{
   display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-bottom:20px;
 }
@@ -566,7 +570,7 @@ tr:last-child td{border-bottom:none;}
 .tc-photo-route{position:relative;z-index:1;display:flex;align-items:flex-start;gap:6px;}
 .tc-photo-city{display:flex;flex-direction:column;gap:2px;min-width:0;max-width:42%;}
 .tc-photo-city.right{align-items:flex-end;text-align:right;}
-.tc-photo-city b{font-size:19px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:normal;overflow-wrap:break-word;line-height:1.15;}
+.tc-photo-city b{font-size:19px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.6);white-space:normal;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;line-height:1.15;}
 .tc-photo-country{font-size:11.5px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.6);}
 .tc-photo-flag{font-size:14px;margin-top:1px;}
 .trip-card-photo .tc-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
@@ -584,7 +588,7 @@ tr:last-child td{border-bottom:none;}
 .tc-compact-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
 .tc-compact-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .tc-compact-route{display:flex;align-items:center;gap:6px;}
-.tc-compact-route b{font-size:14.5px;color:var(--text);white-space:normal;overflow-wrap:break-word;line-height:1.2;flex-shrink:1;max-width:42%;}
+.tc-compact-route b{font-size:14.5px;color:var(--text);white-space:normal;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;line-height:1.2;flex-shrink:1;max-width:42%;}
 .tc-compact-countries{display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-faint);}
 .tc-compact-divider{border-top:1px solid var(--border-soft);margin:2px 0;}
 .tc-compact-stats{font-size:11.5px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -614,8 +618,11 @@ tr:last-child td{border-bottom:none;}
 .tdp-hero-date{position:absolute;top:14px;left:14px;z-index:2;}
 .tdp-hero-overlay{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-self:stretch;}
 .tdp-hero.placeholder .tdp-hero-overlay{position:absolute;bottom:14px;left:14px;right:14px;}
-.tdp-footer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-faint);padding:0 4px;}
-.tdp-footer b{color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-weight:500;}
+.tdp-footer{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--text-faint);padding:0 4px;}
+.tdp-footer-row{display:flex;align-items:baseline;gap:6px;}
+.tdp-footer-row b{color:var(--text-dim);font-family:var(--font-body);font-weight:600;}
+.tdp-footer-sub{font-size:11px;color:var(--text-faint);opacity:0.75;}
+.tdp-footer-sub b{color:var(--text-faint);font-weight:500;}
 
 .tc-mini-route{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:6px;font-size:11px;}
 .tc-mini-route-line{width:20px;height:0;border-top:1.5px dashed var(--border);}
@@ -1885,7 +1892,10 @@ const SVG_ICON_PATHS = {
   navBadges:'<circle cx="12" cy="9" r="5"/><path d="M9 13.5L7.5 21l4.5-2.5 4.5 2.5-1.5-7.5"/>',
   navBucket:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12.5h18"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/>',
   settingsGear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/><path d="M2 21h2.5M1.5 17.5h2"/>'
+  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/><path d="M2 21h2.5M1.5 17.5h2"/>',
+  greetSun:'<circle cx="12" cy="12" r="4.5"/><path d="M12 3v2.5M12 18.5V21M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M3 12h2.5M18.5 12H21M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>',
+  greetSunrise:'<path d="M4 17h16M6.5 17a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v3.5M6 8.5l1.7 1.7M18 8.5l-1.7 1.7"/><path d="M2.5 20.5h19"/>',
+  greetMoon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>'
 };
 const SVG_ICON_FILLED = {menu:'<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>'};
 function svgIcon(name, size, color){
@@ -2003,11 +2013,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.48.3';
+const APP_VERSION = '1.49.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.49.0', tier:'🟡', title:'Begrüßung, Silbentrennung & Änderungs-Zeitstempel', items:[
+    'Neue Begrüßungs-Kachel ganz oben im Dashboard — Tageszeit-abhängiger Gruß ("Guten Morgen" / "Schönen Tag" / "Guten Abend" / "Noch wach") mit dem in den Einstellungen hinterlegten Namen, falls vorhanden.',
+    'Umgebrochene Ortsnamen in "Alle Reisen" trennen jetzt silbengerecht statt beliebig mitten im Wort (CSS-Silbentrennung nach deutschen Regeln).',
+    'Detailansicht einer Reise: "Erstellt:"-Zeile jetzt linksbündig und in einheitlicher Schriftart (vorher rechtsbündig + Mono-Schrift für das Datum). Zusätzlich ein dezenter "Zuletzt geändert:"-Zeitstempel, sobald eine Reise nach dem Anlegen tatsächlich bearbeitet wurde.'
+  ]},
   {v:'1.48.3', tier:'🟢', title:'Lange Ortsnamen in "Alle Reisen" nicht mehr abgeschnitten', items:[
     'Von-/Nach-Namen in der Kartenübersicht wurden bisher einseitig mit "…" abgeschnitten (mal traf es die Von-, mal die Nach-Stadt, je nach Namenslänge). Beide Seiten teilen sich jetzt fair maximal die Hälfte des Platzes, und statt zu kürzen brechen lange Namen bei Bedarf in eine zweite Zeile um — betrifft die große Foto-Karte und die kompakten Karten.'
   ]},
@@ -4432,6 +4447,20 @@ function compareCO2(kg, refKg){
 }
 
 /* ---------- Render: Dashboard ---------- */
+/* Kleine Begrüßungs-Kachel ganz oben im Dashboard — Tageszeit-abhängiger Gruß, nutzt
+   den in den Einstellungen hinterlegten Namen (settings.profileName), fällt ohne Namen
+   auf einen namenlosen Gruß zurück statt "Hallo , !" anzuzeigen. */
+function greetingTileHTML(){
+  const hour = new Date().getHours();
+  let greeting, icon;
+  if(hour>=5 && hour<10){ greeting='Guten Morgen'; icon='greetSunrise'; }
+  else if(hour>=10 && hour<18){ greeting='Schönen Tag'; icon='greetSun'; }
+  else if(hour>=18 && hour<22){ greeting='Guten Abend'; icon='greetSun'; }
+  else { greeting='Noch wach'; icon='greetMoon'; }
+  const name = (settings.profileName||'').trim();
+  const text = name ? greeting+', '+name.replace(/</g,'&lt;')+'!' : greeting+'!';
+  return '<div class="greeting-tile">'+svgIcon(icon,18,'var(--gold)')+'<span>'+text+'</span></div>';
+}
 function renderDashboard(root){
   const agg = aggregate();
   const cityCount = agg.cities.length;
@@ -4454,6 +4483,7 @@ function renderDashboard(root){
   if(trips.length){
     html += levelTileHTML(computeBadgesView());
   }
+  html += greetingTileHTML();
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
   html += '    <div class="hero-eyebrow">'+currentYear+' — Stand aktuelles Jahr</div>';
@@ -5337,6 +5367,7 @@ function renderAdd(root){
       }
     }
 
+    const nowTs = Date.now();
     const trip = {
       id: t ? t.id : uid(),
       fromCity: cityOnly ? '' : fromVal,
@@ -5358,7 +5389,8 @@ function renderAdd(root){
       flightNumber: (!cityOnly && document.getElementById('fldFlightNo')) ? document.getElementById('fldFlightNo').value.trim() : '',
       notes: document.getElementById('fldNotes').value.trim(),
       photos: t ? (t.photos||[]) : [],
-      createdAt: t ? t.createdAt : Date.now()
+      createdAt: t ? t.createdAt : nowTs,
+      updatedAt: nowTs
     };
 
     if(t){
@@ -6504,7 +6536,10 @@ function renderTripDetailPage(tripId, root){
   html += '  <div class="card"><div class="card-head"><h2>Reise auf einen Blick</h2></div>'+tripOverviewStatsHTML(t)+'</div>';
   html += detailCardHTML(t);
   html += '  <div class="tdp-footer">';
-  html += '    <span>Erstellt</span><b>'+(t.createdAt?fmtDate(new Date(t.createdAt).toISOString().slice(0,10)):'–')+'</b>';
+  html += '    <div class="tdp-footer-row"><span>Erstellt:</span><b>'+(t.createdAt?fmtDate(new Date(t.createdAt).toISOString().slice(0,10)):'–')+'</b></div>';
+  if(t.updatedAt && t.createdAt && t.updatedAt!==t.createdAt){
+    html += '    <div class="tdp-footer-row tdp-footer-sub"><span>Zuletzt geändert:</span><b>'+fmtLastEntryTimestamp(t.updatedAt)+'</b></div>';
+  }
   html += '  </div>';
   html += '</div>';
   root.innerHTML = html;
