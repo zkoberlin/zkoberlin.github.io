@@ -452,8 +452,8 @@ tr:last-child td{border-bottom:none;}
    schwebenden Infos mehr. */
 .log-detail-card{
   display:flex;flex-direction:column;
-  background:var(--panel-alt);border:1px solid var(--border-soft);border-radius:var(--radius);
-  overflow:hidden;margin-bottom:20px;
+  background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow);
 }
 .log-detail-section{padding:14px 16px;border-bottom:1px solid var(--border-soft);}
 .log-detail-section-label{
@@ -581,7 +581,10 @@ tr:last-child td{border-bottom:none;}
 .tc-compact-dot{color:var(--text-faint);margin:0 1px;}
 .tc-chevron-side{color:var(--text-faint);font-size:17px;flex-shrink:0;}
 
-.trip-detail-page{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:0 auto;width:100%;}
+.trip-detail-page{display:flex;flex-direction:column;gap:8px;max-width:640px;margin:0 auto;width:100%;}
+/* .card/.log-detail-card bringen sonst ihr eigenes margin-bottom mit, das sich zum
+   Flex-Abstand hier addieren würde — der gap oben soll der einzige Abstandsgeber sein. */
+.trip-detail-page > .card, .trip-detail-page > .log-detail-card{margin-bottom:0;}
 .tdp-header{display:flex;align-items:center;justify-content:space-between;}
 .tdp-header h3{margin:0;font-size:15px;font-family:var(--font-display);}
 .tdp-back, .tdp-menu{
@@ -1957,11 +1960,15 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.44.2';
+const APP_VERSION = '1.44.3';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.44.3', tier:'🟢', title:'Detailseite: Kachel-Look vereinheitlicht', items:[
+    'Details/Fotos/Aktionen-Kachel bekommt jetzt denselben kräftig-weißen Hintergrund und dieselbe Schlagschatten-Kante wie "Reise auf einen Blick" oben — vorher wirkte sie flacher/blasser.',
+    'Abstand zwischen den Kacheln auf der Detailseite verkleinert — gilt für Mobile und Desktop.'
+  ]},
   {v:'1.44.2', tier:'🟢', title:'"Alle Reisen"-Kacheln entschlackt', items:[
     'Transport-Text (z. B. "Hin- & Rückflug") aus der kleinen Kompaktkarten-Statistikzeile entfernt — stand ohnehin schon als Icon in der Routenzeile darüber, wirkte doppelt und zu voll.',
     'Abgeschnittene, zu lange Stadtnamen zeigen beim Hovern jetzt den vollen Namen als Tooltip.',
