@@ -211,19 +211,37 @@ a{color:var(--teal);}
 
 /* Mobiles Tab-Dropdown: per Default versteckt (Desktop zeigt die Button-Leiste) —
    wird erst in der 700px-Breakpoint sichtbar, siehe unten. Ersetzt dort die sonst zu
-   dominante mehrzeilige Button-Reihe durch einen kompakten, nativen Auswahl-Dropdown. */
-.tabs-mobile{display:none;}
-.tabs-mobile-select{
-  width:100%;appearance:none;-webkit-appearance:none;
+   dominante mehrzeilige Button-Reihe. Ein natives <select> kann keine SVG-Icons in
+   <option> darstellen — daher ein eigenes, leichtgewichtiges Dropdown (Trigger-Button
+   + Aufklapp-Panel), das sich wie ein normales Dropdown verhält, aber volle Kontrolle
+   über Icon und Akzentfarbe je Eintrag erlaubt (siehe TAB_MENU_ITEMS). */
+.tabs-mobile{display:none;position:relative;margin:8px 0 2px;}
+.tab-dropdown-trigger{
+  width:100%;display:flex;align-items:center;gap:9px;
   font-family:var(--font-display);font-size:13.5px;font-weight:600;letter-spacing:0.03em;
   color:var(--gold);background:var(--panel);border:1px solid var(--gold-dim);
-  border-radius:10px;padding:11px 38px 11px 14px;cursor:pointer;
+  border-radius:10px;padding:10px 14px;cursor:pointer;box-shadow:var(--shadow);
 }
-.tabs-mobile{position:relative;margin:9px 0 2px;}
+.tab-dropdown-trigger .tab-dropdown-icon{display:flex;flex-shrink:0;}
+.tab-dropdown-trigger span:nth-child(2){flex:1;text-align:left;}
 .tabs-mobile-chevron{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;color:var(--text-faint);pointer-events:none;
+  width:16px;height:16px;color:var(--text-faint);flex-shrink:0;transition:transform .15s ease;
 }
+.tabs-mobile.open .tabs-mobile-chevron{transform:rotate(180deg);}
+.tab-dropdown-panel{
+  display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:60;
+  background:var(--panel);border:1px solid var(--gold-dim);border-radius:12px;
+  box-shadow:var(--shadow);padding:6px;flex-direction:column;gap:2px;
+}
+.tabs-mobile.open .tab-dropdown-panel{display:flex;}
+.tab-dropdown-item{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:none;border:none;border-radius:8px;padding:10px 10px;cursor:pointer;
+  font-size:13px;color:var(--text-dim);font-family:var(--font-body);
+}
+.tab-dropdown-item:hover{background:var(--bg-soft);color:var(--text);}
+.tab-dropdown-item.active{background:var(--bg-soft);color:var(--text);font-weight:600;}
+.tab-dropdown-item-icon{display:flex;flex-shrink:0;}
 
 /* ---------- Cards ---------- */
 .card{
@@ -1343,15 +1361,12 @@ span.flatpickr-weekday{
       <button class="tab-btn" data-tab="bucket">Bucket-Liste</button>
     </div>
     <div class="tabs-mobile" id="tabsMobile">
-      <select id="tabsMobileSelect" class="tabs-mobile-select">
-        <option value="dashboard">🧭 Übersicht</option>
-        <option value="places">🗺️ Länder &amp; Städte</option>
-        <option value="log">📋 Alle Reisen</option>
-        <option value="stats">📊 Statistiken</option>
-        <option value="badges">🏅 Badges</option>
-        <option value="bucket">🧳 Bucket-Liste</option>
-      </select>
-      <svg class="tabs-mobile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      <button type="button" class="tab-dropdown-trigger" id="tabDropdownTrigger">
+        <span class="tab-dropdown-icon" id="tabDropdownIcon"></span>
+        <span id="tabDropdownLabel">Übersicht</span>
+        <svg class="tabs-mobile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="tab-dropdown-panel" id="tabDropdownPanel"></div>
     </div>
   </div>
 </div>
@@ -1871,6 +1886,16 @@ const SVG_ICON_PATHS = {
   continent:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
   flame:'<path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 3-6 5-10z"/>',
   leaf:'<path d="M11 20c-4-.3-7-3.4-7-7.6C4 7 9 4 17 4c0 8-4 13-9.5 13.4"/><path d="M4.5 19.5C7 15 10 13 13 12"/>',
+  tabOverview:'<rect x="3" y="3" width="18" height="18" rx="6"/><circle cx="12" cy="12" r="6"/><path d="M14.5 9.5l-1.3 3.7-3.7 1.3 1.3-3.7z"/>',
+  tabLog:'<rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="3" rx="1"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/>',
+  tabStats:'<path d="M4 20V14"/><path d="M10 20V9"/><path d="M16 20V5"/><path d="M2 20h20"/>',
+  tabBadges:'<circle cx="12" cy="9" r="5"/><path d="M9 13.5L7.5 21l4.5-2.5 4.5 2.5-1.5-7.5"/>',
+  tabBucket:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12.5h18"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/>',
+  navDashboard:'<rect x="3" y="3" width="18" height="18" rx="6"/><circle cx="12" cy="12" r="6"/><path d="M14.5 9.5l-1.3 3.7-3.7 1.3 1.3-3.7z"/>',
+  navLog:'<rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="3" rx="1"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/>',
+  navStats:'<path d="M4 20V14"/><path d="M10 20V9"/><path d="M16 20V5"/><path d="M2 20h20"/>',
+  navBadges:'<circle cx="12" cy="9" r="5"/><path d="M9 13.5L7.5 21l4.5-2.5 4.5 2.5-1.5-7.5"/>',
+  navBucket:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12.5h18"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/>',
   settingsGear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/><path d="M2 21h2.5M1.5 17.5h2"/>'
 };
@@ -1911,6 +1936,17 @@ function getPriorityIconHTML(priority, size){
   const colorMap = {hoch:'var(--rose)', mittel:'var(--gold)', niedrig:'var(--text-faint)'};
   return svgIcon(BUCKET_PRIORITY_ICON_NAME[priority]||'prioLow', size||14, colorMap[priority]||'currentColor');
 }
+/* Mobiles mit Icon+Farbe versehenes "Dropdown" für die Hauptnavigation (ersetzt das
+   native <select>, das keine SVG-Icons in <option> darstellen kann) — siehe
+   renderTabDropdown()/attachTabDropdown(). */
+const TAB_MENU_ITEMS = [
+  {tab:'dashboard', icon:'tabOverview', color:'var(--green)', label:'Übersicht'},
+  {tab:'places', icon:'continent', color:'var(--teal)', label:'Länder & Städte'},
+  {tab:'log', icon:'tabLog', color:'var(--text-dim)', label:'Alle Reisen'},
+  {tab:'stats', icon:'tabStats', color:'var(--rose)', label:'Statistiken'},
+  {tab:'badges', icon:'tabBadges', color:'var(--gold)', label:'Badges'},
+  {tab:'bucket', icon:'tabBucket', color:'#9c6b45', label:'Bucket-Liste'}
+];
 /* CONTINENTS wurde weiter oben (vor der Icon-Definition) deklariert und nutzte dort
    noch Emoji — hier nachträglich auf das einheitliche Kontinent-Icon umgestellt
    (svgIcon() ist erst ab hier sicher aufrufbar, SVG_ICON_PATHS war zuvor noch nicht
@@ -1960,11 +1996,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.45.0';
+const APP_VERSION = '1.46.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.46.0', tier:'🟡', title:'Mobiles Tab-Dropdown neu gebaut', items:[
+    'Das native Auswahlfeld für die Reiter (Übersicht/Länder & Städte/Alle Reisen/Statistiken/Badges/Bucket-Liste) konnte technisch keine Icons anzeigen — durch ein eigenes Dropdown ersetzt: Trigger-Button mit Icon + Label + Pfeil, Aufklapp-Panel mit farbigen Icons je Eintrag (aus deinem Icon-Set), Klick außerhalb schließt automatisch.',
+    'Bleibt weiterhin ein "Dropdown" in der Bedienung — nur jetzt mit vollständiger Icon-/Farbkontrolle statt der Emoji-Vorgänger.',
+    'Abstand zwischen Datum/Standort-Zeile und dem Dropdown gestrafft.'
+  ]},
   {v:'1.45.0', tier:'🟡', title:'Goldrahmen konsequent überall, Verkehrsmittel-Kacheln hervorgehoben', items:[
     'Header-Icons (Hell/Dunkel/Automatik-Umschalter, Heimatort-Chip) nutzten noch die neutrale statt goldene Umrandung — jetzt konsistent wie die anderen Buttons. Die dickere Umrandung für die aktuell gewählte Darstellung (Hell/Dunkel/Automatik) bleibt als Auswahl-Kennzeichnung erhalten.',
     'Weitere Icon-Buttons auf Gold umgestellt: Foto-Lightbox schließen, Zwischenstopp entfernen, "🔄 Berechnen"-Button, alle sekundären Buttons, Datumsfeld leeren.',
@@ -6773,12 +6814,7 @@ function renderLog(root){
 function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  const mobileSelect = document.getElementById('tabsMobileSelect');
-  // "add" ist kein Dropdown-Eintrag mehr (eigener "+"-Button) — Auswahl dann unverändert
-  // lassen, statt sie auf einen nicht existierenden Options-Wert zu setzen (leere Anzeige).
-  if(mobileSelect && mobileSelect.querySelector('option[value="'+tab+'"]') && mobileSelect.value!==tab){
-    mobileSelect.value = tab;
-  }
+  updateTabDropdown();
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+tab));
   const panel = document.getElementById('panel-'+tab);
   if(tab==='dashboard') renderDashboard(panel);
@@ -6789,6 +6825,27 @@ function switchTab(tab){
   if(tab==='badges') renderBadges(panel);
   if(tab==='bucket') renderBucketList(panel);
   window.scrollTo({top:0,behavior:'instant' in window ? 'instant':'auto'});
+}
+/* Aktualisiert Trigger-Icon/-Label + Panel-Markierung des mobilen Tab-Dropdowns.
+   "add" hat keinen eigenen Dropdown-Eintrag (eigener "+"-Button) — Trigger bleibt dann
+   unverändert stehen, statt auf einen nicht existierenden Eintrag zu wechseln. */
+function updateTabDropdown(){
+  const item = TAB_MENU_ITEMS.find(i=>i.tab===currentTab);
+  if(item){
+    const iconEl = document.getElementById('tabDropdownIcon');
+    const labelEl = document.getElementById('tabDropdownLabel');
+    if(iconEl) iconEl.innerHTML = svgIcon(item.icon, 17, item.color);
+    if(labelEl) labelEl.textContent = item.label;
+  }
+  const panel = document.getElementById('tabDropdownPanel');
+  if(panel){
+    panel.innerHTML = TAB_MENU_ITEMS.map(i=>
+      '<button type="button" class="tab-dropdown-item'+(i.tab===currentTab?' active':'')+'" data-tab="'+i.tab+'">'+
+        '<span class="tab-dropdown-item-icon">'+svgIcon(i.icon,17,i.color)+'</span>'+
+        '<span>'+i.label+'</span>'+
+      '</button>'
+    ).join('');
+  }
 }
 
 function renderAll(){
@@ -7153,10 +7210,21 @@ document.getElementById('tabs').addEventListener('click',(e)=>{
   duplicateSource = null;
   switchTab(btn.dataset.tab);
 });
-document.getElementById('tabsMobileSelect').addEventListener('change',(e)=>{
+document.getElementById('tabDropdownTrigger').addEventListener('click',(e)=>{
+  e.stopPropagation();
+  document.getElementById('tabsMobile').classList.toggle('open');
+});
+document.getElementById('tabDropdownPanel').addEventListener('click',(e)=>{
+  const btn = e.target.closest('[data-tab]');
+  if(!btn) return;
+  document.getElementById('tabsMobile').classList.remove('open');
   editingId = null;
   duplicateSource = null;
-  switchTab(e.target.value);
+  switchTab(btn.dataset.tab);
+});
+document.addEventListener('click',(e)=>{
+  const wrap = document.getElementById('tabsMobile');
+  if(wrap && wrap.classList.contains('open') && !wrap.contains(e.target)) wrap.classList.remove('open');
 });
 document.getElementById('newTripBtn').addEventListener('click',()=>{
   editingId = null;
