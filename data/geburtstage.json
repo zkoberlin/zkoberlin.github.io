@@ -1,41 +1,41 @@
 {
-  "datum": "11.08.2026",
-  "generiert": "2026-08-11T02:57:30Z",
+  "datum": "12.08.2026",
+  "generiert": "2026-08-12T03:16:31Z",
   "geburtstage": [
     {
-      "name": "Jasmin Selberg",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Model",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Jasmin_Selberg_at_the_Puteri_Indonesia_2023_final_coronation.jpg/120px-Jasmin_Selberg_at_the_Puteri_Indonesia_2023_final_coronation.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q115687297",
+      "name": "Jule Niemeier",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "German Tennis Player (Born 1999)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Jule_Niemeier_%282024_DC_Open%29_01_%28cropped%29.jpg/330px-Jule_Niemeier_%282024_DC_Open%29_01_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jule_Niemeier",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "André Hoffmann",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Eisschnellläufer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bundesarchiv_Bild_183-1983-1125-023%2C_Andre_Hoffmann.jpg/120px-Bundesarchiv_Bild_183-1983-1125-023%2C_Andre_Hoffmann.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q519714",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Sebastian Huke",
-      "alter": 37,
-      "geburtsjahr": 1989,
+      "name": "Martin Zurawsky",
+      "alter": 36,
+      "geburtsjahr": 1990,
       "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Huke",
+      "wikidata": "https://en.wikipedia.org/wiki/Martin_Zurawsky",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Dirk Hannemann",
-      "alter": 56,
-      "geburtsjahr": 1970,
-      "beruf": "German Footballer (Born 1970)",
+      "name": "Thorsten Boer",
+      "alter": 58,
+      "geburtsjahr": 1968,
+      "beruf": "German Footballer And Manager",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Bundesarchiv_Bild_183-1990-0223-013%2C_Mannschaftsfoto_FC_Berlin.jpg/330px-Bundesarchiv_Bild_183-1990-0223-013%2C_Mannschaftsfoto_FC_Berlin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Thorsten_Boer",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Jürgen Dehmel",
+      "alter": 68,
+      "geburtsjahr": 1958,
+      "beruf": "German Musician",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Dirk_Hannemann",
+      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Dehmel",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
