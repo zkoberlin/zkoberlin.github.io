@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>WELTLOG</title>
+<title>WEITWEG — Deine Reise. Deine Spuren. Deine Welt.</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230E1526%22/%3E%0A%3Cpath%20d%3D%22M8%2015h10l6%2028%208-19%208%2019%206-28h10L45%2052H36l-4-10-4%2010H19L8%2015Z%22%20fill%3D%22%23F2EAD9%22/%3E%0A%3Cpath%20d%3D%22M18%2045c7-7%2013-8%2020-5%205%202%208%200%2011-4%22%20fill%3D%22none%22%20stroke%3D%22%23C89D3C%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%223.5%204%22/%3E%0A%3Cpath%20d%3D%22M48%2010c-4.4%200-8%203.6-8%208%200%206.1%208%2014%208%2014s8-7.9%208-14c0-4.4-3.6-8-8-8Zm0%2011.2a3.2%203.2%200%201%201%200-6.4%203.2%203.2%200%200%201%200%206.4Z%22%20fill%3D%22%23C89D3C%22/%3E%0A%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
@@ -2675,6 +2676,148 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   }
 }
 
+
+/* ============================================================
+   WEITWEG — Brand Integration
+   ============================================================ */
+:root{
+  --brand-navy:#10233F;
+  --brand-cream:#F2EAD9;
+  --brand-gold:#C89D3C;
+}
+.brand-mark{
+  --brand-route:var(--brand-gold);
+  background:var(--brand-navy) !important;
+  color:var(--brand-cream) !important;
+  border:1px solid color-mix(in srgb,var(--brand-gold) 36%,transparent) !important;
+  box-shadow:0 3px 12px rgba(0,0,0,.18) !important;
+  overflow:hidden;
+}
+.brand-mark svg{
+  width:27px !important;
+  height:27px !important;
+  display:block;
+}
+.brand-text h1{letter-spacing:.085em !important}
+.brand-text p{
+  color:var(--gold) !important;
+  font-size:8.5px !important;
+  font-weight:600 !important;
+  letter-spacing:.07em !important;
+}
+.weitweg-about-brand{
+  margin:0 0 18px;
+  padding:16px;
+  border:1px solid var(--border-soft);
+  border-radius:16px;
+  background:var(--bg-soft);
+}
+.weitweg-about-brand svg{
+  display:block;
+  width:min(100%,380px);
+  margin:0 auto;
+}
+@media(max-width:600px){
+  .brand-mark{
+    width:30px !important;height:30px !important;flex-basis:30px !important;
+  }
+  .brand-mark svg{width:24px !important;height:24px !important}
+}
+
+
+/* ============================================================
+   WEITWEG RC13 — Fast geschafft + genderneutrale Badge-Texte
+   ============================================================ */
+
+/* "Fast geschafft": Artwork und Text strikt trennen */
+.discover-feature .discover-badge-row{
+  display:grid !important;
+  grid-template-columns:84px minmax(0,1fr) !important;
+  gap:16px !important;
+  align-items:center !important;
+  min-height:104px !important;
+  padding:14px 0 !important;
+  overflow:hidden !important;
+}
+.discover-feature .discover-badge-row .badge-stamp{
+  width:84px !important;
+  height:84px !important;
+  min-width:84px !important;
+  min-height:84px !important;
+  max-width:84px !important;
+  max-height:84px !important;
+  overflow:hidden !important;
+  contain:paint !important;
+  justify-self:start !important;
+  align-self:center !important;
+}
+.discover-feature .discover-badge-row .badge-stamp svg{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  overflow:hidden !important;
+}
+.discover-feature .discover-badge-copy{
+  min-width:0 !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+  position:relative !important;
+  z-index:2 !important;
+}
+.discover-feature .discover-badge-copy b{
+  display:block !important;
+  margin:0 !important;
+  font-size:14px !important;
+  line-height:1.25 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+}
+.discover-feature .discover-badge-copy span{
+  display:block !important;
+  margin-top:5px !important;
+  font-size:11px !important;
+  line-height:1.35 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* Desktop darf etwas größer sein, bleibt aber sauber getrennt */
+@media(min-width:700px){
+  .discover-feature .discover-badge-row{
+    grid-template-columns:104px minmax(0,1fr) !important;
+    gap:20px !important;
+    min-height:124px !important;
+  }
+  .discover-feature .discover-badge-row .badge-stamp{
+    width:104px !important;
+    height:104px !important;
+    min-width:104px !important;
+    min-height:104px !important;
+    max-width:104px !important;
+    max-height:104px !important;
+  }
+}
+
+/* Sehr schmale Geräte: Artwork oben, Text darunter — kein Überlappen möglich */
+@media(max-width:360px){
+  .discover-feature .discover-badge-row{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+    align-items:start !important;
+  }
+  .discover-feature .discover-badge-row .badge-stamp{
+    width:96px !important;
+    height:96px !important;
+    min-width:96px !important;
+    min-height:96px !important;
+    max-width:96px !important;
+    max-height:96px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2682,10 +2825,14 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true"></div>
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+  <path d="M8 15h10l6 28 8-19 8 19 6-28h10L45 52H36l-4-10-4 10H19L8 15Z" fill="currentColor"/>
+  <path d="M18 45c7-7 13-8 20-5 5 2 8 0 11-4" fill="none" stroke="var(--brand-route,#C89D3C)" stroke-width="3" stroke-linecap="round" stroke-dasharray="3.5 4"/>
+  <path d="M48 10c-4.4 0-8 3.6-8 8 0 6.1 8 14 8 14s8-7.9 8-14c0-4.4-3.6-8-8-8Zm0 11.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Z" fill="var(--brand-route,#C89D3C)"/>
+</svg></div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.23.0</span></h1>
-        <p>Dein persönliches Reise-Logbuch</p>
+        <h1>WEITWEG <span class="version-pill" id="versionPill" title="Version">v1.23.0</span></h1>
+        <p>DEINE REISE. DEINE SPUREN. DEINE WELT.</p>
       </div>
     </div>
     <div class="top-actions">
@@ -2801,7 +2948,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
         </div>
         <div class="profile-row" data-settings-open="about">
           <div class="profile-row-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 8h.01M11 12h1v5h1"/></svg></div>
-          <div class="profile-row-main"><div class="profile-row-title" id="settingsAboutRowTitle">Über WELTLOG</div></div>
+          <div class="profile-row-main"><div class="profile-row-title" id="settingsAboutRowTitle">Über WEITWEG</div></div>
           <span class="profile-chevron">›</span>
         </div>
       </div>
@@ -2921,12 +3068,20 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <div class="profile-row" style="cursor:default;"><div class="profile-row-main"><div class="profile-row-title">Badges &amp; Level</div><div class="profile-row-sub">Unter „Entdecken" siehst du alle Auszeichnungen und deinen Fortschritt.</div></div></div>
           <div class="profile-row" style="cursor:default;border-bottom:none;"><div class="profile-row-main"><div class="profile-row-title">Cloud-Sync einrichten</div><div class="profile-row-sub">Unter „Synchronisation" mit deinem eigenen Cloudflare-Worker verbinden.</div></div></div>
         </div>
-        <p class="sync-desc" style="margin-top:16px;">Fragen oder Ideen? Schreib sie dir einfach als Notiz — WELTLOG ist dein eigenes Projekt.</p>
+        <p class="sync-desc" style="margin-top:16px;">Fragen oder Ideen? WEITWEG ist dein persönliches Reiseprojekt — und wächst mit deinen Reisen.</p>
       </div>
 
       <div class="settings-panel" data-panel="about" hidden>
         <div class="about-app-block">
-          <div class="about-app-title">WELTLOG</div>
+          <div class="weitweg-about-brand"><svg viewBox="0 0 520 120" role="img" aria-label="WEITWEG – Deine Reise. Deine Spuren. Deine Welt.">
+  <g transform="translate(0,8)">
+    <path d="M4 12h24l14 70 20-48 20 48 14-70h24L94 104H74L62 75l-12 29H30L4 12Z" fill="#10233f"/>
+    <path d="M29 86c17-15 32-18 49-11 12 5 20 1 28-9" fill="none" stroke="#C89D3C" stroke-width="6" stroke-linecap="round" stroke-dasharray="8 9"/>
+    <path d="M105 3c-9 0-16 7-16 16 0 12 16 27 16 27s16-15 16-27c0-9-7-16-16-16Zm0 22a6 6 0 1 1 0-12 6 6 0 0 1 0 12Z" fill="#C89D3C"/>
+  </g>
+  <text x="145" y="67" font-family="Space Grotesk, Arial, sans-serif" font-size="62" font-weight="700" letter-spacing="5" fill="#10233f">WEITWEG</text>
+  <text x="148" y="100" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="1.6" fill="#C08B24">DEINE REISE. DEINE SPUREN. DEINE WELT.</text>
+</svg></div><div class="about-app-title">WEITWEG</div>
           <div class="about-app-sub" id="settingsAboutVersion"></div>
           <p class="sync-desc" style="margin-top:14px;">Dein persönliches Reisetagebuch: Reisen erfassen, Strecken &amp; Länder sammeln, Auszeichnungen freischalten und die eigene Welt auf der Karte wachsen sehen.</p>
           <p class="sync-desc">Gebaut von Paul, ganz ohne fremde Werbung oder Tracking — deine Daten bleiben bei dir.</p>
@@ -3496,13 +3651,25 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '2.9.0';
+const APP_VERSION = '3.0.1-rc13';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.0.1-rc13', tier:'🟢', title:'Badge-Layout & genderneutrale Bezeichnungen', items:[
+    '„Fast geschafft“ nutzt auf Mobile und Desktop eine feste Artwork-Spalte mit separatem Textbereich; Badge-Grafiken können die Texte nicht mehr überdecken.',
+    'Auf sehr schmalen Displays wechselt die Darstellung automatisch auf Badge oben und Text darunter.',
+    'Badge-Bezeichnungen wurden sprachlich genderneutral vereinheitlicht, z. B. Läufer:in, Jäger:in, Sammler:in, Entdecker:in und Kenner:in.'
+  ]},
+  {v:'3.0.0-rc12', tier:'🔴', title:'WEITWEG Branding & Karten-Matching', items:[
+    'Die sichtbare Produktmarke wurde von WELTLOG auf WEITWEG umgestellt — inklusive W/Route/Pin-Logo und Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“.',
+    'Header, Home, Profil, Teilen/Export, Einstellungen und „Über WEITWEG“ verwenden die neue Marke. Interne Speicherkeys bleiben unverändert, damit bestehende Reisedaten erhalten bleiben.',
+    'Karten-Bug bei Belgien behoben: Natural-Earth-Regionen mit ISO_A2=-99 werden jetzt über ISO_A2_EH dem richtigen souveränen Land zugeordnet.',
+    'Der gleiche Fix schließt weitere bisher mögliche Kartenlücken bei regional aufgeteilten Ländern wie Portugal und Bosnien und Herzegowina.',
+    'Neuer interner Map-Coverage-Audit warnt in der Browser-Konsole, falls ein besuchter Ländercode zukünftig keine passende Natural-Earth-Fläche besitzt.'
+  ]},
   {v:'2.9.0', tier:'🟡', title:'Einstellungen neu, Kategorie-Icons & persönliche Begrüßung', items:[
     '„Alle Badges" unter Entdecken zeigt jetzt wieder die kategorisierte Ansicht mit Icons pro Kategorie (Länder, Städte, Kilometer, Transport, …) — die alte, unkategorisierte Ansicht ohne Icons wurde entfernt, dadurch verschwindet auch das Überlappen von Stempel und Text endgültig.',
     'Einstellungen komplett neu strukturiert: übersichtliche Liste mit Homebase, Theme, Bereich „App" (Synchronisation, Daten & Sicherheit, Benachrichtigungen) und Bereich „Info" (Was ist neu, Release Notes, Hilfe & Support, Über WELTLOG) inkl. Versionsnummer am Ende.',
@@ -3620,7 +3787,7 @@ const RELEASE_NOTES = [
   ]},
   {v:'1.43.0', tier:'🔴', title:'Icon-Set erweitert, Desktop-Kartenansicht, Settings-X', items:[
     'Neue Icon-Set-Erweiterung eingebaut: Bucket-Liste (Stadt/Land-Toggle, Sehnsucht-Priorität Hoch/Mittel/Niedrig, National), Grund-Icons (Business, Urlaub, Fußballspiel, Lauf-Event, Family & Friends, Ausflug, Alma, Sonstiges) und Rekorde-Karten in Statistiken — alle als SVG statt Emoji.',
-    'Statistiken-Seite durchgängig umgestellt: Verkehrsmittel-Filter, CO2-Ring-Legende, Jahreszeiten- und Entdecker-Trend-Sortierung, National/International-Umschalter.',
+    'Statistiken-Seite durchgängig umgestellt: Verkehrsmittel-Filter, CO2-Ring-Legende, Jahreszeiten- und Entdecker:in-Trend-Sortierung, National/International-Umschalter.',
     'Übersicht-Seite: "Letzter Eintrag"-Uhrsymbol umgestellt (Erde/Mond/Mars/CO2-Vergleichsymbole bleiben Emoji, dafür gibt es im Icon-Set keine Entsprechung).',
     '"Alle Reisen" nutzt jetzt auch auf Desktop die neue Karten-Ansicht statt der alten Tabelle — inkl. zwei-/dreispaltigem Raster ab Tablet-/Desktop-Breite. Die Detailseite bekommt dabei eine sinnvolle Maximalbreite statt über den ganzen Bildschirm zu laufen.',
     'Einstellungen-Dialog hat jetzt oben rechts ein X zum Schließen.',
@@ -3662,7 +3829,7 @@ const RELEASE_NOTES = [
     'Hinweis: Design-Vorlagen 3–5 (Foto-Karten in "Alle Reisen", Detailseiten-Titelbild, Teilen-Funktion, untere Tab-Leiste auf Mobile) folgen in einem nächsten Schritt.'
   ]},
   {v:'1.38.0', tier:'🟡', title:'Länder-Logik korrigiert & Release Notes', items:[
-    'Ein Land zählt nur noch als besucht, wenn die Reise dorthin von einer Stadt eines ANDEREN Landes aus angetreten wurde (z. B. Berlin→Madrid = Spanien-Besuch). Eine Weiterreise innerhalb desselben Landes (z. B. Sitges→Barcelona, beide Spanien) zählt nicht erneut als Landbesuch — die Stadt selbst aber weiterhin ganz normal. Betrifft Dashboard, Länder & Städte, Entdecker-Trend, Rekorde.',
+    'Ein Land zählt nur noch als besucht, wenn die Reise dorthin von einer Stadt eines ANDEREN Landes aus angetreten wurde (z. B. Berlin→Madrid = Spanien-Besuch). Eine Weiterreise innerhalb desselben Landes (z. B. Sitges→Barcelona, beide Spanien) zählt nicht erneut als Landbesuch — die Stadt selbst aber weiterhin ganz normal. Betrifft Dashboard, Länder & Städte, Entdecker:in-Trend, Rekorde.',
     'CO2-Vergleichslinie "Ø Bundesbürger (Mobilität)" ist keine gerade Linie mehr — der Mobilitäts-Fußabdruck war über die Jahre nicht konstant (v. a. Corona-Einbruch 2020/2021). Die "Gesamt"-Ansicht im CO2-Verlauf zeigt jetzt den historischen Verlauf.',
     'Neuer Bereich "Was ist neu?" unter Einstellungen mit dieser Liste.'
   ]},
@@ -4820,7 +4987,7 @@ function aggregate(){
   }
 
   /* Zwischenstopps zählen ebenfalls als besuchte Orte (Karte, Länder & Städte, Top 5,
-     Entdecker-Trend) — mit einer geschätzten Kilometer-Zuordnung: die Teilstrecke von
+     Entdecker:in-Trend) — mit einer geschätzten Kilometer-Zuordnung: die Teilstrecke von
      der jeweils vorherigen Station bis zum Zwischenstopp, berechnet aus Luftlinie ×
      Aufschlag des für diese Teilstrecke gewählten Verkehrsmittels (gleiche Methode wie
      der "🔄 Berechnen"-Button im Formular). Das ist eine Schätzung, keine exakte Messung
@@ -4998,8 +5165,8 @@ function aggregateMonths(){
   return arr;
 }
 
-/* Entdecker-Trend: wie viele Länder/Städte wurden in welchem Jahr zum ERSTEN Mal besucht
-   (chronologisch aufsteigend, zeigt ob das "Entdecker-Tempo" zu- oder abnimmt) */
+/* Entdecker:in-Trend: wie viele Länder/Städte wurden in welchem Jahr zum ERSTEN Mal besucht
+   (chronologisch aufsteigend, zeigt ob das "Entdecker:in-Tempo" zu- oder abnimmt) */
 function aggregateDiscoveries(){
   /* Heimatort zählt an keiner Stelle der App als besuchter Ort (siehe isHomeCity) —
      das galt hier bislang nicht: ein Berlin-Eintrag hätte fälschlich als "neue Stadt"
@@ -5129,7 +5296,7 @@ function computeRecords(){
    können (siehe Absprache: Option 1, rein berechnet).
 
    Schwellen (Stand nach Rebalancing, siehe Absprache): mit 191 Achievements (davon viele
-   "Mengen"-Achievements wie Städte-/Länder-Sammler-Tiers, Streaks, Distanz-Tiers, die schon
+   "Mengen"-Achievements wie Städte-/Länder-Sammler:in-Tiers, Streaks, Distanz-Tiers, die schon
    bei aktivem regionalem Reisen ohne große geografische Breite zusammenkommen) lag der
    maximale Achievement-Bonus-Pool bei ~7.430 Punkten — das drückte den Punktestand bei
    vielreisenden, aber geografisch eher regional unterwegsigen Profilen zu früh in hohe
@@ -5144,8 +5311,8 @@ const LEVELS = [
   {level:4, title:'Grenzgänger', from:700},
   {level:5, title:'Vielgereist', from:1400},
   {level:6, title:'Kontinentalreisender', from:2600},
-  {level:7, title:'Globetrotter', from:4500},
-  {level:8, title:'Weltenbummler', from:7000},
+  {level:7, title:'Globetrotter:in', from:4500},
+  {level:8, title:'Weltenbummler:in', from:7000},
   {level:9, title:'Weltreisender', from:10500},
   {level:10, title:'Legende der Landkarte', from:14000}
 ];
@@ -5576,20 +5743,20 @@ function computeAchievements(){
   /* ================= A. Länder ================= */
   addTiers('LAND', [
     {id:'LAND-01',name:'Erstes Ausland',icon:'🌍',desc:'Die erste Reise außerhalb Deutschlands',target:1,bonus:20},
-    {id:'LAND-02',name:'Länder-Sammler I',icon:'🌍',desc:'2 verschiedene Länder besucht',target:2,bonus:10},
-    {id:'LAND-03',name:'Länder-Sammler II',icon:'🌍',desc:'3 Länder',target:3,bonus:10},
-    {id:'LAND-04',name:'Länder-Sammler III',icon:'🌍',desc:'5 Länder',target:5,bonus:15},
-    {id:'LAND-05',name:'Länder-Sammler IV',icon:'🌎',desc:'8 Länder',target:8,bonus:15},
-    {id:'LAND-06',name:'Länder-Sammler V',icon:'🌎',desc:'12 Länder',target:12,bonus:20},
-    {id:'LAND-07',name:'Länder-Sammler VI',icon:'🌎',desc:'16 Länder',target:16,bonus:20},
-    {id:'LAND-08',name:'Länder-Sammler VII',icon:'🌏',desc:'20 Länder',target:20,bonus:25},
-    {id:'LAND-09',name:'Länder-Sammler VIII',icon:'🌏',desc:'25 Länder',target:25,bonus:30},
-    {id:'LAND-10',name:'Länder-Sammler IX',icon:'🌏',desc:'30 Länder',target:30,bonus:35},
-    {id:'LAND-11',name:'Länder-Sammler X',icon:'🗺️',desc:'40 Länder',target:40,bonus:45},
-    {id:'LAND-12',name:'Länder-Sammler XI',icon:'🗺️',desc:'50 Länder',target:50,bonus:60},
-    {id:'LAND-13',name:'Länder-Sammler XII',icon:'🗺️',desc:'60 Länder',target:60,bonus:75},
-    {id:'LAND-14',name:'Länder-Sammler XIII',icon:'🏆',desc:'75 Länder',target:75,bonus:100},
-    {id:'LAND-15',name:'Länder-Sammler XIV',icon:'🏆',desc:'100 Länder',target:100,bonus:150}
+    {id:'LAND-02',name:'Länder-Sammler:in I',icon:'🌍',desc:'2 verschiedene Länder besucht',target:2,bonus:10},
+    {id:'LAND-03',name:'Länder-Sammler:in II',icon:'🌍',desc:'3 Länder',target:3,bonus:10},
+    {id:'LAND-04',name:'Länder-Sammler:in III',icon:'🌍',desc:'5 Länder',target:5,bonus:15},
+    {id:'LAND-05',name:'Länder-Sammler:in IV',icon:'🌎',desc:'8 Länder',target:8,bonus:15},
+    {id:'LAND-06',name:'Länder-Sammler:in V',icon:'🌎',desc:'12 Länder',target:12,bonus:20},
+    {id:'LAND-07',name:'Länder-Sammler:in VI',icon:'🌎',desc:'16 Länder',target:16,bonus:20},
+    {id:'LAND-08',name:'Länder-Sammler:in VII',icon:'🌏',desc:'20 Länder',target:20,bonus:25},
+    {id:'LAND-09',name:'Länder-Sammler:in VIII',icon:'🌏',desc:'25 Länder',target:25,bonus:30},
+    {id:'LAND-10',name:'Länder-Sammler:in IX',icon:'🌏',desc:'30 Länder',target:30,bonus:35},
+    {id:'LAND-11',name:'Länder-Sammler:in X',icon:'🗺️',desc:'40 Länder',target:40,bonus:45},
+    {id:'LAND-12',name:'Länder-Sammler:in XI',icon:'🗺️',desc:'50 Länder',target:50,bonus:60},
+    {id:'LAND-13',name:'Länder-Sammler:in XII',icon:'🗺️',desc:'60 Länder',target:60,bonus:75},
+    {id:'LAND-14',name:'Länder-Sammler:in XIII',icon:'🏆',desc:'75 Länder',target:75,bonus:100},
+    {id:'LAND-15',name:'Länder-Sammler:in XIV',icon:'🏆',desc:'100 Länder',target:100,bonus:150}
   ], achCountries.length);
 
   const continentBadges = [
@@ -5607,12 +5774,12 @@ function computeAchievements(){
   add('LAND-23','LAND','Weltenbürger','🌐','Alle 7 Kontinente bereist',7,continentsVisited.size,150, Object.keys(CONTINENTS).filter(cc=>!continentsVisited.has(cc)).map(cc=>CONTINENTS[cc].label));
   add('LAND-24','LAND','Nachbarschaft komplett','🤝','Alle 9 direkten Nachbarländer Deutschlands besucht',NEIGHBOR_DE_CC.length,countInGroup(NEIGHBOR_DE_CC),50,missingInGroup(NEIGHBOR_DE_CC));
   addTiers('LAND',[
-    {id:'LAND-25',name:'EU-Kenner I',icon:'🇪🇺',desc:'5 EU-Länder besucht',target:5,bonus:15},
-    {id:'LAND-26',name:'EU-Kenner II',icon:'🇪🇺',desc:'10 EU-Länder besucht',target:10,bonus:25},
-    {id:'LAND-27',name:'EU-Kenner III',icon:'🇪🇺',desc:'15 EU-Länder besucht',target:15,bonus:35},
-    {id:'LAND-28',name:'EU-Kenner IV',icon:'🇪🇺',desc:'20 EU-Länder besucht',target:20,bonus:45}
+    {id:'LAND-25',name:'EU-Kenner:in I',icon:'🇪🇺',desc:'5 EU-Länder besucht',target:5,bonus:15},
+    {id:'LAND-26',name:'EU-Kenner:in II',icon:'🇪🇺',desc:'10 EU-Länder besucht',target:10,bonus:25},
+    {id:'LAND-27',name:'EU-Kenner:in III',icon:'🇪🇺',desc:'15 EU-Länder besucht',target:15,bonus:35},
+    {id:'LAND-28',name:'EU-Kenner:in IV',icon:'🇪🇺',desc:'20 EU-Länder besucht',target:20,bonus:45}
   ], countInGroup(EU_CC));
-  add('LAND-29','LAND','EU-Komplettist','🇪🇺','Alle 27 EU-Länder besucht',EU_CC.length,countInGroup(EU_CC),100,missingInGroup(EU_CC));
+  add('LAND-29','LAND','EU-Komplettist:in','🇪🇺','Alle 27 EU-Länder besucht',EU_CC.length,countInGroup(EU_CC),100,missingInGroup(EU_CC));
   addTiers('LAND',[
     {id:'LAND-30',name:'Kleinstaaten-Kenner:in',icon:'🏰',desc:'3 europäische Kleinstaaten (Andorra, Liechtenstein, Luxemburg, Monaco, Malta, San Marino, Vatikan)',target:3,bonus:20}
   ], microStateCount);
@@ -5627,23 +5794,23 @@ function computeAchievements(){
   /* ================= B. Städte ================= */
   addTiers('STADT',[
     {id:'STADT-01',name:'Erste Stadt',icon:'🏙️',desc:'Die erste erfasste Reise',target:1,bonus:5},
-    {id:'STADT-02',name:'Städte-Sammler I',icon:'🏙️',desc:'5 Städte besucht',target:5,bonus:10},
-    {id:'STADT-03',name:'Städte-Sammler II',icon:'🏙️',desc:'10 Städte',target:10,bonus:15},
-    {id:'STADT-04',name:'Städte-Sammler III',icon:'🏙️',desc:'20 Städte',target:20,bonus:20},
-    {id:'STADT-05',name:'Städte-Sammler IV',icon:'🏙️',desc:'30 Städte',target:30,bonus:25},
-    {id:'STADT-06',name:'Städte-Sammler V',icon:'🌆',desc:'50 Städte',target:50,bonus:35},
-    {id:'STADT-07',name:'Städte-Sammler VI',icon:'🌆',desc:'75 Städte',target:75,bonus:50},
-    {id:'STADT-08',name:'Städte-Sammler VII',icon:'🌆',desc:'100 Städte',target:100,bonus:75},
-    {id:'STADT-09',name:'Städte-Sammler VIII',icon:'🏆',desc:'150 Städte',target:150,bonus:110},
-    {id:'STADT-10',name:'Städte-Sammler IX',icon:'🏆',desc:'200 Städte',target:200,bonus:150}
+    {id:'STADT-02',name:'Städte-Sammler:in I',icon:'🏙️',desc:'5 Städte besucht',target:5,bonus:10},
+    {id:'STADT-03',name:'Städte-Sammler:in II',icon:'🏙️',desc:'10 Städte',target:10,bonus:15},
+    {id:'STADT-04',name:'Städte-Sammler:in III',icon:'🏙️',desc:'20 Städte',target:20,bonus:20},
+    {id:'STADT-05',name:'Städte-Sammler:in IV',icon:'🏙️',desc:'30 Städte',target:30,bonus:25},
+    {id:'STADT-06',name:'Städte-Sammler:in V',icon:'🌆',desc:'50 Städte',target:50,bonus:35},
+    {id:'STADT-07',name:'Städte-Sammler:in VI',icon:'🌆',desc:'75 Städte',target:75,bonus:50},
+    {id:'STADT-08',name:'Städte-Sammler:in VII',icon:'🌆',desc:'100 Städte',target:100,bonus:75},
+    {id:'STADT-09',name:'Städte-Sammler:in VIII',icon:'🏆',desc:'150 Städte',target:150,bonus:110},
+    {id:'STADT-10',name:'Städte-Sammler:in IX',icon:'🏆',desc:'200 Städte',target:200,bonus:150}
   ], achCities.length);
   addTiers('STADT',[
-    {id:'STADT-11',name:'Hauptstadt-Jäger I',icon:'🏛️',desc:'1 Hauptstadt besucht',target:1,bonus:10},
-    {id:'STADT-12',name:'Hauptstadt-Jäger II',icon:'🏛️',desc:'5 Hauptstädte',target:5,bonus:20},
-    {id:'STADT-13',name:'Hauptstadt-Jäger III',icon:'🏛️',desc:'10 Hauptstädte',target:10,bonus:35},
-    {id:'STADT-14',name:'Hauptstadt-Jäger IV',icon:'🏛️',desc:'15 Hauptstädte',target:15,bonus:50},
-    {id:'STADT-15',name:'Hauptstadt-Jäger V',icon:'🏛️',desc:'20 Hauptstädte',target:20,bonus:65},
-    {id:'STADT-16',name:'Hauptstadt-Jäger VI',icon:'👑',desc:'25 Hauptstädte',target:25,bonus:85}
+    {id:'STADT-11',name:'Hauptstadt-Jäger:in I',icon:'🏛️',desc:'1 Hauptstadt besucht',target:1,bonus:10},
+    {id:'STADT-12',name:'Hauptstadt-Jäger:in II',icon:'🏛️',desc:'5 Hauptstädte',target:5,bonus:20},
+    {id:'STADT-13',name:'Hauptstadt-Jäger:in III',icon:'🏛️',desc:'10 Hauptstädte',target:10,bonus:35},
+    {id:'STADT-14',name:'Hauptstadt-Jäger:in IV',icon:'🏛️',desc:'15 Hauptstädte',target:15,bonus:50},
+    {id:'STADT-15',name:'Hauptstadt-Jäger:in V',icon:'🏛️',desc:'20 Hauptstädte',target:20,bonus:65},
+    {id:'STADT-16',name:'Hauptstadt-Jäger:in VI',icon:'👑',desc:'25 Hauptstädte',target:25,bonus:85}
   ], capitalsVisitedCount);
   addTiers('STADT',[
     {id:'STADT-17',name:'Regionalkenner I',icon:'📍',desc:'5 Städte in einem einzigen Land',target:5,bonus:15},
@@ -5687,7 +5854,7 @@ function computeAchievements(){
     {id:'STREAK-13',name:'Starkes Jahr III',icon:'⚡',desc:'15 neue Städte in einem Kalenderjahr',target:15,bonus:50},
     {id:'STREAK-14',name:'Starkes Jahr IV',icon:'⚡',desc:'20 neue Städte in einem Kalenderjahr',target:20,bonus:70}
   ], maxNewCitiesYear);
-  add('STREAK-15','STREAK','Jahres-Komplettist','🎯','In jedem der 12 Monate eines Jahres mind. 1 Reise',1,allMonthsYearAchieved,60);
+  add('STREAK-15','STREAK','Jahres-Komplettist:in','🎯','In jedem der 12 Monate eines Jahres mind. 1 Reise',1,allMonthsYearAchieved,60);
   addTiers('STREAK',[
     {id:'STREAK-16',name:'Ein Jahr dabei',icon:'🕰️',desc:'1 Jahr seit der ersten erfassten Reise',target:1,bonus:10},
     {id:'STREAK-17',name:'Drei Jahre dabei',icon:'🕰️',desc:'3 Jahre seit der ersten erfassten Reise',target:3,bonus:25},
@@ -5752,9 +5919,9 @@ function computeAchievements(){
     add(m.id,'MODE',m.name,m.icon,'Erste Reise mit '+(m.mode==='car'?'dem Auto':m.mode==='train'?'dem Zug':m.mode==='plane'?'dem Flugzeug':m.mode==='bus'?'dem Bus':'dem Rad'),1,modesUsed.has(m.mode),5);
   });
   addTiers('MODE',[
-    {id:'MODE-06',name:'Vielfahrer I (Auto)',icon:'🚗',desc:'1.000 km mit dem Auto',target:1000,bonus:10},
-    {id:'MODE-07',name:'Vielfahrer II (Auto)',icon:'🚗',desc:'5.000 km mit dem Auto',target:5000,bonus:20},
-    {id:'MODE-08',name:'Vielfahrer III (Auto)',icon:'🚗',desc:'15.000 km mit dem Auto',target:15000,bonus:35}
+    {id:'MODE-06',name:'Vielfahrer:in I (Auto)',icon:'🚗',desc:'1.000 km mit dem Auto',target:1000,bonus:10},
+    {id:'MODE-07',name:'Vielfahrer:in II (Auto)',icon:'🚗',desc:'5.000 km mit dem Auto',target:5000,bonus:20},
+    {id:'MODE-08',name:'Vielfahrer:in III (Auto)',icon:'🚗',desc:'15.000 km mit dem Auto',target:15000,bonus:35}
   ], agg.perMode.car||0);
   addTiers('MODE',[
     {id:'MODE-09',name:'Bahnfan I',icon:'🚆',desc:'1.000 km mit dem Zug',target:1000,bonus:10},
@@ -6213,7 +6380,14 @@ async function loadCountryFillGeoJSON(){
   geo.features.forEach(f=>{
     const p = f.properties||{};
     const ukKey = ML_UK_NATION_MAP_KEYS[p.GEOUNIT];
-    f.properties.matchCc = ukKey || (p.ISO_A2 && p.ISO_A2!=='-99' ? p.ISO_A2.toLowerCase() : '');
+
+    // Natural Earth map-units split some sovereign states into regional polygons.
+    // Those features often have ISO_A2="-99", but still carry the correct sovereign
+    // ISO code in ISO_A2_EH (e.g. Belgium regions -> BE, Portugal mainland -> PT,
+    // Bosnia regions -> BA). Prefer normal ISO_A2, then use ISO_A2_EH as fallback.
+    const normalIso = (p.ISO_A2 && p.ISO_A2!=='-99' && p.ISO_A2.length===2) ? p.ISO_A2.toLowerCase() : '';
+    const ehIso = (p.ISO_A2_EH && p.ISO_A2_EH!=='-99' && p.ISO_A2_EH.length===2) ? p.ISO_A2_EH.toLowerCase() : '';
+    f.properties.matchCc = ukKey || normalIso || ehIso || '';
   });
   ML_COUNTRY_FILL_CACHE = geo;
   return geo;
@@ -6224,6 +6398,30 @@ async function loadCountryFillGeoJSON(){
    (und nach jedem Theme-Wechsel, siehe refreshMapColorsForTheme) auflösen. */
 function mapCssVar(name){
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+
+function auditMapCountryCoverage(countryGeo, agg){
+  try{
+    const available = new Set(
+      (countryGeo.features||[])
+        .map(f=>String((f.properties||{}).matchCc||'').toLowerCase())
+        .filter(Boolean)
+    );
+    const visited = [...new Set(
+      (agg.countries||[])
+        .map(c=>flagCcFor((c.cc||'').toLowerCase(), c.country))
+        .filter(Boolean)
+    )];
+    const missing = visited.filter(cc=>!available.has(cc));
+    if(missing.length){
+      console.warn('[WEITWEG Map-Audit] Besuchte Ländercodes ohne passende Natural-Earth-Fläche:', missing);
+    }
+    return missing;
+  }catch(err){
+    console.warn('[WEITWEG Map-Audit] Coverage-Prüfung fehlgeschlagen:', err);
+    return [];
+  }
 }
 
 function buildCountryFillColorExpr(agg){
@@ -6326,6 +6524,7 @@ async function initWorldMapML(agg){
     if(!document.getElementById('worldMapGL')) return;
     loadingEl.style.display='none';
 
+    auditMapCountryCoverage(countryGeo, agg);
     ML_MAP.addSource('country-fill-src', { type:'geojson', data: countryGeo });
     const colorExpr = buildCountryFillColorExpr(agg);
     ML_MAP.addLayer({
@@ -6406,7 +6605,7 @@ function renderMapMarkers(agg){
 
   // Zwischenstopps zählen ebenfalls als besuchte Orte, werden hier bei Bedarf
   // nachträglich geokodiert (siehe aggregate()) — danach zählen sie ab dem nächsten
-  // Rendern automatisch überall mit (Karte, Länder & Städte, Top 5, Entdecker-Trend).
+  // Rendern automatisch überall mit (Karte, Länder & Städte, Top 5, Entdecker:in-Trend).
   const waypointNamesRaw = new Set();
   trips.forEach(t=>{
     (t.outWaypoints||[]).forEach(w=>{ if(w && w.trim()) waypointNamesRaw.add(w.trim()); });
@@ -7227,14 +7426,14 @@ function renderStats(root){
   html += '  <div id="co2ChartBars"></div>';
   html += '</div>';
 
-  /* Entdecker-Trend: neue Länder/Städte je Jahr — sortierbar (Jahr/Städte/Land),
+  /* Entdecker:in-Trend: neue Länder/Städte je Jahr — sortierbar (Jahr/Städte/Land),
      jede Zeile aufklappbar für die konkret neu entdeckten Orte. Bei vielen erfassten
      Jahren bleibt die Liste standardmäßig auf die "wichtigsten" Jahre begrenzt,
      Rest über "mehr anzeigen" aufklappbar (sonst eine sehr lange Liste). */
   const discoveriesAll = aggregateDiscoveries();
   const DISCOVERY_COLLAPSED_COUNT = 5;
   html += '<div class="card">';
-  html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr · antippen für Details</span></div>';
+  html += '  <div class="card-head"><h2>Entdecker:in-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr · antippen für Details</span></div>';
   if(discoveriesAll.length===0){
     html += '<div class="empty-state"><div class="big">'+svgIcon('compass',28,'var(--text-faint)')+'</div>Noch keine Daten vorhanden.</div>';
   } else {
@@ -7734,7 +7933,7 @@ function renderSeasonList(months){
   el.innerHTML = html;
 }
 
-/* Entdecker-Trend: sortierbar nach Jahr (neueste zuerst)/Städten/Ländern, respektiert
+/* Entdecker:in-Trend: sortierbar nach Jahr (neueste zuerst)/Städten/Ländern, respektiert
    den Einklapp-Zustand (discoveryTrendExpanded), jede Zeile aufklappbar mit den konkret
    neu entdeckten Städten & Ländern des jeweiligen Jahres */
 function renderDiscoveryList(discoveriesAll){
@@ -8478,7 +8677,7 @@ async function buildShareCardBlob(t){
 
   ctx.font = '600 24px "Space Grotesk", sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.fillText('WELTLOG', 48, H-48);
+  ctx.fillText('WEITWEG', 48, H-48);
 
   return await new Promise(res=>canvas.toBlob(res,'image/png',0.92));
 }
@@ -8487,8 +8686,8 @@ async function shareTrip(tripId){
   if(!t) return;
   const parts = [t.fromCity ? (t.fromCity+' → '+t.city) : t.city, fmtRange(t.dateFrom,t.dateTo)];
   if(!t.cityOnly) parts.push(fmtKm(tripTotal(t))+' · '+tripTransportLabel(t));
-  const text = parts.join(' · ')+'\n\nGeloggt mit WELTLOG 🧭';
-  const title = 'WELTLOG — '+t.city;
+  const text = parts.join(' · ')+'\n\nFestgehalten mit WEITWEG';
+  const title = 'WEITWEG — '+t.city;
 
   // Bevorzugt: gerenderte Karten-Grafik teilen (Titelbild als Hintergrund, falls vorhanden)
   try{
@@ -9019,7 +9218,7 @@ function showSettingsMain(){
   document.getElementById('settingsHeaderTitle').textContent = 'Einstellungen';
   refreshSettingsOverview();
 }
-const SETTINGS_PANEL_TITLES = {homebase:'Homebase', theme:'Theme', sync:'Synchronisation', data:'Daten & Sicherheit', notifications:'Benachrichtigungen', whatsnew:'Was ist neu?', releasenotes:'Release Notes', help:'Hilfe & Support', about:'Über WELTLOG'};
+const SETTINGS_PANEL_TITLES = {homebase:'Homebase', theme:'Theme', sync:'Synchronisation', data:'Daten & Sicherheit', notifications:'Benachrichtigungen', whatsnew:'Was ist neu?', releasenotes:'Release Notes', help:'Hilfe & Support', about:'Über WEITWEG'};
 function openSettingsPanel(name){
   document.getElementById('settingsMainView').hidden = true;
   document.getElementById('settingsPanelView').hidden = false;
@@ -9275,7 +9474,7 @@ function renderDashboard(root){
   const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''))[0];
   const active=currentTripsForToday();
   const name=(settings.profileName||'').trim()||'Paul';
-  let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WELTLOG</div><div class="home-greeting-title">'+timeGreeting(name)+'</div></div></div>';
+  let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WEITWEG</div><div class="home-greeting-title">'+timeGreeting(name)+'</div></div></div>';
   h+='<section class="home-section home-year-hero-section"><div class="home-year-hero"><div class="home-year">'+yr+'</div><div class="home-km">'+fmtNum(km)+'<small>km</small></div><div class="home-year-meta"><span><b>'+yc.countryCount+'</b> Länder</span><span>·</span><span><b>'+yc.cityCount+'</b> Städte</span><span>·</span><span><b>'+yc.tripCount+'</b> Reisen</span></div><div class="home-kpis"><div class="home-kpi"><strong>'+fmtNum(agg.totalKm)+'</strong><span>km seit Beginn</span></div><div class="home-kpi"><strong>'+agg.countries.length+'</strong><span>Länder gesamt</span></div><div class="home-kpi"><strong>'+agg.cities.length+'</strong><span>Städte gesamt</span></div></div></div></section>';
   h+='<div class="home-layout"><div class="home-main">';
   if(active.length){ h+='<div class="home-current"><b>'+active.length+' aktuelle '+(active.length===1?'Reise':'Reisen')+'</b> · '+active.map(t=>stripCountrySuffix(t.city)).join(', ')+'</div>'; }
@@ -9361,7 +9560,7 @@ function prependDiscoverBack(root,title){
 }
 function renderProfile(root){
   const agg=aggregate(), view=trips.length?computeBadgesView():null, li=view?view.levelInfo:null; const name=(settings.profileName||'Paul').trim()||'Paul';
-  let h='<div class="profile-identity"><div class="profile-avatar">'+svgIcon('profile',30,'currentColor')+'</div><div class="profile-name">'+name+'</div><div class="profile-level">'+(li?'Level '+li.level+' · '+li.title:'Dein WELTLOG')+'</div><div class="profile-distance">'+fmtKm(agg.totalKm)+'</div><div class="profile-totals">'+agg.countries.length+' Länder · '+agg.cities.length+' Städte · '+trips.length+' Reisen</div></div>';
+  let h='<div class="profile-identity"><div class="profile-avatar">'+svgIcon('profile',30,'currentColor')+'</div><div class="profile-name">'+name+'</div><div class="profile-level">'+(li?'Level '+li.level+' · '+li.title:'Dein WEITWEG')+'</div><div class="profile-distance">'+fmtKm(agg.totalKm)+'</div><div class="profile-totals">'+agg.countries.length+' Länder · '+agg.cities.length+' Städte · '+trips.length+' Reisen</div></div>';
   if(view)h+=levelTileHTML(view);
   h+='<div class="profile-list"><div class="profile-row" data-profile-action="home"><div class="profile-row-icon">'+svgIcon('home',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Homebase</div><div class="profile-row-sub">'+(settings.home?(findCity(settings.home)?.n||settings.home):'Noch nicht festgelegt')+'</div></div><span class="profile-chevron">›</span></div>';
   h+='<div class="profile-row" data-profile-action="history"><div class="profile-row-icon">'+svgIcon('calendar',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Travel History</div><div class="profile-row-sub">'+trips.length+' gespeicherte Reisen seit '+(trips.length?trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(Boolean).sort()[0]:'–')+'</div></div><span class="profile-chevron">›</span></div>';
@@ -9434,7 +9633,7 @@ SVG_ICON_PATHS.sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.
 SVG_ICON_PATHS.moon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
 
 function applyMasterUiIcons(){
-  const brand=document.querySelector('.brand-mark'); if(brand){brand.innerHTML=svgIcon('compass',20,'#fff');brand.setAttribute('aria-hidden','true');}
+  const brand=document.querySelector('.brand-mark'); if(brand){brand.setAttribute('aria-hidden','true');}
   const homeLink=document.querySelector('.top-actions a.icon-btn'); if(homeLink){homeLink.innerHTML=svgIcon('home',18,'currentColor');homeLink.setAttribute('aria-label','Zur Startseite');}
   const add=document.getElementById('newTripBtn'); if(add){add.innerHTML=svgIcon('plus',18,'currentColor');add.setAttribute('aria-label','Neue Reise hinzufügen');}
   const light=document.querySelector('[data-theme-choice="light"]'); if(light){light.innerHTML=svgIcon('sun',17,'currentColor');light.setAttribute('aria-label','Heller Modus');}
