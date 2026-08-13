@@ -2653,6 +2653,214 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   }
 }
 
+
+/* ============================================================
+   WELTLOG RC11 — screenshot matched Discover + Settings
+   ============================================================ */
+
+/* Fast geschafft — badge left, copy right, no overlap */
+.discover-feature .discover-badge-list{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.discover-feature .discover-badge-row{
+  display:grid !important;
+  grid-template-columns:96px minmax(0,1fr) !important;
+  gap:16px !important;
+  align-items:center !important;
+  min-height:116px !important;
+  padding:14px 0 !important;
+  margin:0 !important;
+  overflow:hidden !important;
+}
+.discover-feature .discover-badge-row + .discover-badge-row{
+  border-top:1px solid var(--border-soft) !important;
+}
+.discover-feature .discover-badge-row .badge-stamp{
+  width:96px !important;
+  height:96px !important;
+  min-width:96px !important;
+  min-height:96px !important;
+  max-width:96px !important;
+  max-height:96px !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  contain:paint !important;
+}
+.discover-feature .discover-badge-row .badge-stamp svg{
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  display:block !important;
+}
+.discover-badge-copy{
+  min-width:0 !important;
+  overflow:hidden !important;
+}
+.discover-badge-copy b{
+  display:block !important;
+  margin:0 !important;
+  font:600 14px/1.25 var(--font-display) !important;
+  color:var(--text) !important;
+  overflow-wrap:anywhere !important;
+}
+.discover-badge-copy span{
+  display:block !important;
+  margin-top:5px !important;
+  font-size:11px !important;
+  line-height:1.35 !important;
+  color:var(--text-faint) !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* Categories — screenshot 2 */
+.badge-overview{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+}
+.badge-category{
+  background:var(--panel) !important;
+  border:1px solid var(--border-soft) !important;
+  border-radius:16px !important;
+  overflow:hidden !important;
+}
+.badge-category > summary{
+  min-height:68px !important;
+  padding:12px 14px !important;
+  display:grid !important;
+  grid-template-columns:42px minmax(0,1fr) 78px 16px !important;
+  align-items:center !important;
+  gap:12px !important;
+  list-style:none !important;
+}
+.badge-category > summary::-webkit-details-marker{display:none !important}
+.badge-category > summary::after{content:none !important}
+.badge-category-icon{
+  width:42px !important;
+  height:42px !important;
+  border-radius:12px !important;
+  background:var(--bg-soft) !important;
+  border:1px solid var(--border-soft) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  color:var(--bar-accent) !important;
+}
+.badge-category-icon svg{width:21px !important;height:21px !important}
+.badge-category-main{min-width:0 !important}
+.badge-category-title{
+  display:block !important;
+  font:600 14px/1.2 var(--font-display) !important;
+  color:var(--text) !important;
+}
+.badge-category-meta{
+  display:block !important;
+  margin-top:3px !important;
+  font-size:10.5px !important;
+  color:var(--text-faint) !important;
+}
+.badge-category-progress{
+  width:78px !important;
+  height:6px !important;
+  border-radius:999px !important;
+  overflow:hidden !important;
+  background:var(--bg-soft) !important;
+}
+.badge-category-progress span{
+  display:block !important;
+  height:100% !important;
+  border-radius:999px !important;
+  background:var(--bar-accent) !important;
+}
+.badge-category-chevron{
+  color:var(--text-faint) !important;
+  font-size:19px !important;
+  transition:transform .15s ease !important;
+}
+.badge-category[open] .badge-category-chevron{transform:rotate(90deg)}
+.badge-category-body{
+  padding:12px !important;
+  border-top:1px solid var(--border-soft) !important;
+}
+
+/* Settings screenshot-3 overview */
+.rc11-settings-overview{
+  margin-top:8px;
+}
+.rc11-settings-group{margin-bottom:16px}
+.rc11-settings-label{
+  margin:0 0 7px 2px;
+  color:var(--text-faint);
+  font-size:9.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.rc11-settings-list{
+  overflow:hidden;
+  background:var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius:14px;
+}
+.rc11-settings-row{
+  min-height:50px;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  border-bottom:1px solid var(--border-soft);
+  cursor:pointer;
+}
+.rc11-settings-row:last-child{border-bottom:0}
+.rc11-settings-icon{
+  width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);flex:0 0 auto;
+}
+.rc11-settings-icon svg{width:17px;height:17px}
+.rc11-settings-main{flex:1;min-width:0}
+.rc11-settings-title{font-size:12.5px;color:var(--text)}
+.rc11-settings-sub{font-size:9.5px;color:var(--text-faint);margin-top:1px}
+.rc11-settings-value{font-size:11px;color:var(--text-dim);white-space:nowrap}
+.rc11-settings-chevron{color:var(--text-faint)}
+.rc11-settings-version{
+  text-align:center;
+  color:var(--text-faint);
+  font-size:9.5px;
+  padding:8px 0 2px;
+}
+.rc11-settings-detail{
+  margin:10px 0 16px;
+}
+.rc11-settings-detail[hidden]{display:none !important}
+
+/* Mobile */
+@media(max-width:600px){
+  .discover-feature .discover-badge-row{
+    grid-template-columns:86px minmax(0,1fr) !important;
+    gap:13px !important;
+    min-height:104px !important;
+    padding:12px 0 !important;
+  }
+  .discover-feature .discover-badge-row .badge-stamp{
+    width:86px !important;height:86px !important;
+    min-width:86px !important;min-height:86px !important;
+    max-width:86px !important;max-height:86px !important;
+  }
+  .badge-category > summary{
+    min-height:64px !important;
+    grid-template-columns:38px minmax(0,1fr) 56px 14px !important;
+    gap:10px !important;
+    padding:11px 12px !important;
+  }
+  .badge-category-icon{width:38px !important;height:38px !important}
+  .badge-category-progress{width:56px !important}
+}
+
 </style>
 </head>
 <body>
@@ -3360,11 +3568,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '2.8.0-rc10';
+const APP_VERSION = '2.9.0-rc11';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'2.9.0-rc11', tier:'🟡', title:'Discover, Settings & Greeting Polish', items:[
+    '„Fast geschafft“ nach der Vintage-Referenz neu aufgebaut: Stempel links, Titel und Fortschritt rechts, ohne Überlagerungen.',
+    'Badge-Kategorien als klare Accordion-Cards mit passendem WELTLOG-Icon, Fortschrittsbalken und Chevron.',
+    'Einstellungen erhalten eine gruppierte Übersicht im Stil der neuen Mobile-Referenz; bestehende Theme-/Homebase-Funktionen bleiben erhalten.',
+    'Die Home-Begrüßung reagiert jetzt auf die Tageszeit und variiert mit kleinen Reise-Anspielungen.',
+    'Release Notes werden weiterhin fortlaufend unter Einstellungen gepflegt.'
+  ]},
   {v:'2.8.0-rc10', tier:'🟡', title:'Final Mobile Fix + vollständiges Vintage-Set', items:[
     '„Fast geschafft“ rendert die Vintage-Stempel jetzt direkt im eigentlichen Entdecken-Renderer; Artwork und Text besitzen getrennte Spalten und können sich nicht mehr überlagern.',
     'Der leere dunkle Balken unter der Weltkarte wurde an der Quelle entfernt: Die Stadt-Detailfläche existiert erst sichtbar, wenn tatsächlich eine Stadt gewählt wurde.',
@@ -8982,6 +9197,46 @@ function currentTripsForToday(){
   const d = new Date().toISOString().slice(0,10);
   return trips.filter(t=>t.dateFrom && t.dateFrom<=d && (t.dateTo||t.dateFrom)>=d);
 }
+
+function getHomeGreeting(name){
+  const now=new Date(), hour=now.getHours(), day=now.getDate();
+  const pools =
+    hour < 5 ? [
+      'Noch wach, '+name+'?',
+      'Nachtschicht, '+name+'?',
+      'Die Welt schläft. Du offenbar nicht, '+name+'.'
+    ] :
+    hour < 10 ? [
+      'Guten Morgen, '+name+'.',
+      'Morgen, '+name+'. Wohin geht’s als Nächstes?',
+      'Kaffee zuerst, Welt später. Morgen, '+name+'.',
+      'Guten Morgen, '+name+'. Die Welt wartet.'
+    ] :
+    hour < 12 ? [
+      'Schönen Vormittag, '+name+'.',
+      'Moin '+name+'. Schon Reisefieber?',
+      'Hallo '+name+'. Zeit für Fernweh?'
+    ] :
+    hour < 17 ? [
+      'Hallo '+name+'.',
+      'Schönen Nachmittag, '+name+'.',
+      'Na '+name+', schon den nächsten Trip im Kopf?',
+      'Hallo '+name+'. Ein bisschen Fernweh gefällig?'
+    ] :
+    hour < 22 ? [
+      'Guten Abend, '+name+'.',
+      'Abend, '+name+'. Zeit zum Erinnern.',
+      'Hallo '+name+'. Wo warst du heute gedanklich?',
+      'Guten Abend, '+name+'. Noch eine Runde um die Welt?'
+    ] : [
+      'Später Abend, '+name+'.',
+      'Noch wach, '+name+'? Die Weltkarte auch.',
+      'Abend, '+name+'. Fernweh kennt keine Uhrzeit.',
+      'Hallo '+name+'. Nur noch eine Reise anschauen …'
+    ];
+  return pools[(day+hour)%pools.length];
+}
+
 function renderDashboard(root){
   const agg=aggregate(), yr=String(new Date().getFullYear());
   const yearAgg=aggregateYears().find(y=>y.year===yr);
@@ -8989,7 +9244,7 @@ function renderDashboard(root){
   const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''))[0];
   const active=currentTripsForToday();
   const name=(settings.profileName||'').trim();
-  let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WELTLOG</div><div class="home-greeting-title">'+(name?'Hallo '+name+'.':'Deine Reisen, auf einen Blick.')+'</div></div></div>';
+  let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WELTLOG</div><div class="home-greeting-title">'+getHomeGreeting(name||'Paul')+'</div></div></div>';
   h+='<section class="home-section home-year-hero-section"><div class="home-year-hero"><div class="home-year">'+yr+'</div><div class="home-km">'+fmtNum(km)+'<small>km</small></div><div class="home-year-meta"><span><b>'+yc.countryCount+'</b> Länder</span><span>·</span><span><b>'+yc.cityCount+'</b> Städte</span><span>·</span><span><b>'+yc.tripCount+'</b> Reisen</span></div><div class="home-kpis"><div class="home-kpi"><strong>'+fmtNum(agg.totalKm)+'</strong><span>km seit Beginn</span></div><div class="home-kpi"><strong>'+agg.countries.length+'</strong><span>Länder gesamt</span></div><div class="home-kpi"><strong>'+agg.cities.length+'</strong><span>Städte gesamt</span></div></div></div></section>';
   h+='<div class="home-layout"><div class="home-main">';
   if(active.length){ h+='<div class="home-current"><b>'+active.length+' aktuelle '+(active.length===1?'Reise':'Reisen')+'</b> · '+active.map(t=>stripCountrySuffix(t.city)).join(', ')+'</div>'; }
@@ -9389,19 +9644,33 @@ renderBadges=function(root){
   }
   const view=computeBadgesView();
   const all=[...view.unlocked,...view.locked];
-  const grouped={}; all.forEach(a=>(grouped[a.category]||(grouped[a.category]=[])).push(a));
+  const grouped={};
+  all.forEach(a=>(grouped[a.category]||(grouped[a.category]=[])).push(a));
+
   let html=levelTileHTML(view);
   html+='<div class="badge-section-head"><h3>Sammlung</h3><span class="sub">'+view.unlockedCount+' von '+view.totalCount+' freigeschaltet</span></div>';
   html+='<div class="badge-overview">';
+
   Object.keys(WELTLOG_BADGE_CATEGORY_META).forEach((key,idx)=>{
     const items=grouped[key]||[]; if(!items.length)return;
-    const meta=WELTLOG_BADGE_CATEGORY_META[key], unlocked=items.filter(x=>x.unlocked).length;
+    const meta=WELTLOG_BADGE_CATEGORY_META[key];
+    const unlocked=items.filter(x=>x.unlocked).length;
+    const pct=Math.round(unlocked/items.length*100);
     items.sort((a,b)=>Number(b.unlocked)-Number(a.unlocked) || (b.progress/b.target)-(a.progress/a.target));
-    html+='<details class="badge-category" '+(idx===0?'open':'')+'><summary><span class="badge-category-icon">'+masterIcon(meta.icon,18,'currentColor')+'</span><span><span class="badge-category-title">'+meta.label+'</span><span class="badge-category-meta">'+unlocked+' / '+items.length+' freigeschaltet</span></span></summary><div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div></details>';
+
+    html+='<details class="badge-category" '+(idx===0?'open':'')+'>';
+    html+='<summary>';
+    html+='<span class="badge-category-icon">'+masterIcon(meta.icon,20,'currentColor')+'</span>';
+    html+='<span class="badge-category-main"><span class="badge-category-title">'+meta.label+'</span><span class="badge-category-meta">'+unlocked+' von '+items.length+' freigeschaltet</span></span>';
+    html+='<span class="badge-category-progress" aria-hidden="true"><span style="width:'+pct+'%"></span></span>';
+    html+='<span class="badge-category-chevron" aria-hidden="true">›</span>';
+    html+='</summary>';
+    html+='<div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div>';
+    html+='</details>';
   });
   html+='</div>';
   root.innerHTML=html;
-  root.querySelectorAll('.badge-category>summary').forEach(s=>s.setAttribute('aria-label',s.textContent.trim()));
+  root.querySelectorAll('.badge-category>summary').forEach(x=>x.setAttribute('aria-label',x.textContent.trim()));
 };
 
 /* Accessible status messages without altering the existing toast behavior. */
@@ -9628,6 +9897,71 @@ loadData();
   },true);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(wire,0),{once:true});
   else setTimeout(wire,0);
+})();
+</script>
+
+
+<script>
+(function(){
+  function rc11Icon(name){
+    try{return typeof masterIcon==='function'?masterIcon(name,17,'currentColor'):''}catch(e){return ''}
+  }
+  function themeText(){
+    const t=settings?.theme||'dark';
+    return t==='light'?'Hell':t==='auto'?'Automatisch':'Dunkel';
+  }
+  function buildRc11Settings(){
+    const modal=document.querySelector('#settingsModal .modal');
+    if(!modal || modal.querySelector('.rc11-settings-overview')) return;
+
+    const header=modal.querySelector('.modal-header-row');
+    const overview=document.createElement('div');
+    overview.className='rc11-settings-overview';
+    overview.innerHTML=
+      '<div class="rc11-settings-group"><div class="rc11-settings-list">'+
+        '<div class="rc11-settings-row" data-settings-target="homeInput"><span class="rc11-settings-icon">'+rc11Icon('home')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Homebase</span></span><span class="rc11-settings-value">'+(settings?.homeCity||settings?.home||'Berlin')+'</span><span class="rc11-settings-chevron">›</span></div>'+
+        '<div class="rc11-settings-row" data-settings-target="settingsThemeSwitch"><span class="rc11-settings-icon">'+rc11Icon('globe')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Theme</span></span><span class="rc11-settings-value">'+themeText()+'</span><span class="rc11-settings-chevron">›</span></div>'+
+      '</div></div>'+
+      '<div class="rc11-settings-group"><div class="rc11-settings-label">App</div><div class="rc11-settings-list">'+
+        '<div class="rc11-settings-row"><span class="rc11-settings-icon">'+rc11Icon('sync')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Synchronisation</span><span class="rc11-settings-sub">Lokale Speicherung aktiv</span></span><span class="rc11-settings-chevron">›</span></div>'+
+        '<div class="rc11-settings-row"><span class="rc11-settings-icon">'+rc11Icon('settings')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Daten & Sicherheit</span></span><span class="rc11-settings-chevron">›</span></div>'+
+        '<div class="rc11-settings-row"><span class="rc11-settings-icon">'+rc11Icon('calendar')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Benachrichtigungen</span></span><span class="rc11-settings-chevron">›</span></div>'+
+      '</div></div>'+
+      '<div class="rc11-settings-group"><div class="rc11-settings-label">Info</div><div class="rc11-settings-list">'+
+        '<div class="rc11-settings-row" data-rc11-info="new"><span class="rc11-settings-icon">'+rc11Icon('compass')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Was ist neu?</span></span><span class="rc11-settings-value" style="color:var(--teal)">Neu</span></div>'+
+        '<div class="rc11-settings-row" data-rc11-info="release"><span class="rc11-settings-icon">'+rc11Icon('calendar')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Release Notes</span></span><span class="rc11-settings-chevron">›</span></div>'+
+        '<div class="rc11-settings-row"><span class="rc11-settings-icon">'+rc11Icon('discover')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Hilfe & Support</span></span><span class="rc11-settings-chevron">›</span></div>'+
+        '<div class="rc11-settings-row"><span class="rc11-settings-icon">'+rc11Icon('profile')+'</span><span class="rc11-settings-main"><span class="rc11-settings-title">Über WELTLOG</span></span><span class="rc11-settings-chevron">›</span></div>'+
+      '</div></div>'+
+      '<div class="rc11-settings-version">Version '+APP_VERSION+'</div>'+
+      '<div class="rc11-settings-detail" id="rc11SettingsDetail" hidden></div>';
+
+    header.after(overview);
+
+    overview.addEventListener('click',e=>{
+      const row=e.target.closest('.rc11-settings-row'); if(!row)return;
+      const target=row.dataset.settingsTarget;
+      if(target){
+        const el=document.getElementById(target);
+        if(el){el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>el.focus?.(),250)}
+        return;
+      }
+      const info=row.dataset.rc11Info, detail=overview.querySelector('#rc11SettingsDetail');
+      if(info==='new'){
+        detail.hidden=false;
+        detail.innerHTML='<div class="settings-whatsnew"><b>Neu in RC11</b><ul><li>Fast-geschafft-Badges im Vintage-Layout</li><li>Kategorien mit Icons, Fortschritt und Chevron</li><li>Einstellungen als gruppierte Übersicht</li><li>Tageszeitabhängige Begrüßungen auf Home</li></ul></div>';
+      } else if(info==='release'){
+        detail.hidden=false;
+        detail.innerHTML='<div class="settings-release-list">'+(typeof RELEASE_NOTES!=='undefined'?RELEASE_NOTES:[]).slice(0,10).map(r=>'<div class="settings-release-item"><div class="settings-release-item-top"><span class="settings-release-version">'+r.v+'</span></div><div class="settings-release-title">'+r.title+'</div></div>').join('')+'</div>';
+      }
+    });
+  }
+
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#settingsBtn,#settingsCloseX,[data-open-settings],button'))setTimeout(buildRc11Settings,30);
+  },true);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(buildRc11Settings,0),{once:true});
+  else setTimeout(buildRc11Settings,0);
 })();
 </script>
 
