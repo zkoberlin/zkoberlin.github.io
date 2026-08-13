@@ -975,14 +975,18 @@ tr:last-child td{border-bottom:none;}
 .badge-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 0 12px;}
 .badge-section-head h3{font-family:var(--font-display);font-size:14.5px;font-weight:600;color:var(--text);}
 .badge-section-head .sub{font-size:11.5px;color:var(--text-faint);}
-.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
 .badge-card{
   background:var(--panel-alt); border:1px solid var(--border-soft); border-radius:12px;
   padding:13px 14px; display:flex; gap:11px; align-items:flex-start;
 }
 .badge-card.locked{opacity:0.55;}
-.badge-card.locked .badge-icon{filter:grayscale(1);opacity:0.6;}
-.badge-icon{font-size:22px;line-height:1;flex-shrink:0;margin-top:1px;}
+.badge-card.locked .badge-stamp{filter:grayscale(1);opacity:0.75;}
+.badge-stamp{
+  flex-shrink:0;width:80px;min-height:60px;display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
+}
+.badge-stamp svg{max-width:100%;height:auto;}
 .badge-body{flex:1;min-width:0;}
 .badge-name{font-size:13px;font-weight:600;color:var(--text);}
 .badge-desc{font-size:11.5px;color:var(--text-faint);margin-top:2px;line-height:1.4;}
@@ -1857,7 +1861,27 @@ const SVG_ICON_PATHS = {
   settingsGear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   greetSun:'<circle cx="12" cy="12" r="4.5"/><path d="M12 3v2.5M12 18.5V21M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M3 12h2.5M18.5 12H21M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>',
   greetSunrise:'<path d="M4 17h16M6.5 17a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v3.5M6 8.5l1.7 1.7M18 8.5l-1.7 1.7"/><path d="M2.5 20.5h19"/>',
-  greetMoon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>'
+  greetMoon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>',
+  /* Badge-Stempel-Icons — neu entworfen im selben Stil (24x24, 1.8px Outline), da die
+     Original-Icon-Zuordnung je Badge (badges-data.js) nicht mitgeliefert wurde. Wo ein
+     bestehendes Icon inhaltlich passt (Transport, Kontinent, Kalender, Distanz, Foto,
+     Rekord-Icons …), wird das stattdessen direkt wiederverwendet, siehe EMOJI_TO_BADGE_ICON. */
+  badgeCapital:'<path d="M4 21h16"/><path d="M5 21V10M9 21V10M15 21V10M19 21V10"/><path d="M3 10l9-6 9 6"/>',
+  badgeEU:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="5.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="18.5" r="0.9" fill="currentColor" stroke="none"/><circle cx="5.5" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="18.5" cy="12" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.3" cy="7.3" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.7" cy="7.3" r="0.9" fill="currentColor" stroke="none"/><circle cx="7.3" cy="16.7" r="0.9" fill="currentColor" stroke="none"/><circle cx="16.7" cy="16.7" r="0.9" fill="currentColor" stroke="none"/>',
+  badgeTrophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5H5a3 3 0 0 0 3 5"/><path d="M16 5h3a3 3 0 0 1-3 5"/><path d="M12 13v3"/><path d="M9 20h6"/><path d="M10 17h4l1 3H9z"/>',
+  badgeBolt:'<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
+  badgeReceipt:'<path d="M6 2h12v20l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5z"/><path d="M9 7h6M9 11h6M9 15h4"/>',
+  badgeSpark:'<path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/>',
+  badgeSuitcase:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M4 13h16"/>',
+  badgeRepeat:'<path d="M4 12a8 8 0 0 1 14-5.3"/><path d="M20 12a8 8 0 0 1-14 5.3"/><path d="M17 3v4h-4"/><path d="M7 21v-4h4"/>',
+  badgeSnowflake:'<circle cx="12" cy="12" r="9"/><path d="M12 4v16M5.5 7l13 10M18.5 7l-13 10"/>',
+  badgeShuffle:'<path d="M4 7h4l7 10h5"/><path d="M4 17h4l3-4.3"/><path d="M16 4l4 3-4 3M16 20l4-3-4-3"/>',
+  badgeIsland:'<path d="M2 19c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M12 13V5"/><path d="M12 5l4 2-4 2z"/>',
+  badgeWalk:'<circle cx="13" cy="4" r="1.8"/><path d="M10 9l3-2 3 2-1 4 3 2-1 3-4-2-1 4H9l1-6-2-1z"/>',
+  badgeThought:'<path d="M8 15a5 5 0 1 1 4.9 4H9l-3 2 .5-3A5 5 0 0 1 8 15z"/><circle cx="17" cy="18" r="1.3" fill="currentColor" stroke="none"/>',
+  badgeCrown:'<path d="M4 18h16l-1-8-4 3-3-6-3 6-4-3z"/><path d="M4 18v2h16v-2"/>',
+  badgeCastle:'<path d="M4 21V9l3-2v2h3V7l2-2 2 2v2h3V7l3 2v12z"/><path d="M4 21h16"/><path d="M10 21v-5h4v5"/>',
+  badgeMusic:'<path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/>'
 };
 const SVG_ICON_FILLED = {menu:'<circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>'};
 function svgIcon(name, size, color){
@@ -1975,11 +1999,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '2.0.0';
+const APP_VERSION = '2.1.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'2.1.0', tier:'🟡', title:'Badges als Passstempel', items:[
+    'Die 191 Auszeichnungen zeigen jetzt Passstempel statt Emoji-Kacheln — 5 Außenformen (Oval, Hexagon, Raute, Dreieck, Boarding-Ticket), stabil aber "zufällig" pro Badge verteilt, mit Icon aus dem WELTLOG-Icon-Set und der erreichten Zahl bzw. dem Fortschritt sichtbar im Stempel.',
+    'Farben folgen der bestehenden Kategorie-Palette (CO2 grün, Länder teal, Distanz lila, Städte/Verkehrsmittel gold, Streaks/Deutschland eigene Akzentfarben) — dieselben Farben wie Verkehrsmittel & Sortier-Filter.',
+    'Hinweis: Die Original-Icon-Zuordnung je Badge lag nicht vor (fehlende badges-data.js aus der Vorlage) — die Zuordnung wurde neu entworfen, im selben visuellen Stil, mit Wiederverwendung bestehender Icons wo inhaltlich passend.'
+  ]},
   {v:'2.0.0', tier:'🔴', title:'Weltkarte komplett neu: MapLibre + OpenFreeMap', items:[
     'Die Weltkarte basiert nicht mehr auf einer statischen D3/SVG-Zeichnung, sondern auf einer echten interaktiven Vektorkarte (MapLibre GL, OpenFreeMap-Kacheln auf OpenStreetMap-Basis) — freies Zoomen/Schwenken, Orts- und Straßennamen tauchen automatisch beim Reinzoomen auf.',
     'England und Schottland werden auf der Karte jetzt als eigene Flächen geführt (statt als eine gemeinsame "Vereinigtes Königreich"-Fläche) — dafür kommen die einfärbbaren Länder-Flächen von einem separaten Natural-Earth-Datensatz, unabhängig vom Kartenkachel-Anbieter.',
@@ -5906,11 +5935,128 @@ function levelTileHTML(view){
 }
 
 /* ---------- Badges-Tab ---------- */
+/* ============================================================
+   Badge-Passstempel — ersetzt die bisherigen Emoji-Kacheln durch das
+   Passstempel-Design (5 Außenformen, Icon aus dem WELTLOG-Icon-Set, Sterne bei
+   der Oval-Form, Wert/Fortschritt sichtbar im Stempel). Die Original-Zuordnung
+   "welches Icon gehört zu welchem der 145 Badges" (badges-data.js) lag nicht vor
+   — die Zuordnung unten ist daher neu entworfen, im selben 24x24-Outline-Stil wie
+   der Rest des Icon-Sets, und nutzt bestehende Icons wieder, wo inhaltlich passend
+   (Transport, Kontinent, Kalender, Distanz, Rekord-Icons …). */
+const EMOJI_TO_BADGE_ICON = {
+  '🏛️':'badgeCapital', '✈️':'plane', '🗓️':'calendar', '🌎':'continent', '🌍':'continent',
+  '🌏':'continent', '🇪🇺':'badgeEU', '🚴':'bike', '🚗':'car', '🚆':'train', '📏':'distance',
+  '📅':'calendar', '🏙️':'sortCities', '🌆':'sortCities', '🚌':'bus', '🚀':'recordFarthest',
+  '🕰️':'clock', '📍':'stopPin', '📊':'tabStats', '🏆':'badgeTrophy', '🌐':'continent',
+  '⚡':'badgeBolt', '🧾':'badgeReceipt', '🧵':'badgeSpark', '🧳':'badgeSuitcase',
+  '🧭':'recordCompass', '🗺️':'navMap', '🔁':'badgeRepeat', '📈':'recordTrend',
+  '🏳️':'recordFlag', '🎒':'badgeSuitcase', '🍃':'leaf', '🧊':'badgeSnowflake',
+  '🔤':'sortAZ', '🔀':'badgeShuffle', '🏝️':'badgeIsland', '🧑‍🤝‍🧑':'purposeFriends',
+  '🚶':'badgeWalk', '🔥':'flame', '💼':'purposeBusiness', '💭':'badgeThought',
+  '💜':'purposeAlma', '👑':'badgeCrown', '🏷️':'badgeCastle', '🏰':'badgeCastle',
+  '🏖️':'purposeVacation', '🏃':'badgeWalk', '🎵':'badgeMusic', '🌅':'greetSunrise',
+  '❔':'purposeNone', '✨':'badgeSpark', '⚽':'purposeFootball', '⏱️':'clock'
+};
+/* Kategorie-Farben — dieselbe Palette wie Verkehrsmittel & Sort-Filter (bestehende
+   CSS-Variablen), damit sich das System optisch nahtlos einfügt statt eigene Farben
+   einzuführen. */
+const BADGE_CATEGORY_COLOR = {
+  CO2:'var(--green)', DE:'var(--bus)', DIST:'var(--bar-accent)', LAND:'var(--teal)',
+  MODE:'var(--gold)', SPEC:'var(--rose)', STADT:'var(--gold)', STREAK:'var(--text-dim)'
+};
+function badgeIconKeyFor(a){
+  return EMOJI_TO_BADGE_ICON[a.icon] || 'purposeNone';
+}
+function badgeColorFor(a){
+  const prefix = (a.id||'').split('-')[0];
+  return BADGE_CATEGORY_COLOR[prefix] || 'var(--text-dim)';
+}
+/* Stabile, aber "zufällig" wirkende Formzuordnung je Badge — Hash über die Badge-ID,
+   damit dieselbe Auszeichnung bei jedem Rendern immer dieselbe Außenform behält. */
+function badgeShapeIndex(id){
+  let h = 0;
+  for(let i=0;i<id.length;i++){ h = (h*31 + id.charCodeAt(i)) >>> 0; }
+  return h % 5;
+}
+/* Kompakte Zahlendarstellung nur für den Stempel selbst (begrenzter Platz) — die
+   ausführliche Zahl steht weiterhin in der Karte darunter (badge-meta). */
+function badgeCompactNum(n){
+  if(n==null) return '';
+  if(n>=1000000) return (n/1000000).toFixed(n%1000000===0?0:1).replace('.0','')+'M';
+  if(n>=10000) return Math.round(n/1000)+'k';
+  if(n>=1000) return (n/1000).toFixed(n%1000===0?0:1).replace('.0','')+'k';
+  return String(Math.round(n));
+}
+function badgeStampValue(a){
+  return a.unlocked ? badgeCompactNum(a.target) : badgeCompactNum(a.progress)+'/'+badgeCompactNum(a.target);
+}
+function badgeStampStar(cx, cy, s, color){
+  const pts = [];
+  for(let i=0;i<10;i++){
+    const ang = (i/10)*2*Math.PI - Math.PI/2;
+    const rad = i%2===0 ? s : s*0.42;
+    pts.push((cx+rad*Math.cos(ang)).toFixed(1)+','+(cy+rad*Math.sin(ang)).toFixed(1));
+  }
+  return '<polygon points="'+pts.join(' ')+'" fill="'+color+'"/>';
+}
+function badgeStampIconG(iconKey, x, y, s, color){
+  const inner = SVG_ICON_PATHS[iconKey] || SVG_ICON_PATHS.purposeNone;
+  return '<g transform="translate('+x+','+y+') scale('+(s/24)+')" fill="none" stroke="'+color+'" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+inner+'</g>';
+}
+function badgeStampOval(iconKey, color, value){
+  return '<svg viewBox="0 0 130 92" width="76" height="54">'+
+    '<ellipse cx="65" cy="46" rx="60" ry="38" fill="none" stroke="'+color+'" stroke-width="3"/>'+
+    '<ellipse cx="65" cy="46" rx="50" ry="29" fill="none" stroke="'+color+'" stroke-width="1.3" stroke-dasharray="2 3"/>'+
+    badgeStampStar(20,46,5,color)+badgeStampStar(110,46,5,color)+
+    badgeStampIconG(iconKey,41,10,24,color)+
+    '<text x="65" y="65" text-anchor="middle" font-family="var(--font-display)" font-weight="800" font-size="20" fill="'+color+'">'+value+'</text>'+
+  '</svg>';
+}
+function badgeStampHex(iconKey, color, value){
+  return '<svg viewBox="0 0 112 116" width="70" height="72">'+
+    '<path d="M56 4 L100 28 L100 82 L56 106 L12 82 L12 28 Z" fill="none" stroke="'+color+'" stroke-width="3"/>'+
+    '<path d="M56 12 L92 32 L92 78 L56 98 L20 78 L20 32 Z" fill="none" stroke="'+color+'" stroke-width="1.2"/>'+
+    badgeStampIconG(iconKey,32,20,24,color)+
+    '<line x1="26" y1="60" x2="86" y2="60" stroke="'+color+'" stroke-width="1.2"/>'+
+    '<text x="56" y="82" text-anchor="middle" font-family="var(--font-display)" font-weight="800" font-size="17" fill="'+color+'">'+value+'</text>'+
+  '</svg>';
+}
+function badgeStampDiamond(iconKey, color, value){
+  return '<svg viewBox="0 0 116 116" width="72" height="72">'+
+    '<path d="M58 4 L112 58 L58 112 L4 58 Z" fill="none" stroke="'+color+'" stroke-width="3"/>'+
+    '<path d="M58 16 L100 58 L58 100 L16 58 Z" fill="none" stroke="'+color+'" stroke-width="1.2" stroke-dasharray="3 3"/>'+
+    badgeStampIconG(iconKey,34,24,24,color)+
+    '<text x="58" y="82" text-anchor="middle" font-family="var(--font-display)" font-weight="800" font-size="17" fill="'+color+'">'+value+'</text>'+
+  '</svg>';
+}
+function badgeStampTriangle(iconKey, color, value){
+  return '<svg viewBox="0 0 120 116" width="74" height="72">'+
+    '<path d="M60 6 L112 100 Q114 108 106 108 L14 108 Q6 108 8 100 Z" fill="none" stroke="'+color+'" stroke-width="3" stroke-linejoin="round"/>'+
+    badgeStampIconG(iconKey,36,32,24,color)+
+    '<text x="60" y="94" text-anchor="middle" font-family="var(--font-display)" font-weight="800" font-size="16" fill="'+color+'">'+value+'</text>'+
+  '</svg>';
+}
+function badgeStampTicket(iconKey, color, value){
+  return '<svg viewBox="0 0 150 84" width="90" height="50">'+
+    '<rect x="4" y="4" width="142" height="76" rx="10" fill="none" stroke="'+color+'" stroke-width="3"/>'+
+    '<line x1="58" y1="8" x2="58" y2="76" stroke="'+color+'" stroke-width="1.3" stroke-dasharray="3 3"/>'+
+    '<circle cx="58" cy="8" r="4" fill="var(--panel)" stroke="'+color+'" stroke-width="1.3"/>'+
+    '<circle cx="58" cy="76" r="4" fill="var(--panel)" stroke="'+color+'" stroke-width="1.3"/>'+
+    badgeStampIconG(iconKey,7,16,24,color)+
+    '<text x="103" y="49" text-anchor="middle" font-family="var(--font-display)" font-weight="800" font-size="18" fill="'+color+'">'+value+'</text>'+
+  '</svg>';
+}
+const BADGE_STAMP_SHAPES = [badgeStampOval, badgeStampHex, badgeStampDiamond, badgeStampTriangle, badgeStampTicket];
+function badgeStampHTML(a){
+  const fn = BADGE_STAMP_SHAPES[badgeShapeIndex(a.id)];
+  return fn(badgeIconKeyFor(a), badgeColorFor(a), badgeStampValue(a));
+}
+
 function badgeCardHTML(a){
   const cls = 'badge-card '+(a.unlocked ? 'unlocked' : 'locked');
   const pct = Math.max(a.unlocked?100:2, Math.round((a.progress/a.target)*100));
   let html = '<div class="'+cls+'">';
-  html += '  <div class="badge-icon">'+a.icon+'</div>';
+  html += '  <div class="badge-stamp">'+badgeStampHTML(a)+'</div>';
   html += '  <div class="badge-body">';
   html += '    <div class="badge-name">'+a.name+'</div>';
   html += '    <div class="badge-desc">'+a.description+'</div>';
