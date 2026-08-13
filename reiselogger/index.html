@@ -1999,11 +1999,14 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '2.1.0';
+const APP_VERSION = '2.1.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'2.1.1', tier:'🟢', title:'"Zuletzt freigeschaltet"-Streifen zieht mit', items:[
+    'Die kleine Badge-Anzeige unter der Level-Kachel im Dashboard nutzt jetzt dasselbe Icon+Farbe-System wie die Passstempel, statt weiterhin das alte Emoji zu zeigen.'
+  ]},
   {v:'2.1.0', tier:'🟡', title:'Badges als Passstempel', items:[
     'Die 191 Auszeichnungen zeigen jetzt Passstempel statt Emoji-Kacheln — 5 Außenformen (Oval, Hexagon, Raute, Dreieck, Boarding-Ticket), stabil aber "zufällig" pro Badge verteilt, mit Icon aus dem WELTLOG-Icon-Set und der erreichten Zahl bzw. dem Fortschritt sichtbar im Stempel.',
     'Farben folgen der bestehenden Kategorie-Palette (CO2 grün, Länder teal, Distanz lila, Städte/Verkehrsmittel gold, Streaks/Deutschland eigene Akzentfarben) — dieselben Farben wie Verkehrsmittel & Sortier-Filter.',
@@ -5922,7 +5925,7 @@ function levelTileHTML(view){
   const lbRecent = lb && lb.unlockedAt && ((Date.now() - new Date(lb.unlockedAt+'T00:00:00').getTime())/86400000) <= 3;
   if(lbRecent){
     html += '  <div class="last-badge-strip">';
-    html += '    <div class="last-badge-icon">'+lb.icon+'</div>';
+    html += '    <div class="last-badge-icon">'+svgIcon(badgeIconKeyFor(lb), 19, badgeColorFor(lb))+'</div>';
     html += '    <div class="last-badge-text">';
     html += '      <div class="lb-label">Zuletzt freigeschaltet</div>';
     html += '      <div class="lb-name">'+lb.name+'</div>';
