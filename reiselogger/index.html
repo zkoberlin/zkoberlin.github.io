@@ -1311,6 +1311,567 @@ span.flatpickr-weekday{
 .numInputWrapper span.arrowDown:after{border-top-color:var(--text-dim);}
 .numInputWrapper:hover{background:var(--bg-soft);}
 
+
+/* ============================================================
+   WELTLOG 2.1 — konsequenter Product/IA Refactor
+   ============================================================ */
+:root{
+  --radius-xs:8px;--radius-sm:12px;--radius-md:16px;--radius-lg:20px;
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;
+  --shadow-card:0 5px 20px rgba(0,0,0,.18);
+}
+.card{box-shadow:none;border-color:var(--border-soft);border-radius:var(--radius-md);}
+.home-section{margin:0 0 24px;}
+.home-section-head,.section-title-row{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 0 12px;}
+.home-section-head h2,.section-title-row h2{font:600 17px/1.2 var(--font-display);margin:0;letter-spacing:0;text-transform:none;}
+.section-link{border:0;background:none;color:var(--gold);font:600 12px var(--font-body);cursor:pointer;padding:6px 0;}
+.home-greeting{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin:8px 0 16px;}
+.home-greeting-kicker{font-size:12px;color:var(--text-dim);}
+.home-greeting-title{font:700 clamp(22px,5vw,30px)/1.12 var(--font-display);margin:3px 0 0;}
+.home-year-hero{position:relative;overflow:hidden;background:linear-gradient(145deg,var(--panel-alt),var(--panel));border-radius:20px;padding:24px;border:1px solid var(--border-soft);margin-bottom:16px;}
+.home-year-hero:after{content:'';position:absolute;width:220px;height:220px;border-radius:50%;right:-90px;top:-110px;background:radial-gradient(circle,rgba(232,162,61,.18),transparent 68%);pointer-events:none;}
+.home-year{font:600 12px var(--font-display);color:var(--gold);letter-spacing:.06em;}
+.home-km{font:700 clamp(44px,10vw,68px)/1 var(--font-mono);letter-spacing:-.04em;margin:10px 0 8px;}
+.home-km small{font-size:.35em;color:var(--gold);letter-spacing:0;margin-left:5px;}
+.home-year-meta{font-size:13px;color:var(--text-dim);display:flex;gap:8px;flex-wrap:wrap;}
+.home-year-meta b{color:var(--text);font-family:var(--font-mono);}
+.home-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px;max-width:560px;}
+.home-kpi{padding:10px 0;border-top:1px solid var(--border-soft);}
+.home-kpi strong{display:block;font:700 18px var(--font-mono);color:var(--text);}
+.home-kpi span{font-size:10.5px;color:var(--text-faint);}
+.home-current{padding:12px 14px;border-radius:12px;background:var(--panel-alt);border:1px solid var(--border-soft);font-size:12px;color:var(--text-dim);margin-bottom:10px;}
+.home-current b{color:var(--teal);}
+.home-mode-list{display:flex;flex-direction:column;gap:10px;}
+.home-mode-row{display:grid;grid-template-columns:28px 78px 1fr auto;gap:8px;align-items:center;font-size:12px;}
+.home-mode-track{height:5px;border-radius:999px;background:var(--bg-soft);overflow:hidden;}
+.home-mode-fill{height:100%;border-radius:999px;background:var(--mode-color);}
+.home-mode-km{font:600 11px var(--font-mono);color:var(--text-dim);}
+.map-preview-card{padding:0;overflow:hidden;border-radius:16px;border:1px solid var(--border-soft);background:var(--panel);}
+.map-preview-card .map-wrap{border:0;border-radius:0;aspect-ratio:1.85/1;}
+.map-preview-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:10px;}
+.map-preview-footer span{font-size:12px;color:var(--text-dim);}
+.geo-hero{margin-bottom:16px;}
+.geo-hero .map-wrap{aspect-ratio:1.55/1;border-radius:20px;}
+.geo-summary{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px 0;font-size:11.5px;color:var(--text-dim);}
+.geo-switch{display:flex;gap:5px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;}
+.geo-switch::-webkit-scrollbar{display:none;}
+.geo-switch button{min-height:40px;border:1px solid var(--border-soft);background:transparent;color:var(--text-dim);border-radius:999px;padding:8px 13px;font:600 12px var(--font-body);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.geo-switch button.active{border-color:var(--gold-dim);background:var(--panel-alt);color:var(--gold);}
+.geo-list{display:flex;flex-direction:column;gap:7px;}
+.geo-row{display:flex;align-items:center;gap:11px;padding:12px 2px;border-bottom:1px solid var(--border-soft);cursor:pointer;}
+.geo-row:last-child{border-bottom:0;}
+.geo-row-main{flex:1;min-width:0;}
+.geo-row-title{font-weight:600;font-size:14px;color:var(--text);}
+.geo-row-sub{font-size:11px;color:var(--text-faint);margin-top:2px;}
+.geo-row-value{font:600 12px var(--font-mono);color:var(--text-dim);text-align:right;}
+.discover-intro{margin:8px 0 20px;}
+.discover-intro h1{font:700 clamp(24px,5vw,32px)/1.1 var(--font-display);margin:0 0 5px;}
+.discover-intro p{margin:0;color:var(--text-dim);font-size:13px;max-width:620px;}
+.discover-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.discover-feature{background:var(--panel);border:1px solid var(--border-soft);border-radius:16px;padding:16px;min-width:0;}
+.discover-feature.wide{grid-column:1/-1;}
+.discover-feature-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font:600 14px var(--font-display);}
+.record-preview{display:flex;gap:10px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;}
+.record-preview::-webkit-scrollbar{display:none;}
+.record-mini{min-width:150px;padding:13px;border-radius:12px;background:var(--panel-alt);}
+.record-mini strong{display:block;color:var(--gold);font:700 17px var(--font-mono);margin-top:7px;}
+.record-mini span{font-size:10.5px;color:var(--text-faint);}
+.near-badge{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);}
+.near-badge:first-of-type{border-top:0;}
+.near-badge-body{flex:1;min-width:0;}
+.near-badge-name{font-size:12px;font-weight:600;}
+.near-badge-progress{font-size:10.5px;color:var(--text-faint);}
+.profile-identity{padding:24px 4px 20px;text-align:center;}
+.profile-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:var(--panel-alt);border:1px solid var(--gold-dim);color:var(--gold);}
+.profile-name{font:700 25px var(--font-display);}
+.profile-level{color:var(--gold);font-size:12.5px;margin-top:3px;}
+.profile-distance{font:700 30px var(--font-mono);margin:18px 0 3px;}
+.profile-totals{color:var(--text-dim);font-size:12px;}
+.profile-list{border-top:1px solid var(--border-soft);}
+.profile-row{display:flex;align-items:center;gap:12px;min-height:52px;border-bottom:1px solid var(--border-soft);cursor:pointer;}
+.profile-row-icon{width:30px;color:var(--text-dim);display:flex;justify-content:center;}
+.profile-row-main{flex:1;}
+.profile-row-title{font-size:13px;font-weight:600;}
+.profile-row-sub{font-size:10.5px;color:var(--text-faint);margin-top:1px;}
+.profile-chevron{color:var(--text-faint);}
+.trip-primary-cta{display:flex;justify-content:flex-end;margin:4px 0 14px;}
+.trip-primary-cta .btn-primary{min-height:44px;text-transform:none;letter-spacing:0;border-radius:12px;}
+.tdp-route-block{padding:16px 4px 8px;}
+.tdp-route-title{font:700 21px var(--font-display);margin-bottom:4px;}
+.tdp-meta-line{display:flex;gap:8px;flex-wrap:wrap;color:var(--text-dim);font-size:12px;}
+.tdp-section{padding:18px 0;border-top:1px solid var(--border-soft);}
+.tdp-section-title{font:600 14px var(--font-display);margin:0 0 12px;}
+.tdp-action-row{display:flex;gap:8px;justify-content:flex-end;padding:8px 0 2px;}
+.tdp-action-btn{min-height:40px;border:1px solid var(--border-soft);border-radius:10px;background:transparent;color:var(--text-dim);padding:8px 12px;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.tdp-action-btn.danger{color:var(--rose);}
+.travel-placeholder{position:absolute;inset:0;overflow:hidden;background:linear-gradient(145deg,#18223e,#10182b);}
+.travel-placeholder:before{content:'';position:absolute;inset:-20%;opacity:.32;background:repeating-radial-gradient(ellipse at 30% 20%,transparent 0 16px,rgba(151,160,190,.22) 17px 18px,transparent 19px 31px);transform:rotate(-8deg);}
+.travel-placeholder-route{position:absolute;left:14%;right:14%;top:48%;height:1px;border-top:1.5px dashed rgba(232,162,61,.7);}
+.travel-placeholder-route:before,.travel-placeholder-route:after{content:'';position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold);top:-5px;}
+.travel-placeholder-route:before{left:0}.travel-placeholder-route:after{right:0}
+.bottom-tabs{background:rgba(22,31,56,.94);backdrop-filter:blur(18px);}
+.bottom-tab-btn{min-height:52px;font-size:10.5px;}
+.bottom-tab-btn .bt-icon svg{width:23px;height:23px;}
+.bottom-tab-btn.active{background:rgba(232,162,61,.07);color:var(--gold);}
+@media(max-width:760px){
+  .wrap{padding-left:16px;padding-right:16px;padding-bottom:92px;}
+  .tabs{display:none;}
+  .bottom-tabs{display:flex;}
+  .home-year-hero{padding:20px;}
+  .discover-grid{grid-template-columns:1fr;}.discover-feature.wide{grid-column:auto;}
+  .trip-detail-page{gap:12px;}
+  .tdp-hero{height:285px;border-radius:20px;}
+}
+@media(min-width:761px){
+  .home-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:20px;align-items:start;}
+  .home-side{position:sticky;top:110px;}
+  .geo-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.55fr);gap:18px;align-items:start;}
+  .geo-side{max-height:72vh;overflow:auto;padding-right:4px;}
+  .trip-detail-page{max-width:960px;}
+  .tdp-hero{height:420px;border-radius:20px;}
+}
+
+.tc-thumb-icon{position:relative;overflow:hidden;background:linear-gradient(145deg,var(--panel-alt),var(--bg-soft))!important;}
+.tc-thumb-icon>span{display:none!important;}
+.tc-thumb-icon:before{content:"";position:absolute;inset:-25%;background:repeating-radial-gradient(ellipse at 20% 15%,transparent 0 11px,rgba(151,160,190,.13) 12px 13px,transparent 14px 23px);transform:rotate(-12deg);}
+.tc-thumb-icon:after{content:"";position:absolute;left:18%;right:18%;top:50%;border-top:1.5px dashed var(--gold-dim);}
+.form-progress-note{font-size:11.5px;color:var(--text-dim);margin:0 0 16px;padding:10px 12px;border-left:2px solid var(--gold);background:var(--bg-soft);border-radius:0 8px 8px 0;}
+.form-more{margin:4px 0 16px;border-top:1px solid var(--border-soft);padding-top:12px;}
+.form-more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font:600 13px var(--font-display);color:var(--text-dim);}
+.form-more>summary::-webkit-details-marker{display:none}.form-more>summary:after{content:"+";font:400 18px var(--font-body);color:var(--gold)}.form-more[open]>summary:after{content:"–";}
+@media(max-width:680px){.boarding-pass{display:block}.bp-stub{display:none}.bp-main{padding:18px 16px}.field input,.field select,.field textarea{font-size:16px;min-height:44px}.mode-opt,.dir-opt,.purpose-chip{min-height:44px}}
+
+
+/* ============================================================
+   WELTLOG Refactor v3 — detail, form, icon & accessibility pass
+   ============================================================ */
+:root{
+  --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-hero:20px;
+  --shadow-card:0 8px 24px rgba(0,0,0,.18);
+  --shadow-float:0 14px 38px rgba(0,0,0,.28);
+}
+.card{box-shadow:none;border-color:var(--border-soft);}
+.hero-total,.boarding-pass,.log-detail-card{box-shadow:var(--shadow-card);}
+.icon-btn,.theme-switch button,.tdp-back,.tdp-menu{min-width:44px;min-height:44px;}
+.bottom-tab-btn{min-height:56px;}
+.bottom-tab-btn:active,.btn-primary:active,.tdp-action-btn:active,.geo-switch button:active{transform:translateY(1px);}
+
+/* Progressive Reiseerfassung */
+.trip-form-section{padding:4px 0 2px;}
+.trip-form-section-title{display:flex;align-items:center;gap:8px;margin:2px 0 14px;font:600 13px var(--font-display);color:var(--text);}
+.trip-form-section-title .step{width:24px;height:24px;border-radius:999px;background:var(--bg-soft);border:1px solid var(--border-soft);display:flex;align-items:center;justify-content:center;color:var(--gold);font:600 10px var(--font-mono);}
+.form-more{border:1px solid var(--border-soft);border-radius:12px;padding:0 14px;margin:10px 0 14px;background:var(--panel-alt);}
+.form-more>summary{color:var(--text);}
+.form-more[open]>summary{border-bottom:1px solid var(--border-soft);margin-bottom:14px;}
+.form-more .field{margin-bottom:14px!important;}
+.form-advanced{background:transparent;}
+.form-progress-note{border-left:0;border-radius:12px;background:var(--panel-alt);padding:12px 14px;}
+.bp-title{text-transform:none;letter-spacing:0;font-size:20px;}
+.bp-sub{max-width:640px;line-height:1.55;}
+.field label{text-transform:none;letter-spacing:0;font-size:11.5px;}
+.mode-opt .ic{display:flex;justify-content:center;align-items:center;height:24px;margin-bottom:4px;}
+.mode-opt .ic svg{width:22px;height:22px;}
+
+/* Reise-Detail: Journal links, Fakten rechts */
+.tdp-content-grid{display:block;}
+.tdp-main-column,.tdp-facts-column{min-width:0;}
+.tdp-note{font-size:15px;line-height:1.65;color:var(--text);padding:2px 0 4px;}
+.tdp-note:before{content:'“';font:700 28px var(--font-display);color:var(--gold);vertical-align:-5px;margin-right:3px;}
+.tdp-facts-card{background:var(--panel);border:1px solid var(--border-soft);border-radius:16px;padding:0 16px;}
+.tdp-facts-card .tdp-section:first-child{border-top:0;}
+.tdp-action-row{align-items:center;position:relative;}
+.tdp-more-menu{position:relative;}
+.tdp-more-menu>summary{list-style:none;width:42px;height:42px;border:1px solid var(--border-soft);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);cursor:pointer;background:var(--panel);}
+.tdp-more-menu>summary::-webkit-details-marker{display:none;}
+.tdp-more-popover{position:absolute;right:0;bottom:48px;min-width:190px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:6px;box-shadow:var(--shadow-float);z-index:20;}
+.tdp-more-popover button{width:100%;min-height:42px;background:transparent;border:0;border-radius:8px;color:var(--text-dim);display:flex;align-items:center;gap:9px;padding:8px 10px;text-align:left;cursor:pointer;font:500 12px var(--font-body);}
+.tdp-more-popover button:hover{background:var(--bg-soft);color:var(--text);}
+.tdp-more-popover button.danger{color:var(--rose);border-top:1px solid var(--border-soft);border-radius:0 0 8px 8px;margin-top:4px;padding-top:10px;}
+
+/* Fotos stärker als Erinnerung */
+.tdp-section .log-photos-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;}
+.tdp-section .log-photo-thumb{width:100%;height:110px;border-radius:12px;}
+.tdp-section .log-photo-thumb:first-child{grid-row:span 2;height:228px;}
+.tdp-section .log-photo-add{width:100%;height:110px;border-radius:12px;}
+
+/* Navigation / Accessibility */
+.bottom-tab-btn[aria-current="page"]{font-weight:600;}
+button:focus-visible,[role="button"]:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+.geo-switch button{min-height:44px;}
+.section-link{min-height:36px;display:inline-flex;align-items:center;}
+
+/* Light mode gets its own elevation hierarchy */
+[data-theme="light"] .tdp-facts-card,[data-theme="light"] .discover-feature,[data-theme="light"] .form-more{box-shadow:0 5px 18px rgba(30,40,70,.055);}
+[data-theme="light"] .bottom-tabs{background:rgba(255,255,255,.94);}
+[data-theme="light"] .travel-placeholder{background:linear-gradient(145deg,#f6f8fc,#e5eaf4);}
+[data-theme="light"] .travel-placeholder:before{opacity:.38;}
+
+@media(min-width:761px){
+  .trip-detail-page{max-width:1080px;}
+  .tdp-content-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.7fr);gap:28px;align-items:start;}
+  .tdp-facts-column{position:sticky;top:104px;}
+  .tdp-hero{height:460px;}
+  .tdp-route-title{font-size:26px;}
+  .tdp-main-column .tdp-section:first-child{border-top:0;}
+}
+@media(max-width:760px){
+  .tdp-content-grid{display:contents;}
+  .tdp-main-column,.tdp-facts-column{display:contents;}
+  .tdp-facts-card{display:contents;}
+  .tdp-section .log-photos-grid{grid-template-columns:1.7fr 1fr 1fr;overflow:visible;}
+  .tdp-section .log-photo-thumb{height:92px;}
+  .tdp-section .log-photo-thumb:first-child{height:192px;}
+  .tdp-section .log-photo-add{height:92px;}
+  .tdp-action-row{justify-content:space-between;padding-bottom:8px;}
+}
+@media(max-width:480px){
+  .tdp-section .log-photos-grid{display:flex;overflow-x:auto;flex-wrap:nowrap;scroll-snap-type:x proximity;padding-bottom:4px;}
+  .tdp-section .log-photo-thumb,.tdp-section .log-photo-thumb:first-child{width:78vw;height:210px;flex:0 0 78vw;scroll-snap-align:start;}
+  .tdp-section .log-photo-add{width:120px;height:210px;flex:0 0 120px;}
+}
+
+
+/* ============================================================
+   WELTLOG Refactor v4 — final system & screen audit
+   ============================================================ */
+:root{
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;
+  --radius-control:8px;--radius-small:12px;--radius-card:16px;--radius-hero:20px;
+  --shadow-primary:0 6px 22px rgba(0,0,0,.18);
+  --shadow-float:0 12px 32px rgba(0,0,0,.24);
+}
+.card,.log-detail-card{box-shadow:none;border-color:var(--border-soft)}
+.home-year-hero,.tdp-hero,.geo-hero .map-wrap{box-shadow:var(--shadow-primary)}
+.home-section-head h2,.section-title-row h2,.tdp-section-title{letter-spacing:0;text-transform:none}
+.empty-state .big{display:flex;justify-content:center;align-items:center;min-height:32px}
+
+/* Karte ist geografisches Zentrum: volle Breite zuerst, Listen danach. */
+.geo-layout{display:block!important}
+.geo-layout>div:first-child{width:100%}
+.geo-hero .map-wrap{aspect-ratio:1.85/1;min-height:420px}
+.geo-side{margin-top:16px}
+.geo-switch{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.geo-switch::-webkit-scrollbar{display:none}
+.geo-switch button{flex:0 0 auto;min-height:44px;padding:9px 14px;border-radius:999px;background:transparent}
+.geo-switch button.active{background:var(--panel-alt);border-color:var(--gold);color:var(--gold)}
+#geoContent{max-width:920px}
+.geo-list{gap:0}
+.geo-row{min-height:56px;border-bottom:1px solid var(--border-soft);border-radius:0!important;background:transparent!important}
+.geo-row:last-child{border-bottom:none}
+
+/* Home: Journal-first statt Dashboard. */
+.home-recent-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-recent-grid .trip-card{height:100%}
+.home-highlight-strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.home-highlight-strip::-webkit-scrollbar{display:none}
+.home-highlight{flex:0 0 150px;padding:14px;border-radius:12px;background:var(--panel-alt);border:1px solid var(--border-soft)}
+.home-highlight strong{display:block;font:700 17px var(--font-mono);color:var(--text)}
+.home-highlight span{display:block;font-size:10.5px;color:var(--text-faint);margin-top:3px}
+
+/* Entdecken: Level -> zuletzt -> fast geschafft -> weitere Welten. */
+.discover-achievement-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:16px;margin-bottom:16px}
+.discover-achievement-card{background:linear-gradient(145deg,var(--panel-alt),var(--panel));border:1px solid var(--border-soft);border-radius:16px;padding:18px}
+.discover-achievement-card.last{border-color:var(--gold-dim)}
+.discover-achievement-label{font-size:10.5px;color:var(--text-faint);margin-bottom:12px}
+.discover-last-inner{display:flex;gap:16px;align-items:center}
+.discover-last-stamp{width:92px;min-width:92px;display:flex;justify-content:center}
+.discover-last-name{font:700 17px var(--font-display);color:var(--text)}
+.discover-last-desc{font-size:12px;color:var(--text-dim);margin-top:5px;line-height:1.45}
+.discover-near-list{display:flex;flex-direction:column;gap:10px}
+.near-badge{background:transparent!important;border:0!important;padding:0!important}
+.near-badge+.near-badge{padding-top:10px!important;border-top:1px solid var(--border-soft)!important}
+
+/* Profil: weniger Einstellungsseite, mehr Identität. */
+.profile-identity{background:linear-gradient(145deg,var(--panel-alt),transparent);border-radius:20px;margin-bottom:16px;border:1px solid var(--border-soft)}
+.profile-list{border-top:1px solid var(--border-soft)}
+.profile-row{background:transparent!important;border:0!important;border-bottom:1px solid var(--border-soft)!important;border-radius:0!important;min-height:64px}
+.profile-chevron{font-size:0}
+.profile-chevron:after{content:'›';font-size:20px}
+
+/* Actions / keyboard / touch. */
+button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
+.section-link,.tdp-action-btn,.tdp-more-menu summary{min-height:44px}
+.tdp-more-menu summary{min-width:44px}
+[role="dialog"]:focus{outline:none}
+.photo-lightbox-close,.photo-lightbox-nav{min-width:44px;min-height:44px}
+
+[data-theme="light"]{
+  --shadow-primary:0 7px 22px rgba(30,40,70,.08);
+  --shadow-float:0 12px 32px rgba(30,40,70,.12);
+}
+[data-theme="light"] .geo-switch button.active{background:#fff7e9}
+
+@media(max-width:760px){
+  .geo-hero .map-wrap{aspect-ratio:1.05/1;min-height:330px;border-radius:16px}
+  .home-recent-grid{grid-template-columns:1fr}
+  .discover-achievement-hero{grid-template-columns:1fr}
+  .discover-last-stamp{width:74px;min-width:74px}
+  .home-highlight{flex-basis:138px}
+}
+
+
+
+/* ============================================================
+   WELTLOG Refactor v5 — mobile polish & legacy subpage alignment
+   ============================================================ */
+:root{
+  --content-max:1120px;
+  --section-gap:24px;
+  --control-h:44px;
+}
+
+/* Global rhythm: surfaces communicate grouping; borders no longer do all the work. */
+.card{padding:18px;margin-bottom:16px;border-color:color-mix(in srgb,var(--border-soft) 78%,transparent)}
+.card-head{margin-bottom:14px}
+.card-head h2{font-size:14px;text-transform:none;letter-spacing:0}
+.card-head .sub{font-size:11.5px}
+.section-title-row{margin-bottom:16px}
+.home-section{margin-bottom:var(--section-gap)}
+.home-section-head{margin-bottom:12px}
+.home-section-head h2{font-size:16px}
+
+/* Topbar becomes utility chrome rather than a second dashboard on phones. */
+.topbar-inner{min-height:58px}
+.brand-mark{box-shadow:none}
+.top-actions{gap:6px}
+.icon-btn,.theme-switch button{border-color:var(--border-soft);background:transparent}
+.icon-btn:hover,.theme-switch button:hover{background:var(--panel-alt)}
+.theme-switch button.active{box-shadow:none;background:var(--panel-alt)}
+
+/* Bottom navigation: five equal destinations, no decorative color coding. */
+.bottom-tabs{box-shadow:0 -1px 0 var(--border-soft);padding-top:5px}
+.bottom-tab-btn{gap:4px;border-radius:12px;min-height:58px;padding:6px 4px}
+.bottom-tab-btn span:last-child{font-size:10.5px;line-height:1.1}
+.bottom-tab-btn.active{background:rgba(232,162,61,.055)}
+
+/* Home: make the journal hero breathe, de-emphasize secondary metrics. */
+.home-year-hero{border-radius:20px;border-color:transparent}
+.home-year-km{letter-spacing:-.035em}
+.home-year-meta{color:var(--text-dim)}
+.home-kpis{gap:8px}
+.home-kpi{border:0;background:var(--panel-alt);padding:12px;border-radius:12px}
+.home-kpi strong{font-size:16px}
+.home-kpi span{font-size:10px}
+.home-highlight{border:0}
+
+/* Reisen: cards are content first. Secondary separators become quieter. */
+.trip-card{border-color:var(--border-soft);box-shadow:none}
+.trip-card:hover{border-color:var(--gold-dim)}
+.tc-compact-divider{opacity:.7}
+.tc-stat:not(:last-child){border-right-color:var(--border-soft)}
+.trip-primary-cta{position:relative;z-index:2}
+.trip-primary-cta .btn-primary{box-shadow:none}
+
+/* Geography: map is the hero, lists behave like drill-down content. */
+.geo-hero{margin-bottom:14px}
+.geo-hero .card-head{margin-bottom:10px}
+.geo-switch{margin-bottom:2px}
+.geo-switch button{border:1px solid var(--border-soft);color:var(--text-dim)}
+.geo-switch button:not(.active){background:transparent}
+.geo-row{padding-left:4px;padding-right:4px}
+.city-detail{box-shadow:none;background:var(--panel);border-color:var(--border-soft)}
+
+/* Legacy statistics aligned to the calmer refactored system. */
+.stats-grid-2{gap:12px;margin-bottom:16px}
+.stats-grid-2 .card{padding:16px}
+.top-list{gap:10px}
+.top-item{gap:10px}
+.top-rank{background:transparent;border-color:var(--border-soft)}
+.top-rank.r1{border-color:var(--gold-dim);color:var(--gold)}
+.top-bar-track{height:5px;border:0}
+.mode-filter-toggle{gap:6px;margin-bottom:14px}
+.mode-filter-chip{border-color:var(--border-soft);padding:7px 11px}
+.mode-filter-chip.active{box-shadow:none;background:var(--panel-alt)}
+.co2-legend{gap:12px}
+.ring-chart-wrap{padding:10px 0}
+.ring-chart-center{background:var(--panel)}
+
+/* Records stay special, but gold is an accent instead of a frame around everything. */
+.record-grid{gap:10px}
+.record-card{border:1px solid var(--border-soft);background:var(--panel);padding:16px 14px;text-align:left;align-items:flex-start}
+.record-card .rc-icon{width:40px;height:40px;margin-bottom:10px;border:0;background:var(--panel-alt)}
+.record-card .rc-value{font-size:19px}
+.record-card .rc-label{font-size:11.5px;margin-top:4px}
+.record-card .rc-detail{margin-top:7px}
+
+/* Badge collection: category accordions prevent 141 equally loud cards. */
+.badge-overview{display:flex;flex-direction:column;gap:10px}
+.badge-category{border:1px solid var(--border-soft);border-radius:16px;background:var(--panel);overflow:hidden}
+.badge-category>summary{list-style:none;min-height:58px;padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.badge-category>summary::-webkit-details-marker{display:none}
+.badge-category>summary:after{content:'+';margin-left:auto;color:var(--gold);font-size:18px}
+.badge-category[open]>summary:after{content:'–'}
+.badge-category[open]>summary{border-bottom:1px solid var(--border-soft)}
+.badge-category-icon{width:34px;height:34px;border-radius:10px;background:var(--panel-alt);display:flex;align-items:center;justify-content:center;color:var(--text-dim);flex:0 0 auto}
+.badge-category-title{font:600 13.5px var(--font-display)}
+.badge-category-meta{font-size:10.5px;color:var(--text-faint);margin-top:2px}
+.badge-category-body{padding:12px}
+.badge-category-body .badge-grid{grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:8px}
+.badge-card{border-color:var(--border-soft);background:var(--panel-alt);padding:12px;border-radius:12px}
+.badge-card.locked{opacity:.66}
+.badge-stamp{width:68px;min-height:54px}
+.badge-section-head h3{font-size:15px}
+
+/* Bucket list follows the same list hierarchy as geography. */
+.bucket-list{gap:0;border-top:1px solid var(--border-soft)}
+.bucket-row{border:0;border-bottom:1px solid var(--border-soft);border-radius:0;background:transparent;padding:12px 4px;min-height:56px}
+.bucket-row-meta button{min-width:40px;min-height:40px;border-color:transparent}
+.bucket-row-meta button:hover{background:var(--panel-alt);border-color:var(--border-soft)}
+
+/* Form controls: one coherent control language. */
+.field input,.field select,.field textarea,.log-search-input,.log-sort-select{border-color:var(--border-soft);border-radius:8px}
+.field input:focus,.field select:focus,.field textarea:focus,.log-search-input:focus{border-color:var(--gold);outline:none}
+.field input[type="date"]{border-color:var(--border-soft)}
+.field input[type="date"]:focus{border-color:var(--gold)}
+.mode-opt,.dir-opt,.purpose-chip{border-color:var(--border-soft);box-shadow:none!important}
+.mode-opt.active,.dir-opt.active,.purpose-chip.active{background:var(--panel-alt)}
+.btn-primary{text-transform:none;letter-spacing:0;border-radius:10px;min-height:44px}
+.btn-secondary{min-height:44px;border-color:var(--border-soft)}
+
+/* Detail page: clean section cadence and less administrative feeling. */
+.tdp-route-block{padding-top:14px;padding-bottom:14px}
+.tdp-section{padding:20px 0}
+.tdp-facts-card{box-shadow:none}
+.tdp-action-btn{background:transparent}
+.tdp-action-btn:hover{background:var(--panel-alt)}
+
+/* Toasts announced to assistive tech, visually subtle. */
+.toast{border:1px solid var(--border-soft);box-shadow:var(--shadow-float)}
+
+@media(max-width:760px){
+  :root{--section-gap:22px}
+  .wrap{padding-left:14px;padding-right:14px;padding-bottom:96px}
+  .topbar-inner{padding:8px 14px;flex-wrap:nowrap}
+  .brand{min-width:0}
+  .brand-text h1{font-size:16px;white-space:nowrap}
+  .version-pill{display:none}
+  .top-actions{margin-left:auto;flex-shrink:0;width:auto!important}
+  .top-actions>a.icon-btn{display:none}
+  .theme-switch{gap:2px}
+  .icon-btn,.theme-switch button{width:40px;height:40px;min-width:40px;min-height:40px}
+  .bottom-tabs{padding-left:4px;padding-right:4px}
+  .bottom-tab-btn .bt-icon svg{width:22px;height:22px}
+
+  .home-year-hero{padding:20px 18px}
+  .home-year-km{font-size:clamp(39px,12vw,52px)}
+  .home-kpis{grid-template-columns:repeat(3,1fr)}
+  .home-kpi{padding:11px 8px;text-align:center}
+  .home-recent-grid{gap:10px}
+
+  .trip-primary-cta{position:sticky;top:66px;justify-content:stretch;margin:2px 0 12px}
+  .trip-primary-cta .btn-primary{width:100%;box-shadow:0 8px 20px rgba(14,21,38,.24)}
+  .trip-card-compact{padding:11px;gap:10px}
+  .tc-thumb{width:70px;height:70px}
+
+  .geo-hero .map-wrap{min-height:350px}
+  .geo-switch{margin-left:-2px;margin-right:-2px}
+  #geoContent{width:100%}
+
+  .stats-grid-2{grid-template-columns:1fr;gap:10px}
+  .record-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .record-card{padding:13px 11px}
+  .record-card .rc-icon{width:34px;height:34px}
+  .record-card .rc-value{font-size:17px}
+  .ring-chart-wrap{gap:18px}
+
+  .badge-section-head{margin-top:18px}
+  .badge-category>summary{padding:10px 12px}
+  .badge-category-body{padding:8px}
+  .badge-category-body .badge-grid{grid-template-columns:1fr}
+  .badge-card{padding:11px}
+  .badge-stamp{width:62px}
+
+  .bucket-row-meta{gap:2px}
+  .bucket-priority-badge{font-size:10px}
+
+  .boarding-pass{border:0;background:transparent;box-shadow:none;margin-left:-2px;margin-right:-2px}
+  .bp-main{padding:8px 2px 18px!important}
+  .bp-title{font-size:23px}
+  .bp-sub{font-size:13px}
+  .form-more{margin-left:0;margin-right:0}
+
+  .tdp-header{position:sticky;top:58px;z-index:22;padding:6px 0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px)}
+  .tdp-hero{height:min(62vh,390px)}
+  .tdp-route-title{font-size:22px}
+  .tdp-section{padding:18px 0}
+}
+
+@media(max-width:390px){
+  .brand-text h1{font-size:15px}
+  .theme-switch button{width:37px;height:37px;min-width:37px;min-height:37px}
+  .home-kpi strong{font-size:14px}
+  .home-kpi span{font-size:9.5px}
+  .record-grid{grid-template-columns:1fr}
+  .tdp-hero{height:300px}
+}
+
+[data-theme="light"] .card,[data-theme="light"] .record-card,[data-theme="light"] .badge-category{border-color:#DCE2ED}
+[data-theme="light"] .trip-primary-cta .btn-primary{box-shadow:0 8px 18px rgba(168,105,15,.12)}
+
+
+
+/* ============================================================
+   WELTLOG 2.4 RC1 — final screen audit
+   ============================================================ */
+/* Release candidate: one hierarchy, one rhythm, no legacy dashboard chrome. */
+.home-side .level-hero{display:none}
+.home-side:empty{display:none}
+.home-side{align-self:start}
+.home-current{border:0;background:var(--panel-alt);border-radius:12px;padding:10px 12px;color:var(--text-dim)}
+.home-current b{color:var(--text)}
+
+/* Route becomes a first-class object on every trip, even simple A→B trips. */
+.tdp-route-visual{position:relative;padding:14px 0 2px}
+.tdp-route-leg{display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:10px;position:relative;padding-bottom:16px}
+.tdp-route-leg:last-child{padding-bottom:0}
+.tdp-route-rail{position:absolute;left:13px;top:20px;bottom:-2px;border-left:1.5px dashed var(--border)}
+.tdp-route-leg:last-child .tdp-route-rail{display:none}
+.tdp-route-node{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--panel-alt);border:1px solid var(--border-soft);z-index:1;color:var(--text-dim)}
+.tdp-route-node.start{color:var(--gold)}
+.tdp-route-node.stop{color:var(--rose)}
+.tdp-route-node.end{color:var(--teal)}
+.tdp-route-copy{padding-top:2px;min-width:0}
+.tdp-route-place{font:600 14px var(--font-display);color:var(--text)}
+.tdp-route-context{font-size:10.5px;color:var(--text-faint);margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.tdp-route-direction{font:600 10px var(--font-display);letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);margin:2px 0 10px}
+.tdp-route-direction.return{margin-top:18px}
+
+/* Action hierarchy: Share is the primary utility, edit secondary, destructive actions hidden in More. */
+.tdp-header .tdp-menu{color:var(--text-dim)}
+.tdp-action-row{justify-content:flex-end;border-top:1px solid var(--border-soft);padding-top:14px;margin-top:2px}
+.tdp-action-btn{min-height:44px;border:1px solid var(--border-soft);border-radius:10px;padding:9px 13px}
+.tdp-more-menu>summary{min-width:44px;min-height:44px;border:1px solid var(--border-soft);border-radius:10px}
+
+/* Map controls are clearly filters below the geographic hero, not competing navigation. */
+.geo-side{margin-top:18px}
+.geo-switch{position:sticky;top:72px;z-index:12;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);padding:6px 0}
+.geo-switch button{min-height:42px}
+#geoContent{padding-top:10px}
+
+/* Full stats remain analytical, but not visually louder than the travel story. */
+#panel-discover .card-head h2,#panel-discover .badge-section-head h3{font-family:var(--font-display)}
+#panel-discover th{text-transform:none;letter-spacing:0;font-size:11px}
+#panel-discover .compare-chip{box-shadow:none}
+
+/* Desktop trip detail reads as journal + facts, mobile remains story-first. */
+@media(min-width:900px){
+  .tdp-main-column{min-width:0}
+  .tdp-facts-column{position:sticky;top:92px}
+  .tdp-facts-card .tdp-section:first-child{padding-top:16px}
+  .tdp-facts-card .tdp-section:last-child{padding-bottom:16px}
+}
+@media(max-width:760px){
+  .info-strip{display:none}
+  .home-side{display:block;position:static}
+  .home-side .home-section{margin-bottom:18px}
+  .tdp-route-visual{padding-top:10px}
+  .tdp-route-place{font-size:13.5px}
+  .geo-switch{top:58px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .geo-switch::-webkit-scrollbar{display:none}
+  .geo-switch button{flex:0 0 auto;white-space:nowrap}
+  .tdp-action-row{padding-bottom:calc(4px + env(safe-area-inset-bottom))}
+}
+
 </style>
 </head>
 <body>
@@ -1318,9 +1879,9 @@ span.flatpickr-weekday{
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <div class="brand-mark">🧭</div>
+      <div class="brand-mark" aria-hidden="true"></div>
       <div class="brand-text">
-        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.22.0</span></h1>
+        <h1>WELTLOG <span class="version-pill" id="versionPill" title="Version">v1.23.0</span></h1>
         <p>Dein persönliches Reise-Logbuch</p>
       </div>
     </div>
@@ -1357,12 +1918,11 @@ span.flatpickr-weekday{
   </div>
   <div class="wrap" style="padding-top:0;padding-bottom:0;">
     <div class="tabs" id="tabs">
-      <button class="tab-btn active" data-tab="dashboard">Übersicht</button>
-      <button class="tab-btn" data-tab="places">Länder &amp; Städte</button>
-      <button class="tab-btn" data-tab="log">Alle Reisen</button>
-      <button class="tab-btn" data-tab="stats">Statistiken</button>
-      <button class="tab-btn" data-tab="badges">Badges</button>
-      <button class="tab-btn" data-tab="bucket">Bucket-Liste</button>
+      <button class="tab-btn active" data-tab="dashboard">Home</button>
+      <button class="tab-btn" data-tab="log">Reisen</button>
+      <button class="tab-btn" data-tab="map">Karte</button>
+      <button class="tab-btn" data-tab="discover">Entdecken</button>
+      <button class="tab-btn" data-tab="profile">Profil</button>
     </div>
   </div>
 </div>
@@ -1999,7 +2559,7 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '2.1.1';
+const APP_VERSION = '2.4.0-rc1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
@@ -4894,16 +5454,16 @@ function renderCityDetail(agg){
       distText = '📍 nur besucht';
     } else if(t.direction==='roundtrip'){
       const outMo=getMode(t.outMode);
-      let outText = outMo.icon+' '+fmtKm(t.outDistanceKm);
+      let outText = getModeIconHTML(t.outMode,15)+' '+fmtKm(t.outDistanceKm);
       if((t.outWaypoints||[]).length) outText += ' (via '+t.outWaypoints.join(', ')+')';
       const retMo=getMode(t.returnMode);
-      let retText = retMo.icon+' '+fmtKm(t.returnDistanceKm);
+      let retText = getModeIconHTML(t.returnMode,15)+' '+fmtKm(t.returnDistanceKm);
       if((t.returnWaypoints||[]).length) retText += ' (via '+t.returnWaypoints.join(', ')+')';
       distText = outText+' · '+retText+' = '+fmtKm(tripTotal(t));
     } else {
       const leg = primaryLeg(t);
       const mo = getMode(leg.mode);
-      distText = mo.icon+' '+fmtKm(leg.distanceKm);
+      distText = getModeIconHTML(leg.mode,15)+' '+fmtKm(leg.distanceKm);
       if(leg.waypoints.length) distText += ' (via '+leg.waypoints.join(', ')+')';
       if(t.direction==='returnonly') distText += ' (nur Rückweg)';
     }
@@ -4933,7 +5493,7 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
   MODE_ORDER.forEach(m=>{
     const mo=getMode(m);
     const active = mode===m ? ' active':'';
-    h += '<div class="mode-opt'+active+'" data-mode="'+m+'" style="--mode-color:'+mo.color+'"><span class="ic">'+mo.icon+'</span>'+mo.label+'</div>';
+    h += '<div class="mode-opt'+active+'" data-mode="'+m+'" style="--mode-color:'+mo.color+'"><span class="ic">'+getModeIconHTML(m,20)+'</span>'+mo.label+'</div>';
   });
   h += '    </div>';
   h += '  </div>';
@@ -5165,13 +5725,13 @@ function renderAdd(root){
     if(direction==='returnonly'){
       const retInput = document.getElementById('fldDist_return');
       const retVal = retInput ? (parseFloat(retInput.value)||0) : 0;
-      h += '<div class="stub-ic">'+getMode(returnMode).icon+'</div>';
+      h += '<div class="stub-ic">'+getModeIconHTML(returnMode,26)+'</div>';
       h += '<div class="stub-km">'+(retVal?fmtNum(retVal):'—')+'</div>';
       h += '<div class="stub-lbl">km Rückweg</div>';
     } else {
       const outInput = document.getElementById('fldDist_out');
       const outVal = outInput ? (parseFloat(outInput.value)||0) : 0;
-      h += '<div class="stub-ic">'+getMode(outMode).icon+'</div>';
+      h += '<div class="stub-ic">'+getModeIconHTML(outMode,26)+'</div>';
       h += '<div class="stub-km">'+(outVal?fmtNum(outVal):'—')+'</div>';
       h += '<div class="stub-lbl">km Hinweg</div>';
       if(direction==='roundtrip'){
@@ -5470,7 +6030,7 @@ function renderStats(root){
   let html = '';
 
   if(trips.length===0){
-    html += '<div class="card"><div class="empty-state"><div class="big">📊</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, erscheinen hier deine Auswertungen.</div></div>';
+    html += '<div class="card"><div class="empty-state"><div class="big">'+svgIcon('chart',28,'var(--text-faint)')+'</div>Noch keine Reisen erfasst — sobald du Reisen einträgst, erscheinen hier deine Auswertungen.</div></div>';
     root.innerHTML = html;
     return;
   }
@@ -5506,7 +6066,7 @@ function renderStats(root){
   html += '  </div>';
   html += '    <div class="top-list">';
   if(topCountries.length===0){
-    html += '<div class="empty-state" style="padding:14px 6px;"><div class="big">🌍</div>Noch keine weiteren Länder erfasst.</div>';
+    html += '<div class="empty-state" style="padding:14px 6px;"><div class="big">'+svgIcon('globe',28,'var(--text-faint)')+'</div>Noch keine weiteren Länder erfasst.</div>';
   } else {
     topCountries.forEach((c,i)=>{
       const pct = Math.max(6, Math.round((c.visits/maxCountryVisits)*100));
@@ -5539,7 +6099,7 @@ function renderStats(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Verkehrsmittel-Verteilung</h2><span class="sub">Anteil an der Gesamtstrecke</span></div>';
   if(modeTotal===0){
-    html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Kilometer erfasst.</div>';
+    html += '<div class="empty-state"><div class="big">'+svgIcon('compass',28,'var(--text-faint)')+'</div>Noch keine Kilometer erfasst.</div>';
   } else {
     let cum = 0;
     const stops = [];
@@ -5677,7 +6237,7 @@ function renderStats(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Entdecker-Trend</h2><span class="sub">neue Länder &amp; Städte pro Jahr · antippen für Details</span></div>';
   if(discoveriesAll.length===0){
-    html += '<div class="empty-state"><div class="big">🧭</div>Noch keine Daten vorhanden.</div>';
+    html += '<div class="empty-state"><div class="big">'+svgIcon('compass',28,'var(--text-faint)')+'</div>Noch keine Daten vorhanden.</div>';
   } else {
     html += '  <div class="mode-filter-toggle" id="discoverySortFilter">';
     html += '    <div class="mode-filter-chip'+(discoverySortMode==='year'?' active':'')+'" data-discovery-sort="year">'+svgIcon('calendar',14,'currentColor')+' Jahr</div>';
@@ -6245,7 +6805,7 @@ function renderPlaces(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Länder</h2><span class="sub">'+agg.countries.length+' besucht</span></div>';
   if(agg.countries.length===0){
-    html += '<div class="empty-state"><div class="big">🗺️</div>Noch keine Länder erfasst. Trag deine erste Reise ein.</div>';
+    html += '<div class="empty-state"><div class="big">'+svgIcon('map',28,'var(--text-faint)')+'</div>Noch keine Länder erfasst. Trag deine erste Reise ein.</div>';
   } else {
     html += '  <div class="mode-filter-toggle" id="countrySortFilter">';
     COUNTRY_SORT_OPTIONS.forEach(o=>{
@@ -6787,7 +7347,7 @@ function renderLogTableFromSorted(sorted){
     const wpBadge = wpCount>0 ? '<div class="wp-badge">'+wpCount+' '+(wpCount===1?'Stopp':'Stopps')+'</div>' : '';
     const fromEsc = (t.fromCity||'').replace(/"/g,'&quot;');
     const cityEsc = (t.city||'').replace(/"/g,'&quot;');
-    const photoBadge = (t.photos && t.photos.length) ? '<span class="log-photo-badge" title="'+t.photos.length+' Foto'+(t.photos.length===1?'':'s')+'">📷 '+t.photos.length+'</span>' : '';
+    const photoBadge = (t.photos && t.photos.length) ? '<span class="log-photo-badge" title="'+t.photos.length+' Foto'+(t.photos.length===1?'':'s')+'">'+svgIcon('photos',12,'currentColor')+' '+t.photos.length+'</span>' : '';
     html += '<tr class="log-row" data-trip-row="'+t.id+'">';
     html += '<td data-label="Zeitraum" class="log-cell-primary">'+fmtRange(t.dateFrom,t.dateTo)+'</td>';
     html += '<td data-label="Von" class="log-cell-secondary">'+(t.fromCity ? '<span class="log-city-link" data-city-filter="'+fromEsc+'" title="Nach &bdquo;'+fromEsc+'&ldquo; filtern">'+t.fromCity+'</span>' : '–')+'</td>';
@@ -7558,6 +8118,559 @@ document.getElementById('newTripBtn').addEventListener('click',()=>{
   duplicateSource = null;
   switchTab('add');
 });
+
+
+/* ============================================================
+   WELTLOG 2.1 — IA & Screen Refactor Overrides
+   ============================================================ */
+SVG_ICON_PATHS.trips = SVG_ICON_PATHS.tabBucket;
+SVG_ICON_PATHS.map = SVG_ICON_PATHS.navMap;
+SVG_ICON_PATHS.profile = SVG_ICON_PATHS.navProfile;
+SVG_ICON_PATHS.compass = SVG_ICON_PATHS.recordCompass;
+SVG_ICON_PATHS.settings = SVG_ICON_PATHS.settingsGear;
+SVG_ICON_PATHS.mapPin = SVG_ICON_PATHS.stopPin;
+
+const LEGACY_RENDER_ADD = renderAdd;
+const LEGACY_RENDER_STATS = renderStats;
+const LEGACY_RENDER_BADGES = renderBadges;
+const LEGACY_RENDER_BUCKET = renderBucketList;
+let geoViewMode = 'visited';
+let discoverViewMode = 'landing';
+
+function refactorMapHTML(agg, preview){
+  let h = '<div class="'+(preview?'map-preview-card':'geo-hero')+'">';
+  h += '<div class="map-wrap" id="mapWrap"><div class="world-map-gl" id="worldMapGL"></div><div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div><div class="map-error" id="mapError">Karte konnte nicht geladen werden.</div></div>';
+  if(preview){
+    h += '<div class="map-preview-footer"><span>'+agg.countries.length+' Länder · '+agg.cities.length+' Städte entdeckt</span><button class="section-link" type="button" data-go-tab="map">Karte öffnen →</button></div>';
+  }else{
+    h += '<div class="geo-summary"><span><b>'+agg.countries.length+'</b> Länder</span><span><b>'+agg.cities.length+'</b> Städte</span><span><b>'+bucketList.length+'</b> Wünsche</span>'+(settings.home?'<span>'+svgIcon('home',13,'var(--map-home)')+' '+(findCity(settings.home)?.n||settings.home)+'</span>':'')+'</div>';
+    h += '<div class="map-attrib">Kartengrundlage: OpenFreeMap / OpenStreetMap · Länder-Flächen: Natural Earth</div>';
+  }
+  h += '</div>';
+  h += '<div class="city-detail" id="cityDetail"'+(preview?' style="display:none"':'')+'></div>';
+  return h;
+}
+function attachGoTab(root){
+  root.querySelectorAll('[data-go-tab]').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.goTab)));
+}
+function currentTripsForToday(){
+  const d = new Date().toISOString().slice(0,10);
+  return trips.filter(t=>t.dateFrom && t.dateFrom<=d && (t.dateTo||t.dateFrom)>=d);
+}
+function renderDashboard(root){
+  const agg=aggregate(), yr=String(new Date().getFullYear());
+  const yearAgg=aggregateYears().find(y=>y.year===yr);
+  const km=yearAgg?yearAgg.total:0, yc=aggregateYearCounts(yr);
+  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''))[0];
+  const active=currentTripsForToday();
+  const name=(settings.profileName||'').trim();
+  let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WELTLOG</div><div class="home-greeting-title">'+(name?'Hallo '+name+'.':'Deine Reisen, auf einen Blick.')+'</div></div></div>';
+  h+='<div class="home-layout"><div class="home-main">';
+  h+='<section class="home-section"><div class="home-year-hero"><div class="home-year">'+yr+'</div><div class="home-km">'+fmtNum(km)+'<small>km</small></div><div class="home-year-meta"><span><b>'+yc.countryCount+'</b> Länder</span><span>·</span><span><b>'+yc.cityCount+'</b> Städte</span><span>·</span><span><b>'+yc.tripCount+'</b> Reisen</span></div><div class="home-kpis"><div class="home-kpi"><strong>'+fmtNum(agg.totalKm)+'</strong><span>km seit Beginn</span></div><div class="home-kpi"><strong>'+agg.countries.length+'</strong><span>Länder gesamt</span></div><div class="home-kpi"><strong>'+agg.cities.length+'</strong><span>Städte gesamt</span></div></div></div></section>';
+  if(active.length){ h+='<div class="home-current"><b>'+active.length+' aktuelle '+(active.length===1?'Reise':'Reisen')+'</b> · '+active.map(t=>stripCountrySuffix(t.city)).join(', ')+'</div>'; }
+  h+='<section class="home-section"><div class="home-section-head"><h2>Letzte Reise</h2><button class="section-link" type="button" data-go-tab="log">Alle Reisen →</button></div>';
+  if(latest) h+=tripCardHTML(latest,true); else h+='<div class="card"><div class="empty-state">Noch keine Reise gespeichert.<br><button class="btn-primary" type="button" data-go-tab="add" style="margin-top:12px">+ Reise hinzufügen</button></div></div>';
+  h+='</section>';
+  h+='<section class="home-section"><div class="home-section-head"><h2>Welt entdecken</h2><button class="section-link" type="button" data-go-tab="map">Zur Karte →</button></div>'+refactorMapHTML(agg,true)+'</section>';
+  h+='</div><aside class="home-side">';
+  h+='<section class="home-section"><div class="home-section-head"><h2>Unterwegs '+yr+'</h2><button class="section-link" type="button" data-go-tab="discover">Insights →</button></div><div class="discover-feature"><div class="home-mode-list">';
+  const vals=MODE_ORDER.map(m=>({m,v:yearAgg?(yearAgg.perMode[m]||0):0})).sort((a,b)=>b.v-a.v); const max=Math.max(1,...vals.map(x=>x.v));
+  vals.filter(x=>x.v>0).forEach(x=>{const mo=getMode(x.m); h+='<div class="home-mode-row"><span>'+getModeIconHTML(x.m,20)+'</span><span>'+mo.label+'</span><div class="home-mode-track"><div class="home-mode-fill" style="width:'+Math.max(4,Math.round(x.v/max*100))+'%;--mode-color:'+mo.color+'"></div></div><span class="home-mode-km">'+fmtKm(x.v)+'</span></div>';});
+  if(!vals.some(x=>x.v>0))h+='<div style="color:var(--text-faint);font-size:12px">Noch keine Strecke in '+yr+'.</div>';
+  h+='</div></div></section>';
+  if(trips.length) h+='<section class="home-section">'+levelTileHTML(computeBadgesView())+'</section>';
+  h+='</aside></div>';
+  root.innerHTML=h; attachGoTab(root); if(latest) attachLogResultActions(root); initWorldMapML(agg); renderCityDetail(agg);
+}
+
+function geoContentHTML(agg){
+  let h='';
+  if(geoViewMode==='visited'){
+    const top=agg.cities.slice().sort((a,b)=>b.visits-a.visits||b.totalKm-a.totalKm).slice(0,12);
+    h='<div class="section-title-row"><h2>Besuchte Orte</h2><span style="font-size:11px;color:var(--text-faint)">'+agg.cities.length+' Städte</span></div><div class="geo-list">';
+    top.forEach(c=>{h+='<div class="geo-row"><div>'+cityIcon(c.city,c.country,c.cc,34)+'</div><div class="geo-row-main"><div class="geo-row-title">'+cityNameHTML(c.city,c.cc)+'</div><div class="geo-row-sub">'+c.country+' · '+c.visits+' '+(c.visits===1?'Besuch':'Besuche')+'</div></div><div class="geo-row-value">'+fmtKm(c.totalKm)+'</div></div>';}); h+='</div>';
+  } else if(geoViewMode==='countries'){
+    const list=sortCountries(agg.countries,countrySort); h='<div class="section-title-row"><h2>Länder</h2><span style="font-size:11px;color:var(--text-faint)">'+list.length+' besucht</span></div><div class="geo-list">';
+    list.forEach(c=>{h+='<div class="geo-row"><div>'+flagBadge(flagCcFor(c.cc,c.country),38)+'</div><div class="geo-row-main"><div class="geo-row-title">'+c.country+'</div><div class="geo-row-sub">'+c.cities.size+' Städte · '+c.visits+' Besuche</div></div><div class="geo-row-value">'+fmtKm(c.totalKm)+'</div></div>';}); h+='</div>';
+  } else if(geoViewMode==='cities'){
+    const list=agg.cities.slice().sort((a,b)=>a.city.localeCompare(b.city,'de')); h='<div class="section-title-row"><h2>Städte</h2><span style="font-size:11px;color:var(--text-faint)">'+list.length+' besucht</span></div><div class="geo-list">';
+    list.forEach(c=>{const last=c.dates.slice().sort().reverse()[0];h+='<div class="geo-row"><div>'+cityIcon(c.city,c.country,c.cc,34)+'</div><div class="geo-row-main"><div class="geo-row-title">'+cityNameHTML(c.city,c.cc)+'</div><div class="geo-row-sub">'+c.country+' · zuletzt '+fmtDate(last)+'</div></div><div class="geo-row-value">'+c.visits+'×</div></div>';}); h+='</div>';
+  } else {
+    h='<div class="section-title-row"><h2>Bucket List</h2><button class="section-link" type="button" data-discover-view="bucket">Verwalten →</button></div><div class="geo-list">';
+    bucketList.slice().sort((a,b)=>(BUCKET_PRIORITY_RANK[b.priority]||0)-(BUCKET_PRIORITY_RANK[a.priority]||0)).forEach(b=>{h+='<div class="geo-row"><div>'+flagImg(flagCcFor(b.cc,b.country),28)+'</div><div class="geo-row-main"><div class="geo-row-title">'+(b.type==='country'?b.country:b.name)+'</div><div class="geo-row-sub">'+(b.type==='country'?'Land':b.country||'Stadt')+'</div></div><div>'+getPriorityIconHTML(b.priority,16)+'</div></div>';});
+    if(!bucketList.length)h+='<div class="empty-state">Noch keine Sehnsuchtsziele gespeichert.</div>'; h+='</div>';
+  }
+  return h;
+}
+function renderMapHub(root){
+  const agg=aggregate();
+  let h='<div class="geo-layout"><div><div class="section-title-row" style="margin-top:8px"><div><h2 style="font-size:24px">Deine Welt</h2><div style="font-size:12px;color:var(--text-dim);margin-top:4px">Besuchte Orte, Homebase und Sehnsuchtsziele an einem Ort.</div></div></div>'+refactorMapHTML(agg,false)+'</div><aside class="geo-side"><div class="geo-switch">';
+  [['visited','mapPin','Besucht'],['countries','bucketCountry','Länder'],['cities','sortCities','Städte'],['bucket','tabBucket','Bucket List']].forEach(x=>{h+='<button type="button" class="'+(geoViewMode===x[0]?'active':'')+'" data-geo-view="'+x[0]+'">'+svgIcon(x[1],15,'currentColor')+x[2]+'</button>';});
+  h+='</div><div id="geoContent">'+geoContentHTML(agg)+'</div></aside></div>';
+  root.innerHTML=h;
+  root.querySelectorAll('[data-geo-view]').forEach(b=>b.addEventListener('click',()=>{geoViewMode=b.dataset.geoView;renderMapHub(root);}));
+  root.querySelectorAll('[data-discover-view]').forEach(b=>b.addEventListener('click',()=>{discoverViewMode=b.dataset.discoverView;switchTab('discover');}));
+  initWorldMapML(agg);renderCityDetail(agg);
+}
+
+function renderDiscover(root){
+  if(discoverViewMode==='stats'){ LEGACY_RENDER_STATS(root); prependDiscoverBack(root,'Travel Insights'); return; }
+  if(discoverViewMode==='badges'){ LEGACY_RENDER_BADGES(root); prependDiscoverBack(root,'Badges & Level'); return; }
+  if(discoverViewMode==='bucket'){ LEGACY_RENDER_BUCKET(root); prependDiscoverBack(root,'Bucket List'); return; }
+  const agg=aggregate(), view=trips.length?computeBadgesView():null, records=trips.length?computeRecords():null;
+  let h='<div class="discover-intro"><h1>Entdecken</h1><p>Deine Muster, Rekorde, Fortschritte und nächsten Sehnsuchtsziele – ohne deine Reisegeschichte zu überlagern.</p></div>';
+  if(view) h+=levelTileHTML(view);
+  h+='<div class="discover-grid">';
+  h+='<div class="discover-feature"><div class="discover-feature-title">Persönliche Rekorde <button class="section-link" data-discover-view="stats">Alle →</button></div><div class="record-preview">';
+  if(records?.farthest)h+='<div class="record-mini">'+svgIcon('recordFarthest',20,'var(--gold)')+'<strong>'+fmtKm(records.farthest.km)+'</strong><span>Weiteste Reise</span></div>';
+  if(records?.longest)h+='<div class="record-mini">'+svgIcon('calendar',20,'var(--gold)')+'<strong>'+records.longest.days+' Tage</strong><span>Längste Reise</span></div>';
+  if(!records)h+='<div style="font-size:12px;color:var(--text-faint)">Noch keine Rekorde.</div>'; h+='</div></div>';
+  h+='<div class="discover-feature"><div class="discover-feature-title">Badges & Level <button class="section-link" data-discover-view="badges">Alle →</button></div>';
+  if(view){ const near=view.locked.slice().sort((a,b)=>(b.progress/b.target)-(a.progress/a.target)).slice(0,3); if(view.lastUnlocked)h+='<div style="font-size:11px;color:var(--gold);margin-bottom:7px">Zuletzt: <b>'+view.lastUnlocked.name+'</b></div>'; near.forEach(b=>{h+='<div class="near-badge"><div style="width:38px">'+b.icon+'</div><div class="near-badge-body"><div class="near-badge-name">'+b.name+'</div><div class="near-badge-progress">'+Math.round(b.progress/b.target*100)+'% · '+b.description+'</div></div></div>';}); } else h+='<div style="font-size:12px;color:var(--text-faint)">Deine ersten Badges warten auf die erste Reise.</div>'; h+='</div>';
+  h+='<div class="discover-feature wide"><div class="discover-feature-title">Bucket List <button class="section-link" data-discover-view="bucket">Alle →</button></div><div class="geo-list">';
+  const wishes=bucketList.slice().sort((a,b)=>(BUCKET_PRIORITY_RANK[b.priority]||0)-(BUCKET_PRIORITY_RANK[a.priority]||0)).slice(0,3); wishes.forEach(b=>{h+='<div class="geo-row"><div>'+flagImg(flagCcFor(b.cc,b.country),26)+'</div><div class="geo-row-main"><div class="geo-row-title">'+(b.type==='country'?b.country:b.name)+'</div><div class="geo-row-sub">'+(b.type==='country'?'Land':b.country||'Stadt')+'</div></div>'+getPriorityIconHTML(b.priority,16)+'</div>';}); if(!wishes.length)h+='<div style="font-size:12px;color:var(--text-faint)">Noch keine Sehnsuchtsziele gespeichert.</div>'; h+='</div></div>';
+  h+='<div class="discover-feature wide"><div class="discover-feature-title">Travel Insights <button class="section-link" data-discover-view="stats">Öffnen →</button></div><div style="font-size:12px;color:var(--text-dim)">Statistiken, Top-Listen, CO₂-Verlauf, Saisonmuster und weitere Auswertungen.</div></div>';
+  h+='</div>'; root.innerHTML=h;
+  root.querySelectorAll('[data-discover-view]').forEach(b=>b.addEventListener('click',()=>{discoverViewMode=b.dataset.discoverView;renderDiscover(root);}));
+}
+function prependDiscoverBack(root,title){
+  const bar=document.createElement('div');bar.className='section-title-row';bar.innerHTML='<button type="button" class="tdp-action-btn" id="discoverBack">'+svgIcon('back',16,'currentColor')+' Entdecken</button><h2>'+title+'</h2>';
+  root.prepend(bar);document.getElementById('discoverBack').addEventListener('click',()=>{discoverViewMode='landing';renderDiscover(root);});
+}
+function renderProfile(root){
+  const agg=aggregate(), view=trips.length?computeBadgesView():null, li=view?view.levelInfo:null; const name=(settings.profileName||'Paul').trim()||'Paul';
+  let h='<div class="profile-identity"><div class="profile-avatar">'+svgIcon('profile',30,'currentColor')+'</div><div class="profile-name">'+name+'</div><div class="profile-level">'+(li?'Level '+li.level+' · '+li.title:'Dein WELTLOG')+'</div><div class="profile-distance">'+fmtKm(agg.totalKm)+'</div><div class="profile-totals">'+agg.countries.length+' Länder · '+agg.cities.length+' Städte · '+trips.length+' Reisen</div></div>';
+  if(view)h+=levelTileHTML(view);
+  h+='<div class="profile-list"><div class="profile-row" data-profile-action="home"><div class="profile-row-icon">'+svgIcon('home',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Homebase</div><div class="profile-row-sub">'+(settings.home?(findCity(settings.home)?.n||settings.home):'Noch nicht festgelegt')+'</div></div><span class="profile-chevron">›</span></div>';
+  h+='<div class="profile-row" data-profile-action="history"><div class="profile-row-icon">'+svgIcon('calendar',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Travel History</div><div class="profile-row-sub">'+trips.length+' gespeicherte Reisen seit '+(trips.length?trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(Boolean).sort()[0]:'–')+'</div></div><span class="profile-chevron">›</span></div>';
+  h+='<div class="profile-row" data-profile-action="settings"><div class="profile-row-icon">'+svgIcon('settings',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Einstellungen & Theme</div><div class="profile-row-sub">Homebase, Profil, Dark/Light Mode und Sync</div></div><span class="profile-chevron">›</span></div></div>';
+  root.innerHTML=h; root.querySelectorAll('[data-profile-action]').forEach(r=>r.addEventListener('click',()=>{if(r.dataset.profileAction==='history')switchTab('log');else openSettings();}));
+}
+
+renderAdd = function(root){
+  LEGACY_RENDER_ADD(root);
+  const form=root.querySelector('#tripForm'); if(!form)return;
+  const note=document.createElement('div');note.className='form-progress-note';note.textContent='Zuerst Route, Zeitraum und Transport festlegen. Zusätzliche Angaben kannst du danach ergänzen.';form.prepend(note);
+  const purpose=root.querySelector('#purposeToggle')?.closest('.field');
+  const flight=root.querySelector('#flightField');
+  const notes=root.querySelector('#fldNotes')?.closest('.field');
+  if(purpose||flight||notes){const more=document.createElement('details');more.className='form-more';if(editingId||duplicateSource)more.open=true;const sum=document.createElement('summary');sum.textContent='Weitere Reisedetails';more.appendChild(sum);[purpose,flight,notes].filter(Boolean).forEach(el=>more.appendChild(el));const submit=form.querySelector('.bp-submit-row');form.insertBefore(more,submit);}
+};
+
+renderLog = (function(orig){ return function(root){ orig(root); if(!viewingTripId){ const c=document.createElement('div'); c.className='trip-primary-cta'; c.innerHTML='<button class="btn-primary" id="tripAddPrimary" type="button">+ Reise hinzufügen</button>'; root.prepend(c); document.getElementById('tripAddPrimary').addEventListener('click',()=>switchTab('add')); } }; })(renderLog);
+
+renderTripDetailPage = function(tripId,root){
+  const t=trips.find(x=>x.id===tripId); if(!t){viewingTripId=null;renderLog(root);return;} const hasPhoto=t.photos&&t.photos.length, pLbl=purposeLabel(t), contInfo=continentInfo(getContinent((t.cityCC||'').toLowerCase()));
+  let h='<div class="trip-detail-page"><div class="tdp-header"><button type="button" class="tdp-back" id="tdpBackBtn" aria-label="Zurück">'+svgIcon('back',18,'currentColor')+'</button><h3>Reise</h3><button type="button" class="tdp-menu" data-share="'+t.id+'" aria-label="Reise teilen">'+svgIcon('share',17,'currentColor')+'</button></div>';
+  h+='<div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
+  if(!hasPhoto)h+='<div class="travel-placeholder"><div class="travel-placeholder-route"></div></div>';
+  h+='<span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span><div class="tdp-hero-overlay">'+tripCardHeroRouteHTML(t)+'</div></div>';
+  h+='<div class="tdp-route-block"><div class="tdp-route-title">'+stripCountrySuffix(t.fromCity||'–')+' → '+stripCountrySuffix(t.city||'–')+'</div><div class="tdp-meta-line"><span>'+tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage')+'</span><span>·</span><span>'+fmtKm(tripTotal(t))+'</span><span>·</span><span>'+tripTransportIconsHTML(t)+' '+tripTransportLabel(t)+'</span></div></div>';
+  const wps=[...(t.outWaypoints||[]),...(t.returnWaypoints||[])]; if(wps.length)h+='<section class="tdp-section"><h2 class="tdp-section-title">Route</h2><div class="geo-list"><div class="geo-row"><div>'+svgIcon('mapPin',18,'var(--gold)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(t.fromCity)+'</div><div class="geo-row-sub">Start</div></div></div>'+wps.map((w,i)=>'<div class="geo-row"><div>'+svgIcon('stopPin',18,'var(--rose)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(w)+'</div><div class="geo-row-sub">Zwischenstopp '+(i+1)+'</div></div></div>').join('')+'<div class="geo-row"><div>'+svgIcon('mapPin',18,'var(--teal)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(t.city)+'</div><div class="geo-row-sub">Ziel</div></div></div></div></section>';
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Fotos</h2>'+photoFeedHTML(t)+'</section>';
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Reise</h2><div class="log-detail-icongrid">'+detailIconItemHTML(svgIcon('calendar',16,'var(--text-faint)'),'Datum',fmtRange(t.dateFrom,t.dateTo))+detailIconItemHTML(svgIcon('clock',16,'var(--text-faint)'),'Dauer',tripDurationDays(t)+' Tage')+detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'),'Reisegrund',pLbl||'–')+detailIconItemHTML(continentIconDuoHTML(16),'Kontinent',contInfo?contInfo.label:'–')+'</div></section>';
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Unterwegs</h2><div class="log-detail-icongrid">'+detailIconItemHTML(tripTransportIconsHTML(t),'Transport',tripTransportLabel(t))+detailIconItemHTML(svgIcon('distance',16,'var(--text-faint)'),'Distanz',fmtKm(tripTotal(t)))+detailIconItemHTML(svgIcon('stopPin',16,'var(--text-faint)'),'Zwischenstopps',String(wps.length))+'</div></section>';
+  if(!t.cityOnly)h+='<section class="tdp-section"><h2 class="tdp-section-title">Nachhaltigkeit</h2><div class="log-detail-icongrid">'+detailIconItemHTML(svgIcon('co2Cloud',16,'var(--text-faint)'),'CO₂',fmtKg(tripCO2Kg(t)),'geschätzter Wert')+'</div></section>';
+  h+='<div class="tdp-action-row"><button class="tdp-action-btn" data-edit="'+t.id+'">'+svgIcon('edit',16,'currentColor')+' Bearbeiten</button><button class="tdp-action-btn" data-duplicate="'+t.id+'">'+svgIcon('duplicate',16,'currentColor')+' Duplizieren</button><button class="tdp-action-btn danger" data-del="'+t.id+'">'+svgIcon('trash',16,'currentColor')+' Löschen</button></div></div>';
+  root.innerHTML=h;document.getElementById('tdpBackBtn').addEventListener('click',()=>{viewingTripId=null;renderLog(root);});attachLogRowActions(root);attachPhotoLongPress(root);
+};
+
+const NEW_TAB_MENU_ITEMS=[
+  {tab:'dashboard',icon:'home',label:'Home'},
+  {tab:'log',icon:'trips',label:'Reisen'},
+  {tab:'map',icon:'map',label:'Karte'},
+  {tab:'discover',icon:'compass',label:'Entdecken'},
+  {tab:'profile',icon:'profile',label:'Profil'}
+];
+renderBottomTabs=function(){const nav=document.getElementById('bottomTabs');if(!nav)return;nav.innerHTML=NEW_TAB_MENU_ITEMS.map(i=>{const a=i.tab===currentTab;return '<button type="button" class="bottom-tab-btn'+(a?' active':'')+'" data-tab="'+i.tab+'" aria-current="'+(a?'page':'false')+'"><span class="bt-icon">'+svgIcon(i.icon,23,a?'var(--gold)':'var(--text-faint)')+'</span><span style="color:'+(a?'var(--gold)':'var(--text-faint)')+';font-weight:'+(a?'600':'500')+'">'+i.label+'</span></button>';}).join('');};
+switchTab=function(tab){
+  if(tab==='places')tab='map'; if(tab==='stats'||tab==='badges'||tab==='bucket'){discoverViewMode=tab==='stats'?'stats':tab;tab='discover';}
+  currentTab=tab; document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));renderBottomTabs();document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));const p=document.getElementById('panel-'+tab);
+  if(tab==='dashboard')renderDashboard(p);if(tab==='add')renderAdd(p);if(tab==='log')renderLog(p);if(tab==='map')renderMapHub(p);if(tab==='discover')renderDiscover(p);if(tab==='profile')renderProfile(p);window.scrollTo({top:0,behavior:'auto'});
+};
+renderAll=function(){
+  document.getElementById('tabs').innerHTML='<button class="tab-btn" data-tab="dashboard">Home</button><button class="tab-btn" data-tab="log">Reisen</button><button class="tab-btn" data-tab="map">Karte</button><button class="tab-btn" data-tab="discover">Entdecken</button><button class="tab-btn" data-tab="profile">Profil</button>';
+  const root=document.getElementById('appRoot');root.innerHTML='<div class="tab-panel" id="panel-dashboard"></div><div class="tab-panel" id="panel-add"></div><div class="tab-panel" id="panel-log"></div><div class="tab-panel" id="panel-map"></div><div class="tab-panel" id="panel-discover"></div><div class="tab-panel" id="panel-profile"></div><div class="footer-note">Deine Reisedaten werden lokal in diesem Artefakt gespeichert.<br>Distanzen sind Luftlinien-Näherungen — für exakte Werte kannst du sie jederzeit manuell anpassen.</div>';updateHomeChip(); if(!['dashboard','add','log','map','discover','profile'].includes(currentTab))currentTab='dashboard';switchTab(currentTab);
+};
+
+
+
+/* ============================================================
+   WELTLOG Refactor v3 — semantic icon registry aliases
+   ============================================================ */
+SVG_ICON_PATHS.city = SVG_ICON_PATHS.sortCities;
+SVG_ICON_PATHS.globe = SVG_ICON_PATHS.bucketCountry;
+SVG_ICON_PATHS.route = SVG_ICON_PATHS.distance;
+SVG_ICON_PATHS.camera = SVG_ICON_PATHS.photos;
+SVG_ICON_PATHS.pencil = SVG_ICON_PATHS.edit;
+SVG_ICON_PATHS.copy = SVG_ICON_PATHS.duplicate;
+SVG_ICON_PATHS.delete = SVG_ICON_PATHS.trash;
+SVG_ICON_PATHS.chart = SVG_ICON_PATHS.tabStats;
+SVG_ICON_PATHS.more = SVG_ICON_FILLED.menu;
+SVG_ICON_PATHS.plus = '<path d="M12 5v14M5 12h14"/>';
+SVG_ICON_PATHS.sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+SVG_ICON_PATHS.moon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+function applyMasterUiIcons(){
+  const brand=document.querySelector('.brand-mark'); if(brand){brand.innerHTML=svgIcon('compass',20,'#fff');brand.setAttribute('aria-hidden','true');}
+  const homeLink=document.querySelector('.top-actions a.icon-btn'); if(homeLink){homeLink.innerHTML=svgIcon('home',18,'currentColor');homeLink.setAttribute('aria-label','Zur Startseite');}
+  const add=document.getElementById('newTripBtn'); if(add){add.innerHTML=svgIcon('plus',18,'currentColor');add.setAttribute('aria-label','Neue Reise hinzufügen');}
+  const light=document.querySelector('[data-theme-choice="light"]'); if(light){light.innerHTML=svgIcon('sun',17,'currentColor');light.setAttribute('aria-label','Heller Modus');}
+  const dark=document.querySelector('[data-theme-choice="dark"]'); if(dark){dark.innerHTML=svgIcon('moon',17,'currentColor');dark.setAttribute('aria-label','Dunkler Modus');}
+}
+
+/* Form: echte progressive disclosure, ohne Feld-IDs oder Submit-Logik anzutasten. */
+const V2_RENDER_ADD = renderAdd;
+renderAdd = function(root){
+  V2_RENDER_ADD(root);
+  const form=root.querySelector('#tripForm'); if(!form)return;
+  const note=form.querySelector('.form-progress-note'); if(note) note.textContent='Route, Zeitraum und Transport zuerst. Alles Weitere bleibt optional.';
+  const routeRow=form.querySelector('.field-row.with-swap');
+  const date=form.querySelector('#dateRangeWrap');
+  const direction=form.querySelector('#directionToggle')?.closest('.field');
+  const legs=form.querySelector('#legsContainer');
+  if(routeRow && date) routeRow.insertAdjacentElement('afterend',date);
+  const core=document.createElement('section');core.className='trip-form-section';core.innerHTML='<div class="trip-form-section-title"><span class="step">1</span>Reise</div>';
+  const first=form.firstElementChild; form.insertBefore(core, first && first.classList.contains('form-progress-note')?first.nextSibling:first);
+  [routeRow,date,direction,legs].filter(Boolean).forEach(el=>core.appendChild(el));
+
+  const existingMore=form.querySelector('.form-more'); if(existingMore) existingMore.remove();
+  const secondary=document.createElement('details');secondary.className='form-more';if(editingId||duplicateSource)secondary.open=true;
+  secondary.innerHTML='<summary>Reisedetails</summary>';
+  const cityOnly=form.querySelector('#fldCityOnly')?.closest('.field');
+  const manual=form.querySelector('#manualCountryField');
+  const purpose=form.querySelector('#purposeToggle')?.closest('.field');
+  const notes=form.querySelector('#fldNotes')?.closest('.field');
+  [cityOnly,manual,purpose,notes].filter(Boolean).forEach(el=>secondary.appendChild(el));
+
+  const advanced=document.createElement('details');advanced.className='form-more form-advanced'; if(editingId)advanced.open=true;
+  advanced.innerHTML='<summary>Erweitert</summary>';
+  const flight=form.querySelector('#flightField'); if(flight)advanced.appendChild(flight);
+  const submit=form.querySelector('.bp-submit-row');
+  form.insertBefore(secondary,submit); form.insertBefore(advanced,submit);
+
+  root.querySelectorAll('.mode-opt .ic').forEach((el,i)=>{ const key=MODE_ORDER[i%MODE_ORDER.length]; if(key)el.innerHTML=getModeIconHTML(key,22); });
+  root.querySelectorAll('.input-clear-btn').forEach(b=>{b.innerHTML=svgIcon('close',14,'currentColor');b.setAttribute('aria-label','Eingabe leeren');});
+  const swap=root.querySelector('#swapCitiesBtn');if(swap){swap.innerHTML=svgIcon('sortAZ',17,'currentColor');swap.setAttribute('aria-label','Von und Nach tauschen');}
+  applyMasterUiIcons();
+};
+
+function weltlogEscapeHTML(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');}
+
+function detailRouteSectionHTML(t,wps){
+  if(!wps.length)return '';
+  return '<section class="tdp-section"><h2 class="tdp-section-title">Route</h2><div class="geo-list"><div class="geo-row"><div>'+svgIcon('mapPin',18,'var(--gold)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(t.fromCity)+'</div><div class="geo-row-sub">Start</div></div></div>'+wps.map((w,i)=>'<div class="geo-row"><div>'+svgIcon('stopPin',18,'var(--rose)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(w)+'</div><div class="geo-row-sub">Zwischenstopp '+(i+1)+'</div></div></div>').join('')+'<div class="geo-row"><div>'+svgIcon('mapPin',18,'var(--teal)')+'</div><div class="geo-row-main"><div class="geo-row-title">'+stripCountrySuffix(t.city)+'</div><div class="geo-row-sub">Ziel</div></div></div></div></section>';
+}
+
+renderTripDetailPage = function(tripId,root){
+  const t=trips.find(x=>x.id===tripId);if(!t){viewingTripId=null;renderLog(root);return;}
+  const hasPhoto=t.photos&&t.photos.length,pLbl=purposeLabel(t),contInfo=continentInfo(getContinent((t.cityCC||'').toLowerCase()));
+  const wps=[...(t.outWaypoints||[]),...(t.returnWaypoints||[])];
+  let h='<div class="trip-detail-page"><div class="tdp-header"><button type="button" class="tdp-back" id="tdpBackBtn" aria-label="Zurück">'+svgIcon('back',18,'currentColor')+'</button><h3>Reise</h3><button type="button" class="tdp-menu" data-share="'+t.id+'" aria-label="Reise teilen">'+svgIcon('share',17,'currentColor')+'</button></div>';
+  h+='<div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
+  if(!hasPhoto)h+='<div class="travel-placeholder"><div class="travel-placeholder-route"></div></div>';
+  h+='<span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span><div class="tdp-hero-overlay">'+tripCardHeroRouteHTML(t)+'</div></div>';
+  h+='<div class="tdp-route-block"><div class="tdp-route-title">'+stripCountrySuffix(t.fromCity||'–')+' → '+stripCountrySuffix(t.city||'–')+'</div><div class="tdp-meta-line"><span>'+tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage')+'</span><span>·</span><span>'+fmtKm(tripTotal(t))+'</span><span>·</span><span>'+tripTransportIconsHTML(t)+' '+tripTransportLabel(t)+'</span></div></div>';
+  h+='<div class="tdp-content-grid"><main class="tdp-main-column">';
+  h+=detailRouteSectionHTML(t,wps);
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Fotos</h2>'+photoFeedHTML(t)+'</section>';
+  if(t.notes)h+='<section class="tdp-section"><h2 class="tdp-section-title">Notiz</h2><div class="tdp-note">'+weltlogEscapeHTML(t.notes)+'</div></section>';
+  h+='</main><aside class="tdp-facts-column"><div class="tdp-facts-card">';
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Reise</h2><div class="log-detail-icongrid">'+detailIconItemHTML(svgIcon('calendar',16,'var(--text-faint)'),'Datum',fmtRange(t.dateFrom,t.dateTo))+detailIconItemHTML(svgIcon('clock',16,'var(--text-faint)'),'Dauer',tripDurationDays(t)+' Tage')+detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'),'Reisegrund',pLbl||'–')+detailIconItemHTML(svgIcon('globe',16,'var(--text-faint)'),'Kontinent',contInfo?contInfo.label:'–')+'</div></section>';
+  h+='<section class="tdp-section"><h2 class="tdp-section-title">Unterwegs</h2><div class="log-detail-icongrid">'+detailIconItemHTML(tripTransportIconsHTML(t),'Transport',tripTransportLabel(t))+detailIconItemHTML(svgIcon('route',16,'var(--text-faint)'),'Distanz',fmtKm(tripTotal(t)))+detailIconItemHTML(svgIcon('stopPin',16,'var(--text-faint)'),'Zwischenstopps',String(wps.length))+'</div></section>';
+  if(!t.cityOnly)h+='<section class="tdp-section"><h2 class="tdp-section-title">Nachhaltigkeit</h2><div class="log-detail-icongrid">'+detailIconItemHTML(svgIcon('co2Cloud',16,'var(--text-faint)'),'CO₂',fmtKg(tripCO2Kg(t)),'geschätzter Wert')+'</div></section>';
+  h+='</div></aside></div>';
+  h+='<div class="tdp-action-row"><button class="tdp-action-btn" data-edit="'+t.id+'">'+svgIcon('edit',16,'currentColor')+' Bearbeiten</button><details class="tdp-more-menu"><summary aria-label="Weitere Aktionen" title="Weitere Aktionen">'+svgIcon('more',18,'currentColor')+'</summary><div class="tdp-more-popover"><button data-duplicate="'+t.id+'">'+svgIcon('duplicate',16,'currentColor')+' Duplizieren</button><button class="danger" data-del="'+t.id+'">'+svgIcon('trash',16,'currentColor')+' Löschen</button></div></details></div></div>';
+  root.innerHTML=h;document.getElementById('tdpBackBtn').addEventListener('click',()=>{viewingTripId=null;renderLog(root);});attachLogRowActions(root);attachPhotoLongPress(root);applyMasterUiIcons();
+};
+
+/* Entdecken: Badge-Vorschau nutzt das proprietäre Stempel-System statt Roh-Emoji. */
+const V2_RENDER_DISCOVER = renderDiscover;
+renderDiscover = function(root){
+  V2_RENDER_DISCOVER(root);
+  if(discoverViewMode!=='landing'){applyMasterUiIcons();return;}
+  const view=trips.length?computeBadgesView():null;
+  if(view){
+    const near=view.locked.slice().sort((a,b)=>(b.progress/b.target)-(a.progress/a.target)).slice(0,3);
+    const rows=root.querySelectorAll('.near-badge');
+    rows.forEach((row,i)=>{const slot=row.firstElementChild;if(slot&&near[i]){slot.innerHTML=badgeStampHTML(near[i]);slot.style.width='48px';}});
+  }
+  applyMasterUiIcons();
+};
+
+/* Alte funktionale Foto-Emoji in der Reisen-Tabelle nach dem Rendern ersetzen. */
+const V2_RENDER_LOG_FINAL = renderLog;
+renderLog = function(root){
+  V2_RENDER_LOG_FINAL(root);
+  root.querySelectorAll('.log-photo-badge').forEach(el=>{el.innerHTML=svgIcon('photos',12,'currentColor')+' '+(el.textContent.match(/\d+/)?.[0]||'');});
+  applyMasterUiIcons();
+};
+
+/* Navigation state is semantic and screenreader-friendly. */
+const V2_RENDER_BOTTOM_TABS = renderBottomTabs;
+renderBottomTabs = function(){
+  V2_RENDER_BOTTOM_TABS();
+  const nav=document.getElementById('bottomTabs');if(!nav)return;
+  nav.setAttribute('aria-label','Hauptnavigation');
+  nav.querySelectorAll('.bottom-tab-btn').forEach(b=>{b.setAttribute('aria-label',b.textContent.trim());if(b.getAttribute('aria-current')==='false')b.removeAttribute('aria-current');});
+};
+
+const V2_RENDER_ALL = renderAll;
+renderAll = function(){V2_RENDER_ALL();applyMasterUiIcons();};
+
+
+
+/* ============================================================
+   WELTLOG Refactor v4 — master registry, final IA polish & a11y
+   ============================================================ */
+const ICON_REGISTRY = Object.freeze({
+  home:'home', trips:'trips', map:'map', discover:'compass', profile:'profile',
+  stats:'chart', countries:'globe', cities:'city', photos:'camera', date:'calendar',
+  duration:'clock', distance:'route', stop:'stopPin', edit:'pencil', share:'share',
+  duplicate:'copy', delete:'delete', settings:'settings', more:'more', transportPlane:'plane',
+  transportCar:'car', transportTrain:'train', transportBus:'bus', transportBike:'bike'
+});
+function masterIcon(concept,size,color){return svgIcon(ICON_REGISTRY[concept]||concept,size,color);}
+
+/* Normalize model metadata so legacy renderers can still read labels/colors while
+   functional UI is rendered through the WELTLOG registry rather than emoji. */
+Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}).forEach(([key,iconKey])=>{if(MODES[key])MODES[key].iconKey=iconKey;});
+
+/* Final Home pass: retain emotional latest trip, add only two recent memories and
+   a small highlight strip; never reintroduce the full statistics dashboard. */
+const V3_RENDER_DASHBOARD = renderDashboard;
+renderDashboard = function(root){
+  V3_RENDER_DASHBOARD(root);
+  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
+  const main=root.querySelector('.home-main');
+  const mapSection=main?.querySelector('.home-section:last-child');
+  if(main && mapSection && latest.length>1){
+    const sec=document.createElement('section');sec.className='home-section';
+    sec.innerHTML='<div class="home-section-head"><h2>Zuletzt unterwegs</h2><button class="section-link" type="button" data-go-tab="log">Alle Reisen →</button></div><div class="home-recent-grid">'+latest.slice(1,3).map(t=>tripCardHTML(t,false)).join('')+'</div>';
+    main.insertBefore(sec,mapSection);attachGoTab(sec);attachLogResultActions(sec);
+  }
+  const side=root.querySelector('.home-side');
+  if(side && trips.length){
+    const agg=aggregate();
+    const sec=document.createElement('section');sec.className='home-section';
+    sec.innerHTML='<div class="home-section-head"><h2>Highlights</h2><button class="section-link" type="button" data-go-tab="discover">Entdecken →</button></div><div class="home-highlight-strip"><div class="home-highlight"><strong>'+agg.countries.length+'</strong><span>Länder entdeckt</span></div><div class="home-highlight"><strong>'+agg.cities.length+'</strong><span>Städte erinnert</span></div><div class="home-highlight"><strong>'+trips.length+'</strong><span>Reisen im Log</span></div></div>';
+    side.appendChild(sec);attachGoTab(sec);
+  }
+  applyMasterUiIcons();
+};
+
+/* Map hub: map always first/full width, geography filters below. */
+renderMapHub = function(root){
+  const agg=aggregate();
+  let h='<div class="section-title-row" style="margin-top:8px"><div><h1 style="font-size:28px;margin:0">Deine Welt</h1><div style="font-size:12px;color:var(--text-dim);margin-top:4px">Besuchte Orte, Homebase und Sehnsuchtsziele an einem Ort.</div></div></div>';
+  h+='<div class="geo-layout"><div>'+refactorMapHTML(agg,false)+'</div><aside class="geo-side"><div class="geo-switch" role="tablist" aria-label="Kartenansicht">';
+  [['visited','mapPin','Besucht'],['countries','globe','Länder'],['cities','city','Städte'],['bucket','trips','Bucket List']].forEach(x=>{const active=geoViewMode===x[0];h+='<button type="button" role="tab" aria-selected="'+active+'" class="'+(active?'active':'')+'" data-geo-view="'+x[0]+'">'+masterIcon(x[1],16,'currentColor')+x[2]+'</button>';});
+  h+='</div><div id="geoContent">'+geoContentHTML(agg)+'</div></aside></div>';
+  root.innerHTML=h;
+  root.querySelectorAll('[data-geo-view]').forEach(b=>b.addEventListener('click',()=>{geoViewMode=b.dataset.geoView;renderMapHub(root);}));
+  root.querySelectorAll('[data-discover-view]').forEach(b=>b.addEventListener('click',()=>{discoverViewMode=b.dataset.discoverView;switchTab('discover');}));
+  initWorldMapML(agg);renderCityDetail(agg);applyMasterUiIcons();
+};
+
+/* Discover: explicitly prioritize level, latest achievement and near-completion. */
+const V3_RENDER_DISCOVER_FINAL = renderDiscover;
+renderDiscover = function(root){
+  if(discoverViewMode!=='landing'){V3_RENDER_DISCOVER_FINAL(root);applyMasterUiIcons();return;}
+  const view=trips.length?computeBadgesView():null, records=trips.length?computeRecords():null;
+  let h='<div class="discover-intro"><h1>Entdecken</h1><p>Fortschritt, persönliche Rekorde und Sehnsuchtsziele – als zweite Ebene deiner Reisegeschichte.</p></div>';
+  if(view) h+=levelTileHTML(view);
+  if(view){
+    const near=view.locked.slice().filter(b=>b.target>0).sort((a,b)=>(b.progress/b.target)-(a.progress/a.target)).slice(0,3);
+    h+='<div class="discover-achievement-hero"><div class="discover-achievement-card last"><div class="discover-achievement-label">Zuletzt freigeschaltet</div>';
+    if(view.lastUnlocked)h+='<div class="discover-last-inner"><div class="discover-last-stamp">'+badgeStampHTML(view.lastUnlocked)+'</div><div><div class="discover-last-name">'+view.lastUnlocked.name+'</div><div class="discover-last-desc">'+view.lastUnlocked.description+'</div></div></div>';
+    else h+='<div style="font-size:12px;color:var(--text-faint)">Dein erster Badge wartet auf deine erste Reise.</div>';
+    h+='</div><div class="discover-achievement-card"><div class="discover-achievement-label">Fast geschafft</div><div class="discover-near-list">';
+    if(near.length)near.forEach(b=>{const pct=Math.min(100,Math.round(b.progress/b.target*100));h+='<div class="near-badge"><div style="width:46px">'+badgeStampHTML(b)+'</div><div class="near-badge-body"><div class="near-badge-name">'+b.name+'</div><div class="near-badge-progress">'+pct+'% · '+b.description+'</div></div></div>';}); else h+='<div style="font-size:12px;color:var(--text-faint)">Keine offenen Badges.</div>';
+    h+='</div><button class="section-link" data-discover-view="badges" style="margin-top:12px">Alle Badges →</button></div></div>';
+  }
+  h+='<div class="discover-grid"><div class="discover-feature"><div class="discover-feature-title">Persönliche Rekorde <button class="section-link" data-discover-view="stats">Alle →</button></div><div class="record-preview">';
+  if(records?.farthest)h+='<div class="record-mini">'+masterIcon('recordFarthest',20,'var(--gold)')+'<strong>'+fmtKm(records.farthest.km)+'</strong><span>Weiteste Reise</span></div>';
+  if(records?.longest)h+='<div class="record-mini">'+masterIcon('date',20,'var(--gold)')+'<strong>'+records.longest.days+' Tage</strong><span>Längste Reise</span></div>';
+  if(!records)h+='<div style="font-size:12px;color:var(--text-faint)">Noch keine Rekorde.</div>';h+='</div></div>';
+  h+='<div class="discover-feature"><div class="discover-feature-title">Travel Insights <button class="section-link" data-discover-view="stats">Öffnen →</button></div><div style="font-size:12px;color:var(--text-dim)">Statistiken, Top-Listen, CO₂-Verlauf, Saisonmuster und weitere Auswertungen.</div></div>';
+  h+='<div class="discover-feature wide"><div class="discover-feature-title">Bucket List <button class="section-link" data-discover-view="bucket">Alle →</button></div><div class="geo-list">';
+  const wishes=bucketList.slice().sort((a,b)=>(BUCKET_PRIORITY_RANK[b.priority]||0)-(BUCKET_PRIORITY_RANK[a.priority]||0)).slice(0,3);
+  wishes.forEach(b=>{h+='<div class="geo-row"><div>'+flagImg(flagCcFor(b.cc,b.country),26)+'</div><div class="geo-row-main"><div class="geo-row-title">'+(b.type==='country'?b.country:b.name)+'</div><div class="geo-row-sub">'+(b.type==='country'?'Land':b.country||'Stadt')+'</div></div>'+getPriorityIconHTML(b.priority,16)+'</div>';});
+  if(!wishes.length)h+='<div class="empty-state" style="padding:18px 0">Noch keine Sehnsuchtsziele gespeichert.</div>';h+='</div></div></div>';
+  root.innerHTML=h;root.querySelectorAll('[data-discover-view]').forEach(b=>b.addEventListener('click',()=>{discoverViewMode=b.dataset.discoverView;renderDiscover(root);}));applyMasterUiIcons();
+};
+
+/* Lightbox accessibility: dialog semantics, labelled controls, focus return and Esc. */
+let weltlogLightboxReturnFocus=null;
+const V3_OPEN_LIGHTBOX=openPhotoLightbox;
+openPhotoLightbox=function(tripId,photoId){weltlogLightboxReturnFocus=document.activeElement;V3_OPEN_LIGHTBOX(tripId,photoId);enhanceLightboxA11y();};
+const V3_CLOSE_LIGHTBOX=closePhotoLightbox;
+closePhotoLightbox=function(){V3_CLOSE_LIGHTBOX();if(weltlogLightboxReturnFocus&&document.contains(weltlogLightboxReturnFocus))weltlogLightboxReturnFocus.focus();weltlogLightboxReturnFocus=null;};
+const V3_RENDER_LIGHTBOX=renderPhotoLightbox;
+renderPhotoLightbox=function(){V3_RENDER_LIGHTBOX();enhanceLightboxA11y();};
+function enhanceLightboxA11y(){
+  const el=document.getElementById('photoLightbox');if(!el)return;
+  el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Reisefoto');
+  const close=el.querySelector('.photo-lightbox-close');if(close){close.innerHTML=masterIcon('close',18,'currentColor');close.setAttribute('aria-label','Fotogalerie schließen');}
+  const prev=el.querySelector('.prev');if(prev){prev.innerHTML=masterIcon('back',20,'currentColor');prev.setAttribute('aria-label','Vorheriges Foto');}
+  const next=el.querySelector('.next');if(next){next.innerHTML=masterIcon('chevron',20,'currentColor');next.setAttribute('aria-label','Nächstes Foto');}
+  const img=el.querySelector('img');if(img)img.alt='Reisefoto';
+  setTimeout(()=>close?.focus(),0);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('photoLightbox'))closePhotoLightbox();});
+
+/* Final visible icon normalization after every render. */
+const V3_APPLY_MASTER=applyMasterUiIcons;
+applyMasterUiIcons=function(){
+  V3_APPLY_MASTER();
+  document.querySelectorAll('.profile-chevron').forEach(e=>e.setAttribute('aria-hidden','true'));
+  document.querySelectorAll('.section-link').forEach(e=>{if(!e.getAttribute('aria-label'))e.setAttribute('aria-label',e.textContent.trim());});
+};
+
+
+
+
+/* ============================================================
+   WELTLOG Refactor v5 — badge disclosure & accessibility polish
+   ============================================================ */
+const WELTLOG_BADGE_CATEGORY_META={
+  LAND:{label:'Länder',icon:'globe'},
+  STADT:{label:'Städte',icon:'city'},
+  DIST:{label:'Kilometer',icon:'route'},
+  MODE:{label:'Transport',icon:'trips'},
+  CO2:{label:'Nachhaltigkeit',icon:'recordTrend'},
+  STREAK:{label:'Travel History',icon:'calendar'},
+  DE:{label:'Deutschland',icon:'home'},
+  SPEC:{label:'Spezial',icon:'compass'}
+};
+
+/* Full collection is now progressively disclosed by category. This changes only
+   presentation; computeAchievements(), XP and unlock logic remain untouched. */
+renderBadges=function(root){
+  if(trips.length===0){
+    root.innerHTML='<div class="card"><div class="empty-state"><div class="big">'+masterIcon('discover',28,'var(--gold)')+'</div><strong>Noch keine Auszeichnungen</strong><div style="margin-top:5px">Mit deiner ersten gespeicherten Reise beginnt deine Sammlung.</div><button class="btn-primary" type="button" data-go-tab="add" style="margin-top:14px">Reise hinzufügen</button></div></div>';
+    attachGoTab(root); return;
+  }
+  const view=computeBadgesView();
+  const all=[...view.unlocked,...view.locked];
+  const grouped={}; all.forEach(a=>(grouped[a.category]||(grouped[a.category]=[])).push(a));
+  let html=levelTileHTML(view);
+  html+='<div class="badge-section-head"><h3>Sammlung</h3><span class="sub">'+view.unlockedCount+' von '+view.totalCount+' freigeschaltet</span></div>';
+  html+='<div class="badge-overview">';
+  Object.keys(WELTLOG_BADGE_CATEGORY_META).forEach((key,idx)=>{
+    const items=grouped[key]||[]; if(!items.length)return;
+    const meta=WELTLOG_BADGE_CATEGORY_META[key], unlocked=items.filter(x=>x.unlocked).length;
+    items.sort((a,b)=>Number(b.unlocked)-Number(a.unlocked) || (b.progress/b.target)-(a.progress/a.target));
+    html+='<details class="badge-category" '+(idx===0?'open':'')+'><summary><span class="badge-category-icon">'+masterIcon(meta.icon,18,'currentColor')+'</span><span><span class="badge-category-title">'+meta.label+'</span><span class="badge-category-meta">'+unlocked+' / '+items.length+' freigeschaltet</span></span></summary><div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div></details>';
+  });
+  html+='</div>';
+  root.innerHTML=html;
+  root.querySelectorAll('.badge-category>summary').forEach(s=>s.setAttribute('aria-label',s.textContent.trim()));
+};
+
+/* Accessible status messages without altering the existing toast behavior. */
+(function(){
+  const toast=document.getElementById('toast');
+  if(toast){toast.setAttribute('role','status');toast.setAttribute('aria-live','polite');toast.setAttribute('aria-atomic','true');}
+})();
+
+/* Keep only one category expanded on small screens: the collection stays browsable
+   without turning into an endless wall of cards. Desktop can keep multiple open. */
+document.addEventListener('toggle',function(e){
+  const d=e.target;
+  if(!(d instanceof HTMLDetailsElement) || !d.classList.contains('badge-category') || !d.open)return;
+  if(window.matchMedia('(max-width:760px)').matches){
+    d.closest('.badge-overview')?.querySelectorAll('.badge-category[open]').forEach(other=>{if(other!==d)other.open=false;});
+  }
+},true);
+
+/* Focus trap for the existing photo dialog. */
+document.addEventListener('keydown',function(e){
+  const dlg=document.getElementById('photoLightbox');
+  if(!dlg || e.key!=='Tab')return;
+  const focusable=[...dlg.querySelectorAll('button:not([disabled]),input:not([disabled]),[href],select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null);
+  if(!focusable.length)return;
+  const first=focusable[0],last=focusable[focusable.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
+
+/* Final screen-level semantic cleanup after legacy subviews render. */
+const V5_SWITCH_TAB=switchTab;
+switchTab=function(tab){
+  V5_SWITCH_TAB(tab);
+  requestAnimationFrame(()=>{
+    const panel=document.querySelector('.tab-panel.active'); if(!panel)return;
+    panel.querySelectorAll('button').forEach(b=>{if(!b.type)b.type='button';});
+    panel.querySelectorAll('.record-card').forEach(c=>c.setAttribute('role','group'));
+    applyMasterUiIcons();
+  });
+};
+
+
+/* ============================================================
+   WELTLOG 2.4 RC1 — final behavioral audit
+   ============================================================ */
+function routeLegRowsHTML(points, mode, directionLabel){
+  if(!points.length)return '';
+  let h='<div class="tdp-route-direction'+(directionLabel==='Rückweg'?' return':'')+'">'+directionLabel+'</div><div class="tdp-route-visual">';
+  points.forEach((p,i)=>{
+    const first=i===0,last=i===points.length-1;
+    const cls=first?'start':last?'end':'stop';
+    const icon=first||last?masterIcon('stop',14,'currentColor'):masterIcon('stop',13,'currentColor');
+    const ctx=first?'Start':last?'Ziel':'Zwischenstopp '+i;
+    h+='<div class="tdp-route-leg"><div class="tdp-route-rail"></div><div class="tdp-route-node '+cls+'">'+icon+'</div><div class="tdp-route-copy"><div class="tdp-route-place">'+weltlogEscapeHTML(stripCountrySuffix(p||'–'))+'</div><div class="tdp-route-context">'+(mode?getModeIconHTML(mode,14)+' <span>'+weltlogEscapeHTML(getMode(mode)?.label||'')+'</span><span>·</span>':'')+'<span>'+ctx+'</span></div></div></div>';
+  });
+  return h+'</div>';
+}
+
+/* A route is always shown. Round trips retain directionality and their own waypoints/modes. */
+detailRouteSectionHTML=function(t){
+  if(t.cityOnly)return '';
+  const from=t.fromCity||'–',to=t.city||'–';
+  const out=[from,...(t.outWaypoints||[]),to];
+  const ret=[to,...(t.returnWaypoints||[]),from];
+  let body='';
+  if(t.direction==='returnonly') body=routeLegRowsHTML(ret,t.returnMode||t.outMode,'Rückweg');
+  else {
+    body=routeLegRowsHTML(out,t.outMode,'Hinweg');
+    if(t.direction==='roundtrip') body+=routeLegRowsHTML(ret,t.returnMode||t.outMode,'Rückweg');
+  }
+  return '<section class="tdp-section tdp-route-section"><h2 class="tdp-section-title">Route</h2>'+body+'</section>';
+};
+
+/* Re-render detail with the final route helper while preserving all existing data/actions. */
+const RC1_RENDER_DETAIL=renderTripDetailPage;
+renderTripDetailPage=function(tripId,root){
+  RC1_RENDER_DETAIL(tripId,root);
+  const t=trips.find(x=>x.id===tripId);if(!t||t.cityOnly)return;
+  const main=root.querySelector('.tdp-main-column');if(!main)return;
+  const existing=main.querySelector('.tdp-route-section, .tdp-section:first-child');
+  const tmp=document.createElement('div');tmp.innerHTML=detailRouteSectionHTML(t);
+  const route=tmp.firstElementChild;
+  if(existing && existing.querySelector('.geo-list')) existing.replaceWith(route);
+  else if(!main.querySelector('.tdp-route-section')) main.prepend(route);
+};
+
+/* Home is journal-first: level belongs to Entdecken/Profil, not the primary overview. */
+const RC1_RENDER_HOME=renderDashboard;
+renderDashboard=function(root){
+  RC1_RENDER_HOME(root);
+  root.querySelectorAll('.home-side .level-hero').forEach(el=>el.remove());
+  const side=root.querySelector('.home-side');if(side && !side.children.length)side.remove();
+};
+
+/* Screen-level accessibility and semantic cleanup after every top-level render. */
+const RC1_SWITCH_TAB=switchTab;
+switchTab=function(tab){
+  RC1_SWITCH_TAB(tab);
+  requestAnimationFrame(()=>{
+    const panel=document.querySelector('.tab-panel.active');if(!panel)return;
+    panel.querySelectorAll('[role="tab"]').forEach(el=>el.setAttribute('tabindex',el.getAttribute('aria-selected')==='true'?'0':'-1'));
+    panel.querySelectorAll('button,summary').forEach(el=>{if(!el.getAttribute('aria-label')&&!el.textContent.trim())el.setAttribute('aria-label','Aktion');});
+  });
+};
+
 
 /* ---------- Init ---------- */
 document.getElementById('versionPill').textContent = 'v'+APP_VERSION;
