@@ -1,41 +1,41 @@
 {
-  "datum": "12.08.2026",
-  "generiert": "2026-08-12T03:16:31Z",
+  "datum": "13.08.2026",
+  "generiert": "2026-08-13T03:20:59Z",
   "geburtstage": [
     {
-      "name": "Jule Niemeier",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "German Tennis Player (Born 1999)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Jule_Niemeier_%282024_DC_Open%29_01_%28cropped%29.jpg/330px-Jule_Niemeier_%282024_DC_Open%29_01_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jule_Niemeier",
+      "name": "Antonia Lottner",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "German Tennis Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Lottner_WMQ22_%283%29_%2852191414319%29.jpg/330px-Lottner_WMQ22_%283%29_%2852191414319%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Antonia_Lottner",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Martin Zurawsky",
-      "alter": 36,
-      "geburtsjahr": 1990,
+      "name": "Christian Müller (footballer, born 1983)",
+      "alter": 43,
+      "geburtsjahr": 1983,
       "beruf": "German Footballer",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Martin_Zurawsky",
+      "wikidata": "https://en.wikipedia.org/wiki/Christian_M%C3%BCller_(footballer%2C_born_1983)",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Thorsten Boer",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "German Footballer And Manager",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Bundesarchiv_Bild_183-1990-0223-013%2C_Mannschaftsfoto_FC_Berlin.jpg/330px-Bundesarchiv_Bild_183-1990-0223-013%2C_Mannschaftsfoto_FC_Berlin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Thorsten_Boer",
+      "name": "Moritz Bleibtreu",
+      "alter": 55,
+      "geburtsjahr": 1971,
+      "beruf": "German Actor (Born 1971)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Nicht-mein-Tag-Darsteller_%28cropped%29.jpg/330px-Nicht-mein-Tag-Darsteller_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Moritz_Bleibtreu",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jürgen Dehmel",
-      "alter": 68,
-      "geburtsjahr": 1958,
-      "beruf": "German Musician",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Dehmel",
+      "name": "Thomas Pogge",
+      "alter": 73,
+      "geburtsjahr": 1953,
+      "beruf": "German Philosopher (Born 1953)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/2014-01-08_Thomas_Pogge_4805.JPG/330px-2014-01-08_Thomas_Pogge_4805.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Pogge",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
