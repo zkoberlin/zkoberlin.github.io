@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>WELTLOG</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -315,33 +316,32 @@ a{color:var(--teal);}
 
 /* ---------- Map ---------- */
 .map-wrap{
-  position:relative;width:100%;aspect-ratio:1.9/1;
+  position:relative;width:100%;aspect-ratio:1.5/1;
   border-radius:12px;overflow:hidden;
   background:var(--bg-soft);
   border:1px solid var(--border-soft);
 }
-#worldSvg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
-#worldSvg:active{cursor:grabbing;}
-.country{fill:var(--panel-alt);stroke:var(--border);stroke-width:0.5;vector-effect:non-scaling-stroke;}
-.country.visited{fill:var(--teal);fill-opacity:0.55;}
-.country.bucket-wish{fill:var(--map-bucket);fill-opacity:0.35;}
-.city-dot{fill:var(--map-city);stroke:var(--panel);stroke-width:0.8;cursor:pointer;transition:fill-opacity .1s;vector-effect:non-scaling-stroke;}
-.city-dot:hover{fill-opacity:0.8;}
-.city-dot.selected{fill:var(--rose);stroke-width:1.3;}
-.home-dot{fill:var(--map-home);stroke:var(--panel);stroke-width:1;vector-effect:non-scaling-stroke;}
-.bucket-city-dot{fill:var(--map-bucket-dot);stroke:var(--panel);stroke-width:0.8;cursor:pointer;vector-effect:non-scaling-stroke;}
+.world-map-gl{width:100%;height:100%;}
+.world-map-gl .maplibregl-ctrl-attrib{font-size:10px;}
+.world-map-gl .maplibregl-marker{cursor:pointer;}
+.gl-home-marker{
+  width:16px;height:16px;border-radius:50%;background:var(--map-home);
+  border:2px solid #fff;box-shadow:0 0 0 2px rgba(255,150,64,0.35),0 1px 3px rgba(0,0,0,0.4);
+}
+.gl-city-marker{
+  border-radius:50%;background:var(--map-city);
+  border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.4);
+  transition:transform .1s;
+}
+.gl-city-marker:hover{transform:scale(1.15);}
+.gl-city-marker.selected{background:var(--rose);border-width:2px;}
+.gl-bucket-marker{
+  width:8px;height:8px;border-radius:50%;background:var(--map-bucket-dot);
+  border:1.5px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,0.35);opacity:0.85;
+}
 .map-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--text-dim);margin-top:8px;align-items:center;}
 .map-legend-item{display:flex;align-items:center;gap:5px;}
 .map-legend-swatch{width:10px;height:10px;border-radius:3px;display:inline-block;}
-.map-controls{
-  position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;z-index:5;
-}
-.map-controls button{
-  width:30px;height:30px;border-radius:8px;background:var(--panel);border:1px solid var(--border);
-  color:var(--text-dim);font-size:15px;cursor:pointer;font-family:var(--font-mono);
-  box-shadow:var(--shadow);
-}
-.map-controls button:hover{color:var(--text);border-color:var(--gold-dim);}
 .map-loading{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   gap:8px;color:var(--text-faint);font-size:12.5px;background:var(--bg-soft);z-index:4;
@@ -1191,7 +1191,6 @@ tr:last-child td{border-bottom:none;}
   .theme-switch button{width:38px;height:38px;}
   .theme-switch button svg{width:16px;height:16px;}
   .home-chip{padding:8px 12px;}
-  .map-controls button{width:36px;height:36px;font-size:16px;}
   .waypoint-remove{width:40px;height:40px;}
   .row-actions button{width:32px;height:32px;font-size:13px;}
   .btn-calc{height:44px;}
@@ -1477,8 +1476,7 @@ span.flatpickr-weekday{
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/l10n/de.js"></script>
 <script>
@@ -1629,41 +1627,6 @@ function coatOfArmsUrl(filename, pxWidth){
 }
 
 /* ISO-3166-1 alpha-2 -> numerisch, zum Abgleich mit der world-atlas TopoJSON (Feature-IDs) */
-/* Ländercode → numerische ISO-3166-1-ID, wie sie das world-atlas-Kartenmaterial für
-   die Länder-Polygone verwendet. Deckt (fast) alle Länder/Territorien weltweit ab —
-   wichtig, weil per Geokodierung (Nominatim) jede Stadt weltweit erfasst werden kann,
-   nicht nur die ~80 in CITY_DB vorinstallierten. Fehlt hier ein Code, wird das Land
-   auf der Karte nicht eingefärbt, obwohl es in Statistiken/Listen korrekt auftaucht
-   (so geschehen z. B. bei Kroatien/„hr", bis diese Liste erweitert wurde). */
-const COUNTRY_NUMERIC = {
-  ad:20, ae:784, af:4, ag:28, ai:660, al:8, am:51, ao:24, aq:10, ar:32,
-  as:16, at:40, au:36, aw:533, ax:248, az:31, ba:70, bb:52, bd:50, be:56,
-  bf:854, bg:100, bh:48, bi:108, bj:204, bl:652, bm:60, bn:96, bo:68, br:76,
-  bs:44, bt:64, bv:74, bw:72, by:112, bz:84, ca:124, cc:166, cd:180, cf:140,
-  cg:178, ch:756, ci:384, ck:184, cl:152, cm:120, cn:156, co:170, cr:188, cu:192,
-  cv:132, cw:531, cx:162, cy:196, cz:203, de:276, dj:262, dk:208, dm:212, do:214,
-  dz:12, ec:218, ee:233, eg:818, eh:732, er:232, es:724, et:231, fi:246, fj:242,
-  fk:238, fm:583, fo:234, fr:250, ga:266, gb:826, gd:308, ge:268, gf:254, gg:831,
-  gh:288, gi:292, gl:304, gm:270, gn:324, gp:312, gq:226, gr:300, gs:239, gt:320,
-  gu:316, gw:624, gy:328, hk:344, hm:334, hn:340, hr:191, ht:332, hu:348, id:360,
-  ie:372, il:376, im:833, in:356, io:86, iq:368, ir:364, is:352, it:380, je:832,
-  jm:388, jo:400, jp:392, ke:404, kg:417, kh:116, ki:296, km:174, kn:659, kp:408,
-  kr:410, kw:414, ky:136, kz:398, la:418, lb:422, lc:662, li:438, lk:144, lr:430,
-  ls:426, lt:440, lu:442, lv:428, ly:434, ma:504, mc:492, md:498, me:499, mf:663,
-  mg:450, mh:584, mk:807, ml:466, mm:104, mn:496, mo:446, mp:580, mq:474, mr:478,
-  ms:500, mt:470, mu:480, mv:462, mw:454, mx:484, my:458, mz:508, na:516, nc:540,
-  ne:562, nf:574, ng:566, ni:558, nl:528, no:578, np:524, nr:520, nu:570, nz:554,
-  om:512, pa:591, pe:604, pf:258, pg:598, ph:608, pk:586, pl:616, pm:666, pn:612,
-  pr:630, ps:275, pt:620, pw:585, py:600, qa:634, re:638, ro:642, rs:688, ru:643,
-  rw:646, sa:682, sb:90, sc:690, sd:729, se:752, sg:702, sh:654, si:705, sj:744,
-  sk:703, sl:694, sm:674, sn:686, so:706, sr:740, ss:728, st:678, sv:222, sx:534,
-  sy:760, sz:748, tc:796, td:148, tf:260, tg:768, th:764, tj:762, tk:772, tl:626,
-  tm:795, tn:788, to:776, tr:792, tt:780, tv:798, tw:158, tz:834, ua:804, ug:800,
-  um:581, us:840, uy:858, uz:860, va:336, vc:670, ve:862, vg:92, vi:850, vn:704,
-  vu:548, wf:876, ws:882, ye:887, yt:175, za:710, zm:894, zw:716
-};
-let WORLD_TOPOLOGY_CACHE = null;
-
 /* ---------- Kontinent-Zuordnung & Länder-Gruppen (für Gamification: Achievements, Kontinent-Statistik) ---------- */
 /* ISO alpha-2 -> Kontinent-Kürzel. Folgt größtenteils dem UN-Geoschema. Einige Länder liegen
    geografisch auf zwei Kontinenten (Russland, Türkei, Kasachstan, Zypern, Georgien, Armenien,
@@ -2012,11 +1975,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.50.1';
+const APP_VERSION = '2.0.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'2.0.0', tier:'🔴', title:'Weltkarte komplett neu: MapLibre + OpenFreeMap', items:[
+    'Die Weltkarte basiert nicht mehr auf einer statischen D3/SVG-Zeichnung, sondern auf einer echten interaktiven Vektorkarte (MapLibre GL, OpenFreeMap-Kacheln auf OpenStreetMap-Basis) — freies Zoomen/Schwenken, Orts- und Straßennamen tauchen automatisch beim Reinzoomen auf.',
+    'England und Schottland werden auf der Karte jetzt als eigene Flächen geführt (statt als eine gemeinsame "Vereinigtes Königreich"-Fläche) — dafür kommen die einfärbbaren Länder-Flächen von einem separaten Natural-Earth-Datensatz, unabhängig vom Kartenkachel-Anbieter.',
+    'Besuchte Länder UND Wunschländer (Bucket-Liste) werden weiterhin eingefärbt, wie bisher.',
+    'Bekannte Lücke in dieser ersten Version: kein eigener Dunkelmodus-Kartenstil (die kostenlosen OpenFreeMap-Stile sind aktuell nur hell) — Feinschliff folgt in einer späteren Version.',
+    'Wichtige Änderung: Die Karte braucht jetzt bei jedem Öffnen eine Internetverbindung (lädt live Kartenkacheln), anders als vorher, wo einmal geladene Kartendaten komplett offline weiterfunktionierten.'
+  ]},
   {v:'1.50.1', tier:'🟢', title:'Eigene Flaggen für England & Schottland', items:[
     'England (London) und Schottland (Edinburgh) zeigen jetzt ihre eigenen Flaggen statt des Union Jack — in der Länder-Übersicht, bei Rekorden, Wegpunkten, Reisekarten, Bucket-Liste und überall sonst, wo Flaggen erscheinen.',
     'Kontinent-/G7-/G20-/Inselstaaten-Erkennung sowie die Weltkarte laufen weiterhin unverändert über den echten Ländercode "gb", da diese Systeme nur souveräne Staaten kennen — die Flaggen-Anzeige ist davon technisch unabhängig.',
@@ -4583,16 +4553,11 @@ function renderDashboard(root){
   html += '<div class="card">';
   html += '  <div class="card-head"><h2>Weltkarte</h2><span class="sub">Zoomen &amp; verschieben, Punkt anklicken für Details</span></div>';
   html += '  <div class="map-wrap" id="mapWrap">';
-  html += '    <svg id="worldSvg"></svg>';
-  html += '    <div class="map-controls">';
-  html += '      <button type="button" id="zoomInBtn" title="Vergrößern">+</button>';
-  html += '      <button type="button" id="zoomOutBtn" title="Verkleinern">−</button>';
-  html += '      <button type="button" id="zoomResetBtn" title="Zurücksetzen">⟲</button>';
-  html += '    </div>';
+  html += '    <div class="world-map-gl" id="worldMapGL"></div>';
   html += '    <div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div>';
   html += '    <div class="map-error" id="mapError">Karte konnte nicht geladen werden (keine Verbindung?). Städte &amp; Länder findest du vollständig im Tab „Länder &amp; Städte".</div>';
   html += '  </div>';
-  html += '  <div class="map-attrib">Kartengrundlage: <a href="https://github.com/topojson/world-atlas" target="_blank" rel="noopener">world-atlas</a> / Natural Earth · Flaggen: flagcdn.com</div>';
+  html += '  <div class="map-attrib">Kartengrundlage: <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> (© OpenStreetMap-Mitwirkende) · Länder-Flächen: <a href="https://www.naturalearthdata.com" target="_blank" rel="noopener">Natural Earth</a></div>';
   html += '  <div class="map-legend">';
   html += '    <div class="map-legend-item"><span class="map-legend-swatch" style="background:var(--teal)"></span>Besucht</div>';
   if(bucketList.length){
@@ -4625,185 +4590,234 @@ function renderDashboard(root){
     })(performance.now());
   }
 
-  initWorldMap(agg);
+  initWorldMapML(agg);
   renderCityDetail(agg);
 }
 
-async function initWorldMap(agg){
+/* ============================================================
+   Weltkarte (MapLibre GL + OpenFreeMap) — Hybrid-Ansatz:
+   - Basiskarte: OpenFreeMap-Vektor-Kacheln (OSM-Daten) für Zoom,
+     Straßen-/Orts-Kontext und automatische Beschriftungen beim Reinzoomen.
+   - Länder-Flächen zum Einfärben (besucht/Wunschland) kommen NICHT aus den
+     Kacheln (die haben keine Länder-Polygone), sondern aus einem separat
+     geladenen Natural-Earth-"map units"-Datensatz, der z. B. England und
+     Schottland als eigene Flächen führt (anders als world-atlas, das nur
+     souveräne Staaten kennt).
+   Bekannte Lücke in dieser ersten Version: kein eigener Dunkelmodus-Kartenstil
+   (OpenFreeMap bietet aktuell keinen fertigen dunklen Stil) — Feinschliff folgt.
+   ============================================================ */
+let ML_MAP = null;
+let ML_COUNTRY_FILL_CACHE = null;
+let ML_MARKERS = [];
+const ML_COUNTRY_GEOJSON_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_map_units.geojson';
+const ML_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';
+// England/Schottland/Wales/Nordirland haben im map-units-Datensatz keinen ISO_A2-Code
+// (dort steht "-99") — Zuordnung stattdessen über den GEOUNIT-Namen, mit denselben
+// Pseudo-Codes wie flagCcFor() für die Flaggen-Anzeige (siehe dort).
+const ML_UK_NATION_MAP_KEYS = {'England':'gb-eng','Scotland':'gb-sct','Wales':'gb-wls','Northern Ireland':'gb-nir'};
+
+async function loadCountryFillGeoJSON(){
+  if(ML_COUNTRY_FILL_CACHE) return ML_COUNTRY_FILL_CACHE;
+  const resp = await fetch(ML_COUNTRY_GEOJSON_URL);
+  if(!resp.ok) throw new Error('HTTP '+resp.status);
+  const geo = await resp.json();
+  geo.features.forEach(f=>{
+    const p = f.properties||{};
+    const ukKey = ML_UK_NATION_MAP_KEYS[p.GEOUNIT];
+    f.properties.matchCc = ukKey || (p.ISO_A2 && p.ISO_A2!=='-99' ? p.ISO_A2.toLowerCase() : '');
+  });
+  ML_COUNTRY_FILL_CACHE = geo;
+  return geo;
+}
+
+/* Liest die aktuell aktiven CSS-Variablen als konkrete Hex-Werte aus — MapLibre-
+   Paint-Properties verstehen kein var(--x), daher hier einmal zur Kartenbau-Zeit
+   (und nach jedem Theme-Wechsel, siehe refreshMapColorsForTheme) auflösen. */
+function mapCssVar(name){
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function buildCountryFillColorExpr(agg){
+  const visited = new Set(agg.countries.map(c=>flagCcFor((c.cc||'').toLowerCase(), c.country)).filter(Boolean));
+  const bucket = new Set(
+    bucketList
+      .map(b=>flagCcFor((b.cc||'').toLowerCase(), b.country))
+      .filter(cc=>cc && !visited.has(cc))
+  );
+  const visitedArr = [...visited]; if(!visitedArr.length) visitedArr.push('__none__');
+  const bucketArr = [...bucket]; if(!bucketArr.length) bucketArr.push('__none__');
+  return {
+    color: ['match', ['get','matchCc'], visitedArr, mapCssVar('--teal'), bucketArr, mapCssVar('--map-bucket'), 'rgba(0,0,0,0)'],
+    opacity: ['match', ['get','matchCc'], visitedArr, 0.5, bucketArr, 0.35, 0]
+  };
+}
+
+/* Nach einem Hell-/Dunkel-Wechsel die bereits gebaute Länder-Ebene neu einfärben,
+   ohne die ganze Karte neu zu laden (wird vom Theme-Switch-Handler aufgerufen). */
+function refreshMapColorsForTheme(){
+  if(!ML_MAP || !ML_MAP.getLayer('country-fill')) return;
+  try{
+    const expr = buildCountryFillColorExpr(LAST_MAP_AGG || {countries:[]});
+    ML_MAP.setPaintProperty('country-fill','fill-color', expr.color);
+    ML_MAP.setPaintProperty('country-fill','fill-opacity', expr.opacity);
+  }catch(e){ /* Karte evtl. gerade nicht bereit — beim nächsten Rendern zieht's ohnehin nach */ }
+}
+
+let LAST_MAP_AGG = null;
+
+function clearMapMarkers(){
+  ML_MARKERS.forEach(m=>m.remove());
+  ML_MARKERS = [];
+}
+
+function addCityMarkerGL(lon, lat, title, opts){
+  opts = opts||{};
+  const el = document.createElement('div');
+  el.className = 'gl-city-marker'+(opts.selected?' selected':'');
+  const size = opts.size || 12;
+  el.style.width = size+'px'; el.style.height = size+'px';
+  el.title = title;
+  const marker = new maplibregl.Marker({ element: el }).setLngLat([lon, lat]).addTo(ML_MAP);
+  if(opts.onClick) el.addEventListener('click', opts.onClick);
+  ML_MARKERS.push(marker);
+  return marker;
+}
+
+async function initWorldMapML(agg){
   const wrap = document.getElementById('mapWrap');
-  const svgEl = document.getElementById('worldSvg');
+  const mapEl = document.getElementById('worldMapGL');
   const loadingEl = document.getElementById('mapLoading');
   const errorEl = document.getElementById('mapError');
-  if(!wrap || !svgEl) return;
+  if(!wrap || !mapEl) return;
 
-  if(typeof d3==='undefined' || typeof topojson==='undefined'){
+  if(typeof maplibregl==='undefined'){
     loadingEl.style.display='none';
     errorEl.style.display='flex';
     return;
   }
 
-  if(!WORLD_TOPOLOGY_CACHE){ loadingEl.style.display='flex'; } else { loadingEl.style.display='none'; }
+  LAST_MAP_AGG = agg;
+  loadingEl.style.display='flex';
   errorEl.style.display='none';
 
+  let countryGeo;
   try{
-    if(!WORLD_TOPOLOGY_CACHE){
-      const resp = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json');
-      if(!resp.ok) throw new Error('HTTP '+resp.status);
-      WORLD_TOPOLOGY_CACHE = await resp.json();
-    }
+    countryGeo = await loadCountryFillGeoJSON();
   }catch(e){
+    console.error('Länder-Flächen für Karte konnten nicht geladen werden:', e);
     loadingEl.style.display='none';
     errorEl.style.display='flex';
     return;
   }
-  loadingEl.style.display='none';
 
-  // Falls der Nutzer inzwischen den Tab gewechselt hat, ist das SVG evtl. nicht mehr im DOM
-  if(!document.getElementById('worldSvg')) return;
+  // Falls der Nutzer inzwischen den Tab gewechselt hat, ist der Container evtl. nicht
+  // mehr im DOM (renderDashboard baut das komplette Dashboard bei jedem Aufruf neu).
+  if(!document.getElementById('worldMapGL')) return;
 
-  // Sicherstellen, dass der Tab-Wechsel vom Browser bereits layoutet wurde, BEVOR die
-  // Breite gemessen wird — sonst liefert getBoundingClientRect() manchmal 0 (z. B. direkt
-  // nach dem Sichtbarmachen des Tabs), der 600px-Fallback greift, und auf einem schmalen
-  // Handy-Bildschirm wirken die Punkte dadurch "manchmal" viel zu groß.
-  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  if(!document.getElementById('worldSvg')) return;
+  // Alte Karteninstanz sauber entfernen, BEVOR eine neue erzeugt wird — sonst bleiben
+  // bei jedem Dashboard-Rerender (z. B. nach dem Speichern einer Reise) verwaiste
+  // WebGL-Kontexte übrig, die mobile Browser irgendwann zum Absturz bringen können.
+  if(ML_MAP){ try{ ML_MAP.remove(); }catch(e){} ML_MAP = null; }
+  clearMapMarkers();
 
-  const rect = wrap.getBoundingClientRect();
-  const width = rect.width || 600;
-  const height = rect.height || Math.round(width/1.9);
-  // Punktgröße relativ zur tatsächlichen Kartenbreite skalieren — sonst wirkt ein
-  // fester Radius auf einem schmalen Handy-Bildschirm viel größer als auf Desktop,
-  // weil die SVG-Koordinaten 1:1 der gemessenen Container-Breite entsprechen.
-  const rScale = Math.max(0.55, Math.min(1, width/700));
+  ML_MAP = new maplibregl.Map({
+    container: 'worldMapGL',
+    style: ML_STYLE_URL,
+    center: [10, 50],
+    zoom: 3.4,
+    attributionControl: false
+  });
+  ML_MAP.addControl(new maplibregl.NavigationControl({ showCompass:false }), 'top-right');
 
-  const svg = d3.select('#worldSvg').attr('viewBox','0 0 '+width+' '+height);
-  svg.selectAll('*').remove();
+  ML_MAP.on('error', (e)=>{
+    console.error('MapLibre-Fehler:', e && e.error);
+  });
 
-  const countries = topojson.feature(WORLD_TOPOLOGY_CACHE, WORLD_TOPOLOGY_CACHE.objects.countries).features;
-  const projection = d3.geoNaturalEarth1().fitSize([width, height], {type:'FeatureCollection', features:countries});
-  const path = d3.geoPath(projection);
+  ML_MAP.on('load', ()=>{
+    if(!document.getElementById('worldMapGL')) return;
+    loadingEl.style.display='none';
 
-  const visitedIds = new Set(
-    agg.countries.map(c=>COUNTRY_NUMERIC[(c.cc||'').toLowerCase()]).filter(v=>v!==undefined)
-  );
-  // Bucket-Liste-Wünsche — nur einfärben, wenn das Land noch nicht besucht ist (sonst
-  // würde die Wunsch-Farbe die "besucht"-Farbe verdecken, obwohl das Land ja schon
-  // erreicht wurde). Zählt für BEIDE Wunsch-Arten: ein Land-Wunsch direkt, aber auch das
-  // Land, in dem eine gewünschte STADT liegt, wird eingefärbt (statt eines eigenen Punkts).
-  const bucketCountryIds = new Set(
-    bucketList
-      .map(b=>COUNTRY_NUMERIC[(b.cc||'').toLowerCase()])
-      .filter(v=>v!==undefined && !visitedIds.has(v))
-  );
+    ML_MAP.addSource('country-fill-src', { type:'geojson', data: countryGeo });
+    const colorExpr = buildCountryFillColorExpr(agg);
+    ML_MAP.addLayer({
+      id: 'country-fill',
+      type: 'fill',
+      source: 'country-fill-src',
+      paint: {
+        'fill-color': colorExpr.color,
+        'fill-opacity': colorExpr.opacity
+      }
+    });
 
-  const g = svg.append('g');
+    renderMapMarkers(agg);
+  });
+}
 
-  g.append('g').attr('class','countries-layer')
-    .selectAll('path')
-    .data(countries)
-    .join('path')
-    .attr('class', d=> 'country'+(visitedIds.has(Number(d.id)) ? ' visited': bucketCountryIds.has(Number(d.id)) ? ' bucket-wish':''))
-    .attr('d', path);
+function renderMapMarkers(agg){
+  if(!ML_MAP) return;
+  clearMapMarkers();
 
-  let homeDot = null;
-  const homeRadius = 2.4 * rScale;
+  // Heimatort — eigener goldener Marker, wird bei den normalen Stadt-Punkten
+  // ausgeschlossen (siehe cityData-Filter unten), damit kein Doppel-Punkt entsteht.
   const homeCityRef = settings.home ? findCity(settings.home) : null;
   if(homeCityRef){
-    const p = projection([homeCityRef.lon, homeCityRef.lat]);
-    if(p){
-      homeDot = g.append('circle').attr('class','home-dot')
-        .attr('cx',p[0]).attr('cy',p[1]).attr('r',homeRadius);
-      homeDot.append('title').text(homeCityRef.n+' — Heimatort');
-    }
+    const el = document.createElement('div');
+    el.className = 'gl-home-marker';
+    el.title = homeCityRef.n+' — Heimatort';
+    const homeMarker = new maplibregl.Marker({ element: el }).setLngLat([homeCityRef.lon, homeCityRef.lat]).addTo(ML_MAP);
+    ML_MARKERS.push(homeMarker);
   }
 
   const cityData = agg.cities
-    // Der Heimatort hat bereits den eigenen, optisch klar abgesetzten homeDot-Marker
-    // oben — ein zusätzlicher normaler city-dot an derselben Koordinate wäre nur ein
-    // störender Doppel-Punkt. Die Statistiken (Top 5, Länder & Städte, Zähler) sind
-    // davon nicht betroffen, die zeigen den Heimatort weiterhin ganz normal.
     .filter(c=>!(homeCityRef && c.city===homeCityRef.n && c.country===homeCityRef.c))
-    .map(c=>({c, ref:findCity(c.city)}))
-    .filter(x=>x.ref && projection([x.ref.lon, x.ref.lat]));
+    .map(c=>({ c, ref: findCity(c.city) }))
+    .filter(x=>x.ref);
   const maxVisits = Math.max(1, ...cityData.map(x=>x.c.visits));
-  // Kleinere Punkte, damit auch ohne Reinzoomen einzelne Städte klar unterscheidbar bleiben.
-  // Untergrenze sorgt dafür, dass Punkte auch bei rScale<1 (schmale Bildschirme) noch
-  // gut sichtbar/anklickbar bleiben.
-  const dotRadius = x => Math.max(1.3, (1.6 + (x.c.visits/maxVisits)*1.6) * rScale);
 
-  // Größere Punkte zuerst zeichnen, kleinere danach — so liegen bei eng
-  // beieinanderliegenden Städten die kleineren (seltener besuchten) Punkte oben
-  // und bleiben klickbar, statt komplett unter einem großen Nachbarn zu verschwinden.
-  const sortedCityData = cityData.slice().sort((a,b)=> b.c.visits - a.c.visits);
-
-  const cityDots = g.append('g').attr('class','city-layer')
-    .selectAll('circle')
-    .data(sortedCityData, x=>x.c.key)
-    .join('circle')
-    .attr('class', x=> 'city-dot'+(x.c.key===selectedCityKey?' selected':''))
-    .attr('cx', x=>projection([x.ref.lon, x.ref.lat])[0])
-    .attr('cy', x=>projection([x.ref.lon, x.ref.lat])[1])
-    .attr('r', dotRadius)
-    .on('mouseenter', function(){ d3.select(this).raise(); })
-    .on('click', (event, x)=>{
-      selectedCityKey = x.c.key;
-      cityDots.attr('class', xx=> 'city-dot'+(xx.c.key===selectedCityKey?' selected':''));
-      renderCityDetail(agg);
+  cityData.forEach(x=>{
+    const size = Math.round(9 + (x.c.visits/maxVisits)*8);
+    addCityMarkerGL(x.ref.lon, x.ref.lat, x.c.city+' — '+x.c.visits+' Besuch(e)', {
+      size,
+      selected: x.c.key===selectedCityKey,
+      onClick: ()=>{
+        selectedCityKey = x.c.key;
+        renderMapMarkers(agg);
+        renderCityDetail(agg);
+      }
     });
-  cityDots.append('title').text(x=>x.c.city+' — '+x.c.visits+' Besuch(e)');
+  });
 
-  // Bucket-Liste-Städtewünsche: blasser Punkt, GENAU so groß wie ein normaler
-  // Städte-Punkt — fest auf den Basiswert der dotRadius-Formel gesetzt (1.6*rScale,
-  // der kleinste/Standard-Wert der Skala), komplett unabhängig von maxVisits. So kann
-  // die Größe nie mehr von den Besuchszahlen der eigenen Reisedaten abweichen.
-  const bucketCityData = bucketList
+  // Bucket-Listen-Städtewünsche — kleiner, blasser Punkt, feste Größe.
+  bucketList
     .filter(b=>b.type==='city' && typeof b.lat==='number' && typeof b.lon==='number')
-    .map(b=>({b, p:projection([b.lon, b.lat])}))
-    .filter(x=>x.p);
-  const bucketDotRadius = 1.6 * rScale;
-  const bucketLayer = g.append('g').attr('class','bucket-city-layer');
-  const bucketDots = bucketLayer.selectAll('circle.bucket-city-dot')
-    .data(bucketCityData, x=>x.b.id)
-    .join('circle')
-    .attr('class','bucket-city-dot')
-    .attr('cx', x=>x.p[0])
-    .attr('cy', x=>x.p[1])
-    .attr('r', bucketDotRadius);
-  bucketDots.append('title').text(x=>x.b.name+' — Wunschliste ('+(BUCKET_PRIORITY_META[x.b.priority]||BUCKET_PRIORITY_META.mittel).label+')');
-
+    .forEach(b=>{
+      const el = document.createElement('div');
+      el.className = 'gl-bucket-marker';
+      el.title = b.name+' — Wunschliste ('+(BUCKET_PRIORITY_META[b.priority]||BUCKET_PRIORITY_META.mittel).label+')';
+      const marker = new maplibregl.Marker({ element: el }).setLngLat([b.lon, b.lat]).addTo(ML_MAP);
+      ML_MARKERS.push(marker);
+    });
 
   // Für einige (ältere) Reisen konnte die Zielstadt beim Speichern evtl. nicht
-  // aufgelöst werden (z. B. Geokodierung damals offline/fehlgeschlagen) — sie
-  // tauchen dann zwar in Statistik/Log auf, aber es fehlten Koordinaten für die
-  // Karte. Das wird hier im Hintergrund nachgeholt, OHNE das Zeichnen der Karte
-  // zu blockieren (die Karte ist sofort sichtbar; fehlende Punkte poppen ggf.
-  // mit kurzer Verzögerung nach).
+  // aufgelöst werden (Geokodierung damals offline/fehlgeschlagen) — wird hier im
+  // Hintergrund nachgeholt, ohne das Zeichnen der Karte zu blockieren.
   const unresolvedCities = agg.cities.filter(c=>!findCity(c.city) && !unresolvableCityNames.has(c.city));
   if(unresolvedCities.length){
     (async ()=>{
       for(const c of unresolvedCities){
-        if(!document.getElementById('worldSvg')) return;
+        if(!ML_MAP || !document.getElementById('worldMapGL')) return;
         let resolved;
         try{ resolved = await resolveCity(c.city); }catch(e){ resolved = null; }
         if(!resolved){ unresolvableCityNames.add(c.city); continue; }
-        const p = projection([resolved.lon, resolved.lat]);
-        if(!p || !document.getElementById('worldSvg')) continue;
-        const layer = g.select('.city-layer');
-        if(layer.empty()) continue;
-        layer.append('circle')
-          .attr('class','city-dot')
-          .attr('cx',p[0]).attr('cy',p[1])
-          .attr('r', dotRadius({c}))
-          .append('title').text(c.city+' — '+c.visits+' Besuch(e)');
+        if(!ML_MAP || !document.getElementById('worldMapGL')) return;
+        addCityMarkerGL(resolved.lon, resolved.lat, c.city+' — '+c.visits+' Besuch(e)', { size:11 });
       }
     })();
   }
 
-  // Zwischenstopps zählen ebenfalls als besuchte Orte (siehe aggregate()), aber nur
-  // wenn ihr Name lokal auflösbar ist. Noch unbekannte Zwischenstopp-Namen (egal ob
-  // aus einer neuen oder einer schon länger bestehenden Reise) werden hier im
-  // Hintergrund geokodiert — danach zählen sie ab dem nächsten Rendern automatisch
-  // überall mit (Karte, Länder & Städte, Top 5, Entdecker-Trend).
+  // Zwischenstopps zählen ebenfalls als besuchte Orte, werden hier bei Bedarf
+  // nachträglich geokodiert (siehe aggregate()) — danach zählen sie ab dem nächsten
+  // Rendern automatisch überall mit (Karte, Länder & Städte, Top 5, Entdecker-Trend).
   const waypointNamesRaw = new Set();
   trips.forEach(t=>{
     (t.outWaypoints||[]).forEach(w=>{ if(w && w.trim()) waypointNamesRaw.add(w.trim()); });
@@ -4813,63 +4827,16 @@ async function initWorldMap(agg){
   if(unresolvedWaypoints.length){
     (async ()=>{
       for(const name of unresolvedWaypoints){
-        if(!document.getElementById('worldSvg')) return;
+        if(!ML_MAP || !document.getElementById('worldMapGL')) return;
         let resolved;
         try{ resolved = await resolveCity(name); }catch(e){ resolved = null; }
         if(!resolved){ unresolvableCityNames.add(name); continue; }
         if(isHomeCity(resolved.n)) continue;
-        const p = projection([resolved.lon, resolved.lat]);
-        if(!p || !document.getElementById('worldSvg')) continue;
-        const layer = g.select('.city-layer');
-        if(layer.empty()) continue;
-        layer.append('circle')
-          .attr('class','city-dot')
-          .attr('cx',p[0]).attr('cy',p[1])
-          .attr('r', dotRadius({c:{visits:1}}))
-          .append('title').text(resolved.n+' — Zwischenstopp');
+        if(!ML_MAP || !document.getElementById('worldMapGL')) return;
+        addCityMarkerGL(resolved.lon, resolved.lat, resolved.n+' — Zwischenstopp', { size:9 });
       }
     })();
   }
-
-  const zoom = d3.zoom()
-    .scaleExtent([1, 10])
-    .on('zoom', (event)=>{
-      g.attr('transform', event.transform);
-      // Punkte sollen beim Reinzoomen NICHT mitwachsen — Radius wird umgekehrt
-      // proportional zur Zoomstufe verkleinert (bleibt so klein & fein, statt klobig).
-      const k = event.transform.k;
-      // Beim Reinzoomen sollen die Punkte spürbar kleiner werden (nicht nur proportional
-      // mitschrumpfen) — daher zusätzlicher Schrumpf-Faktor und eine deutlich niedrigere
-      // Untergrenze als bisher, damit bei starkem Zoom wirklich winzige Punkte übrig bleiben.
-      cityDots.attr('r', x => Math.max(0.45*rScale, dotRadius(x)/(k*1.3)));
-      if(homeDot) homeDot.attr('r', Math.max(0.6*rScale, homeRadius/(k*1.3)));
-      // BUG-FIX: bucketDots fehlten hier bisher komplett — dadurch wuchsen sie beim
-      // (schon standardmäßig aktiven) Europa-Zoom sichtbar über die anderen Punkte
-      // hinaus, obwohl ihr Radius "eigentlich" gleich groß war. Jetzt exakt gleich
-      // kompensiert wie ein City-Dot mit demselben Basiswert.
-      bucketDots.attr('r', Math.max(0.45*rScale, bucketDotRadius/(k*1.3)));
-    });
-  svg.call(zoom);
-
-  // Standard-Ansicht: statt der kompletten Weltkarte direkt auf Europa eingezoomt
-  // (Heimatregion) — berechnet aus der Pixel-Bounding-Box eines groben Europa-Rechtecks
-  // (Island/Portugal bis zum Ural, Nordkap bis Mittelmeer) innerhalb der aktuellen Projektion.
-  const europeBBox = {type:'Polygon', coordinates:[[[-25,72],[45,72],[45,34],[-25,34],[-25,72]]]};
-  const eb = path.bounds(europeBBox);
-  const ebW = eb[1][0]-eb[0][0], ebH = eb[1][1]-eb[0][1];
-  const europeScale = Math.max(1, Math.min(10, 0.92*Math.min(width/ebW, height/ebH)));
-  const ebCx = (eb[0][0]+eb[1][0])/2, ebCy = (eb[0][1]+eb[1][1])/2;
-  const europeTransform = d3.zoomIdentity
-    .translate(width/2 - europeScale*ebCx, height/2 - europeScale*ebCy)
-    .scale(europeScale);
-  svg.call(zoom.transform, europeTransform);
-
-  const zoomInBtn = document.getElementById('zoomInBtn');
-  const zoomOutBtn = document.getElementById('zoomOutBtn');
-  const zoomResetBtn = document.getElementById('zoomResetBtn');
-  if(zoomInBtn) zoomInBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1.6);
-  if(zoomOutBtn) zoomOutBtn.onclick = ()=> svg.transition().duration(200).call(zoom.scaleBy, 1/1.6);
-  if(zoomResetBtn) zoomResetBtn.onclick = ()=> svg.transition().duration(300).call(zoom.transform, europeTransform);
 }
 
 function renderCityDetail(agg){
@@ -7419,6 +7386,7 @@ document.getElementById('themeSwitch').addEventListener('click', async (e)=>{
   if(!btn) return;
   settings.theme = btn.dataset.themeChoice;
   applyTheme();
+  refreshMapColorsForTheme();
   await saveSettings();
 });
 
