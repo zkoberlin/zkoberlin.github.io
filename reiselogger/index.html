@@ -843,7 +843,7 @@ tr:last-child td{border-bottom:none;}
 /* ---------- Statistiken: Top-Listen ---------- */
 .stats-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
 .stats-grid-2 .card{margin-bottom:0;}
-@media(max-width:760px){.stats-grid-2{grid-template-columns:1fr;gap:0;}}
+@media(max-width:760px){.stats-grid-2{grid-template-columns:1fr;gap:20px;}}
 
 .top-list{display:flex;flex-direction:column;gap:12px;}
 .top-item{display:flex;align-items:center;gap:11px;}
@@ -943,33 +943,33 @@ tr:last-child td{border-bottom:none;}
 .level-hero{
   background:linear-gradient(155deg, var(--panel-alt), var(--panel));
   border:1px solid var(--border-soft); border-radius:var(--radius);
-  padding:20px 22px; margin-bottom:16px;
+  padding:12px 16px; margin-bottom:12px;
 }
-.level-hero-top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
-.level-hero-badge{display:flex;align-items:center;gap:12px;}
+.level-hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.level-hero-badge{display:flex;align-items:center;gap:10px;}
 .level-hero-num{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
   background:var(--bg-soft);border:1.5px solid var(--bar-accent);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-weight:700;font-size:17px;color:var(--bar-accent);
+  font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--bar-accent);
 }
-.level-hero-title{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--text);}
-.level-hero-sub{font-size:11.5px;color:var(--text-faint);margin-top:2px;}
-.level-hero-points{font-family:var(--font-mono);font-size:13px;color:var(--text-dim);text-align:right;}
+.level-hero-title{font-family:var(--font-display);font-weight:700;font-size:14px;color:var(--text);}
+.level-hero-sub{font-size:10.5px;color:var(--text-faint);margin-top:1px;}
+.level-hero-points{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);text-align:right;}
 .level-hero-points b{color:var(--gold);}
-.level-hero-track{height:9px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:14px;}
+.level-hero-track{height:6px;border-radius:100px;background:var(--bg-soft);border:1px solid var(--border-soft);overflow:hidden;margin-top:10px;}
 .level-hero-fill{height:100%;border-radius:100px;background:linear-gradient(90deg, var(--bar-accent), var(--gold));transition:width .5s ease;}
-.level-hero-next{font-size:11.5px;color:var(--text-faint);margin-top:7px;text-align:right;}
-.level-hero-maxed{font-size:11.5px;color:var(--gold);margin-top:7px;text-align:right;}
+.level-hero-next{font-size:10.5px;color:var(--text-faint);margin-top:5px;text-align:right;}
+.level-hero-maxed{font-size:10.5px;color:var(--gold);margin-top:5px;text-align:right;}
 
 .last-badge-strip{
-  display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:16px;
+  display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;
   border-top:1px dashed var(--border);
 }
-.last-badge-icon{font-size:24px;flex-shrink:0;}
-.last-badge-text .lb-label{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em;}
-.last-badge-text .lb-name{font-size:13.5px;color:var(--text);font-weight:600;margin-top:1px;}
-.last-badge-text .lb-date{font-size:11.5px;color:var(--text-dim);margin-top:1px;}
+.last-badge-icon{font-size:19px;flex-shrink:0;}
+.last-badge-text .lb-label{font-size:9.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em;}
+.last-badge-text .lb-name{font-size:12.5px;color:var(--text);font-weight:600;margin-top:1px;}
+.last-badge-text .lb-date{font-size:10.5px;color:var(--text-dim);margin-top:1px;}
 
 /* ---------- Badges-Tab: Auszeichnungs-Grid ---------- */
 .badge-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 0 12px;}
@@ -1498,8 +1498,8 @@ const RAW_CITIES = [
 ["Genf","Schweiz","ch",46.2044,6.1432,"GVA"],
 ["Paris","Frankreich","fr",48.8566,2.3522,"CDG"],
 ["Nizza","Frankreich","fr",43.7102,7.2620,"NCE"],
-["London","Vereinigtes Königreich","gb",51.5074,-0.1278,"LHR"],
-["Edinburgh","Vereinigtes Königreich","gb",55.9533,-3.1883,"EDI"],
+["London","England","gb",51.5074,-0.1278,"LHR"],
+["Edinburgh","Schottland","gb",55.9533,-3.1883,"EDI"],
 ["Dublin","Irland","ie",53.3498,-6.2603,"DUB"],
 ["Amsterdam","Niederlande","nl",52.3676,4.9041,"AMS"],
 ["Brüssel","Belgien","be",50.8503,4.3517,"BRU"],
@@ -1620,7 +1620,7 @@ const CITY_COAT_OF_ARMS = {
   'Wien|Österreich': 'Wien Wappen.svg',
   'Zürich|Schweiz': 'Wappen Zürich matt.svg',
   'Paris|Frankreich': 'Grandes Armes de Paris.svg',
-  'London|Vereinigtes Königreich': 'Coat of Arms of The City of London.svg'
+  'London|England': 'Coat of Arms of The City of London.svg'
 };
 /* Special:FilePath löst den Dateinamen serverseitig auf (kein manuelles MD5-Hashing des
    Wikimedia-Pfads nötig) und liefert wahlweise eine skalierte PNG-Vorschau der SVG-Datei. */
@@ -1877,7 +1877,7 @@ const SVG_ICON_PATHS = {
   close:'<path d="M6 6l12 12M18 6L6 18"/>',
   home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9"/>',
   gear:'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/>',
+  co2Cloud:'<path d="M7 18h9a3.5 3.5 0 0 0 0-7 5 5 0 0 0-9.6-1.5A4 4 0 0 0 7 18z"/>',
   continent:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a13 13 0 0 1 0 18"/><path d="M12 3a13 13 0 0 0 0 18"/>',
   flame:'<path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 3-6 5-10z"/>',
   leaf:'<path d="M11 20c-4-.3-7-3.4-7-7.6C4 7 9 4 17 4c0 8-4 13-9.5 13.4"/><path d="M4.5 19.5C7 15 10 13 13 12"/>',
@@ -1892,7 +1892,6 @@ const SVG_ICON_PATHS = {
   navBadges:'<circle cx="12" cy="9" r="5"/><path d="M9 13.5L7.5 21l4.5-2.5 4.5 2.5-1.5-7.5"/>',
   navBucket:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"/><path d="M3 12.5h18"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/>',
   settingsGear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
-  co2Cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-1-8.9A5.5 5.5 0 0 1 16 8.5h.5a4 4 0 0 1 0 8H6.5z"/><path d="M2 21h2.5M1.5 17.5h2"/>',
   greetSun:'<circle cx="12" cy="12" r="4.5"/><path d="M12 3v2.5M12 18.5V21M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M3 12h2.5M18.5 12H21M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>',
   greetSunrise:'<path d="M4 17h16M6.5 17a5.5 5.5 0 0 1 11 0"/><path d="M12 6.5v3.5M6 8.5l1.7 1.7M18 8.5l-1.7 1.7"/><path d="M2.5 20.5h19"/>',
   greetMoon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/>'
@@ -2013,11 +2012,20 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.49.0';
+const APP_VERSION = '1.50.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.50.0', tier:'🟡', title:'Teilen als Bild, Dashboard-Feinschliff & UK aufgeteilt', items:[
+    'Teilen einer Reise erstellt jetzt eine gerenderte Karten-Grafik (Titelbild als Hintergrund, falls vorhanden, sonst neutraler Verlauf) statt nur reinen Text — mit automatischem Text-Fallback auf Geräten ohne Datei-Sharing.',
+    'CO₂- und Kontinent-Icon in der Reise-Detailansicht durch die zweifarbige "Trip card"-Variante aus dem Icon-Set ersetzt, passend zum bereits zweifarbigen Transport-Icon dort.',
+    'Begrüßungs-Kachel steht jetzt über der Level-Kachel; Level-Kachel selbst deutlich kompakter und weniger dominant.',
+    'Detailansicht einer Reise ohne Foto zeigt jetzt einfach den neutralen Hintergrund ohne Kamera-Platzhalter-Icon (Listenansicht behält ihren Platzhalter).',
+    'Statistiken: Ursache für ungleiche Kartenabstände gefunden und behoben (gepaarte Karten hatten auf Mobile keinen Abstand zueinander).',
+    'Fotos hochladen, löschen oder als Titelbild festlegen zählt jetzt ebenfalls als Änderung ("Zuletzt geändert" in der Detailansicht).',
+    '"Vereinigtes Königreich" in London (England) und Edinburgh (Schottland) aufgeteilt — zählen jetzt einzeln in Länder-Statistik und Achievements. Bestehende Reisen werden automatisch migriert.'
+  ]},
   {v:'1.49.0', tier:'🟡', title:'Begrüßung, Silbentrennung & Änderungs-Zeitstempel', items:[
     'Neue Begrüßungs-Kachel ganz oben im Dashboard — Tageszeit-abhängiger Gruß ("Guten Morgen" / "Schönen Tag" / "Guten Abend" / "Noch wach") mit dem in den Einstellungen hinterlegten Namen, falls vorhanden.',
     'Umgebrochene Ortsnamen in "Alle Reisen" trennen jetzt silbengerecht statt beliebig mitten im Wort (CSS-Silbentrennung nach deutschen Regeln).',
@@ -2668,6 +2676,13 @@ function migrateTrip(t){
     else if(normalized==='alma') m = Object.assign({}, m, {purpose:'alma', purposeCustom:''});
   }
   if(m.photos===undefined) m = Object.assign({}, m, {photos:[]});
+  // "Vereinigtes Königreich" wurde in die einzelnen Landesteile aufgeteilt (siehe
+  // CITY_DB) — bestehende Reisen nach London/Edinburgh werden hier einmalig nachgezogen,
+  // damit sie in Länder-Statistik/Achievements sofort als England/Schottland zählen.
+  if(m.country==='Vereinigtes Königreich'){
+    if(m.city==='London') m = Object.assign({}, m, {country:'England'});
+    else if(m.city==='Edinburgh') m = Object.assign({}, m, {country:'Schottland'});
+  }
   return m;
 }
 
@@ -2902,15 +2917,18 @@ async function addPhotosToTrip(tripId, fileList, root){
   const toAdd = files.slice(0, slotsLeft);
   if(files.length>toAdd.length){ showToast('Nur die ersten '+toAdd.length+' Fotos übernommen (max. '+MAX_PHOTOS_PER_TRIP+' pro Reise).'); }
   showToast('Fotos werden verarbeitet …');
+  let addedAny = false;
   for(const file of toAdd){
     try{
       const dataUrl = await compressImageFile(file);
       trip.photos.push({id:uid(), data:dataUrl, note:'', addedAt:new Date().toISOString()});
+      addedAny = true;
     }catch(e){
       console.error('Foto-Kompression fehlgeschlagen:', e);
       showToast('⚠️ Ein Foto konnte nicht verarbeitet werden.');
     }
   }
+  if(addedAny) trip.updatedAt = Date.now();
   await saveTrips();
   if(viewingTripId===tripId && root){
     renderTripDetailPage(tripId, root);
@@ -2930,6 +2948,7 @@ async function deletePhotoFromTrip(tripId, photoId, root){
   const trip = trips.find(t=>t.id===tripId);
   if(!trip || !trip.photos) return;
   trip.photos = trip.photos.filter(p=>p.id!==photoId);
+  trip.updatedAt = Date.now();
   await saveTrips();
   if(viewingTripId===tripId && root){
     renderTripDetailPage(tripId, root);
@@ -4480,10 +4499,10 @@ function renderDashboard(root){
     html += '<div class="last-entry-note">'+svgIcon('clock',13,'currentColor')+' Letzter Eintrag erstellt: '+lastEntryTs+'</div>';
     html += '</div>';
   }
+  html += greetingTileHTML();
   if(trips.length){
     html += levelTileHTML(computeBadgesView());
   }
-  html += greetingTileHTML();
   html += '<div class="hero">';
   html += '  <div class="hero-total">';
   html += '    <div class="hero-eyebrow">'+currentYear+' — Stand aktuelles Jahr</div>';
@@ -6281,6 +6300,7 @@ async function setCoverPhoto(tripId, photoId, root){
   if(idx<=0) return;
   const [photo] = trip.photos.splice(idx,1);
   trip.photos.unshift(photo);
+  trip.updatedAt = Date.now();
   await saveTrips();
   showToast('⭐ Titelbild festgelegt.');
   if(viewingTripId===tripId && root){
@@ -6338,6 +6358,19 @@ function detailIconItemHTML(icon, label, value, sub){
     (sub ? '<div class="log-detail-item-sub">'+sub+'</div>' : '')+
     '</div></div>';
 }
+/* Zweifarbiges Kontinent-Icon nur für die Reise-Detailansicht (Outline var(--text-dim),
+   Meridiane var(--text-faint)) — passend zum "Trip card"-Eintrag im Icon-Set-Kontext und
+   im selben Stil wie das zweifarbige Transport-Icon dort. Der einfarbige `continent`-
+   Eintrag in SVG_ICON_PATHS bleibt unverändert, da er global u. a. im "Orte"-Tab und in
+   Sortier-Labels mit eigener Akzentfarbe verwendet wird. */
+function continentIconDuoHTML(size){
+  size = size||16;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+
+    '<circle cx="12" cy="12" r="9" stroke="var(--text-dim)"/>'+
+    '<path d="M3 12h18" stroke="var(--text-faint)"/>'+
+    '<path d="M12 3a13 13 0 0 1 0 18" stroke="var(--text-faint)"/>'+
+    '<path d="M12 3a13 13 0 0 0 0 18" stroke="var(--text-faint)"/></svg>';
+}
 function detailCardHTML(t){
   const pLbl = purposeLabel(t);
   const contCode = getContinent((t.cityCC||'').toLowerCase());
@@ -6350,9 +6383,9 @@ function detailCardHTML(t){
   (t.returnWaypoints||[]).forEach(name=>{
     items += detailIconItemHTML(svgIcon('stopPin',16,'var(--rose)'), 'Stopp · Rückweg', waypointDisplayHTML(name));
   });
-  if(!t.cityOnly) items += detailIconItemHTML(svgIcon('co2Cloud',16,'currentColor'), 'CO₂', fmtKg(tripCO2Kg(t)));
+  if(!t.cityOnly) items += detailIconItemHTML(svgIcon('co2Cloud',16,'var(--text-dim)'), 'CO₂', fmtKg(tripCO2Kg(t)));
   items += detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,t.purpose==='alma'?'var(--rose)':'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'), 'Grund', pLbl||'–');
-  items += detailIconItemHTML(contInfo?contInfo.icon:svgIcon('continent',16,'var(--text-faint)'), 'Kontinent', contInfo?contInfo.label:'–');
+  items += detailIconItemHTML(continentIconDuoHTML(16), 'Kontinent', contInfo?contInfo.label:'–');
 
   let html = '<div class="log-detail-card">';
   html += '  <div class="log-detail-section">';
@@ -6526,7 +6559,6 @@ function renderTripDetailPage(tripId, root){
   html += '    <button type="button" class="tdp-menu" data-share="'+t.id+'" title="Teilen">'+svgIcon('share',17,'currentColor')+'</button>';
   html += '  </div>';
   html += '  <div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
-  if(!hasPhoto) html += '    <span class="tdp-hero-placeholder-icon">'+svgIcon('photos',40,'currentColor')+'</span>';
   html += '    <span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span>';
   html += '    <div class="tdp-hero-overlay">';
   html += tripCardHeroRouteHTML(t);
@@ -6677,14 +6709,108 @@ function tripTransportIconsHTML(t){
    iOS/Android/Desktop), mit Zwischenablage-Fallback für Browser ohne Unterstützung.
    WELTLOG ist eine reine Client-App ohne aufrufbare Einzelreise-URLs — geteilt wird
    daher eine Text-Zusammenfassung, kein direkter Link zur Reise. */
+/* Rendert eine teilbare Karten-Grafik der Reise per Canvas (1200×800, PNG) — Titelbild
+   als Hintergrund, falls vorhanden, sonst derselbe dunkle Verlauf wie die Platzhalter-
+   Karte in der Detailansicht. Enthält Datum, Von→Nach mit Land, sowie Dauer/Distanz/
+   Transport, im selben Look wie die Foto-Karte in "Alle Reisen". */
+async function buildShareCardBlob(t){
+  const W = 1200, H = 800;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  if(t.photos && t.photos.length){
+    try{
+      const img = await new Promise((res,rej)=>{
+        const im = new Image();
+        im.onload = ()=>res(im);
+        im.onerror = rej;
+        im.src = t.photos[0].data;
+      });
+      const scale = Math.max(W/img.width, H/img.height);
+      const dw = img.width*scale, dh = img.height*scale;
+      ctx.drawImage(img, (W-dw)/2, (H-dh)/2, dw, dh);
+    }catch(e){
+      console.error('Titelbild konnte für Teilen-Grafik nicht geladen werden:', e);
+      const grad = ctx.createLinearGradient(0,0,W,H);
+      grad.addColorStop(0,'#1a2038'); grad.addColorStop(1,'#0e1526');
+      ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+    }
+  } else {
+    const grad = ctx.createLinearGradient(0,0,W,H);
+    grad.addColorStop(0,'#1a2038'); grad.addColorStop(1,'#0e1526');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+  }
+
+  const overlay = ctx.createLinearGradient(0,0,0,H);
+  overlay.addColorStop(0,'rgba(0,0,0,0.2)');
+  overlay.addColorStop(0.5,'rgba(0,0,0,0.1)');
+  overlay.addColorStop(1,'rgba(0,0,0,0.8)');
+  ctx.fillStyle = overlay; ctx.fillRect(0,0,W,H);
+
+  if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '600 26px Inter, sans-serif';
+  ctx.fillText(fmtRange(t.dateFrom,t.dateTo), 48, 66);
+
+  const fromLabel = t.fromCity ? stripCountrySuffix(t.fromCity) : '';
+  const toLabel = stripCountrySuffix(t.city);
+  ctx.textAlign = 'left';
+  ctx.font = '700 62px "Space Grotesk", sans-serif';
+  ctx.fillStyle = '#fff';
+  if(fromLabel) ctx.fillText(fromLabel, 48, H-256);
+
+  ctx.textAlign = 'right';
+  ctx.fillText(toLabel, W-48, H-256);
+  ctx.font = '400 28px Inter, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  if(t.country) ctx.fillText(t.country, W-48, H-216);
+  ctx.textAlign = 'left';
+
+  const parts = [];
+  if(t.dateFrom && t.dateTo){
+    const days = Math.round((new Date(t.dateTo)-new Date(t.dateFrom))/86400000)+1;
+    parts.push(days+' Tage');
+  }
+  if(!t.cityOnly){ parts.push(fmtKm(tripTotal(t))); parts.push(tripTransportLabel(t)); }
+  ctx.font = '600 30px Inter, sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.fillText(parts.join('   ·   '), 48, H-108);
+
+  ctx.font = '600 24px "Space Grotesk", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.fillText('WELTLOG', 48, H-48);
+
+  return await new Promise(res=>canvas.toBlob(res,'image/png',0.92));
+}
 async function shareTrip(tripId){
   const t = trips.find(x=>x.id===tripId);
   if(!t) return;
   const parts = [t.fromCity ? (t.fromCity+' → '+t.city) : t.city, fmtRange(t.dateFrom,t.dateTo)];
   if(!t.cityOnly) parts.push(fmtKm(tripTotal(t))+' · '+tripTransportLabel(t));
   const text = parts.join(' · ')+'\n\nGeloggt mit WELTLOG 🧭';
+  const title = 'WELTLOG — '+t.city;
+
+  // Bevorzugt: gerenderte Karten-Grafik teilen (Titelbild als Hintergrund, falls vorhanden)
+  try{
+    if(navigator.share && navigator.canShare){
+      const blob = await buildShareCardBlob(t);
+      if(blob){
+        const file = new File([blob], 'weltlog-'+(t.city||'reise').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.png', {type:'image/png'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({files:[file], title, text});
+          return;
+        }
+      }
+    }
+  }catch(e){
+    if(e && e.name==='AbortError') return; // Nutzer hat abgebrochen
+    console.error('Karten-Teilen fehlgeschlagen, falle auf Text zurück:', e);
+  }
+
   if(navigator.share){
-    try{ await navigator.share({title:'WELTLOG — '+t.city, text}); }
+    try{ await navigator.share({title, text}); }
     catch(e){ /* Nutzer hat abgebrochen — kein Fehler */ }
   } else if(navigator.clipboard){
     try{
