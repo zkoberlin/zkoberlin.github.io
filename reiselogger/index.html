@@ -2060,6 +2060,86 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   .wl-badge-cat-progress{width:48px}
 }
 
+
+/* ============================================================
+   WELTLOG RC3 — badge architecture + render stability
+   ============================================================ */
+.badge-stamp{
+  overflow:hidden !important;
+  contain:paint;
+}
+.badge-stamp svg{
+  overflow:hidden !important;
+  max-width:100% !important;
+  max-height:100% !important;
+}
+.wl-badge-categories-rc3{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.wl-badge-category-rc3{
+  background:var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius:16px;
+  overflow:hidden;
+}
+.wl-badge-category-rc3 > summary{
+  list-style:none;
+  cursor:pointer;
+  min-height:60px;
+  padding:13px 16px;
+  display:grid;
+  grid-template-columns:38px minmax(0,1fr) 78px 16px;
+  align-items:center;
+  gap:12px;
+}
+.wl-badge-category-rc3 > summary::-webkit-details-marker{display:none}
+.wl-badge-category-rc3[open] .wl-badge-cat-chevron{transform:rotate(90deg)}
+.wl-badge-category-rc3 .wl-badge-cat-icon{
+  width:38px;height:38px;border-radius:11px;
+}
+.wl-badge-category-rc3 .wl-badge-cat-title{display:block}
+.wl-badge-category-rc3 .wl-badge-cat-meta{display:block}
+.wl-badge-category-rc3 .wl-badge-category-content{padding:0 12px 12px}
+.wl-badge-category-rc3 .badge-grid{
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:10px;
+}
+.badge-card[data-badge-status="locked"]{opacity:.62}
+.badge-card[data-badge-status="unlocked"]{opacity:1}
+.badge-status-label{
+  display:inline-flex;
+  margin-top:6px;
+  font-size:10px;
+  color:var(--text-faint);
+}
+.badge-card[data-badge-status="unlocked"] .badge-status-label{color:var(--gold)}
+
+@media(max-width:600px){
+  .wl-badge-category-rc3 > summary{
+    grid-template-columns:34px minmax(0,1fr) 50px 14px;
+    padding:11px 12px;
+    gap:9px;
+  }
+  .wl-badge-category-rc3 .wl-badge-cat-icon{width:34px;height:34px}
+  .wl-badge-category-rc3 .badge-grid{grid-template-columns:1fr}
+  .badge-card{
+    grid-template-columns:72px minmax(0,1fr) !important;
+  }
+  .badge-stamp{
+    width:72px !important;height:64px !important;min-height:64px !important;
+  }
+}
+@media(min-width:601px){
+  .badge-stamp{
+    width:96px !important;height:78px !important;min-width:96px !important;min-height:78px !important;
+  }
+  .badge-card{
+    grid-template-columns:96px minmax(0,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -8958,7 +9038,8 @@ loadData();
   }
 
   function repairBadges(){
-    document.querySelectorAll('.badge-grid').forEach(groupBadgeGrid);
+    // RC3 badge grouping is handled by rebuildBadgeCollectionRC3().
+    // Do not group individual grids independently.
   }
 
   function reorderHome(){
@@ -8986,11 +9067,153 @@ loadData();
   else setTimeout(polish,0);
 
   // Existing app renderers replace chunks of DOM, so re-apply only when needed.
-  const obs=new MutationObserver(()=>requestAnimationFrame(polish));
-  window.addEventListener('load',()=>{
-    const app=document.querySelector('.wrap, main, #app');
-    if(app) obs.observe(app,{childList:true,subtree:true});
-  },{once:true});
+  // RC3: no permanent MutationObserver. polish() mutates the DOM itself and
+  // observing those mutations caused a self-trigger loop in RC2.
+  window.addEventListener('load',()=>requestAnimationFrame(polish),{once:true});
+})();
+</script>
+
+
+<script>
+(function(){
+  const RC3_CATS = [
+    ['countries','Länder','globe'],
+    ['cities','Städte','city'],
+    ['distance','Kilometer','route'],
+    ['transport','Transport','trips'],
+    ['sustainability','Nachhaltigkeit','leaf'],
+    ['history','Travel History','calendar'],
+    ['germany','Deutschland','home'],
+    ['special','Spezial','discover']
+  ];
+
+  function txt(el){ return (el?.textContent||'').toLowerCase(); }
+
+  // Central semantic classifier. Prefer stable identifiers/data attributes when
+  // the existing renderer exposes them; text matching is only a legacy fallback.
+  function stableBadgeKey(card){
+    return [
+      card.dataset.badgeId, card.dataset.id, card.id,
+      card.getAttribute('data-key'), card.getAttribute('data-achievement')
+    ].filter(Boolean).join(' ').toLowerCase();
+  }
+
+  function categoryFor(card){
+    const k=stableBadgeKey(card);
+    const t=txt(card);
+    const q=(k+' '+t);
+
+    if(/deutsch|bundesland|germany|berlin|brandenburg|hamburg|bayern|sachsen/.test(q)) return 'germany';
+    if(/sustain|co2|co₂|emission|klima|eco|green|nachhalt/.test(q)) return 'sustainability';
+    if(/transport|flight|plane|flug|train|bahn|zug|car|auto|bus|bike|rad|fahrrad/.test(q)) return 'transport';
+    if(/distance|kilometer|\bkm\b|distanz|strecke|erdumfang|mond|mars/.test(q)) return 'distance';
+    if(/city|cities|stadt|städte|metropole|hauptstadt/.test(q)) return 'cities';
+    if(/country|countries|land|länder|kontinent|europe|europa|asia|asien|afrika|america|amerika|ozean/.test(q)) return 'countries';
+    if(/history|reise|reisen|trip|year|jahr|monat|woche|tag|streak|serie|anniversary|jubil/.test(q)) return 'history';
+    return 'special';
+  }
+
+  function iconMarkup(name){
+    try{
+      if(typeof window.wlIcon==='function') return window.wlIcon(name,18);
+      if(typeof window.icon==='function') return window.icon(name,18);
+      if(window.WELTLOG_ICONS?.[name]) return window.WELTLOG_ICONS[name];
+      if(window.ICONS?.[name]) return window.ICONS[name];
+    }catch(e){}
+    return '<span aria-hidden="true">·</span>';
+  }
+
+  function findBadgeScope(){
+    const grids=[...document.querySelectorAll('.badge-grid')].filter(g=>!g.closest('.wl-badge-categories-rc3'));
+    if(!grids.length) return null;
+
+    // Find the nearest common container that owns the collection.
+    let scope=grids[0].parentElement;
+    while(scope && !grids.every(g=>scope.contains(g))) scope=scope.parentElement;
+    return scope || grids[0].parentElement;
+  }
+
+  function rebuildBadgeCollectionRC3(){
+    if(document.querySelector('.wl-badge-categories-rc3')) return;
+
+    const grids=[...document.querySelectorAll('.badge-grid')]
+      .filter(g=>!g.closest('.wl-badge-categories-rc3'));
+    const cards=grids.flatMap(g=>[...g.children].filter(c=>c.classList.contains('badge-card')));
+    if(cards.length<5) return;
+
+    // Mark status before moving cards.
+    cards.forEach(c=>{
+      const unlocked=!c.classList.contains('locked');
+      c.dataset.badgeStatus=unlocked?'unlocked':'locked';
+      if(!c.querySelector('.badge-status-label')){
+        const body=c.querySelector('.badge-body');
+        if(body){
+          const status=document.createElement('span');
+          status.className='badge-status-label';
+          status.textContent=unlocked?'Freigeschaltet':'In Arbeit';
+          body.appendChild(status);
+        }
+      }
+    });
+
+    const groups={};
+    cards.forEach(c=>(groups[categoryFor(c)] ||= []).push(c));
+
+    const host=document.createElement('div');
+    host.className='wl-badge-categories-rc3';
+
+    RC3_CATS.forEach(([key,label,ico])=>{
+      const list=groups[key]||[];
+      if(!list.length) return;
+      const unlocked=list.filter(c=>c.dataset.badgeStatus==='unlocked').length;
+      const pct=Math.round(unlocked/list.length*100);
+
+      const d=document.createElement('details');
+      d.className='wl-badge-category-rc3';
+      if(key==='countries') d.open=true;
+      d.innerHTML=
+        '<summary>'+
+          '<span class="wl-badge-cat-icon">'+iconMarkup(ico)+'</span>'+
+          '<span class="wl-badge-cat-main"><span class="wl-badge-cat-title">'+label+'</span>'+
+          '<span class="wl-badge-cat-meta">'+unlocked+' von '+list.length+' freigeschaltet</span></span>'+
+          '<span class="wl-badge-cat-progress" aria-hidden="true"><span style="width:'+pct+'%"></span></span>'+
+          '<span class="wl-badge-cat-chevron" aria-hidden="true">›</span>'+
+        '</summary>'+
+        '<div class="wl-badge-category-content"><div class="badge-grid"></div></div>';
+
+      const target=d.querySelector('.badge-grid');
+      list.forEach(c=>target.appendChild(c));
+      host.appendChild(d);
+    });
+
+    const firstGrid=grids[0];
+    firstGrid.parentNode.insertBefore(host,firstGrid);
+
+    // Remove only the now-empty legacy grids and their immediately associated
+    // empty section headings where safe; no achievement data is deleted.
+    grids.forEach(g=>{
+      if(!g.children.length) g.remove();
+    });
+
+    host.addEventListener('toggle',e=>{
+      const d=e.target;
+      if(!(d instanceof HTMLDetailsElement) || !d.open || innerWidth>600) return;
+      host.querySelectorAll('details[open]').forEach(o=>{if(o!==d)o.open=false});
+    },true);
+  }
+
+  function run(){
+    rebuildBadgeCollectionRC3();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(run,0));
+  else setTimeout(run,0);
+
+  // Hook user navigation/render events without observing our own DOM mutations.
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button,[role="tab"],.tab-btn,.bottom-tab-btn');
+    if(b) setTimeout(run,30);
+  },true);
 })();
 </script>
 
