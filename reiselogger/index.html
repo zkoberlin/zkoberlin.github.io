@@ -1401,6 +1401,8 @@ span.flatpickr-weekday{
 .record-mini span{font-size:10.5px;color:var(--text-faint);}
 .near-badge{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);}
 .near-badge:first-of-type{border-top:0;}
+.near-badge-icon{width:46px;height:46px;min-width:46px;max-width:46px;min-height:46px;max-height:46px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.near-badge-icon svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;}
 .near-badge-body{flex:1;min-width:0;}
 .near-badge-name{font-size:12px;font-weight:600;}
 .near-badge-progress{font-size:10.5px;color:var(--text-faint);}
@@ -3016,7 +3018,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
     line-height:1.15 !important;
     letter-spacing:.075em !important;
     white-space:nowrap !important;
-    color:var(--text-faint) !important;
+    color:var(--gold) !important;
     opacity:.9 !important;
   }
   .brand-text{
@@ -3030,15 +3032,6 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   .brand-text p{
     font-size:6.8px !important;
     letter-spacing:.055em !important;
-  }
-}
-
-
-/* WEITWEG 3.1.3 — Mobile Claim in Gold */
-@media(max-width:600px){
-  .brand-text p{
-    color:var(--gold) !important;
-    opacity:1 !important;
   }
 }
 
@@ -3875,15 +3868,21 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.1.3';
+const APP_VERSION = '3.1.4';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
-  {v:'3.1.3', tier:'🟢', title:'Claim-Farbe auf Mobile', items:[
-    'Der WEITWEG-Claim wird auf Mobile jetzt wie in der Desktop/Web-Version im goldenen Markenakzent dargestellt.'
+  {v:'3.1.4', tier:'🟢', title:'Claim im Header jetzt auch mobil in Gold', items:[
+    'Der Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“ wurde auf Desktop bereits in Gold angezeigt, auf Mobile (≤600px) aber von einer späteren, spezifischeren Regel aus dem 3.1.2-Release auf Text-Faint zurückgesetzt.',
+    'Die mobile Regel setzt die Claim-Farbe jetzt ebenfalls auf Gold, sodass die Kopfzeile auf allen Displaygrößen einheitlich aussieht.'
+  ]},
+  {v:'3.1.3', tier:'🟢', title:'„Fast geschafft“ wirklich am Ursprungsort korrigiert', items:[
+    'Die Vorgänger-Fixes (3.0.1-rc13 / 3.1.0 / 3.1.1) haben ausschließlich einen inzwischen ungenutzten CSS-Block korrigiert. Die tatsächlich aktive „Fast geschafft“-Kachel wurde von einer anderen, später überschreibenden Renderer-Funktion erzeugt und war davon unberührt.',
+    'Root Cause: Das Badge-Artwork saß in einem Container ohne feste Höhe, ohne Overflow-Begrenzung und ohne Regel, die das SVG auf die Containergröße zwingt. Da die Vintage-Badge-SVGs ihre eigene feste Breite/Höhe mitbringen, wurden sie in Originalgröße gerendert und legten sich über den Titel- und Fortschrittstext.',
+    'Der Icon-Container hat jetzt eine feste 46×46px-Box mit Overflow-Begrenzung, und das SVG wird zuverlässig darauf skaliert – Artwork und Text können sich nicht mehr überlagern.'
   ]},
   {v:'3.1.2', tier:'🟢', title:'WEITWEG Claim auf Mobile', items:[
     'Der Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“ wird jetzt auch in der mobilen Kopfzeile unter dem WEITWEG-Schriftzug angezeigt.',
@@ -10056,7 +10055,7 @@ renderDiscover = function(root){
     if(view.lastUnlocked)h+='<div class="discover-last-inner"><div class="discover-last-stamp">'+badgeStampHTML(view.lastUnlocked)+'</div><div><div class="discover-last-name">'+view.lastUnlocked.name+'</div><div class="discover-last-desc">'+view.lastUnlocked.description+'</div></div></div>';
     else h+='<div style="font-size:12px;color:var(--text-faint)">Dein erster Badge wartet auf deine erste Reise.</div>';
     h+='</div><div class="discover-achievement-card"><div class="discover-achievement-label">Fast geschafft</div><div class="discover-near-list">';
-    if(near.length)near.forEach(b=>{const pct=Math.min(100,Math.round(b.progress/b.target*100));h+='<div class="near-badge"><div style="width:46px">'+badgeStampHTML(b)+'</div><div class="near-badge-body"><div class="near-badge-name">'+b.name+'</div><div class="near-badge-progress">'+pct+'% · '+b.description+'</div></div></div>';}); else h+='<div style="font-size:12px;color:var(--text-faint)">Keine offenen Badges.</div>';
+    if(near.length)near.forEach(b=>{const pct=Math.min(100,Math.round(b.progress/b.target*100));h+='<div class="near-badge"><div class="near-badge-icon">'+badgeStampHTML(b)+'</div><div class="near-badge-body"><div class="near-badge-name">'+b.name+'</div><div class="near-badge-progress">'+pct+'% · '+b.description+'</div></div></div>';}); else h+='<div style="font-size:12px;color:var(--text-faint)">Keine offenen Badges.</div>';
     h+='</div><button class="section-link" data-discover-view="badges" style="margin-top:12px">Alle Badges →</button></div></div>';
   }
   h+='<div class="discover-grid"><div class="discover-feature"><div class="discover-feature-title">Persönliche Rekorde <button class="section-link" data-discover-view="stats">Alle →</button></div><div class="record-preview">';
