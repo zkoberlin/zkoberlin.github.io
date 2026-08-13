@@ -1771,7 +1771,6 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   .brand-text h1{font-size:16px;white-space:nowrap}
   .version-pill{display:none}
   .top-actions{margin-left:auto;flex-shrink:0;width:auto!important}
-  .top-actions>a.icon-btn{display:none}
   .theme-switch{gap:2px}
   .icon-btn,.theme-switch button{width:40px;height:40px;min-width:40px;min-height:40px}
   .bottom-tabs{padding-left:4px;padding-right:4px}
@@ -1977,9 +1976,27 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   }
   .brand-text p,
   .version-pill,
-  .top-actions,
   .info-strip{
     display:none !important;
+  }
+  .top-actions{
+    display:flex !important;
+    width:auto !important;
+    margin-left:auto !important;
+    flex-shrink:0 !important;
+  }
+  .top-actions #newTripBtn,
+  .top-actions .theme-switch,
+  .top-actions #homeChip,
+  .top-actions #settingsBtn{
+    display:none !important;
+  }
+  .top-actions a.icon-btn{
+    display:flex !important;
+    width:36px !important;
+    height:36px !important;
+    min-width:36px !important;
+    min-height:36px !important;
   }
   .tabs{
     display:none !important;
@@ -3868,13 +3885,21 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.1.4';
+const APP_VERSION = '3.1.6';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.1.6', tier:'🟢', title:'Mobiler Header nur noch mit Home-Icon', items:[
+    'In der Kopfzeile auf schmalen Displays (≤600px) sind jetzt nur noch das Home-Icon (Link zu zkoberlin.github.io) sichtbar; Homebase-Chip und Einstellungen-Zahnrad sind entfernt, da beide bereits im Profil-Tab erreichbar sind (Homebase & „Einstellungen & Theme").',
+    '„Neue Reise“ und der Theme-Umschalter waren dort schon zuvor ausgeblendet, da sie über den sticky CTA im Reisen-Tab bzw. über die Einstellungen verfügbar sind.'
+  ]},
+  {v:'3.1.5', tier:'🟢', title:'Home-Icon im Header jetzt auch auf Mobile sichtbar', items:[
+    'Auf schmalen Displays (≤600px) wurde die gesamte Top-Actions-Leiste inklusive Home-Icon per CSS ausgeblendet, damit „Neue Reise“ und Theme-Umschalter Platz sparen — die haben dort aber ohnehin eigene Bedienelemente (sticky CTA im Reisen-Tab bzw. Einstellungen).',
+    'Das Home-Icon (Link zu zkoberlin.github.io) bleibt jetzt gezielt sichtbar, während die redundanten Buttons weiterhin ausgeblendet sind.'
+  ]},
   {v:'3.1.4', tier:'🟢', title:'Claim im Header jetzt auch mobil in Gold', items:[
     'Der Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“ wurde auf Desktop bereits in Gold angezeigt, auf Mobile (≤600px) aber von einer späteren, spezifischeren Regel aus dem 3.1.2-Release auf Text-Faint zurückgesetzt.',
     'Die mobile Regel setzt die Claim-Farbe jetzt ebenfalls auf Gold, sodass die Kopfzeile auf allen Displaygrößen einheitlich aussieht.'
