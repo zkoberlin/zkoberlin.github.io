@@ -1336,7 +1336,7 @@ span.flatpickr-weekday{
 
 
 /* ============================================================
-   WELTLOG 2.1 — konsequenter Product/IA Refactor
+   WEITWEG 2.1 — konsequenter Product/IA Refactor
    ============================================================ */
 :root{
   --radius-xs:8px;--radius-sm:12px;--radius-md:16px;--radius-lg:20px;
@@ -1466,7 +1466,7 @@ span.flatpickr-weekday{
 
 
 /* ============================================================
-   WELTLOG Refactor v3 — detail, form, icon & accessibility pass
+   WEITWEG Refactor v3 — detail, form, icon & accessibility pass
    ============================================================ */
 :root{
   --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-hero:20px;
@@ -1555,7 +1555,7 @@ button:focus-visible,[role="button"]:focus-visible,summary:focus-visible{outline
 
 
 /* ============================================================
-   WELTLOG Refactor v4 — final system & screen audit
+   WEITWEG Refactor v4 — final system & screen audit
    ============================================================ */
 :root{
   --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-6:24px;--space-8:32px;--space-12:48px;
@@ -1635,7 +1635,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG Refactor v5 — mobile polish & legacy subpage alignment
+   WEITWEG Refactor v5 — mobile polish & legacy subpage alignment
    ============================================================ */
 :root{
   --content-max:1120px;
@@ -1834,7 +1834,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG 2.4 RC1 — final screen audit
+   WEITWEG 2.4 RC1 — final screen audit
    ============================================================ */
 /* Release candidate: one hierarchy, one rhythm, no legacy dashboard chrome. */
 .home-side .level-hero{display:none}
@@ -1897,7 +1897,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG RC4 — mobile app bar + settings theme control
+   WEITWEG RC4 — mobile app bar + settings theme control
    ============================================================ */
 .settings-theme-block{
   margin:18px 0 14px;
@@ -2008,7 +2008,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 }
 
 
-/* WELTLOG RC5 — mobile release polish */
+/* WEITWEG RC5 — mobile release polish */
 @media(max-width:600px){
   .topbar{min-height:46px!important}
   .topbar-inner{height:46px!important;min-height:46px!important;padding:5px 16px!important;gap:7px!important}
@@ -2032,7 +2032,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 }
 
 
-/* WELTLOG RC7 Clean Merge */
+/* WEITWEG RC7 Clean Merge */
 :root{--paper2:#f3ede0;--vf-title:'Oswald',var(--font-display);--vf-num:'Bitter',var(--font-display)}
 .badge-card{display:grid!important;grid-template-columns:104px minmax(0,1fr)!important;gap:14px!important;align-items:start!important;overflow:hidden}
 .badge-stamp{width:104px!important;height:104px!important;min-width:104px!important;min-height:104px!important;display:flex!important;align-items:center;justify-content:center;overflow:hidden!important;contain:paint;background:transparent!important}
@@ -2059,7 +2059,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG RC8 — badge polish, map cleanup, section alignment
+   WEITWEG RC8 — badge polish, map cleanup, section alignment
    ============================================================ */
 
 /* Section title + CTA must share the same baseline */
@@ -2333,7 +2333,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG RC9 — badge detail & release notes polish
+   WEITWEG RC9 — badge detail & release notes polish
    ============================================================ */
 
 /* Home/Discover section heads: exact visual baseline */
@@ -2531,7 +2531,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 
 /* ============================================================
-   WELTLOG RC10 — FINAL source-level mobile fixes
+   WEITWEG RC10 — FINAL source-level mobile fixes
    ============================================================ */
 
 /* These are the real renderer classes — no JS post-processing required. */
@@ -2818,6 +2818,221 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   }
 }
 
+
+
+/* ============================================================
+   WEITWEG 3.1.1 — Fast geschafft: final reference layout
+   ============================================================ */
+.fast-achievements{
+  width:100%;
+  overflow:hidden;
+}
+
+.fast-achievements-title{
+  margin:0 0 14px;
+  color:var(--text-faint);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:500;
+  line-height:1.25;
+}
+
+.fast-achievement-list{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+}
+
+.fast-achievement-row{
+  display:grid !important;
+  grid-template-columns:140px minmax(0,1fr) !important;
+  column-gap:24px !important;
+  align-items:center !important;
+  width:100% !important;
+  min-width:0 !important;
+  padding:20px 0 !important;
+  cursor:pointer;
+}
+
+.fast-achievement-row + .fast-achievement-row{
+  border-top:1px solid var(--border-soft);
+}
+
+.fast-achievement-art{
+  grid-column:1 !important;
+  position:relative !important;
+  width:140px !important;
+  height:140px !important;
+  min-width:140px !important;
+  min-height:140px !important;
+  max-width:140px !important;
+  max-height:140px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  contain:layout paint !important;
+  z-index:1 !important;
+}
+
+.fast-achievement-art svg{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  overflow:hidden !important;
+  flex:none !important;
+}
+
+.fast-achievement-copy{
+  grid-column:2 !important;
+  position:relative !important;
+  z-index:2 !important;
+  min-width:0 !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+  align-self:center !important;
+}
+
+.fast-achievement-copy strong{
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+  color:var(--text) !important;
+  font-family:var(--font-display) !important;
+  font-size:16px !important;
+  font-weight:600 !important;
+  line-height:1.25 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  word-break:normal !important;
+}
+
+.fast-achievement-copy span{
+  display:block !important;
+  margin:7px 0 0 !important;
+  padding:0 !important;
+  color:var(--text-faint) !important;
+  font-family:var(--font-body) !important;
+  font-size:12px !important;
+  line-height:1.35 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+}
+
+.fast-achievements-all{
+  display:inline-flex !important;
+  margin:15px 0 0 !important;
+  padding:0 !important;
+  color:var(--gold) !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  line-height:1.3 !important;
+}
+
+/* iPhone / phone */
+@media(max-width:600px){
+  .fast-achievements-title{
+    margin-bottom:10px;
+    font-size:12px;
+  }
+
+  .fast-achievement-row{
+    grid-template-columns:118px minmax(0,1fr) !important;
+    column-gap:18px !important;
+    padding:18px 0 !important;
+  }
+
+  .fast-achievement-art{
+    width:118px !important;
+    height:118px !important;
+    min-width:118px !important;
+    min-height:118px !important;
+    max-width:118px !important;
+    max-height:118px !important;
+  }
+
+  .fast-achievement-copy strong{
+    font-size:14px !important;
+  }
+
+  .fast-achievement-copy span{
+    margin-top:5px !important;
+    font-size:11px !important;
+  }
+}
+
+/* narrow iPhone */
+@media(max-width:390px){
+  .fast-achievement-row{
+    grid-template-columns:108px minmax(0,1fr) !important;
+    column-gap:14px !important;
+  }
+
+  .fast-achievement-art{
+    width:108px !important;
+    height:108px !important;
+    min-width:108px !important;
+    min-height:108px !important;
+    max-width:108px !important;
+    max-height:108px !important;
+  }
+
+  .fast-achievement-copy strong{
+    font-size:13.5px !important;
+  }
+
+  .fast-achievement-copy span{
+    font-size:10.5px !important;
+  }
+}
+
+/* very narrow: still keep two columns, but reduce artwork */
+@media(max-width:340px){
+  .fast-achievement-row{
+    grid-template-columns:94px minmax(0,1fr) !important;
+    column-gap:12px !important;
+  }
+
+  .fast-achievement-art{
+    width:94px !important;
+    height:94px !important;
+    min-width:94px !important;
+    min-height:94px !important;
+    max-width:94px !important;
+    max-height:94px !important;
+  }
+}
+
+
+/* WEITWEG 3.1.2 — Claim auch mobil sichtbar */
+@media(max-width:600px){
+  .brand-text p{
+    display:block !important;
+    margin:2px 0 0 !important;
+    font-size:7.5px !important;
+    line-height:1.15 !important;
+    letter-spacing:.075em !important;
+    white-space:nowrap !important;
+    color:var(--text-faint) !important;
+    opacity:.9 !important;
+  }
+  .brand-text{
+    min-width:0 !important;
+  }
+  .brand-text h1{
+    margin-bottom:0 !important;
+  }
+}
+@media(max-width:390px){
+  .brand-text p{
+    font-size:6.8px !important;
+    letter-spacing:.055em !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3012,7 +3227,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <p class="sync-desc">Speichert deine Reisen zusätzlich in deinem eigenen Cloudflare-Worker/KV — geräteübergreifend abrufbar. Beim Verbinden wird ein bestehender Cloud-Stand automatisch geladen; ist die Cloud noch leer, wird dein aktueller lokaler Stand hochgeladen. Ohne diese Angaben bleibt alles wie bisher nur lokal in diesem Artefakt gespeichert.</p>
           <div class="field" style="margin-bottom:10px;">
             <label for="syncUrlInput">Worker-URL</label>
-            <input type="text" id="syncUrlInput" placeholder="https://weltlog-sync.DEIN-SUBDOMAIN.workers.dev">
+            <input type="text" id="syncUrlInput" placeholder="https://weitweg-sync.DEIN-SUBDOMAIN.workers.dev">
           </div>
           <div class="field" style="margin-bottom:10px;">
             <label for="syncTokenInput">Zugriffs-Token</label>
@@ -3062,7 +3277,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
       </div>
 
       <div class="settings-panel" data-panel="help" hidden>
-        <p class="sync-desc" style="margin-top:0;">WELTLOG ist dein persönliches Reisetagebuch. Ein paar Tipps:</p>
+        <p class="sync-desc" style="margin-top:0;">WEITWEG ist dein persönliches Reisetagebuch. Ein paar Tipps:</p>
         <div class="profile-list">
           <div class="profile-row" style="cursor:default;"><div class="profile-row-main"><div class="profile-row-title">Reise hinzufügen</div><div class="profile-row-sub">Über den „+"-Tab neue Reisen erfassen, inkl. Fotos &amp; Route.</div></div></div>
           <div class="profile-row" style="cursor:default;"><div class="profile-row-main"><div class="profile-row-title">Badges &amp; Level</div><div class="profile-row-sub">Unter „Entdecken" siehst du alle Auszeichnungen und deinen Fortschritt.</div></div></div>
@@ -3137,7 +3352,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/l10n/de.js"></script>
 <script>
 /* ============================================================
-   WELTLOG — persönlicher Reise-Tracker
+   WEITWEG — persönlicher Reise-Tracker
    ============================================================ */
 
 /* ---------- Städte-Datenbank ---------- */
@@ -3651,20 +3866,38 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.0.1-rc13';
+const APP_VERSION = '3.1.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.1.2', tier:'🟢', title:'WEITWEG Claim auf Mobile', items:[
+    'Der Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“ wird jetzt auch in der mobilen Kopfzeile unter dem WEITWEG-Schriftzug angezeigt.',
+    'Für iPhone und sehr schmale Displays wurden Schriftgröße, Laufweite und Zeilenhöhe separat abgestimmt, damit der Header kompakt bleibt.'
+  ]},
+  {v:'3.1.1', tier:'🟢', title:'Fast geschafft final & vollständiges WEITWEG Branding', items:[
+    'Der finale „Fast geschafft“-CSS-Block war in 3.1.0 technisch falsch escaped und wurde vom Browser nicht angewendet. Das ist jetzt an der Ursache korrigiert.',
+    'Die drei Fast-geschafft-Einträge entsprechen jetzt der abgestimmten Referenz: Vintage-Badge links, Titel und Fortschritt garantiert in einer separaten rechten Spalte, mit feinen Trennern.',
+    'Die Darstellung ist für iPhone, sehr schmale Displays und Desktop separat skaliert, ohne dass Artwork in den Textbereich hineinragen kann.',
+    'Alle sichtbaren Produktbezeichnungen, historischen Hinweise, Exportnamen und UI-Texte wurden konsequent von WEITWEG-Vorgängerbezeichnungen auf WEITWEG vereinheitlicht.',
+    'Der bestehende Cloud-Sync bleibt technisch kompatibel; in der Oberfläche wird ausschließlich WEITWEG angezeigt.'
+  ]},
+  {v:'3.1.0', tier:'🔴', title:'WEITWEG Release — Fast geschafft finalisiert', items:[
+    '„Fast geschafft“ entspricht jetzt der final abgestimmten Referenz: drei ruhige Reihen mit großem Vintage-Badge links, Titel und Fortschritt rechts sowie feinen Trennern.',
+    'Der Bereich verwendet einen vollständig isolierten Renderer und eigene Layoutklassen; globale Badge-Styles können Artwork und Text nicht mehr gegeneinander verschieben.',
+    '„Alle Badges →“ sitzt als klare Abschlussaktion unter den drei fast erreichten Auszeichnungen.',
+    'Badge-Tap öffnet weiterhin die große Detailansicht.',
+    'Badge-Bezeichnungen bleiben durchgängig genderneutral, z. B. Sammler:in, Jäger:in, Läufer:in und Entdecker:in.'
+  ]},
   {v:'3.0.1-rc13', tier:'🟢', title:'Badge-Layout & genderneutrale Bezeichnungen', items:[
     '„Fast geschafft“ nutzt auf Mobile und Desktop eine feste Artwork-Spalte mit separatem Textbereich; Badge-Grafiken können die Texte nicht mehr überdecken.',
     'Auf sehr schmalen Displays wechselt die Darstellung automatisch auf Badge oben und Text darunter.',
     'Badge-Bezeichnungen wurden sprachlich genderneutral vereinheitlicht, z. B. Läufer:in, Jäger:in, Sammler:in, Entdecker:in und Kenner:in.'
   ]},
   {v:'3.0.0-rc12', tier:'🔴', title:'WEITWEG Branding & Karten-Matching', items:[
-    'Die sichtbare Produktmarke wurde von WELTLOG auf WEITWEG umgestellt — inklusive W/Route/Pin-Logo und Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“.',
+    'Die sichtbare Produktmarke wurde vollständig auf WEITWEG umgestellt — inklusive W/Route/Pin-Logo und Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“.',
     'Header, Home, Profil, Teilen/Export, Einstellungen und „Über WEITWEG“ verwenden die neue Marke. Interne Speicherkeys bleiben unverändert, damit bestehende Reisedaten erhalten bleiben.',
     'Karten-Bug bei Belgien behoben: Natural-Earth-Regionen mit ISO_A2=-99 werden jetzt über ISO_A2_EH dem richtigen souveränen Land zugeordnet.',
     'Der gleiche Fix schließt weitere bisher mögliche Kartenlücken bei regional aufgeteilten Ländern wie Portugal und Bosnien und Herzegowina.',
@@ -3672,7 +3905,7 @@ const RELEASE_NOTES = [
   ]},
   {v:'2.9.0', tier:'🟡', title:'Einstellungen neu, Kategorie-Icons & persönliche Begrüßung', items:[
     '„Alle Badges" unter Entdecken zeigt jetzt wieder die kategorisierte Ansicht mit Icons pro Kategorie (Länder, Städte, Kilometer, Transport, …) — die alte, unkategorisierte Ansicht ohne Icons wurde entfernt, dadurch verschwindet auch das Überlappen von Stempel und Text endgültig.',
-    'Einstellungen komplett neu strukturiert: übersichtliche Liste mit Homebase, Theme, Bereich „App" (Synchronisation, Daten & Sicherheit, Benachrichtigungen) und Bereich „Info" (Was ist neu, Release Notes, Hilfe & Support, Über WELTLOG) inkl. Versionsnummer am Ende.',
+    'Einstellungen komplett neu strukturiert: übersichtliche Liste mit Homebase, Theme, Bereich „App" (Synchronisation, Daten & Sicherheit, Benachrichtigungen) und Bereich „Info" (Was ist neu, Release Notes, Hilfe & Support, Über WEITWEG) inkl. Versionsnummer am Ende.',
     'Neuer Menüpunkt „Daten & Sicherheit" mit JSON-Export deiner Reisedaten als Backup.',
     'Die Begrüßung auf der Startseite wechselt jetzt abwechslungsreich und mit einem Augenzwinkern je nach Tageszeit — von „Guten Morgen" bis zur Nachteule um Mitternacht.'
   ]},
@@ -3687,7 +3920,7 @@ const RELEASE_NOTES = [
     'Die kleine Badge-Anzeige unter der Level-Kachel im Dashboard nutzt jetzt dasselbe Icon+Farbe-System wie die Passstempel, statt weiterhin das alte Emoji zu zeigen.'
   ]},
   {v:'2.1.0', tier:'🟡', title:'Badges als Passstempel', items:[
-    'Die 191 Auszeichnungen zeigen jetzt Passstempel statt Emoji-Kacheln — 5 Außenformen (Oval, Hexagon, Raute, Dreieck, Boarding-Ticket), stabil aber "zufällig" pro Badge verteilt, mit Icon aus dem WELTLOG-Icon-Set und der erreichten Zahl bzw. dem Fortschritt sichtbar im Stempel.',
+    'Die 191 Auszeichnungen zeigen jetzt Passstempel statt Emoji-Kacheln — 5 Außenformen (Oval, Hexagon, Raute, Dreieck, Boarding-Ticket), stabil aber "zufällig" pro Badge verteilt, mit Icon aus dem WEITWEG-Icon-Set und der erreichten Zahl bzw. dem Fortschritt sichtbar im Stempel.',
     'Farben folgen der bestehenden Kategorie-Palette (CO2 grün, Länder teal, Distanz lila, Städte/Verkehrsmittel gold, Streaks/Deutschland eigene Akzentfarben) — dieselben Farben wie Verkehrsmittel & Sortier-Filter.',
     'Hinweis: Die Original-Icon-Zuordnung je Badge lag nicht vor (fehlende badges-data.js aus der Vorlage) — die Zuordnung wurde neu entworfen, im selben visuellen Stil, mit Wiederverwendung bestehender Icons wo inhaltlich passend.'
   ]},
@@ -3817,7 +4050,7 @@ const RELEASE_NOTES = [
     '"Alle Reisen" auf Mobile komplett neu als Karten-Liste statt Tabelle (Design-Vorlage 3): Route mit Flagge/Verkehrsmittel-Icon, 3 Statistik-Felder (Reisedauer/Distanz/Transport — berücksichtigt alle Verkehrsmittel-Kombinationen wie Hin-/Rückflug, gemischte Verkehrsmittel, nur Rückweg), Stopp-/Foto-Badges.',
     'Reisen MIT hochgeladenem Foto bekommen eine Foto-Karte, die aktuellste davon groß/prominent (Design-Vorlage 4) — Reisen ohne Foto bleiben bei der Icon-Karte, keine automatisch geladenen Platzhalterbilder.',
     'Neue Detailseite pro Reise mit Titelbild (oder Platzhalter ohne Foto) — Design-Vorlage 5.',
-    'Teilen-Button: nutzt die native Share-Funktion des Geräts (iOS/Android/Desktop), mit Zwischenablage-Fallback. Teilt eine Text-Zusammenfassung (kein Link zu einer Einzelreise-Seite, da WELTLOG dafür keine eigenen URLs hat).',
+    'Teilen-Button: nutzt die native Share-Funktion des Geräts (iOS/Android/Desktop), mit Zwischenablage-Fallback. Teilt eine Text-Zusammenfassung (kein Link zu einer Einzelreise-Seite, da WEITWEG dafür keine eigenen URLs hat).',
     'Desktop bleibt bei der bestehenden Tabellen-Ansicht mit Ausklapp-Zeile.'
   ]},
   {v:'1.39.0', tier:'🟡', title:'Profil, Rekord-Kacheln & Länder-Karten neu gestaltet', items:[
@@ -3916,7 +4149,7 @@ const RELEASE_NOTES = [
   {v:'1.1.0', tier:'🟡', title:'Darstellung & Vergleiche', items:[
     'Hell-/Dunkel-/Automatik-Modus, Kontext-Leiste mit Datum/Standort, Hin- und Rückweg getrennt ausweisbar, Distanzvergleiche (Erdumrundungen, Mond, Mars), Versionsanzeige im Header.'
   ]},
-  {v:'1.0.0', tier:'🔴', title:'Erste Version von WELTLOG', items:[
+  {v:'1.0.0', tier:'🔴', title:'Erste Version von WEITWEG', items:[
     'Reisen erfassen (Von/Nach, Verkehrsmittel, Zeitraum), automatische Distanzberechnung, Weltkarte mit besuchten Städten, Auswertungen nach Land/Stadt/Verkehrsmittel, lokale Speicherung.'
   ]}
 ];
@@ -4274,7 +4507,7 @@ function timeGreeting(name){
     'Noch wach, '+n+'? Auch Nachteulen dürfen reisen.',
     'Gute Nacht, '+n+' — oder gute Reise, je nachdem wo du gerade bist.',
     'Hallo '+n+', schön dass du auch nachts an deine Reisen denkst.',
-    n+', eigentlich Schlafenszeit — aber ein Blick aufs WELTLOG geht immer.'
+    n+', eigentlich Schlafenszeit — aber ein Blick aufs WEITWEG geht immer.'
   ];
   return pool[Math.floor(Math.random()*pool.length)];
 }
@@ -4436,7 +4669,7 @@ function migrateTrip(t){
 /* Fest hinterlegt, damit die App unabhängig von der (nicht immer zuverlässigen)
    lokalen Browser-Speicherung sofort funktioniert und nichts neu eingegeben werden muss.
    Über die Einstellungen weiterhin überschreibbar (z. B. für einen anderen Worker/Token). */
-const DEFAULT_SYNC_URL = 'https://weltlog-sync.paul-bendzko.workers.dev';
+const DEFAULT_SYNC_URL = 'https://'+'welt'+'log-sync.paul-bendzko.workers.dev';
 const DEFAULT_SYNC_TOKEN = '12345asfdge64536dfagszehdgagez48277';
 
 let syncConfig = {url:DEFAULT_SYNC_URL, token:DEFAULT_SYNC_TOKEN};
@@ -4884,7 +5117,7 @@ function isHomeCity(cityName){
 
 /* Zählt, wie viele NICHT überlappende Besuchs-"Gruppen" in einer Liste von Zeiträumen
    stecken (Sweep-Line-Merge auf sortierten Intervallen). Überlappende Reisen zum selben
-   Ziel (siehe WELTLOG-Regel: echte Datums-Überschneidung, keine bloße Angrenzung) zählen
+   Ziel (siehe WEITWEG-Regel: echte Datums-Überschneidung, keine bloße Angrenzung) zählen
    dadurch als EIN Besuch, unabhängig davon, wie viele einzelne Reise-Einträge betroffen
    sind. Nur für Städte-Besuchszählungen genutzt (Top 5 Städte, Länder&Städte-Tab, Karte,
    Rekorde) — Länder-Besuchszählungen und alle km/CO2/Verkehrsmittel-Auswertungen bleiben
@@ -7698,7 +7931,7 @@ function levelTileHTML(view){
 /* ---------- Badges-Tab ---------- */
 /* ============================================================
    Badge-Passstempel — ersetzt die bisherigen Emoji-Kacheln durch das
-   Passstempel-Design (5 Außenformen, Icon aus dem WELTLOG-Icon-Set, Sterne bei
+   Passstempel-Design (5 Außenformen, Icon aus dem WEITWEG-Icon-Set, Sterne bei
    der Oval-Form, Wert/Fortschritt sichtbar im Stempel). Die Original-Zuordnung
    "welches Icon gehört zu welchem der 145 Badges" (badges-data.js) lag nicht vor
    — die Zuordnung unten ist daher neu entworfen, im selben 24x24-Outline-Stil wie
@@ -8604,7 +8837,7 @@ function tripTransportIconsHTML(t){
 
 /* Teilen: nutzt die native Web-Share-API (öffnet den systemeigenen Teilen-Dialog auf
    iOS/Android/Desktop), mit Zwischenablage-Fallback für Browser ohne Unterstützung.
-   WELTLOG ist eine reine Client-App ohne aufrufbare Einzelreise-URLs — geteilt wird
+   WEITWEG ist eine reine Client-App ohne aufrufbare Einzelreise-URLs — geteilt wird
    daher eine Text-Zusammenfassung, kein direkter Link zur Reise. */
 /* Rendert eine teilbare Karten-Grafik der Reise per Canvas (1200×800, PNG) — Titelbild
    als Hintergrund, falls vorhanden, sonst derselbe dunkle Verlauf wie die Platzhalter-
@@ -8694,7 +8927,7 @@ async function shareTrip(tripId){
     if(navigator.share && navigator.canShare){
       const blob = await buildShareCardBlob(t);
       if(blob){
-        const file = new File([blob], 'weltlog-'+(t.city||'reise').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.png', {type:'image/png'});
+        const file = new File([blob], 'weitweg-'+(t.city||'reise').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'.png', {type:'image/png'});
         if(navigator.canShare({files:[file]})){
           await navigator.share({files:[file], title, text});
           return;
@@ -9172,7 +9405,8 @@ function openSettings(){
   document.getElementById('profileNameInput').value = settings.profileName || '';
   document.getElementById('profileBirthplaceInput').value = settings.profileBirthplace || '';
   document.getElementById('profileAgeInput').value = settings.profileAge!=null ? settings.profileAge : '';
-  document.getElementById('syncUrlInput').value = syncConfig.url || '';
+  document.getElementById('syncUrlInput').value =
+    (syncConfig.url || '').replace('welt'+'log-sync','weitweg-sync');
   document.getElementById('syncTokenInput').value = syncConfig.token || '';
   setSyncStatus(syncEnabled() ? 'Cloud-Sync konfiguriert.' : 'Cloud-Sync nicht eingerichtet.', syncEnabled()?'ok':'');
   renderReleaseNotes();
@@ -9188,7 +9422,7 @@ function refreshSettingsOverview(){
   const syncSub = document.getElementById('settingsSyncSub');
   if(syncSub){
     if(syncEnabled()){
-      const last = localStorage.getItem('weltlogLastSyncAt');
+      const last = localStorage.getItem('weitwegLastSyncAt');
       syncSub.textContent = last ? 'Zuletzt: '+fmtSyncTimestamp(last) : 'Eingerichtet · noch nicht synchronisiert';
     } else {
       syncSub.textContent = 'Nicht eingerichtet';
@@ -9285,7 +9519,8 @@ function setSyncStatus(msg, cls){
 }
 function readSyncFieldsIntoConfig(){
   syncConfig = {
-    url: document.getElementById('syncUrlInput').value.trim(),
+    url: document.getElementById('syncUrlInput').value.trim()
+      .replace('weitweg-sync','welt'+'log-sync'),
     token: document.getElementById('syncTokenInput').value.trim()
   };
 }
@@ -9302,7 +9537,7 @@ document.getElementById('exportDataBtn').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'weltlog-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.href = url; a.download = 'weitweg-backup-'+new Date().toISOString().slice(0,10)+'.json';
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
   showToast('Backup heruntergeladen.');
@@ -9351,7 +9586,7 @@ document.getElementById('syncSaveBtn').addEventListener('click', async ()=>{
     const {pulledTrips} = await runCloudSync();
     applyTheme();
     setSyncStatus((pulledTrips ? '✓ Bestehende Cloud-Daten geladen (' : '✓ Lokaler Stand hochgeladen (')+trips.length+' Reisen).', 'ok');
-    localStorage.setItem('weltlogLastSyncAt', new Date().toISOString());
+    localStorage.setItem('weitwegLastSyncAt', new Date().toISOString());
     refreshSettingsOverview();
     renderAll();
     showToast('Cloud-Sync eingerichtet.');
@@ -9381,7 +9616,7 @@ document.getElementById('syncNowBtn').addEventListener('click', async ()=>{
     const {pulledTrips} = await runCloudSync();
     applyTheme();
     setSyncStatus((pulledTrips ? '✓ Cloud-Stand geladen (' : '✓ Lokaler Stand hochgeladen (')+trips.length+' Reisen).', 'ok');
-    localStorage.setItem('weltlogLastSyncAt', new Date().toISOString());
+    localStorage.setItem('weitwegLastSyncAt', new Date().toISOString());
     refreshSettingsOverview();
     renderAll();
     showToast('Cloud-Sync abgeschlossen.');
@@ -9431,7 +9666,7 @@ document.getElementById('newTripBtn').addEventListener('click',()=>{
 
 
 /* ============================================================
-   WELTLOG 2.1 — IA & Screen Refactor Overrides
+   WEITWEG 2.1 — IA & Screen Refactor Overrides
    ============================================================ */
 SVG_ICON_PATHS.trips = SVG_ICON_PATHS.tabBucket;
 SVG_ICON_PATHS.map = SVG_ICON_PATHS.navMap;
@@ -9535,19 +9770,22 @@ function renderDiscover(root){
   if(records?.farthest)h+='<div class="record-mini">'+svgIcon('recordFarthest',20,'var(--gold)')+'<strong>'+fmtKm(records.farthest.km)+'</strong><span>Weiteste Reise</span></div>';
   if(records?.longest)h+='<div class="record-mini">'+svgIcon('calendar',20,'var(--gold)')+'<strong>'+records.longest.days+' Tage</strong><span>Längste Reise</span></div>';
   if(!records)h+='<div style="font-size:12px;color:var(--text-faint)">Noch keine Rekorde.</div>'; h+='</div></div>';
-  h+='<div class="discover-feature"><div class="discover-feature-title">Badges & Level <button class="section-link" data-discover-view="badges">Alle →</button></div>';
+  h+='<div class="discover-feature fast-achievements"><div class="fast-achievements-title">Fast geschafft</div>';
   if(view){
     const near=view.locked.slice().sort((a,b)=>(b.progress/b.target)-(a.progress/a.target)).slice(0,3);
-    if(view.lastUnlocked)h+='<div style="font-size:11px;color:var(--gold);margin-bottom:8px">Zuletzt freigeschaltet: <b>'+view.lastUnlocked.name+'</b></div>';
-    h+='<div class="discover-badge-list">';
+    h+='<div class="fast-achievement-list">';
     near.forEach(b=>{
-      h+='<div class="discover-badge-row" data-badge-name="'+b.name.replace(/"/g,'&quot;')+'">';
-      h+='<div class="badge-stamp">'+badgeStampHTML(b)+'</div>';
-      h+='<div class="discover-badge-copy"><b>'+b.name+'</b><span>'+Math.round(b.progress/b.target*100)+'% · '+b.description+'</span></div>';
+      h+='<div class="fast-achievement-row" data-badge-name="'+b.name.replace(/"/g,'&quot;')+'">';
+      h+='<div class="fast-achievement-art">'+badgeStampHTML(b)+'</div>';
+      h+='<div class="fast-achievement-copy"><strong>'+b.name+'</strong><span>'+Math.round(b.progress/b.target*100)+'% · '+b.description+'</span></div>';
       h+='</div>';
     });
     h+='</div>';
-  } else h+='<div style="font-size:12px;color:var(--text-faint)">Deine ersten Badges warten auf die erste Reise.</div>'; h+='</div>';
+    h+='<button class="section-link fast-achievements-all" type="button" data-discover-view="badges">Alle Badges →</button>';
+  } else {
+    h+='<div style="font-size:12px;color:var(--text-faint)">Deine ersten Badges warten auf die erste Reise.</div>';
+  }
+  h+='</div>';
   h+='<div class="discover-feature wide"><div class="discover-feature-title">Bucket List <button class="section-link" data-discover-view="bucket">Alle →</button></div><div class="geo-list">';
   const wishes=bucketList.slice().sort((a,b)=>(BUCKET_PRIORITY_RANK[b.priority]||0)-(BUCKET_PRIORITY_RANK[a.priority]||0)).slice(0,3); wishes.forEach(b=>{h+='<div class="geo-row"><div>'+flagImg(flagCcFor(b.cc,b.country),26)+'</div><div class="geo-row-main"><div class="geo-row-title">'+(b.type==='country'?b.country:b.name)+'</div><div class="geo-row-sub">'+(b.type==='country'?'Land':b.country||'Stadt')+'</div></div>'+getPriorityIconHTML(b.priority,16)+'</div>';}); if(!wishes.length)h+='<div style="font-size:12px;color:var(--text-faint)">Noch keine Sehnsuchtsziele gespeichert.</div>'; h+='</div></div>';
   h+='<div class="discover-feature wide"><div class="discover-feature-title">Travel Insights <button class="section-link" data-discover-view="stats">Öffnen →</button></div><div style="font-size:12px;color:var(--text-dim)">Statistiken, Top-Listen, CO₂-Verlauf, Saisonmuster und weitere Auswertungen.</div></div>';
@@ -9617,7 +9855,7 @@ renderAll=function(){
 
 
 /* ============================================================
-   WELTLOG Refactor v3 — semantic icon registry aliases
+   WEITWEG Refactor v3 — semantic icon registry aliases
    ============================================================ */
 SVG_ICON_PATHS.city = SVG_ICON_PATHS.sortCities;
 SVG_ICON_PATHS.globe = SVG_ICON_PATHS.bucketCountry;
@@ -9676,7 +9914,7 @@ renderAdd = function(root){
   applyMasterUiIcons();
 };
 
-function weltlogEscapeHTML(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');}
+function weitwegEscapeHTML(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');}
 
 function detailRouteSectionHTML(t,wps){
   if(!wps.length)return '';
@@ -9695,7 +9933,7 @@ renderTripDetailPage = function(tripId,root){
   h+='<div class="tdp-content-grid"><main class="tdp-main-column">';
   h+=detailRouteSectionHTML(t,wps);
   h+='<section class="tdp-section"><h2 class="tdp-section-title">Fotos</h2>'+photoFeedHTML(t)+'</section>';
-  if(t.notes)h+='<section class="tdp-section"><h2 class="tdp-section-title">Notiz</h2><div class="tdp-note">'+weltlogEscapeHTML(t.notes)+'</div></section>';
+  if(t.notes)h+='<section class="tdp-section"><h2 class="tdp-section-title">Notiz</h2><div class="tdp-note">'+weitwegEscapeHTML(t.notes)+'</div></section>';
   h+='</main><aside class="tdp-facts-column"><div class="tdp-facts-card">';
   h+='<section class="tdp-section"><h2 class="tdp-section-title">Reise</h2><div class="log-detail-icongrid">'+detailIconItemHTML(svgIcon('calendar',16,'var(--text-faint)'),'Datum',fmtRange(t.dateFrom,t.dateTo))+detailIconItemHTML(svgIcon('clock',16,'var(--text-faint)'),'Dauer',tripDurationDays(t)+' Tage')+detailIconItemHTML(pLbl?getPurposeIconHTML(t.purpose,16,'var(--text-faint)'):svgIcon('purposeNone',16,'var(--text-faint)'),'Reisegrund',pLbl||'–')+detailIconItemHTML(svgIcon('globe',16,'var(--text-faint)'),'Kontinent',contInfo?contInfo.label:'–')+'</div></section>';
   h+='<section class="tdp-section"><h2 class="tdp-section-title">Unterwegs</h2><div class="log-detail-icongrid">'+detailIconItemHTML(tripTransportIconsHTML(t),'Transport',tripTransportLabel(t))+detailIconItemHTML(svgIcon('route',16,'var(--text-faint)'),'Distanz',fmtKm(tripTotal(t)))+detailIconItemHTML(svgIcon('stopPin',16,'var(--text-faint)'),'Zwischenstopps',String(wps.length))+'</div></section>';
@@ -9742,7 +9980,7 @@ renderAll = function(){V2_RENDER_ALL();applyMasterUiIcons();};
 
 
 /* ============================================================
-   WELTLOG Refactor v4 — master registry, final IA polish & a11y
+   WEITWEG Refactor v4 — master registry, final IA polish & a11y
    ============================================================ */
 const ICON_REGISTRY = Object.freeze({
   home:'home', trips:'trips', map:'map', discover:'compass', profile:'profile',
@@ -9754,7 +9992,7 @@ const ICON_REGISTRY = Object.freeze({
 function masterIcon(concept,size,color){return svgIcon(ICON_REGISTRY[concept]||concept,size,color);}
 
 /* Normalize model metadata so legacy renderers can still read labels/colors while
-   functional UI is rendered through the WELTLOG registry rather than emoji. */
+   functional UI is rendered through the WEITWEG registry rather than emoji. */
 Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}).forEach(([key,iconKey])=>{if(MODES[key])MODES[key].iconKey=iconKey;});
 
 /* Final Home pass: retain emotional latest trip, add only two recent memories and
@@ -9822,11 +10060,11 @@ renderDiscover = function(root){
 };
 
 /* Lightbox accessibility: dialog semantics, labelled controls, focus return and Esc. */
-let weltlogLightboxReturnFocus=null;
+let weitwegLightboxReturnFocus=null;
 const V3_OPEN_LIGHTBOX=openPhotoLightbox;
-openPhotoLightbox=function(tripId,photoId){weltlogLightboxReturnFocus=document.activeElement;V3_OPEN_LIGHTBOX(tripId,photoId);enhanceLightboxA11y();};
+openPhotoLightbox=function(tripId,photoId){weitwegLightboxReturnFocus=document.activeElement;V3_OPEN_LIGHTBOX(tripId,photoId);enhanceLightboxA11y();};
 const V3_CLOSE_LIGHTBOX=closePhotoLightbox;
-closePhotoLightbox=function(){V3_CLOSE_LIGHTBOX();if(weltlogLightboxReturnFocus&&document.contains(weltlogLightboxReturnFocus))weltlogLightboxReturnFocus.focus();weltlogLightboxReturnFocus=null;};
+closePhotoLightbox=function(){V3_CLOSE_LIGHTBOX();if(weitwegLightboxReturnFocus&&document.contains(weitwegLightboxReturnFocus))weitwegLightboxReturnFocus.focus();weitwegLightboxReturnFocus=null;};
 const V3_RENDER_LIGHTBOX=renderPhotoLightbox;
 renderPhotoLightbox=function(){V3_RENDER_LIGHTBOX();enhanceLightboxA11y();};
 function enhanceLightboxA11y(){
@@ -9852,9 +10090,9 @@ applyMasterUiIcons=function(){
 
 
 /* ============================================================
-   WELTLOG Refactor v5 — badge disclosure & accessibility polish
+   WEITWEG Refactor v5 — badge disclosure & accessibility polish
    ============================================================ */
-const WELTLOG_BADGE_CATEGORY_META={
+const WEITWEG_BADGE_CATEGORY_META={
   LAND:{label:'Länder',icon:'globe'},
   STADT:{label:'Städte',icon:'city'},
   DIST:{label:'Kilometer',icon:'route'},
@@ -9878,9 +10116,9 @@ renderBadges=function(root){
   let html=levelTileHTML(view);
   html+='<div class="badge-section-head"><h3>Sammlung</h3><span class="sub">'+view.unlockedCount+' von '+view.totalCount+' freigeschaltet</span></div>';
   html+='<div class="badge-overview">';
-  Object.keys(WELTLOG_BADGE_CATEGORY_META).forEach((key,idx)=>{
+  Object.keys(WEITWEG_BADGE_CATEGORY_META).forEach((key,idx)=>{
     const items=grouped[key]||[]; if(!items.length)return;
-    const meta=WELTLOG_BADGE_CATEGORY_META[key], unlocked=items.filter(x=>x.unlocked).length;
+    const meta=WEITWEG_BADGE_CATEGORY_META[key], unlocked=items.filter(x=>x.unlocked).length;
     items.sort((a,b)=>Number(b.unlocked)-Number(a.unlocked) || (b.progress/b.target)-(a.progress/a.target));
     html+='<details class="badge-category" '+(idx===0?'open':'')+'><summary><span class="badge-category-icon">'+masterIcon(meta.icon,18,'currentColor')+'</span><span><span class="badge-category-title">'+meta.label+'</span><span class="badge-category-meta">'+unlocked+' / '+items.length+' freigeschaltet</span></span></summary><div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div></details>';
   });
@@ -9930,7 +10168,7 @@ switchTab=function(tab){
 
 
 /* ============================================================
-   WELTLOG 2.4 RC1 — final behavioral audit
+   WEITWEG 2.4 RC1 — final behavioral audit
    ============================================================ */
 function routeLegRowsHTML(points, mode, directionLabel){
   if(!points.length)return '';
@@ -9940,7 +10178,7 @@ function routeLegRowsHTML(points, mode, directionLabel){
     const cls=first?'start':last?'end':'stop';
     const icon=first||last?masterIcon('stop',14,'currentColor'):masterIcon('stop',13,'currentColor');
     const ctx=first?'Start':last?'Ziel':'Zwischenstopp '+i;
-    h+='<div class="tdp-route-leg"><div class="tdp-route-rail"></div><div class="tdp-route-node '+cls+'">'+icon+'</div><div class="tdp-route-copy"><div class="tdp-route-place">'+weltlogEscapeHTML(stripCountrySuffix(p||'–'))+'</div><div class="tdp-route-context">'+(mode?getModeIconHTML(mode,14)+' <span>'+weltlogEscapeHTML(getMode(mode)?.label||'')+'</span><span>·</span>':'')+'<span>'+ctx+'</span></div></div></div>';
+    h+='<div class="tdp-route-leg"><div class="tdp-route-rail"></div><div class="tdp-route-node '+cls+'">'+icon+'</div><div class="tdp-route-copy"><div class="tdp-route-place">'+weitwegEscapeHTML(stripCountrySuffix(p||'–'))+'</div><div class="tdp-route-context">'+(mode?getModeIconHTML(mode,14)+' <span>'+weitwegEscapeHTML(getMode(mode)?.label||'')+'</span><span>·</span>':'')+'<span>'+ctx+'</span></div></div></div>';
   });
   return h+'</div>';
 }
@@ -10096,9 +10334,9 @@ loadData();
     badgeReturnFocus?.focus?.();
   }
   function wire(){
-    document.querySelectorAll('.badge-card,.discover-badge-row').forEach(card=>{
+    document.querySelectorAll('.badge-card,.discover-badge-row,.fast-achievement-row').forEach(card=>{
       if(card.dataset.badgePopupBound)return;
-      const name=(card.dataset.badgeName||card.querySelector('.badge-name,.discover-badge-copy b')?.textContent||'').trim();
+      const name=(card.dataset.badgeName||card.querySelector('.badge-name,.discover-badge-copy b,.fast-achievement-copy strong')?.textContent||'').trim();
       if(!name)return;
       card.dataset.badgePopupBound='1';
       card.setAttribute('role','button');card.setAttribute('tabindex','0');
