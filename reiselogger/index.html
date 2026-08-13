@@ -1872,6 +1872,194 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   .tdp-action-row{padding-bottom:calc(4px + env(safe-area-inset-bottom))}
 }
 
+
+/* ============================================================
+   WELTLOG RC2 — rendered desktop/iPhone review fixes
+   ============================================================ */
+
+/* HOME: journal-first order and less dashboard-like desktop composition */
+.home-v2-grid,
+.home-journal-grid{
+  grid-template-columns:1fr !important;
+}
+.home-v2-grid > *,
+.home-journal-grid > *{
+  grid-column:1 / -1 !important;
+}
+.home-map-preview .map-wrap,
+.dashboard-map-preview .map-wrap{
+  aspect-ratio:auto !important;
+  height:clamp(210px,28vw,320px) !important;
+}
+
+/* Badge artwork must never be covered by text. */
+.badge-card{
+  display:grid !important;
+  grid-template-columns:88px minmax(0,1fr) !important;
+  align-items:start !important;
+  gap:14px !important;
+  overflow:hidden;
+}
+.badge-stamp{
+  width:88px !important;
+  min-width:88px !important;
+  min-height:68px !important;
+  align-self:start;
+  overflow:visible;
+}
+.badge-stamp svg{
+  display:block;
+  width:100% !important;
+  max-width:88px !important;
+  height:auto !important;
+  overflow:visible;
+}
+.badge-body{
+  min-width:0 !important;
+  overflow:hidden;
+}
+.badge-name,.badge-desc,.badge-missing,.badge-progress-label,.badge-date{
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+.badge-meta{
+  flex-wrap:wrap;
+}
+
+/* Category accordion: categories are first-class, collection is secondary. */
+.wl-badge-categories{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.wl-badge-category{
+  background:var(--panel);
+  border:1px solid var(--border-soft);
+  border-radius:16px;
+  overflow:hidden;
+}
+.wl-badge-category > summary{
+  list-style:none;
+  cursor:pointer;
+  min-height:56px;
+  padding:13px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-family:var(--font-display);
+  font-weight:600;
+}
+.wl-badge-category > summary::-webkit-details-marker{display:none}
+.wl-badge-cat-icon{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--bar-accent);
+  background:var(--bg-soft);
+  flex:0 0 auto;
+}
+.wl-badge-cat-main{min-width:0;flex:1}
+.wl-badge-cat-title{font-size:14px;color:var(--text)}
+.wl-badge-cat-meta{font-size:11px;color:var(--text-faint);margin-top:2px;font-family:var(--font-body)}
+.wl-badge-cat-progress{
+  width:72px;height:5px;border-radius:999px;background:var(--bg-soft);
+  overflow:hidden;flex:0 0 auto;
+}
+.wl-badge-cat-progress > span{display:block;height:100%;background:var(--bar-accent);border-radius:inherit}
+.wl-badge-cat-chevron{color:var(--text-faint);transition:transform .15s ease}
+.wl-badge-category[open] .wl-badge-cat-chevron{transform:rotate(90deg)}
+.wl-badge-category-content{padding:0 12px 12px}
+.wl-badge-category-content .badge-grid{margin-top:2px}
+
+/* Toast: long status text should be a compact notification, never a giant pill. */
+.toast,.sync-toast,.app-toast{
+  max-width:min(360px,calc(100vw - 32px)) !important;
+  border-radius:12px !important;
+  white-space:normal !important;
+  line-height:1.35 !important;
+}
+
+/* Mobile app chrome */
+@media(max-width:600px){
+  .wrap{padding-left:16px;padding-right:16px;padding-bottom:118px !important}
+  .topbar-inner{
+    min-height:56px;
+    padding:8px 16px !important;
+    flex-wrap:nowrap !important;
+    gap:8px !important;
+  }
+  .brand{min-width:0}
+  .brand-mark{width:32px;height:32px;border-radius:9px}
+  .brand-text h1{font-size:16px}
+  .brand-text .version-pill,.version-pill{display:none !important}
+  .top-actions{
+    width:auto !important;
+    margin-left:auto;
+    gap:6px !important;
+    justify-content:flex-end !important;
+    flex-wrap:nowrap;
+  }
+  /* Keep only the contextually useful homebase/profile-level control visible.
+     Theme/settings live in Profile on mobile. */
+  .top-actions .theme-switch,
+  .top-actions > .icon-btn,
+  .top-actions > a.icon-btn{
+    display:none !important;
+  }
+  .top-actions .home-chip{
+    display:flex !important;
+    max-width:148px;
+    min-height:40px;
+    padding:7px 10px;
+    overflow:hidden;
+  }
+  .top-actions .home-chip span{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .info-strip{display:none !important}
+
+  .bottom-tabs{
+    min-height:68px;
+    padding:6px 6px calc(6px + env(safe-area-inset-bottom)) !important;
+  }
+  .bottom-tab-btn{
+    min-height:54px;
+    padding:6px 2px !important;
+    border-radius:12px;
+    gap:3px;
+  }
+  .bottom-tab-btn.active{
+    background:color-mix(in srgb,var(--gold) 8%,transparent) !important;
+  }
+
+  .home-map-preview .map-wrap,
+  .dashboard-map-preview .map-wrap{
+    height:190px !important;
+  }
+
+  .toast,.sync-toast,.app-toast{
+    left:16px !important;
+    right:16px !important;
+    bottom:calc(82px + env(safe-area-inset-bottom)) !important;
+    width:auto !important;
+    max-width:none !important;
+    border-radius:12px !important;
+    padding:10px 12px !important;
+  }
+
+  .badge-card{
+    grid-template-columns:72px minmax(0,1fr) !important;
+    gap:11px !important;
+    padding:12px !important;
+  }
+  .badge-stamp{
+    width:72px !important;min-width:72px !important;min-height:58px !important;
+  }
+  .badge-stamp svg{max-width:72px !important}
+  .badge-grid{grid-template-columns:1fr !important}
+  .wl-badge-category > summary{padding:12px;gap:10px}
+  .wl-badge-cat-progress{width:48px}
+}
+
 </style>
 </head>
 <body>
@@ -8677,5 +8865,134 @@ document.getElementById('versionPill').textContent = 'v'+APP_VERSION;
 populateDatalist();
 loadData();
 </script>
+
+<script>
+/* WELTLOG RC2 — final UI reconciliation */
+(function(){
+  const CAT_ORDER = [
+    ['countries','Länder','globe'],
+    ['cities','Städte','city'],
+    ['distance','Kilometer','route'],
+    ['transport','Transport','trips'],
+    ['sustainability','Nachhaltigkeit','leaf'],
+    ['history','Travel History','calendar'],
+    ['germany','Deutschland','home'],
+    ['special','Spezial','discover']
+  ];
+
+  function textOf(el){ return (el?.textContent || '').toLowerCase(); }
+
+  function badgeCategory(card){
+    const t = textOf(card);
+    if(/deutschland|bundesland|hauptstadt.*deutsch|berlin|brandenburg/.test(t)) return 'germany';
+    if(/co₂|co2|nachhalt|emission|klima|grün|green/.test(t)) return 'sustainability';
+    if(/flug|flieg|flugzeug|bahn|zug|auto|bus|fahrrad|rad|transport|verkehrsmittel/.test(t)) return 'transport';
+    if(/kilometer|\bkm\b|distanz|strecke|erdumfang|mond|mars/.test(t)) return 'distance';
+    if(/stadt|städte|city|metropole|hauptstadt/.test(t)) return 'cities';
+    if(/land|länder|country|kontinent|europa|asien|afrika|amerika|ozean/.test(t)) return 'countries';
+    if(/reise|reisen|trip|jahr|monat|woche|tag|history|historie|serie|streak/.test(t)) return 'history';
+    return 'special';
+  }
+
+  function iconMarkup(name){
+    try{
+      if(typeof window.wlIcon === 'function') return window.wlIcon(name,18);
+      if(typeof window.icon === 'function') return window.icon(name,18);
+      if(window.WELTLOG_ICONS && window.WELTLOG_ICONS[name]) return window.WELTLOG_ICONS[name];
+      if(window.ICONS && window.ICONS[name]) return window.ICONS[name];
+    }catch(e){}
+    return '<span aria-hidden="true">·</span>';
+  }
+
+  function categoryLabel(key){
+    const x=CAT_ORDER.find(v=>v[0]===key); return x?x[1]:key;
+  }
+  function categoryIcon(key){
+    const x=CAT_ORDER.find(v=>v[0]===key); return x?x[2]:'discover';
+  }
+
+  function groupBadgeGrid(grid){
+    if(!grid || grid.closest('.wl-badge-categories')) return;
+    const cards=[...grid.children].filter(el=>el.classList.contains('badge-card'));
+    if(cards.length < 5) return;
+
+    const groups={};
+    cards.forEach(card=>{
+      const key=badgeCategory(card);
+      (groups[key] ||= []).push(card);
+    });
+
+    const wrap=document.createElement('div');
+    wrap.className='wl-badge-categories';
+
+    CAT_ORDER.forEach(([key,label])=>{
+      const list=groups[key]||[];
+      if(!list.length) return;
+      const unlocked=list.filter(c=>!c.classList.contains('locked')).length;
+      const pct=Math.round((unlocked/list.length)*100);
+      const details=document.createElement('details');
+      details.className='wl-badge-category';
+      if(key==='countries') details.open=true;
+      details.innerHTML=
+        '<summary>'+
+          '<span class="wl-badge-cat-icon">'+iconMarkup(categoryIcon(key))+'</span>'+
+          '<span class="wl-badge-cat-main"><span class="wl-badge-cat-title">'+label+'</span>'+
+          '<span class="wl-badge-cat-meta">'+unlocked+' von '+list.length+' freigeschaltet</span></span>'+
+          '<span class="wl-badge-cat-progress" aria-hidden="true"><span style="width:'+pct+'%"></span></span>'+
+          '<span class="wl-badge-cat-chevron" aria-hidden="true">›</span>'+
+        '</summary>'+
+        '<div class="wl-badge-category-content"><div class="badge-grid"></div></div>';
+      const target=details.querySelector('.badge-grid');
+      list.forEach(c=>target.appendChild(c));
+      wrap.appendChild(details);
+    });
+
+    grid.replaceWith(wrap);
+
+    // On phones, one category at a time keeps the collection scannable.
+    wrap.addEventListener('toggle',e=>{
+      const d=e.target;
+      if(!(d instanceof HTMLDetailsElement) || !d.open || innerWidth>600) return;
+      wrap.querySelectorAll('details[open]').forEach(other=>{ if(other!==d) other.open=false; });
+    },true);
+  }
+
+  function repairBadges(){
+    document.querySelectorAll('.badge-grid').forEach(groupBadgeGrid);
+  }
+
+  function reorderHome(){
+    // Keep the requested story order when identifiable sections exist:
+    // Hero → latest trip → travel progress → map preview → highlights.
+    const root=document.querySelector('#tab-home.tab-panel, #home.tab-panel, [data-page="home"]');
+    if(!root) return;
+    const find=(rx)=>[...root.children].find(el=>rx.test((el.textContent||'').trim()));
+    const latest=find(/letzte reise|zuletzt/i);
+    const progress=find(/unterwegs|verkehrsmittel|travel progress/i);
+    const map=find(/weltkarte|karte/i);
+    if(latest && progress && map && latest.parentNode===root){
+      latest.after(progress);
+      progress.after(map);
+    }
+  }
+
+  function polish(){
+    repairBadges();
+    reorderHome();
+    document.body.classList.add('wl-rc2');
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(polish,0));
+  else setTimeout(polish,0);
+
+  // Existing app renderers replace chunks of DOM, so re-apply only when needed.
+  const obs=new MutationObserver(()=>requestAnimationFrame(polish));
+  window.addEventListener('load',()=>{
+    const app=document.querySelector('.wrap, main, #app');
+    if(app) obs.observe(app,{childList:true,subtree:true});
+  },{once:true});
+})();
+</script>
+
 </body>
 </html>
