@@ -3033,6 +3033,15 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   }
 }
 
+
+/* WEITWEG 3.1.3 — Mobile Claim in Gold */
+@media(max-width:600px){
+  .brand-text p{
+    color:var(--gold) !important;
+    opacity:1 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3866,13 +3875,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.1.2';
+const APP_VERSION = '3.1.3';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.1.3', tier:'🟢', title:'Claim-Farbe auf Mobile', items:[
+    'Der WEITWEG-Claim wird auf Mobile jetzt wie in der Desktop/Web-Version im goldenen Markenakzent dargestellt.'
+  ]},
   {v:'3.1.2', tier:'🟢', title:'WEITWEG Claim auf Mobile', items:[
     'Der Claim „DEINE REISE. DEINE SPUREN. DEINE WELT.“ wird jetzt auch in der mobilen Kopfzeile unter dem WEITWEG-Schriftzug angezeigt.',
     'Für iPhone und sehr schmale Displays wurden Schriftgröße, Laufweite und Zeilenhöhe separat abgestimmt, damit der Header kompakt bleibt.'
