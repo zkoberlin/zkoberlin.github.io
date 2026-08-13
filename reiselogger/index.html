@@ -2012,11 +2012,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '1.50.0';
+const APP_VERSION = '1.50.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt. */
 const RELEASE_NOTES = [
+  {v:'1.50.1', tier:'🟢', title:'Eigene Flaggen für England & Schottland', items:[
+    'England (London) und Schottland (Edinburgh) zeigen jetzt ihre eigenen Flaggen statt des Union Jack — in der Länder-Übersicht, bei Rekorden, Wegpunkten, Reisekarten, Bucket-Liste und überall sonst, wo Flaggen erscheinen.',
+    'Kontinent-/G7-/G20-/Inselstaaten-Erkennung sowie die Weltkarte laufen weiterhin unverändert über den echten Ländercode "gb", da diese Systeme nur souveräne Staaten kennen — die Flaggen-Anzeige ist davon technisch unabhängig.',
+    'Die Weltkarte selbst kann England/Schottland nicht als getrennte Flächen einfärben — das verwendete Kartenmaterial (world-atlas) bildet nur souveräne Staaten ab, es gibt dort keine Geometrie für Landesteile. Die Vereinigtes-Königreich-Fläche leuchtet weiterhin als Ganzes auf, sobald einer der beiden Orte besucht wurde.'
+  ]},
   {v:'1.50.0', tier:'🟡', title:'Teilen als Bild, Dashboard-Feinschliff & UK aufgeteilt', items:[
     'Teilen einer Reise erstellt jetzt eine gerenderte Karten-Grafik (Titelbild als Hintergrund, falls vorhanden, sonst neutraler Verlauf) statt nur reinen Text — mit automatischem Text-Fallback auf Geräten ohne Datei-Sharing.',
     'CO₂- und Kontinent-Icon in der Reise-Detailansicht durch die zweifarbige "Trip card"-Variante aus dem Icon-Set ersetzt, passend zum bereits zweifarbigen Transport-Icon dort.',
@@ -2465,8 +2470,21 @@ function computeMultiLegSegments(cityNames, mode){
 /* Länderflaggen als Unicode-Emoji statt externer Bilder — die bisherige Lösung lud PNGs von
    flagcdn.com nach, was je nach Netzwerk/Browser fehlschlagen kann (siehe Screenshot: überall
    nur der 🌍-Fallback). Emoji-Flaggen brauchen keine externe Anfrage und funktionieren immer. */
+/* England/Schottland (und vorsorglich Wales) haben keinen eigenen ISO-3166-1-Code — beide
+   City-DB-Einträge behalten cc:'gb' für Kontinent/G7/G20/Inselstaaten/Weltkarte, da diese
+   Systeme nur souveräne Staaten kennen. Für die reine Flaggen-DARSTELLUNG wird deshalb
+   anhand des angezeigten Ländernamens auf die korrekte Unicode-Tag-Sequenz umgeleitet. */
+const UK_NATION_FLAG_CC = {'England':'gb-eng','Schottland':'gb-sct','Wales':'gb-wls'};
+const SPECIAL_FLAG_EMOJI = {'gb-eng':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','gb-sct':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','gb-wls':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'};
+/* Liefert den für die Flaggen-ANZEIGE passenden Code — für Kontinent/G7/G20/Karten-Logik
+   immer weiterhin den echten cc (z. B. 'gb') verwenden, niemals das Ergebnis dieser Funktion. */
+function flagCcFor(cc, countryName){
+  return (countryName && UK_NATION_FLAG_CC[countryName]) || cc;
+}
 function flagEmoji(cc){
-  if(!cc || cc.length!==2) return '🌍';
+  if(!cc) return '🌍';
+  if(SPECIAL_FLAG_EMOJI[cc]) return SPECIAL_FLAG_EMOJI[cc];
+  if(cc.length!==2) return '🌍';
   const upper = cc.toUpperCase();
   const points = [...upper].map(ch=>127397+ch.charCodeAt(0));
   return String.fromCodePoint(...points);
@@ -2487,10 +2505,11 @@ function flagBadge(cc,size){
    es bleibt also nie ein kaputtes Bild stehen. */
 function cityIcon(cityName, country, cc, size){
   size = size||24;
+  const flagCc = flagCcFor(cc, country);
   const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
-  if(!file) return flagImg(cc, size);
+  if(!file) return flagImg(flagCc, size);
   const url = coatOfArmsUrl(file, Math.max(80, Math.round(size*3)));
-  const fallback = flagImg(cc, size).replace(/"/g,'&quot;');
+  const fallback = flagImg(flagCc, size).replace(/"/g,'&quot;');
   return '<img class="city-coa" src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" '+
     'style="height:'+size+'px;width:auto;max-width:'+Math.round(size*1.4)+'px;" loading="lazy" '+
     'onerror="this.outerHTML=\''+fallback+'\'">';
@@ -2498,10 +2517,11 @@ function cityIcon(cityName, country, cc, size){
 /* Größere Wappen-Kachel im selben Design wie flagBadge — für die prominente Stadt-Detailansicht */
 function cityBadge(cityName, country, cc, size){
   size = size||44;
+  const flagCc = flagCcFor(cc, country);
   const file = CITY_COAT_OF_ARMS[(cityName||'')+'|'+(country||'')];
-  if(!file) return flagBadge(cc, size);
+  if(!file) return flagBadge(flagCc, size);
   const url = coatOfArmsUrl(file, Math.max(120, size*3));
-  const fallbackEmoji = flagEmoji(cc);
+  const fallbackEmoji = flagEmoji(flagCc);
   return '<div class="flag-badge coa-badge" style="width:'+size+'px;height:'+size+'px;">'+
     '<img src="'+url+'" alt="" title="Wappen von '+String(cityName).replace(/"/g,'&quot;')+'" loading="lazy" '+
     'onerror="this.outerHTML=\''+fallbackEmoji+'\'"></div>';
@@ -2595,7 +2615,7 @@ function fallbackLocation(){
   if(!el) return;
   if(settings.home){
     const hc = findCity(settings.home);
-    el.innerHTML = (hc?flagImg(hc.cc,16):'')+' '+(hc?hc.n:settings.home)+' <span style="opacity:.7">(Heimatort)</span>';
+    el.innerHTML = (hc?flagImg(flagCcFor(hc.cc,hc.c),16):'')+' '+(hc?hc.n:settings.home)+' <span style="opacity:.7">(Heimatort)</span>';
   } else {
     el.textContent = 'Standort nicht verfügbar';
   }
@@ -5307,7 +5327,7 @@ function renderAdd(root){
     hintEl.textContent = '🔍 Suche Land …';
     const info = await geocodeCity(val);
     if(info && info.c){
-      hintEl.innerHTML = '✓ Erkannt: '+flagImg(info.cc,16)+' '+info.c;
+      hintEl.innerHTML = '✓ Erkannt: '+flagImg(flagCcFor(info.cc,info.c),16)+' '+info.c;
       e.target.dataset.resolvedCountry = info.c;
       e.target.dataset.resolvedCc = info.cc;
     } else {
@@ -5491,7 +5511,7 @@ function renderStats(root){
   } else {
     topCountries.forEach((c,i)=>{
       const pct = Math.max(6, Math.round((c.visits/maxCountryVisits)*100));
-      const name = flagImg(c.cc,18)+'<span>'+c.country+'</span>';
+      const name = flagImg(flagCcFor(c.cc,c.country),18)+'<span>'+c.country+'</span>';
       const val = '<b>'+c.visits+'</b> '+(c.visits===1?'Besuch':'Besuche');
       html += topListItemHTML(i, name, val, pct);
     });
@@ -5591,7 +5611,7 @@ function renderStats(root){
   }
   const mostVisitedCountry = agg.countries.filter(c=>!homeCountry || c.country!==homeCountry).slice().sort((a,b)=>b.visits-a.visits)[0];
   if(mostVisitedCountry){
-    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordFlag',22,'var(--gold)')+'</div><div class="rc-value">'+mostVisitedCountry.visits+' '+(mostVisitedCountry.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchtes Land</div><div class="rc-detail">'+flagImg(mostVisitedCountry.cc,16)+' '+mostVisitedCountry.country+'</div></div>';
+    html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('recordFlag',22,'var(--gold)')+'</div><div class="rc-value">'+mostVisitedCountry.visits+' '+(mostVisitedCountry.visits===1?'Besuch':'Besuche')+'</div><div class="rc-label">Meistbesuchtes Land</div><div class="rc-detail">'+flagImg(flagCcFor(mostVisitedCountry.cc,mostVisitedCountry.country),16)+' '+mostVisitedCountry.country+'</div></div>';
   }
   html += '  </div>';
   html += '</div>';
@@ -6065,7 +6085,7 @@ function renderDiscoveryList(discoveriesAll){
     if(expanded){
       html += '<div class="discovery-detail">';
       if(d.countries.length){
-        html += '<div class="discovery-detail-group"><span class="ddg-label">Länder</span>'+d.countries.map(c=>flagImg(c.cc,15)+' '+c.country).join(', ')+'</div>';
+        html += '<div class="discovery-detail-group"><span class="ddg-label">Länder</span>'+d.countries.map(c=>flagImg(flagCcFor(c.cc,c.country),15)+' '+c.country).join(', ')+'</div>';
       }
       if(d.cities.length){
         html += '<div class="discovery-detail-group"><span class="ddg-label">Städte</span>'+d.cities.map(c=>cityIcon(c.city,c.country,c.cc,15)+' '+cityNameHTML(c.city,c.cc)).join(', ')+'</div>';
@@ -6120,7 +6140,7 @@ function renderPlaces(root){
     html += '<div class="countries-grid">';
     sortedCountries.forEach(c=>{
       html += '<div class="country-card" data-country="'+c.key.replace(/"/g,'&quot;')+'">';
-      html += '  <div class="country-top">'+flagBadge(c.cc,42)+'<h4>'+c.country+'</h4><span class="country-top-chevron">›</span></div>';
+      html += '  <div class="country-top">'+flagBadge(flagCcFor(c.cc,c.country),42)+'<h4>'+c.country+'</h4><span class="country-top-chevron">›</span></div>';
       html += '  <div class="country-stats"><div class="cs-item"><span class="cs-value">'+c.cities.size+'</span><span class="cs-label">Städte</span></div><div class="cs-item"><span class="cs-value">'+c.visits+'</span><span class="cs-label">Besuche</span></div><div class="cs-item"><span class="cs-value">'+fmtKm(c.totalKm)+'</span><span class="cs-label">Entfernung</span></div></div>';
       html += '  <div class="country-cities">';
       agg.cities.filter(ci=>ci.country===c.country).sort((a,b)=>b.totalKm-a.totalKm).forEach(ci=>{
@@ -6348,7 +6368,7 @@ function waypointDisplayHTML(rawName){
   const stripped = stripCountrySuffix(rawName);
   const ref = findCity(stripped) || findCity(rawName);
   const esc = String(stripped).replace(/</g,'&lt;');
-  return ref ? esc+' '+flagImg(ref.cc,15) : esc;
+  return ref ? esc+' '+flagImg(flagCcFor(ref.cc,ref.c),15) : esc;
 }
 function detailIconItemHTML(icon, label, value, sub){
   return '<div class="log-detail-icongrid-item">'+
@@ -6454,11 +6474,11 @@ function tripCardHeroRouteHTML(t){
   const fromRef = findCity(t.fromCity);
   const fromName = stripCountrySuffix(t.fromCity)||'?';
   const fromCountry = fromRef ? fromRef.c : '';
-  const fromFlag = fromRef ? flagImg(fromRef.cc,13) : '';
+  const fromFlag = fromRef ? flagImg(flagCcFor(fromRef.cc,fromCountry),13) : '';
   return '<div class="tc-photo-route">'+
     '<div class="tc-photo-city"><b title="'+fromName.replace(/"/g,'&quot;')+'">'+fromName+'</b><span class="tc-photo-country">'+fromCountry+'</span>'+(fromFlag?'<span class="tc-photo-flag">'+fromFlag+'</span>':'')+'</div>'+
     '<div class="tc-route-line light"><span class="tc-route-dot">'+tripTransportIconsHTML(t)+'</span></div>'+
-    '<div class="tc-photo-city right"><b title="'+t.city.replace(/"/g,'&quot;')+'">'+stripCountrySuffix(t.city)+'</b><span class="tc-photo-country">'+t.country+'</span><span class="tc-photo-flag">'+flagImg(t.cityCC,13)+'</span></div>'+
+    '<div class="tc-photo-city right"><b title="'+t.city.replace(/"/g,'&quot;')+'">'+stripCountrySuffix(t.city)+'</b><span class="tc-photo-country">'+t.country+'</span><span class="tc-photo-flag">'+flagImg(flagCcFor(t.cityCC,t.country),13)+'</span></div>'+
   '</div>';
 }
 /* Kompakte Route-Zeile für die "normalen" (nicht-hero) Karten — schmaler, Land+Flagge
@@ -6468,7 +6488,7 @@ function tripCardCompactRouteHTML(t){
   const fromRef = findCity(t.fromCity);
   const fromName = stripCountrySuffix(t.fromCity)||'?';
   const fromCountry = fromRef ? fromRef.c : '';
-  const fromFlag = fromRef ? flagImg(fromRef.cc,12) : '';
+  const fromFlag = fromRef ? flagImg(flagCcFor(fromRef.cc,fromCountry),12) : '';
   return '<div class="tc-compact-route">'+
     '<b title="'+fromName.replace(/"/g,'&quot;')+'">'+fromName+'</b>'+
     '<div class="tc-route-line compact">'+tripTransportIconsHTML(t)+'</div>'+
@@ -6476,7 +6496,7 @@ function tripCardCompactRouteHTML(t){
   '</div>'+
   '<div class="tc-compact-countries">'+
     '<span>'+fromCountry+(fromFlag?' '+fromFlag:'')+'</span>'+
-    '<span>'+t.country+' '+flagImg(t.cityCC,12)+'</span>'+
+    '<span>'+t.country+' '+flagImg(flagCcFor(t.cityCC,t.country),12)+'</span>'+
   '</div>';
 }
 function tripCardStatsLineHTML(t){
@@ -7109,11 +7129,11 @@ function bucketEntryRowHTML(b){
   const prio = BUCKET_PRIORITY_META[b.priority] || BUCKET_PRIORITY_META.mittel;
   let flagHTML, nameHTML, subHTML;
   if(b.type==='country'){
-    flagHTML = flagImg(b.cc,22);
+    flagHTML = flagImg(flagCcFor(b.cc,b.country),22);
     nameHTML = b.country;
     subHTML = '<span class="bucket-type-tag">Land</span>';
   } else {
-    flagHTML = flagImg(b.cc,22);
+    flagHTML = flagImg(flagCcFor(b.cc,b.country),22);
     nameHTML = b.name;
     subHTML = b.country ? '<span class="bucket-sub">'+b.country+'</span>' : '';
   }
