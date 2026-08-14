@@ -157,6 +157,35 @@ a{color:var(--teal);}
 .icon-btn:hover{color:var(--text);border-color:var(--gold);}
 .icon-btn svg{width:16px;height:16px;}
 
+.notif-bell-btn{position:relative;}
+.notif-count-badge{
+  position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;
+  border-radius:100px;background:var(--rose);color:#fff;font-family:var(--font-mono);
+  font-size:9.5px;font-weight:700;line-height:16px;text-align:center;
+  box-shadow:0 0 0 2px var(--bg);
+}
+
+.trip-start-modal-icon{font-size:38px;margin-bottom:6px;}
+
+.notif-history{display:flex;flex-direction:column;gap:2px;margin-top:2px;}
+.notif-history-empty{font-size:12px;color:var(--text-faint);padding:14px 0;}
+.notif-history-item{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--border-soft);
+}
+.notif-history-item:last-child{border-bottom:none;}
+.notif-history-icon{
+  width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+  background:var(--bg-soft);border:1px solid var(--border-soft);
+}
+.notif-history-body{flex:1;min-width:0;}
+.notif-history-title{font-size:12.5px;font-weight:600;color:var(--text);}
+.notif-history-msg{font-size:11.5px;color:var(--text-dim);margin-top:1px;}
+.notif-history-time{font-size:10px;color:var(--text-faint);margin-top:3px;font-family:var(--font-mono);}
+.notif-history-item.unread .notif-history-icon{border-color:var(--gold);}
+.notif-history-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
+
 .version-pill{
   font-family:var(--font-mono);font-size:10px;font-weight:500;
   color:var(--text-faint);background:var(--bg-soft);
@@ -1735,9 +1764,8 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 
 /* Geplante Reisen: kleiner Status-Chip auf Trip-Cards + Teaser-Layout */
 .geplant-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--teal) 16%,transparent);color:var(--teal);font:600 10px var(--font-mono);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;}
-.trip-card-compact .geplant-chip{margin-bottom:4px;}
-.home-next-trip-card{position:relative;}
-.home-next-trip-card .geplant-chip{position:absolute;top:10px;right:44px;z-index:2;}
+.home-next-trip-card{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.home-next-trip-card .trip-card{width:100%;}
 .badge-category-body{padding:12px}
 .badge-category-body .badge-grid{grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:8px}
 .badge-card{border-color:var(--border-soft);background:var(--panel-alt);padding:12px;border-radius:12px}
@@ -3084,6 +3112,10 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
       <button class="icon-btn" id="newTripBtn" title="Neue Reise">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
       </button>
+      <button class="icon-btn notif-bell-btn" id="notifBellBtn" title="Benachrichtigungen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="notif-count-badge" id="notifCountBadge" hidden>0</span>
+      </button>
       <div class="theme-switch" id="themeSwitch">
         <button data-theme-choice="light" title="Heller Modus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button>
         <button data-theme-choice="dark" title="Dunkler Modus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
@@ -3291,6 +3323,8 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <div class="profile-row-main"><div class="profile-row-title">Badge-Benachrichtigungen</div><div class="profile-row-sub">Bei neuen Auszeichnungen informieren</div></div>
           <label class="settings-toggle"><input type="checkbox" id="notifBadgesToggle"><span></span></label>
         </div>
+        <div class="settings-group-label" style="margin-top:18px;">VERLAUF</div>
+        <div class="notif-history" id="notifHistoryList"></div>
       </div>
 
       <div class="settings-panel" data-panel="whatsnew" hidden>
@@ -3329,6 +3363,18 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <p class="sync-desc">Gebaut von Paul, ganz ohne fremde Werbung oder Tracking — deine Daten bleiben bei dir.</p>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="tripStartModal">
+  <div class="modal" style="max-width:340px;text-align:center;">
+    <div class="trip-start-modal-icon">🧳</div>
+    <h3 id="tripStartModalTitle" style="text-align:center;">Reise startet heute!</h3>
+    <p class="sync-desc" id="tripStartModalMsg" style="margin-bottom:20px;"></p>
+    <div class="modal-actions" style="justify-content:center;">
+      <button class="btn-secondary" id="tripStartModalClose">Schließen</button>
+      <button class="btn-primary" id="tripStartModalView">Reise ansehen</button>
     </div>
   </div>
 </div>
@@ -3893,13 +3939,25 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.2.1';
+const APP_VERSION = '3.3.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.3.1', tier:'🟢', title:'Geplant-Badge überlappte auf Mobile den Reise-Zeitraum', items:[
+    'Der grüne „In X Tagen"-Chip auf geplanten Reisen war absolut über der Karte positioniert — auf schmalen Bildschirmen überlappte er dadurch mit dem Datum („21.08.2026 – 23.08.2026"). Der Chip sitzt jetzt regulär oberhalb der Karte, rechtsbündig, statt darüber zu schweben.',
+    'Text gekürzt von „In 7 Tagen" auf „7 Tage" (bzw. weiterhin „Heute"/„Morgen"), damit er auch auf kleinen Displays komfortabel Platz hat.'
+  ]},
+  {v:'3.3.0', tier:'🟡', title:'Neu: Benachrichtigungen für anstehende Reisen & neue Badges', items:[
+    'Neue Glocke im Header mit Zähler für ungelesene Benachrichtigungen — ein Klick öffnet direkt die Benachrichtigungs-Übersicht in den Einstellungen.',
+    'Startet eine Reise heute (Startdatum = heute), erscheint beim ersten Öffnen an dem Tag ein kleines Popup „Deine Reise startet heute!" mit Link direkt zur Reise.',
+    'Wird ein neuer Badge freigeschaltet, poppt automatisch die bereits bekannte Badge-Lightbox auf — direkt beim Speichern der auslösenden Reise oder spätestens beim nächsten App-Start.',
+    'Neuer Abschnitt „Verlauf" unter Einstellungen → Benachrichtigungen: alle bisherigen Reise- und Badge-Meldungen chronologisch, antippbar (führt zur Reise bzw. zum Badge). Öffnen der Seite markiert alles als gelesen.',
+    'Die bereits vorhandenen Toggles „Reise-Erinnerungen" und „Badge-Benachrichtigungen" in den Einstellungen steuern jetzt tatsächlich, ob diese Popups/Meldungen erzeugt werden.',
+    'Beim Update auf diese Version werden bereits freigeschaltete Bestandsbadges einmalig still in den Verlauf nachgetragen (ohne Popup) — so poppt beim ersten Öffnen nicht die komplette Badge-Sammlung auf einmal auf.'
+  ]},
   {v:'3.2.1', tier:'🟢', title:'Nachbesserungen an „Geplante Reisen“: Hero-Karte, Statistiken & Duplikate', items:[
     'Hero-Karte in „Alle Reisen“ zeigte fälschlich die erste Reise MIT Foto groß an, egal an welcher Position sie stand — z. B. eine ältere Reise statt der aktuellsten. Jetzt bekommt ausschließlich die erste Reise der Liste die große Foto-Darstellung, alle anderen bleiben kompakt.',
     'Kilometer-Zähler und Statistiken (Jahres-km, „km seit Beginn“, Länder/Städte gesamt) zählten geplante (zukünftige) Reisen bereits mit, obwohl sie noch nicht stattgefunden haben. Neuer Helfer „hasStarted“ filtert sie jetzt konsequent aus allen Aggregationen heraus, bis ihr Startdatum erreicht ist.',
@@ -4306,6 +4364,13 @@ const BUCKET_PRIORITY_META = {
   hoch:{label:'Hoch', icon:'🔥'}, mittel:{label:'Mittel', icon:'✨'}, niedrig:{label:'Niedrig', icon:'💭'}
 };
 
+/* Benachrichtigungen: {id, type:'tripStart'|'badge', refId, title, message, createdAt, read}
+   — lokal gespeichert (kein Cloud-Sync, siehe loadNotifications/saveNotifications), da es
+   sich um leichtgewichtigen, gerätespezifischen UI-Status handelt statt um Reisedaten.
+   refId verhindert Doppel-Erzeugung: tripStart→Reise-ID, badge→Badge-ID (siehe checkNotifications). */
+let notifications = [];
+let notifPopupQueue = [];
+
 /* ---------- Helpers ---------- */
 function uid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 
@@ -4396,6 +4461,68 @@ async function saveBucketList(){
     try{ await syncPush('bucketList', bucketList); }
     catch(e){ console.error('Cloud-Sync (bucketList) fehlgeschlagen:', e); }
   }
+}
+
+async function loadNotifications(){
+  try{
+    const s = await window.storage.get('notifications', false);
+    notifications = s ? JSON.parse(s.value) : [];
+  }catch(e){ notifications = []; }
+}
+async function saveNotifications(){
+  try{ await window.storage.set('notifications', JSON.stringify(notifications), false); }
+  catch(e){ console.error('Storage-Fehler (notifications):', e); }
+}
+/* Prüft beim App-Start (siehe loadData) auf zwei Ereignisse und legt dafür je einen
+   Eintrag an — refId verhindert, dass dasselbe Ereignis (dieselbe Reise/derselbe Badge)
+   mehrfach gemeldet wird, auch über mehrere App-Starts hinweg:
+   1) Eine Reise, deren Startdatum HEUTE ist (nicht cityOnly, nicht bereits gemeldet).
+   2) Ein neu freigeschaltetes Badge (Abgleich gegen bereits vorhandene Badge-Meldungen).
+   Beim allerersten Lauf (settings.notifBadgeSeedDone fehlt) werden bereits freigeschaltete
+   Badges nur "still" nachgetragen (read:true, kein Popup) — sonst würde ein Update auf
+   diese Version bei bestehenden Nutzer:innen alle Alt-Badges gleichzeitig aufpoppen lassen.
+   Gibt die neu erzeugten (noch ungelesenen) Einträge zurück, die als Popup gezeigt werden sollen. */
+async function checkNotifications(){
+  const d = new Date().toISOString().slice(0,10);
+  const queued = [];
+  let changed = false;
+
+  if(settings.notifyTrips!==false){
+    trips.forEach(t=>{
+      if(t.cityOnly || !t.dateFrom || t.dateFrom!==d) return;
+      if(notifications.some(n=>n.type==='tripStart' && n.refId===t.id)) return;
+      const n = {
+        id:uid(), type:'tripStart', refId:t.id,
+        title:'Deine Reise startet heute!',
+        message:'Deine Reise nach '+stripCountrySuffix(t.city)+' beginnt heute.',
+        createdAt:Date.now(), read:false
+      };
+      notifications.unshift(n); queued.push(n); changed=true;
+    });
+  }
+
+  if(settings.notifyBadges!==false && trips.length){
+    const view = computeBadgesView();
+    const firstRun = !settings.notifBadgeSeedDone;
+    view.unlocked.forEach(a=>{
+      if(notifications.some(n=>n.type==='badge' && n.refId===a.id)) return;
+      const n = {
+        id:uid(), type:'badge', refId:a.id,
+        title:'Neuer Badge freigeschaltet!',
+        message:a.name+' — '+a.description,
+        createdAt:Date.now(), read: firstRun
+      };
+      notifications.unshift(n); changed=true;
+      if(!firstRun) queued.push(n);
+    });
+    if(firstRun){ settings.notifBadgeSeedDone = true; await saveSettings(); }
+  }
+
+  if(changed){
+    notifications = notifications.slice(0,200);
+    await saveNotifications();
+  }
+  return queued;
 }
 /* Führt zwei Bucket-Listen zusammen (dedupliziert nach id) — analog zu
    mergeCustomCityLists(), damit weder lokale noch Cloud-seitige Einträge beim
@@ -4883,6 +5010,7 @@ async function loadData(){
   await loadSyncConfig();
   await loadCustomCities();
   await loadBucketList();
+  await loadNotifications();
   try{
     const t = await window.storage.get('trips', false);
     trips = t ? JSON.parse(t.value) : [];
@@ -4902,6 +5030,9 @@ async function loadData(){
   detectLocation();
   populateDatalist();
   renderAll();
+  notifPopupQueue = await checkNotifications();
+  renderNotifBell();
+  if(notifPopupQueue.length) setTimeout(showNextNotifPopup, 500);
 }
 async function saveTrips(){
   try{
@@ -7506,6 +7637,8 @@ function renderAdd(root){
     duplicateSource = null;
     await saveTrips();
     switchTab('dashboard');
+    const newly = await checkNotifications();
+    if(newly.length){ notifPopupQueue.push(...newly); renderNotifBell(); setTimeout(showNextNotifPopup, 700); }
   });
 }
 
@@ -9509,6 +9642,102 @@ function refreshSettingsOverview(){
   const aboutVersion = document.getElementById('settingsAboutVersion');
   if(aboutVersion) aboutVersion.textContent = 'Version '+APP_VERSION;
 }
+/* ---------- Benachrichtigungen: Glocke, Historie, Event-Popups ---------- */
+function renderNotifBell(){
+  const badge = document.getElementById('notifCountBadge');
+  if(!badge) return;
+  const unread = notifications.filter(n=>!n.read).length;
+  badge.hidden = unread===0;
+  badge.textContent = unread>99 ? '99+' : String(unread);
+}
+async function markAllNotificationsRead(){
+  let changed = false;
+  notifications.forEach(n=>{ if(!n.read){ n.read=true; changed=true; } });
+  if(changed) await saveNotifications();
+  renderNotifBell();
+}
+function fmtNotifTime(ts){
+  const d = new Date(ts), now = new Date();
+  const sameDay = d.toDateString()===now.toDateString();
+  const time = d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  return sameDay ? 'Heute, '+time : d.toLocaleDateString('de-DE')+', '+time;
+}
+function renderNotifHistory(){
+  const el = document.getElementById('notifHistoryList');
+  if(!el) return;
+  if(!notifications.length){
+    el.innerHTML = '<div class="notif-history-empty">Noch keine Benachrichtigungen — hier landen Reise-Erinnerungen und neue Badges.</div>';
+    return;
+  }
+  const sorted = notifications.slice().sort((a,b)=>b.createdAt-a.createdAt);
+  el.innerHTML = sorted.map(n=>{
+    const icon = n.type==='badge' ? '🏅' : '🧳';
+    return '<div class="notif-history-item'+(!n.read?' unread':'')+'" data-notif-open="'+n.id+'">'+
+      '<div class="notif-history-icon">'+icon+'</div>'+
+      '<div class="notif-history-body"><div class="notif-history-title">'+n.title+'</div>'+
+      '<div class="notif-history-msg">'+n.message+'</div>'+
+      '<div class="notif-history-time">'+fmtNotifTime(n.createdAt)+'</div></div>'+
+      (!n.read ? '<div class="notif-history-dot"></div>' : '')+
+      '</div>';
+  }).join('');
+  el.querySelectorAll('[data-notif-open]').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const n = notifications.find(x=>x.id===row.dataset.notifOpen);
+      if(!n) return;
+      if(n.type==='tripStart' && trips.some(t=>t.id===n.refId)){
+        closeSettings();
+        viewingTripId = n.refId; switchTab('log');
+      } else if(n.type==='badge'){
+        const a = computeBadgesView().unlocked.find(b=>b.id===n.refId);
+        if(a && typeof window.openBadgeLightbox==='function') window.openBadgeLightbox(a, row);
+      }
+    });
+  });
+}
+/* Zeigt das nächste Ereignis aus notifPopupQueue: Reise-Start als eigenes kleines
+   Modal, Badge über die bestehende Badge-Lightbox (siehe openBadgeLightbox weiter unten).
+   Wird nacheinander abgearbeitet, damit bei mehreren Ereignissen (z. B. Reise + 2 Badges
+   am selben Tag) nicht alles gleichzeitig übereinander aufpoppt. */
+function showNextNotifPopup(){
+  const n = notifPopupQueue.shift();
+  if(!n) return;
+  if(n.type==='tripStart'){
+    document.getElementById('tripStartModalTitle').textContent = n.title;
+    document.getElementById('tripStartModalMsg').textContent = n.message;
+    document.getElementById('tripStartModal').classList.add('open');
+    document.getElementById('tripStartModal').dataset.tripId = n.refId;
+  } else if(n.type==='badge'){
+    const a = computeBadgesView().unlocked.find(b=>b.id===n.refId);
+    markAllNotificationsRead();
+    if(a && typeof window.openBadgeLightbox==='function'){
+      window._notifPopupActive = true;
+      window.openBadgeLightbox(a, null);
+    } else {
+      showNextNotifPopup();
+    }
+  }
+}
+async function closeTripStartPopup(){
+  document.getElementById('tripStartModal').classList.remove('open');
+  await markAllNotificationsRead();
+  setTimeout(showNextNotifPopup, 400);
+}
+document.getElementById('tripStartModalClose').addEventListener('click', closeTripStartPopup);
+document.getElementById('tripStartModalView').addEventListener('click', async ()=>{
+  const tripId = document.getElementById('tripStartModal').dataset.tripId;
+  document.getElementById('tripStartModal').classList.remove('open');
+  await markAllNotificationsRead();
+  if(tripId){ viewingTripId = tripId; switchTab('log'); }
+  setTimeout(showNextNotifPopup, 400);
+});
+document.getElementById('tripStartModal').addEventListener('click', (e)=>{
+  if(e.target.id==='tripStartModal') closeTripStartPopup();
+});
+document.getElementById('notifBellBtn').addEventListener('click', ()=>{
+  openSettings();
+  openSettingsPanel('notifications');
+});
+
 function fmtSyncTimestamp(iso){
   try{
     const d=new Date(iso), now=new Date();
@@ -9537,6 +9766,8 @@ function openSettingsPanel(name){
   if(name==='notifications'){
     document.getElementById('notifTripsToggle').checked = settings.notifyTrips!==false;
     document.getElementById('notifBadgesToggle').checked = settings.notifyBadges!==false;
+    renderNotifHistory();
+    markAllNotificationsRead();
   }
   document.getElementById('settingsPanelView').scrollTop = 0;
 }
@@ -9604,7 +9835,7 @@ document.getElementById('settingsModal').addEventListener('click',(e)=>{
   if(e.target.id==='settingsModal') closeSettings();
 });
 document.getElementById('exportDataBtn').addEventListener('click', ()=>{
-  const payload = {exportedAt:new Date().toISOString(), version:APP_VERSION, trips, settings, bucketList};
+  const payload = {exportedAt:new Date().toISOString(), version:APP_VERSION, trips, settings, bucketList, notifications};
   const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -9926,7 +10157,7 @@ renderLog = (function(orig){ return function(root){
   const upcoming = plannedTrips(); if(!upcoming.length) return;
   const cta = root.querySelector('.trip-primary-cta'); if(!cta) return;
   const sec=document.createElement('div');sec.className='card';
-  sec.innerHTML='<div class="card-head"><h2>Geplant</h2><span class="sub">'+upcoming.length+' '+(upcoming.length===1?'Reise':'Reisen')+'</span></div><div class="trip-cards-list">'+upcoming.map(t=>'<div class="home-next-trip-card"><span class="geplant-chip">'+svgIcon('calendar',11,'currentColor')+' '+(daysUntil(t.dateFrom)<=1?(daysUntil(t.dateFrom)===0?'Heute':'Morgen'):'In '+daysUntil(t.dateFrom)+' Tagen')+'</span>'+tripCardHTML(t,false)+'</div>').join('')+'</div>';
+  sec.innerHTML='<div class="card-head"><h2>Geplant</h2><span class="sub">'+upcoming.length+' '+(upcoming.length===1?'Reise':'Reisen')+'</span></div><div class="trip-cards-list">'+upcoming.map(t=>'<div class="home-next-trip-card"><span class="geplant-chip">'+svgIcon('calendar',11,'currentColor')+' '+(daysUntil(t.dateFrom)<=1?(daysUntil(t.dateFrom)===0?'Heute':'Morgen'):daysUntil(t.dateFrom)+' Tage')+'</span>'+tripCardHTML(t,false)+'</div>').join('')+'</div>';
   cta.insertAdjacentElement('afterend', sec);
   attachLogResultActions(sec);
 }; })(renderLog);
@@ -10445,6 +10676,10 @@ loadData();
     if(!lb||lb.hidden)return;
     lb.hidden=true; document.body.style.overflow='';
     badgeReturnFocus?.focus?.();
+    if(window._notifPopupActive){
+      window._notifPopupActive=false;
+      setTimeout(()=>{ if(typeof showNextNotifPopup==='function') showNextNotifPopup(); }, 400);
+    }
   }
   function wire(){
     document.querySelectorAll('.badge-card,.discover-badge-row,.fast-achievement-row').forEach(card=>{
@@ -10464,6 +10699,10 @@ loadData();
   },true);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(wire,0),{once:true});
   else setTimeout(wire,0);
+  // Für die Benachrichtigungs-Popups (siehe checkNotifications/showNextNotifPopup) global
+  // erreichbar machen — sonst bleibt die Lightbox nur über Badge-Karten auslösbar.
+  window.openBadgeLightbox = openBadgeLightbox;
+  window.closeBadgeLightbox = closeBadgeLightbox;
 })();
 </script>
 
