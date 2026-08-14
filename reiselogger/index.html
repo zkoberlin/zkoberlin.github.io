@@ -3963,13 +3963,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.4.0';
+const APP_VERSION = '3.4.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.4.1', tier:'🟢', title:'Badge-Benachrichtigungen fluteten ein zweites Gerät rückwirkend', items:[
+    'Root Cause: Der Seed-Marker, der beim ersten Start verhindern soll, dass alle längst freigeschalteten Badges auf einmal als Popup erscheinen, lag in den Cloud-synchronisierten Einstellungen — die Benachrichtigungs-Historie selbst syncte aber bewusst nicht geräteübergreifend. Ein zweites Gerät (z. B. Desktop, nachdem Mobile schon "geseeded" war) hielt sich dadurch fälschlich für bereits abgesichert, obwohl seine lokale Historie leer war — Ergebnis: alle Bestandsbadges poppten dort rückwirkend auf einmal auf.',
+    'Fix: Der Seed-Marker liegt jetzt lokal pro Gerät (nicht mehr in den synchronisierten Einstellungen) und räumt beim jeweils ersten Lauf zusätzlich automatisch mit bereits fälschlich erzeugten Badge-Meldungen auf. Ab sofort gilt auf jedem Gerät: alles, was VOR dem ersten Start dieser Version schon freigeschaltet war, zählt als bekannt (kein Popup) — nur wirklich neu hinzukommende Badges lösen ab jetzt ein Popup aus.'
+  ]},
   {v:'3.4.0', tier:'🟡', title:'Neu: Profilfoto mit Level-Badge', items:[
     'Im Profil kann jetzt ein eigenes Foto hochgeladen werden — einfach auf den Avatar-Kreis tippen, ein Bild auswählen, fertig. Wird komprimiert und lokal (und bei aktivem Cloud-Sync geräteübergreifend) gespeichert.',
     'Auf dem Profilfoto erscheint automatisch ein kleiner Badge mit der aktuellen Level-Zahl, der sich mit fortschreitendem Level von selbst aktualisiert.',
@@ -4532,19 +4536,41 @@ async function checkNotifications(){
 
   if(settings.notifyBadges!==false && trips.length){
     const view = computeBadgesView();
-    const firstRun = !settings.notifBadgeSeedDone;
-    view.unlocked.forEach(a=>{
-      if(notifications.some(n=>n.type==='badge' && n.refId===a.id)) return;
-      const n = {
-        id:uid(), type:'badge', refId:a.id,
-        title:'Neuer Badge freigeschaltet!',
-        message:a.name+' — '+a.description,
-        createdAt:Date.now(), read: firstRun
-      };
-      notifications.unshift(n); changed=true;
-      if(!firstRun) queued.push(n);
-    });
-    if(firstRun){ settings.notifBadgeSeedDone = true; await saveSettings(); }
+    // Lokaler (NICHT Cloud-synchronisierter) Seed-Marker statt settings.notifBadgeSeedDone:
+    // notifications selbst syncen bewusst nicht über Geräte hinweg (siehe loadNotifications/
+    // saveNotifications) — ein Flag in den (Cloud-synchronisierten) settings hätte also ein
+    // zweites Gerät (z. B. Desktop) fälschlich als "schon geseeded" markiert, obwohl dessen
+    // lokale notifications-Historie leer war. Ergebnis: Auf dem zweiten Gerät wurden dann
+    // ALLE längst freigeschalteten Badges als vermeintlich neu erkannt und geflutet als
+    // Popup gezeigt. 'notifBadgeSeedV2' unten läuft daher separat auf JEDEM Gerät einmalig,
+    // räumt dabei zur Sicherheit auch bereits fälschlich erzeugte Badge-Meldungen aus einer
+    // vorherigen Flut auf (purge + stilles Reseeding) und verhindert, dass sich das wiederholt.
+    let seedDone = false;
+    try{ const s = await window.storage.get('notifBadgeSeedV2', false); seedDone = !!s; }catch(e){ seedDone = false; }
+    if(!seedDone){
+      notifications = notifications.filter(n=>n.type!=='badge');
+      view.unlocked.forEach(a=>{
+        notifications.unshift({
+          id:uid(), type:'badge', refId:a.id,
+          title:'Neuer Badge freigeschaltet!',
+          message:a.name+' — '+a.description,
+          createdAt:Date.now(), read:true
+        });
+      });
+      changed = true;
+      try{ await window.storage.set('notifBadgeSeedV2', 'true', false); }catch(e){ console.error('Storage-Fehler (notifBadgeSeedV2):', e); }
+    } else {
+      view.unlocked.forEach(a=>{
+        if(notifications.some(n=>n.type==='badge' && n.refId===a.id)) return;
+        const n = {
+          id:uid(), type:'badge', refId:a.id,
+          title:'Neuer Badge freigeschaltet!',
+          message:a.name+' — '+a.description,
+          createdAt:Date.now(), read:false
+        };
+        notifications.unshift(n); queued.push(n); changed=true;
+      });
+    }
   }
 
   if(changed){
