@@ -1732,6 +1732,12 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
 .badge-category-icon{width:34px;height:34px;border-radius:10px;background:var(--panel-alt);display:flex;align-items:center;justify-content:center;color:var(--text-dim);flex:0 0 auto}
 .badge-category-title{font:600 13.5px var(--font-display)}
 .badge-category-meta{font-size:10.5px;color:var(--text-faint);margin-top:2px}
+
+/* Geplante Reisen: kleiner Status-Chip auf Trip-Cards + Teaser-Layout */
+.geplant-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--teal) 16%,transparent);color:var(--teal);font:600 10px var(--font-mono);letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;}
+.trip-card-compact .geplant-chip{margin-bottom:4px;}
+.home-next-trip-card{position:relative;}
+.home-next-trip-card .geplant-chip{position:absolute;top:10px;right:44px;z-index:2;}
 .badge-category-body{padding:12px}
 .badge-category-body .badge-grid{grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:8px}
 .badge-card{border-color:var(--border-soft);background:var(--panel-alt);padding:12px;border-radius:12px}
@@ -3887,13 +3893,27 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.1.7';
+const APP_VERSION = '3.2.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.2.0', tier:'🟡', title:'Geplante Reisen: neu auf Dashboard und im Reisen-Tab', items:[
+    'Eine Reise mit einem Startdatum in der Zukunft gilt jetzt als „geplant" — erkennbar an einem kleinen Geplant-Chip auf der Trip-Card, ohne dass dafür ein neues Formularfeld nötig war (reine Auswertung des vorhandenen Startdatums).',
+    'Dashboard: Neuer Abschnitt „Nächste Reise" zwischen „Letzte Reise" und „Zuletzt unterwegs" — kompakt gehalten (nicht als große Hero-Karte), mit Countdown („In 12 Tagen"/„Morgen"/„Heute"). Erscheint nur, wenn tatsächlich eine zukünftige Reise erfasst ist.',
+    'Reisen-Tab: Neuer Abschnitt „Geplant" direkt unter dem „+ Reise hinzufügen"-Button, aufsteigend sortiert (nächste zuerst) — vor der bestehenden, unverändert vollständigen „Alle Reisen"-Liste.',
+    'Eine Reise mit Startdatum = heute zählt weiterhin als „aktuelle Reise" (bestehendes Verhalten), nicht als „geplant" — keine Doppelanzeige.'
+  ]},
+  {v:'3.1.9', tier:'🟢', title:'Badge-Kategorien in „Sammlung“: zugeklappt per Default & fehlendes Leerzeichen', items:[
+    'Die erste Kategorie („Länder“) war bisher beim Öffnen von „Alle Badges“ immer aufgeklappt — jetzt starten alle Kategorien konsistent zugeklappt.',
+    'Zwischen Kategorie-Namen und Zähler fehlte ein Leerzeichen im HTML („Länder14 / 35 freigeschaltet“) — jetzt korrekt „Länder 14 / 35 freigeschaltet“.'
+  ]},
+  {v:'3.1.8', tier:'🟢', title:'„Letzte Reise“ zeigt bei gleichem Datum jetzt zuverlässig die neueste', items:[
+    'Root Cause: Die Sortierung, die bestimmt, welche Reise groß als „Letzte Reise“ erscheint, verglich ausschließlich das Startdatum — ohne Tiebreaker. Bei zwei Reisen mit identischem Startdatum blieb durch Sortier-Stabilität die zuerst gespeicherte Reise vorn, selbst wenn gerade eine neuere mit demselben Datum hinzugefügt wurde.',
+    'Fix: Bei gleichem Startdatum entscheidet jetzt zusätzlich der Anlagezeitpunkt (createdAt) — die zuletzt hinzugefügte Reise gewinnt. Betrifft die Hero-Karte auf dem Dashboard sowie die „Zuletzt unterwegs“-Kacheln, damit beide konsistent bleiben.'
+  ]},
   {v:'3.1.7', tier:'🟢', title:'Formular „Neue Reise“ komplett wiederhergestellt (Grund, Notizen, Speichern)', items:[
     'Root Cause: Zwei übereinandergelegte Formular-Erweiterungen sind sich in die Quere gekommen. Die ältere Version hatte Grund, Flugnummer und Notizen bereits in eine eigene aufklappbare „Weitere Reisedetails“-Sektion verschoben. Die neuere Version (progressive Reiseerfassung mit den Bereichen „Reise“/„Reisedetails“/„Erweitert“) hat diese ältere Sektion beim Aufbau per .remove() entfernt — und mit ihr alle darin enthaltenen Felder gleich mit, statt sie vorher herauszulösen.',
     'Dadurch fehlten Grund und Notizen komplett im Formular, „Reisedetails“ enthielt nur noch „Nur Stadt merken“, „Erweitert“ war leer, und Speichern schlug fehl, weil der Submit-Handler auf das nicht mehr vorhandene Notizen-Feld zugriff.',
@@ -7474,7 +7494,7 @@ function renderAdd(root){
       trips.push(trip);
       showToast('Reise hinzugefügt — willkommen in '+cityName+'!');
     }
-    trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||''));
+    trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
     editingId = null;
     duplicateSource = null;
     await saveTrips();
@@ -9746,11 +9766,20 @@ function currentTripsForToday(){
   const d = new Date().toISOString().slice(0,10);
   return trips.filter(t=>t.dateFrom && t.dateFrom<=d && (t.dateTo||t.dateFrom)>=d);
 }
+function plannedTrips(){
+  const d = new Date().toISOString().slice(0,10);
+  return trips.filter(t=>t.dateFrom && t.dateFrom>d).sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'') || (a.createdAt||0)-(b.createdAt||0));
+}
+function daysUntil(dateStr){
+  const d=new Date().toISOString().slice(0,10);
+  const ms=new Date(dateStr+'T00:00:00')-new Date(d+'T00:00:00');
+  return Math.round(ms/86400000);
+}
 function renderDashboard(root){
   const agg=aggregate(), yr=String(new Date().getFullYear());
   const yearAgg=aggregateYears().find(y=>y.year===yr);
   const km=yearAgg?yearAgg.total:0, yc=aggregateYearCounts(yr);
-  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''))[0];
+  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0))[0];
   const active=currentTripsForToday();
   const name=(settings.profileName||'').trim()||'Paul';
   let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WEITWEG</div><div class="home-greeting-title">'+timeGreeting(name)+'</div></div></div>';
@@ -9771,6 +9800,22 @@ function renderDashboard(root){
   h+='</aside></div>';
   root.innerHTML=h; attachGoTab(root); if(latest) attachLogResultActions(root); initWorldMapML(agg); renderCityDetail(agg);
 }
+
+/* Geplante Reisen: kompakter Teaser zwischen "Letzte Reise" und den weiteren
+   Home-Sections, nur sichtbar wenn tatsächlich eine zukünftige Reise erfasst ist. */
+const V2B_RENDER_DASHBOARD = renderDashboard;
+renderDashboard = function(root){
+  V2B_RENDER_DASHBOARD(root);
+  const next = plannedTrips()[0]; if(!next) return;
+  const main = root.querySelector('.home-main'); if(!main) return;
+  const mapSection = main.querySelector('.home-section:last-child'); if(!mapSection) return;
+  const days = daysUntil(next.dateFrom);
+  const daysLabel = days===0?'Heute':days===1?'Morgen':'In '+days+' Tagen';
+  const sec=document.createElement('section');sec.className='home-section';
+  sec.innerHTML='<div class="home-section-head"><h2>Nächste Reise</h2><span class="section-link" style="cursor:default;color:var(--text-faint);font-weight:500;">'+daysLabel+'</span></div><div class="home-next-trip-card"><span class="geplant-chip">'+svgIcon('calendar',11,'currentColor')+' Geplant</span>'+tripCardHTML(next,false)+'</div>';
+  main.insertBefore(sec, mapSection);
+  attachLogResultActions(sec);
+};
 
 function geoContentHTML(agg){
   let h='';
@@ -9857,6 +9902,19 @@ renderAdd = function(root){
 };
 
 renderLog = (function(orig){ return function(root){ orig(root); if(!viewingTripId){ const c=document.createElement('div'); c.className='trip-primary-cta'; c.innerHTML='<button class="btn-primary" id="tripAddPrimary" type="button">+ Reise hinzufügen</button>'; root.prepend(c); document.getElementById('tripAddPrimary').addEventListener('click',()=>switchTab('add')); } }; })(renderLog);
+
+/* Geplante Reisen: eigener Abschnitt vor der chronologischen "Alle Reisen"-Liste,
+   aufsteigend sortiert (nächste zuerst), nur sichtbar wenn welche erfasst sind. */
+renderLog = (function(orig){ return function(root){
+  orig(root);
+  if(viewingTripId) return;
+  const upcoming = plannedTrips(); if(!upcoming.length) return;
+  const cta = root.querySelector('.trip-primary-cta'); if(!cta) return;
+  const sec=document.createElement('div');sec.className='card';
+  sec.innerHTML='<div class="card-head"><h2>Geplant</h2><span class="sub">'+upcoming.length+' '+(upcoming.length===1?'Reise':'Reisen')+'</span></div><div class="trip-cards-list">'+upcoming.map(t=>'<div class="home-next-trip-card"><span class="geplant-chip">'+svgIcon('calendar',11,'currentColor')+' '+(daysUntil(t.dateFrom)<=1?(daysUntil(t.dateFrom)===0?'Heute':'Morgen'):'In '+daysUntil(t.dateFrom)+' Tagen')+'</span>'+tripCardHTML(t,false)+'</div>').join('')+'</div>';
+  cta.insertAdjacentElement('afterend', sec);
+  attachLogResultActions(sec);
+}; })(renderLog);
 
 renderTripDetailPage = function(tripId,root){
   const t=trips.find(x=>x.id===tripId); if(!t){viewingTripId=null;renderLog(root);return;} const hasPhoto=t.photos&&t.photos.length, pLbl=purposeLabel(t), contInfo=continentInfo(getContinent((t.cityCC||'').toLowerCase()));
@@ -10040,7 +10098,7 @@ Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}).fo
 const V3_RENDER_DASHBOARD = renderDashboard;
 renderDashboard = function(root){
   V3_RENDER_DASHBOARD(root);
-  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||''));
+  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
   const main=root.querySelector('.home-main');
   const mapSection=main?.querySelector('.home-section:last-child');
   if(main && mapSection && latest.length>1){
@@ -10160,7 +10218,7 @@ renderBadges=function(root){
     const items=grouped[key]||[]; if(!items.length)return;
     const meta=WEITWEG_BADGE_CATEGORY_META[key], unlocked=items.filter(x=>x.unlocked).length;
     items.sort((a,b)=>Number(b.unlocked)-Number(a.unlocked) || (b.progress/b.target)-(a.progress/a.target));
-    html+='<details class="badge-category" '+(idx===0?'open':'')+'><summary><span class="badge-category-icon">'+masterIcon(meta.icon,18,'currentColor')+'</span><span><span class="badge-category-title">'+meta.label+'</span><span class="badge-category-meta">'+unlocked+' / '+items.length+' freigeschaltet</span></span></summary><div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div></details>';
+    html+='<details class="badge-category"><summary><span class="badge-category-icon">'+masterIcon(meta.icon,18,'currentColor')+'</span><span><span class="badge-category-title">'+meta.label+' </span><span class="badge-category-meta">'+unlocked+' / '+items.length+' freigeschaltet</span></span></summary><div class="badge-category-body"><div class="badge-grid">'+items.map(badgeCardHTML).join('')+'</div></div></details>';
   });
   html+='</div>';
   root.innerHTML=html;
