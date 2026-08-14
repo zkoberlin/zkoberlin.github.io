@@ -1,41 +1,41 @@
 {
-  "datum": "13.08.2026",
-  "generiert": "2026-08-13T03:20:59Z",
+  "datum": "14.08.2026",
+  "generiert": "2026-08-14T03:18:19Z",
   "geburtstage": [
     {
-      "name": "Antonia Lottner",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "German Tennis Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Lottner_WMQ22_%283%29_%2852191414319%29.jpg/330px-Lottner_WMQ22_%283%29_%2852191414319%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Antonia_Lottner",
+      "name": "Wim Wenders",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Filmregisseur",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/MJK30764_Wim_Wenders_%28Berlinale_2017%29_2.jpg/120px-MJK30764_Wim_Wenders_%28Berlinale_2017%29_2.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q55411",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Christian Müller (footballer, born 1983)",
-      "alter": 43,
-      "geburtsjahr": 1983,
+      "name": "Heiko Westermann",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Heiko_Westermann_2012.jpg/120px-Heiko_Westermann_2012.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q115341",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Magic Johnson",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Magic_Johnson_at_SXSW_2022_%2851958828669%29_%28cropped%29.jpg/120px-Magic_Johnson_at_SXSW_2022_%2851958828669%29_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q134183",
+      "nationalitaet": null
+    },
+    {
+      "name": "Christian Gentner",
+      "alter": 41,
+      "geburtsjahr": 1985,
       "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Christian_M%C3%BCller_(footballer%2C_born_1983)",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Moritz Bleibtreu",
-      "alter": 55,
-      "geburtsjahr": 1971,
-      "beruf": "German Actor (Born 1971)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Nicht-mein-Tag-Darsteller_%28cropped%29.jpg/330px-Nicht-mein-Tag-Darsteller_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Moritz_Bleibtreu",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Thomas Pogge",
-      "alter": 73,
-      "geburtsjahr": 1953,
-      "beruf": "German Philosopher (Born 1953)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/2014-01-08_Thomas_Pogge_4805.JPG/330px-2014-01-08_Thomas_Pogge_4805.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Pogge",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/ChristianGentner_VfB.jpg/330px-ChristianGentner_VfB.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christian_Gentner",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
