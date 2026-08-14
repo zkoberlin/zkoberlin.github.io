@@ -5310,7 +5310,7 @@ function aggregate(){
     });
   }
 
-  trips.forEach(t=>{
+  trips.filter(hasStarted).forEach(t=>{
     const out=tripOut(t), ret=tripReturn(t), tot=out+ret;
     totalOut+=out; totalReturn+=ret;
     if(t.direction!=='returnonly' && t.outMode){
@@ -5392,7 +5392,7 @@ function aggregate(){
    (Hin- und Rückweg zählen unabhängig, je nach ihrem eigenen Verkehrsmittel) */
 function aggregateYears(){
   const map = new Map();
-  trips.forEach(t=>{
+  trips.filter(hasStarted).forEach(t=>{
     const year = (t.dateFrom||'').slice(0,4);
     if(!/^\d{4}$/.test(year)) return;
     if(!map.has(year)) map.set(year,{year:year, total:0, totalOut:0, totalReturn:0, perMode:{}});
@@ -5427,7 +5427,7 @@ function aggregateYearCounts(year){
     cityKeys.add(name+'|'+country);
     if(country !== homeCountry && countsCountry!==false) countryKeys.add(country);
   }
-  trips.forEach(t=>{
+  trips.filter(hasStarted).forEach(t=>{
     if((t.dateFrom||'').slice(0,4)!==year) return;
     tripCount++;
     const crossings = tripBorderCrossings(t);
@@ -7492,7 +7492,7 @@ function renderAdd(root){
       showToast('Reise aktualisiert.');
     } else {
       trips.push(trip);
-      showToast('Reise hinzugefügt — willkommen in '+cityName+'!');
+      showToast(hasStarted(trip) ? 'Reise hinzugefügt — willkommen in '+cityName+'!' : 'Reise geplant — auf nach '+cityName+'!');
     }
     trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
     editingId = null;
@@ -8718,12 +8718,10 @@ function renderLogCards(sortedTrips){
   if(!sortedTrips.length){
     return '<div class="empty-state"><div class="big">🔍</div>Keine Reisen für „'+logCityFilter.replace(/</g,'&lt;')+'" gefunden.</div>';
   }
-  let heroAssigned = false;
   let html = '<div class="trip-cards-list">';
-  sortedTrips.forEach(t=>{
+  sortedTrips.forEach((t,i)=>{
     const hasPhoto = t.photos && t.photos.length;
-    const isHero = hasPhoto && !heroAssigned;
-    if(isHero) heroAssigned = true;
+    const isHero = i===0 && hasPhoto;
     html += tripCardHTML(t, isHero);
   });
   html += '</div>';
@@ -9766,6 +9764,14 @@ function currentTripsForToday(){
   const d = new Date().toISOString().slice(0,10);
   return trips.filter(t=>t.dateFrom && t.dateFrom<=d && (t.dateTo||t.dateFrom)>=d);
 }
+/* Reisen, die bereits begonnen haben (Startdatum erreicht oder in der Vergangenheit) —
+   oder ohne Startdatum (z. B. cityOnly). Zukünftig geplante Reisen zählen bewusst nicht
+   in Kilometer-Zählern, Länder-/Städte-Statistiken oder als "Letzte Reise", solange ihr
+   Startdatum noch nicht erreicht ist. */
+function hasStarted(t){
+  const d = new Date().toISOString().slice(0,10);
+  return !t.dateFrom || t.dateFrom<=d;
+}
 function plannedTrips(){
   const d = new Date().toISOString().slice(0,10);
   return trips.filter(t=>t.dateFrom && t.dateFrom>d).sort((a,b)=>(a.dateFrom||'').localeCompare(b.dateFrom||'') || (a.createdAt||0)-(b.createdAt||0));
@@ -9779,7 +9785,7 @@ function renderDashboard(root){
   const agg=aggregate(), yr=String(new Date().getFullYear());
   const yearAgg=aggregateYears().find(y=>y.year===yr);
   const km=yearAgg?yearAgg.total:0, yc=aggregateYearCounts(yr);
-  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0))[0];
+  const latest=trips.filter(hasStarted).slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0))[0];
   const active=currentTripsForToday();
   const name=(settings.profileName||'').trim()||'Paul';
   let h='<div class="home-greeting"><div><div class="home-greeting-kicker">Dein WEITWEG</div><div class="home-greeting-title">'+timeGreeting(name)+'</div></div></div>';
@@ -10098,7 +10104,7 @@ Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}).fo
 const V3_RENDER_DASHBOARD = renderDashboard;
 renderDashboard = function(root){
   V3_RENDER_DASHBOARD(root);
-  const latest=trips.slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
+  const latest=trips.filter(hasStarted).slice().sort((a,b)=>(b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
   const main=root.querySelector('.home-main');
   const mapSection=main?.querySelector('.home-section:last-child');
   if(main && mapSection && latest.length>1){
