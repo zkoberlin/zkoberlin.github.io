@@ -1484,7 +1484,9 @@ span.flatpickr-weekday{
 /* Progressive Reiseerfassung */
 .trip-form-section{padding:4px 0 2px;}
 .trip-form-section-title{display:flex;align-items:center;gap:8px;margin:2px 0 14px;font:600 13px var(--font-display);color:var(--text);}
-.trip-form-section-title .step{width:24px;height:24px;border-radius:999px;background:var(--bg-soft);border:1px solid var(--border-soft);display:flex;align-items:center;justify-content:center;color:var(--gold);font:600 10px var(--font-mono);}
+.trip-form-section-title .step,
+.form-more-summary-label .step{width:24px;height:24px;border-radius:999px;background:var(--bg-soft);border:1px solid var(--border-soft);display:flex;align-items:center;justify-content:center;color:var(--gold);font:600 10px var(--font-mono);flex-shrink:0;}
+.form-more-summary-label{display:flex;align-items:center;gap:8px;}
 .form-more{border:1px solid var(--border-soft);border-radius:12px;padding:0 14px;margin:10px 0 14px;background:var(--panel-alt);}
 .form-more>summary{color:var(--text);}
 .form-more[open]>summary{border-bottom:1px solid var(--border-soft);margin-bottom:14px;}
@@ -3885,13 +3887,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.1.6';
+const APP_VERSION = '3.1.7';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.1.7', tier:'🟢', title:'Formular „Neue Reise“ komplett wiederhergestellt (Grund, Notizen, Speichern)', items:[
+    'Root Cause: Zwei übereinandergelegte Formular-Erweiterungen sind sich in die Quere gekommen. Die ältere Version hatte Grund, Flugnummer und Notizen bereits in eine eigene aufklappbare „Weitere Reisedetails“-Sektion verschoben. Die neuere Version (progressive Reiseerfassung mit den Bereichen „Reise“/„Reisedetails“/„Erweitert“) hat diese ältere Sektion beim Aufbau per .remove() entfernt — und mit ihr alle darin enthaltenen Felder gleich mit, statt sie vorher herauszulösen.',
+    'Dadurch fehlten Grund und Notizen komplett im Formular, „Reisedetails“ enthielt nur noch „Nur Stadt merken“, „Erweitert“ war leer, und Speichern schlug fehl, weil der Submit-Handler auf das nicht mehr vorhandene Notizen-Feld zugriff.',
+    'Fix: Die ältere, jetzt überflüssige Gruppierung wurde entfernt, sodass alle Felder unangetastet an ihrem ursprünglichen Platz bleiben, bis die neuere Version sie sauber in „Reisedetails“ (Nur-Stadt, manuelles Land, Grund, Notizen) bzw. „Erweitert“ (Flugnummer) einsortiert. Mit einem gezielten Test nachgestellt und verifiziert.',
+    'Zusätzlich: Durchgehende Schritt-Nummerierung 1 (Reise) · 2 (Reisedetails) · 3 (Erweitert) statt einer einsamen „1“ ohne Fortsetzung.'
+  ]},
   {v:'3.1.6', tier:'🟢', title:'Mobiler Header nur noch mit Home-Icon', items:[
     'In der Kopfzeile auf schmalen Displays (≤600px) sind jetzt nur noch das Home-Icon (Link zu zkoberlin.github.io) sichtbar; Homebase-Chip und Einstellungen-Zahnrad sind entfernt, da beide bereits im Profil-Tab erreichbar sind (Homebase & „Einstellungen & Theme").',
     '„Neue Reise“ und der Theme-Umschalter waren dort schon zuvor ausgeblendet, da sie über den sticky CTA im Reisen-Tab bzw. über die Einstellungen verfügbar sind.'
@@ -9846,10 +9854,6 @@ renderAdd = function(root){
   LEGACY_RENDER_ADD(root);
   const form=root.querySelector('#tripForm'); if(!form)return;
   const note=document.createElement('div');note.className='form-progress-note';note.textContent='Zuerst Route, Zeitraum und Transport festlegen. Zusätzliche Angaben kannst du danach ergänzen.';form.prepend(note);
-  const purpose=root.querySelector('#purposeToggle')?.closest('.field');
-  const flight=root.querySelector('#flightField');
-  const notes=root.querySelector('#fldNotes')?.closest('.field');
-  if(purpose||flight||notes){const more=document.createElement('details');more.className='form-more';if(editingId||duplicateSource)more.open=true;const sum=document.createElement('summary');sum.textContent='Weitere Reisedetails';more.appendChild(sum);[purpose,flight,notes].filter(Boolean).forEach(el=>more.appendChild(el));const submit=form.querySelector('.bp-submit-row');form.insertBefore(more,submit);}
 };
 
 renderLog = (function(orig){ return function(root){ orig(root); if(!viewingTripId){ const c=document.createElement('div'); c.className='trip-primary-cta'; c.innerHTML='<button class="btn-primary" id="tripAddPrimary" type="button">+ Reise hinzufügen</button>'; root.prepend(c); document.getElementById('tripAddPrimary').addEventListener('click',()=>switchTab('add')); } }; })(renderLog);
@@ -9931,7 +9935,7 @@ renderAdd = function(root){
 
   const existingMore=form.querySelector('.form-more'); if(existingMore) existingMore.remove();
   const secondary=document.createElement('details');secondary.className='form-more';if(editingId||duplicateSource)secondary.open=true;
-  secondary.innerHTML='<summary>Reisedetails</summary>';
+  secondary.innerHTML='<summary><span class="form-more-summary-label"><span class="step">2</span>Reisedetails</span></summary>';
   const cityOnly=form.querySelector('#fldCityOnly')?.closest('.field');
   const manual=form.querySelector('#manualCountryField');
   const purpose=form.querySelector('#purposeToggle')?.closest('.field');
@@ -9939,7 +9943,7 @@ renderAdd = function(root){
   [cityOnly,manual,purpose,notes].filter(Boolean).forEach(el=>secondary.appendChild(el));
 
   const advanced=document.createElement('details');advanced.className='form-more form-advanced'; if(editingId)advanced.open=true;
-  advanced.innerHTML='<summary>Erweitert</summary>';
+  advanced.innerHTML='<summary><span class="form-more-summary-label"><span class="step">3</span>Erweitert</span></summary>';
   const flight=form.querySelector('#flightField'); if(flight)advanced.appendChild(flight);
   const submit=form.querySelector('.bp-submit-row');
   form.insertBefore(secondary,submit); form.insertBefore(advanced,submit);
