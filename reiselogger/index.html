@@ -1436,7 +1436,31 @@ span.flatpickr-weekday{
 .near-badge-name{font-size:12px;font-weight:600;}
 .near-badge-progress{font-size:10.5px;color:var(--text-faint);}
 .profile-identity{padding:24px 4px 20px;text-align:center;}
-.profile-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:var(--panel-alt);border:1px solid var(--gold-dim);color:var(--gold);}
+.profile-avatar-wrap{position:relative;width:88px;height:88px;margin:0 auto 12px;}
+.profile-avatar{
+  width:88px;height:88px;border-radius:50%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;background:var(--panel-alt);
+  border:1px solid var(--gold-dim);color:var(--gold);cursor:pointer;
+}
+.profile-avatar:hover{border-color:var(--gold);}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+.profile-avatar-edit{
+  position:absolute;bottom:-1px;right:-1px;width:26px;height:26px;border-radius:50%;
+  background:var(--gold);color:#1a1305;display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);cursor:pointer;pointer-events:none;
+}
+.profile-avatar-edit svg{width:13px;height:13px;}
+.profile-level-badge{
+  position:absolute;top:-4px;left:-4px;min-width:26px;height:26px;padding:0 6px;border-radius:100px;
+  background:var(--gold);color:#1a1305;font-family:var(--font-mono);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);
+  box-shadow:0 2px 6px rgba(0,0,0,0.25);pointer-events:none;
+}
+.profile-avatar-remove{
+  display:inline-block;margin-top:2px;background:none;border:none;color:var(--text-faint);
+  font-size:11px;cursor:pointer;text-decoration:underline;
+}
+.profile-avatar-remove:hover{color:var(--rose);}
 .profile-name{font:700 25px var(--font-display);}
 .profile-level{color:var(--gold);font-size:12.5px;margin-top:3px;}
 .profile-distance{font:700 30px var(--font-mono);margin:18px 0 3px;}
@@ -3939,13 +3963,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.3.1';
+const APP_VERSION = '3.4.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.4.0', tier:'🟡', title:'Neu: Profilfoto mit Level-Badge', items:[
+    'Im Profil kann jetzt ein eigenes Foto hochgeladen werden — einfach auf den Avatar-Kreis tippen, ein Bild auswählen, fertig. Wird komprimiert und lokal (und bei aktivem Cloud-Sync geräteübergreifend) gespeichert.',
+    'Auf dem Profilfoto erscheint automatisch ein kleiner Badge mit der aktuellen Level-Zahl, der sich mit fortschreitendem Level von selbst aktualisiert.',
+    '„Foto entfernen" unterhalb des Avatars setzt wieder das Platzhalter-Icon zurück.'
+  ]},
   {v:'3.3.1', tier:'🟢', title:'Geplant-Badge überlappte auf Mobile den Reise-Zeitraum', items:[
     'Der grüne „In X Tagen"-Chip auf geplanten Reisen war absolut über der Karte positioniert — auf schmalen Bildschirmen überlappte er dadurch mit dem Datum („21.08.2026 – 23.08.2026"). Der Chip sitzt jetzt regulär oberhalb der Karte, rechtsbündig, statt darüber zu schweben.',
     'Text gekürzt von „In 7 Tagen" auf „7 Tage" (bzw. weiterhin „Heute"/„Morgen"), damit er auch auf kleinen Displays komfortabel Platz hat.'
@@ -10133,12 +10162,49 @@ function prependDiscoverBack(root,title){
 }
 function renderProfile(root){
   const agg=aggregate(), view=trips.length?computeBadgesView():null, li=view?view.levelInfo:null; const name=(settings.profileName||'Paul').trim()||'Paul';
-  let h='<div class="profile-identity"><div class="profile-avatar">'+svgIcon('profile',30,'currentColor')+'</div><div class="profile-name">'+name+'</div><div class="profile-level">'+(li?'Level '+li.level+' · '+li.title:'Dein WEITWEG')+'</div><div class="profile-distance">'+fmtKm(agg.totalKm)+'</div><div class="profile-totals">'+agg.countries.length+' Länder · '+agg.cities.length+' Städte · '+trips.length+' Reisen</div></div>';
+  const avatarInner = settings.profileAvatar
+    ? '<img src="'+settings.profileAvatar+'" alt="Profilfoto">'
+    : svgIcon('profile',30,'currentColor');
+  let h='<div class="profile-identity"><div class="profile-avatar-wrap">'+
+    '<div class="profile-avatar" id="profileAvatarBtn" role="button" tabindex="0" title="Profilfoto ändern">'+avatarInner+'</div>'+
+    (li ? '<div class="profile-level-badge">'+li.level+'</div>' : '')+
+    '<div class="profile-avatar-edit">'+svgIcon('edit',12,'currentColor')+'</div>'+
+    '<input type="file" id="profileAvatarInput" accept="image/*" hidden>'+
+    '</div>'+
+    (settings.profileAvatar ? '<div><button type="button" class="profile-avatar-remove" id="profileAvatarRemove">Foto entfernen</button></div>' : '')+
+    '<div class="profile-name">'+name+'</div><div class="profile-level">'+(li?'Level '+li.level+' · '+li.title:'Dein WEITWEG')+'</div><div class="profile-distance">'+fmtKm(agg.totalKm)+'</div><div class="profile-totals">'+agg.countries.length+' Länder · '+agg.cities.length+' Städte · '+trips.length+' Reisen</div></div>';
   if(view)h+=levelTileHTML(view);
   h+='<div class="profile-list"><div class="profile-row" data-profile-action="home"><div class="profile-row-icon">'+svgIcon('home',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Homebase</div><div class="profile-row-sub">'+(settings.home?(findCity(settings.home)?.n||settings.home):'Noch nicht festgelegt')+'</div></div><span class="profile-chevron">›</span></div>';
   h+='<div class="profile-row" data-profile-action="history"><div class="profile-row-icon">'+svgIcon('calendar',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Travel History</div><div class="profile-row-sub">'+trips.length+' gespeicherte Reisen seit '+(trips.length?trips.map(t=>(t.dateFrom||'').slice(0,4)).filter(Boolean).sort()[0]:'–')+'</div></div><span class="profile-chevron">›</span></div>';
   h+='<div class="profile-row" data-profile-action="settings"><div class="profile-row-icon">'+svgIcon('settings',20,'currentColor')+'</div><div class="profile-row-main"><div class="profile-row-title">Einstellungen & Theme</div><div class="profile-row-sub">Homebase, Profil, Dark/Light Mode und Sync</div></div><span class="profile-chevron">›</span></div></div>';
   root.innerHTML=h; root.querySelectorAll('[data-profile-action]').forEach(r=>r.addEventListener('click',()=>{if(r.dataset.profileAction==='history')switchTab('log');else openSettings();}));
+
+  const avatarBtn = document.getElementById('profileAvatarBtn');
+  const avatarInput = document.getElementById('profileAvatarInput');
+  if(avatarBtn && avatarInput){
+    const openPicker = ()=>avatarInput.click();
+    avatarBtn.addEventListener('click', openPicker);
+    avatarBtn.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openPicker(); } });
+    avatarInput.addEventListener('change', async ()=>{
+      const file = avatarInput.files && avatarInput.files[0];
+      if(!file || !file.type || !file.type.startsWith('image/')) return;
+      try{
+        showToast('Profilfoto wird verarbeitet …');
+        settings.profileAvatar = await compressImageFile(file, 480, 0.85);
+        await saveSettings();
+        renderProfile(root);
+      }catch(e){ console.error('Profilfoto-Fehler:', e); showToast('Foto konnte nicht verarbeitet werden.'); }
+    });
+  }
+  const removeBtn = document.getElementById('profileAvatarRemove');
+  if(removeBtn){
+    removeBtn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      settings.profileAvatar = null;
+      await saveSettings();
+      renderProfile(root);
+    });
+  }
 }
 
 renderAdd = function(root){
