@@ -3893,13 +3893,20 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.2.0';
+const APP_VERSION = '3.2.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.2.1', tier:'🟢', title:'Nachbesserungen an „Geplante Reisen“: Hero-Karte, Statistiken & Duplikate', items:[
+    'Hero-Karte in „Alle Reisen“ zeigte fälschlich die erste Reise MIT Foto groß an, egal an welcher Position sie stand — z. B. eine ältere Reise statt der aktuellsten. Jetzt bekommt ausschließlich die erste Reise der Liste die große Foto-Darstellung, alle anderen bleiben kompakt.',
+    'Kilometer-Zähler und Statistiken (Jahres-km, „km seit Beginn“, Länder/Städte gesamt) zählten geplante (zukünftige) Reisen bereits mit, obwohl sie noch nicht stattgefunden haben. Neuer Helfer „hasStarted“ filtert sie jetzt konsequent aus allen Aggregationen heraus, bis ihr Startdatum erreicht ist.',
+    '„Letzte Reise" auf dem Dashboard sowie „Zuletzt unterwegs" zeigten teils die geplante statt der tatsächlich letzten stattgefundenen Reise, wenn deren Startdatum weiter in der Zukunft lag als alle anderen. Beide Stellen filtern jetzt ebenfalls über „hasStarted".',
+    'Geplante Reisen erschienen doppelt: einmal oben im „Geplant"-Bereich UND unten in der normalen „Alle Reisen"-Liste. Sie tauchen jetzt in „Alle Reisen" erst auf, sobald ihr Startdatum erreicht ist — bis dahin ausschließlich oben im „Geplant"-Bereich.',
+    'Neuer, unterscheidbarer Toast beim Anlegen einer zukünftigen Reise: „Reise geplant — auf nach …!" statt „Reise hinzugefügt — willkommen in …!".'
+  ]},
   {v:'3.2.0', tier:'🟡', title:'Geplante Reisen: neu auf Dashboard und im Reisen-Tab', items:[
     'Eine Reise mit einem Startdatum in der Zukunft gilt jetzt als „geplant" — erkennbar an einem kleinen Geplant-Chip auf der Trip-Card, ohne dass dafür ein neues Formularfeld nötig war (reine Auswertung des vorhandenen Startdatums).',
     'Dashboard: Neuer Abschnitt „Nächste Reise" zwischen „Letzte Reise" und „Zuletzt unterwegs" — kompakt gehalten (nicht als große Hero-Karte), mit Countdown („In 12 Tagen"/„Morgen"/„Heute"). Erscheint nur, wenn tatsächlich eine zukünftige Reise erfasst ist.',
@@ -8776,9 +8783,10 @@ function renderTripDetailPage(tripId, root){
 
 function getFilteredSortedTrips(){
   const q = logCityFilter.trim().toLowerCase();
-  const filtered = q
+  const filtered = (q
     ? trips.filter(t => tripMatchesLogFilter(t, q))
-    : trips.slice();
+    : trips.slice()
+  ).filter(hasStarted);
 
   function purposeSortLabel(t){ return purposeLabel(t) || ''; }
   function continentSortLabel(t){ const ci = continentInfo(getContinent((t.cityCC||'').toLowerCase())); return ci ? ci.label : ''; }
@@ -9117,14 +9125,15 @@ function renderLog(root){
     renderTripDetailPage(viewingTripId, root);
     return;
   }
+  const startedTrips = trips.filter(hasStarted);
   const filteredCount = logCityFilter.trim()
-    ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
-    : trips.length;
-  const countLabel = logCityFilter.trim() ? (filteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
+    ? startedTrips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
+    : startedTrips.length;
+  const countLabel = logCityFilter.trim() ? (filteredCount+' von '+startedTrips.length+' Einträgen') : (startedTrips.length+' Einträge');
 
   let html = '<div class="card">';
   html += '<div class="card-head"><h2>Alle Reisen</h2><span class="sub">'+countLabel+'</span></div>';
-  if(trips.length>0){
+  if(startedTrips.length>0){
     html += '<div class="log-filter-row">';
     html += '  <input type="text" id="logCitySearch" class="log-search-input" placeholder="🔍 Suchen (Stadt, Land, Grund, Kontinent, Verkehrsmittel) …" value="'+logCityFilter.replace(/"/g,'&quot;')+'">';
     if(logCityFilter.trim()){
@@ -9141,7 +9150,7 @@ function renderLog(root){
     html += '  <button type="button" id="logSortDirBtn" class="btn-secondary log-sort-dir-btn" title="Sortierrichtung umkehren">'+(logSort.dir==='asc'?'▴ Aufsteigend':'▾ Absteigend')+'</button>';
     html += '</div>';
   }
-  if(trips.length===0){
+  if(startedTrips.length===0){
     html += '<div class="empty-state"><div class="big">📓</div>Noch nichts erfasst. Leg mit deiner ersten Reise los.</div>';
   } else {
     html += '<div id="logResultsWrap">'+renderLogResults()+'</div>';
@@ -9149,7 +9158,7 @@ function renderLog(root){
   html += '</div>';
   root.innerHTML = html;
 
-  if(trips.length>0){
+  if(startedTrips.length>0){
     attachLogResultActions(root);
     const searchInput = document.getElementById('logCitySearch');
     if(searchInput){
@@ -9158,9 +9167,9 @@ function renderLog(root){
         const wrap = document.getElementById('logResultsWrap');
         const countEl = root.querySelector('.card-head .sub');
         const newFilteredCount = logCityFilter.trim()
-          ? trips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
-          : trips.length;
-        if(countEl) countEl.textContent = logCityFilter.trim() ? (newFilteredCount+' von '+trips.length+' Einträgen') : (trips.length+' Einträge');
+          ? startedTrips.filter(t => tripMatchesLogFilter(t, logCityFilter.trim().toLowerCase())).length
+          : startedTrips.length;
+        if(countEl) countEl.textContent = logCityFilter.trim() ? (newFilteredCount+' von '+startedTrips.length+' Einträgen') : (startedTrips.length+' Einträge');
         if(wrap) wrap.innerHTML = renderLogResults();
         attachLogResultActions(root);
         // Reset-Button je nach Filterstatus ein-/ausblenden, ohne das Suchfeld selbst neu zu rendern (sonst verliert es den Fokus während des Tippens).
