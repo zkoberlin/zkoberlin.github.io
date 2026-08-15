@@ -3347,6 +3347,10 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <div class="profile-row-main"><div class="profile-row-title">Badge-Benachrichtigungen</div><div class="profile-row-sub">Bei neuen Auszeichnungen informieren</div></div>
           <label class="settings-toggle"><input type="checkbox" id="notifBadgesToggle"><span></span></label>
         </div>
+        <div class="profile-row" style="cursor:default;">
+          <div class="profile-row-main"><div class="profile-row-title">Standort-Vorschlag</div><div class="profile-row-sub">Fragen, ob eine Reise angelegt werden soll, wenn du weit weg von zuhause bist</div></div>
+          <label class="settings-toggle"><input type="checkbox" id="notifLocationToggle"><span></span></label>
+        </div>
         <div class="settings-group-label" style="margin-top:18px;">VERLAUF</div>
         <div class="notif-history" id="notifHistoryList"></div>
       </div>
@@ -3399,6 +3403,18 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
     <div class="modal-actions" style="justify-content:center;">
       <button class="btn-secondary" id="tripStartModalClose">Schließen</button>
       <button class="btn-primary" id="tripStartModalView">Reise ansehen</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="locationSuggestModal">
+  <div class="modal" style="max-width:340px;text-align:center;">
+    <div class="trip-start-modal-icon">📍</div>
+    <h3 id="locSuggestTitle" style="text-align:center;">Neue Reise eintragen?</h3>
+    <p class="sync-desc" id="locSuggestMsg" style="margin-bottom:20px;"></p>
+    <div class="modal-actions" style="justify-content:center;">
+      <button class="btn-secondary" id="locSuggestDismiss">Nein danke</button>
+      <button class="btn-primary" id="locSuggestConfirm">Ja</button>
     </div>
   </div>
 </div>
@@ -3963,13 +3979,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.4.1';
+const APP_VERSION = '3.5.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.5.0', tier:'🟡', title:'Neu: Standort-Vorschlag für neue Reisen', items:[
+    'Beim Öffnen der App wird (mit Standort-Erlaubnis) geprüft, ob du weit weg von deiner Homebase bist — falls ja und noch keine passende Reise dafür erfasst ist, fragt ein kleines Popup „Neue Reise eintragen?" und öffnet bei Bestätigung das Formular mit vorausgefüllter Zielstadt und heutigem Datum.',
+    'Duplikate werden vermieden: Ist bereits eine aktuell laufende ODER eine geplante Reise für den erkannten Ort eingetragen, kommt kein Vorschlag für eine neue Reise.',
+    'Passt der Standort zu einer geplanten (zukünftigen) Reise, wird stattdessen gefragt, ob diese Reise wohl schon früher gestartet ist — bei „Ja" wird ihr Startdatum auf heute gesetzt, statt eine doppelte Reise anzulegen.',
+    'Fragt maximal 1x pro Tag und Ort und lässt sich in Einstellungen → Benachrichtigungen → „Standort-Vorschlag" jederzeit deaktivieren.'
+  ]},
   {v:'3.4.1', tier:'🟢', title:'Badge-Benachrichtigungen fluteten ein zweites Gerät rückwirkend', items:[
     'Root Cause: Der Seed-Marker, der beim ersten Start verhindern soll, dass alle längst freigeschalteten Badges auf einmal als Popup erscheinen, lag in den Cloud-synchronisierten Einstellungen — die Benachrichtigungs-Historie selbst syncte aber bewusst nicht geräteübergreifend. Ein zweites Gerät (z. B. Desktop, nachdem Mobile schon "geseeded" war) hielt sich dadurch fälschlich für bereits abgesichert, obwohl seine lokale Historie leer war — Ergebnis: alle Bestandsbadges poppten dort rückwirkend auf einmal auf.',
     'Fix: Der Seed-Marker liegt jetzt lokal pro Gerät (nicht mehr in den synchronisierten Einstellungen) und räumt beim jeweils ersten Lauf zusätzlich automatisch mit bereits fälschlich erzeugten Badge-Meldungen auf. Ab sofort gilt auf jedem Gerät: alles, was VOR dem ersten Start dieser Version schon freigeschaltet war, zählt als bekannt (kein Popup) — nur wirklich neu hinzukommende Badges lösen ab jetzt ein Popup aus.'
@@ -4351,6 +4373,12 @@ let editingId = null;
    vorausfüllt (nicht als Bearbeitung — editingId bleibt dabei null). Wird beim Absenden
    oder Abbrechen des Formulars sowie beim Tab-Wechsel wieder zurückgesetzt. */
 let duplicateSource = null;
+/* Vorausfüllung fürs Add-Formular, ausgelöst durch den Standort-Vorschlag
+   (siehe checkLocationTripSuggestion/confirmLocationSuggest) — funktional identisch
+   zu duplicateSource (nutzt denselben prefill-Mechanismus in renderAdd), aber bewusst
+   getrennt gehalten, damit Titel/Hinweistexte für "Reise duplizieren" nicht fälschlich
+   auch hier erscheinen. Wird an denselben Stellen wie duplicateSource zurückgesetzt. */
+let locationPrefillSource = null; locationPrefillSource = null;
 let selectedCityKey = null;
 let citySort = {key:'totalKm', dir:'desc'};
 let countrySort = 'km';
@@ -4833,10 +4861,9 @@ function fallbackLocation(){
   }
 }
 
-function detectLocation(){
+function detectLocation(onResolved){
   const el = document.getElementById('currentLocationText');
-  if(!el) return;
-  if(!navigator.geolocation){ fallbackLocation(); return; }
+  if(!navigator.geolocation){ if(el) fallbackLocation(); return; }
   navigator.geolocation.getCurrentPosition(
     async (pos)=>{
       try{
@@ -4846,17 +4873,130 @@ function detectLocation(){
         const city = data.city || data.locality || data.principalSubdivision || '';
         const country = data.countryName || '';
         const cc = (data.countryCode||'').toLowerCase();
-        if(city||country){
-          el.innerHTML = (cc?flagImg(cc,16):'')+' '+[city,country].filter(Boolean).join(', ');
-        } else {
-          fallbackLocation();
+        if(el){
+          if(city||country) el.innerHTML = (cc?flagImg(cc,16):'')+' '+[city,country].filter(Boolean).join(', ');
+          else fallbackLocation();
         }
-      }catch(e){ fallbackLocation(); }
+        if(typeof onResolved==='function') onResolved({latitude,longitude,city,country,cc});
+      }catch(e){ if(el) fallbackLocation(); }
     },
-    ()=>{ fallbackLocation(); },
+    ()=>{ if(el) fallbackLocation(); },
     {timeout:4000, maximumAge:600000}
   );
 }
+
+/* ---------- Standort-Vorschlag: "Bist du unterwegs? Reise eintragen?" ---------- */
+let locSuggestContext = null;
+/* Prüft nach jedem erfolgreichen Standort-Abruf (siehe detectLocation-Aufruf in loadData),
+   ob eine Reise vorgeschlagen werden sollte. Reihenfolge wichtig, um NIE doppelt zu fragen:
+   1) Ist bereits eine AKTUELL laufende Reise für diesen Ort erfasst? → nichts tun.
+   2) Passt eine GEPLANTE (zukünftige) Reise zu diesem Ort? → statt einer neuen Reise wird
+      angeboten, die geplante Reise als "schon gestartet" zu markieren (Startdatum = heute).
+   3) Sonst, nur wenn weit genug von der Homebase entfernt: neue Reise vorschlagen.
+   Pro Ort maximal 1x pro Kalendertag, siehe 'locationPromptDismissed' (lokal, kein Sync). */
+async function checkLocationTripSuggestion(loc){
+  if(!loc || !loc.city) return;
+  if(settings.notifyLocationSuggest===false) return;
+  if(!settings.home) return;
+  const homeCity = findCity(settings.home);
+  if(!homeCity || homeCity.lat==null || homeCity.lon==null) return;
+
+  const distKm = Math.round(haversine(loc.latitude, loc.longitude, homeCity.lat, homeCity.lon));
+  const cityKey = loc.city.trim().toLowerCase();
+  if(!cityKey) return;
+
+  const d = new Date().toISOString().slice(0,10);
+  let dismissed = {date:'', keys:[]};
+  try{
+    const s = await window.storage.get('locationPromptDismissed', false);
+    if(s) dismissed = JSON.parse(s.value);
+  }catch(e){ dismissed = {date:'', keys:[]}; }
+  if(dismissed.date===d && (dismissed.keys||[]).includes(cityKey)) return;
+
+  const norm = s=>(s||'').trim().toLowerCase();
+  const matchesCity = t => norm(t.city)===cityKey || (t.outWaypoints||[]).some(w=>norm(w)===cityKey) || (t.returnWaypoints||[]).some(w=>norm(w)===cityKey);
+
+  const activeMatch = trips.find(t=> t.dateFrom && t.dateFrom<=d && (t.dateTo||t.dateFrom)>=d && matchesCity(t));
+  if(activeMatch) return;
+
+  const plannedMatch = trips.find(t=> t.dateFrom && t.dateFrom>d && matchesCity(t));
+  if(plannedMatch){
+    showLocationSuggestPopup({mode:'earlyStart', tripId:plannedMatch.id, cityKey, cityLabel:loc.city});
+    return;
+  }
+
+  if(distKm < 50) return;
+  showLocationSuggestPopup({mode:'newTrip', cityKey, cityLabel:loc.city, country:loc.country, cc:loc.cc});
+}
+function showLocationSuggestPopup(ctx){
+  locSuggestContext = ctx;
+  const titleEl = document.getElementById('locSuggestTitle');
+  const msgEl = document.getElementById('locSuggestMsg');
+  const confirmBtn = document.getElementById('locSuggestConfirm');
+  if(!titleEl || !msgEl || !confirmBtn) return;
+  if(ctx.mode==='earlyStart'){
+    const trip = trips.find(t=>t.id===ctx.tripId);
+    titleEl.textContent = 'Reise wohl schon gestartet?';
+    msgEl.textContent = 'Du scheinst bereits in '+ctx.cityLabel+' zu sein — deine geplante Reise dorthin war eigentlich erst ab '+(trip?fmtDate(trip.dateFrom):'später')+' vorgesehen. Jetzt als gestartet markieren?';
+    confirmBtn.textContent = 'Ja, gestartet';
+  } else {
+    titleEl.textContent = 'Neue Reise eintragen?';
+    msgEl.textContent = 'Du scheinst gerade in '+ctx.cityLabel+(ctx.country?', '+ctx.country:'')+' zu sein. Soll ich eine Reise dorthin anlegen?';
+    confirmBtn.textContent = 'Ja, anlegen';
+  }
+  // Kleine Verzögerung, damit Reise-Start-/Badge-Popups (siehe showNextNotifPopup)
+  // beim App-Start Vorrang haben und sich nichts optisch überlagert.
+  setTimeout(()=>document.getElementById('locationSuggestModal').classList.add('open'), 1200);
+}
+async function persistLocationDismissal(cityKey){
+  const d = new Date().toISOString().slice(0,10);
+  try{
+    const s = await window.storage.get('locationPromptDismissed', false);
+    let dismissed = s ? JSON.parse(s.value) : {date:'', keys:[]};
+    if(dismissed.date!==d) dismissed = {date:d, keys:[]};
+    if(!dismissed.keys.includes(cityKey)) dismissed.keys.push(cityKey);
+    await window.storage.set('locationPromptDismissed', JSON.stringify(dismissed), false);
+  }catch(e){ console.error('Storage-Fehler (locationPromptDismissed):', e); }
+}
+document.getElementById('locSuggestDismiss').addEventListener('click', async ()=>{
+  document.getElementById('locationSuggestModal').classList.remove('open');
+  if(locSuggestContext) await persistLocationDismissal(locSuggestContext.cityKey);
+  locSuggestContext = null;
+});
+document.getElementById('locSuggestConfirm').addEventListener('click', async ()=>{
+  const ctx = locSuggestContext;
+  document.getElementById('locationSuggestModal').classList.remove('open');
+  locSuggestContext = null;
+  if(!ctx) return;
+  if(ctx.mode==='earlyStart'){
+    const trip = trips.find(t=>t.id===ctx.tripId);
+    if(!trip) return;
+    const d = new Date().toISOString().slice(0,10);
+    if(trip.dateTo && trip.dateFrom && trip.dateTo>trip.dateFrom){
+      const spanMs = new Date(trip.dateTo+'T00:00:00Z') - new Date(trip.dateFrom+'T00:00:00Z');
+      trip.dateTo = new Date(new Date(d+'T00:00:00Z').getTime()+spanMs).toISOString().slice(0,10);
+    }
+    trip.dateFrom = d;
+    trip.updatedAt = Date.now();
+    trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
+    await saveTrips();
+    showToast('Reise nach '+stripCountrySuffix(trip.city)+' ist jetzt als gestartet markiert.');
+    renderAll();
+  } else {
+    locationPrefillSource = {
+      city: ctx.cityLabel, fromCity: settings.home || '', cityOnly:false,
+      country: ctx.country || 'Unbekannt', cityCC: ctx.cc || '',
+      direction:'oneway', purpose:null, purposeCustom:'',
+      dateFrom: new Date().toISOString().slice(0,10), dateTo:'', notes:'', flightNumber:''
+    };
+    editingId = null; duplicateSource = null;
+    switchTab('add');
+  }
+  await persistLocationDismissal(ctx.cityKey);
+});
+document.getElementById('locationSuggestModal').addEventListener('click', (e)=>{
+  if(e.target.id==='locationSuggestModal') document.getElementById('locSuggestDismiss').click();
+});
 
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -5082,7 +5222,7 @@ async function loadData(){
   await initialCloudSync();
   applyTheme();
   renderCurrentDate();
-  detectLocation();
+  detectLocation(loc=>checkLocationTripSuggestion(loc));
   populateDatalist();
   renderAll();
   notifPopupQueue = await checkNotifications();
@@ -7209,7 +7349,7 @@ function renderAdd(root){
      Bearbeitung (t) oder beim Duplizieren (duplicateSource) identisch behandelt.
      Ob am Ende überschrieben oder neu angelegt wird, entscheidet weiterhin allein `t`
      (siehe Submit-Handler unten) — duplicateSource führt NIE zu einem Überschreiben. */
-  const prefill = t || duplicateSource;
+  const prefill = t || duplicateSource || locationPrefillSource;
   const homeVal = prefill ? prefill.fromCity : (settings.home || '');
 
   let html = '';
@@ -7270,7 +7410,7 @@ function renderAdd(root){
   html += '      </div>';
   html += '      <div class="bp-submit-row">';
   html += '        <button type="submit" class="btn-primary">'+(t?'Änderungen speichern':'Reise hinzufügen')+'</button>';
-  if(t || duplicateSource) html += '<button type="button" class="btn-secondary" id="cancelEdit">Abbrechen</button>';
+  if(t || duplicateSource || locationPrefillSource) html += '<button type="button" class="btn-secondary" id="cancelEdit">Abbrechen</button>';
   html += '      </div>';
   html += '    </form>';
   html += '  </div>';
@@ -7689,7 +7829,7 @@ function renderAdd(root){
     }
     trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
     editingId = null;
-    duplicateSource = null;
+    duplicateSource = null; locationPrefillSource = null;
     await saveTrips();
     switchTab('dashboard');
     const newly = await checkNotifications();
@@ -9214,7 +9354,7 @@ function attachLogRowActions(root){
   root.querySelectorAll('[data-edit]').forEach(btn=>{
     btn.addEventListener('click',()=>{
       editingId = btn.dataset.edit;
-      duplicateSource = null;
+      duplicateSource = null; locationPrefillSource = null;
       switchTab('add');
     });
   });
@@ -9821,6 +9961,7 @@ function openSettingsPanel(name){
   if(name==='notifications'){
     document.getElementById('notifTripsToggle').checked = settings.notifyTrips!==false;
     document.getElementById('notifBadgesToggle').checked = settings.notifyBadges!==false;
+    document.getElementById('notifLocationToggle').checked = settings.notifyLocationSuggest!==false;
     renderNotifHistory();
     markAllNotificationsRead();
   }
@@ -9904,6 +10045,9 @@ document.getElementById('notifTripsToggle').addEventListener('change', async (e)
 });
 document.getElementById('notifBadgesToggle').addEventListener('change', async (e)=>{
   settings.notifyBadges = e.target.checked; await saveSettings();
+});
+document.getElementById('notifLocationToggle').addEventListener('change', async (e)=>{
+  settings.notifyLocationSuggest = e.target.checked; await saveSettings();
 });
 document.getElementById('settingsSave').addEventListener('click', async ()=>{
   const val = document.getElementById('homeInput').value.trim();
@@ -10005,19 +10149,19 @@ document.getElementById('tabs').addEventListener('click',(e)=>{
   const btn = e.target.closest('.tab-btn');
   if(!btn) return;
   editingId = null;
-  duplicateSource = null;
+  duplicateSource = null; locationPrefillSource = null;
   switchTab(btn.dataset.tab);
 });
 document.getElementById('bottomTabs').addEventListener('click',(e)=>{
   const btn = e.target.closest('[data-tab]');
   if(!btn) return;
   editingId = null;
-  duplicateSource = null;
+  duplicateSource = null; locationPrefillSource = null;
   switchTab(btn.dataset.tab);
 });
 document.getElementById('newTripBtn').addEventListener('click',()=>{
   editingId = null;
-  duplicateSource = null;
+  duplicateSource = null; locationPrefillSource = null;
   switchTab('add');
 });
 
