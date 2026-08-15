@@ -1280,6 +1280,12 @@ tr:last-child td{border-bottom:none;}
   max-width:calc(100vw - 32px);text-align:center;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.success{
+  border-color:var(--green);
+  background:color-mix(in srgb, var(--green) 16%, var(--panel-alt));
+  color:var(--text);
+  font-weight:600;
+}
 
 .footer-note{
   text-align:center;font-size:11px;color:var(--text-faint);margin-top:30px;line-height:1.7;
@@ -4154,13 +4160,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.4.2';
+const APP_VERSION = '4.5.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.5.0', tier:'🟡', title:'Klarerer Erfolgs-Toast + direkt zur Reise nach dem Speichern', items:[
+    'Beim Neuanlegen einer Reise erscheint der Bestätigungs-Toast jetzt deutlich als Erfolg erkennbar: grün eingefärbt, mit Häkchen-Symbol, statt der bisherigen neutralen Optik.',
+    'Nach dem Speichern — egal ob neue Reise oder Bearbeitung einer bestehenden — landest du jetzt direkt auf der Detailseite dieser Reise, statt zurück zum Dashboard zu springen.'
+  ]},
   {v:'4.4.2', tier:'🟢', title:'Flugdaten-Karte erschien nie — echte Ursache gefunden', items:[
     'Der 4.4.1-Fix war zu kurz gegriffen. Tatsächliche Ursache: renderTripDetailPage wird im Code mehrfach überschrieben (bestehendes Muster in dieser App), die allerletzte Version gewinnt — und genau die kannte die neue Flugdaten-Karte noch gar nicht, weil sie an einer früheren, inzwischen nie mehr ausgeführten Version hing. Die Reise wurde also die ganze Zeit korrekt gespeichert, nur angezeigt wurde es nie.',
     'Fix: Die Flugdaten-Karte (inkl. „Erneut suchen / aktualisieren"-Button) hängt jetzt an der tatsächlich aktiven, allerletzten Version der Detailseite — funktioniert jetzt sowohl direkt nach dem Anlegen/Bearbeiten als auch beim nachträglichen Suchen auf der Detailseite selbst.'
@@ -5247,9 +5257,10 @@ document.getElementById('locationSuggestModal').addEventListener('click', (e)=>{
   if(e.target.id==='locationSuggestModal') document.getElementById('locSuggestDismiss').click();
 });
 
-function showToast(msg){
+function showToast(msg, type){
   const t=document.getElementById('toast');
   t.textContent=msg;
+  t.className='toast'+(type?' '+type:'');
   t.classList.add('show');
   clearTimeout(showToast._t);
   showToast._t=setTimeout(()=>t.classList.remove('show'),2600);
@@ -8271,13 +8282,14 @@ function renderAdd(root){
       showToast('Reise aktualisiert.');
     } else {
       trips.push(trip);
-      showToast(hasStarted(trip) ? 'Reise hinzugefügt — willkommen in '+cityName+'!' : 'Reise geplant — auf nach '+cityName+'!');
+      showToast(hasStarted(trip) ? '✓ Reise hinzugefügt — willkommen in '+cityName+'!' : '✓ Reise geplant — auf nach '+cityName+'!', 'success');
     }
     trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
     editingId = null;
     duplicateSource = null; locationPrefillSource = null;
     await saveTrips();
-    switchTab('dashboard');
+    viewingTripId = trip.id;
+    switchTab('log');
     const newly = await checkNotifications();
     if(newly.length){ notifPopupQueue.push(...newly); renderNotifBell(); setTimeout(showNextNotifPopup, 700); }
   });
