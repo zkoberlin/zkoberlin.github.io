@@ -523,6 +523,46 @@ tr:last-child td{border-bottom:none;}
 }
 .log-photo-thumb.is-cover{box-shadow:0 0 0 2px var(--gold);}
 .log-detail-icongrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;}
+.flight-no-row{display:flex;gap:8px;}
+.flight-no-row input{flex:1;min-width:0;}
+.flight-search-btn{flex-shrink:0;width:42px;padding:0;display:flex;align-items:center;justify-content:center;}
+.flight-airport-row{display:flex;gap:16px;margin-bottom:4px;}
+.flight-airport-row>div{flex:1;min-width:0;}
+.airport-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.airport-chip{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:100px;
+  background:var(--panel-alt);border:1px solid var(--border-soft);color:var(--text-dim);cursor:pointer;
+}
+.airport-chip.active{background:var(--gold);color:#241a05;border-color:var(--gold);}
+.airport-picker input.flight-airport-manual{
+  font-family:var(--font-mono);text-transform:uppercase;width:90px;padding:6px 10px;border-radius:8px;
+  background:var(--panel-alt);border:1px solid var(--border-soft);color:var(--text);
+}
+.flight-search-divider{
+  display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-size:10.5px;color:var(--text-faint);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.flight-search-divider::before,.flight-search-divider::after{content:'';flex:1;height:1px;background:var(--border-soft);}
+.flight-search-results{display:flex;flex-direction:column;gap:6px;margin-top:12px;max-height:260px;overflow-y:auto;}
+.flight-result-row{
+  padding:10px 12px;border-radius:10px;background:var(--panel-alt);border:1px solid var(--border-soft);cursor:pointer;
+}
+.flight-result-row:hover{border-color:var(--gold-dim);}
+.flight-result-main{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;}
+.flight-result-status{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;color:var(--text-faint);}
+.flight-result-sub{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:3px;}
+
+/* ---------- Flugdaten-Karte auf der Reise-Detailseite (siehe flightDataCardHTML) ---------- */
+.status-pill{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:100px;font-weight:600;background:var(--panel-alt);color:var(--text-dim);}
+.status-pill.landed{background:color-mix(in srgb,var(--teal) 16%,transparent);color:var(--teal);}
+.status-pill.live{background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold);}
+.status-pill.delayed{background:color-mix(in srgb,var(--rose) 16%,transparent);color:var(--rose);}
+.route-line{display:flex;align-items:center;gap:6px;margin:2px 0 14px;}
+.route-line .city{font-family:var(--font-display);font-size:15px;font-weight:700;}
+.route-line .code{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);display:block;margin-top:1px;font-weight:400;}
+.route-line .mid{flex:1;display:flex;align-items:center;gap:3px;}
+.route-line .mid .dash{flex:1;border-top:1.5px dashed var(--gold-dim);}
+.route-line .mid svg{width:15px;height:15px;color:var(--gold);flex-shrink:0;}
 .log-detail-icongrid-item{display:flex;align-items:flex-start;gap:8px;min-width:0;}
 .log-detail-icon{font-size:16px;line-height:1.3;flex-shrink:0;}
 .log-detail-item-label{font-size:11px;color:var(--text-faint);}
@@ -3258,6 +3298,11 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <div class="profile-row-main"><div class="profile-row-title">Benachrichtigungen</div></div>
           <span class="profile-chevron">›</span>
         </div>
+        <div class="profile-row" data-settings-open="flightdata">
+          <div class="profile-row-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2.5 1.5V22l4-1 4 1v-1.5L13 19v-5.5l8 2.5Z"/></svg></div>
+          <div class="profile-row-main"><div class="profile-row-title">Flugdaten</div><div class="profile-row-sub" id="settingsFlightDataSub">Nicht eingerichtet</div></div>
+          <span class="profile-chevron">›</span>
+        </div>
       </div>
 
       <div class="settings-group-label">INFO</div>
@@ -3389,6 +3434,18 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
         <div class="notif-history" id="notifHistoryList"></div>
       </div>
 
+      <div class="settings-panel" data-panel="flightdata" hidden>
+        <p class="sync-desc" style="margin-top:0;">Mit einem AviationStack-API-Key kannst du beim Anlegen einer Flugreise nach der Flugnummer suchen — Airline, Zeiten, Terminal/Gate und Verspätung werden dann automatisch übernommen statt von Hand eingetragen. <a href="https://aviationstack.com/product" target="_blank" rel="noopener">Kostenlosen Key holen ↗</a></p>
+        <div class="field" style="margin-bottom:10px;">
+          <label for="aviationstackKeyInput">AviationStack API-Key</label>
+          <input type="password" id="aviationstackKeyInput" placeholder="Dein Access Key">
+        </div>
+        <div class="sync-actions">
+          <button type="button" class="btn-secondary" id="aviationstackSaveBtn">Speichern</button>
+        </div>
+        <div class="sync-status" id="aviationstackStatus"></div>
+      </div>
+
       <div class="settings-panel" data-panel="whatsnew" hidden>
         <p class="sync-desc" style="margin-top:0;">Das Neueste zuerst — der volle Verlauf steht unter „Release Notes".</p>
         <div class="release-notes-list" id="whatsNewLatest"></div>
@@ -3452,6 +3509,33 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
     <div class="modal-actions" style="justify-content:center;">
       <button class="btn-secondary" id="locSuggestDismiss">Nein danke</button>
       <button class="btn-primary" id="locSuggestConfirm">Ja</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="flightSearchModal">
+  <div class="modal modal-wide" style="max-width:420px;">
+    <div class="modal-header-row">
+      <h3 id="flightSearchTitle">Flugnummer suchen</h3>
+      <button type="button" class="modal-close-x" id="flightSearchClose">✕</button>
+    </div>
+    <div id="flightSearchNoKey" hidden>
+      <p class="sync-desc" style="margin-top:0;">Dafür brauchst du einen AviationStack-API-Key. Unter Einstellungen → Flugdaten kannst du ihn hinterlegen.</p>
+      <button type="button" class="btn-primary" id="flightSearchGoSettings">Zu den Einstellungen</button>
+    </div>
+    <div id="flightSearchBody">
+      <div class="flight-airport-row">
+        <div><div class="log-detail-item-label">Abflug</div><div class="airport-picker" id="flightDepPicker"></div></div>
+        <div><div class="log-detail-item-label">Ziel</div><div class="airport-picker" id="flightArrPicker"></div></div>
+      </div>
+      <button type="button" class="btn-secondary" id="flightSearchSuggestBtn" style="width:100%;margin-top:14px;">Flüge dieser Strecke &amp; dieses Datums anzeigen</button>
+      <div class="flight-search-divider"><span>oder Flugnummer direkt eingeben</span></div>
+      <div class="flight-no-row">
+        <input type="text" id="flightSearchManualInput" placeholder="z. B. LH1234">
+        <button type="button" class="btn-secondary" id="flightSearchManualBtn" style="width:auto;padding:0 16px;">Suchen</button>
+      </div>
+      <div class="sync-status" id="flightSearchStatus"></div>
+      <div id="flightSearchResults" class="flight-search-results"></div>
     </div>
   </div>
 </div>
@@ -3593,6 +3677,43 @@ const CITY_DB = RAW_CITIES.map(([n,c,cc,lat,lon,ia])=>({
   key:n+'|'+c,
   label:n+' ('+c+')'
 }));
+
+/* Für die AviationStack-Flugnummer-Suche: die meisten Städte haben genau einen
+   Flughafen (siehe CITY_DB .ia), aber bei größeren Städten mit mehreren Flughäfen
+   reicht das nicht — z. B. Berlin (historisch TXL/SXF vor BER) oder London
+   (LHR/LGW/STN/LTN/LCY). Hier NUR die zusätzlichen Codes über den .ia-Hauptflughafen
+   hinaus; getCityAirportCodes() unten führt beides zusammen. Unbekannte/fehlende
+   Städte fallen automatisch auf manuelle Eingabe zurück (siehe Such-Modal). */
+const CITY_AIRPORT_ALTS = {
+  'Berlin': ['TXL','SXF'],
+  'London': ['LGW','STN','LTN','LCY','SEN'],
+  'Paris': ['ORY','BVA'],
+  'New York': ['JFK','EWR','LGA'],
+  'Moskau': ['SVO','DME','VKO'],
+  'Tokio': ['NRT'],
+  'Chicago': ['ORD','MDW'],
+  'Washington': ['IAD','DCA','BWI'],
+  'Mailand': ['MXP','LIN','BGY'],
+  'Rom': ['FCO','CIA'],
+  'Istanbul': ['IST','SAW'],
+  'Shanghai': ['SHA'],
+  'Peking': ['PKX'],
+  'Seoul': ['GMP'],
+  'Osaka': ['ITM'],
+  'Bangkok': ['DMK'],
+  'Houston': ['HOU'],
+  'Los Angeles': ['LGB','SNA','BUR'],
+  'São Paulo': ['CGH'],
+  'Buenos Aires': ['AEP']
+};
+/* Alle bekannten IATA-Codes für eine Stadt, Hauptflughafen zuerst, dedupliziert. */
+function getCityAirportCodes(cityRef){
+  if(!cityRef) return [];
+  const codes = [];
+  if(cityRef.ia) codes.push(cityRef.ia);
+  (CITY_AIRPORT_ALTS[cityRef.n]||[]).forEach(c=>{ if(!codes.includes(c)) codes.push(c); });
+  return codes;
+}
 
 /* Ländercode (lowercase) -> deutscher Ländername, aus CITY_DB abgeleitet (erster Treffer je
    cc gewinnt). Wird für "was fehlt noch?"-Hinweise bei Gruppen-Achievements (G7, Baltikum,
@@ -3813,6 +3934,7 @@ function getMode(key){
    Zurück/Teilen, Länder-Sortierfilter). Flaggen, CO2-Wolke und Grund-Icons bleiben
    bewusst Emoji (im Design-Dokument explizit als "bereits passend" ausgenommen). */
 const SVG_ICON_PATHS = {
+  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/>',
   calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/>',
   clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
   distance:'<circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.2 19h7.3a3.3 3.3 0 0 0 0-6.6h-7a3.3 3.3 0 0 1 0-6.6h7.3"/>',
@@ -4022,13 +4144,20 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.1.0';
+const APP_VERSION = '4.2.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.2.0', tier:'🟡', title:'Neu: Flugnummer-Suche & Flugdaten (AviationStack)', items:[
+    'Neuer Einstellungen-Punkt „Flugdaten": eigenen AviationStack-API-Key hinterlegen, um beim Anlegen einer Flugreise nach der Flugnummer zu suchen statt sie von Hand einzutragen.',
+    'Getrennte Flugnummer-Felder für Hin- und Rückflug, jeweils mit eigenem Such-Button — Airline, Zeiten, Terminal/Gate und Status werden automatisch übernommen.',
+    'Zwei Suchwege: direkt per Flugnummer, oder automatisch vorgeschlagen anhand der bereits bekannten Route und des Reisedatums („Flüge dieser Strecke & dieses Datums anzeigen"). Bei Städten mit mehreren Flughäfen (z. B. Berlin, London) lässt sich der passende Flughafen auswählen.',
+    'Auch bei bereits gespeicherten Flugreisen nachträglich möglich: neue „Flugdaten"-Karte auf der Reise-Detailseite mit „Erneut suchen / aktualisieren"-Button — kein Umweg über den Bearbeiten-Modus nötig.',
+    'Ohne hinterlegten API-Key bleibt die Flugnummer-Eingabe wie bisher als reines Freitextfeld nutzbar.'
+  ]},
   {v:'4.1.0', tier:'🟡', title:'Neu: animierte Routen-Bögen auf der Weltkarte', items:[
     'Neuer „Routen"-Schalter direkt auf der interaktiven Weltkarte (oben links): blendet gebogene Verbindungslinien von deiner Homebase zu allen Zielstädten ein — im klassischen Flugroutenkarten-Stil, animiert nacheinander eingezeichnet statt alle auf einmal.',
     'Nach Verkehrsmittel filterbar (Alle, Flugzeug, Auto, Zug, Bus, Schiff, Rad) — jede Route ist in der jeweiligen Verkehrsmittel-Akzentfarbe eingefärbt, dieselben Farben wie schon bei den Kartenminiaturen und Statistiken.',
@@ -5112,6 +5241,17 @@ function migrateTrip(t){
     else if(normalized==='alma') m = Object.assign({}, m, {purpose:'alma', purposeCustom:''});
   }
   if(m.photos===undefined) m = Object.assign({}, m, {photos:[]});
+  // Flugnummer war früher ein einzelnes gemeinsames Feld für Hin- und Rückflug —
+  // jetzt getrennt pro Richtung, dazu neue Felder für den gewählten Abflug-/Ankunfts-
+  // flughafen (bei Städten mit mehreren Flughäfen) und den zuletzt geladenen
+  // AviationStack-Datensatz je Richtung (siehe Flugdaten-Suche/-Karte).
+  if(m.flightNumberOut===undefined){
+    m = Object.assign({}, m, {
+      flightNumberOut: m.flightNumber||'', flightNumberReturn:'',
+      depAirportOut:null, arrAirportOut:null, depAirportReturn:null, arrAirportReturn:null,
+      flightDataOut:null, flightDataReturn:null
+    });
+  }
   // "Vereinigtes Königreich" wurde in die einzelnen Landesteile aufgeteilt (siehe
   // CITY_DB) — bestehende Reisen nach London/Edinburgh werden hier einmalig nachgezogen,
   // damit sie in Länder-Statistik/Achievements sofort als England/Schottland zählen.
@@ -7593,10 +7733,15 @@ function renderAdd(root){
   html += '        <input type="hidden" id="fldToDate" value="'+(prefill?(prefill.dateTo||''):'')+'">';
   html += '        <div class="hint">Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.'+(duplicateSource?' Beim Duplizieren ist das ursprüngliche Datum vorausgefüllt — hier einfach anpassen.':'')+'</div>';
   html += '      </div>';
-  html += '      <div class="field" id="flightField" style="margin-bottom:14px;display:none;">';
-  html += '        <label for="fldFlightNo">Flugnummer(n) (optional)</label>';
-  html += '        <input type="text" id="fldFlightNo" placeholder="z. B. LH1234" value="'+(prefill&&prefill.flightNumber?prefill.flightNumber.replace(/"/g,'&quot;'):'')+'">';
-  html += '        <div class="hint">Eine Live-Anbindung an Flugdaten ist in dieser App nicht möglich — die Distanz wird über die Flughafenkoordinaten berechnet.</div>';
+  html += '      <div class="field" id="flightFieldOut" style="margin-bottom:14px;display:none;">';
+  html += '        <label for="fldFlightNoOut">Flugnummer Hinflug (optional)</label>';
+  html += '        <div class="flight-no-row"><input type="text" id="fldFlightNoOut" placeholder="z. B. LH1234" value="'+(prefill&&prefill.flightNumberOut?prefill.flightNumberOut.replace(/"/g,'&quot;'):(prefill&&prefill.flightNumber?prefill.flightNumber.replace(/"/g,'&quot;'):''))+'"><button type="button" class="btn-secondary flight-search-btn" id="flightSearchOutBtn" title="Flugnummer suchen">'+svgIcon('search',15,'currentColor')+'</button></div>';
+  html += '        <div class="hint" id="flightHintOut">Direkt eingeben, oder über die Suche nach Airline/Zeiten/Terminal suchen lassen.</div>';
+  html += '      </div>';
+  html += '      <div class="field" id="flightFieldReturn" style="margin-bottom:14px;display:none;">';
+  html += '        <label for="fldFlightNoReturn">Flugnummer Rückflug (optional)</label>';
+  html += '        <div class="flight-no-row"><input type="text" id="fldFlightNoReturn" placeholder="z. B. LH5678" value="'+(prefill&&prefill.flightNumberReturn?prefill.flightNumberReturn.replace(/"/g,'&quot;'):'')+'"><button type="button" class="btn-secondary flight-search-btn" id="flightSearchReturnBtn" title="Flugnummer suchen">'+svgIcon('search',15,'currentColor')+'</button></div>';
+  html += '        <div class="hint" id="flightHintReturn">Direkt eingeben, oder über die Suche nach Airline/Zeiten/Terminal suchen lassen.</div>';
   html += '      </div>';
   html += '      <div class="field" style="margin-bottom:16px;">';
   html += '        <label for="fldNotes">Notizen (optional)</label>';
@@ -7674,6 +7819,15 @@ function renderAdd(root){
   let outWaypoints = prefill ? (prefill.outWaypoints||[]).slice() : [];
   let returnWaypoints = prefill ? (prefill.returnWaypoints||[]).slice() : [];
   let purpose = prefill ? (prefill.purpose||null) : null;
+  /* Hält Abflug-/Ankunftsflughafen + zuletzt geladenen AviationStack-Datensatz je
+     Richtung, bis zum Speichern (siehe Such-Modal weiter unten). 'data:undefined'
+     bedeutet "unverändert seit dem letzten Speichern" — beim Bearbeiten einer
+     bestehenden Reise bleibt ein bereits vorhandener flightData-Snapshot also
+     erhalten, solange nicht neu gesucht wurde (siehe Submit-Handler). */
+  const pendingFlightAirports = {
+    out: {dep: t?t.depAirportOut:null, arr: t?t.arrAirportOut:null, data: undefined},
+    return: {dep: t?t.depAirportReturn:null, arr: t?t.arrAirportReturn:null, data: undefined}
+  };
 
   /* Von leeren + Von/Nach tauschen */
   const fldFromClearBtn = document.getElementById('fldFromClear');
@@ -7701,7 +7855,8 @@ function renderAdd(root){
     if(on){
       dateInput.removeAttribute('required');
       if(dateHint) dateHint.textContent = 'Optional — Monat/Jahr reicht, wenn du dich an den genauen Tag nicht mehr erinnerst.';
-      document.getElementById('flightField').style.display = 'none';
+      document.getElementById('flightFieldOut').style.display = 'none';
+      document.getElementById('flightFieldReturn').style.display = 'none';
     } else {
       dateInput.setAttribute('required','required');
       if(dateHint) dateHint.textContent = 'Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.';
@@ -7727,11 +7882,33 @@ function renderAdd(root){
   });
 
   function updateFlightField(){
-    let show;
-    if(direction==='returnonly') show = returnMode==='plane';
-    else show = outMode==='plane' || (direction==='roundtrip' && returnMode==='plane');
-    document.getElementById('flightField').style.display = show ? 'block':'none';
+    const showOut = direction!=='returnonly' && outMode==='plane';
+    const showReturn = (direction==='roundtrip' || direction==='returnonly') && returnMode==='plane';
+    document.getElementById('flightFieldOut').style.display = showOut ? 'block':'none';
+    document.getElementById('flightFieldReturn').style.display = showReturn ? 'block':'none';
+    if(!showOut){ document.getElementById('fldFlightNoOut').value=''; pendingFlightAirports.out = {dep:null, arr:null, data:null}; }
+    if(!showReturn){ document.getElementById('fldFlightNoReturn').value=''; pendingFlightAirports.return = {dep:null, arr:null, data:null}; }
   }
+
+  function openFlightSearchFor(leg){
+    const fromName = document.getElementById('fldFrom').value.trim();
+    const toName = document.getElementById('fldTo').value.trim();
+    const date = leg==='out' ? document.getElementById('fldFromDate').value : (document.getElementById('fldToDate').value || document.getElementById('fldFromDate').value);
+    const depCity = leg==='out' ? fromName : toName;
+    const arrCity = leg==='out' ? toName : fromName;
+    openFlightSearchModal({
+      leg, depCity, arrCity, date,
+      onSelect: (flightData, depCode, arrCode)=>{
+        const noInput = document.getElementById(leg==='out'?'fldFlightNoOut':'fldFlightNoReturn');
+        if(noInput) noInput.value = flightData.flightNumber;
+        pendingFlightAirports[leg] = {dep:depCode, arr:arrCode, data:flightData};
+      }
+    });
+  }
+  const searchOutBtn = document.getElementById('flightSearchOutBtn');
+  if(searchOutBtn) searchOutBtn.addEventListener('click', ()=>openFlightSearchFor('out'));
+  const searchReturnBtn = document.getElementById('flightSearchReturnBtn');
+  if(searchReturnBtn) searchReturnBtn.addEventListener('click', ()=>openFlightSearchFor('return'));
 
   function updateStub(){
     const stub = document.getElementById('bpStubContent');
@@ -8006,7 +8183,12 @@ function renderAdd(root){
       dateTo: dateTo,
       purpose: purpose,
       purposeCustom: purpose==='custom' ? document.getElementById('fldPurposeCustom').value.trim() : '',
-      flightNumber: (!cityOnly && document.getElementById('fldFlightNo')) ? document.getElementById('fldFlightNo').value.trim() : '',
+      flightNumberOut: (!cityOnly && document.getElementById('fldFlightNoOut')) ? document.getElementById('fldFlightNoOut').value.trim() : '',
+      flightNumberReturn: (!cityOnly && document.getElementById('fldFlightNoReturn')) ? document.getElementById('fldFlightNoReturn').value.trim() : '',
+      depAirportOut: pendingFlightAirports.out.dep, arrAirportOut: pendingFlightAirports.out.arr,
+      depAirportReturn: pendingFlightAirports.return.dep, arrAirportReturn: pendingFlightAirports.return.arr,
+      flightDataOut: pendingFlightAirports.out.data!==undefined ? pendingFlightAirports.out.data : (t ? t.flightDataOut : null),
+      flightDataReturn: pendingFlightAirports.return.data!==undefined ? pendingFlightAirports.return.data : (t ? t.flightDataReturn : null),
       notes: document.getElementById('fldNotes').value.trim(),
       photos: t ? (t.photos||[]) : [],
       createdAt: t ? t.createdAt : nowTs,
@@ -9094,6 +9276,57 @@ function continentIconDuoHTML(size){
     '<path d="M12 3a13 13 0 0 1 0 18" stroke="var(--text-faint)"/>'+
     '<path d="M12 3a13 13 0 0 0 0 18" stroke="var(--text-faint)"/></svg>';
 }
+const FLIGHT_STATUS_META = {
+  scheduled:{label:'Geplant', cls:''}, active:{label:'In der Luft', cls:'live'},
+  landed:{label:'Gelandet', cls:'landed'}, cancelled:{label:'Storniert', cls:'delayed'},
+  incident:{label:'Vorfall', cls:'delayed'}, diverted:{label:'Umgeleitet', cls:'delayed'}
+};
+/* Eine Flugdaten-Karte je Richtung (Hin-/Rückflug), sofern outMode/returnMode
+   'plane' ist. Zeigt entweder den zwischengespeicherten AviationStack-Datensatz
+   (siehe openFlightSearchModal-Auswahl) im Mockup-1-Layout, oder — falls noch nichts
+   gesucht wurde bzw. der Trip vor diesem Feature angelegt wurde — eine schlanke
+   Aufforderung, die Suche direkt von der Detailseite aus zu starten (deckt "auch bei
+   bereits angelegten Reisen suchen können" ab, ohne erst in den Bearbeiten-Modus zu müssen). */
+function flightDataCardHTML(t){
+  if(t.cityOnly) return '';
+  const legs = [];
+  if(t.outMode==='plane') legs.push({leg:'out', label:'Hinflug', data:t.flightDataOut, num:t.flightNumberOut, dep:t.fromCity, arr:t.city});
+  if((t.direction==='roundtrip'||t.direction==='returnonly') && t.returnMode==='plane') legs.push({leg:'return', label:'Rückflug', data:t.flightDataReturn, num:t.flightNumberReturn, dep:t.city, arr:t.fromCity});
+  if(!legs.length) return '';
+
+  let html = '';
+  legs.forEach(l=>{
+    html += '<div class="card flight-data-card" data-flight-leg="'+l.leg+'">';
+    html += '<div class="card-head"><h2>Flugdaten · '+l.label+'</h2><span class="sub">via AviationStack</span></div>';
+    if(l.data){
+      const n = l.data;
+      const statusMeta = FLIGHT_STATUS_META[n.status] || {label:n.status||'–', cls:''};
+      html += '<div class="route-line">';
+      html += '<div><span class="city">'+(n.depIata||'?')+'</span><span class="code">'+fmtFlightTime(n.depActual||n.depScheduled)+'</span></div>';
+      html += '<div class="mid"><div class="dash"></div>'+svgIcon('plane',15,'currentColor')+'<div class="dash"></div></div>';
+      html += '<div style="text-align:right;"><span class="city">'+(n.arrIata||'?')+'</span><span class="code">'+fmtFlightTime(n.arrActual||n.arrScheduled)+'</span></div>';
+      html += '</div>';
+      html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
+      html += '<span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">'+(n.airline?n.airline+' · ':'')+n.flightNumber+'</span>';
+      html += '<span class="status-pill'+(statusMeta.cls?' '+statusMeta.cls:'')+'">'+statusMeta.label+'</span>';
+      html += '</div>';
+      html += '<div class="log-detail-icongrid">';
+      html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Terminal / Gate</div><div class="log-detail-item-value">'+([n.depTerminal,n.depGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
+      html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Ankunft Terminal/Gate</div><div class="log-detail-item-value">'+([n.arrTerminal,n.arrGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
+      html += '</div>';
+      html += '<button type="button" class="btn-secondary" data-flight-refresh="'+l.leg+'" style="width:100%;margin-top:14px;">'+svgIcon('search',14,'currentColor')+' Erneut suchen / aktualisieren</button>';
+    } else if(l.num){
+      html += '<p class="sub" style="margin:0 0 12px;">Flugnummer <b style="color:var(--text);font-family:var(--font-mono);">'+l.num+'</b> eingetragen, aber noch keine Details geladen.</p>';
+      html += '<button type="button" class="btn-primary" data-flight-refresh="'+l.leg+'" style="width:100%;">'+svgIcon('search',14,'currentColor')+' Flugdaten laden</button>';
+    } else {
+      html += '<p class="sub" style="margin:0 0 12px;">Noch keine Flugnummer hinterlegt.</p>';
+      html += '<button type="button" class="btn-primary" data-flight-refresh="'+l.leg+'" style="width:100%;">'+svgIcon('search',14,'currentColor')+' Flugnummer suchen</button>';
+    }
+    html += '</div>';
+  });
+  return html;
+}
+
 function detailCardHTML(t){
   const pLbl = purposeLabel(t);
   const contCode = getContinent((t.cityCC||'').toLowerCase());
@@ -9292,6 +9525,7 @@ function renderTripDetailPage(tripId, root){
   html += '    </div>';
   html += '  </div>';
   html += '  <div class="card"><div class="card-head"><h2>Reise auf einen Blick</h2></div>'+tripOverviewStatsHTML(t)+'</div>';
+  html += flightDataCardHTML(t);
   html += detailCardHTML(t);
   html += '  <div class="tdp-footer">';
   html += '    <div class="tdp-footer-row"><span>Erstellt:</span><b>'+(t.createdAt?fmtDate(new Date(t.createdAt).toISOString().slice(0,10)):'–')+'</b></div>';
@@ -9304,6 +9538,27 @@ function renderTripDetailPage(tripId, root){
   document.getElementById('tdpBackBtn').addEventListener('click', ()=>{
     viewingTripId = null;
     renderLog(root);
+  });
+  root.querySelectorAll('[data-flight-refresh]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const leg = btn.dataset.flightRefresh;
+      const depCity = leg==='out' ? t.fromCity : t.city;
+      const arrCity = leg==='out' ? t.city : t.fromCity;
+      const date = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
+      openFlightSearchModal({
+        leg, depCity, arrCity, date,
+        onSelect: async (flightData, depCode, arrCode)=>{
+          const trip = trips.find(x=>x.id===t.id);
+          if(!trip) return;
+          if(leg==='out'){ trip.flightNumberOut = flightData.flightNumber; trip.flightDataOut = flightData; trip.depAirportOut = depCode; trip.arrAirportOut = arrCode; }
+          else { trip.flightNumberReturn = flightData.flightNumber; trip.flightDataReturn = flightData; trip.depAirportReturn = depCode; trip.arrAirportReturn = arrCode; }
+          trip.updatedAt = Date.now();
+          await saveTrips();
+          showToast('Flugdaten aktualisiert.');
+          renderTripDetailPage(t.id, root);
+        }
+      });
+    });
   });
   attachLogRowActions(root);
 }
@@ -10026,6 +10281,8 @@ function refreshSettingsOverview(){
       syncSub.textContent = 'Nicht eingerichtet';
     }
   }
+  const flightSub = document.getElementById('settingsFlightDataSub');
+  if(flightSub) flightSub.textContent = settings.aviationstackKey ? 'Eingerichtet' : 'Nicht eingerichtet';
   const newPill = document.getElementById('settingsNewPill');
   if(newPill){
     const latestV = RELEASE_NOTES[0]?.v;
@@ -10168,6 +10425,141 @@ function attachMapRoutesControl(agg){
   }
 }
 
+/* ---------- Flugnummer-Suche (AviationStack) ---------- */
+let flightSearchCtx = null;
+
+function aviationstackConfigured(){ return !!(settings.aviationstackKey && settings.aviationstackKey.trim()); }
+
+async function aviationstackFetch(params){
+  const key = settings.aviationstackKey;
+  if(!key) throw new Error('Kein API-Key hinterlegt.');
+  const qs = new URLSearchParams(Object.assign({access_key:key}, params));
+  const resp = await fetch('https://api.aviationstack.com/v1/flights?'+qs.toString());
+  if(!resp.ok) throw new Error('HTTP '+resp.status);
+  const json = await resp.json();
+  if(json.error) throw new Error(json.error.message || json.error.info || 'AviationStack-Fehler');
+  return json.data || [];
+}
+/* Reduziert die recht umfangreiche AviationStack-Antwort auf genau die Felder, die
+   die Flugdaten-Karte (siehe flightDataCardHTML) tatsächlich anzeigt. */
+function normalizeFlightData(raw){
+  const dep = raw.departure||{}, arr = raw.arrival||{}, al = raw.airline||{}, fl = raw.flight||{};
+  return {
+    flightNumber: fl.iata || fl.icao || '',
+    airline: al.name || '',
+    status: raw.flight_status || '',
+    depAirportName: dep.airport || '', depIata: dep.iata || '',
+    arrAirportName: arr.airport || '', arrIata: arr.iata || '',
+    depTerminal: dep.terminal || '', depGate: dep.gate || '',
+    arrTerminal: arr.terminal || '', arrGate: arr.gate || '',
+    depScheduled: dep.scheduled || '', depActual: dep.actual || dep.estimated || '',
+    arrScheduled: arr.scheduled || '', arrActual: arr.actual || arr.estimated || '',
+    fetchedAt: Date.now()
+  };
+}
+function fmtFlightTime(iso){
+  if(!iso) return '–';
+  const m = /T(\d{2}:\d{2})/.exec(iso);
+  return m ? m[1] : iso;
+}
+function setFlightSearchStatus(msg, cls){
+  const el = document.getElementById('flightSearchStatus');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'sync-status'+(cls?' '+cls:'');
+}
+function renderAirportPicker(elId, codes, onPick){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(!codes.length){
+    el.innerHTML = '<input type="text" class="flight-airport-manual" placeholder="IATA" maxlength="3">';
+    const input = el.querySelector('input');
+    input.addEventListener('input', ()=>onPick(input.value.trim().toUpperCase()));
+    return;
+  }
+  el.innerHTML = codes.map((c,i)=>'<button type="button" class="airport-chip'+(i===0?' active':'')+'" data-code="'+c+'">'+c+'</button>').join('');
+  onPick(codes[0]);
+  el.querySelectorAll('.airport-chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      el.querySelectorAll('.airport-chip').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      onPick(btn.dataset.code);
+    });
+  });
+}
+function renderFlightResults(rawList){
+  const el = document.getElementById('flightSearchResults');
+  if(!el) return;
+  if(!rawList.length){ el.innerHTML=''; return; }
+  el.innerHTML = rawList.slice(0,15).map((raw,i)=>{
+    const n = normalizeFlightData(raw);
+    return '<div class="flight-result-row" data-idx="'+i+'">'+
+      '<div class="flight-result-main"><b>'+(n.airline||'Unbekannte Airline')+' '+n.flightNumber+'</b>'+
+      '<span class="flight-result-status">'+(n.status||'')+'</span></div>'+
+      '<div class="flight-result-sub">'+(n.depIata||'?')+' '+fmtFlightTime(n.depScheduled)+' → '+(n.arrIata||'?')+' '+fmtFlightTime(n.arrScheduled)+'</div>'+
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.flight-result-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const raw = rawList[+row.dataset.idx];
+      const n = normalizeFlightData(raw);
+      if(flightSearchCtx && flightSearchCtx.onSelect) flightSearchCtx.onSelect(n, flightSearchCtx.depCode, flightSearchCtx.arrCode);
+      document.getElementById('flightSearchModal').classList.remove('open');
+    });
+  });
+}
+function openFlightSearchModal(ctx){
+  flightSearchCtx = ctx;
+  document.getElementById('flightSearchTitle').textContent = ctx.leg==='out' ? 'Hinflug suchen' : 'Rückflug suchen';
+  document.getElementById('flightSearchResults').innerHTML = '';
+  document.getElementById('flightSearchManualInput').value = '';
+  setFlightSearchStatus('', '');
+  const hasKey = aviationstackConfigured();
+  document.getElementById('flightSearchNoKey').hidden = hasKey;
+  document.getElementById('flightSearchBody').hidden = !hasKey;
+  if(hasKey){
+    const depRef = findCity(ctx.depCity), arrRef = findCity(ctx.arrCity);
+    const depCodes = getCityAirportCodes(depRef), arrCodes = getCityAirportCodes(arrRef);
+    renderAirportPicker('flightDepPicker', depCodes, code=>{ flightSearchCtx.depCode = code; });
+    renderAirportPicker('flightArrPicker', arrCodes, code=>{ flightSearchCtx.arrCode = code; });
+  }
+  document.getElementById('flightSearchModal').classList.add('open');
+}
+document.getElementById('flightSearchClose').addEventListener('click', ()=>{
+  document.getElementById('flightSearchModal').classList.remove('open');
+});
+document.getElementById('flightSearchModal').addEventListener('click', (e)=>{
+  if(e.target.id==='flightSearchModal') document.getElementById('flightSearchModal').classList.remove('open');
+});
+document.getElementById('flightSearchGoSettings').addEventListener('click', ()=>{
+  document.getElementById('flightSearchModal').classList.remove('open');
+  openSettings(); openSettingsPanel('flightdata');
+});
+document.getElementById('flightSearchSuggestBtn').addEventListener('click', async ()=>{
+  const ctx = flightSearchCtx;
+  if(!ctx.depCode || !ctx.arrCode){ setFlightSearchStatus('Bitte Abflug- und Zielflughafen wählen.', 'err'); return; }
+  if(!ctx.date){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
+  setFlightSearchStatus('Suche läuft …', '');
+  try{
+    const data = await aviationstackFetch({dep_iata: ctx.depCode, arr_iata: ctx.arrCode, flight_date: ctx.date});
+    renderFlightResults(data);
+    setFlightSearchStatus(data.length ? data.length+' Flüge gefunden — antippen zum Übernehmen.' : 'Keine Flüge für diese Strecke/dieses Datum gefunden.', data.length?'ok':'');
+  }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); }
+});
+document.getElementById('flightSearchManualBtn').addEventListener('click', async ()=>{
+  const ctx = flightSearchCtx;
+  const num = document.getElementById('flightSearchManualInput').value.trim().toUpperCase().replace(/\s+/g,'');
+  if(!num){ setFlightSearchStatus('Bitte eine Flugnummer eingeben.', 'err'); return; }
+  setFlightSearchStatus('Suche läuft …', '');
+  try{
+    const params = {flight_iata: num};
+    if(ctx.date) params.flight_date = ctx.date;
+    const data = await aviationstackFetch(params);
+    renderFlightResults(data);
+    setFlightSearchStatus(data.length ? data.length+' Treffer — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer gefunden.', data.length?'ok':'');
+  }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); }
+});
+
 function fmtSyncTimestamp(iso){
   try{
     const d=new Date(iso), now=new Date();
@@ -10182,7 +10574,7 @@ function showSettingsMain(){
   document.getElementById('settingsHeaderTitle').textContent = 'Einstellungen';
   refreshSettingsOverview();
 }
-const SETTINGS_PANEL_TITLES = {homebase:'Homebase', theme:'Theme', sync:'Synchronisation', data:'Daten & Sicherheit', notifications:'Benachrichtigungen', whatsnew:'Was ist neu?', releasenotes:'Release Notes', help:'Hilfe & Support', about:'Über Trailyx'};
+const SETTINGS_PANEL_TITLES = {homebase:'Homebase', theme:'Theme', sync:'Synchronisation', data:'Daten & Sicherheit', notifications:'Benachrichtigungen', flightdata:'Flugdaten', whatsnew:'Was ist neu?', releasenotes:'Release Notes', help:'Hilfe & Support', about:'Über Trailyx'};
 function openSettingsPanel(name){
   document.getElementById('settingsMainView').hidden = true;
   document.getElementById('settingsPanelView').hidden = false;
@@ -10200,12 +10592,25 @@ function openSettingsPanel(name){
     renderNotifHistory();
     markAllNotificationsRead();
   }
+  if(name==='flightdata'){
+    document.getElementById('aviationstackKeyInput').value = settings.aviationstackKey || '';
+    document.getElementById('aviationstackStatus').textContent = '';
+    document.getElementById('aviationstackStatus').className = 'sync-status';
+  }
   document.getElementById('settingsPanelView').scrollTop = 0;
 }
 document.querySelectorAll('[data-settings-open]').forEach(row=>{
   row.addEventListener('click', ()=>openSettingsPanel(row.dataset.settingsOpen));
 });
 document.getElementById('settingsPanelBack').addEventListener('click', showSettingsMain);
+document.getElementById('aviationstackSaveBtn').addEventListener('click', async ()=>{
+  settings.aviationstackKey = document.getElementById('aviationstackKeyInput').value.trim() || null;
+  await saveSettings();
+  refreshSettingsOverview();
+  const st = document.getElementById('aviationstackStatus');
+  st.textContent = settings.aviationstackKey ? 'Gespeichert.' : 'Entfernt — Flugnummer-Suche ist jetzt deaktiviert.';
+  st.className = 'sync-status ok';
+});
 function renderWhatsNewLatest(){
   const el = document.getElementById('whatsNewLatest');
   if(!el || !RELEASE_NOTES.length) return;
@@ -10719,7 +11124,8 @@ renderAdd = function(root){
 
   const advanced=document.createElement('details');advanced.className='form-more form-advanced'; if(editingId)advanced.open=true;
   advanced.innerHTML='<summary><span class="form-more-summary-label"><span class="step">3</span>Erweitert</span></summary>';
-  const flight=form.querySelector('#flightField'); if(flight)advanced.appendChild(flight);
+  const flightOut=form.querySelector('#flightFieldOut'); if(flightOut)advanced.appendChild(flightOut);
+  const flightReturn=form.querySelector('#flightFieldReturn'); if(flightReturn)advanced.appendChild(flightReturn);
   const submit=form.querySelector('.bp-submit-row');
   form.insertBefore(secondary,submit); form.insertBefore(advanced,submit);
 
