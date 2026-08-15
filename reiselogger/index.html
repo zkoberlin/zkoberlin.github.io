@@ -4154,13 +4154,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.4.1';
+const APP_VERSION = '4.4.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.4.2', tier:'🟢', title:'Flugdaten-Karte erschien nie — echte Ursache gefunden', items:[
+    'Der 4.4.1-Fix war zu kurz gegriffen. Tatsächliche Ursache: renderTripDetailPage wird im Code mehrfach überschrieben (bestehendes Muster in dieser App), die allerletzte Version gewinnt — und genau die kannte die neue Flugdaten-Karte noch gar nicht, weil sie an einer früheren, inzwischen nie mehr ausgeführten Version hing. Die Reise wurde also die ganze Zeit korrekt gespeichert, nur angezeigt wurde es nie.',
+    'Fix: Die Flugdaten-Karte (inkl. „Erneut suchen / aktualisieren"-Button) hängt jetzt an der tatsächlich aktiven, allerletzten Version der Detailseite — funktioniert jetzt sowohl direkt nach dem Anlegen/Bearbeiten als auch beim nachträglichen Suchen auf der Detailseite selbst.'
+  ]},
   {v:'4.4.1', tier:'🟢', title:'Flugdaten-Karte verschwand nach erfolgreicher Suche', items:[
     'Nach dem Übernehmen eines Suchergebnisses wurde die Reise korrekt gespeichert (Bestätigungstoast erschien), aber die Flugdaten-Karte auf der Detailseite blieb komplett leer bzw. tauchte gar nicht mehr auf — ein Rendering-Fehler bei einem einzelnen Flug-Datensatz riss dabei die komplette Aktualisierung der Detailseite ab, bevor sie überhaupt sichtbar wurde.',
     'Fix: Jede Flug-Etappe wird jetzt einzeln abgesichert gerendert. Ein Problem bei einer Etappe zeigt jetzt nur einen Hinweis für genau diese Etappe (Details in der Browser-Konsole), statt die gesamte Detailseite unsichtbar zu lassen. Zusätzlich gegen fehlerhafte/lückenhafte Datensätze abgesichert.'
@@ -11631,6 +11635,52 @@ renderTripDetailPage=function(tripId,root){
   const route=tmp.firstElementChild;
   if(existing && existing.querySelector('.geo-list')) existing.replaceWith(route);
   else if(!main.querySelector('.tdp-route-section')) main.prepend(route);
+
+  /* Flugdaten-Karte (siehe flightDataCardHTML weiter oben im Code) nachträglich
+     einhängen: renderTripDetailPage wird oben mehrfach überschrieben (RC1_RENDER_DETAIL
+     ist bereits die zweite Überschreibung der ursprünglichen Funktion) — die ORIGINALE
+     Definition, an der die Flugdaten-Karte hing, wird dadurch nie ausgeführt. Analog
+     zum Route-Ersatz direkt darüber wird die Karte hier in die tatsächlich aktive
+     Detailseite eingefügt, direkt nach dem Route-Abschnitt. */
+  root.querySelectorAll('.flight-data-card').forEach(el=>el.remove());
+  let flightHtml = '';
+  try{ flightHtml = flightDataCardHTML(t); }catch(err){ console.error('Flugdaten-Karte konnte nicht gerendert werden:', err); }
+  if(flightHtml){
+    const tmp2=document.createElement('div'); tmp2.innerHTML=flightHtml;
+    const routeSectionNow = main.querySelector('.tdp-route-section');
+    Array.from(tmp2.children).forEach(card=>{
+      if(routeSectionNow) routeSectionNow.insertAdjacentElement('afterend', card);
+      else main.prepend(card);
+    });
+    root.querySelectorAll('[data-flight-refresh]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const leg = btn.dataset.flightRefresh;
+        const waypoints = leg==='out' ? (t.outWaypoints||[]) : (t.returnWaypoints||[]);
+        const depAll = leg==='out' ? t.fromCity : t.city;
+        const arrAll = leg==='out' ? t.city : t.fromCity;
+        const segments = legSegments(depAll, arrAll, waypoints);
+        const centerDate = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
+        const existingSegs = ((leg==='out' ? t.flightDataOut : t.flightDataReturn) || []).filter(Boolean);
+        openFlightSearchModal({
+          leg, segments, centerDate,
+          existing: existingSegs.map(d=>({dep:d.depIata, arr:d.arrIata, data:d})),
+          onSelect: async (segIndex, flightData)=>{
+            const trip = trips.find(x=>x.id===t.id);
+            if(!trip) return;
+            const arr = ((leg==='out' ? trip.flightDataOut : trip.flightDataReturn) || []).filter(Boolean);
+            arr[segIndex] = flightData;
+            const nums = arr.map(d=>d&&d.flightNumber).filter(Boolean);
+            if(leg==='out'){ trip.flightDataOut = arr; trip.flightNumberOut = nums.join(', '); }
+            else { trip.flightDataReturn = arr; trip.flightNumberReturn = nums.join(', '); }
+            trip.updatedAt = Date.now();
+            await saveTrips();
+            showToast('Flugdaten aktualisiert.');
+            try{ renderTripDetailPage(t.id, root); }catch(err){ console.error('Detailseite konnte nach Flugdaten-Update nicht neu gerendert werden:', err); }
+          }
+        });
+      });
+    });
+  }
 };
 
 /* Home is journal-first: level belongs to Entdecken/Profil, not the primary overview. */
