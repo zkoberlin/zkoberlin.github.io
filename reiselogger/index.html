@@ -4171,13 +4171,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.8.0';
+const APP_VERSION = '4.9.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.9.0', tier:'🟢', title:'Flugnummer-Badge im Foto-Vorschaubild, Flugdauer in den Details', items:[
+    'Das große Foto-Vorschaubild in „Alle Reisen" zeigt bei Flugreisen jetzt zusätzlich zum Datum ein kleines Flugnummer-Badge oben rechts.',
+    'Neue Zeile „Flugdauer" im Flugdaten-Detailraster — berechnet aus tatsächlicher Ab-/Ankunftszeit (fällt auf die geplanten Zeiten zurück, falls die Ist-Zeiten noch fehlen).'
+  ]},
   {v:'4.8.0', tier:'🟡', title:'Flugdaten: "???"-Abflugort behoben, Geplant/Tatsächlich mit Farben, Distanz immer sichtbar', items:[
     'Der vorherige Fix griff nur bei der Routen-Vorschlags-Suche. Jetzt zusätzlich abgesichert: fehlt der Abflug-/Ankunftscode in der API-Antwort (egal über welchen Suchweg gefunden), wird auf den im Such-Modal gewählten Flughafen zurückgefallen. Bereits gespeicherte Flüge mit „???" werden dabei automatisch repariert, ohne dass neu gesucht werden muss — die Anzeige löst den Code jetzt zusätzlich aus dem gespeicherten Etappen-Namen auf.',
     'Neue Geplant/Tatsächlich-Zeile für Abflug und Ankunft: grün wenn pünktlich oder früher, rot ab mehr als 5 Minuten Verspätung, inkl. „+X min"-Anzeige.',
@@ -9416,6 +9420,16 @@ const FLIGHT_STATUS_META = {
    eine schlanke Aufforderung, direkt von der Detailseite aus zu suchen. */
 /* Verspätung in Minuten (positiv = später als geplant). null wenn eine der beiden
    Zeiten fehlt oder unparsbar ist. */
+/* Flugdauer als "Xh YYmin" — bevorzugt aus den tatsächlichen Zeiten (spiegelt die
+   reale Blockzeit inkl. Verspätung wider), sonst aus den geplanten. */
+function flightDurationLabel(depIso, arrIso){
+  const d = parseFlightTimeStr(depIso), a = parseFlightTimeStr(arrIso);
+  if(!d || !a) return '';
+  let mins = Math.round((a.getTime()-d.getTime())/60000);
+  if(mins<0) mins += 24*60; // grober Fallback bei Datumsgrenz-Sonderfällen in den Rohdaten
+  const h = Math.floor(mins/60), m = mins%60;
+  return h+'h '+(m<10?'0':'')+m+'min';
+}
 function flightDelayMinutes(scheduledIso, actualIso){
   const s = parseFlightTimeStr(scheduledIso), a = parseFlightTimeStr(actualIso);
   if(!s || !a) return null;
@@ -9472,6 +9486,7 @@ function flightSegmentBlockHTML(n, leg, segIdx){
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Terminal / Gate</div><div class="log-detail-item-value">'+([n.depTerminal,n.depGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Ankunft Terminal/Gate</div><div class="log-detail-item-value">'+([n.arrTerminal,n.arrGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('distance',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdistanz</div><div class="log-detail-item-value">'+(n.greatCircleKm?fmtKm(n.greatCircleKm):'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('clock',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdauer</div><div class="log-detail-item-value">'+(flightDurationLabel(n.depActual||n.depScheduled, n.arrActual||n.arrScheduled)||'–')+'</div></div></div>';
   html += '</div>';
   // Zusatz-Raster: nur die Felder, die AeroDataBox für DIESEN Flug tatsächlich liefert.
   const extras = [];
@@ -9489,13 +9504,15 @@ function flightSegmentBlockHTML(n, leg, segIdx){
   }
   return html;
 }
-/* Kleines Flugnummer-Badge fürs Hero-Foto der Detailseite (siehe renderTripDetailPage-
-   Überschreibung weiter unten) — zeigt die Hinflug-Nummer, sonst die Rückflug-Nummer. */
-function tripFlightBadgeHTML(t){
+/* Kleines Flugnummer-Badge — auf der Detailseite absolut positioniert unters Datum
+   (siehe renderTripDetailPage-Überschreibung weiter unten), im "Alle Reisen"-Karten-
+   header (inline=true) stattdessen normal in die bestehende Flex-Zeile neben dem
+   Datums-Badge eingereiht. Zeigt die Hinflug-Nummer, sonst die Rückflug-Nummer. */
+function tripFlightBadgeHTML(t, inline){
   if(t.cityOnly) return '';
   const num = t.flightNumberOut || t.flightNumberReturn;
   if(!num) return '';
-  return '<span class="tc-date-badge tdp-hero-flight">'+svgIcon('plane',12,'#fff')+' Flug '+num+'</span>';
+  return '<span class="tc-date-badge'+(inline?'':' tdp-hero-flight')+'">'+svgIcon('plane',12,'#fff')+' '+(inline?num:'Flug '+num)+'</span>';
 }
 /* Summiert die Luftlinien-Distanz (greatCircleKm) aller Etappen einer Flugrichtung —
    nur wenn WIRKLICH jede Etappe einen Wert von der API hat (sonst lieber die bisherige
@@ -9673,7 +9690,7 @@ function tripCardHTML(t, isHero){
     const photoUrl = t.photos[0].data;
     let html = '<div class="trip-card trip-card-photo tc-hero" data-trip-card="'+t.id+'">';
     html += '  <div class="tc-photo" style="background-image:url(&quot;'+photoUrl+'&quot;)">';
-    html += '    <div class="tc-photo-top"><span class="tc-date-badge">'+svgIcon('calendar',13,'#fff')+' '+dateLabel+'</span></div>';
+    html += '    <div class="tc-photo-top"><span class="tc-date-badge">'+svgIcon('calendar',13,'#fff')+' '+dateLabel+'</span>'+tripFlightBadgeHTML(t, true)+'</div>';
     html += tripCardHeroRouteHTML(t);
     html += '  </div>';
     html += '  <div class="tc-body">'+tripCardStatsHTML(t)+tripCardBadgesHTML(t)+'</div>';
