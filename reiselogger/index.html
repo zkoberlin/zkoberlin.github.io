@@ -354,6 +354,25 @@ a{color:var(--teal);}
 .world-map-gl{width:100%;height:100%;}
 .world-map-gl .maplibregl-ctrl-attrib{font-size:10px;}
 .world-map-gl .maplibregl-marker{cursor:pointer;}
+.map-routes-ctrl{position:absolute;top:10px;left:10px;z-index:5;display:flex;flex-direction:column;gap:6px;}
+.map-routes-toggle{
+  display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:100px;
+  background:var(--panel);border:1px solid var(--border-soft);color:var(--text-dim);
+  font-size:12px;font-weight:600;cursor:pointer;box-shadow:var(--shadow);
+  font-family:inherit;
+}
+.map-routes-toggle:hover{color:var(--text);}
+.map-routes-toggle.active{background:var(--gold);color:#1a1305;border-color:var(--gold);}
+.map-routes-toggle svg{width:14px;height:14px;flex-shrink:0;}
+.map-routes-modes{display:flex;gap:3px;background:var(--panel);border:1px solid var(--border-soft);border-radius:100px;padding:4px;box-shadow:var(--shadow);}
+.map-routes-modes button{
+  width:26px;height:26px;border-radius:50%;border:none;background:transparent;color:var(--text-dim);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:9.5px;font-weight:700;
+  font-family:var(--font-mono);padding:0;
+}
+.map-routes-modes button svg{width:13px;height:13px;}
+.map-routes-modes button.active{background:var(--panel-alt);color:var(--gold);}
+.map-routes-modes button:hover{color:var(--text);}
 .gl-home-marker{
   width:16px;height:16px;border-radius:50%;background:var(--map-home);
   border:2px solid #fff;box-shadow:0 0 0 2px rgba(255,150,64,0.35),0 1px 3px rgba(0,0,0,0.4);
@@ -4003,13 +4022,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.0.0';
+const APP_VERSION = '4.1.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.1.0', tier:'🟡', title:'Neu: animierte Routen-Bögen auf der Weltkarte', items:[
+    'Neuer „Routen"-Schalter direkt auf der interaktiven Weltkarte (oben links): blendet gebogene Verbindungslinien von deiner Homebase zu allen Zielstädten ein — im klassischen Flugroutenkarten-Stil, animiert nacheinander eingezeichnet statt alle auf einmal.',
+    'Nach Verkehrsmittel filterbar (Alle, Flugzeug, Auto, Zug, Bus, Schiff, Rad) — jede Route ist in der jeweiligen Verkehrsmittel-Akzentfarbe eingefärbt, dieselben Farben wie schon bei den Kartenminiaturen und Statistiken.',
+    'Läuft komplett clientseitig ohne zusätzliche Kartendaten, bleibt beim Hell-/Dunkel-Wechsel farblich konsistent und der Ein/Aus-Zustand übersteht auch einen Tab-Wechsel.'
+  ]},
   {v:'4.0.0', tier:'🔴', title:'WEITWEG heißt jetzt Trailyx', items:[
     'Neuer, international nutzbarer Markenname: aus WEITWEG wird Trailyx — der deutsche Claim „Deine Reise. Deine Spuren. Deine Welt." bleibt unverändert.',
     'Neues Logo: zwei sich kreuzende gestrichelte Trail-Linien mit Wegpunkt-Dots an den vier Enden, die zusammen ein „X" ergeben — eine direkte Weiterentwicklung der bereits bestehenden Routen-/Wegpunkt-Optik der App (Kartenminiaturen, Flugbogen), nicht neu erfunden. Header-Logo, App-Icon/Favicon, Splash- und „Über"-Bereich wurden entsprechend aktualisiert.',
@@ -6988,6 +7012,7 @@ function renderDashboard(root){
   html += '    <div class="world-map-gl" id="worldMapGL"></div>';
   html += '    <div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div>';
   html += '    <div class="map-error" id="mapError">Karte konnte nicht geladen werden (keine Verbindung?). Städte &amp; Länder findest du vollständig im Tab „Länder &amp; Städte".</div>';
+  html += mapRoutesControlHTML();
   html += '  </div>';
   html += '  <div class="map-attrib">Kartengrundlage: <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> (© OpenStreetMap-Mitwirkende) · Länder-Flächen: <a href="https://www.naturalearthdata.com" target="_blank" rel="noopener">Natural Earth</a></div>';
   html += '  <div class="map-legend">';
@@ -7041,6 +7066,13 @@ function renderDashboard(root){
 let ML_MAP = null;
 let ML_COUNTRY_FILL_CACHE = null;
 let ML_MARKERS = [];
+/* Flugrouten-Bögen (Homebase -> Zielstädte): globaler An/Aus-Status + Verkehrsmittel-
+   Filter, überlebt bewusst als Modul-Variable jede Kartenneuerstellung (siehe
+   initWorldMapML — die Karteninstanz wird bei jedem Tab-Wechsel komplett neu gebaut),
+   damit der Toggle-Zustand über Tab-Wechsel hinweg erhalten bleibt. */
+let routeArcsOn = false;
+let routeArcMode = 'all';
+let routeArcAnimFrame = null;
 const ML_COUNTRY_GEOJSON_URL = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_map_units.geojson';
 const ML_STYLE_URL = 'https://tiles.openfreemap.org/styles/liberty';
 // England/Schottland/Wales/Nordirland haben im map-units-Datensatz keinen ISO_A2-Code
@@ -7123,7 +7155,121 @@ function refreshMapColorsForTheme(){
     const expr = buildCountryFillColorExpr(LAST_MAP_AGG || {countries:[]});
     ML_MAP.setPaintProperty('country-fill','fill-color', expr.color);
     ML_MAP.setPaintProperty('country-fill','fill-opacity', expr.opacity);
+    if(ML_MAP.getLayer('route-arcs-line')) ML_MAP.setPaintProperty('route-arcs-line','line-color', buildRouteColorExpr());
   }catch(e){ /* Karte evtl. gerade nicht bereit — beim nächsten Rendern zieht's ohnehin nach */ }
+}
+
+/* ---------- Flugrouten-Bögen: Homebase -> Zielstädte, animiert eingeblendet ----------
+   Rein clientseitig berechnete Bogen-Geometrie (quadratische Bezierkurve, seitlich zur
+   Verbindungslinie ausgebeult, Höhe proportional zur Distanz) — klassische
+   "Flugroutenkarte"-Optik, ohne externe Great-Circle-Bibliothek. */
+function buildArcCoords(lon1, lat1, lon2, lat2, segments){
+  segments = segments || 56;
+  const dx = lon2-lon1, dy = lat2-lat1;
+  const dist = Math.sqrt(dx*dx+dy*dy);
+  const coords = [];
+  if(dist < 0.0001){ coords.push([lon1,lat1]); return coords; }
+  const midLon = (lon1+lon2)/2, midLat = (lat1+lat2)/2;
+  const nx = -dy/dist, ny = dx/dist;
+  const offset = dist*0.18;
+  const ctrlLon = midLon + nx*offset, ctrlLat = midLat + ny*offset;
+  for(let i=0;i<=segments;i++){
+    const t = i/segments;
+    const it = 1-t;
+    const lon = it*it*lon1 + 2*it*t*ctrlLon + t*t*lon2;
+    const lat = it*it*lat1 + 2*it*t*ctrlLat + t*t*lat2;
+    coords.push([lon,lat]);
+  }
+  return coords;
+}
+/* MapLibre-Paint-Properties verstehen kein var(--x) — löst sowohl reine CSS-Var-Farben
+   (die meisten MODES-Einträge) als auch literale Hex-Farben (z. B. Schiff) einheitlich auf. */
+function resolveModeColor(key){
+  const raw = (MODES[key]||{}).color || '';
+  const m = /^var\((--[\w-]+)\)$/.exec(raw);
+  return m ? (mapCssVar(m[1]) || '#9aa0ad') : (raw || '#9aa0ad');
+}
+function buildRouteColorExpr(){
+  const expr = ['match', ['get','mode']];
+  MODE_ORDER.forEach(k=>{ expr.push(k, resolveModeColor(k)); });
+  expr.push(mapCssVar('--text-dim') || '#9aa0ad');
+  return expr;
+}
+/* Baut die Bogen-Features aus den Reisedaten: Homebase -> t.city, Modus = outMode
+   (bzw. returnMode bei reinen Rückreisen). Gleicher Modus + gleiche Zielstadt wird
+   dedupliziert (sonst überlagern sich bei mehreren Reisen zur selben Stadt identische
+   Bögen). optional gefiltert auf ein einzelnes Verkehrsmittel. */
+function buildRouteArcFeatures(modeFilter){
+  const homeCityRef = settings.home ? findCity(settings.home) : null;
+  if(!homeCityRef) return [];
+  const feats = [];
+  const seen = new Set();
+  trips.forEach(t=>{
+    if(t.cityOnly) return;
+    const mode = t.direction==='returnonly' ? t.returnMode : t.outMode;
+    if(!mode) return;
+    if(modeFilter && modeFilter!=='all' && mode!==modeFilter) return;
+    const dest = findCity(t.city);
+    if(!dest) return;
+    const key = mode+'|'+dest.n+'|'+dest.c;
+    if(seen.has(key)) return;
+    seen.add(key);
+    const coords = buildArcCoords(homeCityRef.lon, homeCityRef.lat, dest.lon, dest.lat);
+    if(coords.length<2) return;
+    feats.push({type:'Feature', properties:{mode:mode, city:dest.n}, geometry:{type:'LineString', coordinates:coords}});
+  });
+  return feats;
+}
+/* Zeichnet die Bögen animiert ein: jeder Bogen wächst von Start- zu Zielpunkt,
+   zeitversetzt pro Bogen (stagger), statt dass alle gleichzeitig aufpoppen. */
+function animateRouteArcsIn(features){
+  if(!ML_MAP) return;
+  if(routeArcAnimFrame){ cancelAnimationFrame(routeArcAnimFrame); routeArcAnimFrame=null; }
+  const full = features.map(f=>f.geometry.coordinates);
+  const stagger = 55, dur = 750;
+  const start = performance.now();
+  function frame(now){
+    const src = ML_MAP.getSource('route-arcs-src');
+    if(!src){ routeArcAnimFrame=null; return; }
+    const t = now-start;
+    let allDone = true;
+    const liveFeatures = features.map((f,i)=>{
+      const localT = t - i*stagger;
+      let progress = localT<=0 ? 0 : Math.min(1, localT/dur);
+      if(progress<1) allDone=false;
+      const eased = 1-Math.pow(1-progress,3);
+      const count = Math.max(1, Math.round(full[i].length*eased));
+      return {type:'Feature', properties:f.properties, geometry:{type:'LineString', coordinates:full[i].slice(0,count)}};
+    });
+    src.setData({type:'FeatureCollection', features:liveFeatures});
+    if(!allDone) routeArcAnimFrame = requestAnimationFrame(frame);
+    else routeArcAnimFrame = null;
+  }
+  routeArcAnimFrame = requestAnimationFrame(frame);
+}
+/* An-/Ausschalten der Bogen-Ebene. Wird auch nach jeder Kartenneuerstellung erneut
+   aufgerufen (siehe initWorldMapML 'load'-Handler), da MapLibre-Instanzen bei jedem
+   Tab-Wechsel komplett neu gebaut werden und dabei alle Layer/Sources verlieren. */
+function setRouteArcsLayer(on){
+  if(!ML_MAP || !ML_MAP.isStyleLoaded()) return;
+  if(on){
+    const feats = buildRouteArcFeatures(routeArcMode);
+    if(!ML_MAP.getSource('route-arcs-src')){
+      ML_MAP.addSource('route-arcs-src', {type:'geojson', data:{type:'FeatureCollection', features:[]}});
+      ML_MAP.addLayer({
+        id:'route-arcs-line', type:'line', source:'route-arcs-src',
+        layout:{'line-cap':'round','line-join':'round'},
+        paint:{'line-color': buildRouteColorExpr(), 'line-width':2, 'line-opacity':0.85}
+      });
+    } else {
+      ML_MAP.setPaintProperty('route-arcs-line','line-color', buildRouteColorExpr());
+    }
+    animateRouteArcsIn(feats);
+  } else {
+    if(routeArcAnimFrame){ cancelAnimationFrame(routeArcAnimFrame); routeArcAnimFrame=null; }
+    if(ML_MAP.getLayer('route-arcs-line')) ML_MAP.removeLayer('route-arcs-line');
+    if(ML_MAP.getSource('route-arcs-src')) ML_MAP.removeSource('route-arcs-src');
+  }
 }
 
 let LAST_MAP_AGG = null;
@@ -7152,6 +7298,7 @@ async function initWorldMapML(agg){
   const loadingEl = document.getElementById('mapLoading');
   const errorEl = document.getElementById('mapError');
   if(!wrap || !mapEl) return;
+  attachMapRoutesControl(agg);
 
   if(typeof maplibregl==='undefined'){
     loadingEl.style.display='none';
@@ -7214,6 +7361,7 @@ async function initWorldMapML(agg){
     });
 
     renderMapMarkers(agg);
+    if(routeArcsOn) setRouteArcsLayer(true);
   });
 }
 
@@ -9984,6 +10132,42 @@ document.getElementById('notifBellBtn').addEventListener('click', ()=>{
   openSettingsPanel('notifications');
 });
 
+/* Overlay-Steuerung für die Flugrouten-Bögen (siehe setRouteArcsLayer/animateRouteArcsIn
+   weiter unten) — wird an beiden Stellen eingesetzt, die den Karten-Wrap rendern
+   (Karte-Tab via refactorMapHTML und die alte Statistik-Kartenansicht). */
+function mapRoutesControlHTML(){
+  let h = '<div class="map-routes-ctrl" id="mapRoutesCtrl">';
+  h += '<button type="button" class="map-routes-toggle'+(routeArcsOn?' active':'')+'" id="mapRoutesToggle">'+svgIcon('plane',14,'currentColor')+'<span>Routen</span></button>';
+  h += '<div class="map-routes-modes" id="mapRoutesModes" '+(routeArcsOn?'':'hidden')+'>';
+  h += '<button type="button" data-route-mode="all" class="'+(routeArcMode==='all'?'active':'')+'" title="Alle Verkehrsmittel">Alle</button>';
+  MODE_ORDER.forEach(m=>{
+    h += '<button type="button" data-route-mode="'+m+'" class="'+(routeArcMode===m?'active':'')+'" title="'+getMode(m).label+'">'+getModeIconHTML(m,13)+'</button>';
+  });
+  h += '</div></div>';
+  return h;
+}
+
+function attachMapRoutesControl(agg){
+  const toggle = document.getElementById('mapRoutesToggle');
+  const modes = document.getElementById('mapRoutesModes');
+  if(!toggle) return;
+  toggle.addEventListener('click', ()=>{
+    routeArcsOn = !routeArcsOn;
+    toggle.classList.toggle('active', routeArcsOn);
+    if(modes) modes.hidden = !routeArcsOn;
+    setRouteArcsLayer(routeArcsOn);
+  });
+  if(modes){
+    modes.querySelectorAll('[data-route-mode]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        routeArcMode = btn.dataset.routeMode;
+        modes.querySelectorAll('[data-route-mode]').forEach(b=>b.classList.toggle('active', b===btn));
+        if(routeArcsOn) setRouteArcsLayer(true);
+      });
+    });
+  }
+}
+
 function fmtSyncTimestamp(iso){
   try{
     const d=new Date(iso), now=new Date();
@@ -10236,7 +10420,7 @@ let discoverViewMode = 'landing';
 
 function refactorMapHTML(agg, preview){
   let h = '<div class="'+(preview?'map-preview-card':'geo-hero')+'">';
-  h += '<div class="map-wrap" id="mapWrap"><div class="world-map-gl" id="worldMapGL"></div><div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div><div class="map-error" id="mapError">Karte konnte nicht geladen werden.</div></div>';
+  h += '<div class="map-wrap" id="mapWrap"><div class="world-map-gl" id="worldMapGL"></div><div class="map-loading" id="mapLoading"><div class="spinner"></div>Karte wird geladen …</div><div class="map-error" id="mapError">Karte konnte nicht geladen werden.</div>'+mapRoutesControlHTML()+'</div>';
   if(preview){
     h += '<div class="map-preview-footer"><span>'+agg.countries.length+' Länder · '+agg.cities.length+' Städte entdeckt</span><button class="section-link" type="button" data-go-tab="map">Karte öffnen →</button></div>';
   }else{
