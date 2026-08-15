@@ -3435,15 +3435,15 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
       </div>
 
       <div class="settings-panel" data-panel="flightdata" hidden>
-        <p class="sync-desc" style="margin-top:0;">Läuft über einen eigenen Cloudflare-Worker als Proxy, damit dein AviationStack-API-Key nie im Browser sichtbar ist. Beim Anlegen einer Flugreise kannst du dann nach der Flugnummer suchen — Airline, Zeiten, Terminal/Gate und Status werden automatisch übernommen statt von Hand eingetragen.</p>
+        <p class="sync-desc" style="margin-top:0;">Läuft über einen eigenen Cloudflare-Worker als Proxy, damit dein RapidAPI-Key (für AeroDataBox) nie im Browser sichtbar ist. Beim Anlegen einer Flugreise kannst du dann nach der Flugnummer suchen — Airline, Zeiten, Terminal/Gate und Status werden automatisch übernommen statt von Hand eingetragen.</p>
         <div class="field" style="margin-bottom:10px;">
-          <label for="aviationstackProxyInput">Proxy-Worker-URL</label>
-          <input type="text" id="aviationstackProxyInput" placeholder="https://aviationstack-proxy.DEIN-SUBDOMAIN.workers.dev">
+          <label for="flightProxyUrlInput">Proxy-Worker-URL</label>
+          <input type="text" id="flightProxyUrlInput" placeholder="https://aerodatabox-proxy.DEIN-SUBDOMAIN.workers.dev">
         </div>
         <div class="sync-actions">
-          <button type="button" class="btn-secondary" id="aviationstackSaveBtn">Speichern</button>
+          <button type="button" class="btn-secondary" id="flightProxySaveBtn">Speichern</button>
         </div>
-        <div class="sync-status" id="aviationstackStatus"></div>
+        <div class="sync-status" id="flightProxyStatus"></div>
       </div>
 
       <div class="settings-panel" data-panel="whatsnew" hidden>
@@ -4144,13 +4144,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.2.1';
+const APP_VERSION = '4.3.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.3.0', tier:'🟡', title:'Flugdaten-Anbieter gewechselt: AeroDataBox statt AviationStack', items:[
+    'AviationStacks kostenpflichtiger Plan deckte trotz Bezahlung keine datumsbasierten (vergangenen/zukünftigen) Flugabfragen ab — genau das, was die Flugnummer-Suche für Reisedaten braucht.',
+    'Umgestiegen auf AeroDataBox über RapidAPI: dauerhaft kostenloser Plan mit 600 Abfragen/Monat, deckt Flüge bis zu 365 Tage in Vergangenheit und Zukunft ab.',
+    'Proxy-Worker entsprechend umgebaut (Code separat bereitgestellt) — läuft technisch wie zuvor (API-Key bleibt server-seitig verborgen), nur der Anbieter dahinter hat sich geändert. In den Einstellungen ist weiterhin nur eine Worker-URL nötig.',
+    'Der "automatische Vorschlag anhand von Route + Datum" funktioniert weiterhin, jetzt intern über eine Abfrage der Abflüge des Startflughafens statt eines direkten Routen-Filters.'
+  ]},
   {v:'4.2.1', tier:'🟢', title:'Flugdaten-Suche läuft jetzt über einen eigenen Proxy-Worker', items:[
     'Bisher rief die App AviationStack direkt aus dem Browser mit sichtbarem API-Key auf — das scheiterte im kostenlosen Plan zusätzlich an dessen HTTPS-Restriktion (HTTP 403).',
     'Einstellungen → Flugdaten fragt jetzt eine Proxy-Worker-URL statt eines rohen API-Keys ab. Ein kleiner Cloudflare Worker (Code liegt separat bei, analog zum bestehenden Sync-Worker) ruft AviationStack server-seitig auf — der Key steckt dort nur noch als verschlüsseltes Secret, taucht im Browser nie mehr auf.'
@@ -9281,9 +9287,10 @@ function continentIconDuoHTML(size){
     '<path d="M12 3a13 13 0 0 0 0 18" stroke="var(--text-faint)"/></svg>';
 }
 const FLIGHT_STATUS_META = {
-  scheduled:{label:'Geplant', cls:''}, active:{label:'In der Luft', cls:'live'},
-  landed:{label:'Gelandet', cls:'landed'}, cancelled:{label:'Storniert', cls:'delayed'},
-  incident:{label:'Vorfall', cls:'delayed'}, diverted:{label:'Umgeleitet', cls:'delayed'}
+  expected:{label:'Geplant', cls:''}, enroute:{label:'In der Luft', cls:'live'},
+  departed:{label:'Gestartet', cls:'live'}, arrived:{label:'Gelandet', cls:'landed'},
+  cancelled:{label:'Storniert', cls:'delayed'}, diverted:{label:'Umgeleitet', cls:'delayed'},
+  delayed:{label:'Verspätet', cls:'delayed'}, unknown:{label:'Unbekannt', cls:''}
 };
 /* Eine Flugdaten-Karte je Richtung (Hin-/Rückflug), sofern outMode/returnMode
    'plane' ist. Zeigt entweder den zwischengespeicherten AviationStack-Datensatz
@@ -9301,10 +9308,10 @@ function flightDataCardHTML(t){
   let html = '';
   legs.forEach(l=>{
     html += '<div class="card flight-data-card" data-flight-leg="'+l.leg+'">';
-    html += '<div class="card-head"><h2>Flugdaten · '+l.label+'</h2><span class="sub">via AviationStack</span></div>';
+    html += '<div class="card-head"><h2>Flugdaten · '+l.label+'</h2><span class="sub">via AeroDataBox</span></div>';
     if(l.data){
       const n = l.data;
-      const statusMeta = FLIGHT_STATUS_META[n.status] || {label:n.status||'–', cls:''};
+      const statusMeta = FLIGHT_STATUS_META[(n.status||'').toLowerCase()] || {label:n.status||'–', cls:''};
       html += '<div class="route-line">';
       html += '<div><span class="city">'+(n.depIata||'?')+'</span><span class="code">'+fmtFlightTime(n.depActual||n.depScheduled)+'</span></div>';
       html += '<div class="mid"><div class="dash"></div>'+svgIcon('plane',15,'currentColor')+'<div class="dash"></div></div>';
@@ -10286,7 +10293,7 @@ function refreshSettingsOverview(){
     }
   }
   const flightSub = document.getElementById('settingsFlightDataSub');
-  if(flightSub) flightSub.textContent = settings.aviationstackProxyUrl ? 'Eingerichtet' : 'Nicht eingerichtet';
+  if(flightSub) flightSub.textContent = settings.flightProxyUrl ? 'Eingerichtet' : 'Nicht eingerichtet';
   const newPill = document.getElementById('settingsNewPill');
   if(newPill){
     const latestV = RELEASE_NOTES[0]?.v;
@@ -10429,49 +10436,74 @@ function attachMapRoutesControl(agg){
   }
 }
 
-/* ---------- Flugnummer-Suche (AviationStack, über eigenen Proxy-Worker) ---------- */
+/* ---------- Flugnummer-Suche (AeroDataBox via RapidAPI, über eigenen Proxy-Worker) ---------- */
 let flightSearchCtx = null;
 
-function aviationstackConfigured(){ return !!(settings.aviationstackProxyUrl && settings.aviationstackProxyUrl.trim()); }
+function flightApiConfigured(){ return !!(settings.flightProxyUrl && settings.flightProxyUrl.trim()); }
 
-/* Ruft NICHT mehr direkt api.aviationstack.com auf (das würde den API-Key im
-   Browser-Netzwerk-Tab offenlegen und scheitert im kostenlosen Plan zudem an
-   HTTPS-Restriktionen), sondern den eigenen Cloudflare-Worker-Proxy (siehe
-   worker/aviationstack-proxy.js) — der Key bleibt dort als verschlüsseltes Secret. */
-async function aviationstackFetch(params){
-  const proxyUrl = (settings.aviationstackProxyUrl||'').trim().replace(/\/$/,'');
+/* Ruft nie direkt aerodatabox.p.rapidapi.com auf — das Auth läuft dort über HTTP-Header
+   (X-RapidAPI-Key), die im Browser sichtbar wären. Stattdessen immer über den eigenen
+   Cloudflare-Worker-Proxy (siehe worker/aerodatabox-proxy.js), der den Key server-seitig
+   als verschlüsseltes Secret hält und die Header dort anhängt. */
+async function flightProxyFetch(params){
+  const proxyUrl = (settings.flightProxyUrl||'').trim().replace(/\/$/,'');
   if(!proxyUrl) throw new Error('Kein Proxy-Worker hinterlegt.');
   const qs = new URLSearchParams(params);
   const resp = await fetch(proxyUrl+'?'+qs.toString());
+  const body = await resp.json().catch(()=>null);
   if(!resp.ok){
-    let msg = 'HTTP '+resp.status;
-    try{ const errJson = await resp.json(); if(errJson?.error?.message) msg = errJson.error.message; }catch(e){}
+    const msg = body?.error?.message || body?.message || ('HTTP '+resp.status);
     throw new Error(msg);
   }
-  const json = await resp.json();
-  if(json.error) throw new Error(json.error.message || json.error.info || 'AviationStack-Fehler');
-  return json.data || [];
+  return body;
 }
-/* Reduziert die recht umfangreiche AviationStack-Antwort auf genau die Felder, die
-   die Flugdaten-Karte (siehe flightDataCardHTML) tatsächlich anzeigt. */
+/* Flugnummer + Datum -> Array möglicher Treffer (meist genau 1, gelegentlich mehrere
+   bei Codeshares/mehreren Legs am selben Tag). */
+async function flightApiFetchByNumber(number, date){
+  const data = await flightProxyFetch({mode:'byNumber', number, date});
+  return Array.isArray(data) ? data : (data ? [data] : []);
+}
+/* Route + Datum (ohne bekannte Flugnummer): AeroDataBox filtert nach Abflug-Flughafen
+   statt direkt nach Route, daher zwei Abfragen (00–12 Uhr und 12–24 Uhr lokal, größeres
+   Zeitfenster ist pro Aufruf nicht erlaubt) und client-seitiges Herausfiltern der
+   Flüge, die tatsächlich am gewünschten Zielflughafen ankommen. */
+async function flightApiFetchByRoute(depIata, arrIata, date){
+  const windows = [[date+'T00:00', date+'T12:00'], [date+'T12:00', date+'T23:59']];
+  const results = [];
+  for(const [from,to] of windows){
+    try{
+      const data = await flightProxyFetch({mode:'byAirport', iata:depIata, from, to});
+      const departures = data?.departures || (Array.isArray(data)?data:[]);
+      departures.forEach(f=>{
+        if((f.arrival?.airport?.iata||'').toUpperCase()===arrIata.toUpperCase()) results.push(f);
+      });
+    }catch(e){ /* ein Zeitfenster darf fehlschlagen, ohne die ganze Suche abzubrechen */ }
+  }
+  return results;
+}
+/* Reduziert die AeroDataBox-Antwort auf genau die Felder, die die Flugdaten-Karte
+   (siehe flightDataCardHTML) tatsächlich anzeigt. */
 function normalizeFlightData(raw){
-  const dep = raw.departure||{}, arr = raw.arrival||{}, al = raw.airline||{}, fl = raw.flight||{};
+  const dep = raw.departure||{}, arr = raw.arrival||{};
+  const depAirport = dep.airport||{}, arrAirport = arr.airport||{};
+  const depSched = dep.scheduledTime||{}, depBest = dep.actualTime||dep.predictedTime||depSched;
+  const arrSched = arr.scheduledTime||{}, arrBest = arr.actualTime||arr.predictedTime||arrSched;
   return {
-    flightNumber: fl.iata || fl.icao || '',
-    airline: al.name || '',
-    status: raw.flight_status || '',
-    depAirportName: dep.airport || '', depIata: dep.iata || '',
-    arrAirportName: arr.airport || '', arrIata: arr.iata || '',
+    flightNumber: raw.number || '',
+    airline: (raw.airline||{}).name || '',
+    status: raw.status || '',
+    depAirportName: depAirport.name || '', depIata: depAirport.iata || '',
+    arrAirportName: arrAirport.name || '', arrIata: arrAirport.iata || '',
     depTerminal: dep.terminal || '', depGate: dep.gate || '',
     arrTerminal: arr.terminal || '', arrGate: arr.gate || '',
-    depScheduled: dep.scheduled || '', depActual: dep.actual || dep.estimated || '',
-    arrScheduled: arr.scheduled || '', arrActual: arr.actual || arr.estimated || '',
+    depScheduled: depSched.local || depSched.utc || '', depActual: depBest.local || depBest.utc || '',
+    arrScheduled: arrSched.local || arrSched.utc || '', arrActual: arrBest.local || arrBest.utc || '',
     fetchedAt: Date.now()
   };
 }
 function fmtFlightTime(iso){
   if(!iso) return '–';
-  const m = /T(\d{2}:\d{2})/.exec(iso);
+  const m = /[T ](\d{2}:\d{2})/.exec(iso);
   return m ? m[1] : iso;
 }
 function setFlightSearchStatus(msg, cls){
@@ -10526,7 +10558,7 @@ function openFlightSearchModal(ctx){
   document.getElementById('flightSearchResults').innerHTML = '';
   document.getElementById('flightSearchManualInput').value = '';
   setFlightSearchStatus('', '');
-  const hasKey = aviationstackConfigured();
+  const hasKey = flightApiConfigured();
   document.getElementById('flightSearchNoKey').hidden = hasKey;
   document.getElementById('flightSearchBody').hidden = !hasKey;
   if(hasKey){
@@ -10553,7 +10585,7 @@ document.getElementById('flightSearchSuggestBtn').addEventListener('click', asyn
   if(!ctx.date){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
   setFlightSearchStatus('Suche läuft …', '');
   try{
-    const data = await aviationstackFetch({dep_iata: ctx.depCode, arr_iata: ctx.arrCode, flight_date: ctx.date});
+    const data = await flightApiFetchByRoute(ctx.depCode, ctx.arrCode, ctx.date);
     renderFlightResults(data);
     setFlightSearchStatus(data.length ? data.length+' Flüge gefunden — antippen zum Übernehmen.' : 'Keine Flüge für diese Strecke/dieses Datum gefunden.', data.length?'ok':'');
   }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); }
@@ -10562,13 +10594,12 @@ document.getElementById('flightSearchManualBtn').addEventListener('click', async
   const ctx = flightSearchCtx;
   const num = document.getElementById('flightSearchManualInput').value.trim().toUpperCase().replace(/\s+/g,'');
   if(!num){ setFlightSearchStatus('Bitte eine Flugnummer eingeben.', 'err'); return; }
+  if(!ctx.date){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
   setFlightSearchStatus('Suche läuft …', '');
   try{
-    const params = {flight_iata: num};
-    if(ctx.date) params.flight_date = ctx.date;
-    const data = await aviationstackFetch(params);
+    const data = await flightApiFetchByNumber(num, ctx.date);
     renderFlightResults(data);
-    setFlightSearchStatus(data.length ? data.length+' Treffer — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer gefunden.', data.length?'ok':'');
+    setFlightSearchStatus(data.length ? data.length+' Treffer — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer an diesem Datum gefunden.', data.length?'ok':'');
   }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); }
 });
 
@@ -10605,9 +10636,9 @@ function openSettingsPanel(name){
     markAllNotificationsRead();
   }
   if(name==='flightdata'){
-    document.getElementById('aviationstackProxyInput').value = settings.aviationstackProxyUrl || '';
-    document.getElementById('aviationstackStatus').textContent = '';
-    document.getElementById('aviationstackStatus').className = 'sync-status';
+    document.getElementById('flightProxyUrlInput').value = settings.flightProxyUrl || '';
+    document.getElementById('flightProxyStatus').textContent = '';
+    document.getElementById('flightProxyStatus').className = 'sync-status';
   }
   document.getElementById('settingsPanelView').scrollTop = 0;
 }
@@ -10615,12 +10646,12 @@ document.querySelectorAll('[data-settings-open]').forEach(row=>{
   row.addEventListener('click', ()=>openSettingsPanel(row.dataset.settingsOpen));
 });
 document.getElementById('settingsPanelBack').addEventListener('click', showSettingsMain);
-document.getElementById('aviationstackSaveBtn').addEventListener('click', async ()=>{
-  settings.aviationstackProxyUrl = document.getElementById('aviationstackProxyInput').value.trim() || null;
+document.getElementById('flightProxySaveBtn').addEventListener('click', async ()=>{
+  settings.flightProxyUrl = document.getElementById('flightProxyUrlInput').value.trim() || null;
   await saveSettings();
   refreshSettingsOverview();
-  const st = document.getElementById('aviationstackStatus');
-  st.textContent = settings.aviationstackProxyUrl ? 'Gespeichert.' : 'Entfernt — Flugnummer-Suche ist jetzt deaktiviert.';
+  const st = document.getElementById('flightProxyStatus');
+  st.textContent = settings.flightProxyUrl ? 'Gespeichert.' : 'Entfernt — Flugnummer-Suche ist jetzt deaktiviert.';
   st.className = 'sync-status ok';
 });
 function renderWhatsNewLatest(){
