@@ -714,6 +714,7 @@ tr:last-child td{border-bottom:none;}
   background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.7) 100%);
 }
 .tdp-hero-date{position:absolute;top:14px;left:14px;z-index:2;}
+.tdp-hero-flight{position:absolute;top:46px;left:14px;z-index:2;background:rgba(29,120,84,0.75);}
 .tdp-hero-overlay{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-self:stretch;}
 .tdp-hero.placeholder .tdp-hero-overlay{position:absolute;bottom:14px;left:14px;right:14px;}
 .tdp-footer{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--text-faint);padding:0 4px;}
@@ -4160,13 +4161,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.5.0';
+const APP_VERSION = '4.6.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.6.0', tier:'🟢', title:'Flugdaten-Feinschliff: Abflugort-Bug, Status-Korrektur, Flugnummer aufs Hero-Foto', items:[
+    'Abflugort zeigte bei der Routen-Suche manchmal „???" statt z. B. „BER" — lag daran, dass AeroDataBox den abgefragten Flughafen in der Ergebnisliste teils nicht nochmal nennt. Wird jetzt direkt beim Abruf mit dem bekannten Flughafen aufgefüllt, zusätzlich ICAO-Code als Rückfallebene.',
+    'Status alter Flüge (z. B. „Gestartet" bei einer Reise Monate zurück) wird jetzt korrigiert auf „Gelandet", wenn die Ankunftszeit klar in der Vergangenheit liegt — gilt auch rückwirkend für bereits gespeicherte Flugdaten, kein erneutes Suchen nötig.',
+    'Flugnummer erscheint jetzt als Badge auf dem Hero-Foto der Reise-Detailseite (unter dem Datum), sofern eine hinterlegt ist.',
+    'Terminal/Gate bleiben bei manchen Flügen weiterhin leer („–") — das ist keine Störung, sondern die Datenlage: Airports veröffentlichen Gates oft erst wenige Stunden vor Abflug, und nicht jede Airline liefert diese Daten strukturiert an AeroDataBox.'
+  ]},
   {v:'4.5.0', tier:'🟡', title:'Klarerer Erfolgs-Toast + direkt zur Reise nach dem Speichern', items:[
     'Beim Neuanlegen einer Reise erscheint der Bestätigungs-Toast jetzt deutlich als Erfolg erkennbar: grün eingefärbt, mit Häkchen-Symbol, statt der bisherigen neutralen Optik.',
     'Nach dem Speichern — egal ob neue Reise oder Bearbeitung einer bestehenden — landest du jetzt direkt auf der Detailseite dieser Reise, statt zurück zum Dashboard zu springen.'
@@ -9374,7 +9381,8 @@ const FLIGHT_STATUS_META = {
    (noch nicht gesucht, oder Trip vor diesem Feature angelegt) zeigen stattdessen
    eine schlanke Aufforderung, direkt von der Detailseite aus zu suchen. */
 function flightSegmentBlockHTML(n, leg, segIdx){
-  const statusMeta = FLIGHT_STATUS_META[(n.status||'').toLowerCase()] || {label:n.status||'–', cls:''};
+  const displayStatus = inferFinalFlightStatus(n.status, n.arrActual, n.arrScheduled);
+  const statusMeta = FLIGHT_STATUS_META[displayStatus] || {label:n.status||'–', cls:''};
   let html = '';
   if(n.segmentLabel) html += '<div class="log-detail-section-label" style="margin-bottom:8px;">'+n.segmentLabel+'</div>';
   html += '<div class="route-line">';
@@ -9406,6 +9414,14 @@ function flightSegmentBlockHTML(n, leg, segIdx){
     html += '</div>';
   }
   return html;
+}
+/* Kleines Flugnummer-Badge fürs Hero-Foto der Detailseite (siehe renderTripDetailPage-
+   Überschreibung weiter unten) — zeigt die Hinflug-Nummer, sonst die Rückflug-Nummer. */
+function tripFlightBadgeHTML(t){
+  if(t.cityOnly) return '';
+  const num = t.flightNumberOut || t.flightNumberReturn;
+  if(!num) return '';
+  return '<span class="tc-date-badge tdp-hero-flight">'+svgIcon('plane',12,'#fff')+' Flug '+num+'</span>';
 }
 function flightDataCardHTML(t){
   if(t.cityOnly) return '';
@@ -10591,7 +10607,15 @@ async function flightApiFetchByRoute(depIata, arrIata, date){
       const data = await flightProxyFetch({mode:'byAirport', iata:depIata, from, to});
       const departures = data?.departures || (Array.isArray(data)?data:[]);
       departures.forEach(f=>{
-        if((f.arrival?.airport?.iata||'').toUpperCase()===arrIata.toUpperCase()) results.push(f);
+        if((f.arrival?.airport?.iata||'').toUpperCase()===arrIata.toUpperCase()){
+          // Bei der Flughafen-FIDS-Abfrage lässt AeroDataBox das Abflug-Flughafen-Feld
+          // je Eintrag manchmal leer, weil es implizit der abgefragte Flughafen ist —
+          // ohne diesen Patch stünde in der Anzeige "???" statt z. B. "BER".
+          if(!f.departure) f.departure = {};
+          if(!f.departure.airport) f.departure.airport = {};
+          if(!f.departure.airport.iata) f.departure.airport.iata = depIata.toUpperCase();
+          results.push(f);
+        }
       });
     }catch(e){ /* ein Zeitfenster darf fehlschlagen, ohne die ganze Suche abzubrechen */ }
   }
@@ -10599,18 +10623,37 @@ async function flightApiFetchByRoute(depIata, arrIata, date){
 }
 /* Reduziert die AeroDataBox-Antwort auf genau die Felder, die die Flugdaten-Karte
    (siehe flightDataCardHTML) tatsächlich anzeigt. */
+function parseFlightTimeStr(s){
+  if(!s) return null;
+  const d = new Date(s.trim().replace(' ','T'));
+  return isNaN(d.getTime()) ? null : d;
+}
+/* Hebt einen noch nicht finalen Status ("Gestartet"/"In der Luft"/"Geplant"/unbekannt)
+   auf "Gelandet" an, wenn die Ankunftszeit klar in der Vergangenheit liegt (>12h Puffer
+   für Verspätungen). Wird sowohl beim frischen Normalisieren als auch beim Anzeigen
+   bereits gespeicherter (ggf. Monate alter) Flugdaten angewendet — ein einmal beim
+   Suchen übernommener Status würde sonst dauerhaft "Gestartet" zeigen, selbst wenn der
+   Flug längst gelandet ist, da wir keine automatischen Hintergrund-Updates machen. */
+function inferFinalFlightStatus(status, arrActualIso, arrScheduledIso){
+  const s = (status||'').toLowerCase();
+  if(!['expected','enroute','departed','unknown',''].includes(s)) return s;
+  const arrRef = parseFlightTimeStr(arrActualIso||arrScheduledIso||'');
+  if(arrRef && (Date.now()-arrRef.getTime()) > 12*3600*1000) return 'arrived';
+  return s;
+}
 function normalizeFlightData(raw){
   const dep = raw.departure||{}, arr = raw.arrival||{};
   const depAirport = dep.airport||{}, arrAirport = arr.airport||{};
   const depSched = dep.scheduledTime||{}, depBest = dep.actualTime||dep.predictedTime||depSched;
   const arrSched = arr.scheduledTime||{}, arrBest = arr.actualTime||arr.predictedTime||arrSched;
   const aircraft = raw.aircraft||{};
+  const arrBestIso = arrBest.utc||arrBest.local||'', arrSchedIso = arrSched.utc||arrSched.local||'';
   return {
     flightNumber: raw.number || '',
     airline: (raw.airline||{}).name || '',
-    status: raw.status || '',
-    depAirportName: depAirport.name || '', depIata: depAirport.iata || '',
-    arrAirportName: arrAirport.name || '', arrIata: arrAirport.iata || '',
+    status: inferFinalFlightStatus(raw.status, arrBestIso, arrSchedIso),
+    depAirportName: depAirport.name || '', depIata: depAirport.iata || depAirport.icao || '',
+    arrAirportName: arrAirport.name || '', arrIata: arrAirport.iata || arrAirport.icao || '',
     depTerminal: dep.terminal || '', depGate: dep.gate || '',
     arrTerminal: arr.terminal || '', arrGate: arr.gate || '',
     depScheduled: depSched.local || depSched.utc || '', depActual: depBest.local || depBest.utc || '',
@@ -11366,7 +11409,7 @@ renderTripDetailPage = function(tripId,root){
   let h='<div class="trip-detail-page"><div class="tdp-header"><button type="button" class="tdp-back" id="tdpBackBtn" aria-label="Zurück">'+svgIcon('back',18,'currentColor')+'</button><h3>Reise</h3><button type="button" class="tdp-menu" data-share="'+t.id+'" aria-label="Reise teilen">'+svgIcon('share',17,'currentColor')+'</button></div>';
   h+='<div class="tdp-hero'+(hasPhoto?'':' placeholder')+'"'+(hasPhoto?' style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"':'')+'>';
   if(!hasPhoto)h+='<div class="travel-placeholder"><div class="travel-placeholder-route"></div></div>';
-  h+='<span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span><div class="tdp-hero-overlay">'+tripCardHeroRouteHTML(t)+'</div></div>';
+  h+='<span class="tc-date-badge tdp-hero-date">'+svgIcon('calendar',13,'#fff')+' '+fmtRange(t.dateFrom,t.dateTo)+'</span>'+tripFlightBadgeHTML(t)+'<div class="tdp-hero-overlay">'+tripCardHeroRouteHTML(t)+'</div></div>';
   h+='<div class="tdp-route-block"><div class="tdp-route-title">'+stripCountrySuffix(t.fromCity||'–')+' → '+stripCountrySuffix(t.city||'–')+'</div><div class="tdp-meta-line"><span>'+tripDurationDays(t)+' '+(tripDurationDays(t)===1?'Tag':'Tage')+'</span><span>·</span><span>'+fmtKm(tripTotal(t))+'</span><span>·</span><span>'+tripTransportIconsHTML(t)+' '+tripTransportLabel(t)+'</span></div></div>';
   h+='<div class="tdp-content-grid"><main class="tdp-main-column">';
   h+=detailRouteSectionHTML(t,wps);
