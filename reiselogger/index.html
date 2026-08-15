@@ -4161,13 +4161,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.6.0';
+const APP_VERSION = '4.7.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.7.0', tier:'🟡', title:'Flug-Distanz kommt jetzt aus der API statt manueller Eingabe', items:[
+    'Beim Anlegen einer Reise wird das Distanz-Feld nicht mehr angezeigt, sobald „Flugzeug" als Verkehrsmittel gewählt ist — stattdessen ein Hinweis, dass die Distanz über die Flugnummer-Suche kommt. Im Hintergrund wird bis dahin weiterhin automatisch eine Luftlinien-Schätzung vorgehalten, damit CO₂/Statistiken auch ohne Suche schon einen sinnvollen Wert haben.',
+    'Sobald ein Flug ausgewählt wird (egal ob beim Anlegen, Bearbeiten oder nachträglich auf der Detailseite), ersetzt die von AeroDataBox gelieferte echte Luftlinien-Distanz die bisherige Schätzung — nur wenn wirklich für jede Etappe ein Wert vorliegt, sonst bleibt die Schätzung stehen, statt eine unvollständige Summe zu zeigen.'
+  ]},
   {v:'4.6.0', tier:'🟢', title:'Flugdaten-Feinschliff: Abflugort-Bug, Status-Korrektur, Flugnummer aufs Hero-Foto', items:[
     'Abflugort zeigte bei der Routen-Suche manchmal „???" statt z. B. „BER" — lag daran, dass AeroDataBox den abgefragten Flughafen in der Ergebnisliste teils nicht nochmal nennt. Wird jetzt direkt beim Abruf mit dem bekannten Flughafen aufgefüllt, zusätzlich ICAO-Code als Rückfallebene.',
     'Status alter Flüge (z. B. „Gestartet" bei einer Reise Monate zurück) wird jetzt korrigiert auf „Gelandet", wenn die Ankunftszeit klar in der Vergangenheit liegt — gilt auch rückwirkend für bereits gespeicherte Flugdaten, kein erneutes Suchen nötig.',
@@ -7743,7 +7747,7 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
   h += '    <button type="button" class="btn-add-waypoint" data-add-waypoint-leg="'+legKey+'">+ Zwischenstopp ('+legLabel+')</button>';
   h += '    <div class="hint">Zählt nicht als eigener Besuch — beeinflusst nur die berechnete Distanz dieser Teilstrecke.</div>';
   h += '  </div>';
-  h += '  <div class="field" style="margin-bottom:6px;">';
+  h += '  <div class="field" id="distWrap_'+legKey+'" style="margin-bottom:6px;'+(mode==='plane'?'display:none;':'')+'">';
   h += '    <label for="fldDist_'+legKey+'">Distanz '+legLabel+' (km)</label>';
   h += '    <div class="dist-row">';
   h += '      <div class="field" style="margin:0;"><input type="number" id="fldDist_'+legKey+'" min="0" step="1" placeholder="km" value="'+(distVal||'')+'"></div>';
@@ -7751,6 +7755,7 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
   h += '    </div>';
   h += '    <div class="hint" id="distHint_'+legKey+'">Luftlinie × Aufschlag je nach Verkehrsmittel (Flug ≈ 1.0×, Zug/Bus ≈ 1.25×, Auto ≈ 1.3×, Rad ≈ 1.15×). Mit Zwischenstopps: Summe der Teilstrecken.</div>';
   h += '  </div>';
+  h += '  <div class="hint" id="distAutoHint_'+legKey+'" style="margin-bottom:12px;'+(mode==='plane'?'':'display:none;')+'">Die Distanz wird automatisch über die Flugnummer-Suche ermittelt — bis dahin grob per Luftlinie geschätzt.</div>';
   h += '</div>';
   return h;
 }
@@ -7973,6 +7978,15 @@ function renderAdd(root){
     if(!noInput) return;
     const nums = pendingFlightAirports[leg].segments.map(s=>s&&s.data&&s.data.flightNumber).filter(Boolean);
     noInput.value = nums.join(', ');
+    // Sobald AeroDataBox eine echte Luftlinien-Distanz mitliefert, ersetzt sie die
+    // bisherige grobe Schätzung — das Feld ist bei "Flugzeug" zwar ausgeblendet (siehe
+    // updateDistFieldVisibility), hält den Wert aber weiterhin fürs Speichern vor.
+    const distInput = document.getElementById('fldDist_'+leg);
+    if(distInput){
+      const km = sumFlightSegmentsKm(pendingFlightAirports[leg].segments.map(s=>s&&s.data));
+      if(km!=null) distInput.value = km;
+    }
+    updateStub();
   }
 
   function openFlightSearchFor(leg){
@@ -8105,6 +8119,11 @@ function renderAdd(root){
       if(legKey==='out') outMode = modeOpt.dataset.mode; else returnMode = modeOpt.dataset.mode;
       legBlock.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('active'));
       modeOpt.classList.add('active');
+      const isPlane = modeOpt.dataset.mode==='plane';
+      const distWrap = document.getElementById('distWrap_'+legKey);
+      const autoHint = document.getElementById('distAutoHint_'+legKey);
+      if(distWrap) distWrap.style.display = isPlane ? 'none' : '';
+      if(autoHint) autoHint.style.display = isPlane ? '' : 'none';
       tryAutoCalc(legKey);
       updateFlightField();
       return;
@@ -9422,6 +9441,18 @@ function tripFlightBadgeHTML(t){
   const num = t.flightNumberOut || t.flightNumberReturn;
   if(!num) return '';
   return '<span class="tc-date-badge tdp-hero-flight">'+svgIcon('plane',12,'#fff')+' Flug '+num+'</span>';
+}
+/* Summiert die Luftlinien-Distanz (greatCircleKm) aller Etappen einer Flugrichtung —
+   nur wenn WIRKLICH jede Etappe einen Wert von der API hat (sonst lieber die bisherige
+   Schätzung behalten, als eine unvollständige Summe anzuzeigen). Wird sowohl beim
+   Auswählen im Such-Modal als auch beim nachträglichen Aktualisieren auf der
+   Detailseite verwendet, um outDistanceKm/returnDistanceKm mit dem echten API-Wert
+   statt der Luftlinien-Schätzung zu befüllen. */
+function sumFlightSegmentsKm(dataArray){
+  if(!dataArray || !dataArray.length) return null;
+  let total = 0, count = 0;
+  dataArray.forEach(d=>{ if(d && typeof d.greatCircleKm==='number'){ total+=d.greatCircleKm; count++; } });
+  return (count===dataArray.length && count>0) ? Math.round(total) : null;
 }
 function flightDataCardHTML(t){
   if(t.cityOnly) return '';
@@ -11727,6 +11758,8 @@ renderTripDetailPage=function(tripId,root){
             const nums = arr.map(d=>d&&d.flightNumber).filter(Boolean);
             if(leg==='out'){ trip.flightDataOut = arr; trip.flightNumberOut = nums.join(', '); }
             else { trip.flightDataReturn = arr; trip.flightNumberReturn = nums.join(', '); }
+            const km = sumFlightSegmentsKm(arr);
+            if(km!=null){ if(leg==='out') trip.outDistanceKm = km; else trip.returnDistanceKm = km; }
             trip.updatedAt = Date.now();
             await saveTrips();
             showToast('Flugdaten aktualisiert.');
