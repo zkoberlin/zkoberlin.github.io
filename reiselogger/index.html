@@ -805,7 +805,7 @@ tr:last-child td{border-bottom:none;}
   border:1px dashed var(--border-soft);border-radius:7px;padding:2px 7px;
 }
 
-.mode-toggle{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.mode-toggle{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
 @media(max-width:600px){.mode-toggle{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:420px){
   .mode-toggle{grid-template-columns:repeat(2,1fr);}
@@ -1513,6 +1513,18 @@ span.flatpickr-weekday{
 .tc-thumb-icon>span{display:none!important;}
 .tc-thumb-icon:before{content:"";position:absolute;inset:-25%;background:repeating-radial-gradient(ellipse at 20% 15%,transparent 0 11px,rgba(151,160,190,.13) 12px 13px,transparent 14px 23px);transform:rotate(-12deg);}
 .tc-thumb-icon:after{content:"";position:absolute;left:18%;right:18%;top:50%;border-top:1.5px dashed var(--gold-dim);}
+/* Flug-Variante: statt der geraden gestrichelten Linie ein gebogener Flugbogen
+   (klassischer CSS-Trick: :after ohne Radius bekommt oben einen 50%/100%-Radius,
+   wodurch nur die obere Kante als Halbellipse erscheint — mit Flugzeug-Icon am Scheitel
+   und zwei Punkten für Start/Ziel). Aktiviert über .tc-thumb-flight (siehe tripCardHTML). */
+.tc-thumb-icon.tc-thumb-flight:after{
+  left:16%;right:16%;top:30%;height:40px;border-top:1.5px dashed var(--gold-dim);
+  border-radius:50%/100% 100% 0 0;
+}
+.tc-thumb-flight-plane{position:absolute;top:11%;left:50%;transform:translate(-50%,0) rotate(90deg);color:var(--gold);z-index:1;}
+.tc-thumb-flight-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--gold-dim);z-index:1;}
+.tc-thumb-flight-dot.start{left:16%;top:68%;}
+.tc-thumb-flight-dot.end{right:16%;top:68%;}
 .form-progress-note{font-size:11.5px;color:var(--text-dim);margin:0 0 16px;padding:10px 12px;border-left:2px solid var(--gold);background:var(--bg-soft);border-radius:0 8px 8px 0;}
 .form-more{margin:4px 0 16px;border-top:1px solid var(--border-soft);padding-top:12px;}
 .form-more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:44px;font:600 13px var(--font-display);color:var(--text-dim);}
@@ -3763,9 +3775,10 @@ const MODES = {
   car:{label:'Auto',icon:'🚗',color:'var(--rose)',factor:1.3},
   train:{label:'Zug',icon:'🚆',color:'var(--teal)',factor:1.25},
   bus:{label:'Bus',icon:'🚌',color:'var(--bus)',factor:1.25},
+  ship:{label:'Schiff',icon:'🚢',color:'#3b82c4',factor:1.35},
   bike:{label:'Mit Rad',icon:'🚴',color:'var(--green)',factor:1.15}
 };
-const MODE_ORDER = ['plane','car','train','bus','bike'];
+const MODE_ORDER = ['plane','car','train','bus','ship','bike'];
 function getMode(key){
   return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
 }
@@ -3785,6 +3798,7 @@ const SVG_ICON_PATHS = {
   train:'<rect x="5" y="4" width="14" height="13" rx="3"/><path d="M5 11h14"/><circle cx="8.5" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/><path d="M8 20l-2 2M16 20l2 2"/>',
   bus:'<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3 12h18"/><circle cx="7.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/>',
   bike:'<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-8h4l3 8"/><path d="M10 9h3"/>',
+  ship:'<path d="M6 15.5V9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5"/><path d="M9 8V5h6v3"/><path d="M3 18c1.4 1 2.8 1 4.2 0s2.8-1 4.2 0 2.8 1 4.2 0 2.8-1 4.2 0"/>',
   stopPin:'<path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/>',
   back:'<path d="M15 5l-7 7 7 7"/>',
   edit:'<path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 7.5l3 3"/>',
@@ -3878,7 +3892,7 @@ function svgIcon(name, size, color){
    für ältere/nicht im Scope enthaltene Stellen unverändert nutzbar. */
 function getModeIconHTML(key, size){
   const mo = getMode(key);
-  const name = {plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}[key];
+  const name = {plane:'plane',car:'car',train:'train',bus:'bus',ship:'ship',bike:'bike'}[key];
   if(!name) return mo.icon;
   return svgIcon(name, size||18, mo.color);
 }
@@ -3893,7 +3907,8 @@ const DUO_MODE_ICON_SVG = {
   car:'<path d="M4 17V12l2-5h12l2 5v5" stroke="var(--text-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M2 17h20" stroke="var(--text-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="17" r="1.6" fill="var(--text-faint)"/><circle cx="17" cy="17" r="1.6" fill="var(--text-faint)"/>',
   train:'<rect x="5" y="4" width="14" height="13" rx="3" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><path d="M5 11h14" stroke="var(--text-dim)" stroke-width="1.8"/><circle cx="8.5" cy="14" r="1" fill="var(--text-faint)"/><circle cx="15.5" cy="14" r="1" fill="var(--text-faint)"/><path d="M8 20l-2 2M16 20l2 2" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round"/>',
   bus:'<rect x="3" y="5" width="18" height="12" rx="2" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><path d="M3 12h18" stroke="var(--text-dim)" stroke-width="1.8"/><circle cx="7.5" cy="19" r="1.3" fill="var(--text-faint)"/><circle cx="16.5" cy="19" r="1.3" fill="var(--text-faint)"/>',
-  bike:'<circle cx="6" cy="17" r="3.2" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><circle cx="18" cy="17" r="3.2" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><path d="M6 17l4-8h4l3 8" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M10 9h3" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round"/>'
+  bike:'<circle cx="6" cy="17" r="3.2" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><circle cx="18" cy="17" r="3.2" stroke="var(--text-dim)" stroke-width="1.8" fill="none"/><path d="M6 17l4-8h4l3 8" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M10 9h3" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round"/>',
+  ship:'<path d="M6 15.5V9a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5" stroke="var(--text-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9 8V5h6v3" stroke="var(--text-dim)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M3 18c1.4 1 2.8 1 4.2 0s2.8-1 4.2 0 2.8 1 4.2 0 2.8-1 4.2 0" stroke="var(--text-faint)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>'
 };
 function getModeIconDuoHTML(key, size){
   size = size||18;
@@ -3939,8 +3954,11 @@ Object.keys(CONTINENTS).forEach(k=>{ CONTINENTS[k].icon = svgIcon('continent', 1
 /* CO2e-Richtwerte in Gramm pro Personenkilometer (Umweltbundesamt/TREMOD-Durchschnittswerte,
    Kurz-/Mittelstrecke Flug ~230, Pkw-Durchschnitt inkl. E-Autos ~164, Bahn-Fernverkehr ~35,
    Fernbus ~30, Rad praktisch 0). Reale Werte schwanken je nach Auslastung, Antrieb und Strommix
-   spürbar — das sind grobe, aber realistische Orientierungswerte. */
-const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, bike:0 };
+   spürbar — das sind grobe, aber realistische Orientierungswerte.
+   Schiff/Fähre ~40: Passagierfähren liegen laut UBA/DEFRA je nach Schiffstyp und Auslastung
+   grob zwischen 20 und 60 g/Pkm — 40 ist ein realistischer Mittelwert für den gemischten
+   Personen-/Autofähren-Betrieb, den diese App abbildet. */
+const CO2_FACTORS = { plane:230, car:164, train:35, bus:30, ship:40, bike:0 };
 /* ø CO2-Fußabdruck durch Mobilität pro Kopf und Jahr in Deutschland — rund 2,0 t CO2e
    im aktuellen Jahr (Anteil "Mobilität" von rund 19–21 % am gesamten Pro-Kopf-
    Fußabdruck von 10,4 t; Quelle: Umweltbundesamt/BMUV, Stand 2025). Bewusst NICHT der
@@ -3979,13 +3997,23 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '3.5.0';
+const APP_VERSION = '3.7.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'3.7.0', tier:'🟡', title:'Neu: Schiff als Verkehrsmittel', items:[
+    'Schiff/Fähre steht jetzt bei jeder Reise als sechstes Verkehrsmittel zur Auswahl (eigenes Icon, eigene Akzentfarbe) — überall dort, wo bisher nur Flugzeug, Auto, Zug, Bus und Rad wählbar waren.',
+    'CO2-Statistik berücksichtigt Schiffsreisen mit einem eigenen, realistischen Emissionswert (~40 g CO2/Pkm, grober Mittelwert für gemischten Personen-/Autofähren-Betrieb) — taucht in der CO2-Aufschlüsselung nach Verkehrsmittel genauso auf wie die anderen.',
+    'Statistiken, Jahres-Kilometer nach Verkehrsmittel, die Verkehrsmittel-Suche in „Alle Reisen" und die Kartenminiaturen berücksichtigen Schiff automatisch — keine Sonderbehandlung nötig, da alles zentral über die Verkehrsmittel-Liste läuft.',
+    'Vier neue Badges: „Erste Schiffsreise" sowie eine dreistufige Distanz-Reihe „Seefahrer:in I–III" (500 / 2.000 / 8.000 km). Der Badge „Alleskönner:in" (alle Verkehrsmittel genutzt) verlangt jetzt entsprechend alle sechs statt fünf.'
+  ]},
+  {v:'3.6.0', tier:'🟡', title:'Neue Kartenvariante für Flugreisen: Flugbogen statt gerader Linie', items:[
+    'Reisekarten ohne eigenes Foto zeigten bisher unabhängig vom Verkehrsmittel dieselbe gerade gestrichelte Linie als Platzhalter. Reisen, deren Hin- oder Rückweg per Flugzeug war, bekommen jetzt automatisch stattdessen einen gebogenen Flugbogen mit Flugzeug-Icon am Scheitelpunkt und zwei Punkten für Start/Ziel — passend zur klassischen Flugroutenkarten-Optik.',
+    'Automatisch aktiv, keine Einstellung nötig — greift überall, wo die kompakte Kartenansicht ohne Foto verwendet wird (Alle Reisen, Geplant, Dashboard).'
+  ]},
   {v:'3.5.0', tier:'🟡', title:'Neu: Standort-Vorschlag für neue Reisen', items:[
     'Beim Öffnen der App wird (mit Standort-Erlaubnis) geprüft, ob du weit weg von deiner Homebase bist — falls ja und noch keine passende Reise dafür erfasst ist, fragt ein kleines Popup „Neue Reise eintragen?" und öffnet bei Bestätigung das Formular mit vorausgefüllter Zielstadt und heutigem Datum.',
     'Duplikate werden vermieden: Ist bereits eine aktuell laufende ODER eine geplante Reise für den erkannten Ort eingetragen, kommt kein Vorschlag für eine neue Reise.',
@@ -6543,10 +6571,11 @@ function computeAchievements(){
     {id:'MODE-02',mode:'train',name:'Erste Zugfahrt',icon:'🚆'},
     {id:'MODE-03',mode:'plane',name:'Erster Flug',icon:'✈️'},
     {id:'MODE-04',mode:'bus',name:'Erste Busfahrt',icon:'🚌'},
-    {id:'MODE-05',mode:'bike',name:'Erste Radtour',icon:'🚴'}
+    {id:'MODE-05',mode:'bike',name:'Erste Radtour',icon:'🚴'},
+    {id:'MODE-25',mode:'ship',name:'Erste Schiffsreise',icon:'🚢'}
   ];
   modeFirstDefs.forEach(m=>{
-    add(m.id,'MODE',m.name,m.icon,'Erste Reise mit '+(m.mode==='car'?'dem Auto':m.mode==='train'?'dem Zug':m.mode==='plane'?'dem Flugzeug':m.mode==='bus'?'dem Bus':'dem Rad'),1,modesUsed.has(m.mode),5);
+    add(m.id,'MODE',m.name,m.icon,'Erste Reise mit '+(m.mode==='car'?'dem Auto':m.mode==='train'?'dem Zug':m.mode==='plane'?'dem Flugzeug':m.mode==='bus'?'dem Bus':m.mode==='ship'?'dem Schiff':'dem Rad'),1,modesUsed.has(m.mode),5);
   });
   addTiers('MODE',[
     {id:'MODE-06',name:'Vielfahrer:in I (Auto)',icon:'🚗',desc:'1.000 km mit dem Auto',target:1000,bonus:10},
@@ -6572,7 +6601,12 @@ function computeAchievements(){
     {id:'MODE-18',name:'Radler:in II',icon:'🚴',desc:'500 km mit dem Rad',target:500,bonus:20},
     {id:'MODE-19',name:'Radler:in III',icon:'🚴',desc:'2.000 km mit dem Rad',target:2000,bonus:40}
   ], agg.perMode.bike||0);
-  add('MODE-20','MODE','Alleskönner:in','🎫','Alle 5 Verkehrsmittel mindestens einmal genutzt',MODE_ORDER.length,modesUsed.size,25);
+  addTiers('MODE',[
+    {id:'MODE-26',name:'Seefahrer:in I',icon:'🚢',desc:'500 km mit dem Schiff',target:500,bonus:10},
+    {id:'MODE-27',name:'Seefahrer:in II',icon:'🚢',desc:'2.000 km mit dem Schiff',target:2000,bonus:20},
+    {id:'MODE-28',name:'Seefahrer:in III',icon:'🚢',desc:'8.000 km mit dem Schiff',target:8000,bonus:35}
+  ], agg.perMode.ship||0);
+  add('MODE-20','MODE','Alleskönner:in','🎫','Alle '+MODE_ORDER.length+' Verkehrsmittel mindestens einmal genutzt',MODE_ORDER.length,modesUsed.size,25);
   add('MODE-21','MODE','Fliegerfreies Jahr','🌱','Ein Kalenderjahr komplett ohne Flugreise (bei ≥1 Reise)',1,flightFreeYear,30);
   addTiers('MODE',[
     {id:'MODE-22',name:'Mixed-Mode I',icon:'🔀',desc:'3 Hin-und-Rück-Reisen mit unterschiedlichem Verkehrsmittel je Richtung',target:3,bonus:15},
@@ -9033,10 +9067,15 @@ function tripCardHTML(t, isHero){
   }
 
   // Kompaktkarte — für alle übrigen Reisen (mit UND ohne Foto): Miniatur links
-  // (Foto, sofern vorhanden, sonst Koffer-Icon), Inhalt rechts, Pfeil ganz rechts.
+  // (Foto, sofern vorhanden, sonst Koffer-Icon; bei Flugreisen ohne Foto stattdessen
+  // ein gebogener Flugbogen statt der geraden Linie — siehe .tc-thumb-flight CSS),
+  // Inhalt rechts, Pfeil ganz rechts.
+  const isFlight = t.outMode==='plane' || t.returnMode==='plane';
   const thumbHTML = hasPhoto
     ? '<div class="tc-thumb tc-thumb-photo" style="background-image:url(&quot;'+t.photos[0].data+'&quot;)"></div>'
-    : '<div class="tc-thumb tc-thumb-icon"><span>'+svgIcon('photos',26,'currentColor')+'</span></div>';
+    : (isFlight
+        ? '<div class="tc-thumb tc-thumb-icon tc-thumb-flight"><span class="tc-thumb-flight-plane">'+svgIcon('plane',15,'currentColor')+'</span><span class="tc-thumb-flight-dot start"></span><span class="tc-thumb-flight-dot end"></span></div>'
+        : '<div class="tc-thumb tc-thumb-icon"><span>'+svgIcon('photos',26,'currentColor')+'</span></div>');
   let html = '<div class="trip-card trip-card-compact" data-trip-card="'+t.id+'">';
   html += thumbHTML;
   html += '  <div class="tc-compact-body">';
@@ -10573,7 +10612,7 @@ function masterIcon(concept,size,color){return svgIcon(ICON_REGISTRY[concept]||c
 
 /* Normalize model metadata so legacy renderers can still read labels/colors while
    functional UI is rendered through the WEITWEG registry rather than emoji. */
-Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',bike:'bike'}).forEach(([key,iconKey])=>{if(MODES[key])MODES[key].iconKey=iconKey;});
+Object.entries({plane:'plane',car:'car',train:'train',bus:'bus',ship:'ship',bike:'bike'}).forEach(([key,iconKey])=>{if(MODES[key])MODES[key].iconKey=iconKey;});
 
 /* Final Home pass: retain emotional latest trip, add only two recent memories and
    a small highlight strip; never reintroduce the full statistics dashboard. */
