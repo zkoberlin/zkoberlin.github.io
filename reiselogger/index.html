@@ -3435,10 +3435,10 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
       </div>
 
       <div class="settings-panel" data-panel="flightdata" hidden>
-        <p class="sync-desc" style="margin-top:0;">Mit einem AviationStack-API-Key kannst du beim Anlegen einer Flugreise nach der Flugnummer suchen — Airline, Zeiten, Terminal/Gate und Verspätung werden dann automatisch übernommen statt von Hand eingetragen. <a href="https://aviationstack.com/product" target="_blank" rel="noopener">Kostenlosen Key holen ↗</a></p>
+        <p class="sync-desc" style="margin-top:0;">Läuft über einen eigenen Cloudflare-Worker als Proxy, damit dein AviationStack-API-Key nie im Browser sichtbar ist. Beim Anlegen einer Flugreise kannst du dann nach der Flugnummer suchen — Airline, Zeiten, Terminal/Gate und Status werden automatisch übernommen statt von Hand eingetragen.</p>
         <div class="field" style="margin-bottom:10px;">
-          <label for="aviationstackKeyInput">AviationStack API-Key</label>
-          <input type="password" id="aviationstackKeyInput" placeholder="Dein Access Key">
+          <label for="aviationstackProxyInput">Proxy-Worker-URL</label>
+          <input type="text" id="aviationstackProxyInput" placeholder="https://aviationstack-proxy.DEIN-SUBDOMAIN.workers.dev">
         </div>
         <div class="sync-actions">
           <button type="button" class="btn-secondary" id="aviationstackSaveBtn">Speichern</button>
@@ -3520,7 +3520,7 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
       <button type="button" class="modal-close-x" id="flightSearchClose">✕</button>
     </div>
     <div id="flightSearchNoKey" hidden>
-      <p class="sync-desc" style="margin-top:0;">Dafür brauchst du einen AviationStack-API-Key. Unter Einstellungen → Flugdaten kannst du ihn hinterlegen.</p>
+      <p class="sync-desc" style="margin-top:0;">Dafür brauchst du erst einen Proxy-Worker. Unter Einstellungen → Flugdaten kannst du die Worker-URL hinterlegen.</p>
       <button type="button" class="btn-primary" id="flightSearchGoSettings">Zu den Einstellungen</button>
     </div>
     <div id="flightSearchBody">
@@ -4144,13 +4144,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.2.0';
+const APP_VERSION = '4.2.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.2.1', tier:'🟢', title:'Flugdaten-Suche läuft jetzt über einen eigenen Proxy-Worker', items:[
+    'Bisher rief die App AviationStack direkt aus dem Browser mit sichtbarem API-Key auf — das scheiterte im kostenlosen Plan zusätzlich an dessen HTTPS-Restriktion (HTTP 403).',
+    'Einstellungen → Flugdaten fragt jetzt eine Proxy-Worker-URL statt eines rohen API-Keys ab. Ein kleiner Cloudflare Worker (Code liegt separat bei, analog zum bestehenden Sync-Worker) ruft AviationStack server-seitig auf — der Key steckt dort nur noch als verschlüsseltes Secret, taucht im Browser nie mehr auf.'
+  ]},
   {v:'4.2.0', tier:'🟡', title:'Neu: Flugnummer-Suche & Flugdaten (AviationStack)', items:[
     'Neuer Einstellungen-Punkt „Flugdaten": eigenen AviationStack-API-Key hinterlegen, um beim Anlegen einer Flugreise nach der Flugnummer zu suchen statt sie von Hand einzutragen.',
     'Getrennte Flugnummer-Felder für Hin- und Rückflug, jeweils mit eigenem Such-Button — Airline, Zeiten, Terminal/Gate und Status werden automatisch übernommen.',
@@ -10282,7 +10286,7 @@ function refreshSettingsOverview(){
     }
   }
   const flightSub = document.getElementById('settingsFlightDataSub');
-  if(flightSub) flightSub.textContent = settings.aviationstackKey ? 'Eingerichtet' : 'Nicht eingerichtet';
+  if(flightSub) flightSub.textContent = settings.aviationstackProxyUrl ? 'Eingerichtet' : 'Nicht eingerichtet';
   const newPill = document.getElementById('settingsNewPill');
   if(newPill){
     const latestV = RELEASE_NOTES[0]?.v;
@@ -10425,17 +10429,25 @@ function attachMapRoutesControl(agg){
   }
 }
 
-/* ---------- Flugnummer-Suche (AviationStack) ---------- */
+/* ---------- Flugnummer-Suche (AviationStack, über eigenen Proxy-Worker) ---------- */
 let flightSearchCtx = null;
 
-function aviationstackConfigured(){ return !!(settings.aviationstackKey && settings.aviationstackKey.trim()); }
+function aviationstackConfigured(){ return !!(settings.aviationstackProxyUrl && settings.aviationstackProxyUrl.trim()); }
 
+/* Ruft NICHT mehr direkt api.aviationstack.com auf (das würde den API-Key im
+   Browser-Netzwerk-Tab offenlegen und scheitert im kostenlosen Plan zudem an
+   HTTPS-Restriktionen), sondern den eigenen Cloudflare-Worker-Proxy (siehe
+   worker/aviationstack-proxy.js) — der Key bleibt dort als verschlüsseltes Secret. */
 async function aviationstackFetch(params){
-  const key = settings.aviationstackKey;
-  if(!key) throw new Error('Kein API-Key hinterlegt.');
-  const qs = new URLSearchParams(Object.assign({access_key:key}, params));
-  const resp = await fetch('https://api.aviationstack.com/v1/flights?'+qs.toString());
-  if(!resp.ok) throw new Error('HTTP '+resp.status);
+  const proxyUrl = (settings.aviationstackProxyUrl||'').trim().replace(/\/$/,'');
+  if(!proxyUrl) throw new Error('Kein Proxy-Worker hinterlegt.');
+  const qs = new URLSearchParams(params);
+  const resp = await fetch(proxyUrl+'?'+qs.toString());
+  if(!resp.ok){
+    let msg = 'HTTP '+resp.status;
+    try{ const errJson = await resp.json(); if(errJson?.error?.message) msg = errJson.error.message; }catch(e){}
+    throw new Error(msg);
+  }
   const json = await resp.json();
   if(json.error) throw new Error(json.error.message || json.error.info || 'AviationStack-Fehler');
   return json.data || [];
@@ -10593,7 +10605,7 @@ function openSettingsPanel(name){
     markAllNotificationsRead();
   }
   if(name==='flightdata'){
-    document.getElementById('aviationstackKeyInput').value = settings.aviationstackKey || '';
+    document.getElementById('aviationstackProxyInput').value = settings.aviationstackProxyUrl || '';
     document.getElementById('aviationstackStatus').textContent = '';
     document.getElementById('aviationstackStatus').className = 'sync-status';
   }
@@ -10604,11 +10616,11 @@ document.querySelectorAll('[data-settings-open]').forEach(row=>{
 });
 document.getElementById('settingsPanelBack').addEventListener('click', showSettingsMain);
 document.getElementById('aviationstackSaveBtn').addEventListener('click', async ()=>{
-  settings.aviationstackKey = document.getElementById('aviationstackKeyInput').value.trim() || null;
+  settings.aviationstackProxyUrl = document.getElementById('aviationstackProxyInput').value.trim() || null;
   await saveSettings();
   refreshSettingsOverview();
   const st = document.getElementById('aviationstackStatus');
-  st.textContent = settings.aviationstackKey ? 'Gespeichert.' : 'Entfernt — Flugnummer-Suche ist jetzt deaktiviert.';
+  st.textContent = settings.aviationstackProxyUrl ? 'Gespeichert.' : 'Entfernt — Flugnummer-Suche ist jetzt deaktiviert.';
   st.className = 'sync-status ok';
 });
 function renderWhatsNewLatest(){
