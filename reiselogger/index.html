@@ -572,6 +572,16 @@ tr:last-child td{border-bottom:none;}
 .route-line .mid{flex:1;display:flex;align-items:center;gap:3px;}
 .route-line .mid .dash{flex:1;border-top:1.5px dashed var(--gold-dim);}
 .route-line .mid svg{width:15px;height:15px;color:var(--gold);flex-shrink:0;}
+.time-compare-block{margin-bottom:14px;padding:10px 12px;background:var(--bg-soft);border-radius:10px;display:flex;flex-direction:column;gap:6px;}
+.time-compare-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;font-size:11.5px;}
+.time-compare-label{font-family:var(--font-display);font-weight:600;color:var(--text-dim);min-width:52px;}
+.time-compare-sched{color:var(--text-faint);font-family:var(--font-mono);}
+.time-compare-actual{font-family:var(--font-mono);font-weight:600;}
+.time-compare-actual.ontime{color:var(--green);}
+.time-compare-actual.delayed{color:var(--rose);}
+.time-delta{font-family:var(--font-mono);font-size:10px;padding:1px 7px;border-radius:100px;font-weight:700;}
+.time-delta.ontime{background:color-mix(in srgb, var(--green) 16%, transparent);color:var(--green);}
+.time-delta.delayed{background:color-mix(in srgb, var(--rose) 16%, transparent);color:var(--rose);}
 .log-detail-icongrid-item{display:flex;align-items:flex-start;gap:8px;min-width:0;}
 .log-detail-icon{font-size:16px;line-height:1.3;flex-shrink:0;}
 .log-detail-item-label{font-size:11px;color:var(--text-faint);}
@@ -4161,13 +4171,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.7.0';
+const APP_VERSION = '4.8.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'4.8.0', tier:'🟡', title:'Flugdaten: "???"-Abflugort behoben, Geplant/Tatsächlich mit Farben, Distanz immer sichtbar', items:[
+    'Der vorherige Fix griff nur bei der Routen-Vorschlags-Suche. Jetzt zusätzlich abgesichert: fehlt der Abflug-/Ankunftscode in der API-Antwort (egal über welchen Suchweg gefunden), wird auf den im Such-Modal gewählten Flughafen zurückgefallen. Bereits gespeicherte Flüge mit „???" werden dabei automatisch repariert, ohne dass neu gesucht werden muss — die Anzeige löst den Code jetzt zusätzlich aus dem gespeicherten Etappen-Namen auf.',
+    'Neue Geplant/Tatsächlich-Zeile für Abflug und Ankunft: grün wenn pünktlich oder früher, rot ab mehr als 5 Minuten Verspätung, inkl. „+X min"-Anzeige.',
+    'Flugdistanz steht jetzt fest im Detail-Raster (mit „–" falls die API sie für einen Flug nicht liefert), statt nur optional in den Zusatzfeldern zu erscheinen.'
+  ]},
   {v:'4.7.0', tier:'🟡', title:'Flug-Distanz kommt jetzt aus der API statt manueller Eingabe', items:[
     'Beim Anlegen einer Reise wird das Distanz-Feld nicht mehr angezeigt, sobald „Flugzeug" als Verkehrsmittel gewählt ist — stattdessen ein Hinweis, dass die Distanz über die Flugnummer-Suche kommt. Im Hintergrund wird bis dahin weiterhin automatisch eine Luftlinien-Schätzung vorgehalten, damit CO₂/Statistiken auch ohne Suche schon einen sinnvollen Wert haben.',
     'Sobald ein Flug ausgewählt wird (egal ob beim Anlegen, Bearbeiten oder nachträglich auf der Detailseite), ersetzt die von AeroDataBox gelieferte echte Luftlinien-Distanz die bisherige Schätzung — nur wenn wirklich für jede Etappe ein Wert vorliegt, sonst bleibt die Schätzung stehen, statt eine unvollständige Summe zu zeigen.'
@@ -9399,23 +9414,64 @@ const FLIGHT_STATUS_META = {
    ergänzt — ohne die Basisdarstellung zu verändern. Etappen ohne geladene Daten
    (noch nicht gesucht, oder Trip vor diesem Feature angelegt) zeigen stattdessen
    eine schlanke Aufforderung, direkt von der Detailseite aus zu suchen. */
+/* Verspätung in Minuten (positiv = später als geplant). null wenn eine der beiden
+   Zeiten fehlt oder unparsbar ist. */
+function flightDelayMinutes(scheduledIso, actualIso){
+  const s = parseFlightTimeStr(scheduledIso), a = parseFlightTimeStr(actualIso);
+  if(!s || !a) return null;
+  return Math.round((a.getTime()-s.getTime())/60000);
+}
+/* Geplant/Tatsächlich-Zeile mit Farbcodierung: grün wenn pünktlich/früher, rot wenn
+   verspätet (>5 Min Toleranz). Zeigt "Geplant" immer, "Tatsächlich" nur wenn abweichend
+   und bekannt (bei rein geplanten/zukünftigen Flügen gibt es noch keine Ist-Zeit). */
+function timeCompareRowHTML(label, scheduledIso, actualIso){
+  const schedTxt = fmtFlightTime(scheduledIso);
+  const hasActual = actualIso && actualIso!==scheduledIso;
+  const delayMin = flightDelayMinutes(scheduledIso, actualIso);
+  let html = '<div class="time-compare-row"><span class="time-compare-label">'+label+'</span>';
+  html += '<span class="time-compare-sched">Geplant '+schedTxt+'</span>';
+  if(hasActual){
+    const cls = delayMin!=null && delayMin>5 ? 'delayed' : 'ontime';
+    html += '<span class="time-compare-actual '+cls+'">Tatsächlich '+fmtFlightTime(actualIso)+'</span>';
+    if(delayMin!=null) html += '<span class="time-delta '+cls+'">'+(delayMin>0?'+':'')+delayMin+' min</span>';
+  }
+  html += '</div>';
+  return html;
+}
 function flightSegmentBlockHTML(n, leg, segIdx){
   const displayStatus = inferFinalFlightStatus(n.status, n.arrActual, n.arrScheduled);
   const statusMeta = FLIGHT_STATUS_META[displayStatus] || {label:n.status||'–', cls:''};
+  // Rückwirkende Reparatur für bereits gespeicherte Flüge mit fehlendem Code (siehe
+  // "?"-Problem oben): aus dem gespeicherten Etappen-Label ("Riga → Vilnius") den
+  // Hauptflughafen-Code der jeweiligen Stadt nachschlagen, falls n.depIata/arrIata leer ist.
+  let depIataDisplay = n.depIata, arrIataDisplay = n.arrIata;
+  if((!depIataDisplay || !arrIataDisplay) && n.segmentLabel){
+    const parts = n.segmentLabel.split('→').map(s=>s.trim());
+    if(!depIataDisplay && parts[0]){ const ref=findCity(parts[0]); if(ref&&ref.ia) depIataDisplay=ref.ia; }
+    if(!arrIataDisplay && parts[1]){ const ref=findCity(parts[1]); if(ref&&ref.ia) arrIataDisplay=ref.ia; }
+  }
   let html = '';
   if(n.segmentLabel) html += '<div class="log-detail-section-label" style="margin-bottom:8px;">'+n.segmentLabel+'</div>';
   html += '<div class="route-line">';
-  html += '<div><span class="city">'+(n.depIata||'?')+'</span><span class="code">'+fmtFlightTime(n.depActual||n.depScheduled)+'</span></div>';
+  html += '<div><span class="city">'+(depIataDisplay||'?')+'</span><span class="code">'+fmtFlightTime(n.depActual||n.depScheduled)+'</span></div>';
   html += '<div class="mid"><div class="dash"></div>'+svgIcon('plane',15,'currentColor')+'<div class="dash"></div></div>';
-  html += '<div style="text-align:right;"><span class="city">'+(n.arrIata||'?')+'</span><span class="code">'+fmtFlightTime(n.arrActual||n.arrScheduled)+'</span></div>';
+  html += '<div style="text-align:right;"><span class="city">'+(arrIataDisplay||'?')+'</span><span class="code">'+fmtFlightTime(n.arrActual||n.arrScheduled)+'</span></div>';
   html += '</div>';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
   html += '<span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">'+(n.airline?n.airline+' · ':'')+n.flightNumber+'</span>';
   html += '<span class="status-pill'+(statusMeta.cls?' '+statusMeta.cls:'')+'">'+statusMeta.label+'</span>';
   html += '</div>';
+  // Geplant/Tatsächlich je Richtung, mit Grün/Rot-Verspätungsanzeige.
+  if(n.depScheduled || n.arrScheduled){
+    html += '<div class="time-compare-block">';
+    if(n.depScheduled) html += timeCompareRowHTML('Abflug', n.depScheduled, n.depActual);
+    if(n.arrScheduled) html += timeCompareRowHTML('Ankunft', n.arrScheduled, n.arrActual);
+    html += '</div>';
+  }
   html += '<div class="log-detail-icongrid">';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Terminal / Gate</div><div class="log-detail-item-value">'+([n.depTerminal,n.depGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Ankunft Terminal/Gate</div><div class="log-detail-item-value">'+([n.arrTerminal,n.arrGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('distance',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdistanz</div><div class="log-detail-item-value">'+(n.greatCircleKm?fmtKm(n.greatCircleKm):'–')+'</div></div></div>';
   html += '</div>';
   // Zusatz-Raster: nur die Felder, die AeroDataBox für DIESEN Flug tatsächlich liefert.
   const extras = [];
@@ -9423,7 +9479,6 @@ function flightSegmentBlockHTML(n, leg, segIdx){
   if(n.aircraftReg) extras.push([svgIcon('stopPin',16,'var(--text-faint)'), 'Kennzeichen', n.aircraftReg]);
   if(n.baggageBelt) extras.push([svgIcon('photos',16,'var(--text-faint)'), 'Gepäckband', n.baggageBelt]);
   if(n.callSign) extras.push([svgIcon('search',16,'var(--text-faint)'), 'Callsign', n.callSign]);
-  if(n.greatCircleKm) extras.push([svgIcon('distance',16,'var(--text-faint)'), 'Luftlinie', fmtKm(n.greatCircleKm)]);
   if(n.codeshareStatus && n.codeshareStatus!=='IsOperator') extras.push([svgIcon('duplicate',16,'var(--text-faint)'), 'Codeshare', n.codeshareStatus]);
   if(extras.length){
     html += '<div class="log-detail-icongrid" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);">';
@@ -10752,6 +10807,12 @@ function renderFlightResults(rawList){
       const n = normalizeFlightData(raw);
       const ctx = flightSearchCtx;
       const seg = ctx.segments[ctx.activeSegIndex];
+      // Fällt AeroDataBox mit dem Abflug-/Ankunftscode aus (siehe "?"-Problem in
+      // flightApiFetchByRoute), auf den im Such-Modal explizit gewählten Flughafen
+      // zurückfallen — unabhängig davon, ob per Routen-Vorschlag oder direkter
+      // Flugnummer gesucht wurde.
+      if(!n.depIata && ctx.depCode) n.depIata = ctx.depCode;
+      if(!n.arrIata && ctx.arrCode) n.arrIata = ctx.arrCode;
       n.segmentLabel = seg.dep+' → '+seg.arr;
       if(ctx.onSelect) ctx.onSelect(ctx.activeSegIndex, n, ctx.depCode, ctx.arrCode);
       ctx.existing[ctx.activeSegIndex] = {dep:ctx.depCode, arr:ctx.arrCode, data:n};
