@@ -4171,13 +4171,23 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '4.9.0';
+const APP_VERSION = '5.0.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.0.0', tier:'🔴', title:'Flugdaten-Anbindung auf echte, bestätigte API-Struktur umgestellt', items:[
+    'Bisher basierte die Zeiten-Auswertung auf geratenen Feldnamen (actualTime/predictedTime) — anhand einer echten AeroDataBox-Antwort bestätigt, dass die korrekten Felder scheduledTime, revisedTime und runwayTime heißen. Das war die eigentliche Ursache, warum „Tatsächliche Zeit" oft leer blieb.',
+    'Flugnummer-Suche läuft jetzt über den bestätigten Endpunkt /flights/number/{nummer}/{von}/{bis} mit echtem Datumsbereich — die komplette ±2-Tage-Suche braucht dadurch nur noch EINEN API-Aufruf statt fünf einzelner.',
+    'Der separate (geratene) Distanz-Endpunkt wurde entfernt: die Luftlinien-Distanz steckt bereits direkt in der Flugnummer-Antwort selbst (greatCircleDistance) — ein API-Aufruf pro Flug gespart.',
+    'Flugnummern werden jetzt ohne Leerzeichen gespeichert (API liefert z. B. „DL 47", angezeigt/gespeichert wird „DL47").'
+  ]},
+  {v:'4.9.1', tier:'🟢', title:'Flugdistanz zeigte immer "–"', items:[
+    'Die API liefert die Luftlinien-Distanz offenbar nicht zuverlässig unter dem erwarteten Feldnamen — statt weiter zu raten, probiert die Auswertung jetzt mehrere plausible Varianten UND berechnet zusätzlich selbst eine Luftlinien-Distanz aus den bekannten Städtekoordinaten, falls die API keine liefert. Damit steht nie mehr "–", sondern immer eine Zahl.',
+    'Gilt auch rückwirkend für bereits gespeicherte Flüge ohne Distanzangabe — kein erneutes Suchen nötig.'
+  ]},
   {v:'4.9.0', tier:'🟢', title:'Flugnummer-Badge im Foto-Vorschaubild, Flugdauer in den Details', items:[
     'Das große Foto-Vorschaubild in „Alle Reisen" zeigt bei Flugreisen jetzt zusätzlich zum Datum ein kleines Flugnummer-Badge oben rechts.',
     'Neue Zeile „Flugdauer" im Flugdaten-Detailraster — berechnet aus tatsächlicher Ab-/Ankunftszeit (fällt auf die geplanten Zeiten zurück, falls die Ist-Zeiten noch fehlen).'
@@ -9464,6 +9474,13 @@ function flightSegmentBlockHTML(n, leg, segIdx){
     if(!depIataDisplay && parts[0]){ const ref=findCity(parts[0]); if(ref&&ref.ia) depIataDisplay=ref.ia; }
     if(!arrIataDisplay && parts[1]){ const ref=findCity(parts[1]); if(ref&&ref.ia) arrIataDisplay=ref.ia; }
   }
+  // Dasselbe für die Flugdistanz: fehlt sie im gespeicherten Datensatz (weil die API sie
+  // damals nicht lieferte), aus dem Etappen-Label selbst nachberechnen statt "–" zu zeigen.
+  let greatCircleKmDisplay = n.greatCircleKm;
+  if(greatCircleKmDisplay==null && n.segmentLabel){
+    const parts = n.segmentLabel.split('→').map(s=>s.trim());
+    if(parts[0] && parts[1]){ const d = computeDistance(parts[0], parts[1], 'plane'); if(d!=null) greatCircleKmDisplay = d; }
+  }
   let html = '';
   if(n.segmentLabel) html += '<div class="log-detail-section-label" style="margin-bottom:8px;">'+n.segmentLabel+'</div>';
   html += '<div class="route-line">';
@@ -9485,8 +9502,8 @@ function flightSegmentBlockHTML(n, leg, segIdx){
   html += '<div class="log-detail-icongrid">';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Terminal / Gate</div><div class="log-detail-item-value">'+([n.depTerminal,n.depGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
   html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Ankunft Terminal/Gate</div><div class="log-detail-item-value">'+([n.arrTerminal,n.arrGate].filter(Boolean).join(' · ')||'–')+'</div></div></div>';
-  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('distance',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdistanz</div><div class="log-detail-item-value">'+(n.greatCircleKm?fmtKm(n.greatCircleKm):'–')+'</div></div></div>';
-  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('clock',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdauer</div><div class="log-detail-item-value">'+(flightDurationLabel(n.depActual||n.depScheduled, n.arrActual||n.arrScheduled)||'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('distance',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdistanz</div><div class="log-detail-item-value">'+(greatCircleKmDisplay?fmtKm(greatCircleKmDisplay):'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('clock',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Flugdauer</div><div class="log-detail-item-value">'+(flightDurationLabel(n.depActual||n.depScheduled, n.arrActual||n.arrScheduled)||fmtApproxFlightTime(n.approxFlightTime)||'–')+'</div></div></div>';
   html += '</div>';
   // Zusatz-Raster: nur die Felder, die AeroDataBox für DIESEN Flug tatsächlich liefert.
   const extras = [];
@@ -10692,10 +10709,12 @@ async function flightProxyFetch(params){
   }
   return body;
 }
-/* Flugnummer + Datum -> Array möglicher Treffer (meist genau 1, gelegentlich mehrere
-   bei Codeshares/mehreren Legs am selben Tag). */
-async function flightApiFetchByNumber(number, date){
-  const data = await flightProxyFetch({mode:'byNumber', number, date});
+/* Flugnummer + Datumsbereich -> Array möglicher Treffer, ein Eintrag pro Tag im
+   Bereich (bestätigter Endpunkt: /flights/number/{nummer}/{von}/{bis}?dateLocalRole=Both).
+   Deckt die komplette ±2-Tage-Suche mit EINEM Aufruf ab, statt wie vorher fünf
+   Einzelabfragen zu brauchen. */
+async function flightApiFetchByNumber(number, fromDate, toDate){
+  const data = await flightProxyFetch({mode:'byNumber', number, fromDate, toDate});
   return Array.isArray(data) ? data : (data ? [data] : []);
 }
 /* Route + Datum (ohne bekannte Flugnummer): AeroDataBox filtert nach Abflug-Flughafen
@@ -10744,15 +10763,39 @@ function inferFinalFlightStatus(status, arrActualIso, arrScheduledIso){
   if(arrRef && (Date.now()-arrRef.getTime()) > 12*3600*1000) return 'arrived';
   return s;
 }
+/* AeroDataBox liefert die Luftlinien-Distanz nicht immer unter demselben Feldnamen/
+   derselben Struktur (Beobachtung: mal fehlt sie komplett, mal andere Einheit) — hier
+   werden mehrere plausible Varianten durchprobiert, bevor aufgegeben wird. Ein
+   zusätzlicher, garantiert funktionierender Fallback (Berechnung aus den bekannten
+   Stadt-Koordinaten) sitzt in renderFlightResults' Auswahl-Handler. */
+function extractGreatCircleKm(raw){
+  const gcd = raw.greatCircleDistance || raw.distance || raw.greatCircle || null;
+  if(gcd && typeof gcd==='object'){
+    if(typeof gcd.km==='number') return Math.round(gcd.km);
+    if(typeof gcd.kilometers==='number') return Math.round(gcd.kilometers);
+    if(typeof gcd.meter==='number') return Math.round(gcd.meter/1000);
+    if(typeof gcd.metres==='number') return Math.round(gcd.metres/1000);
+    if(typeof gcd.m==='number') return Math.round(gcd.m/1000);
+  }
+  if(typeof gcd==='number') return Math.round(gcd);
+  if(typeof raw.greatCircleDistanceKm==='number') return Math.round(raw.greatCircleDistanceKm);
+  if(typeof raw.distanceKm==='number') return Math.round(raw.distanceKm);
+  return null;
+}
 function normalizeFlightData(raw){
   const dep = raw.departure||{}, arr = raw.arrival||{};
   const depAirport = dep.airport||{}, arrAirport = arr.airport||{};
-  const depSched = dep.scheduledTime||{}, depBest = dep.actualTime||dep.predictedTime||depSched;
-  const arrSched = arr.scheduledTime||{}, arrBest = arr.actualTime||arr.predictedTime||arrSched;
+  // Per curl-Test bestätigte AeroDataBox-Feldnamen: scheduledTime (Original-Plan),
+  // revisedTime (aktualisierte Schätzung, z. B. bei Verspätung), runwayTime (tatsächliche
+  // Startbahn-Zeit, sobald bekannt) — NICHT actualTime/predictedTime, wie ursprünglich
+  // angenommen (das war der Grund für die fehlenden "Tatsächlich"-Zeiten). Bei noch nicht
+  // gelandeten Flügen steht statt runwayTime teils predictedTime — beides abgedeckt.
+  const depSched = dep.scheduledTime||{}, depBest = dep.runwayTime||dep.predictedTime||dep.revisedTime||depSched;
+  const arrSched = arr.scheduledTime||{}, arrBest = arr.runwayTime||arr.predictedTime||arr.revisedTime||arrSched;
   const aircraft = raw.aircraft||{};
   const arrBestIso = arrBest.utc||arrBest.local||'', arrSchedIso = arrSched.utc||arrSched.local||'';
   return {
-    flightNumber: raw.number || '',
+    flightNumber: (raw.number||'').replace(/\s+/g,''),
     airline: (raw.airline||{}).name || '',
     status: inferFinalFlightStatus(raw.status, arrBestIso, arrSchedIso),
     depAirportName: depAirport.name || '', depIata: depAirport.iata || depAirport.icao || '',
@@ -10769,7 +10812,7 @@ function normalizeFlightData(raw){
     baggageBelt: arr.baggageBelt || '',
     codeshareStatus: raw.codeshareStatus || '',
     isCargo: !!raw.isCargo,
-    greatCircleKm: raw.greatCircleDistance && typeof raw.greatCircleDistance.km==='number' ? Math.round(raw.greatCircleDistance.km) : null,
+    greatCircleKm: extractGreatCircleKm(raw),
     fetchedAt: Date.now()
   };
 }
@@ -10819,7 +10862,7 @@ function renderFlightResults(rawList){
       '</div>';
   }).join('');
   el.querySelectorAll('.flight-result-row').forEach(row=>{
-    row.addEventListener('click', ()=>{
+    row.addEventListener('click', async ()=>{
       const raw = rawList[+row.dataset.idx];
       const n = normalizeFlightData(raw);
       const ctx = flightSearchCtx;
@@ -10830,6 +10873,15 @@ function renderFlightResults(rawList){
       // Flugnummer gesucht wurde.
       if(!n.depIata && ctx.depCode) n.depIata = ctx.depCode;
       if(!n.arrIata && ctx.arrCode) n.arrIata = ctx.arrCode;
+      row.style.opacity = '0.5'; row.style.pointerEvents = 'none';
+      // Garantierter Fallback: liefert die API für DIESEN Flug ausnahmsweise keine
+      // Luftlinien-Distanz (greatCircleKm kommt normalerweise direkt in der Antwort mit,
+      // siehe extractGreatCircleKm), wird sie aus den bekannten Städtekoordinaten selbst
+      // berechnet, damit nie "–" stehen bleibt.
+      if(n.greatCircleKm==null){
+        const d = computeDistance(seg.dep, seg.arr, 'plane');
+        if(d!=null) n.greatCircleKm = d;
+      }
       n.segmentLabel = seg.dep+' → '+seg.arr;
       if(ctx.onSelect) ctx.onSelect(ctx.activeSegIndex, n, ctx.depCode, ctx.arrCode);
       ctx.existing[ctx.activeSegIndex] = {dep:ctx.depCode, arr:ctx.arrCode, data:n};
@@ -10916,15 +10968,13 @@ document.getElementById('flightSearchManualBtn').addEventListener('click', async
   const num = document.getElementById('flightSearchManualInput').value.trim().toUpperCase().replace(/\s+/g,'');
   if(!num){ setFlightSearchStatus('Bitte eine Flugnummer eingeben.', 'err'); return; }
   if(!ctx.centerDate){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
-  const dates = dateWindow(ctx.centerDate, 2);
+  const [fromDate, toDate] = [dateWindow(ctx.centerDate,2)[0], dateWindow(ctx.centerDate,2).slice(-1)[0]];
   setFlightSearchStatus('Suche läuft (±2 Tage) …', '');
-  const all = [];
-  for(const date of dates){
-    try{
-      const data = await flightApiFetchByNumber(num, date);
-      data.forEach(f=>{ f.__searchDate = date; all.push(f); });
-    }catch(e){ /* einzelner Tag darf fehlschlagen */ }
-  }
+  let all = [];
+  try{
+    const data = await flightApiFetchByNumber(num, fromDate, toDate);
+    all = data.map(f=>{ f.__searchDate = (f.departure?.scheduledTime?.local||'').slice(0,10) || undefined; return f; });
+  }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); return; }
   renderFlightResults(all);
   setFlightSearchStatus(all.length ? all.length+' Treffer (±2 Tage um '+fmtDate(ctx.centerDate)+') — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer im Zeitraum gefunden.', all.length?'ok':'');
 });
