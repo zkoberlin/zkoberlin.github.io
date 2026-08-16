@@ -4237,13 +4237,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.5.1';
+const APP_VERSION = '6.5.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.5.2', tier:'🟢', title:'Zugsuche: Anfrage auf Minimalparameter reduziert (Diagnose)', items:[
+    '"missing parameter" trat identisch bei kombiniertem und getrenntem date/time sowie über drei API-Versionen hinweg auf — Verdacht jetzt auf arriveBy/numItineraries/language. Anfrage testweise auf nur fromPlace/toPlace/time reduziert, um den Verursacher einzugrenzen.'
+  ]},
   {v:'6.5.1', tier:'🟢', title:'Zugsuche: date/time getrennt statt kombiniertem Zeitstempel', items:[
     '"missing parameter" trat mit gültigen Stationen/Koordinaten über mehrere API-Versionen (v5, v6, v2) hinweg identisch auf — Verdacht: der kombinierte ISO-Zeitstempel unter "time" wird nicht erkannt. Umgestellt auf getrennte date (YYYY-MM-DD) und time (HH:MM:SS) Parameter, die klassische OpenTripPlanner-Konvention, auf der MOTIS aufbaut.'
   ]},
@@ -11428,14 +11431,12 @@ async function dbFindStations(name, limit){
    siehe unten) schon vorher von db-vendo-client erwartet haben — dadurch musste an
    der Normalisierungs-/Anzeige-Logik nichts geändert werden. */
 async function dbSearchJourneys(fromId, toId, whenIso){
-  // whenIso kommt als "YYYY-MM-DDTHH:MM:SS" rein — hier in date/time aufgeteilt
-  // (klassische OpenTripPlanner-API-Konvention, auf der MOTIS aufbaut), da ein
-  // kombinierter ISO-Zeitstempel unter "time" trotz gültiger fromPlace/toPlace-Werte
-  // durchgängig zu "missing parameter" führte (über mehrere API-Versionen hinweg).
-  const [datePart, timePart] = whenIso.split('T');
+  // Auf das Minimum reduziert (nur fromPlace/toPlace + kombiniertes "time"), da
+  // date/time getrennt UND mehrere API-Versionen identisch fehlschlugen — Verdacht
+  // jetzt: einer der bisher mitgeschickten "optionalen" Parameter (arriveBy,
+  // numItineraries, language) verursacht den Fehler, nicht date/time/Version.
   const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
-    +'&date='+encodeURIComponent(datePart)+'&time='+encodeURIComponent(timePart)
-    +'&arriveBy=false&numItineraries=6&language=de';
+    +'&time='+encodeURIComponent(whenIso);
   try{
     const data = await motisFetch('/v2/plan?'+qs);
     const itineraries = data?.itineraries || [];
@@ -11443,10 +11444,10 @@ async function dbSearchJourneys(fromId, toId, whenIso){
   }catch(e){
     // Server-Fehlermeldung ist sehr knapp ({"error":"missing parameter"}, ohne zu
     // sagen welcher) — hier die tatsächlich gesendeten Werte mit anhängen, um beim
-    // nächsten Fehlschlag sofort zu sehen, ob fromId/toId/date/time leer oder
+    // nächsten Fehlschlag sofort zu sehen, ob fromId/toId/whenIso leer oder
     // unerwartet formatiert ankommen, statt weiter zu raten.
     if(!(e instanceof DbTransportOutageError)){
-      e.message += ' [gesendet: fromPlace='+JSON.stringify(fromId)+', toPlace='+JSON.stringify(toId)+', date='+JSON.stringify(datePart)+', time='+JSON.stringify(timePart)+']';
+      e.message += ' [gesendet: fromPlace='+JSON.stringify(fromId)+', toPlace='+JSON.stringify(toId)+', time='+JSON.stringify(whenIso)+']';
     }
     throw e;
   }
