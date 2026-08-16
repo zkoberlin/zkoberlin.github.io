@@ -572,14 +572,14 @@ tr:last-child td{border-bottom:none;}
 .route-line .mid{flex:1;display:flex;align-items:center;gap:3px;}
 .route-line .mid .dash{flex:1;border-top:1.5px dashed var(--gold-dim);}
 .route-line .mid svg{width:15px;height:15px;color:var(--gold);flex-shrink:0;}
-.time-compare-block{margin-bottom:14px;padding:10px 12px;background:var(--bg-soft);border-radius:10px;display:flex;flex-direction:column;gap:6px;}
-.time-compare-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;font-size:11.5px;}
-.time-compare-label{font-family:var(--font-display);font-weight:600;color:var(--text-dim);min-width:52px;}
-.time-compare-sched{color:var(--text-faint);font-family:var(--font-mono);}
-.time-compare-actual{font-family:var(--font-mono);font-weight:600;}
+.time-compare-block{margin-bottom:14px;padding:10px 14px;background:var(--bg-soft);border-radius:10px;display:grid;grid-template-columns:auto auto 1fr auto;column-gap:14px;row-gap:7px;align-items:center;font-size:11.5px;}
+.time-compare-row{display:contents;}
+.time-compare-label{grid-column:1;font-family:var(--font-display);font-weight:600;color:var(--text-dim);white-space:nowrap;}
+.time-compare-sched{grid-column:2;color:var(--text-faint);font-family:var(--font-mono);white-space:nowrap;}
+.time-compare-actual{grid-column:3;font-family:var(--font-mono);font-weight:600;white-space:nowrap;justify-self:start;}
 .time-compare-actual.ontime{color:var(--green);}
 .time-compare-actual.delayed{color:var(--rose);}
-.time-delta{font-family:var(--font-mono);font-size:10px;padding:1px 7px;border-radius:100px;font-weight:700;}
+.time-delta{grid-column:4;justify-self:start;font-family:var(--font-mono);font-size:10px;padding:1px 7px;border-radius:100px;font-weight:700;}
 .time-delta.ontime{background:color-mix(in srgb, var(--green) 16%, transparent);color:var(--green);}
 .time-delta.delayed{background:color-mix(in srgb, var(--rose) 16%, transparent);color:var(--rose);}
 .log-detail-icongrid-item{display:flex;align-items:flex-start;gap:8px;min-width:0;}
@@ -4171,13 +4171,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.0.1';
+const APP_VERSION = '5.1.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.1.0', tier:'🟢', title:'Geplant/Tatsächlich-Zeiten sauber ausgerichtet, jede Verspätung jetzt rot', items:[
+    'Die Abflug-/Ankunftszeilen liefen bisher frei fließend nebeneinander — dadurch standen die Werte zwischen beiden Zeilen nicht exakt untereinander, weil „Abflug" und „Ankunft" unterschiedlich breit sind. Jetzt ein echtes Spalten-Raster: Geplant/Tatsächlich/Verspätung fluchten in beiden Zeilen exakt.',
+    'Jede Verspätung über 0 Minuten zählt jetzt als „verspätet" (rot) statt erst ab 6 Minuten — auch +5 min wird also korrekt rot statt grün angezeigt.'
+  ]},
   {v:'5.0.1', tier:'🟢', title:'Status "Approaching" (Landeanflug) ergänzt', items:[
     'In echten API-Daten aufgefallen: AeroDataBox kennt auch den Status „Approaching" (kurz vor der Landung), der in der bisherigen Status-Tabelle fehlte und dadurch als reiner Rohtext statt als übersetztes, farbiges Badge erschien. Jetzt als „Im Landeanflug" mit demselben Blau/Live-Stil wie „In der Luft" ergänzt, inklusive Status-Korrektur für alte Flüge.'
   ]},
@@ -9459,7 +9463,7 @@ function timeCompareRowHTML(label, scheduledIso, actualIso){
   let html = '<div class="time-compare-row"><span class="time-compare-label">'+label+'</span>';
   html += '<span class="time-compare-sched">Geplant '+schedTxt+'</span>';
   if(hasActual){
-    const cls = delayMin!=null && delayMin>5 ? 'delayed' : 'ontime';
+    const cls = delayMin!=null && delayMin>0 ? 'delayed' : 'ontime';
     html += '<span class="time-compare-actual '+cls+'">Tatsächlich '+fmtFlightTime(actualIso)+'</span>';
     if(delayMin!=null) html += '<span class="time-delta '+cls+'">'+(delayMin>0?'+':'')+delayMin+' min</span>';
   }
