@@ -1,42 +1,42 @@
 {
-  "datum": "15.08.2026",
-  "generiert": "2026-08-15T02:06:03Z",
+  "datum": "16.08.2026",
+  "generiert": "2026-08-16T02:13:43Z",
   "geburtstage": [
     {
-      "name": "Jennifer Lawrence",
+      "name": "Reiner Kunze",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Jennifer_Lawrence%2C_Cannes_Film_Festival_2025.jpg/120px-Jennifer_Lawrence%2C_Cannes_Film_Festival_2025.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q189490",
-      "nationalitaet": null
-    },
-    {
-      "name": "Inês Pedrosa",
-      "alter": 64,
-      "geburtsjahr": 1962,
-      "beruf": "Portuguese Journalist, Novelist, Short Story (Born 1962)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/In%C3%AAs_Pedrosa",
+      "beruf": "Linguist",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Reiner_Kunze_Schorndorf_2012-01-29.JPG/120px-Reiner_Kunze_Schorndorf_2012-01-29.JPG",
+      "wikidata": "https://www.wikidata.org/wiki/Q61199",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Albert Ballin",
-      "alter": 169,
-      "geburtsjahr": 1857,
-      "beruf": "German Businessman",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Albert_Ballin_2.jpg/330px-Albert_Ballin_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Albert_Ballin",
+      "name": "Tolgay Arslan",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Tolgay_Arslan.jpg/120px-Tolgay_Arslan.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q335413",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Juanlu Sánchez",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Spanish Footballer (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/93/Juanlu_S%C3%A1nchez_October_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Juanlu_S%C3%A1nchez",
-      "nationalitaet": null
+      "name": "Stefan Klos",
+      "alter": 55,
+      "geburtsjahr": 1971,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Stefan_Klos_2005.jpg/330px-Stefan_Klos_2005.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Klos",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Helmut Rahn",
+      "alter": 97,
+      "geburtsjahr": 1929,
+      "beruf": "German Footballer (1929–2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Helmut_Rahn.jpg/330px-Helmut_Rahn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Helmut_Rahn",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
