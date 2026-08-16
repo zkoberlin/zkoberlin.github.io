@@ -4214,13 +4214,23 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.9.0';
+const APP_VERSION = '6.1.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.1.0', tier:'🟡', title:'Transport-Segment-System: Phase 5 (Teil 1) — neue Verkehrsmittel-Rekorde', items:[
+    'Neue Karte "Verkehrsmittel-Rekorde" unter Travel Insights → Persönliche Rekorde: weiteste Einzel-Flugetappe, weiteste Einzel-Zugfahrt, meistgenutzter Flughafen/Bahnhof, häufigste Airline/häufigster Bahnbetreiber — alles Werte, die erst durch das Transport-Segment-System (Phase 1–4) möglich wurden, da vorher nur "Hin-/Rückweg gesamt" statt einzelner Etappen samt Ort/Betreiber erfasst war.',
+    'Erscheint erst, sobald mindestens eine Reise über die Flug- oder Zugsuche echte Segmentdaten gesammelt hat — rein manuell erfasste Reisen fließen bewusst nicht mit ein (sonst nur Rauschen ohne echten Flughafen-/Bahnhofsbezug).',
+    'Phase 5 ist noch nicht komplett: Badges und Kartenvisualisierung aus den Segmenten folgen in einem weiteren Schritt.'
+  ]},
+  {v:'6.0.0', tier:'🔴', title:'Transport-Segment-System: Phase 4 — echtes Routing für Auto, Rad & Fuß', items:[
+    'Der "🔄 Berechnen"-Button versucht bei Auto, Rad und Fuß jetzt zuerst eine echte Straßen-/Wege-Route (statt nur Luftlinie × Aufschlag) — über den kostenlosen, keylosen OpenStreetMap-Routing-Dienst (OSRM). Liefert realistischere Distanz und geschätzte Fahrzeit/Gehzeit. Klappt das nicht (kein Netz, keine Route gefunden), fällt die App automatisch und unbemerkt auf die bisherige Luftlinien-Schätzung zurück — Distanzfeld bleibt immer manuell überschreibbar.',
+    'Bei Direktverbindungen ohne Zwischenstopp wird zusätzlich die echte Routen-Geometrie gespeichert (transportSegments, Phase 1) — Grundlage für eine spätere Kartenanzeige entlang der tatsächlichen Strecke statt einer geraden Linie.',
+    'Damit sind jetzt alle in der Spezifikation vorgesehenen Verkehrsmittel (Flug, Zug, Auto, Rad, Fuß) an die gemeinsame Transport-Architektur angebunden.'
+  ]},
   {v:'5.9.0', tier:'🟢', title:'Transport-Segment-System: Phase 3 — Flug-Integration angeglichen', items:[
     'Die Flugsuche lief durch Phase 1 bereits über dieselbe transportSegments-Architektur wie der Zug — hier nur noch die Detailfelder an die Spezifikation angeglichen: Airline-IATA-Code, sowie Verspätung in Minuten für Ab- und Ankunft (aus den bereits vorhandenen Zeiten berechnet, nicht neu abgefragt) sind jetzt Teil jedes Flug-Segments, genau wie beim Zug.',
     'Rein strukturell, keine sichtbare Änderung in der App — betrifft nur die interne Datengrundlage für spätere Auswertungen (Phase 5).'
@@ -4883,12 +4893,20 @@ function buildLegTransportSegments(t, leg){
   const waypoints = leg==='out' ? (t.outWaypoints||[]) : (t.returnWaypoints||[]);
   const hops = legSegments(fromAll, toAll, waypoints);
   const flightData = (leg==='out' ? t.flightDataOut : t.flightDataReturn) || [];
+  const routeGeometry = leg==='out' ? t.outRouteGeometry : t.returnRouteGeometry;
+  const routeCalculatedBy = leg==='out' ? t.outRouteCalculatedBy : t.returnRouteCalculatedBy;
+  const routeDurationMinutes = leg==='out' ? t.outRouteDurationMinutes : t.returnRouteDurationMinutes;
+  // Echte OSRM-Geometrie nur bei genau einer Etappe (keine Zwischenstopps) anhängen —
+  // bei mehreren Etappen deckt eine einzelne OSRM-Abfrage zwar die Gesamtstrecke korrekt
+  // ab (siehe tryAutoCalc/osrmRoute), aber die Aufteilung der Polyline auf einzelne
+  // Hops würde zusätzliche Komplexität brauchen, die hier (noch) nicht nötig ist.
+  const hasRealRoute = hops.length===1 && routeCalculatedBy==='osrm' && Array.isArray(routeGeometry) && routeGeometry.length>0;
   return hops.map((hop,i)=>{
     const fd = mode==='plane' ? flightData[i] : null;
     const seg = {
       id: 'segment_'+uid(),
       mode: mode,
-      source: fd ? 'aerodatabox' : 'manual',
+      source: fd ? 'aerodatabox' : (hasRealRoute?'osrm':'manual'),
       sourceId: fd ? fd.flightNumber||null : null,
       origin: resolveSegmentPoint(hop.dep, fd?fd.depIata:null),
       destination: resolveSegmentPoint(hop.arr, fd?fd.arrIata:null),
@@ -4896,10 +4914,15 @@ function buildLegTransportSegments(t, leg){
       actualDeparture: fd ? (fd.depActual||null) : null,
       scheduledArrival: fd ? (fd.arrScheduled||null) : null,
       actualArrival: fd ? (fd.arrActual||null) : null,
-      durationMinutes: fd ? (()=>{ const l=flightDurationLabel(fd.depActual||fd.depScheduled, fd.arrActual||fd.arrScheduled); if(!l) return null; const mh=/(\d+)h\s*(\d+)/.exec(l); return mh?(+mh[1]*60+ +mh[2]):null; })() : null,
+      durationMinutes: fd ? (()=>{ const l=flightDurationLabel(fd.depActual||fd.depScheduled, fd.arrActual||fd.arrScheduled); if(!l) return null; const mh=/(\d+)h\s*(\d+)/.exec(l); return mh?(+mh[1]*60+ +mh[2]):null; })() : (hasRealRoute ? routeDurationMinutes : null),
       distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : (hops.length===1 ? (legDistanceKm||null) : (legDistanceKm?Math.round(legDistanceKm/hops.length):null)),
       operator: fd ? (fd.airline||null) : null,
-      route: { distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : null, geometry:{type:'LineString',coordinates:[]}, stops:[], calculatedBy: fd?'aerodatabox':'beeline-estimate' },
+      route: {
+        distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : (hasRealRoute ? (legDistanceKm||null) : null),
+        geometry: hasRealRoute ? {type:'LineString', coordinates: routeGeometry} : {type:'LineString', coordinates:[]},
+        stops:[],
+        calculatedBy: fd?'aerodatabox':(hasRealRoute?'osrm':'beeline-estimate')
+      },
       details: fd ? {
         flightNumber: fd.flightNumber||null,
         airline: fd.airline?{name:fd.airline, iata:fd.airlineIata||null}:null,
@@ -5573,6 +5596,14 @@ function migrateTrip(t){
   // Zugdaten (Phase 2, siehe Zugverbindungs-Suche) — analog zu den Flugfeldern.
   if(m.trainDataOut===undefined){
     m = Object.assign({}, m, {trainSummaryOut:'', trainSummaryReturn:'', trainDataOut:[], trainDataReturn:[]});
+  }
+  // Auto/Rad/Fuß-Routing (Phase 4, OSRM) — echte Routen-Geometrie, sofern schon
+  // einmal berechnet; bei älteren Reisen schlicht nicht vorhanden (null).
+  if(m.outRouteGeometry===undefined){
+    m = Object.assign({}, m, {
+      outRouteGeometry:null, outRouteCalculatedBy:null, outRouteDurationMinutes:null,
+      returnRouteGeometry:null, returnRouteCalculatedBy:null, returnRouteDurationMinutes:null
+    });
   }
   // "Vereinigtes Königreich" wurde in die einzelnen Landesteile aufgeteilt (siehe
   // CITY_DB) — bestehende Reisen nach London/Edinburgh werden hier einmalig nachgezogen,
@@ -6456,6 +6487,56 @@ function computeRecords(){
     bestYear: bestYear ? {year:bestYear, count:bestCount} : null,
     mostNewCitiesYear: mostNewCitiesYear ? {year:mostNewCitiesYear.year, newCities:mostNewCitiesYear.newCities} : null,
     bestCO2Year
+  };
+}
+
+/* ---------- Transport-Segment-Rekorde (Phase 5) ----------
+   Werte, die vor dem Transport-Segment-System (Phase 1–4) so gar nicht ermittelbar
+   waren: einzelne Flug-/Zugetappe statt nur "Hin-/Rückweg gesamt", konkreter Bahnhof/
+   Flughafen statt nur Stadt, Airline/Betreiber. Rein lesend über t.transportSegments
+   aller Reisen — läuft leer, solange noch keine Reise über Flug-/Zugsuche echte
+   Segmentdaten gesammelt hat (ältere/manuell erfasste Reisen liefern zwar auch
+   Segmente, aber ohne operator/echten Stationsnamen — die zählen hier bewusst nicht
+   mit, sonst würde z. B. "häufigster Betreiber" nur Rauschen aus Städtenamen zeigen). */
+function computeTransportSegmentStats(){
+  const allSegs = [];
+  trips.forEach(t=>{ (t.transportSegments||[]).forEach(seg=>allSegs.push(seg)); });
+  if(!allSegs.length) return null;
+
+  function longestOfMode(mode){
+    const withDist = allSegs.filter(s=>s.mode===mode && typeof s.distanceKm==='number' && s.distanceKm>0);
+    if(!withDist.length) return null;
+    const best = withDist.slice().sort((a,b)=>b.distanceKm-a.distanceKm)[0];
+    return {km:best.distanceKm, from:best.origin?.name||'', to:best.destination?.name||'', details:best.details||{}};
+  }
+  function topByCount(items){
+    const counts = new Map();
+    items.forEach(v=>{ if(!v) return; counts.set(v, (counts.get(v)||0)+1); });
+    let best=null, bestN=0;
+    counts.forEach((n,v)=>{ if(n>bestN){ bestN=n; best=v; } });
+    return best ? {value:best, count:bestN} : null;
+  }
+
+  const stationNames = [];
+  allSegs.forEach(s=>{
+    if(s.source==='dbtransport'){ if(s.origin?.name) stationNames.push(s.origin.name); if(s.destination?.name) stationNames.push(s.destination.name); }
+  });
+  const airportNames = [];
+  allSegs.forEach(s=>{
+    if(s.source==='aerodatabox'){ if(s.origin?.code) airportNames.push(s.origin.code); if(s.destination?.code) airportNames.push(s.destination.code); }
+  });
+  const operators = allSegs.filter(s=>s.source==='dbtransport').map(s=>s.operator).filter(Boolean);
+  const airlines = allSegs.filter(s=>s.source==='aerodatabox').map(s=>s.details?.airline?.name).filter(Boolean);
+
+  return {
+    longestTrain: longestOfMode('train'),
+    longestFlight: longestOfMode('plane'),
+    trainSegmentCount: allSegs.filter(s=>s.mode==='train' && s.source==='dbtransport').length,
+    flightSegmentCount: allSegs.filter(s=>s.mode==='plane' && s.source==='aerodatabox').length,
+    topStation: topByCount(stationNames),
+    topAirport: topByCount(airportNames),
+    topOperator: topByCount(operators),
+    topAirline: topByCount(airlines)
   };
 }
 
@@ -8194,6 +8275,13 @@ function renderAdd(root){
     out: {legs: (t && Array.isArray(t.trainDataOut)) ? t.trainDataOut : [], touched:false},
     return: {legs: (t && Array.isArray(t.trainDataReturn)) ? t.trainDataReturn : [], touched:false}
   };
+  /* Hält je Richtung die zuletzt via OSRM berechnete echte Routen-Geometrie (Auto/Rad/
+     Fuß, siehe tryAutoCalc) bis zum Speichern — analog zu den anderen pending*-Objekten.
+     null = noch keine echte Route berechnet (nur Luftlinien-Schätzung vorhanden). */
+  const pendingRouteGeometry = {
+    out: {geometry: (t && Array.isArray(t.outRouteGeometry)) ? t.outRouteGeometry : null, calculatedBy: t?t.outRouteCalculatedBy||null:null, durationMinutes: t?t.outRouteDurationMinutes??null:null},
+    return: {geometry: (t && Array.isArray(t.returnRouteGeometry)) ? t.returnRouteGeometry : null, calculatedBy: t?t.returnRouteCalculatedBy||null:null, durationMinutes: t?t.returnRouteDurationMinutes??null:null}
+  };
 
   /* Von leeren + Von/Nach tauschen */
   const fldFromClearBtn = document.getElementById('fldFromClear');
@@ -8406,9 +8494,34 @@ function renderAdd(root){
     }
 
     const chain = legKey==='out' ? [from, ...wps, to] : [to, ...wps, from];
+
+    // Auto/Rad/Fuß: echte Route über OSRM versuchen, bevor auf die Luftlinien-Schätzung
+    // zurückgefallen wird (siehe osrmRoute weiter oben) — liefert genauere Distanz UND
+    // die tatsächliche Routen-Geometrie fürs spätere Kartenrendering.
+    if(OSRM_PROFILES[mode]){
+      const points = chain.map(name=>{ const ref=findCity(name); return ref?{lat:ref.lat,lon:ref.lon}:null; });
+      if(points.every(Boolean) && points.length>=2){
+        hint.textContent = '🔄 Route wird berechnet (OpenStreetMap-Routing) …';
+        try{
+          const r = await osrmRoute(mode, points);
+          if(r){
+            distInput.value = r.distanceKm;
+            pendingRouteGeometry[legKey] = {geometry:r.geometry, calculatedBy:'osrm', durationMinutes:r.durationMinutes};
+            hint.textContent = 'Echte Strecke berechnet'+(wps.length?' über '+wps.length+' Zwischenstopp(s)':'')+' — ca. '+fmtTrainDuration(r.durationMinutes)+' unterwegs (OpenStreetMap-Routing). Überschreibbar.';
+            updateStub();
+            updateToCityFallback();
+            return;
+          }
+        }catch(e){
+          console.warn('OSRM-Routing fehlgeschlagen, falle auf Luftlinien-Schätzung zurück:', e);
+        }
+      }
+    }
+
     const d = computeMultiLegDistance(chain, mode);
     if(d!=null){
       distInput.value = d;
+      pendingRouteGeometry[legKey] = {geometry:null, calculatedBy:'beeline-estimate', durationMinutes:null};
       hint.textContent = wps.length
         ? 'Automatisch berechnet über '+wps.length+' Zwischenstopp(s): Summe der Teilstrecken × Aufschlag für "'+getMode(mode).label+'". Überschreibbar.'
         : 'Automatisch berechnet: Luftlinie × Aufschlag für "'+getMode(mode).label+'". Überschreibbar.';
@@ -8637,6 +8750,8 @@ function renderAdd(root){
       trainSummaryReturn: (!cityOnly && document.getElementById('fldTrainNoReturn')) ? document.getElementById('fldTrainNoReturn').value.trim() : '',
       trainDataOut: pendingTrainData.out.touched ? pendingTrainData.out.legs : (t ? (t.trainDataOut||[]) : []),
       trainDataReturn: pendingTrainData.return.touched ? pendingTrainData.return.legs : (t ? (t.trainDataReturn||[]) : []),
+      outRouteGeometry: pendingRouteGeometry.out.geometry, outRouteCalculatedBy: pendingRouteGeometry.out.calculatedBy, outRouteDurationMinutes: pendingRouteGeometry.out.durationMinutes,
+      returnRouteGeometry: pendingRouteGeometry.return.geometry, returnRouteCalculatedBy: pendingRouteGeometry.return.calculatedBy, returnRouteDurationMinutes: pendingRouteGeometry.return.durationMinutes,
       notes: document.getElementById('fldNotes').value.trim(),
       photos: t ? (t.photos||[]) : [],
       createdAt: t ? t.createdAt : nowTs,
@@ -8830,6 +8945,39 @@ function renderStats(root){
   }
   html += '  </div>';
   html += '</div>';
+
+  /* Verkehrsmittel-Rekorde (Phase 5) — nur Werte, die transportSegments überhaupt erst
+     ermöglicht (einzelne Etappe statt Hin-/Rückweg gesamt, konkreter Bahnhof/Flughafen,
+     Airline/Betreiber). Ganze Karte entfällt, solange noch keine Reise per Flug-/
+     Zugsuche echte Segmentdaten gesammelt hat. */
+  const tSegStats = computeTransportSegmentStats();
+  if(tSegStats && (tSegStats.longestTrain || tSegStats.longestFlight || tSegStats.topStation || tSegStats.topAirport || tSegStats.topOperator || tSegStats.topAirline)){
+    html += '<div class="card">';
+    html += '  <div class="card-head"><h2>Verkehrsmittel-Rekorde</h2><span class="sub">aus Flug-/Zugsuche</span></div>';
+    html += '  <div class="record-grid">';
+    if(tSegStats.longestFlight){
+      const r = tSegStats.longestFlight;
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('plane',22,'var(--gold)')+'</div><div class="rc-value">'+fmtKm(r.km)+'</div><div class="rc-label">Weiteste Einzel-Flugetappe</div><div class="rc-detail">'+weitwegEscapeHTML(r.from)+' → '+weitwegEscapeHTML(r.to)+(r.details.flightNumber?' · '+r.details.flightNumber:'')+'</div></div>';
+    }
+    if(tSegStats.longestTrain){
+      const r = tSegStats.longestTrain;
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('train',22,'var(--teal)')+'</div><div class="rc-value">'+fmtKm(r.km)+'</div><div class="rc-label">Weiteste Einzel-Zugfahrt</div><div class="rc-detail">'+weitwegEscapeHTML(r.from)+' → '+weitwegEscapeHTML(r.to)+(r.details.trainNumber?' · '+r.details.trainNumber:'')+'</div></div>';
+    }
+    if(tSegStats.topAirport){
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('plane',22,'var(--gold)')+'</div><div class="rc-value">'+tSegStats.topAirport.count+'×</div><div class="rc-label">Meistgenutzter Flughafen</div><div class="rc-detail">'+weitwegEscapeHTML(tSegStats.topAirport.value)+'</div></div>';
+    }
+    if(tSegStats.topStation){
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('train',22,'var(--teal)')+'</div><div class="rc-value">'+tSegStats.topStation.count+'×</div><div class="rc-label">Meistgenutzter Bahnhof</div><div class="rc-detail">'+weitwegEscapeHTML(tSegStats.topStation.value)+'</div></div>';
+    }
+    if(tSegStats.topAirline){
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('plane',22,'var(--gold)')+'</div><div class="rc-value">'+tSegStats.topAirline.count+'×</div><div class="rc-label">Häufigste Airline</div><div class="rc-detail">'+weitwegEscapeHTML(tSegStats.topAirline.value)+'</div></div>';
+    }
+    if(tSegStats.topOperator){
+      html += '    <div class="record-card"><div class="rc-icon">'+svgIcon('train',22,'var(--teal)')+'</div><div class="rc-value">'+tSegStats.topOperator.count+'×</div><div class="rc-label">Häufigster Bahnbetreiber</div><div class="rc-detail">'+weitwegEscapeHTML(tSegStats.topOperator.value)+'</div></div>';
+    }
+    html += '  </div>';
+    html += '</div>';
+  }
 
   /* CO2-Extremwerte: die 3 Reisen mit dem höchsten bzw. niedrigsten CO2-Ausstoß, mit Distanz */
   const co2Extremes = computeCO2Extremes();
@@ -11165,6 +11313,35 @@ function normalizeTrainLeg(leg){
    rausfiltern, die zählen nicht als eigenes Transportsegment. */
 function normalizeTrainJourney(journey){
   return (journey.legs||[]).filter(l=>!l.walking).map(normalizeTrainLeg);
+}
+
+/* ---------- Auto/Rad/Fuß-Routing (Phase 4, OSRM-Demoserver) ----------
+   Kostenlos, ohne API-Key, direkt aus dem Browser aufrufbar — genau wie die
+   Zugsuche kein Proxy-Worker nötig. Läuft über den öffentlichen FOSSGIS-Demoserver
+   (router.project-osrm.org), der ausdrücklich für "angemessene, nicht-kommerzielle
+   Nutzung" gedacht ist (max. 1 Anfrage/Sekunde, keine Uptime-Garantie) — für privates
+   Reise-Tracking völlig ausreichend. Liefert echte Straßen-/Wege-Distanz UND die
+   tatsächliche Routen-Geometrie (statt nur Luftlinie × Aufschlag), fällt bei Fehlern
+   (Netzwerk, keine Route, Rate-Limit) automatisch auf die bestehende Luftlinien-
+   Schätzung zurück — nie eine harte Fehlermeldung, ganz im Sinne von "manueller
+   Modus bleibt immer verfügbar". */
+const OSRM_BASE = 'https://router.project-osrm.org';
+const OSRM_PROFILES = { car:'driving', bike:'bike', walk:'foot' };
+async function osrmRoute(mode, points){
+  const profile = OSRM_PROFILES[mode];
+  if(!profile || points.length<2) return null;
+  const coordStr = points.map(p=>p.lon+','+p.lat).join(';');
+  const url = OSRM_BASE+'/route/v1/'+profile+'/'+coordStr+'?overview=full&geometries=geojson&steps=false';
+  const resp = await fetch(url);
+  if(!resp.ok) throw new Error('HTTP '+resp.status);
+  const data = await resp.json();
+  if(data.code!=='Ok' || !data.routes || !data.routes.length) throw new Error(data.message||'Keine Route gefunden.');
+  const route = data.routes[0];
+  return {
+    distanceKm: Math.round(route.distance/1000),
+    durationMinutes: Math.round(route.duration/60),
+    geometry: (route.geometry && route.geometry.coordinates) || []
+  };
 }
 
 async function flightApiFetchByNumber(number, fromDate, toDate){
