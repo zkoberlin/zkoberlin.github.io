@@ -4214,13 +4214,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.3.1';
+const APP_VERSION = '6.3.2';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.3.2', tier:'🟢', title:'Zugsuche: korrekter API-Pfad (v6 statt v5) + vollständige Fehlerdiagnose', items:[
+    'Verbindungssuche lief auf /api/v5/plan, einem nur aus einem Versions-Changelog abgeleiteten, nicht bestätigten Pfad — umgestellt auf /api/v6/plan, den in der aktuellen MOTIS-API-Referenz tatsächlich dokumentierten Endpunkt. War vermutlich Ursache der "missing parameter"-Fehlermeldung.',
+    'Fehlermeldungen vom Zugsuche-Server zeigen jetzt die komplette Rohantwort statt nur geratener Feldnamen (error/message) — falls doch noch ein Parameter fehlt, ist der genaue Grund direkt im Modal sichtbar.'
+  ]},
   {v:'6.3.1', tier:'🟢', title:'Zugsuche: bessere Fehlerdiagnose bei der Transitous-Umstellung', items:[
     'Die Stationssuche (Von/Nach) bricht jetzt mit einer aussagekräftigen Fehlermeldung ab, statt eine unvollständig aufgelöste Station stillschweigend weiterzureichen — bisher führte das erst später bei der Verbindungssuche zu einer wenig hilfreichen "missing parameter"-Meldung.',
     'Läuft die Feldzuordnung noch nicht korrekt, zeigt das Modal jetzt direkt die rohen Transitous-Antwortdaten in der Fehlermeldung an — das macht das endgültige Nachjustieren der Feldnamen ohne Browser-Konsole möglich.'
@@ -11324,7 +11328,15 @@ async function motisFetch(path){
   }
   if(!resp.ok){
     let msg = 'HTTP '+resp.status;
-    try{ const j = await resp.json(); if(j?.error||j?.message) msg = j.error||j.message; console.error('[MOTIS] Fehlerantwort für', path, j); }catch(e){}
+    try{
+      const j = await resp.json();
+      // Vorherige Version hat nur j.error/j.message geraten — falls das MOTIS-
+      // Error-Schema andere Feldnamen nutzt, ging der eigentliche Grund verloren.
+      // Jetzt wird die komplette Rohantwort mitgegeben, damit beim nächsten
+      // Fehlschlag sofort sichtbar ist, welches Feld wirklich fehlt.
+      msg = (j?.error||j?.message||j?.msg||j?.reason) ? (j.error||j.message||j.msg||j.reason)+' — Rohdaten: '+JSON.stringify(j).slice(0,400) : 'HTTP '+resp.status+' — Rohdaten: '+JSON.stringify(j).slice(0,400);
+      console.error('[MOTIS] Fehlerantwort für', path, j);
+    }catch(e){}
     throw new Error(msg);
   }
   const json = await resp.json();
@@ -11364,7 +11376,7 @@ async function dbFindStation(name){
 async function dbSearchJourneys(fromId, toId, whenIso){
   const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
     +'&time='+encodeURIComponent(whenIso)+'&arriveBy=false&numItineraries=6&language=de';
-  const data = await motisFetch('/v5/plan?'+qs);
+  const data = await motisFetch('/v6/plan?'+qs);
   const itineraries = data?.itineraries || [];
   return itineraries.map(it => ({ legs: (it.legs||[]).map(motisLegToLegacyShape) }));
 }
