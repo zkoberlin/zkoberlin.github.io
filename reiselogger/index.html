@@ -1297,6 +1297,12 @@ tr:last-child td{border-bottom:none;}
   color:var(--text);
   font-weight:600;
 }
+.toast.error{
+  border-color:var(--rose);
+  background:color-mix(in srgb, var(--rose) 18%, var(--panel-alt));
+  color:var(--text);
+  font-weight:600;
+}
 
 .footer-note{
   text-align:center;font-size:11px;color:var(--text-faint);margin-top:30px;line-height:1.7;
@@ -4171,13 +4177,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.4.0';
+const APP_VERSION = '5.5.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.5.0', tier:'🟢', title:'Alle Bestätigungs-Toasts jetzt farblich eindeutig', items:[
+    'Bisher war nur der Toast beim Neuanlegen einer Reise grün hervorgehoben, alle anderen (auch "Flugdaten aktualisiert") liefen in der neutralen Standardoptik mit und waren dadurch schlecht erkennbar. Jetzt einheitlich: grün mit Häkchen für erfolgreiche Aktionen (Speichern, Löschen, Sync, Flugdaten-Update, etc.), rot für Fehler/Validierungshinweise (Cloud-Sync fehlgeschlagen, Pflichtfeld fehlt, Foto nicht verarbeitbar, etc.). Rein informative Zwischenstatus-Meldungen ("Fotos werden verarbeitet …") bleiben bewusst neutral, da weder Erfolg noch Fehler.'
+  ]},
   {v:'5.4.0', tier:'🟡', title:'Flugsuche: exaktes Reisedatum statt ±2-Tage-Fenster', items:[
     'Sowohl der Routen-Vorschlag als auch die direkte Flugnummer-Suche verwenden jetzt exakt das Reisedatum (Hinflug: Startdatum, Rückflug: Enddatum der Reise) statt eines automatischen ±2-Tage-Fensters — zuverlässiger und spart API-Kontingent (1 Aufruf statt bis zu 10).'
   ]},
@@ -5299,7 +5308,7 @@ document.getElementById('locSuggestConfirm').addEventListener('click', async ()=
     trip.updatedAt = Date.now();
     trips.sort((a,b)=> (b.dateFrom||'').localeCompare(a.dateFrom||'') || (b.createdAt||0)-(a.createdAt||0));
     await saveTrips();
-    showToast('Reise nach '+stripCountrySuffix(trip.city)+' ist jetzt als gestartet markiert.');
+    showToast('✓ Reise nach '+stripCountrySuffix(trip.city)+' ist jetzt als gestartet markiert.', 'success');
     renderAll();
   } else {
     locationPrefillSource = {
@@ -5530,7 +5539,7 @@ async function initialCloudSync(){
     await runCloudSync();
   }catch(e){
     console.error('Cloud-Sync (Start) fehlgeschlagen:', e);
-    showToast('⚠️ Cloud-Sync nicht erreichbar — Änderungen werden erst nach erfolgreicher Verbindung hochgeladen.');
+    showToast('⚠️ Cloud-Sync nicht erreichbar — Änderungen werden erst nach erfolgreicher Verbindung hochgeladen.', 'error');
     // dataReady bleibt bewusst false: erst nach erfolgreichem Abgleich darf wieder
     // in die Cloud geschrieben werden, sonst könnten unvollständige Daten überschreiben.
   }
@@ -5584,10 +5593,10 @@ async function saveTrips(){
   }catch(e){ console.error('Storage-Fehler (trips):', e); }
   if(syncEnabled() && dataReady){
     try{ await syncPush('trips', trips); }
-    catch(e){ console.error('Cloud-Sync (trips) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.'); }
+    catch(e){ console.error('Cloud-Sync (trips) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.', 'error'); }
   } else if(syncEnabled() && !dataReady){
     console.warn('Cloud-Push übersprungen: noch keine erfolgreiche Erstsynchronisierung.');
-    showToast('⚠️ Noch nicht mit der Cloud verbunden — „Jetzt synchronisieren" in den Einstellungen versuchen.');
+    showToast('⚠️ Noch nicht mit der Cloud verbunden — „Jetzt synchronisieren" in den Einstellungen versuchen.', 'error');
   }
 }
 
@@ -5637,7 +5646,7 @@ async function addPhotosToTrip(tripId, fileList, root){
   if(!trip.photos) trip.photos = [];
   const files = Array.from(fileList||[]).filter(f=>f.type && f.type.startsWith('image/'));
   const slotsLeft = MAX_PHOTOS_PER_TRIP - trip.photos.length;
-  if(slotsLeft<=0){ showToast('Maximal '+MAX_PHOTOS_PER_TRIP+' Fotos pro Reise.'); return; }
+  if(slotsLeft<=0){ showToast('Maximal '+MAX_PHOTOS_PER_TRIP+' Fotos pro Reise.', 'error'); return; }
   const toAdd = files.slice(0, slotsLeft);
   if(files.length>toAdd.length){ showToast('Nur die ersten '+toAdd.length+' Fotos übernommen (max. '+MAX_PHOTOS_PER_TRIP+' pro Reise).'); }
   showToast('Fotos werden verarbeitet …');
@@ -5649,7 +5658,7 @@ async function addPhotosToTrip(tripId, fileList, root){
       addedAny = true;
     }catch(e){
       console.error('Foto-Kompression fehlgeschlagen:', e);
-      showToast('⚠️ Ein Foto konnte nicht verarbeitet werden.');
+      showToast('⚠️ Ein Foto konnte nicht verarbeitet werden.', 'error');
     }
   }
   if(addedAny) trip.updatedAt = Date.now();
@@ -5754,7 +5763,7 @@ async function saveSettings(){
   }catch(e){ console.error('Storage-Fehler (settings):', e); }
   if(syncEnabled() && dataReady){
     try{ await syncPush('settings', settings); }
-    catch(e){ console.error('Cloud-Sync (settings) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.'); }
+    catch(e){ console.error('Cloud-Sync (settings) fehlgeschlagen:', e); showToast('⚠️ Cloud-Sync fehlgeschlagen — lokal gespeichert.', 'error'); }
   } else if(syncEnabled() && !dataReady){
     console.warn('Cloud-Push übersprungen: noch keine erfolgreiche Erstsynchronisierung.');
   }
@@ -8271,27 +8280,27 @@ function renderAdd(root){
   document.getElementById('tripForm').addEventListener('submit', async (e)=>{
     e.preventDefault();
     const toVal = document.getElementById('fldTo').value.trim();
-    if(!toVal){ showToast('Bitte eine Zielstadt eintragen.'); return; }
+    if(!toVal){ showToast('Bitte eine Zielstadt eintragen.', 'error'); return; }
     const fromVal = document.getElementById('fldFrom').value.trim();
     const cityOnly = !!(cityOnlyBox && cityOnlyBox.checked);
     const dateFrom = document.getElementById('fldFromDate').value;
-    if(!cityOnly && !dateFrom){ showToast('Bitte ein Startdatum eintragen.'); return; }
-    if(!cityOnly && !direction){ showToast('Bitte wähle eine Fahrtrichtung.'); return; }
+    if(!cityOnly && !dateFrom){ showToast('Bitte ein Startdatum eintragen.', 'error'); return; }
+    if(!cityOnly && !direction){ showToast('Bitte wähle eine Fahrtrichtung.', 'error'); return; }
 
     let outDistVal = null, returnDistVal = null;
     if(!cityOnly){
       if(direction==='returnonly'){
         const retDistInput = document.getElementById('fldDist_return');
         returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
-        if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+        if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.', 'error'); return; }
       } else {
         const outDistInput = document.getElementById('fldDist_out');
         outDistVal = outDistInput ? parseFloat(outDistInput.value) : NaN;
-        if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.'); return; }
+        if(!outDistVal || outDistVal<=0){ showToast('Bitte eine Distanz für den Hinweg angeben.', 'error'); return; }
         if(direction==='roundtrip'){
           const retDistInput = document.getElementById('fldDist_return');
           returnDistVal = retDistInput ? parseFloat(retDistInput.value) : NaN;
-          if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.'); return; }
+          if(!returnDistVal || returnDistVal<=0){ showToast('Bitte eine Distanz für den Rückweg angeben.', 'error'); return; }
         }
       }
     }
@@ -8367,7 +8376,7 @@ function renderAdd(root){
     if(t){
       const idx = trips.findIndex(x=>x.id===t.id);
       trips[idx]=trip;
-      showToast('Reise aktualisiert.');
+      showToast('✓ Reise aktualisiert.', 'success');
     } else {
       trips.push(trip);
       showToast(hasStarted(trip) ? '✓ Reise hinzugefügt — willkommen in '+cityName+'!' : '✓ Reise geplant — auf nach '+cityName+'!', 'success');
@@ -9282,7 +9291,7 @@ async function retryCityGeocode(cityName, btn){
   try{
     const info = await geocodeCity(cityName);
     if(!info){
-      showToast('„'+cityName+'“ wurde nicht gefunden. Bitte Schreibweise prüfen.');
+      showToast('„'+cityName+'“ wurde nicht gefunden. Bitte Schreibweise prüfen.', 'error');
       btn.disabled = false; btn.textContent = original;
       return;
     }
@@ -9296,11 +9305,11 @@ async function retryCityGeocode(cityName, btn){
     await saveCustomCities();
     populateDatalist();
     unresolvableCityNames.delete(cityName);
-    showToast('„'+cityName+'“ ergänzt und gespeichert.');
+    showToast('✓ „'+cityName+'“ ergänzt und gespeichert.', 'success');
     if(currentTab==='stats') switchTab('stats');
   }catch(e){
     console.error('Nachauflösung fehlgeschlagen:', e);
-    showToast('Fehler bei der Suche. Bitte später erneut versuchen.');
+    showToast('Fehler bei der Suche. Bitte später erneut versuchen.', 'error');
     btn.disabled = false; btn.textContent = original;
   }
 }
@@ -9377,7 +9386,7 @@ async function setCoverPhoto(tripId, photoId, root){
   trip.photos.unshift(photo);
   trip.updatedAt = Date.now();
   await saveTrips();
-  showToast('⭐ Titelbild festgelegt.');
+  showToast('⭐ Titelbild festgelegt.', 'success');
   if(viewingTripId===tripId && root){
     renderTripDetailPage(tripId, root);
   } else if(root){
@@ -9851,7 +9860,7 @@ function renderTripDetailPage(tripId, root){
           else { trip.flightDataReturn = arr; trip.flightNumberReturn = nums.join(', '); }
           trip.updatedAt = Date.now();
           await saveTrips();
-          showToast('Flugdaten aktualisiert.');
+          showToast('✓ Flugdaten aktualisiert.', 'success');
           try{ renderTripDetailPage(t.id, root); }catch(err){ console.error('Detailseite konnte nach Flugdaten-Update nicht neu gerendert werden:', err); }
         }
       });
@@ -10094,10 +10103,10 @@ async function shareTrip(tripId){
   } else if(navigator.clipboard){
     try{
       await navigator.clipboard.writeText(text);
-      showToast('In die Zwischenablage kopiert (Teilen wird hier nicht unterstützt).');
-    }catch(e){ showToast('Teilen wird auf diesem Gerät nicht unterstützt.'); }
+      showToast('✓ In die Zwischenablage kopiert.', 'success');
+    }catch(e){ showToast('Teilen wird auf diesem Gerät nicht unterstützt.', 'error'); }
   } else {
-    showToast('Teilen wird auf diesem Gerät nicht unterstützt.');
+    showToast('Teilen wird auf diesem Gerät nicht unterstützt.', 'error');
   }
 }
 
@@ -10123,7 +10132,7 @@ function attachLogRowActions(root){
       duplicateSource = Object.assign({}, original, {photos:[]});
       editingId = null;
       switchTab('add');
-      showToast('Reise dupliziert — Grund und Datum kannst du jetzt anpassen.');
+      showToast('✓ Reise dupliziert — Grund und Datum kannst du jetzt anpassen.', 'success');
     });
   });
   root.querySelectorAll('[data-del]').forEach(btn=>{
@@ -10135,7 +10144,7 @@ function attachLogRowActions(root){
       await saveTrips();
       renderLog(document.getElementById('appRoot').querySelector('#panel-log') || root);
       renderAll();
-      showToast('Reise gelöscht.');
+      showToast('Reise gelöscht.', 'success');
     });
   });
   root.querySelectorAll('.log-city-link').forEach(el=>{
@@ -10532,7 +10541,7 @@ async function handleBucketAdd(root){
       });
     }
     await saveBucketList();
-    showToast('Zur Wunschliste hinzugefügt.');
+    showToast('✓ Zur Wunschliste hinzugefügt.', 'success');
     renderBucketList(root);
   } finally {
     bucketAddBusy = false;
@@ -11166,7 +11175,7 @@ document.getElementById('exportDataBtn').addEventListener('click', ()=>{
   a.href = url; a.download = 'trailyx-backup-'+new Date().toISOString().slice(0,10)+'.json';
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
-  showToast('Backup heruntergeladen.');
+  showToast('✓ Backup heruntergeladen.', 'success');
 });
 document.getElementById('notifTripsToggle').addEventListener('change', async (e)=>{
   settings.notifyTrips = e.target.checked; await saveSettings();
@@ -11188,7 +11197,7 @@ document.getElementById('settingsSave').addEventListener('click', async ()=>{
   updateHomeChip();
   closeSettings();
   renderAll();
-  showToast('Einstellungen gespeichert.');
+  showToast('✓ Einstellungen gespeichert.', 'success');
 });
 document.getElementById('resetAllBtn').addEventListener('click', async ()=>{
   if(!confirm('Wirklich ALLE Reisedaten unwiderruflich löschen?')) return;
@@ -11199,7 +11208,7 @@ document.getElementById('resetAllBtn').addEventListener('click', async ()=>{
   closeSettings();
   applyTheme();
   renderAll();
-  showToast('Alle Daten gelöscht.');
+  showToast('Alle Daten gelöscht.', 'success');
 });
 
 document.getElementById('syncSaveBtn').addEventListener('click', async ()=>{
@@ -11207,7 +11216,7 @@ document.getElementById('syncSaveBtn').addEventListener('click', async ()=>{
   await saveSyncConfig();
   if(!syncEnabled()){
     setSyncStatus('Zugangsdaten gelöscht — Sync deaktiviert.', '');
-    showToast('Cloud-Sync deaktiviert.');
+    showToast('Cloud-Sync deaktiviert.', 'success');
     return;
   }
   setSyncStatus('Verbinde und gleiche ab …');
@@ -11218,7 +11227,7 @@ document.getElementById('syncSaveBtn').addEventListener('click', async ()=>{
     localStorage.setItem('weitwegLastSyncAt', new Date().toISOString());
     refreshSettingsOverview();
     renderAll();
-    showToast('Cloud-Sync eingerichtet.');
+    showToast('✓ Cloud-Sync eingerichtet.', 'success');
   }catch(e){
     setSyncStatus('✗ Verbindung fehlgeschlagen: '+e.message, 'err');
   }
@@ -11248,7 +11257,7 @@ document.getElementById('syncNowBtn').addEventListener('click', async ()=>{
     localStorage.setItem('weitwegLastSyncAt', new Date().toISOString());
     refreshSettingsOverview();
     renderAll();
-    showToast('Cloud-Sync abgeschlossen.');
+    showToast('✓ Cloud-Sync abgeschlossen.', 'success');
   }catch(e){
     setSyncStatus('✗ Sync fehlgeschlagen: '+e.message, 'err');
   }
@@ -11493,7 +11502,7 @@ function renderProfile(root){
         settings.profileAvatar = await compressImageFile(file, 480, 0.85);
         await saveSettings();
         renderProfile(root);
-      }catch(e){ console.error('Profilfoto-Fehler:', e); showToast('Foto konnte nicht verarbeitet werden.'); }
+      }catch(e){ console.error('Profilfoto-Fehler:', e); showToast('Foto konnte nicht verarbeitet werden.', 'error'); }
     });
   }
   const removeBtn = document.getElementById('profileAvatarRemove');
@@ -11961,7 +11970,7 @@ renderTripDetailPage=function(tripId,root){
             if(km!=null){ if(leg==='out') trip.outDistanceKm = km; else trip.returnDistanceKm = km; }
             trip.updatedAt = Date.now();
             await saveTrips();
-            showToast('Flugdaten aktualisiert.');
+            showToast('✓ Flugdaten aktualisiert.', 'success');
             try{ renderTripDetailPage(t.id, root); }catch(err){ console.error('Detailseite konnte nach Flugdaten-Update nicht neu gerendert werden:', err); }
           }
         });
