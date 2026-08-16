@@ -3575,6 +3575,28 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
   </div>
 </div>
 
+<div class="modal-backdrop" id="trainSearchModal">
+  <div class="modal modal-wide" style="max-width:420px;">
+    <div class="modal-header-row">
+      <h3 id="trainSearchTitle">Zugverbindung suchen</h3>
+      <button type="button" class="modal-close-x" id="trainSearchClose">✕</button>
+    </div>
+    <div id="trainSearchBody">
+      <div class="flight-airport-row">
+        <div><div class="log-detail-item-label">Von</div><div class="airport-picker" id="trainDepResolved"></div></div>
+        <div><div class="log-detail-item-label">Nach</div><div class="airport-picker" id="trainArrResolved"></div></div>
+      </div>
+      <div class="field" style="margin-top:12px;margin-bottom:0;">
+        <label for="trainSearchTime">Ungefähre Abfahrtszeit</label>
+        <input type="time" id="trainSearchTime" value="09:00">
+      </div>
+      <button type="button" class="btn-secondary" id="trainSearchGoBtn" style="width:100%;margin-top:14px;">Verbindungen suchen</button>
+      <div class="sync-status" id="trainSearchStatus"></div>
+      <div id="trainSearchResults" class="flight-search-results"></div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop stacked" id="newCityModal">
   <div class="modal">
     <h3>Neue Stadt anlegen</h3>
@@ -4192,13 +4214,20 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.7.0';
+const APP_VERSION = '5.8.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.8.0', tier:'🟡', title:'Transport-Segment-System: Phase 2 — Zugverbindungs-Suche', items:[
+    'Neu bei Verkehrsmittel "Zug": Von/Nach werden automatisch aus dem Formular übernommen, dazu ungefähre Abfahrtszeit — "Verbindungen suchen" zeigt passende Züge (Linie, Zeiten, Dauer, Direkt/Umstiege) zum Antippen an, statt alles von Hand einzutragen. Läuft über v6.db.transport.rest — kostenlos, ohne API-Key, kein Proxy-Worker nötig.',
+    'Nach Auswahl automatisch übernommen: Zugnummer/Linie, Betreiber, geplante & tatsächliche Zeiten, Gleise, Verspätungen, Zwischenhalte, Distanz — inkl. Umstiege als mehrere zusammenhängende Etappen.',
+    'Neue "Zugdaten"-Karte auf der Reise-Detailseite, analog zur Flugdaten-Karte, inkl. "Erneut suchen / aktualisieren" direkt dort.',
+    'Distanz-Feld wird bei "Zug" jetzt genauso automatisch befüllt/ausgeblendet wie bei "Flugzeug" — manuelle Eingabe bleibt bei Bedarf weiterhin möglich.',
+    'transportSegments (Phase 1) berücksichtigt jetzt auch echte Zugverbindungsdaten.'
+  ]},
   {v:'5.7.0', tier:'🟡', title:'Transport-Segment-System: Phase 1 (Architektur, unsichtbar)', items:[
     'Grundlage für ein einheitliches Transport-Segment-System gelegt (erster Schritt eines mehrteiligen Umbaus). Jede Reise bekommt jetzt zusätzlich ein transportSegments-Array — eine Etappe pro Teilstrecke (inkl. Zwischenstopps), mit Koordinaten, Distanz, Zeiten und bei Flügen den vollständigen AeroDataBox-Daten.',
     'Rein additiv: keine bestehenden Felder wurden verändert oder entfernt, nichts an der Optik hat sich geändert. Bestehende Reisen werden beim nächsten Laden einmalig migriert, danach bleibt das Segment-Array stabil (Snapshot-Prinzip) und wird nur beim tatsächlichen Speichern/Bearbeiten einer Reise neu berechnet.',
@@ -4788,13 +4817,13 @@ function legSegments(fromCity, toCity, waypoints){
    Reisen als auch beim Speichern (neu/bearbeitet) neu berechnet, damit es immer mit
    den "eigentlichen" Feldern synchron bleibt, bis eine spätere Phase eigene Segment-
    Bearbeitung einführt. */
-function resolveSegmentPoint(cityName, iataCode){
+function resolveSegmentPoint(cityName, iataCode, explicitLat, explicitLon){
   const ref = findCity(cityName);
   return {
     name: cityName || '',
     code: iataCode || (ref ? ref.ia||null : null),
-    lat: ref ? ref.lat : null,
-    lon: ref ? ref.lon : null
+    lat: explicitLat!=null ? explicitLat : (ref ? ref.lat : null),
+    lon: explicitLon!=null ? explicitLon : (ref ? ref.lon : null)
   };
 }
 function buildLegTransportSegments(t, leg){
@@ -4802,11 +4831,54 @@ function buildLegTransportSegments(t, leg){
   if(!mode || t.cityOnly) return [];
   const fromAll = leg==='out' ? t.fromCity : t.city;
   const toAll = leg==='out' ? t.city : t.fromCity;
+  const legDistanceKm = leg==='out' ? tripOut(t) : tripReturn(t);
+  const legDate = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
+
+  // Zug: Eine gesuchte Verbindung bringt ihre eigenen Etappen (inkl. Umstiege) direkt
+  // aus der API mit — die stimmen i. d. R. NICHT mit vom Nutzer eingetragenen
+  // Zwischenstopps überein (die kennt der Nutzer vor der Suche oft noch gar nicht).
+  // Deshalb hier bewusst NICHT über legSegments(waypoints) gehen, sondern die echten
+  // Verbindungs-Etappen 1:1 übernehmen, solange welche vorliegen.
+  if(mode==='train'){
+    const trainData = (leg==='out' ? t.trainDataOut : t.trainDataReturn) || [];
+    if(trainData.length){
+      return trainData.map(td=>({
+        id: 'segment_'+uid(),
+        mode: 'train',
+        source: 'dbtransport',
+        sourceId: td.trainNumber||null,
+        origin: resolveSegmentPoint(td.depStationName, td.depStationId, td.depLat, td.depLon),
+        destination: resolveSegmentPoint(td.arrStationName, td.arrStationId, td.arrLat, td.arrLon),
+        scheduledDeparture: td.depScheduled||null, actualDeparture: td.depActual||null,
+        scheduledArrival: td.arrScheduled||null, actualArrival: td.arrActual||null,
+        durationMinutes: td.durationMinutes!=null?td.durationMinutes:null,
+        distanceKm: td.distanceKm!=null?td.distanceKm:null,
+        operator: td.operator||null,
+        route: { distanceKm: td.distanceKm!=null?td.distanceKm:null, geometry:{type:'LineString',coordinates:[]}, stops: td.stops||[], calculatedBy:'dbtransport' },
+        details: {
+          trainNumber: td.trainNumber||null, line: td.line||null, trainType: td.trainType||null,
+          direction: td.arrStationName||null,
+          departurePlatform: td.departurePlatform||null, arrivalPlatform: td.arrivalPlatform||null,
+          departureDelayMinutes: td.departureDelayMinutes!=null?td.departureDelayMinutes:null,
+          arrivalDelayMinutes: td.arrivalDelayMinutes!=null?td.arrivalDelayMinutes:null,
+          cancelled: !!td.cancelled
+        }
+      }));
+    }
+    // Noch keine Verbindung gesucht: einfacher manueller Platzhalter, direkt Start -> Ziel.
+    return [{
+      id: 'segment_'+uid(), mode:'train', source:'manual', sourceId:null,
+      origin: resolveSegmentPoint(fromAll,null), destination: resolveSegmentPoint(toAll,null),
+      scheduledDeparture: legDate||null, actualDeparture:null, scheduledArrival:null, actualArrival:null,
+      durationMinutes:null, distanceKm: legDistanceKm||null, operator:null,
+      route:{distanceKm:legDistanceKm||null, geometry:{type:'LineString',coordinates:[]}, stops:[], calculatedBy:'beeline-estimate'},
+      details:{}
+    }];
+  }
+
   const waypoints = leg==='out' ? (t.outWaypoints||[]) : (t.returnWaypoints||[]);
   const hops = legSegments(fromAll, toAll, waypoints);
   const flightData = (leg==='out' ? t.flightDataOut : t.flightDataReturn) || [];
-  const legDistanceKm = leg==='out' ? tripOut(t) : tripReturn(t);
-  const legDate = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
   return hops.map((hop,i)=>{
     const fd = mode==='plane' ? flightData[i] : null;
     const seg = {
@@ -5492,6 +5564,10 @@ function migrateTrip(t){
   if(m.flightDataReturn && !Array.isArray(m.flightDataReturn)) m = Object.assign({}, m, {flightDataReturn:[m.flightDataReturn]});
   if(m.flightDataOut===null) m = Object.assign({}, m, {flightDataOut:[]});
   if(m.flightDataReturn===null) m = Object.assign({}, m, {flightDataReturn:[]});
+  // Zugdaten (Phase 2, siehe Zugverbindungs-Suche) — analog zu den Flugfeldern.
+  if(m.trainDataOut===undefined){
+    m = Object.assign({}, m, {trainSummaryOut:'', trainSummaryReturn:'', trainDataOut:[], trainDataReturn:[]});
+  }
   // "Vereinigtes Königreich" wurde in die einzelnen Landesteile aufgeteilt (siehe
   // CITY_DB) — bestehende Reisen nach London/Edinburgh werden hier einmalig nachgezogen,
   // damit sie in Länder-Statistik/Achievements sofort als England/Schottland zählen.
@@ -7930,7 +8006,7 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
   h += '    <button type="button" class="btn-add-waypoint" data-add-waypoint-leg="'+legKey+'">+ Zwischenstopp ('+legLabel+')</button>';
   h += '    <div class="hint">Zählt nicht als eigener Besuch — beeinflusst nur die berechnete Distanz dieser Teilstrecke.</div>';
   h += '  </div>';
-  h += '  <div class="field" id="distWrap_'+legKey+'" style="margin-bottom:6px;'+(mode==='plane'?'display:none;':'')+'">';
+  h += '  <div class="field" id="distWrap_'+legKey+'" style="margin-bottom:6px;'+((mode==='plane'||mode==='train')?'display:none;':'')+'">';
   h += '    <label for="fldDist_'+legKey+'">Distanz '+legLabel+' (km)</label>';
   h += '    <div class="dist-row">';
   h += '      <div class="field" style="margin:0;"><input type="number" id="fldDist_'+legKey+'" min="0" step="1" placeholder="km" value="'+(distVal||'')+'"></div>';
@@ -7938,7 +8014,7 @@ function buildLegBlockHTML(legKey, legLabel, mode, distVal, waypointsArr){
   h += '    </div>';
   h += '    <div class="hint" id="distHint_'+legKey+'">Luftlinie × Aufschlag je nach Verkehrsmittel (Flug ≈ 1.0×, Zug/Bus ≈ 1.25×, Auto ≈ 1.3×, Rad ≈ 1.15×). Mit Zwischenstopps: Summe der Teilstrecken.</div>';
   h += '  </div>';
-  h += '  <div class="hint" id="distAutoHint_'+legKey+'" style="margin-bottom:12px;'+(mode==='plane'?'':'display:none;')+'">Die Distanz wird automatisch über die Flugnummer-Suche ermittelt — bis dahin grob per Luftlinie geschätzt.</div>';
+  h += '  <div class="hint" id="distAutoHint_'+legKey+'" style="margin-bottom:12px;'+((mode==='plane'||mode==='train')?'':'display:none;')+'">Die Distanz wird automatisch über die '+(mode==='train'?'Zugverbindungs':'Flugnummer')+'-Suche ermittelt — bis dahin grob per Luftlinie geschätzt.</div>';
   h += '</div>';
   return h;
 }
@@ -8008,6 +8084,16 @@ function renderAdd(root){
   html += '        <label for="fldFlightNoReturn">Flugnummer Rückflug (optional)</label>';
   html += '        <div class="flight-no-row"><input type="text" id="fldFlightNoReturn" placeholder="z. B. LH5678" value="'+(prefill&&prefill.flightNumberReturn?prefill.flightNumberReturn.replace(/"/g,'&quot;'):'')+'"><button type="button" class="btn-secondary flight-search-btn" id="flightSearchReturnBtn" title="Flugnummer suchen">'+svgIcon('search',15,'currentColor')+'</button></div>';
   html += '        <div class="hint" id="flightHintReturn">Direkt eingeben, oder über die Suche nach Airline/Zeiten/Terminal suchen lassen.</div>';
+  html += '      </div>';
+  html += '      <div class="field" id="trainFieldOut" style="margin-bottom:14px;display:none;">';
+  html += '        <label for="fldTrainNoOut">Zugverbindung Hinweg (optional)</label>';
+  html += '        <div class="flight-no-row"><input type="text" id="fldTrainNoOut" placeholder="z. B. ICE 1005" value="'+(prefill&&prefill.trainSummaryOut?prefill.trainSummaryOut.replace(/"/g,'&quot;'):'')+'"><button type="button" class="btn-secondary flight-search-btn" id="trainSearchOutBtn" title="Zugverbindung suchen">'+svgIcon('search',15,'currentColor')+'</button></div>';
+  html += '        <div class="hint" id="trainHintOut">Direkt eingeben, oder Von/Nach aus den Feldern oben automatisch für die Verbindungssuche übernehmen.</div>';
+  html += '      </div>';
+  html += '      <div class="field" id="trainFieldReturn" style="margin-bottom:14px;display:none;">';
+  html += '        <label for="fldTrainNoReturn">Zugverbindung Rückweg (optional)</label>';
+  html += '        <div class="flight-no-row"><input type="text" id="fldTrainNoReturn" placeholder="z. B. ICE 703" value="'+(prefill&&prefill.trainSummaryReturn?prefill.trainSummaryReturn.replace(/"/g,'&quot;'):'')+'"><button type="button" class="btn-secondary flight-search-btn" id="trainSearchReturnBtn" title="Zugverbindung suchen">'+svgIcon('search',15,'currentColor')+'</button></div>';
+  html += '        <div class="hint" id="trainHintReturn">Direkt eingeben, oder Von/Nach aus den Feldern oben automatisch für die Verbindungssuche übernehmen.</div>';
   html += '      </div>';
   html += '      <div class="field" style="margin-bottom:16px;">';
   html += '        <label for="fldNotes">Notizen (optional)</label>';
@@ -8094,6 +8180,14 @@ function renderAdd(root){
     out: {segments: (t && Array.isArray(t.flightDataOut)) ? t.flightDataOut.map(d=>({dep:d.depIata,arr:d.arrIata,data:d})) : [], touched:false},
     return: {segments: (t && Array.isArray(t.flightDataReturn)) ? t.flightDataReturn.map(d=>({dep:d.depIata,arr:d.arrIata,data:d})) : [], touched:false}
   };
+  /* Analog zu pendingFlightAirports, aber einfacher: eine Zugverbindung wird als GANZE
+     Reihe von Etappen (bei Umstiegen mehrere) auf einmal ausgewählt (siehe Such-Modal),
+     nicht Etappe für Etappe wie bei der Flug-Zwischenstopp-Suche — db.transport.rest
+     liefert Umstiege bereits als eine zusammenhängende Verbindung zurück. */
+  const pendingTrainData = {
+    out: {legs: (t && Array.isArray(t.trainDataOut)) ? t.trainDataOut : [], touched:false},
+    return: {legs: (t && Array.isArray(t.trainDataReturn)) ? t.trainDataReturn : [], touched:false}
+  };
 
   /* Von leeren + Von/Nach tauschen */
   const fldFromClearBtn = document.getElementById('fldFromClear');
@@ -8123,10 +8217,13 @@ function renderAdd(root){
       if(dateHint) dateHint.textContent = 'Optional — Monat/Jahr reicht, wenn du dich an den genauen Tag nicht mehr erinnerst.';
       document.getElementById('flightFieldOut').style.display = 'none';
       document.getElementById('flightFieldReturn').style.display = 'none';
+      document.getElementById('trainFieldOut').style.display = 'none';
+      document.getElementById('trainFieldReturn').style.display = 'none';
     } else {
       dateInput.setAttribute('required','required');
       if(dateHint) dateHint.textContent = 'Ein Datum antippen für einen Tag, zwei für einen Zeitraum — „bis" ist optional.';
       updateFlightField();
+      updateTrainField();
     }
   }
   if(cityOnlyBox) cityOnlyBox.addEventListener('change', ()=>{ updateCityOnlyVisibility(); if(typeof updateStub==='function') updateStub(); });
@@ -8196,6 +8293,50 @@ function renderAdd(root){
   if(searchOutBtn) searchOutBtn.addEventListener('click', ()=>openFlightSearchFor('out'));
   const searchReturnBtn = document.getElementById('flightSearchReturnBtn');
   if(searchReturnBtn) searchReturnBtn.addEventListener('click', ()=>openFlightSearchFor('return'));
+
+  function updateTrainField(){
+    const showOut = direction!=='returnonly' && outMode==='train';
+    const showReturn = (direction==='roundtrip' || direction==='returnonly') && returnMode==='train';
+    document.getElementById('trainFieldOut').style.display = showOut ? 'block':'none';
+    document.getElementById('trainFieldReturn').style.display = showReturn ? 'block':'none';
+    if(!showOut){ pendingTrainData.out = {legs:[], touched:true}; }
+    if(!showReturn){ pendingTrainData.return = {legs:[], touched:true}; }
+  }
+  function updatePendingTrainField(leg){
+    const noInput = document.getElementById(leg==='out'?'fldTrainNoOut':'fldTrainNoReturn');
+    const legs = pendingTrainData[leg].legs;
+    if(noInput && legs.length){
+      noInput.value = legs.map(l=>l.line||l.trainNumber).filter(Boolean).join(' → ');
+    }
+    const distInput = document.getElementById('fldDist_'+leg);
+    if(distInput){
+      const total = legs.reduce((sum,l)=> sum + (typeof l.distanceKm==='number'?l.distanceKm:0), 0);
+      const allHaveDist = legs.length && legs.every(l=>typeof l.distanceKm==='number');
+      if(allHaveDist) distInput.value = Math.round(total);
+    }
+    updateStub();
+  }
+  function openTrainSearchFor(leg){
+    const fromName = document.getElementById('fldFrom').value.trim();
+    const toName = document.getElementById('fldTo').value.trim();
+    const depAll = leg==='out' ? fromName : toName;
+    const arrAll = leg==='out' ? toName : fromName;
+    const date = leg==='out'
+      ? document.getElementById('fldFromDate').value
+      : (document.getElementById('fldToDate').value || document.getElementById('fldFromDate').value);
+    openTrainSearchModal({
+      leg, depName: depAll, arrName: arrAll, date,
+      onSelect: (legs)=>{
+        pendingTrainData[leg].touched = true;
+        pendingTrainData[leg].legs = legs;
+        updatePendingTrainField(leg);
+      }
+    });
+  }
+  const trainSearchOutBtn = document.getElementById('trainSearchOutBtn');
+  if(trainSearchOutBtn) trainSearchOutBtn.addEventListener('click', ()=>openTrainSearchFor('out'));
+  const trainSearchReturnBtn = document.getElementById('trainSearchReturnBtn');
+  if(trainSearchReturnBtn) trainSearchReturnBtn.addEventListener('click', ()=>openTrainSearchFor('return'));
 
   function updateStub(){
     const stub = document.getElementById('bpStubContent');
@@ -8277,6 +8418,7 @@ function renderAdd(root){
     if(!direction){
       container.innerHTML = '<div class="hint" style="padding:4px 0 14px;">Bitte zuerst die Fahrtrichtung wählen — danach erscheinen die Felder für Verkehrsmittel, Zwischenstopps und Distanz.</div>';
       updateFlightField();
+      updateTrainField();
       updateStub();
       return;
     }
@@ -8291,6 +8433,7 @@ function renderAdd(root){
     }
     container.innerHTML = h;
     updateFlightField();
+    updateTrainField();
     updateStub();
   }
 
@@ -8302,13 +8445,18 @@ function renderAdd(root){
       if(legKey==='out') outMode = modeOpt.dataset.mode; else returnMode = modeOpt.dataset.mode;
       legBlock.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('active'));
       modeOpt.classList.add('active');
-      const isPlane = modeOpt.dataset.mode==='plane';
+      const selMode = modeOpt.dataset.mode;
+      const autoDist = selMode==='plane' || selMode==='train';
       const distWrap = document.getElementById('distWrap_'+legKey);
       const autoHint = document.getElementById('distAutoHint_'+legKey);
-      if(distWrap) distWrap.style.display = isPlane ? 'none' : '';
-      if(autoHint) autoHint.style.display = isPlane ? '' : 'none';
+      if(distWrap) distWrap.style.display = autoDist ? 'none' : '';
+      if(autoHint){
+        autoHint.style.display = autoDist ? '' : 'none';
+        autoHint.textContent = 'Die Distanz wird automatisch über die '+(selMode==='train'?'Zugverbindungs':'Flugnummer')+'-Suche ermittelt — bis dahin grob per Luftlinie geschätzt.';
+      }
       tryAutoCalc(legKey);
       updateFlightField();
+      updateTrainField();
       return;
     }
     const addWpBtn = e.target.closest('[data-add-waypoint-leg]');
@@ -8479,6 +8627,10 @@ function renderAdd(root){
       flightNumberReturn: (!cityOnly && document.getElementById('fldFlightNoReturn')) ? document.getElementById('fldFlightNoReturn').value.trim() : '',
       flightDataOut: pendingFlightAirports.out.touched ? pendingFlightAirports.out.segments.map(s=>s&&s.data).filter(Boolean) : (t ? (t.flightDataOut||[]) : []),
       flightDataReturn: pendingFlightAirports.return.touched ? pendingFlightAirports.return.segments.map(s=>s&&s.data).filter(Boolean) : (t ? (t.flightDataReturn||[]) : []),
+      trainSummaryOut: (!cityOnly && document.getElementById('fldTrainNoOut')) ? document.getElementById('fldTrainNoOut').value.trim() : '',
+      trainSummaryReturn: (!cityOnly && document.getElementById('fldTrainNoReturn')) ? document.getElementById('fldTrainNoReturn').value.trim() : '',
+      trainDataOut: pendingTrainData.out.touched ? pendingTrainData.out.legs : (t ? (t.trainDataOut||[]) : []),
+      trainDataReturn: pendingTrainData.return.touched ? pendingTrainData.return.legs : (t ? (t.trainDataReturn||[]) : []),
       notes: document.getElementById('fldNotes').value.trim(),
       photos: t ? (t.photos||[]) : [],
       createdAt: t ? t.createdAt : nowTs,
@@ -9739,6 +9891,73 @@ function flightDataCardHTML(t){
   return html;
 }
 
+/* Einzelner Zug-Etappen-Block, analog zu flightSegmentBlockHTML. */
+function trainLegBlockHTML(td, segmentLabel){
+  let html = '';
+  if(segmentLabel) html += '<div class="log-detail-section-label" style="margin-bottom:8px;">'+segmentLabel+'</div>';
+  html += '<div class="route-line">';
+  html += '<div><span class="city">'+(td.depStationName||'?')+'</span><span class="code">'+fmtFlightTime(td.depActual||td.depScheduled)+'</span></div>';
+  html += '<div class="mid"><div class="dash"></div>'+svgIcon('train',15,'currentColor')+'<div class="dash"></div></div>';
+  html += '<div style="text-align:right;"><span class="city">'+(td.arrStationName||'?')+'</span><span class="code">'+fmtFlightTime(td.arrActual||td.arrScheduled)+'</span></div>';
+  html += '</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
+  html += '<span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">'+(td.operator?td.operator+' · ':'')+(td.trainNumber||td.line||'')+'</span>';
+  if(td.cancelled) html += '<span class="status-pill delayed">Ausgefallen</span>';
+  html += '</div>';
+  if(td.depScheduled || td.arrScheduled){
+    html += '<div class="time-compare-block">';
+    if(td.depScheduled) html += timeCompareRowHTML('Abfahrt', td.depScheduled, td.depActual);
+    if(td.arrScheduled) html += timeCompareRowHTML('Ankunft', td.arrScheduled, td.arrActual);
+    html += '</div>';
+  }
+  html += '<div class="log-detail-icongrid">';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Gleis Abfahrt</div><div class="log-detail-item-value">'+(td.departurePlatform||'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Gleis Ankunft</div><div class="log-detail-item-value">'+(td.arrivalPlatform||'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('distance',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Distanz</div><div class="log-detail-item-value">'+(td.distanceKm!=null?fmtKm(td.distanceKm):'–')+'</div></div></div>';
+  html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('clock',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Fahrzeit</div><div class="log-detail-item-value">'+(td.durationMinutes!=null?fmtTrainDuration(td.durationMinutes):'–')+'</div></div></div>';
+  html += '</div>';
+  if(td.stops && td.stops.length){
+    html += '<div class="log-detail-icongrid" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);grid-template-columns:1fr;">';
+    html += '<div class="log-detail-icongrid-item"><span class="log-detail-icon">'+svgIcon('stopPin',16,'var(--text-faint)')+'</span><div><div class="log-detail-item-label">Zwischenhalte</div><div class="log-detail-item-value" style="font-weight:400;font-size:12px;">'+td.stops.map(s=>s.name).filter(Boolean).join(' · ')+'</div></div></div>';
+    html += '</div>';
+  }
+  return html;
+}
+function trainDataCardHTML(t){
+  if(t.cityOnly) return '';
+  const legs = [];
+  if(t.outMode==='train') legs.push({leg:'out', label:'Hinweg', data:(t.trainDataOut||[]).filter(Boolean), summary:t.trainSummaryOut});
+  if((t.direction==='roundtrip'||t.direction==='returnonly') && t.returnMode==='train') legs.push({leg:'return', label:'Rückweg', data:(t.trainDataReturn||[]).filter(Boolean), summary:t.trainSummaryReturn});
+  if(!legs.length) return '';
+
+  let html = '';
+  legs.forEach(l=>{
+    html += '<div class="card train-data-card" data-train-leg="'+l.leg+'">';
+    html += '<div class="card-head"><h2>Zugdaten · '+l.label+'</h2><span class="sub">via Deutsche Bahn</span></div>';
+    if(l.data.length){
+      l.data.forEach((td,i)=>{
+        if(i>0) html += '<div style="height:1px;background:var(--border-soft);margin:16px 0;"></div>';
+        const label = l.data.length>1 ? (td.depStationName+' → '+td.arrStationName) : '';
+        try{
+          html += trainLegBlockHTML(td, label);
+        }catch(err){
+          console.error('Zugdaten-Karte: Fehler beim Rendern von Etappe', i, 'für', l.leg, err, td);
+          html += '<p class="sub" style="margin:0;">Diese Etappe konnte nicht angezeigt werden (Datenformat-Fehler — Details in der Browser-Konsole).</p>';
+        }
+      });
+      html += '<button type="button" class="btn-secondary" data-train-refresh="'+l.leg+'" style="width:100%;margin-top:14px;">'+svgIcon('search',14,'currentColor')+' Erneut suchen / aktualisieren</button>';
+    } else if(l.summary){
+      html += '<p class="sub" style="margin:0 0 12px;">Verbindung <b style="color:var(--text);">'+l.summary+'</b> eingetragen, aber noch keine Details geladen.</p>';
+      html += '<button type="button" class="btn-primary" data-train-refresh="'+l.leg+'" style="width:100%;">'+svgIcon('search',14,'currentColor')+' Zugdaten laden</button>';
+    } else {
+      html += '<p class="sub" style="margin:0 0 12px;">Noch keine Zugverbindung hinterlegt.</p>';
+      html += '<button type="button" class="btn-primary" data-train-refresh="'+l.leg+'" style="width:100%;">'+svgIcon('search',14,'currentColor')+' Zugverbindung suchen</button>';
+    }
+    html += '</div>';
+  });
+  return html;
+}
+
 function detailCardHTML(t){
   const pLbl = purposeLabel(t);
   const contCode = getContinent((t.cityCC||'').toLowerCase());
@@ -10869,6 +11088,79 @@ async function flightProxyFetch(params){
    Bereich (bestätigter Endpunkt: /flights/number/{nummer}/{von}/{bis}?dateLocalRole=Both).
    Deckt die komplette ±2-Tage-Suche mit EINEM Aufruf ab, statt wie vorher fünf
    Einzelabfragen zu brauchen. */
+/* ---------- Zug-Suche (Phase 2, v6.db.transport.rest) ----------
+   Anders als AeroDataBox: kostenlos, ohne API-Key, direkt aus dem Browser aufrufbar
+   (CORS aktiviert) — kein Proxy-Worker nötig. Rate-Limit 100 Anfragen/Minute.
+   Läuft über einen inoffiziellen Community-Wrapper (db-vendo-client), da die
+   ursprüngliche offizielle DB-HAFAS-Schnittstelle abgeschaltet wurde — funktioniert,
+   ist aber nicht offiziell von der Bahn betrieben (siehe Provider-Austauschbarkeit,
+   Abschnitt 4/5 der Transport-Segment-Spezifikation). */
+const DB_TRANSPORT_BASE = 'https://v6.db.transport.rest';
+async function dbTransportFetch(path){
+  const resp = await fetch(DB_TRANSPORT_BASE+path);
+  if(!resp.ok){
+    let msg = 'HTTP '+resp.status;
+    try{ const j = await resp.json(); if(j?.message) msg = j.message; }catch(e){}
+    throw new Error(msg);
+  }
+  return resp.json();
+}
+/* Löst einen Stadt-/Bahnhofsnamen zur besten passenden Haltestelle auf (id, Name,
+   Koordinaten) — needed, da /journeys IDs statt Freitext erwartet. Bevorzugt Fern-
+   verkehrs-Hauptbahnhöfe (stationOrStop mit hoher Relevanz kommt bei dieser API
+   bereits sortiert zurück, erster Treffer ist i. d. R. der richtige Hbf). */
+async function dbFindStation(name){
+  if(!name) return null;
+  const results = await dbTransportFetch('/locations?query='+encodeURIComponent(name)+'&results=5&stops=true&addresses=false&poi=false');
+  if(!results || !results.length) return null;
+  const best = results[0];
+  return {id: best.id, name: best.name, lat: best.location?.latitude??null, lon: best.location?.longitude??null};
+}
+/* Sucht Verbindungen zwischen zwei Haltestellen-IDs ab einem Abfahrtszeitpunkt.
+   Gibt die rohen "journeys" zurück (jede kann 1..n legs bei Umstiegen haben). */
+async function dbSearchJourneys(fromId, toId, whenIso){
+  const qs = 'from='+encodeURIComponent(fromId)+'&to='+encodeURIComponent(toId)
+    +'&departure='+encodeURIComponent(whenIso)+'&results=6&stopovers=true&language=de';
+  const data = await dbTransportFetch('/journeys?'+qs);
+  return data?.journeys || [];
+}
+/* Reduziert eine rohe "leg" (Fahrtabschnitt) auf genau die Felder, die die
+   Zugdaten-Anzeige (Formular-Zusammenfassung + spätere Detail-Karte) braucht. */
+function normalizeTrainLeg(leg){
+  const dep = leg.origin||{}, arr = leg.destination||{};
+  const line = leg.line||{};
+  const stops = (leg.stopovers||[]).filter(s=>s.stop && s.stop.id!==dep.id && s.stop.id!==arr.id).map(s=>({
+    name: s.stop?.name||'', arrival: s.arrival||null, departure: s.departure||null,
+    platform: s.arrivalPlatform||s.departurePlatform||null,
+    lat: s.stop?.location?.latitude??null, lon: s.stop?.location?.longitude??null
+  }));
+  return {
+    trainNumber: line.fahrtNr ? (line.productName||line.name||'')+' '+line.fahrtNr : (line.name||''),
+    line: line.name||null,
+    trainType: line.product||null,
+    operator: (line.operator&&line.operator.name) || null,
+    depStationName: dep.name||'', depStationId: dep.id||null, depLat: dep.location?.latitude??null, depLon: dep.location?.longitude??null,
+    arrStationName: arr.name||'', arrStationId: arr.id||null, arrLat: arr.location?.latitude??null, arrLon: arr.location?.longitude??null,
+    depScheduled: leg.plannedDeparture||leg.departure||null, depActual: leg.departure||null,
+    arrScheduled: leg.plannedArrival||leg.arrival||null, arrActual: leg.arrival||null,
+    departurePlatform: leg.departurePlatform||leg.plannedDeparturePlatform||null,
+    arrivalPlatform: leg.arrivalPlatform||leg.plannedArrivalPlatform||null,
+    departureDelayMinutes: typeof leg.departureDelay==='number' ? Math.round(leg.departureDelay/60) : null,
+    arrivalDelayMinutes: typeof leg.arrivalDelay==='number' ? Math.round(leg.arrivalDelay/60) : null,
+    cancelled: !!leg.cancelled,
+    distanceKm: typeof leg.distance==='number' ? Math.round(leg.distance/1000) : null,
+    durationMinutes: (leg.departure && leg.arrival) ? Math.round((new Date(leg.arrival)-new Date(leg.departure))/60000) : null,
+    stops: stops,
+    fetchedAt: Date.now()
+  };
+}
+/* Eine Journey kann mehrere "legs" haben (Umstiege) — nur die tatsächlichen
+   Zug-/Bus-Abschnitte behalten, reine Fußwege zwischen Bahnsteigen ("walking":true)
+   rausfiltern, die zählen nicht als eigenes Transportsegment. */
+function normalizeTrainJourney(journey){
+  return (journey.legs||[]).filter(l=>!l.walking).map(normalizeTrainLeg);
+}
+
 async function flightApiFetchByNumber(number, fromDate, toDate){
   const data = await flightProxyFetch({mode:'byNumber', number, fromDate, toDate});
   return Array.isArray(data) ? data : (data ? [data] : []);
@@ -11169,6 +11461,97 @@ document.getElementById('flightSearchManualBtn').addEventListener('click', async
   renderFlightResults(all);
   setFlightSearchStatus(all.length ? all.length+' Treffer am '+fmtDate(ctx.centerDate)+' — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer am '+fmtDate(ctx.centerDate)+' gefunden.', all.length?'ok':'');
 });
+
+/* ---------- Zugverbindungs-Such-Modal (Phase 2) ---------- */
+let trainSearchCtx = null;
+function setTrainSearchStatus(msg, cls){
+  const el = document.getElementById('trainSearchStatus');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'sync-status'+(cls?' '+cls:'');
+}
+function renderTrainStationChip(elId, station, fallbackName){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(station){
+    el.innerHTML = '<span class="airport-chip active">'+station.name+'</span>';
+  } else {
+    el.innerHTML = '<span class="airport-chip" style="opacity:.6;">„'+(fallbackName||'?')+'" nicht gefunden</span>';
+  }
+}
+function fmtTrainTime(iso){
+  if(!iso) return '–';
+  const d = new Date(iso);
+  if(isNaN(d.getTime())) return '–';
+  return d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+function fmtTrainDuration(mins){
+  if(mins==null) return '';
+  const h = Math.floor(mins/60), m = mins%60;
+  return (h?h+'h ':'')+(m<10&&h?'0':'')+m+'min';
+}
+async function openTrainSearchModal(ctx){
+  trainSearchCtx = ctx;
+  const legLabel = ctx.leg==='out' ? 'Hinweg' : 'Rückweg';
+  document.getElementById('trainSearchTitle').textContent = 'Zugverbindung suchen ('+legLabel+')';
+  document.getElementById('trainSearchResults').innerHTML = '';
+  setTrainSearchStatus('Stationen werden ermittelt …', '');
+  document.getElementById('trainSearchModal').classList.add('open');
+  try{
+    const [dep, arr] = await Promise.all([dbFindStation(ctx.depName), dbFindStation(ctx.arrName)]);
+    ctx.depStation = dep; ctx.arrStation = arr;
+    renderTrainStationChip('trainDepResolved', dep, ctx.depName);
+    renderTrainStationChip('trainArrResolved', arr, ctx.arrName);
+    setTrainSearchStatus(dep&&arr ? '' : 'Von/Nach konnten nicht eindeutig gefunden werden — bitte Städtenamen in Von/Nach prüfen.', dep&&arr?'':'err');
+  }catch(e){
+    setTrainSearchStatus('Stationssuche fehlgeschlagen: '+e.message, 'err');
+  }
+}
+document.getElementById('trainSearchClose').addEventListener('click', ()=>{
+  document.getElementById('trainSearchModal').classList.remove('open');
+});
+document.getElementById('trainSearchModal').addEventListener('click', (e)=>{
+  if(e.target.id==='trainSearchModal') document.getElementById('trainSearchModal').classList.remove('open');
+});
+document.getElementById('trainSearchGoBtn').addEventListener('click', async ()=>{
+  const ctx = trainSearchCtx;
+  if(!ctx || !ctx.depStation || !ctx.arrStation){ setTrainSearchStatus('Von/Nach noch nicht aufgelöst.', 'err'); return; }
+  if(!ctx.date){ setTrainSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
+  const time = document.getElementById('trainSearchTime').value || '09:00';
+  const whenIso = ctx.date+'T'+time+':00';
+  setTrainSearchStatus('Suche läuft …', '');
+  let journeys = [];
+  try{
+    journeys = await dbSearchJourneys(ctx.depStation.id, ctx.arrStation.id, whenIso);
+  }catch(e){ setTrainSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); return; }
+  renderTrainResults(journeys);
+  setTrainSearchStatus(journeys.length ? journeys.length+' Verbindungen gefunden — antippen zum Übernehmen.' : 'Keine Verbindungen gefunden.', journeys.length?'ok':'');
+});
+function renderTrainResults(journeys){
+  const el = document.getElementById('trainSearchResults');
+  if(!el) return;
+  if(!journeys.length){ el.innerHTML=''; return; }
+  el.innerHTML = journeys.map((j,i)=>{
+    const legs = normalizeTrainJourney(j);
+    if(!legs.length) return '';
+    const first = legs[0], last = legs[legs.length-1];
+    const totalMin = legs.reduce((s,l)=>s+(l.durationMinutes||0),0);
+    const lineLabel = legs.length===1 ? (first.trainNumber||first.line||'Zug') : legs.map(l=>l.trainNumber||l.line).filter(Boolean).join(' → ');
+    const transferLabel = legs.length>1 ? legs.length-1+' Umstieg'+(legs.length-1>1?'e':'') : 'Direkt';
+    return '<div class="flight-result-row" data-idx="'+i+'">'+
+      '<div class="flight-result-main"><b>'+lineLabel+'</b><span class="flight-result-status">'+transferLabel+'</span></div>'+
+      '<div class="flight-result-sub">'+fmtTrainTime(first.depScheduled)+' '+first.depStationName+' → '+fmtTrainTime(last.arrScheduled)+' '+last.arrStationName+(totalMin?' · '+fmtTrainDuration(totalMin):'')+'</div>'+
+      '</div>';
+  }).join('');
+  el.querySelectorAll('.flight-result-row').forEach(row=>{
+    row.addEventListener('click', ()=>{
+      const journey = journeys[+row.dataset.idx];
+      const legs = normalizeTrainJourney(journey);
+      if(trainSearchCtx && trainSearchCtx.onSelect) trainSearchCtx.onSelect(legs);
+      document.getElementById('trainSearchModal').classList.remove('open');
+    });
+  });
+}
 
 function fmtSyncTimestamp(iso){
   try{
@@ -11738,6 +12121,8 @@ renderAdd = function(root){
   advanced.innerHTML='<summary><span class="form-more-summary-label"><span class="step">3</span>Erweitert</span></summary>';
   const flightOut=form.querySelector('#flightFieldOut'); if(flightOut)advanced.appendChild(flightOut);
   const flightReturn=form.querySelector('#flightFieldReturn'); if(flightReturn)advanced.appendChild(flightReturn);
+  const trainOut=form.querySelector('#trainFieldOut'); if(trainOut)advanced.appendChild(trainOut);
+  const trainReturn=form.querySelector('#trainFieldReturn'); if(trainReturn)advanced.appendChild(trainReturn);
   const submit=form.querySelector('.bp-submit-row');
   form.insertBefore(secondary,submit); form.insertBefore(advanced,submit);
 
@@ -12086,6 +12471,46 @@ renderTripDetailPage=function(tripId,root){
             await saveTrips();
             showToast('✓ Flugdaten aktualisiert.', 'success');
             try{ renderTripDetailPage(t.id, root); }catch(err){ console.error('Detailseite konnte nach Flugdaten-Update nicht neu gerendert werden:', err); }
+          }
+        });
+      });
+    });
+  }
+
+  /* Zugdaten-Karte (Phase 2) — gleiches Nachhäng-Muster wie die Flugdaten-Karte
+     direkt darüber, aus demselben Grund (mehrfach überschriebene Basisfunktion). */
+  root.querySelectorAll('.train-data-card').forEach(el=>el.remove());
+  let trainHtml = '';
+  try{ trainHtml = trainDataCardHTML(t); }catch(err){ console.error('Zugdaten-Karte konnte nicht gerendert werden:', err); }
+  if(trainHtml){
+    const tmp3=document.createElement('div'); tmp3.innerHTML=trainHtml;
+    const anchor = main.querySelector('.flight-data-card:last-of-type') || main.querySelector('.tdp-route-section');
+    Array.from(tmp3.children).forEach(card=>{
+      if(anchor) anchor.insertAdjacentElement('afterend', card);
+      else main.prepend(card);
+    });
+    root.querySelectorAll('[data-train-refresh]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const leg = btn.dataset.trainRefresh;
+        const depAll = leg==='out' ? t.fromCity : t.city;
+        const arrAll = leg==='out' ? t.city : t.fromCity;
+        const date = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
+        openTrainSearchModal({
+          leg, depName: depAll, arrName: arrAll, date,
+          onSelect: async (legs)=>{
+            const trip = trips.find(x=>x.id===t.id);
+            if(!trip) return;
+            const summary = legs.map(l=>l.trainNumber||l.line).filter(Boolean).join(' → ');
+            if(leg==='out'){ trip.trainDataOut = legs; trip.trainSummaryOut = summary; }
+            else { trip.trainDataReturn = legs; trip.trainSummaryReturn = summary; }
+            const total = legs.reduce((s,l)=>s+(typeof l.distanceKm==='number'?l.distanceKm:0),0);
+            const allHaveDist = legs.length && legs.every(l=>typeof l.distanceKm==='number');
+            if(allHaveDist){ if(leg==='out') trip.outDistanceKm = Math.round(total); else trip.returnDistanceKm = Math.round(total); }
+            trip.transportSegments = deriveTransportSegments(trip);
+            trip.updatedAt = Date.now();
+            await saveTrips();
+            showToast('✓ Zugdaten aktualisiert.', 'success');
+            try{ renderTripDetailPage(t.id, root); }catch(err){ console.error('Detailseite konnte nach Zugdaten-Update nicht neu gerendert werden:', err); }
           }
         });
       });
