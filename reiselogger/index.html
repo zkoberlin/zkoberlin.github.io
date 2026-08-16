@@ -4214,13 +4214,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.8.0';
+const APP_VERSION = '5.9.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.9.0', tier:'🟢', title:'Transport-Segment-System: Phase 3 — Flug-Integration angeglichen', items:[
+    'Die Flugsuche lief durch Phase 1 bereits über dieselbe transportSegments-Architektur wie der Zug — hier nur noch die Detailfelder an die Spezifikation angeglichen: Airline-IATA-Code, sowie Verspätung in Minuten für Ab- und Ankunft (aus den bereits vorhandenen Zeiten berechnet, nicht neu abgefragt) sind jetzt Teil jedes Flug-Segments, genau wie beim Zug.',
+    'Rein strukturell, keine sichtbare Änderung in der App — betrifft nur die interne Datengrundlage für spätere Auswertungen (Phase 5).'
+  ]},
   {v:'5.8.0', tier:'🟡', title:'Transport-Segment-System: Phase 2 — Zugverbindungs-Suche', items:[
     'Neu bei Verkehrsmittel "Zug": Von/Nach werden automatisch aus dem Formular übernommen, dazu ungefähre Abfahrtszeit — "Verbindungen suchen" zeigt passende Züge (Linie, Zeiten, Dauer, Direkt/Umstiege) zum Antippen an, statt alles von Hand einzutragen. Läuft über v6.db.transport.rest — kostenlos, ohne API-Key, kein Proxy-Worker nötig.',
     'Nach Auswahl automatisch übernommen: Zugnummer/Linie, Betreiber, geplante & tatsächliche Zeiten, Gleise, Verspätungen, Zwischenhalte, Distanz — inkl. Umstiege als mehrere zusammenhängende Etappen.',
@@ -4898,10 +4902,12 @@ function buildLegTransportSegments(t, leg){
       route: { distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : null, geometry:{type:'LineString',coordinates:[]}, stops:[], calculatedBy: fd?'aerodatabox':'beeline-estimate' },
       details: fd ? {
         flightNumber: fd.flightNumber||null,
-        airline: fd.airline?{name:fd.airline}:null,
+        airline: fd.airline?{name:fd.airline, iata:fd.airlineIata||null}:null,
         aircraft: (fd.aircraftModel||fd.aircraftReg)?{registration:fd.aircraftReg||null,type:fd.aircraftModel||null}:null,
         departureTerminal: fd.depTerminal||null, departureGate: fd.depGate||null,
         arrivalTerminal: fd.arrTerminal||null, arrivalGate: fd.arrGate||null,
+        departureDelayMinutes: flightDelayMinutes(fd.depScheduled, fd.depActual),
+        arrivalDelayMinutes: flightDelayMinutes(fd.arrScheduled, fd.arrActual),
         flightStatus: fd.status||null,
         callSign: fd.callSign||null,
         codeshareStatus: fd.codeshareStatus||null,
@@ -11267,6 +11273,8 @@ function normalizeFlightData(raw){
   return {
     flightNumber: (raw.number||'').replace(/\s+/g,''),
     airline: (raw.airline||{}).name || '',
+    airlineIata: (raw.airline||{}).iata || '',
+    airlineIcao: (raw.airline||{}).icao || '',
     status: inferFinalFlightStatus(raw.status, arrBestIso, arrSchedIso),
     depAirportName: depAirport.name || '', depIata: depAirport.iata || depAirport.icao || '',
     arrAirportName: arrAirport.name || '', arrIata: arrAirport.iata || arrAirport.icao || '',
