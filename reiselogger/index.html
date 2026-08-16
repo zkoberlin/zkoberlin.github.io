@@ -3458,6 +3458,11 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
           <button class="btn-secondary" id="exportDataBtn" type="button">Daten exportieren (JSON)</button>
         </div>
         <div class="danger-zone">
+          <p style="margin-bottom:12px;">Bestehende Auto-, Rad- und Bus-Strecken, die noch mit der alten Luftlinien-Schätzung berechnet wurden, rückwirkend auf echtes Straßen-/Wege-Routing (OpenStreetMap) umstellen. Bereits per Routing berechnete oder manuell eingetragene Strecken werden nicht angetastet.</p>
+          <button class="btn-secondary" id="recalcDistancesBtn" type="button">Distanzen neu berechnen</button>
+          <div class="sync-status" id="recalcDistancesStatus"></div>
+        </div>
+        <div class="danger-zone">
           <p>Alle erfassten Reisen unwiderruflich löschen.</p>
           <button class="btn-danger" id="resetAllBtn">Alle Daten löschen</button>
         </div>
@@ -4237,13 +4242,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.5.4';
+const APP_VERSION = '6.6.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.6.0', tier:'🟡', title:'Rückwirkende Distanz-Neuberechnung + automatische Flugdaten-Aktualisierung', items:[
+    'Neu in den Einstellungen unter "Daten": "Distanzen neu berechnen" geht alle gespeicherten Reisen durch und ersetzt bei Auto-, Rad- und Bus-Etappen, die noch auf der alten Luftlinien-Schätzung beruhen, die Distanz durch echtes OSRM-Routing (Straße/Weg statt Luftlinie) — bereits per Routing berechnete oder manuell eingetragene Strecken bleiben unangetastet.',
+    'Bus nutzt dafür das "driving"-Profil (kein eigenes öffentliches Bus-Routing-Profil bei OSRM verfügbar) — näher an der Realität als die bisherige Schätzung, aber keine exakte Busroute.',
+    'Flugdaten: Beim Öffnen einer Reise mit noch nicht gelandetem/ausgefallenem Flug werden Status und Zeiten automatisch im Hintergrund aktualisiert, falls die letzten Daten älter als 5 Minuten sind — kein Klick auf "Erneut suchen" mehr nötig. Der manuelle Button bleibt weiterhin verfügbar.'
+  ]},
   {v:'6.5.4', tier:'🟢', title:'Zugsuche: Uhrzeit auf der Detailkarte war 2h daneben', items:[
     'Ergebnisliste zeigte die richtige Uhrzeit (z. B. 12:14), auf der Zugdaten-Detailkarte nach der Auswahl stand aber die UTC-Zeit ohne Umrechnung (10:14) — verursacht durch eine für AeroDataBox-Flugzeiten gebaute Formatierungsfunktion, die einfach "HH:MM" aus dem String schneidet statt die Zeitzone zu berücksichtigen.',
     'Funktion erkennt jetzt Zeitstempel mit Zeitzonenkennung (Z/Offset, wie von der Zugsuche geliefert) automatisch und rechnet korrekt in die lokale Zeit um — AeroDataBox-Flugzeiten (ohne Zeitzone) bleiben unverändert wie bisher.'
@@ -10403,6 +10413,47 @@ function attachLogCardActions(root){
    Panel-Inhalt komplett (kein Modal), mit Zurück-Pfeil zur Liste. Nutzt dieselbe
    detailCardHTML() wie die Desktop-Ausklapp-Zeile für Details/Fotos/Aktionen, damit
    beide Ansichten inhaltlich immer synchron bleiben. */
+/* Automatische, stille Aktualisierung "in der Luft" befindlicher Flüge — anders als
+   der manuelle "Erneut suchen"-Button (öffnet ein Auswahl-Modal) fragt das hier direkt
+   dieselbe bereits bekannte Flugnummer erneut ab und ersetzt den Eintrag ohne Nutzer-
+   interaktion. Läuft nur an, wenn (a) der Flug noch nicht final ist (nicht gelandet/
+   ausgefallen, siehe inferFinalFlightStatus) UND (b) die letzten Daten älter als 5 Min
+   sind — hält den AeroDataBox-Verbrauch (Basic-Plan, begrenztes Kontingent) bewusst
+   niedrig, kein fortlaufendes Polling währenddessen die Seite offen bleibt.
+   Gibt true zurück, wenn mindestens ein Eintrag aktualisiert wurde. */
+async function autoRefreshStaleFlights(trip){
+  if(!flightApiConfigured()) return false;
+  const STALE_MS = 5*60*1000;
+  let anyUpdated = false;
+  for(const legKey of ['flightDataOut','flightDataReturn']){
+    const arr = trip[legKey];
+    if(!Array.isArray(arr) || !arr.length) continue;
+    for(let i=0;i<arr.length;i++){
+      const n = arr[i];
+      if(!n || !n.flightNumber) continue;
+      const displayStatus = inferFinalFlightStatus(n.status, n.arrActual, n.arrScheduled);
+      if(displayStatus==='arrived' || displayStatus==='cancelled') continue; // Flug ist fertig, nichts mehr zu holen
+      const age = Date.now() - (n.fetchedAt||0);
+      if(age < STALE_MS) continue; // erst kürzlich geladen, nicht nochmal abfragen
+      try{
+        const searchDate = (n.depScheduled||'').slice(0,10) || null;
+        if(!searchDate) continue;
+        const results = await flightApiFetchByNumber(n.flightNumber, searchDate, searchDate);
+        if(!results.length) continue;
+        // Bei mehreren Treffern (z. B. Codeshare-Varianten) den mit passendem
+        // Abflug-Flughafen bevorzugen, sonst den ersten nehmen.
+        const raw = results.find(r=>((r.departure?.airport?.iata||r.departure?.airport?.icao||'').toUpperCase())===(n.depIata||'').toUpperCase()) || results[0];
+        const fresh = normalizeFlightData(raw);
+        arr[i] = fresh;
+        anyUpdated = true;
+      }catch(e){
+        console.warn('Automatische Flugdaten-Aktualisierung fehlgeschlagen für', n.flightNumber, e);
+      }
+    }
+  }
+  if(anyUpdated){ trip.updatedAt = Date.now(); await saveTrips(); }
+  return anyUpdated;
+}
 function renderTripDetailPage(tripId, root){
   const t = trips.find(x=>x.id===tripId);
   if(!t){ viewingTripId=null; renderLog(root); return; }
@@ -10462,6 +10513,15 @@ function renderTripDetailPage(tripId, root){
         }
       });
     });
+  });
+  // Beim Öffnen der Detailseite still prüfen, ob "in der Luft" befindliche Flüge
+  // veraltete Daten haben (>5 Min, siehe autoRefreshStaleFlights) — falls ja, im
+  // Hintergrund neu laden und die Seite (nur falls noch aktiv angeschaut) danach
+  // neu rendern. Blockiert die erste Anzeige nicht, läuft asynchron nach.
+  autoRefreshStaleFlights(t).then(updated=>{
+    if(updated && viewingTripId===tripId){
+      try{ renderTripDetailPage(tripId, root); }catch(err){ console.error('Detailseite konnte nach automatischer Flugdaten-Aktualisierung nicht neu gerendert werden:', err); }
+    }
   });
   attachLogRowActions(root);
 }
@@ -11553,7 +11613,11 @@ function normalizeTrainJourney(journey){
    Schätzung zurück — nie eine harte Fehlermeldung, ganz im Sinne von "manueller
    Modus bleibt immer verfügbar". */
 const OSRM_BASE = 'https://router.project-osrm.org';
-const OSRM_PROFILES = { car:'driving', bike:'bike', walk:'foot' };
+// Bus nutzt das "driving"-Profil mit (Busse fahren i. d. R. auf denselben Straßen
+// wie Autos) — es gibt kein eigenes öffentliches Bus-Routing-Profil bei OSRM. Etwas
+// ungenauer als ein echtes ÖPNV-Routing, aber deutlich näher an der Realität als die
+// bisherige Luftlinien-Schätzung.
+const OSRM_PROFILES = { car:'driving', bike:'bike', walk:'foot', bus:'driving' };
 async function osrmRoute(mode, points){
   const profile = OSRM_PROFILES[mode];
   if(!profile || points.length<2) return null;
@@ -12138,6 +12202,70 @@ document.getElementById('exportDataBtn').addEventListener('click', ()=>{
   URL.revokeObjectURL(url);
   showToast('✓ Backup heruntergeladen.', 'success');
 });
+/* Rückwirkende Neuberechnung: geht alle gespeicherten Reisen durch und ersetzt bei
+   Auto/Rad/Bus-Etappen, die noch nicht per OSRM (echtes Routing) berechnet wurden
+   (calculatedBy !== 'osrm', also Luftlinien-Schätzung oder gar nichts), die Distanz
+   durch eine echte OSRM-Route — sofern Start/Ziel/Zwischenstopps als Stadt auflösbar
+   sind. Läuft die Anfragen bewusst NACHEINANDER mit Pause ab (siehe OSRM-Kommentar
+   weiter oben: max. 1 Anfrage/Sekunde beim öffentlichen Demoserver), nicht parallel.
+   Bereits per OSRM berechnete oder manuell überschriebene (calculatedBy null, aber
+   vom Nutzer bewusst editiert) Strecken werden nicht angetastet — hier ließe sich
+   ohne Weiteres nicht unterscheiden "nie berechnet" von "bewusst manuell gesetzt",
+   daher wird konservativ alles außer echtem OSRM-Ergebnis als Kandidat behandelt. */
+async function recalcAllRouteDistances(){
+  const statusEl = document.getElementById('recalcDistancesStatus');
+  const btn = document.getElementById('recalcDistancesBtn');
+  const jobs = [];
+  trips.forEach(t=>{
+    if(t.direction!=='returnonly' && OSRM_PROFILES[t.outMode] && t.outRouteCalculatedBy!=='osrm'){
+      jobs.push({t, legKey:'out', mode:t.outMode, chain:[t.fromCity, ...(t.outWaypoints||[]), t.city]});
+    }
+    if((t.direction==='roundtrip'||t.direction==='returnonly') && OSRM_PROFILES[t.returnMode] && t.returnRouteCalculatedBy!=='osrm'){
+      jobs.push({t, legKey:'return', mode:t.returnMode, chain:[t.city, ...(t.returnWaypoints||[]), t.fromCity]});
+    }
+  });
+  if(!jobs.length){
+    statusEl.textContent = 'Keine Strecken gefunden, die noch auf der alten Luftlinien-Schätzung beruhen.';
+    statusEl.className = 'sync-status';
+    return;
+  }
+  btn.disabled = true;
+  let updated = 0, skipped = 0;
+  for(let i=0;i<jobs.length;i++){
+    const job = jobs[i];
+    statusEl.className = 'sync-status';
+    statusEl.textContent = 'Prüfe Strecke '+(i+1)+' von '+jobs.length+' … ('+updated+' aktualisiert)';
+    try{
+      const names = job.chain.map(n=>(n||'').trim()).filter(Boolean);
+      const unresolved = names.filter(n=>!findCity(n));
+      for(const n of unresolved){ await resolveCity(n); }
+      const points = names.map(n=>{ const ref=findCity(n); return ref?{lat:ref.lat,lon:ref.lon}:null; });
+      if(points.length>=2 && points.every(Boolean)){
+        const r = await osrmRoute(job.mode, points);
+        if(r){
+          job.t[job.legKey+'DistanceKm'] = r.distanceKm;
+          job.t[job.legKey+'RouteGeometry'] = r.geometry;
+          job.t[job.legKey+'RouteCalculatedBy'] = 'osrm';
+          job.t[job.legKey+'RouteDurationMinutes'] = r.durationMinutes;
+          job.t.updatedAt = Date.now();
+          updated++;
+        } else { skipped++; }
+      } else { skipped++; }
+    }catch(e){
+      console.warn('Neuberechnung für eine Strecke fehlgeschlagen:', e);
+      skipped++;
+    }
+    // OSRM-Demoserver-Limit einhalten (max. 1 Anfrage/Sekunde) — Pause auch nach der
+    // letzten Iteration schadet nicht, spart aber keinen nennenswerten Vorteil, daher
+    // nur zwischen den Durchläufen warten.
+    if(i<jobs.length-1) await new Promise(res=>setTimeout(res,1100));
+  }
+  await saveTrips();
+  btn.disabled = false;
+  statusEl.className = 'sync-status ok';
+  statusEl.textContent = '✓ Fertig: '+updated+' Strecke'+(updated===1?'':'n')+' aktualisiert'+(skipped?', '+skipped+' übersprungen (Ort nicht gefunden oder keine Route)':'')+'.';
+}
+document.getElementById('recalcDistancesBtn').addEventListener('click', recalcAllRouteDistances);
 document.getElementById('notifTripsToggle').addEventListener('change', async (e)=>{
   settings.notifyTrips = e.target.checked; await saveSettings();
 });
