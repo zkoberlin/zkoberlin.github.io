@@ -4214,13 +4214,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.2.1';
+const APP_VERSION = '6.3.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.3.0', tier:'🟡', title:'Zugsuche: Wechsel von v6.db.transport.rest zu Transitous/MOTIS', items:[
+    'Der bisherige inoffizielle db-vendo-client-Wrapper (v6.db.transport.rest) ist dauerhaft ausgefallen (siehe 6.2.1) — die Zugsuche läuft jetzt stattdessen über Transitous, einen gemeinnützigen, provider-neutralen MOTIS-Router auf offenen GTFS/GTFS-RT-Daten. Deutschland ist über DELFI/gtfs.de abgedeckt.',
+    'Technisch ein reiner Provider-Austausch innerhalb der bestehenden Architektur: nur der Fetch-Layer (Stationssuche über /v1/geocode, Verbindungssuche über /v5/plan) wurde ersetzt, die Anzeige-/Speicherlogik blieb unverändert.',
+    'Offen: Die exakte Feldzuordnung der Transitous-Antworten wird gerade gegen echte Suchergebnisse verifiziert (Debug-Log in der Browser-Konsole ergänzt) — kann in einer Folgeversion noch nachjustiert werden.',
+    'Vor dem Live-Betrieb mit zahlenden Abonnenten noch zu klären: Transitous’ Nutzungsrichtlinie schließt kommerzielle Nutzung ohne Rücksprache aus — entweder Kontakt zum Transitous-Team oder eigene MOTIS-Instanz.'
+  ]},
   {v:'6.2.1', tier:'🟢', title:'Zugsuche: klare Meldung bei Anbieter-Ausfall statt stiller Leere', items:[
     'Live geprüft: v6.db.transport.rest meldet sich aktuell selbst als "currently unavailable" (die zugrunde liegende DB-Schnittstelle wurde abgeschaltet, der angekündigte Ersatz ist laut Anbieter noch nicht vollständig umgestellt) — das war die Ursache, warum die Zugsuche zuletzt kommentarlos leer blieb.',
     'Ein kompletter Anbieter-Ausfall (Statusseite statt JSON-Antwort) wird jetzt erkannt und klar als solcher angezeigt, mit direktem Hinweis auf die manuelle Eingabe der Zugverbindung — die funktioniert unabhängig vom Suchdienst weiterhin.',
@@ -11314,10 +11320,15 @@ async function motisFetch(path){
   }
   if(!resp.ok){
     let msg = 'HTTP '+resp.status;
-    try{ const j = await resp.json(); if(j?.error||j?.message) msg = j.error||j.message; }catch(e){}
+    try{ const j = await resp.json(); if(j?.error||j?.message) msg = j.error||j.message; console.error('[MOTIS] Fehlerantwort für', path, j); }catch(e){}
     throw new Error(msg);
   }
-  return resp.json();
+  const json = await resp.json();
+  // TEMPORÄRES DEBUG-LOG (siehe Testhinweis oben) — einfach console.error-Aufruf
+  // unten entfernen, sobald die Feldzuordnung einmal gegen eine echte Antwort
+  // geprüft und bei Bedarf angepasst wurde.
+  console.log('[MOTIS] Antwort für', path, json);
+  return json;
 }
 /* Löst einen Stadt-/Bahnhofsnamen zur besten passenden Haltestelle auf (id, Name,
    Koordinaten) über den MOTIS-Geocoder. Feldnamen defensiv mit Fallbacks abgefragt,
