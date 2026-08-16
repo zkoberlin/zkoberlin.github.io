@@ -4171,13 +4171,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.2.0';
+const APP_VERSION = '5.3.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.3.0', tier:'🟡', title:'Routen-Vorschlag: zweites, bisher unbekanntes Antwortformat behoben', items:[
+    'Anhand einer echten Beispielantwort bestätigt: Der Flughafen-Abflüge-Endpunkt (für den Routen-Vorschlag) liefert Zeiten in einem komplett anderen Format als die Flugnummer-Suche — flache Felder wie scheduledTimeLocal statt verschachtelter {utc, local}-Objekte. Die Auswertung kannte bisher nur das verschachtelte Format, wodurch bei per Routen-Suche gefundenen Flügen praktisch alle Zeiten leer blieben.',
+    'Zusätzlich liefert dieser Endpunkt grundsätzlich keine Ankunftszeiten, Flugzeugtyp oder Distanz für das Ziel (nur Abflugdaten). Wird jetzt automatisch nach Auswahl über den vollständigen Flugnummer-Endpunkt nachgeladen, damit über die Routen-Suche gefundene Flüge genauso vollständige Daten zeigen wie eine direkte Flugnummer-Suche.'
+  ]},
   {v:'5.2.0', tier:'🟢', title:'Vier kleinere UI-Korrekturen', items:[
     'Icon in der Reise-Detailseiten-Kopfzeile ("1 Tag · 2.312 km · ✈ Direktflug") war vertikal nicht mittig zum Text ausgerichtet — behoben.',
     'Von Entdecken in "Travel Insights"/Badges/Bucket List zu springen (und wieder zurück) landete auf Mobile oft mittig auf der Seite statt oben — springt jetzt zuverlässig nach oben.',
@@ -10809,16 +10813,38 @@ function extractGreatCircleKm(raw){
   if(typeof raw.distanceKm==='number') return Math.round(raw.distanceKm);
   return null;
 }
+/* AeroDataBox nutzt für Zeiten je nach Endpunkt ZWEI unterschiedliche Formate:
+   - /flights/number/...: verschachtelt, z. B. dep.scheduledTime = {utc, local}
+   - /flights/airports/... (FIDS, für den Routen-Vorschlag): FLACH, z. B.
+     dep.scheduledTimeLocal + dep.scheduledTimeUtc als getrennte String-Felder,
+     ohne scheduledTime-Objekt. Per echter Beispielantwort bestätigt — vorher kannte
+     normalizeFlightData nur das verschachtelte Format, wodurch bei der Routen-Suche
+     praktisch alle Zeiten leer blieben. pickTime() versteht jetzt beide Varianten. */
+function pickTime(obj, base){
+  if(obj[base] && typeof obj[base]==='object') return obj[base];
+  const local = obj[base+'Local'], utc = obj[base+'Utc'];
+  if(local || utc) return {local, utc};
+  return {};
+}
+function bestTime(obj, bases){
+  for(const base of bases){
+    const t = pickTime(obj, base);
+    if(t.local || t.utc) return t;
+  }
+  return {};
+}
 function normalizeFlightData(raw){
   const dep = raw.departure||{}, arr = raw.arrival||{};
   const depAirport = dep.airport||{}, arrAirport = arr.airport||{};
-  // Per curl-Test bestätigte AeroDataBox-Feldnamen: scheduledTime (Original-Plan),
-  // revisedTime (aktualisierte Schätzung, z. B. bei Verspätung), runwayTime (tatsächliche
-  // Startbahn-Zeit, sobald bekannt) — NICHT actualTime/predictedTime, wie ursprünglich
-  // angenommen (das war der Grund für die fehlenden "Tatsächlich"-Zeiten). Bei noch nicht
-  // gelandeten Flügen steht statt runwayTime teils predictedTime — beides abgedeckt.
-  const depSched = dep.scheduledTime||{}, depBest = dep.runwayTime||dep.predictedTime||dep.revisedTime||depSched;
-  const arrSched = arr.scheduledTime||{}, arrBest = arr.runwayTime||arr.predictedTime||arr.revisedTime||arrSched;
+  // Reihenfolge "bestmögliche Zeit": tatsächliche Startbahn-/Landezeit zuerst, dann
+  // Vorhersage/aktualisierte Schätzung, zuletzt der ursprüngliche Plan. Deckt sowohl
+  // die Flugnummer-Antwort (scheduledTime/revisedTime/runwayTime/predictedTime,
+  // verschachtelt) als auch die FIDS-Antwort (scheduledTimeLocal/actualTimeLocal/
+  // runwayTimeLocal, flach) über dieselbe Logik ab.
+  const depSched = pickTime(dep,'scheduledTime');
+  const depBest = bestTime(dep, ['runwayTime','actualTime','predictedTime','revisedTime']);
+  const arrSched = pickTime(arr,'scheduledTime');
+  const arrBest = bestTime(arr, ['runwayTime','actualTime','predictedTime','revisedTime']);
   const aircraft = raw.aircraft||{};
   const arrBestIso = arrBest.utc||arrBest.local||'', arrSchedIso = arrSched.utc||arrSched.local||'';
   return {
@@ -10901,6 +10927,23 @@ function renderFlightResults(rawList){
       if(!n.depIata && ctx.depCode) n.depIata = ctx.depCode;
       if(!n.arrIata && ctx.arrCode) n.arrIata = ctx.arrCode;
       row.style.opacity = '0.5'; row.style.pointerEvents = 'none';
+      // Der Flughafen-Abflüge-Endpunkt (Routen-Vorschlag) liefert keine Ankunftszeiten,
+      // Flugzeugtyp o. Ä. für das Ziel — nur die Flugnummer-Endpunkt-Antwort ist
+      // vollständig. Kam dieses Ergebnis aus der Routen-Suche, hier direkt die volle
+      // Antwort nachladen und die spärlichen FIDS-Daten damit ersetzen. Schlägt das
+      // fehl (z. B. Netzwerkfehler), bleiben die FIDS-Basisdaten als Fallback erhalten.
+      if(raw.__fromFids && raw.__searchDate){
+        try{
+          const full = await flightApiFetchByNumber(n.flightNumber, raw.__searchDate, raw.__searchDate);
+          if(full.length){
+            const fullN = normalizeFlightData(full[0]);
+            Object.assign(n, fullN, {
+              depIata: fullN.depIata || n.depIata,
+              arrIata: fullN.arrIata || n.arrIata
+            });
+          }
+        }catch(e){ /* FIDS-Basisdaten bleiben als Fallback stehen */ }
+      }
       // Garantierter Fallback: liefert die API für DIESEN Flug ausnahmsweise keine
       // Luftlinien-Distanz (greatCircleKm kommt normalerweise direkt in der Antwort mit,
       // siehe extractGreatCircleKm), wird sie aus den bekannten Städtekoordinaten selbst
@@ -10984,7 +11027,7 @@ document.getElementById('flightSearchSuggestBtn').addEventListener('click', asyn
   for(const date of dates){
     try{
       const data = await flightApiFetchByRoute(ctx.depCode, ctx.arrCode, date);
-      data.forEach(f=>{ f.__searchDate = date; all.push(f); });
+      data.forEach(f=>{ f.__searchDate = date; f.__fromFids = true; all.push(f); });
     }catch(e){ /* einzelner Tag darf fehlschlagen, Suche läuft weiter */ }
   }
   renderFlightResults(all);
