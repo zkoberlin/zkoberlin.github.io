@@ -4214,13 +4214,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.3.2';
+const APP_VERSION = '6.3.3';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.3.3', tier:'🟢', title:'Zugsuche: gesendete Parameter in Fehlermeldung sichtbar', items:[
+    'Die Server-Fehlermeldung ("missing parameter") nennt nicht, welcher Parameter gemeint ist — die Fehlermeldung im Modal zeigt jetzt zusätzlich die tatsächlich gesendeten fromPlace/toPlace/time-Werte an, um leere oder falsch formatierte Stations-IDs direkt erkennbar zu machen.'
+  ]},
   {v:'6.3.2', tier:'🟢', title:'Zugsuche: korrekter API-Pfad (v6 statt v5) + vollständige Fehlerdiagnose', items:[
     'Verbindungssuche lief auf /api/v5/plan, einem nur aus einem Versions-Changelog abgeleiteten, nicht bestätigten Pfad — umgestellt auf /api/v6/plan, den in der aktuellen MOTIS-API-Referenz tatsächlich dokumentierten Endpunkt. War vermutlich Ursache der "missing parameter"-Fehlermeldung.',
     'Fehlermeldungen vom Zugsuche-Server zeigen jetzt die komplette Rohantwort statt nur geratener Feldnamen (error/message) — falls doch noch ein Parameter fehlt, ist der genaue Grund direkt im Modal sichtbar.'
@@ -11376,9 +11379,20 @@ async function dbFindStation(name){
 async function dbSearchJourneys(fromId, toId, whenIso){
   const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
     +'&time='+encodeURIComponent(whenIso)+'&arriveBy=false&numItineraries=6&language=de';
-  const data = await motisFetch('/v6/plan?'+qs);
-  const itineraries = data?.itineraries || [];
-  return itineraries.map(it => ({ legs: (it.legs||[]).map(motisLegToLegacyShape) }));
+  try{
+    const data = await motisFetch('/v6/plan?'+qs);
+    const itineraries = data?.itineraries || [];
+    return itineraries.map(it => ({ legs: (it.legs||[]).map(motisLegToLegacyShape) }));
+  }catch(e){
+    // Server-Fehlermeldung ist sehr knapp ({"error":"missing parameter"}, ohne zu
+    // sagen welcher) — hier die tatsächlich gesendeten Werte mit anhängen, um beim
+    // nächsten Fehlschlag sofort zu sehen, ob fromId/toId/whenIso leer oder
+    // unerwartet formatiert ankommen, statt weiter zu raten.
+    if(!(e instanceof DbTransportOutageError)){
+      e.message += ' [gesendet: fromPlace='+JSON.stringify(fromId)+', toPlace='+JSON.stringify(toId)+', time='+JSON.stringify(whenIso)+']';
+    }
+    throw e;
+  }
 }
 /* Adapter: MOTIS/OTP-artiger Leg (from/to/startTime/endTime/routeShortName/...) ->
    dieselbe Feldform wie zuvor ein db-vendo-client-Leg (origin/destination/line/
