@@ -3961,6 +3961,16 @@ const MODES = {
   walk:{label:'Zu Fuß',icon:'🚶',color:'var(--walk)',factor:1.15}
 };
 const MODE_ORDER = ['plane','car','train','bus','ship','bike','walk'];
+/* ---------- Transport-Segment-System: zentrale Registry (Phase 1) ----------
+   Bewusst KEINE zweite, parallel gepflegte Objektstruktur — TRANSPORT_TYPES ist ein
+   dünner, abgeleiteter Wrapper um das bestehende MODES-Objekt (Label/Icon/Farbe bleiben
+   an EINER Stelle gepflegt). statCategory entspricht bewusst dem bestehenden internen
+   Key (plane/car/train/bus/ship/bike/walk) — siehe Anpassungs-Notiz: Umbenennen der
+   Keys (z. B. plane→flight) würde eine Migration aller gespeicherten Reisen erzwingen,
+   ohne echten Nutzen; die sichtbaren Labels sind ohnehin schon korrekt ("Schiff" statt
+   "Fähre" usw.). "other" existiert in dieser App nicht und wird nicht eingeführt. */
+const TRANSPORT_TYPES = {};
+MODE_ORDER.forEach(k=>{ TRANSPORT_TYPES[k] = Object.assign({}, MODES[k], {statCategory:k}); });
 function getMode(key){
   return MODES[key] || {label:key||'Unbekannt', icon:'❔', color:'var(--text-dim)', factor:1.15};
 }
@@ -4182,13 +4192,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.6.0';
+const APP_VERSION = '5.7.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.7.0', tier:'🟡', title:'Transport-Segment-System: Phase 1 (Architektur, unsichtbar)', items:[
+    'Grundlage für ein einheitliches Transport-Segment-System gelegt (erster Schritt eines mehrteiligen Umbaus). Jede Reise bekommt jetzt zusätzlich ein transportSegments-Array — eine Etappe pro Teilstrecke (inkl. Zwischenstopps), mit Koordinaten, Distanz, Zeiten und bei Flügen den vollständigen AeroDataBox-Daten.',
+    'Rein additiv: keine bestehenden Felder wurden verändert oder entfernt, nichts an der Optik hat sich geändert. Bestehende Reisen werden beim nächsten Laden einmalig migriert, danach bleibt das Segment-Array stabil (Snapshot-Prinzip) und wird nur beim tatsächlichen Speichern/Bearbeiten einer Reise neu berechnet.',
+    'Zentrale TRANSPORT_TYPES-Registry ergänzt (Label/Icon/Farbe je Verkehrsmittel an einer Stelle) — baut auf der bestehenden Verkehrsmittel-Definition auf, keine doppelte Pflege.',
+    'Noch keine neue sichtbare Funktion — die eigentliche Zug-Suche folgt in Phase 2.'
+  ]},
   {v:'5.6.0', tier:'🟡', title:'Neu: Zu Fuß als siebtes Verkehrsmittel', items:[
     'Zu Fuß steht jetzt bei jeder Reise als siebtes Verkehrsmittel zur Auswahl — eigenes Icon (Geh-Figur, im bestehenden Outline-Stil), eigene Akzentfarbe, CO₂-Faktor 0 wie beim Rad.',
     'Alte, sehr weit zurückliegende Reisen mit dem historischen Wert "walk" wurden bisher beim Laden automatisch zu "Rad" umgewandelt (Zu Fuß gab es früher als eigene Option nicht) — bleiben jetzt korrekt als Zu-Fuß-Reisen erhalten.',
@@ -4751,13 +4767,82 @@ let notifPopupQueue = [];
 /* ---------- Helpers ---------- */
 function uid(){return 't_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
 
-/* Zerlegt eine Reise-Richtung in einzelne Flug-Etappen anhand der Zwischenstopps —
+/* Zerlegt eine Reise-Richtung in einzelne Etappen anhand der Zwischenstopps —
    z. B. Berlin -> Riga -> Vilnius wird zu [{dep:'Berlin',arr:'Riga'},{dep:'Riga',arr:'Vilnius'}].
-   Ohne Zwischenstopps ergibt sich genau eine Etappe (dep -> arr). */
+   Ohne Zwischenstopps ergibt sich genau eine Etappe (dep -> arr). Ursprünglich nur für
+   Flug-Etappen gebaut, wird jetzt auch von deriveTransportSegments (Phase 1) für jedes
+   Verkehrsmittel verwendet. */
 function legSegments(fromCity, toCity, waypoints){
   const points = [fromCity, ...((waypoints||[]).filter(Boolean)), toCity];
   const segs = [];
   for(let i=0;i<points.length-1;i++) segs.push({dep:points[i], arr:points[i+1]});
+  return segs;
+}
+
+/* ---------- Transport-Segment-System: Ableitung (Phase 1) ----------
+   Baut aus den BESTEHENDEN Feldern (outMode/returnMode, Zwischenstopps, Flugdaten)
+   ein einheitliches transportSegments-Array je Reise — rein additiv, verändert oder
+   ersetzt keines der bisherigen Felder. Das ist bewusst noch keine neue UI, sondern
+   die Datengrundlage: Phase 2 (Zug-Suche) und alles Weitere baut darauf auf, ohne
+   dass bestehende Reisen/Anzeigen sich ändern. Wird sowohl bei der Migration alter
+   Reisen als auch beim Speichern (neu/bearbeitet) neu berechnet, damit es immer mit
+   den "eigentlichen" Feldern synchron bleibt, bis eine spätere Phase eigene Segment-
+   Bearbeitung einführt. */
+function resolveSegmentPoint(cityName, iataCode){
+  const ref = findCity(cityName);
+  return {
+    name: cityName || '',
+    code: iataCode || (ref ? ref.ia||null : null),
+    lat: ref ? ref.lat : null,
+    lon: ref ? ref.lon : null
+  };
+}
+function buildLegTransportSegments(t, leg){
+  const mode = leg==='out' ? t.outMode : t.returnMode;
+  if(!mode || t.cityOnly) return [];
+  const fromAll = leg==='out' ? t.fromCity : t.city;
+  const toAll = leg==='out' ? t.city : t.fromCity;
+  const waypoints = leg==='out' ? (t.outWaypoints||[]) : (t.returnWaypoints||[]);
+  const hops = legSegments(fromAll, toAll, waypoints);
+  const flightData = (leg==='out' ? t.flightDataOut : t.flightDataReturn) || [];
+  const legDistanceKm = leg==='out' ? tripOut(t) : tripReturn(t);
+  const legDate = leg==='out' ? t.dateFrom : (t.dateTo||t.dateFrom);
+  return hops.map((hop,i)=>{
+    const fd = mode==='plane' ? flightData[i] : null;
+    const seg = {
+      id: 'segment_'+uid(),
+      mode: mode,
+      source: fd ? 'aerodatabox' : 'manual',
+      sourceId: fd ? fd.flightNumber||null : null,
+      origin: resolveSegmentPoint(hop.dep, fd?fd.depIata:null),
+      destination: resolveSegmentPoint(hop.arr, fd?fd.arrIata:null),
+      scheduledDeparture: fd ? (fd.depScheduled||null) : (i===0 ? legDate||null : null),
+      actualDeparture: fd ? (fd.depActual||null) : null,
+      scheduledArrival: fd ? (fd.arrScheduled||null) : null,
+      actualArrival: fd ? (fd.arrActual||null) : null,
+      durationMinutes: fd ? (()=>{ const l=flightDurationLabel(fd.depActual||fd.depScheduled, fd.arrActual||fd.arrScheduled); if(!l) return null; const mh=/(\d+)h\s*(\d+)/.exec(l); return mh?(+mh[1]*60+ +mh[2]):null; })() : null,
+      distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : (hops.length===1 ? (legDistanceKm||null) : (legDistanceKm?Math.round(legDistanceKm/hops.length):null)),
+      operator: fd ? (fd.airline||null) : null,
+      route: { distanceKm: fd ? (fd.greatCircleKm!=null?fd.greatCircleKm:null) : null, geometry:{type:'LineString',coordinates:[]}, stops:[], calculatedBy: fd?'aerodatabox':'beeline-estimate' },
+      details: fd ? {
+        flightNumber: fd.flightNumber||null,
+        airline: fd.airline?{name:fd.airline}:null,
+        aircraft: (fd.aircraftModel||fd.aircraftReg)?{registration:fd.aircraftReg||null,type:fd.aircraftModel||null}:null,
+        departureTerminal: fd.depTerminal||null, departureGate: fd.depGate||null,
+        arrivalTerminal: fd.arrTerminal||null, arrivalGate: fd.arrGate||null,
+        flightStatus: fd.status||null,
+        callSign: fd.callSign||null,
+        codeshareStatus: fd.codeshareStatus||null,
+        baggageBelt: fd.baggageBelt||null
+      } : {}
+    };
+    return seg;
+  });
+}
+function deriveTransportSegments(t){
+  if(t.cityOnly) return [];
+  const segs = [...buildLegTransportSegments(t,'out')];
+  if(t.direction==='roundtrip' || t.direction==='returnonly') segs.push(...buildLegTransportSegments(t,'return'));
   return segs;
 }
 /* Liste von Datums-Strings (YYYY-MM-DD) rund um ein Zentrumsdatum, für die
@@ -5414,6 +5499,12 @@ function migrateTrip(t){
     if(m.city==='London') m = Object.assign({}, m, {country:'England'});
     else if(m.city==='Edinburgh') m = Object.assign({}, m, {country:'Schottland'});
   }
+  // Transport-Segment-System (Phase 1, siehe deriveTransportSegments): einmalig aus den
+  // bestehenden Feldern ableiten, falls noch nicht vorhanden. Wird danach NICHT bei
+  // jedem Laden neu berechnet (Snapshot-Prinzip) — nur beim tatsächlichen Speichern
+  // einer Reise (siehe Submit-Handler) aktualisiert, damit z. B. Segment-IDs stabil
+  // bleiben, sobald eine spätere Phase eigene Segment-Bearbeitung einführt.
+  if(m.transportSegments===undefined) m = Object.assign({}, m, {transportSegments: deriveTransportSegments(m)});
   return m;
 }
 
@@ -8393,6 +8484,7 @@ function renderAdd(root){
       createdAt: t ? t.createdAt : nowTs,
       updatedAt: nowTs
     };
+    trip.transportSegments = deriveTransportSegments(trip);
 
     if(t){
       const idx = trips.findIndex(x=>x.id===t.id);
@@ -11989,6 +12081,7 @@ renderTripDetailPage=function(tripId,root){
             else { trip.flightDataReturn = arr; trip.flightNumberReturn = nums.join(', '); }
             const km = sumFlightSegmentsKm(arr);
             if(km!=null){ if(leg==='out') trip.outDistanceKm = km; else trip.returnDistanceKm = km; }
+            trip.transportSegments = deriveTransportSegments(trip);
             trip.updatedAt = Date.now();
             await saveTrips();
             showToast('✓ Flugdaten aktualisiert.', 'success');
