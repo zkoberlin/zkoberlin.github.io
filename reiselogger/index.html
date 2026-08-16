@@ -4214,13 +4214,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.2.0';
+const APP_VERSION = '6.2.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.2.1', tier:'🟢', title:'Zugsuche: klare Meldung bei Anbieter-Ausfall statt stiller Leere', items:[
+    'Live geprüft: v6.db.transport.rest meldet sich aktuell selbst als "currently unavailable" (die zugrunde liegende DB-Schnittstelle wurde abgeschaltet, der angekündigte Ersatz ist laut Anbieter noch nicht vollständig umgestellt) — das war die Ursache, warum die Zugsuche zuletzt kommentarlos leer blieb.',
+    'Ein kompletter Anbieter-Ausfall (Statusseite statt JSON-Antwort) wird jetzt erkannt und klar als solcher angezeigt, mit direktem Hinweis auf die manuelle Eingabe der Zugverbindung — die funktioniert unabhängig vom Suchdienst weiterhin.',
+    'Sobald der Anbieter wieder online ist, funktioniert die Suche automatisch ohne weitere Codeänderung — gleicher Endpunkt, kein neuer Key nötig.'
+  ]},
   {v:'6.2.0', tier:'🟡', title:'Transport-Segment-System: Phase 5 abgeschlossen — Badges & echte Routen auf der Karte', items:[
     'Acht neue Badges, die erst durch echte Flug-/Zugsuche möglich sind: "Über den Wolken I–III" (Anzahl gesuchter Flüge statt nur Distanz), "Auf Schienen I–III" (Anzahl gesuchter Zugfahrten), "Quer durchs Land" (10 unterschiedliche Bahnhöfe) und "Vielflieger-Radar" (10 unterschiedliche Flughäfen).',
     'Die "Routen"-Ansicht auf der Weltkarte zeichnet bei Auto/Rad/Fuß-Reisen jetzt die echte, über OpenStreetMap berechnete Strecke (Phase 4) statt eines stilisierten Bogens — folgt der tatsächlichen Straße/dem Weg. Flüge, Züge und Reisen ohne berechnete Route zeigen weiterhin den Bogen.',
@@ -11287,8 +11292,27 @@ async function flightProxyFetch(params){
    ist aber nicht offiziell von der Bahn betrieben (siehe Provider-Austauschbarkeit,
    Abschnitt 4/5 der Transport-Segment-Spezifikation). */
 const DB_TRANSPORT_BASE = 'https://v6.db.transport.rest';
+/* Eigener, klar erkennbarer Fehlertyp für "Anbieter komplett down" (z. B. HTML-
+   Statusseite statt JSON-Antwort) — damit die UI das von "keine Verbindung gefunden"
+   unterscheiden und gezielt zur manuellen Eingabe hinleiten kann (siehe Spezifikation
+   Abschnitt 14/19: API-Ausfall darf niemals "Reise kann nicht gespeichert werden"
+   suggerieren). */
+class DbTransportOutageError extends Error {}
 async function dbTransportFetch(path){
-  const resp = await fetch(DB_TRANSPORT_BASE+path);
+  let resp;
+  try{
+    resp = await fetch(DB_TRANSPORT_BASE+path);
+  }catch(e){
+    throw new DbTransportOutageError('Zugverbindungs-Dienst nicht erreichbar (Netzwerkfehler).');
+  }
+  const contentType = resp.headers.get('content-type')||'';
+  if(!contentType.includes('json')){
+    // v6.db.transport.rest antwortet bei einem kompletten Ausfall des Anbieters mit
+    // einer HTML-Statusseite (200 OK, aber kein JSON) statt eines regulären Fehlers —
+    // ohne diese Prüfung würde resp.json() darunter mit einer kryptischen Parse-
+    // Fehlermeldung fehlschlagen, die nicht erkennen lässt, was wirklich los ist.
+    throw new DbTransportOutageError('Der Zugverbindungs-Anbieter (v6.db.transport.rest) ist aktuell nicht erreichbar.');
+  }
   if(!resp.ok){
     let msg = 'HTTP '+resp.status;
     try{ const j = await resp.json(); if(j?.message) msg = j.message; }catch(e){}
@@ -11712,6 +11736,16 @@ function fmtTrainDuration(mins){
   const h = Math.floor(mins/60), m = mins%60;
   return (h?h+'h ':'')+(m<10&&h?'0':'')+m+'min';
 }
+/* Deutlich sichtbarer Hinweis speziell für einen kompletten Anbieter-Ausfall (siehe
+   DbTransportOutageError) — verweist aktiv auf die manuelle Eingabe, statt den Nutzer
+   mit einer bloßen Fehlermeldung ratlos zurückzulassen (Spezifikation Abschnitt 14/19:
+   ein API-Ausfall darf niemals bedeuten, dass die Reise nicht gespeichert werden kann). */
+function setTrainOutageNotice(msg){
+  const el = document.getElementById('trainSearchStatus');
+  if(!el) return;
+  el.innerHTML = '⚠️ '+msg+' Verbindung stattdessen einfach direkt ins Feld „Zugverbindung" eintragen (z. B. „ICE 1005") — das funktioniert unabhängig davon.';
+  el.className = 'sync-status err';
+}
 async function openTrainSearchModal(ctx){
   trainSearchCtx = ctx;
   const legLabel = ctx.leg==='out' ? 'Hinweg' : 'Rückweg';
@@ -11726,7 +11760,8 @@ async function openTrainSearchModal(ctx){
     renderTrainStationChip('trainArrResolved', arr, ctx.arrName);
     setTrainSearchStatus(dep&&arr ? '' : 'Von/Nach konnten nicht eindeutig gefunden werden — bitte Städtenamen in Von/Nach prüfen.', dep&&arr?'':'err');
   }catch(e){
-    setTrainSearchStatus('Stationssuche fehlgeschlagen: '+e.message, 'err');
+    if(e instanceof DbTransportOutageError) setTrainOutageNotice(e.message);
+    else setTrainSearchStatus('Stationssuche fehlgeschlagen: '+e.message, 'err');
   }
 }
 document.getElementById('trainSearchClose').addEventListener('click', ()=>{
@@ -11745,7 +11780,11 @@ document.getElementById('trainSearchGoBtn').addEventListener('click', async ()=>
   let journeys = [];
   try{
     journeys = await dbSearchJourneys(ctx.depStation.id, ctx.arrStation.id, whenIso);
-  }catch(e){ setTrainSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); return; }
+  }catch(e){
+    if(e instanceof DbTransportOutageError) setTrainOutageNotice(e.message);
+    else setTrainSearchStatus('Suche fehlgeschlagen: '+e.message, 'err');
+    return;
+  }
   renderTrainResults(journeys);
   setTrainSearchStatus(journeys.length ? journeys.length+' Verbindungen gefunden — antippen zum Übernehmen.' : 'Keine Verbindungen gefunden.', journeys.length?'ok':'');
 });
