@@ -540,6 +540,19 @@ tr:last-child td{border-bottom:none;}
 .flight-segment-chip .check{font-size:10px;}
 .flight-airport-row>div{flex:1;min-width:0;}
 .airport-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.station-search-input{
+  width:100%;font-size:13px;padding:8px 11px;border-radius:8px;margin-top:4px;
+  background:var(--panel-alt);border:1px solid var(--border-soft);color:var(--text);box-sizing:border-box;
+}
+.station-search-dropdown{
+  display:flex;flex-direction:column;gap:2px;margin-top:4px;max-height:180px;overflow-y:auto;
+}
+.station-search-dropdown:empty{margin-top:0;}
+.station-result-row{
+  font-size:12px;text-align:left;padding:7px 9px;border-radius:6px;cursor:pointer;
+  background:var(--panel-alt);border:1px solid transparent;color:var(--text-dim);
+}
+.station-result-row:hover{border-color:var(--gold-dim);color:var(--text);}
 .airport-chip{
   font-family:var(--font-mono);font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:100px;
   background:var(--panel-alt);border:1px solid var(--border-soft);color:var(--text-dim);cursor:pointer;
@@ -3583,8 +3596,18 @@ button,.profile-row,.trip-card,.country-card{touch-action:manipulation}
     </div>
     <div id="trainSearchBody">
       <div class="flight-airport-row">
-        <div><div class="log-detail-item-label">Von</div><div class="airport-picker" id="trainDepResolved"></div></div>
-        <div><div class="log-detail-item-label">Nach</div><div class="airport-picker" id="trainArrResolved"></div></div>
+        <div>
+          <div class="log-detail-item-label">Von</div>
+          <input type="text" id="trainDepQuery" class="station-search-input" placeholder="Stadt oder Bahnhof" autocomplete="off">
+          <div class="station-search-dropdown" id="trainDepResults"></div>
+          <div class="airport-picker" id="trainDepResolved" style="margin-top:6px;"></div>
+        </div>
+        <div>
+          <div class="log-detail-item-label">Nach</div>
+          <input type="text" id="trainArrQuery" class="station-search-input" placeholder="Stadt oder Bahnhof" autocomplete="off">
+          <div class="station-search-dropdown" id="trainArrResults"></div>
+          <div class="airport-picker" id="trainArrResolved" style="margin-top:6px;"></div>
+        </div>
       </div>
       <div class="field" style="margin-top:12px;margin-bottom:0;">
         <label for="trainSearchTime">Ungefähre Abfahrtszeit</label>
@@ -4214,13 +4237,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.4.0';
+const APP_VERSION = '6.5.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.5.0', tier:'🟡', title:'Zugsuche: Von/Nach jetzt als echtes Suchfeld statt Vorschlags-Chips', items:[
+    'Von/Nach sind jetzt Textfelder statt automatisch befüllter Chips — vorbefüllt mit dem Städtenamen aus dem Formular, aber frei erweiterbar (z. B. "Berlin Hauptbahnhof" oder "Berlin Südkreuz" eintippen).',
+    'Live-Suche mit kurzer Verzögerung während des Tippens, Ergebnisse erscheinen als Liste zum Antippen darunter — die zuletzt gewählte Station bleibt als Chip sichtbar.',
+    'Ersetzt die automatische Mehrfach-Vorschlagsliste aus 6.4.0 (dort noch ohne eigene Sucheingabe, nur die ersten 5 Treffer der Stadt).'
+  ]},
   {v:'6.4.0', tier:'🟡', title:'Zugsuche: mehrere Bahnhöfe pro Stadt auswählbar', items:[
     'Analog zur Flughafenauswahl bei der Flugsuche: Von/Nach zeigt jetzt bis zu 5 Bahnhof-Kandidaten als antippbare Chips (z. B. Berlin Hbf, Südkreuz, Ostbahnhof, Gesundbrunnen) statt automatisch nur den ersten Treffer zu übernehmen.',
     'Anders als bei der Flugsuche kein hartcodiertes Städte-Mapping nötig — die Kandidaten kommen direkt und dynamisch aus der Transitous-Geocoder-Antwort, funktioniert also für jede Stadt weltweit ohne Pflege einer Liste.',
@@ -11390,25 +11418,7 @@ async function dbFindStations(name, limit){
   }
   return out;
 }
-/* Rendert mehrere Stations-Kandidaten als antippbare Chips (gleiche Optik wie
-   .airport-chip bei der Flugsuche) — Klick wählt die Station für diese Richtung. */
-function renderStationPicker(elId, stations, fallbackName, onPick){
-  const el = document.getElementById(elId);
-  if(!el) return;
-  if(!stations.length){
-    el.innerHTML = '<span class="airport-chip" style="opacity:.6;">„'+weitwegEscapeHTML(fallbackName||'?')+'" nicht gefunden</span>';
-    return;
-  }
-  el.innerHTML = stations.map((s,i)=>'<button type="button" class="airport-chip'+(i===0?' active':'')+'" data-idx="'+i+'" style="white-space:nowrap;">'+weitwegEscapeHTML(s.name)+'</button>').join('');
-  onPick(stations[0]);
-  el.querySelectorAll('.airport-chip').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      el.querySelectorAll('.airport-chip').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      onPick(stations[+btn.dataset.idx]);
-    });
-  });
-}
+
 /* Sucht Verbindungen zwischen zwei Stationen/Koordinaten ab einem Abfahrtszeitpunkt
    über /v5/plan und übersetzt jede zurückgegebene Itinerary in dieselbe
    {legs:[...]}-Form, die normalizeTrainJourney/normalizeTrainLeg (unverändert,
@@ -11870,15 +11880,51 @@ async function openTrainSearchModal(ctx){
   const legLabel = ctx.leg==='out' ? 'Hinweg' : 'Rückweg';
   document.getElementById('trainSearchTitle').textContent = 'Zugverbindung suchen ('+legLabel+')';
   document.getElementById('trainSearchResults').innerHTML = '';
-  setTrainSearchStatus('Stationen werden ermittelt …', '');
+  ctx.depStation = null; ctx.arrStation = null;
+  document.getElementById('trainDepResults').innerHTML = '';
+  document.getElementById('trainArrResults').innerHTML = '';
+  document.getElementById('trainDepResolved').innerHTML = '';
+  document.getElementById('trainArrResolved').innerHTML = '';
+  const depInput = document.getElementById('trainDepQuery'), arrInput = document.getElementById('trainArrQuery');
+  depInput.value = ctx.depName||''; arrInput.value = ctx.arrName||'';
+  setTrainSearchStatus('', '');
   document.getElementById('trainSearchModal').classList.add('open');
+  setupStationSearchInput(depInput, 'trainDepResults', 'trainDepResolved', s=>{ ctx.depStation = s; });
+  setupStationSearchInput(arrInput, 'trainArrResults', 'trainArrResolved', s=>{ ctx.arrStation = s; });
+  // Beim Öffnen einmal automatisch mit dem vorbefüllten Städtenamen suchen, damit
+  // nicht erst getippt werden muss, um überhaupt Ergebnisse zu sehen.
+  runStationSearch(depInput.value, 'trainDepResults', 'trainDepResolved', s=>{ ctx.depStation = s; });
+  runStationSearch(arrInput.value, 'trainArrResults', 'trainArrResolved', s=>{ ctx.arrStation = s; });
+}
+/* Debounced Live-Suche pro Eingabefeld (statt automatischer Städte->Bahnhof-
+   Auflösung): Tippen löst nach kurzer Pause eine neue Geocoder-Abfrage aus, z. B.
+   "Berlin" -> alle Bahnhöfe der Stadt, "Berlin Hauptbahnhof" -> gezielt gefiltert. */
+function setupStationSearchInput(input, resultsElId, resolvedElId, onPick){
+  let timer = null;
+  input.addEventListener('input', ()=>{
+    clearTimeout(timer);
+    const q = input.value;
+    timer = setTimeout(()=> runStationSearch(q, resultsElId, resolvedElId, onPick), 350);
+  });
+}
+async function runStationSearch(query, resultsElId, resolvedElId, onPick){
+  const resultsEl = document.getElementById(resultsElId);
+  if(!query || query.trim().length<2){ resultsEl.innerHTML=''; return; }
+  resultsEl.innerHTML = '<div class="station-result-row" style="cursor:default;opacity:.6;">Suche …</div>';
   try{
-    const [depList, arrList] = await Promise.all([dbFindStations(ctx.depName,5), dbFindStations(ctx.arrName,5)]);
-    ctx.depStation = depList[0]||null; ctx.arrStation = arrList[0]||null;
-    renderStationPicker('trainDepResolved', depList, ctx.depName, s=>{ ctx.depStation = s; });
-    renderStationPicker('trainArrResolved', arrList, ctx.arrName, s=>{ ctx.arrStation = s; });
-    setTrainSearchStatus(depList.length&&arrList.length ? '' : 'Von/Nach konnten nicht eindeutig gefunden werden — bitte Städtenamen in Von/Nach prüfen.', depList.length&&arrList.length?'':'err');
+    const stations = await dbFindStations(query, 8);
+    if(!stations.length){ resultsEl.innerHTML = '<div class="station-result-row" style="cursor:default;opacity:.6;">Keine Treffer</div>'; return; }
+    resultsEl.innerHTML = stations.map((s,i)=>'<div class="station-result-row" data-idx="'+i+'">'+weitwegEscapeHTML(s.name)+'</div>').join('');
+    resultsEl.querySelectorAll('.station-result-row').forEach(row=>{
+      row.addEventListener('click', ()=>{
+        const s = stations[+row.dataset.idx];
+        onPick(s);
+        document.getElementById(resolvedElId).innerHTML = '<span class="airport-chip active">'+weitwegEscapeHTML(s.name)+'</span>';
+        resultsEl.innerHTML = '';
+      });
+    });
   }catch(e){
+    resultsEl.innerHTML = '';
     if(e instanceof DbTransportOutageError) setTrainOutageNotice(e.message);
     else setTrainSearchStatus('Stationssuche fehlgeschlagen: '+e.message, 'err');
   }
