@@ -11284,60 +11284,101 @@ async function flightProxyFetch(params){
    Bereich (bestätigter Endpunkt: /flights/number/{nummer}/{von}/{bis}?dateLocalRole=Both).
    Deckt die komplette ±2-Tage-Suche mit EINEM Aufruf ab, statt wie vorher fünf
    Einzelabfragen zu brauchen. */
-/* ---------- Zug-Suche (Phase 2, v6.db.transport.rest) ----------
-   Anders als AeroDataBox: kostenlos, ohne API-Key, direkt aus dem Browser aufrufbar
-   (CORS aktiviert) — kein Proxy-Worker nötig. Rate-Limit 100 Anfragen/Minute.
-   Läuft über einen inoffiziellen Community-Wrapper (db-vendo-client), da die
-   ursprüngliche offizielle DB-HAFAS-Schnittstelle abgeschaltet wurde — funktioniert,
-   ist aber nicht offiziell von der Bahn betrieben (siehe Provider-Austauschbarkeit,
-   Abschnitt 4/5 der Transport-Segment-Spezifikation). */
-const DB_TRANSPORT_BASE = 'https://v6.db.transport.rest';
-/* Eigener, klar erkennbarer Fehlertyp für "Anbieter komplett down" (z. B. HTML-
-   Statusseite statt JSON-Antwort) — damit die UI das von "keine Verbindung gefunden"
-   unterscheiden und gezielt zur manuellen Eingabe hinleiten kann (siehe Spezifikation
-   Abschnitt 14/19: API-Ausfall darf niemals "Reise kann nicht gespeichert werden"
-   suggerieren). */
+/* ---------- Zug-Suche (Transitous / MOTIS) ----------
+   Ersetzt den bisherigen v6.db.transport.rest-Wrapper (inoffiziell, zuletzt dauerhaft
+   down) durch Transitous — einen gemeinnützigen, provider-neutralen MOTIS-Router auf
+   offenen GTFS/GTFS-RT-Daten (siehe transitous.org), Deutschland über DELFI/gtfs.de
+   abgedeckt. WICHTIG (Nutzungsrichtlinie transitous.org/api): der öffentliche
+   Endpunkt ist NICHT für kommerzielle/gewinnorientierte Zwecke gedacht — vor dem
+   Live-Betrieb mit zahlenden Abonnenten muss das mit dem Transitous-Team geklärt
+   werden ODER MOTIS_BASE unten auf eine selbst gehostete MOTIS-Instanz zeigen.
+   Außerdem verlangt die Richtlinie einen sichtbaren Attributions-Link zu
+   https://transitous.org/sources/ irgendwo in der App (z. B. Impressum/Über-Seite).
+   Für Entwicklung/Test ist die öffentliche Instanz ausdrücklich erlaubt.
+   API-Doku: https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/motis-project/motis/refs/tags/v2.10.2/openapi.yaml */
+const MOTIS_BASE = 'https://api.transitous.org/api';
+/* Gleicher Fehlertyp wie vorher beibehalten (Name absichtlich unverändert), damit
+   die bestehende Fehlerbehandlung in openTrainSearchModal/trainSearchGoBtn (siehe
+   unten) unverändert weiterfunktioniert. */
 class DbTransportOutageError extends Error {}
-async function dbTransportFetch(path){
+async function motisFetch(path){
   let resp;
   try{
-    resp = await fetch(DB_TRANSPORT_BASE+path);
+    resp = await fetch(MOTIS_BASE+path);
   }catch(e){
     throw new DbTransportOutageError('Zugverbindungs-Dienst nicht erreichbar (Netzwerkfehler).');
   }
   const contentType = resp.headers.get('content-type')||'';
   if(!contentType.includes('json')){
-    // v6.db.transport.rest antwortet bei einem kompletten Ausfall des Anbieters mit
-    // einer HTML-Statusseite (200 OK, aber kein JSON) statt eines regulären Fehlers —
-    // ohne diese Prüfung würde resp.json() darunter mit einer kryptischen Parse-
-    // Fehlermeldung fehlschlagen, die nicht erkennen lässt, was wirklich los ist.
-    throw new DbTransportOutageError('Der Zugverbindungs-Anbieter (v6.db.transport.rest) ist aktuell nicht erreichbar.');
+    throw new DbTransportOutageError('Der Zugverbindungs-Anbieter (Transitous/MOTIS) ist aktuell nicht erreichbar.');
   }
   if(!resp.ok){
     let msg = 'HTTP '+resp.status;
-    try{ const j = await resp.json(); if(j?.message) msg = j.message; }catch(e){}
+    try{ const j = await resp.json(); if(j?.error||j?.message) msg = j.error||j.message; }catch(e){}
     throw new Error(msg);
   }
   return resp.json();
 }
 /* Löst einen Stadt-/Bahnhofsnamen zur besten passenden Haltestelle auf (id, Name,
-   Koordinaten) — needed, da /journeys IDs statt Freitext erwartet. Bevorzugt Fern-
-   verkehrs-Hauptbahnhöfe (stationOrStop mit hoher Relevanz kommt bei dieser API
-   bereits sortiert zurück, erster Treffer ist i. d. R. der richtige Hbf). */
+   Koordinaten) über den MOTIS-Geocoder. Feldnamen defensiv mit Fallbacks abgefragt,
+   da die exakte Struktur einmal gegen eine echte Antwort geprüft werden sollte
+   (siehe Test-Hinweis unten). */
 async function dbFindStation(name){
   if(!name) return null;
-  const results = await dbTransportFetch('/locations?query='+encodeURIComponent(name)+'&results=5&stops=true&addresses=false&poi=false');
+  const data = await motisFetch('/v1/geocode?text='+encodeURIComponent(name)+'&language=de');
+  const results = Array.isArray(data) ? data : (data?.results||data?.locations||[]);
   if(!results || !results.length) return null;
   const best = results[0];
-  return {id: best.id, name: best.name, lat: best.location?.latitude??null, lon: best.location?.longitude??null};
+  const lat = best.lat!=null?best.lat:(best.location?.lat??best.location?.latitude??null);
+  const lon = best.lon!=null?best.lon:(best.location?.lon??best.location?.longitude??null);
+  return {id: best.id||best.stopId||(lat!=null&&lon!=null?lat+','+lon:null), name: best.name||best.label||name, lat, lon};
 }
-/* Sucht Verbindungen zwischen zwei Haltestellen-IDs ab einem Abfahrtszeitpunkt.
-   Gibt die rohen "journeys" zurück (jede kann 1..n legs bei Umstiegen haben). */
+/* Sucht Verbindungen zwischen zwei Stationen/Koordinaten ab einem Abfahrtszeitpunkt
+   über /v5/plan und übersetzt jede zurückgegebene Itinerary in dieselbe
+   {legs:[...]}-Form, die normalizeTrainJourney/normalizeTrainLeg (unverändert,
+   siehe unten) schon vorher von db-vendo-client erwartet haben — dadurch musste an
+   der Normalisierungs-/Anzeige-Logik nichts geändert werden. */
 async function dbSearchJourneys(fromId, toId, whenIso){
-  const qs = 'from='+encodeURIComponent(fromId)+'&to='+encodeURIComponent(toId)
-    +'&departure='+encodeURIComponent(whenIso)+'&results=6&stopovers=true&language=de';
-  const data = await dbTransportFetch('/journeys?'+qs);
-  return data?.journeys || [];
+  const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
+    +'&time='+encodeURIComponent(whenIso)+'&arriveBy=false&numItineraries=6&language=de';
+  const data = await motisFetch('/v5/plan?'+qs);
+  const itineraries = data?.itineraries || [];
+  return itineraries.map(it => ({ legs: (it.legs||[]).map(motisLegToLegacyShape) }));
+}
+/* Adapter: MOTIS/OTP-artiger Leg (from/to/startTime/endTime/routeShortName/...) ->
+   dieselbe Feldform wie zuvor ein db-vendo-client-Leg (origin/destination/line/
+   stopovers/plannedDeparture/...). TESTHINWEIS: einmal eine echte Suche ausführen
+   und console.log(itineraries) im Netzwerk-Tab prüfen — falls einzelne Felder
+   (insb. Feinname für Gleis/Track oder Verspätungsfelder) abweichen, hier
+   nachjustieren; die Fallback-Ketten unten fangen die üblichen Varianten ab. */
+function motisLegToLegacyShape(leg){
+  const from = leg.from||{}, to = leg.to||{};
+  return {
+    origin: {id: from.stopId||from.id||null, name: from.name||'', location:{latitude:from.lat??null, longitude:from.lon??null}},
+    destination: {id: to.stopId||to.id||null, name: to.name||'', location:{latitude:to.lat??null, longitude:to.lon??null}},
+    line: {
+      fahrtNr: null,
+      name: leg.routeShortName || leg.displayName || leg.headsign || leg.mode || '',
+      product: (leg.mode||'').toLowerCase(),
+      operator: leg.agencyName ? {name: leg.agencyName} : null
+    },
+    stopovers: (leg.intermediateStops||[]).map(s=>({
+      stop: {id: s.stopId||s.id||null, name: s.name||'', location:{latitude:s.lat??null, longitude:s.lon??null}},
+      arrival: s.arrival||null, departure: s.departure||null,
+      arrivalPlatform: s.track||s.arrivalTrack||null, departurePlatform: s.track||s.departureTrack||null
+    })),
+    plannedDeparture: leg.scheduledStartTime||leg.startTime||null,
+    departure: leg.startTime||null,
+    plannedArrival: leg.scheduledEndTime||leg.endTime||null,
+    arrival: leg.endTime||null,
+    departurePlatform: from.track||null,
+    arrivalPlatform: to.track||null,
+    departureDelay: (leg.startTime&&leg.scheduledStartTime) ? Math.round((new Date(leg.startTime)-new Date(leg.scheduledStartTime))/1000) : null,
+    arrivalDelay: (leg.endTime&&leg.scheduledEndTime) ? Math.round((new Date(leg.endTime)-new Date(leg.scheduledEndTime))/1000) : null,
+    cancelled: !!leg.cancelled || !!leg.realTimeState==='CANCELED',
+    distance: typeof leg.distance==='number' ? leg.distance : null,
+    walking: (leg.mode==='WALK'||leg.mode==='FOOT')
+  };
 }
 /* Reduziert eine rohe "leg" (Fahrtabschnitt) auf genau die Felder, die die
    Zugdaten-Anzeige (Formular-Zusammenfassung + spätere Detail-Karte) braucht. */
