@@ -4214,13 +4214,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.3.3';
+const APP_VERSION = '6.3.4';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.3.4', tier:'🟢', title:'Zugsuche: eigentliche Ursache behoben — Adress- statt Bahnhof-Treffer', items:[
+    'Gefunden: Die Geocoding-Suche nach einem Städtenamen wie "Berlin" lieferte einen allgemeinen Adress-/POI-Treffer mit einer internen OSM-Referenz (z. B. "node/[240109189]") statt einer echten Bahnhof-ID — das war kein gültiges Format für die Verbindungssuche, daher "missing parameter".',
+    'Zwei Korrekturen: (1) Bei mehreren Kandidaten wird jetzt bevorzugt ein echter Haltestellen-Treffer gewählt, falls vorhanden. (2) Ist das nicht der Fall, werden die Koordinaten (immer ein gültiges Format) statt der OSM-Referenz verwendet.'
+  ]},
   {v:'6.3.3', tier:'🟢', title:'Zugsuche: gesendete Parameter in Fehlermeldung sichtbar', items:[
     'Die Server-Fehlermeldung ("missing parameter") nennt nicht, welcher Parameter gemeint ist — die Fehlermeldung im Modal zeigt jetzt zusätzlich die tatsächlich gesendeten fromPlace/toPlace/time-Werte an, um leere oder falsch formatierte Stations-IDs direkt erkennbar zu machen.'
   ]},
@@ -11358,10 +11362,19 @@ async function dbFindStation(name){
   const data = await motisFetch('/v1/geocode?text='+encodeURIComponent(name)+'&language=de');
   const results = Array.isArray(data) ? data : (data?.results||data?.locations||[]);
   if(!results || !results.length) return null;
-  const best = results[0];
+  // Bevorzugt einen echten Haltestellen-Treffer (type STOP oder vorhandene stopId),
+  // falls die Antwort mehrere Kandidaten liefert — sonst nimmt man ggf. eine
+  // allgemeine Adresse/POI statt des Bahnhofs (siehe fromPlace-Problem oben).
+  const stopHit = results.find(r => r.type==='STOP' || r.stopId);
+  const best = stopHit || results[0];
   const lat = best.lat!=null?best.lat:(best.location?.lat??best.location?.latitude??null);
   const lon = best.lon!=null?best.lon:(best.location?.lon??best.location?.longitude??null);
-  const id = best.id||best.stopId||(lat!=null&&lon!=null?lat+','+lon:null);
+  // WICHTIG: best.id ist bei Nicht-Stop-Treffern (Adressen/POIs) eine interne
+  // OSM-Referenz wie "node/[240109189]" — kein gültiges fromPlace/toPlace-Format
+  // für /plan (das akzeptiert nur "lat,lon[,level]" oder eine echte Stop-ID).
+  // Deshalb Priorität: echte Stop-ID (falls Haltestellen-Treffer) > Koordinaten
+  // (immer gültig) > id nur als letzter Notnagel.
+  const id = best.stopId || (lat!=null&&lon!=null ? lat+','+lon : null) || best.id;
   if(id==null){
     // Feldnamen-Annahme stimmt nicht mit der echten Antwort überein — statt eines
     // stillen null-Ergebnisses (das später zu "missing parameter" führt) hier direkt
