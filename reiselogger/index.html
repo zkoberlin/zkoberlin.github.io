@@ -4171,13 +4171,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.0.0';
+const APP_VERSION = '5.0.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.0.1', tier:'🟢', title:'Status "Approaching" (Landeanflug) ergänzt', items:[
+    'In echten API-Daten aufgefallen: AeroDataBox kennt auch den Status „Approaching" (kurz vor der Landung), der in der bisherigen Status-Tabelle fehlte und dadurch als reiner Rohtext statt als übersetztes, farbiges Badge erschien. Jetzt als „Im Landeanflug" mit demselben Blau/Live-Stil wie „In der Luft" ergänzt, inklusive Status-Korrektur für alte Flüge.'
+  ]},
   {v:'5.0.0', tier:'🔴', title:'Flugdaten-Anbindung auf echte, bestätigte API-Struktur umgestellt', items:[
     'Bisher basierte die Zeiten-Auswertung auf geratenen Feldnamen (actualTime/predictedTime) — anhand einer echten AeroDataBox-Antwort bestätigt, dass die korrekten Felder scheduledTime, revisedTime und runwayTime heißen. Das war die eigentliche Ursache, warum „Tatsächliche Zeit" oft leer blieb.',
     'Flugnummer-Suche läuft jetzt über den bestätigten Endpunkt /flights/number/{nummer}/{von}/{bis} mit echtem Datumsbereich — die komplette ±2-Tage-Suche braucht dadurch nur noch EINEN API-Aufruf statt fünf einzelner.',
@@ -9415,7 +9418,8 @@ function continentIconDuoHTML(size){
 }
 const FLIGHT_STATUS_META = {
   expected:{label:'Geplant', cls:''}, enroute:{label:'In der Luft', cls:'live'},
-  departed:{label:'Gestartet', cls:'live'}, arrived:{label:'Gelandet', cls:'landed'},
+  departed:{label:'Gestartet', cls:'live'}, approaching:{label:'Im Landeanflug', cls:'live'},
+  arrived:{label:'Gelandet', cls:'landed'},
   cancelled:{label:'Storniert', cls:'delayed'}, diverted:{label:'Umgeleitet', cls:'delayed'},
   delayed:{label:'Verspätet', cls:'delayed'}, unknown:{label:'Unbekannt', cls:''}
 };
@@ -10758,7 +10762,7 @@ function parseFlightTimeStr(s){
    Flug längst gelandet ist, da wir keine automatischen Hintergrund-Updates machen. */
 function inferFinalFlightStatus(status, arrActualIso, arrScheduledIso){
   const s = (status||'').toLowerCase();
-  if(!['expected','enroute','departed','unknown',''].includes(s)) return s;
+  if(!['expected','enroute','departed','approaching','unknown',''].includes(s)) return s;
   const arrRef = parseFlightTimeStr(arrActualIso||arrScheduledIso||'');
   if(arrRef && (Date.now()-arrRef.getTime()) > 12*3600*1000) return 'arrived';
   return s;
