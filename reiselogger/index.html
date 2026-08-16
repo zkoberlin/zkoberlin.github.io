@@ -4214,13 +4214,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.3.0';
+const APP_VERSION = '6.3.1';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.3.1', tier:'🟢', title:'Zugsuche: bessere Fehlerdiagnose bei der Transitous-Umstellung', items:[
+    'Die Stationssuche (Von/Nach) bricht jetzt mit einer aussagekräftigen Fehlermeldung ab, statt eine unvollständig aufgelöste Station stillschweigend weiterzureichen — bisher führte das erst später bei der Verbindungssuche zu einer wenig hilfreichen "missing parameter"-Meldung.',
+    'Läuft die Feldzuordnung noch nicht korrekt, zeigt das Modal jetzt direkt die rohen Transitous-Antwortdaten in der Fehlermeldung an — das macht das endgültige Nachjustieren der Feldnamen ohne Browser-Konsole möglich.'
+  ]},
   {v:'6.3.0', tier:'🟡', title:'Zugsuche: Wechsel von v6.db.transport.rest zu Transitous/MOTIS', items:[
     'Der bisherige inoffizielle db-vendo-client-Wrapper (v6.db.transport.rest) ist dauerhaft ausgefallen (siehe 6.2.1) — die Zugsuche läuft jetzt stattdessen über Transitous, einen gemeinnützigen, provider-neutralen MOTIS-Router auf offenen GTFS/GTFS-RT-Daten. Deutschland ist über DELFI/gtfs.de abgedeckt.',
     'Technisch ein reiner Provider-Austausch innerhalb der bestehenden Architektur: nur der Fetch-Layer (Stationssuche über /v1/geocode, Verbindungssuche über /v5/plan) wurde ersetzt, die Anzeige-/Speicherlogik blieb unverändert.',
@@ -11342,7 +11346,15 @@ async function dbFindStation(name){
   const best = results[0];
   const lat = best.lat!=null?best.lat:(best.location?.lat??best.location?.latitude??null);
   const lon = best.lon!=null?best.lon:(best.location?.lon??best.location?.longitude??null);
-  return {id: best.id||best.stopId||(lat!=null&&lon!=null?lat+','+lon:null), name: best.name||best.label||name, lat, lon};
+  const id = best.id||best.stopId||(lat!=null&&lon!=null?lat+','+lon:null);
+  if(id==null){
+    // Feldnamen-Annahme stimmt nicht mit der echten Antwort überein — statt eines
+    // stillen null-Ergebnisses (das später zu "missing parameter" führt) hier direkt
+    // die Rohdaten in die Fehlermeldung packen, die im Modal sichtbar wird. Damit
+    // lässt sich der Adapter beim nächsten Fehlschlag ohne Konsolen-Zugriff korrigieren.
+    throw new Error('Geocoding-Antwort hat unerwartetes Format: '+JSON.stringify(best).slice(0,400));
+  }
+  return {id, name: best.name||best.label||name, lat, lon};
 }
 /* Sucht Verbindungen zwischen zwei Stationen/Koordinaten ab einem Abfahrtszeitpunkt
    über /v5/plan und übersetzt jede zurückgegebene Itinerary in dieselbe
