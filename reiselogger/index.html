@@ -4237,13 +4237,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.5.3';
+const APP_VERSION = '6.5.4';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.5.4', tier:'🟢', title:'Zugsuche: Uhrzeit auf der Detailkarte war 2h daneben', items:[
+    'Ergebnisliste zeigte die richtige Uhrzeit (z. B. 12:14), auf der Zugdaten-Detailkarte nach der Auswahl stand aber die UTC-Zeit ohne Umrechnung (10:14) — verursacht durch eine für AeroDataBox-Flugzeiten gebaute Formatierungsfunktion, die einfach "HH:MM" aus dem String schneidet statt die Zeitzone zu berücksichtigen.',
+    'Funktion erkennt jetzt Zeitstempel mit Zeitzonenkennung (Z/Offset, wie von der Zugsuche geliefert) automatisch und rechnet korrekt in die lokale Zeit um — AeroDataBox-Flugzeiten (ohne Zeitzone) bleiben unverändert wie bisher.'
+  ]},
   {v:'6.5.3', tier:'🟢', title:'Zugsuche: eigentliche Ursache gefunden — Zeitformat ohne Zeitzone', items:[
     'Per echtem Netzwerk-Mitschnitt der Transitous-eigenen Weboberfläche bestätigt: "time" muss ein vollständiger UTC-Zeitstempel mit Millisekunden und "Z"-Suffix sein (z. B. "2026-08-21T09:57:00.000Z"). Bisher wurde eine zeitzonenlose Zeit gesendet — laut RFC3339/date-time-Standard ungültig, wurde vom Server unklar als "missing parameter" statt als Formatfehler gemeldet.',
     'Das war über alle bisherigen Versuche hinweg (verschiedene API-Versionen, getrennte/kombinierte date/time-Parameter, minimale Parameterliste) die eigentliche, durchgehend übersehene Ursache.'
@@ -11696,6 +11700,17 @@ function normalizeFlightData(raw){
 }
 function fmtFlightTime(iso){
   if(!iso) return '–';
+  // UTC-Zeitstempel mit Zeitzonenkennung (z. B. "...Z" oder "+02:00" von der
+  // Zugsuche) müssen ins lokale Zeitzone umgerechnet werden. AeroDataBox liefert
+  // dagegen bereits naive lokale Zeit-Strings ohne Zeitzone — die sollen unverändert
+  // per Regex übernommen werden (new Date() würde sie sonst fälschlich als UTC
+  // interpretieren und nochmal verschieben). Dieser Unterschied war die Ursache für
+  // die falsch angezeigte Uhrzeit auf der Zugdaten-Detailkarte (Ergebnisliste selbst
+  // nutzt bereits korrekt fmtTrainTime()).
+  if(/Z$|[+-]\d{2}:?\d{2}$/.test(iso)){
+    const d = new Date(iso);
+    if(!isNaN(d.getTime())) return d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  }
   const m = /[T ](\d{2}:\d{2})/.exec(iso);
   return m ? m[1] : iso;
 }
