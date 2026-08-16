@@ -4237,13 +4237,17 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.5.2';
+const APP_VERSION = '6.5.3';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.5.3', tier:'🟢', title:'Zugsuche: eigentliche Ursache gefunden — Zeitformat ohne Zeitzone', items:[
+    'Per echtem Netzwerk-Mitschnitt der Transitous-eigenen Weboberfläche bestätigt: "time" muss ein vollständiger UTC-Zeitstempel mit Millisekunden und "Z"-Suffix sein (z. B. "2026-08-21T09:57:00.000Z"). Bisher wurde eine zeitzonenlose Zeit gesendet — laut RFC3339/date-time-Standard ungültig, wurde vom Server unklar als "missing parameter" statt als Formatfehler gemeldet.',
+    'Das war über alle bisherigen Versuche hinweg (verschiedene API-Versionen, getrennte/kombinierte date/time-Parameter, minimale Parameterliste) die eigentliche, durchgehend übersehene Ursache.'
+  ]},
   {v:'6.5.2', tier:'🟢', title:'Zugsuche: Anfrage auf Minimalparameter reduziert (Diagnose)', items:[
     '"missing parameter" trat identisch bei kombiniertem und getrenntem date/time sowie über drei API-Versionen hinweg auf — Verdacht jetzt auf arriveBy/numItineraries/language. Anfrage testweise auf nur fromPlace/toPlace/time reduziert, um den Verursacher einzugrenzen.'
   ]},
@@ -11401,6 +11405,10 @@ async function motisFetch(path){
    vorhanden) werden vor allgemeinen Adress-/POI-Treffern einsortiert. */
 async function dbFindStations(name, limit){
   if(!name) return [];
+  // Hinweis: "text" ist der in der offiziellen API-Doku dokumentierte Parametername
+  // und funktioniert nachweislich (Stationssuche liefert bereits korrekte Treffer).
+  // Die Transitous-eigene Weboberfläche nutzt intern "place" — vermutlich ein
+  // zusätzlicher Alias, kein Ersatz. Bei Bedarf hier anpassen, falls sich das ändert.
   const data = await motisFetch('/v1/geocode?text='+encodeURIComponent(name)+'&language=de');
   const results = Array.isArray(data) ? data : (data?.results||data?.locations||[]);
   if(!results || !results.length) return [];
@@ -11431,12 +11439,18 @@ async function dbFindStations(name, limit){
    siehe unten) schon vorher von db-vendo-client erwartet haben — dadurch musste an
    der Normalisierungs-/Anzeige-Logik nichts geändert werden. */
 async function dbSearchJourneys(fromId, toId, whenIso){
-  // Auf das Minimum reduziert (nur fromPlace/toPlace + kombiniertes "time"), da
-  // date/time getrennt UND mehrere API-Versionen identisch fehlschlugen — Verdacht
-  // jetzt: einer der bisher mitgeschickten "optionalen" Parameter (arriveBy,
-  // numItineraries, language) verursacht den Fehler, nicht date/time/Version.
+  // ENTSCHEIDENDER FUND (aus echtem Netzwerk-Mitschnitt der Transitous-eigenen
+  // Oberfläche): "time" muss ein vollständiger UTC-Zeitstempel mit Millisekunden
+  // UND "Z"-Suffix sein (z. B. "2026-08-21T09:57:00.000Z"), nicht nur
+  // "YYYY-MM-DDTHH:MM:SS" ohne Zeitzone. Der date-time-Standard (RFC3339), auf den
+  // sich die Spezifikation bezieht, verlangt zwingend eine Zeitzone — ohne die
+  // schlägt das Parsen fehl, was der Server unklar als "missing parameter" meldet.
+  // new Date(whenIso) interpretiert die zeitzonenlose Eingabe als lokale Zeit (korrekt,
+  // da der Nutzer eine lokale Uhrzeit einträgt), toISOString() liefert dann exakt das
+  // geforderte UTC-Format inkl. Millisekunden.
+  const timeParam = new Date(whenIso).toISOString();
   const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
-    +'&time='+encodeURIComponent(whenIso);
+    +'&time='+encodeURIComponent(timeParam);
   try{
     const data = await motisFetch('/v2/plan?'+qs);
     const itineraries = data?.itineraries || [];
@@ -11447,7 +11461,7 @@ async function dbSearchJourneys(fromId, toId, whenIso){
     // nächsten Fehlschlag sofort zu sehen, ob fromId/toId/whenIso leer oder
     // unerwartet formatiert ankommen, statt weiter zu raten.
     if(!(e instanceof DbTransportOutageError)){
-      e.message += ' [gesendet: fromPlace='+JSON.stringify(fromId)+', toPlace='+JSON.stringify(toId)+', time='+JSON.stringify(whenIso)+']';
+      e.message += ' [gesendet: fromPlace='+JSON.stringify(fromId)+', toPlace='+JSON.stringify(toId)+', time='+JSON.stringify(timeParam)+']';
     }
     throw e;
   }
