@@ -4214,13 +4214,18 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.1.0';
+const APP_VERSION = '6.2.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.2.0', tier:'🟡', title:'Transport-Segment-System: Phase 5 abgeschlossen — Badges & echte Routen auf der Karte', items:[
+    'Acht neue Badges, die erst durch echte Flug-/Zugsuche möglich sind: "Über den Wolken I–III" (Anzahl gesuchter Flüge statt nur Distanz), "Auf Schienen I–III" (Anzahl gesuchter Zugfahrten), "Quer durchs Land" (10 unterschiedliche Bahnhöfe) und "Vielflieger-Radar" (10 unterschiedliche Flughäfen).',
+    'Die "Routen"-Ansicht auf der Weltkarte zeichnet bei Auto/Rad/Fuß-Reisen jetzt die echte, über OpenStreetMap berechnete Strecke (Phase 4) statt eines stilisierten Bogens — folgt der tatsächlichen Straße/dem Weg. Flüge, Züge und Reisen ohne berechnete Route zeigen weiterhin den Bogen.',
+    'Damit ist die komplette Transport-Segment-Spezifikation umgesetzt: Architektur, Zug, Flug, Auto/Rad/Fuß-Routing, Statistiken, Badges und Kartenvisualisierung.'
+  ]},
   {v:'6.1.0', tier:'🟡', title:'Transport-Segment-System: Phase 5 (Teil 1) — neue Verkehrsmittel-Rekorde', items:[
     'Neue Karte "Verkehrsmittel-Rekorde" unter Travel Insights → Persönliche Rekorde: weiteste Einzel-Flugetappe, weiteste Einzel-Zugfahrt, meistgenutzter Flughafen/Bahnhof, häufigste Airline/häufigster Bahnbetreiber — alles Werte, die erst durch das Transport-Segment-System (Phase 1–4) möglich wurden, da vorher nur "Hin-/Rückweg gesamt" statt einzelner Etappen samt Ort/Betreiber erfasst war.',
     'Erscheint erst, sobald mindestens eine Reise über die Flug- oder Zugsuche echte Segmentdaten gesammelt hat — rein manuell erfasste Reisen fließen bewusst nicht mit ein (sonst nur Rauschen ohne echten Flughafen-/Bahnhofsbezug).',
@@ -7210,6 +7215,31 @@ function computeAchievements(){
     {id:'MODE-31',name:'Spaziergänger:in II',icon:'🚶',desc:'100 km zu Fuß',target:100,bonus:20},
     {id:'MODE-32',name:'Spaziergänger:in III',icon:'🚶',desc:'400 km zu Fuß',target:400,bonus:35}
   ], agg.perMode.walk||0);
+
+  /* ---- Neu ab Transport-Segment-System (Phase 5): Werte, die erst durch echte
+     Flug-/Zugsuche entstehen — Anzahl statt nur Distanz, plus Vielfalt an Orten.
+     Zählt nur Segmente aus echter Suche (source aerodatabox/dbtransport), nicht rein
+     manuell eingetragene Reisen. */
+  const allSegsForBadges = [];
+  trips.forEach(tr=>{ (tr.transportSegments||[]).forEach(seg=>allSegsForBadges.push(seg)); });
+  const realFlightSegCount = allSegsForBadges.filter(s=>s.source==='aerodatabox').length;
+  const realTrainSegCount = allSegsForBadges.filter(s=>s.source==='dbtransport').length;
+  const uniqueAirportsSet = new Set();
+  allSegsForBadges.filter(s=>s.source==='aerodatabox').forEach(s=>{ if(s.origin?.code) uniqueAirportsSet.add(s.origin.code); if(s.destination?.code) uniqueAirportsSet.add(s.destination.code); });
+  const uniqueStationsSet = new Set();
+  allSegsForBadges.filter(s=>s.source==='dbtransport').forEach(s=>{ if(s.origin?.name) uniqueStationsSet.add(s.origin.name); if(s.destination?.name) uniqueStationsSet.add(s.destination.name); });
+  addTiers('MODE',[
+    {id:'MODE-33',name:'Über den Wolken I',icon:'✈️',desc:'5 gesuchte Flüge (per Flugnummer-Suche erfasst)',target:5,bonus:10},
+    {id:'MODE-34',name:'Über den Wolken II',icon:'✈️',desc:'15 gesuchte Flüge',target:15,bonus:20},
+    {id:'MODE-35',name:'Über den Wolken III',icon:'✈️',desc:'30 gesuchte Flüge',target:30,bonus:35}
+  ], realFlightSegCount);
+  addTiers('MODE',[
+    {id:'MODE-36',name:'Auf Schienen I',icon:'🚆',desc:'5 gesuchte Zugfahrten (per Verbindungssuche erfasst)',target:5,bonus:10},
+    {id:'MODE-37',name:'Auf Schienen II',icon:'🚆',desc:'15 gesuchte Zugfahrten',target:15,bonus:20},
+    {id:'MODE-38',name:'Auf Schienen III',icon:'🚆',desc:'30 gesuchte Zugfahrten',target:30,bonus:35}
+  ], realTrainSegCount);
+  add('MODE-39','MODE','Quer durchs Land','🗺️','10 unterschiedliche Bahnhöfe (aus echten Zugverbindungen)',10,uniqueStationsSet.size,25);
+  add('MODE-40','MODE','Vielflieger-Radar','📡','10 unterschiedliche Flughäfen (aus echten Flugdaten)',10,uniqueAirportsSet.size,25);
   add('MODE-20','MODE','Alleskönner:in','🎫','Alle '+MODE_ORDER.length+' Verkehrsmittel mindestens einmal genutzt',MODE_ORDER.length,modesUsed.size,25);
   add('MODE-21','MODE','Fliegerfreies Jahr','🌱','Ein Kalenderjahr komplett ohne Flugreise (bei ≥1 Reise)',1,flightFreeYear,30);
   addTiers('MODE',[
@@ -7782,7 +7812,14 @@ function buildRouteArcFeatures(modeFilter){
     const key = mode+'|'+dest.n+'|'+dest.c;
     if(seen.has(key)) return;
     seen.add(key);
-    const coords = buildArcCoords(homeCityRef.lon, homeCityRef.lat, dest.lon, dest.lat);
+    // Echte Routen-Geometrie (Phase 4, OSRM — Auto/Rad/Fuß) bevorzugen, wenn
+    // vorhanden: folgt der tatsächlichen Straße/dem Weg statt eines stilisierten
+    // Bogens. Für Flüge/Züge/Reisen ohne berechnete Geometrie bleibt der Bogen.
+    const realGeometry = t.direction==='returnonly' ? t.returnRouteGeometry : t.outRouteGeometry;
+    const realCalcBy = t.direction==='returnonly' ? t.returnRouteCalculatedBy : t.outRouteCalculatedBy;
+    const coords = (realCalcBy==='osrm' && Array.isArray(realGeometry) && realGeometry.length>1)
+      ? realGeometry
+      : buildArcCoords(homeCityRef.lon, homeCityRef.lat, dest.lon, dest.lat);
     if(coords.length<2) return;
     feats.push({type:'Feature', properties:{mode:mode, city:dest.n}, geometry:{type:'LineString', coordinates:coords}});
   });
