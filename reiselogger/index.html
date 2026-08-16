@@ -4171,13 +4171,16 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '5.3.0';
+const APP_VERSION = '5.4.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'5.4.0', tier:'🟡', title:'Flugsuche: exaktes Reisedatum statt ±2-Tage-Fenster', items:[
+    'Sowohl der Routen-Vorschlag als auch die direkte Flugnummer-Suche verwenden jetzt exakt das Reisedatum (Hinflug: Startdatum, Rückflug: Enddatum der Reise) statt eines automatischen ±2-Tage-Fensters — zuverlässiger und spart API-Kontingent (1 Aufruf statt bis zu 10).'
+  ]},
   {v:'5.3.0', tier:'🟡', title:'Routen-Vorschlag: zweites, bisher unbekanntes Antwortformat behoben', items:[
     'Anhand einer echten Beispielantwort bestätigt: Der Flughafen-Abflüge-Endpunkt (für den Routen-Vorschlag) liefert Zeiten in einem komplett anderen Format als die Flugnummer-Suche — flache Felder wie scheduledTimeLocal statt verschachtelter {utc, local}-Objekte. Die Auswertung kannte bisher nur das verschachtelte Format, wodurch bei per Routen-Suche gefundenen Flügen praktisch alle Zeiten leer blieben.',
     'Zusätzlich liefert dieser Endpunkt grundsätzlich keine Ankunftszeiten, Flugzeugtyp oder Distanz für das Ziel (nur Abflugdaten). Wird jetzt automatisch nach Auswahl über den vollständigen Flugnummer-Endpunkt nachgeladen, damit über die Routen-Suche gefundene Flüge genauso vollständige Daten zeigen wie eine direkte Flugnummer-Suche.'
@@ -11021,32 +11024,28 @@ document.getElementById('flightSearchSuggestBtn').addEventListener('click', asyn
   const ctx = flightSearchCtx;
   if(!ctx.depCode || !ctx.arrCode){ setFlightSearchStatus('Bitte Abflug- und Zielflughafen wählen.', 'err'); return; }
   if(!ctx.centerDate){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
-  const dates = dateWindow(ctx.centerDate, 2);
-  setFlightSearchStatus('Suche läuft (±2 Tage, kann kurz dauern) …', '');
-  const all = [];
-  for(const date of dates){
-    try{
-      const data = await flightApiFetchByRoute(ctx.depCode, ctx.arrCode, date);
-      data.forEach(f=>{ f.__searchDate = date; f.__fromFids = true; all.push(f); });
-    }catch(e){ /* einzelner Tag darf fehlschlagen, Suche läuft weiter */ }
-  }
+  setFlightSearchStatus('Suche läuft …', '');
+  let all = [];
+  try{
+    const data = await flightApiFetchByRoute(ctx.depCode, ctx.arrCode, ctx.centerDate);
+    all = data.map(f=>{ f.__searchDate = ctx.centerDate; f.__fromFids = true; return f; });
+  }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); return; }
   renderFlightResults(all);
-  setFlightSearchStatus(all.length ? all.length+' Flüge gefunden (±2 Tage um '+fmtDate(ctx.centerDate)+') — antippen zum Übernehmen.' : 'Keine Flüge für diese Strecke im Zeitraum gefunden.', all.length?'ok':'');
+  setFlightSearchStatus(all.length ? all.length+' Flüge gefunden am '+fmtDate(ctx.centerDate)+' — antippen zum Übernehmen.' : 'Keine Flüge für diese Strecke am '+fmtDate(ctx.centerDate)+' gefunden.', all.length?'ok':'');
 });
 document.getElementById('flightSearchManualBtn').addEventListener('click', async ()=>{
   const ctx = flightSearchCtx;
   const num = document.getElementById('flightSearchManualInput').value.trim().toUpperCase().replace(/\s+/g,'');
   if(!num){ setFlightSearchStatus('Bitte eine Flugnummer eingeben.', 'err'); return; }
   if(!ctx.centerDate){ setFlightSearchStatus('Kein Datum gesetzt — bitte zuerst den Reisezeitraum wählen.', 'err'); return; }
-  const [fromDate, toDate] = [dateWindow(ctx.centerDate,2)[0], dateWindow(ctx.centerDate,2).slice(-1)[0]];
-  setFlightSearchStatus('Suche läuft (±2 Tage) …', '');
+  setFlightSearchStatus('Suche läuft …', '');
   let all = [];
   try{
-    const data = await flightApiFetchByNumber(num, fromDate, toDate);
-    all = data.map(f=>{ f.__searchDate = (f.departure?.scheduledTime?.local||'').slice(0,10) || undefined; return f; });
+    const data = await flightApiFetchByNumber(num, ctx.centerDate, ctx.centerDate);
+    all = data.map(f=>{ f.__searchDate = ctx.centerDate; return f; });
   }catch(e){ setFlightSearchStatus('Suche fehlgeschlagen: '+e.message, 'err'); return; }
   renderFlightResults(all);
-  setFlightSearchStatus(all.length ? all.length+' Treffer (±2 Tage um '+fmtDate(ctx.centerDate)+') — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer im Zeitraum gefunden.', all.length?'ok':'');
+  setFlightSearchStatus(all.length ? all.length+' Treffer am '+fmtDate(ctx.centerDate)+' — antippen zum Übernehmen.' : 'Kein Flug mit dieser Nummer am '+fmtDate(ctx.centerDate)+' gefunden.', all.length?'ok':'');
 });
 
 function fmtSyncTimestamp(iso){
