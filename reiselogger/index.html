@@ -4214,13 +4214,19 @@ function co2ReferenceKgForYear(year){
   return GERMAN_AVG_CO2_KG_PER_YEAR;
 }
 
-const APP_VERSION = '6.3.4';
+const APP_VERSION = '6.4.0';
 
 /* Release Notes — rückwirkend erstellt, neueste zuerst. Gleiche Tier-Konvention wie
    CHANGELOG.md (🔴 Major / 🟡 Minor / 🟢 Patch). Wird unter Einstellungen angezeigt.
    Wichtig: Bei jeder sichtbaren Änderung an der App wird hier ein neuer Eintrag
    ergänzt, damit "Was ist neu?" und "Release Notes" immer aktuell bleiben. */
 const RELEASE_NOTES = [
+  {v:'6.4.0', tier:'🟡', title:'Zugsuche: mehrere Bahnhöfe pro Stadt auswählbar', items:[
+    'Analog zur Flughafenauswahl bei der Flugsuche: Von/Nach zeigt jetzt bis zu 5 Bahnhof-Kandidaten als antippbare Chips (z. B. Berlin Hbf, Südkreuz, Ostbahnhof, Gesundbrunnen) statt automatisch nur den ersten Treffer zu übernehmen.',
+    'Anders als bei der Flugsuche kein hartcodiertes Städte-Mapping nötig — die Kandidaten kommen direkt und dynamisch aus der Transitous-Geocoder-Antwort, funktioniert also für jede Stadt weltweit ohne Pflege einer Liste.',
+    'Echte Bahnhof-Treffer werden vor allgemeinen Adress-/POI-Treffern einsortiert.',
+    'Da "missing parameter" auch mit gültigen Koordinaten weiter auftrat, zusätzlich von /v6/plan auf /v2/plan umgestellt — dafür gibt es ein konkret dokumentiertes Beispiel mit demselben Parametersatz; /v6 war nur aus der Spezifikation abgeleitet, nicht gegen den Live-Server bestätigt.'
+  ]},
   {v:'6.3.4', tier:'🟢', title:'Zugsuche: eigentliche Ursache behoben — Adress- statt Bahnhof-Treffer', items:[
     'Gefunden: Die Geocoding-Suche nach einem Städtenamen wie "Berlin" lieferte einen allgemeinen Adress-/POI-Treffer mit einer internen OSM-Referenz (z. B. "node/[240109189]") statt einer echten Bahnhof-ID — das war kein gültiges Format für die Verbindungssuche, daher "missing parameter".',
     'Zwei Korrekturen: (1) Bei mehreren Kandidaten wird jetzt bevorzugt ein echter Haltestellen-Treffer gewählt, falls vorhanden. (2) Ist das nicht der Fall, werden die Koordinaten (immer ein gültiges Format) statt der OSM-Referenz verwendet.'
@@ -11353,36 +11359,55 @@ async function motisFetch(path){
   console.log('[MOTIS] Antwort für', path, json);
   return json;
 }
-/* Löst einen Stadt-/Bahnhofsnamen zur besten passenden Haltestelle auf (id, Name,
-   Koordinaten) über den MOTIS-Geocoder. Feldnamen defensiv mit Fallbacks abgefragt,
-   da die exakte Struktur einmal gegen eine echte Antwort geprüft werden sollte
-   (siehe Test-Hinweis unten). */
-async function dbFindStation(name){
-  if(!name) return null;
+/* Löst einen Stadt-/Bahnhofsnamen zu MEHREREN möglichen Haltestellen auf (nicht nur
+   der "besten") — analog zur Mehrfach-Flughafenauswahl bei der Flugsuche (siehe
+   renderAirportPicker/getCityAirportCodes), nur ohne hartcodiertes Städte-Mapping,
+   da der Geocoder selbst mehrere Kandidaten liefert (z. B. Berlin Hbf, Südkreuz,
+   Ostbahnhof, Gesundbrunnen). Echte Haltestellen-Treffer (type STOP / stopId
+   vorhanden) werden vor allgemeinen Adress-/POI-Treffern einsortiert. */
+async function dbFindStations(name, limit){
+  if(!name) return [];
   const data = await motisFetch('/v1/geocode?text='+encodeURIComponent(name)+'&language=de');
   const results = Array.isArray(data) ? data : (data?.results||data?.locations||[]);
-  if(!results || !results.length) return null;
-  // Bevorzugt einen echten Haltestellen-Treffer (type STOP oder vorhandene stopId),
-  // falls die Antwort mehrere Kandidaten liefert — sonst nimmt man ggf. eine
-  // allgemeine Adresse/POI statt des Bahnhofs (siehe fromPlace-Problem oben).
-  const stopHit = results.find(r => r.type==='STOP' || r.stopId);
-  const best = stopHit || results[0];
-  const lat = best.lat!=null?best.lat:(best.location?.lat??best.location?.latitude??null);
-  const lon = best.lon!=null?best.lon:(best.location?.lon??best.location?.longitude??null);
-  // WICHTIG: best.id ist bei Nicht-Stop-Treffern (Adressen/POIs) eine interne
-  // OSM-Referenz wie "node/[240109189]" — kein gültiges fromPlace/toPlace-Format
-  // für /plan (das akzeptiert nur "lat,lon[,level]" oder eine echte Stop-ID).
-  // Deshalb Priorität: echte Stop-ID (falls Haltestellen-Treffer) > Koordinaten
-  // (immer gültig) > id nur als letzter Notnagel.
-  const id = best.stopId || (lat!=null&&lon!=null ? lat+','+lon : null) || best.id;
-  if(id==null){
-    // Feldnamen-Annahme stimmt nicht mit der echten Antwort überein — statt eines
-    // stillen null-Ergebnisses (das später zu "missing parameter" führt) hier direkt
-    // die Rohdaten in die Fehlermeldung packen, die im Modal sichtbar wird. Damit
-    // lässt sich der Adapter beim nächsten Fehlschlag ohne Konsolen-Zugriff korrigieren.
-    throw new Error('Geocoding-Antwort hat unerwartetes Format: '+JSON.stringify(best).slice(0,400));
+  if(!results || !results.length) return [];
+  const sorted = [...results].sort((a,b)=>{
+    const aStop = (a.type==='STOP'||a.stopId) ? 0 : 1;
+    const bStop = (b.type==='STOP'||b.stopId) ? 0 : 1;
+    return aStop-bStop;
+  });
+  const seen = new Set();
+  const out = [];
+  for(const r of sorted){
+    const lat = r.lat!=null?r.lat:(r.location?.lat??r.location?.latitude??null);
+    const lon = r.lon!=null?r.lon:(r.location?.lon??r.location?.longitude??null);
+    // Gleiche Prioritätslogik wie beim vorherigen Einzel-Treffer: echte Stop-ID vor
+    // Koordinaten vor der (für /plan ungültigen) internen OSM-Referenz.
+    const id = r.stopId || (lat!=null&&lon!=null ? lat+','+lon : null) || r.id;
+    if(id==null || seen.has(id)) continue;
+    seen.add(id);
+    out.push({id, name: r.name||r.label||name, lat, lon});
+    if(out.length >= (limit||5)) break;
   }
-  return {id, name: best.name||best.label||name, lat, lon};
+  return out;
+}
+/* Rendert mehrere Stations-Kandidaten als antippbare Chips (gleiche Optik wie
+   .airport-chip bei der Flugsuche) — Klick wählt die Station für diese Richtung. */
+function renderStationPicker(elId, stations, fallbackName, onPick){
+  const el = document.getElementById(elId);
+  if(!el) return;
+  if(!stations.length){
+    el.innerHTML = '<span class="airport-chip" style="opacity:.6;">„'+weitwegEscapeHTML(fallbackName||'?')+'" nicht gefunden</span>';
+    return;
+  }
+  el.innerHTML = stations.map((s,i)=>'<button type="button" class="airport-chip'+(i===0?' active':'')+'" data-idx="'+i+'" style="white-space:nowrap;">'+weitwegEscapeHTML(s.name)+'</button>').join('');
+  onPick(stations[0]);
+  el.querySelectorAll('.airport-chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      el.querySelectorAll('.airport-chip').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      onPick(stations[+btn.dataset.idx]);
+    });
+  });
 }
 /* Sucht Verbindungen zwischen zwei Stationen/Koordinaten ab einem Abfahrtszeitpunkt
    über /v5/plan und übersetzt jede zurückgegebene Itinerary in dieselbe
@@ -11393,7 +11418,7 @@ async function dbSearchJourneys(fromId, toId, whenIso){
   const qs = 'fromPlace='+encodeURIComponent(fromId)+'&toPlace='+encodeURIComponent(toId)
     +'&time='+encodeURIComponent(whenIso)+'&arriveBy=false&numItineraries=6&language=de';
   try{
-    const data = await motisFetch('/v6/plan?'+qs);
+    const data = await motisFetch('/v2/plan?'+qs);
     const itineraries = data?.itineraries || [];
     return itineraries.map(it => ({ legs: (it.legs||[]).map(motisLegToLegacyShape) }));
   }catch(e){
@@ -11819,15 +11844,6 @@ function setTrainSearchStatus(msg, cls){
   el.textContent = msg;
   el.className = 'sync-status'+(cls?' '+cls:'');
 }
-function renderTrainStationChip(elId, station, fallbackName){
-  const el = document.getElementById(elId);
-  if(!el) return;
-  if(station){
-    el.innerHTML = '<span class="airport-chip active">'+station.name+'</span>';
-  } else {
-    el.innerHTML = '<span class="airport-chip" style="opacity:.6;">„'+(fallbackName||'?')+'" nicht gefunden</span>';
-  }
-}
 function fmtTrainTime(iso){
   if(!iso) return '–';
   const d = new Date(iso);
@@ -11857,11 +11873,11 @@ async function openTrainSearchModal(ctx){
   setTrainSearchStatus('Stationen werden ermittelt …', '');
   document.getElementById('trainSearchModal').classList.add('open');
   try{
-    const [dep, arr] = await Promise.all([dbFindStation(ctx.depName), dbFindStation(ctx.arrName)]);
-    ctx.depStation = dep; ctx.arrStation = arr;
-    renderTrainStationChip('trainDepResolved', dep, ctx.depName);
-    renderTrainStationChip('trainArrResolved', arr, ctx.arrName);
-    setTrainSearchStatus(dep&&arr ? '' : 'Von/Nach konnten nicht eindeutig gefunden werden — bitte Städtenamen in Von/Nach prüfen.', dep&&arr?'':'err');
+    const [depList, arrList] = await Promise.all([dbFindStations(ctx.depName,5), dbFindStations(ctx.arrName,5)]);
+    ctx.depStation = depList[0]||null; ctx.arrStation = arrList[0]||null;
+    renderStationPicker('trainDepResolved', depList, ctx.depName, s=>{ ctx.depStation = s; });
+    renderStationPicker('trainArrResolved', arrList, ctx.arrName, s=>{ ctx.arrStation = s; });
+    setTrainSearchStatus(depList.length&&arrList.length ? '' : 'Von/Nach konnten nicht eindeutig gefunden werden — bitte Städtenamen in Von/Nach prüfen.', depList.length&&arrList.length?'':'err');
   }catch(e){
     if(e instanceof DbTransportOutageError) setTrainOutageNotice(e.message);
     else setTrainSearchStatus('Stationssuche fehlgeschlagen: '+e.message, 'err');
