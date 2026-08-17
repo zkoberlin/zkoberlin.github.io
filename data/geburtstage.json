@@ -1,41 +1,41 @@
 {
-  "datum": "16.08.2026",
-  "generiert": "2026-08-16T02:13:43Z",
+  "datum": "17.08.2026",
+  "generiert": "2026-08-17T02:11:52Z",
   "geburtstage": [
     {
-      "name": "Reiner Kunze",
+      "name": "Herta Müller",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Linguist",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Reiner_Kunze_Schorndorf_2012-01-29.JPG/120px-Reiner_Kunze_Schorndorf_2012-01-29.JPG",
-      "wikidata": "https://www.wikidata.org/wiki/Q61199",
+      "beruf": "Schriftsteller",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Herta_M%C3%BCller_Brucknerhaus_Linz_2025_BHO-4188.jpg/120px-Herta_M%C3%BCller_Brucknerhaus_Linz_2025_BHO-4188.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q38049",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Tolgay Arslan",
+      "name": "Ismail Jakobs",
       "alter": null,
       "geburtsjahr": null,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Tolgay_Arslan.jpg/120px-Tolgay_Arslan.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q335413",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Ismail_Jakobs_France_v_Senegal_16_June_2026-237_%28cropped%29.jpg/120px-Ismail_Jakobs_France_v_Senegal_16_June_2026-237_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q74178822",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Stefan Klos",
-      "alter": 55,
-      "geburtsjahr": 1971,
-      "beruf": "German Footballer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Stefan_Klos_2005.jpg/330px-Stefan_Klos_2005.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Klos",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Robert De Niro",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Robert_De_Niro_Cannes_2016.jpg/120px-Robert_De_Niro_Cannes_2016.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q36949",
+      "nationalitaet": null
     },
     {
-      "name": "Helmut Rahn",
-      "alter": 97,
-      "geburtsjahr": 1929,
-      "beruf": "German Footballer (1929–2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Helmut_Rahn.jpg/330px-Helmut_Rahn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Helmut_Rahn",
+      "name": "Nastasja Schunk",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "German Tennis Player (Born 2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Schunk_RGQ22_%2819%29_%2852129770809%29.jpg/330px-Schunk_RGQ22_%2819%29_%2852129770809%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nastasja_Schunk",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
