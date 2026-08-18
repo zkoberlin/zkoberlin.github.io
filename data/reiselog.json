@@ -1,10 +1,10 @@
 {
-  "totalKm": 313216,
+  "totalKm": 313761,
   "countries": 22,
   "cities": 130,
-  "trips": 264,
-  "earthLaps": 7.82,
+  "trips": 265,
+  "earthLaps": 7.83,
   "yearStart": "1995",
   "yearEnd": "2026",
-  "updated_at": "2026-08-17T04:49:25.079020+00:00"
+  "updated_at": "2026-08-18T04:40:57.111447+00:00"
 }
