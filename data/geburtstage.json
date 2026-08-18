@@ -1,41 +1,41 @@
 {
-  "datum": "17.08.2026",
-  "generiert": "2026-08-17T02:11:52Z",
+  "datum": "18.08.2026",
+  "generiert": "2026-08-18T02:07:56Z",
   "geburtstage": [
     {
-      "name": "Herta Müller",
+      "name": "Robert Huth",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Schriftsteller",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Herta_M%C3%BCller_Brucknerhaus_Linz_2025_BHO-4188.jpg/120px-Herta_M%C3%BCller_Brucknerhaus_Linz_2025_BHO-4188.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q38049",
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Robert_Huth_Middlesbrough_relegation_day.jpg/120px-Robert_Huth_Middlesbrough_relegation_day.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q155461",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ismail Jakobs",
+      "name": "Michael Greis",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Ismail_Jakobs_France_v_Senegal_16_June_2026-237_%28cropped%29.jpg/120px-Ismail_Jakobs_France_v_Senegal_16_June_2026-237_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q74178822",
+      "beruf": "Biathlet",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Michael_Greis_Trondheim_2009.jpg/120px-Michael_Greis_Trondheim_2009.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q57957",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Robert De Niro",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Robert_De_Niro_Cannes_2016.jpg/120px-Robert_De_Niro_Cannes_2016.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q36949",
-      "nationalitaet": null
+      "name": "Andi Deris",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "German Singer (Born 1964)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Helloween_-_Andi_Deris_at_Masters_of_Rock_2018_by_vSpectrum_%28cropped%29.jpg/330px-Helloween_-_Andi_Deris_at_Masters_of_Rock_2018_by_vSpectrum_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andi_Deris",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Nastasja Schunk",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "German Tennis Player (Born 2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Schunk_RGQ22_%2819%29_%2852129770809%29.jpg/330px-Schunk_RGQ22_%2819%29_%2852129770809%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nastasja_Schunk",
+      "name": "Otto Ernst Remer",
+      "alter": 114,
+      "geburtsjahr": 1912,
+      "beruf": "German Wehrmacht Army Officer And Neo-Nazi Leader (1912–1997)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Otto_Ernst_Remer_portrait.JPG/330px-Otto_Ernst_Remer_portrait.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Otto_Ernst_Remer",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
