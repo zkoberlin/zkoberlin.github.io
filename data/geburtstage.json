@@ -1,42 +1,42 @@
 {
-  "datum": "18.08.2026",
-  "generiert": "2026-08-18T02:07:56Z",
+  "datum": "19.08.2026",
+  "generiert": "2026-08-19T02:09:43Z",
   "geburtstage": [
     {
-      "name": "Robert Huth",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Robert_Huth_Middlesbrough_relegation_day.jpg/120px-Robert_Huth_Middlesbrough_relegation_day.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q155461",
+      "name": "Nico Hülkenberg",
+      "alter": 39,
+      "geburtsjahr": 1987,
+      "beruf": "German Racing Driver (Born 1987)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/2019_Formula_One_tests_Barcelona%2C_Hulkenberg_%2840287128313%29.jpg/330px-2019_Formula_One_tests_Barcelona%2C_Hulkenberg_%2840287128313%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nico_H%C3%BClkenberg",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Michael Greis",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Biathlet",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Michael_Greis_Trondheim_2009.jpg/120px-Michael_Greis_Trondheim_2009.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q57957",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Chae Hyun-woo",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "South Korean Footballer (Born 2004)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Chae_Hyun-woo",
+      "nationalitaet": null
     },
     {
-      "name": "Andi Deris",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "German Singer (Born 1964)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Helloween_-_Andi_Deris_at_Masters_of_Rock_2018_by_vSpectrum_%28cropped%29.jpg/330px-Helloween_-_Andi_Deris_at_Masters_of_Rock_2018_by_vSpectrum_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Andi_Deris",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Nguyễn Đình Bắc",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Vietnamese Footballer (Born 2004)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc.png/330px-Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc",
+      "nationalitaet": null
     },
     {
-      "name": "Otto Ernst Remer",
-      "alter": 114,
-      "geburtsjahr": 1912,
-      "beruf": "German Wehrmacht Army Officer And Neo-Nazi Leader (1912–1997)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Otto_Ernst_Remer_portrait.JPG/330px-Otto_Ernst_Remer_portrait.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Otto_Ernst_Remer",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Awak Kuier",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Finnish Basketball Player (Born 2001)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Awak_Kuier",
+      "nationalitaet": null
     }
   ]
 }
