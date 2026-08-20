@@ -1,42 +1,42 @@
 {
-  "datum": "19.08.2026",
-  "generiert": "2026-08-19T02:09:43Z",
+  "datum": "20.08.2026",
+  "generiert": "2026-08-20T02:09:28Z",
   "geburtstage": [
     {
-      "name": "Nico Hülkenberg",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Racing Driver (Born 1987)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/2019_Formula_One_tests_Barcelona%2C_Hulkenberg_%2840287128313%29.jpg/330px-2019_Formula_One_tests_Barcelona%2C_Hulkenberg_%2840287128313%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nico_H%C3%BClkenberg",
+      "name": "Maxim Vengerov",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Dirigent",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Vengerovfestival.jpg/120px-Vengerovfestival.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q441388",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Chae Hyun-woo",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "South Korean Footballer (Born 2004)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Chae_Hyun-woo",
-      "nationalitaet": null
+      "name": "Ralf Hütter",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Komponist/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Ralf_H%C3%BCtter_1975.jpg/120px-Ralf_H%C3%BCtter_1975.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q372438",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Nguyễn Đình Bắc",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Vietnamese Footballer (Born 2004)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc.png/330px-Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nguy%E1%BB%85n_%C4%90%C3%ACnh_B%E1%BA%AFc",
-      "nationalitaet": null
+      "name": "Stefan Aigner",
+      "alter": 39,
+      "geburtsjahr": 1987,
+      "beruf": "German Footballer (Born 1987)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Stefan_Aigner_1860_2009.JPG/330px-Stefan_Aigner_1860_2009.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Aigner",
+      "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Awak Kuier",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Finnish Basketball Player (Born 2001)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Awak_Kuier",
-      "nationalitaet": null
+      "name": "Laura Georges",
+      "alter": 42,
+      "geburtsjahr": 1984,
+      "beruf": "French Footballer (Born 1984)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Laura_Georges_in_2011.JPG/330px-Laura_Georges_in_2011.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Laura_Georges",
+      "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
 }
