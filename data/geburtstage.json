@@ -1,42 +1,42 @@
 {
-  "datum": "20.08.2026",
-  "generiert": "2026-08-20T02:09:28Z",
+  "datum": "21.08.2026",
+  "generiert": "2026-08-21T02:15:48Z",
   "geburtstage": [
     {
-      "name": "Maxim Vengerov",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Dirigent",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Vengerovfestival.jpg/120px-Vengerovfestival.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q441388",
+      "name": "Charlison Benschop",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "Professional Footballer (Born 1989)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Charlison-benschop.jpg/330px-Charlison-benschop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Charlison_Benschop",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Ralf Hütter",
-      "alter": null,
-      "geburtsjahr": null,
-      "beruf": "Komponist/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Ralf_H%C3%BCtter_1975.jpg/120px-Ralf_H%C3%BCtter_1975.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q372438",
+      "name": "Jasmin Wöhr",
+      "alter": 46,
+      "geburtsjahr": 1980,
+      "beruf": "German Tennis Player",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Jasmin_Woehr_at_the_2010_US_Open_01.jpg/330px-Jasmin_Woehr_at_the_2010_US_Open_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jasmin_W%C3%B6hr",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Stefan Aigner",
-      "alter": 39,
-      "geburtsjahr": 1987,
-      "beruf": "German Footballer (Born 1987)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Stefan_Aigner_1860_2009.JPG/330px-Stefan_Aigner_1860_2009.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Aigner",
+      "name": "Mamadou Diallo (footballer, born 1971)",
+      "alter": 55,
+      "geburtsjahr": 1971,
+      "beruf": "Senegalese Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Mamadou_Diallo_(footballer%2C_born_1971)",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Laura Georges",
-      "alter": 42,
-      "geburtsjahr": 1984,
-      "beruf": "French Footballer (Born 1984)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Laura_Georges_in_2011.JPG/330px-Laura_Georges_in_2011.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Laura_Georges",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Piper Rockelle",
+      "alter": 19,
+      "geburtsjahr": 2007,
+      "beruf": "American Content Creator And Model (Born 2007)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Piper_Rockelle",
+      "nationalitaet": null
     }
   ]
 }
