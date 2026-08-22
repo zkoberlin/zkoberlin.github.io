@@ -1,42 +1,42 @@
 {
-  "datum": "21.08.2026",
-  "generiert": "2026-08-21T02:15:48Z",
+  "datum": "22.08.2026",
+  "generiert": "2026-08-22T02:07:03Z",
   "geburtstage": [
     {
-      "name": "Charlison Benschop",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Professional Footballer (Born 1989)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Charlison-benschop.jpg/330px-Charlison-benschop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Charlison_Benschop",
+      "name": "Laura Dahlmeier",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "German Biathlete (1993–2025)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Portr%C3%A4ts_bei_der_Olympia-Einkleidung_M%C3%BCnchen_2018_%28Martin_Rulsch%29_48_%284x5_cropped%29.jpg/330px-Portr%C3%A4ts_bei_der_Olympia-Einkleidung_M%C3%BCnchen_2018_%28Martin_Rulsch%29_48_%284x5_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Laura_Dahlmeier",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jasmin Wöhr",
+      "name": "Christina Obergföll",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "German Javelin Thrower",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/20150726_1723_DM_Leichtathletik_Frauen_Speerwurf_1480.jpg/330px-20150726_1723_DM_Leichtathletik_Frauen_Speerwurf_1480.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christina_Obergf%C3%B6ll",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Roland Benschneider",
       "alter": 46,
       "geburtsjahr": 1980,
-      "beruf": "German Tennis Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Jasmin_Woehr_at_the_2010_US_Open_01.jpg/330px-Jasmin_Woehr_at_the_2010_US_Open_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jasmin_W%C3%B6hr",
+      "beruf": "German Footballer (Born 1980)",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Roland_Benschneider",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mamadou Diallo (footballer, born 1971)",
-      "alter": 55,
-      "geburtsjahr": 1971,
-      "beruf": "Senegalese Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Mamadou_Diallo_(footballer%2C_born_1971)",
+      "name": "Leni Riefenstahl",
+      "alter": 124,
+      "geburtsjahr": 1902,
+      "beruf": "German Filmmaker (1902–2003)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Leni_Riefenstahl%2C_1935.jpg/330px-Leni_Riefenstahl%2C_1935.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Leni_Riefenstahl",
       "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Piper Rockelle",
-      "alter": 19,
-      "geburtsjahr": 2007,
-      "beruf": "American Content Creator And Model (Born 2007)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Piper_Rockelle",
-      "nationalitaet": null
     }
   ]
 }
