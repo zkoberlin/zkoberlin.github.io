@@ -1,41 +1,41 @@
 {
-  "datum": "22.08.2026",
-  "generiert": "2026-08-22T02:07:03Z",
+  "datum": "23.08.2026",
+  "generiert": "2026-08-23T02:16:46Z",
   "geburtstage": [
     {
-      "name": "Laura Dahlmeier",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "German Biathlete (1993–2025)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Portr%C3%A4ts_bei_der_Olympia-Einkleidung_M%C3%BCnchen_2018_%28Martin_Rulsch%29_48_%284x5_cropped%29.jpg/330px-Portr%C3%A4ts_bei_der_Olympia-Einkleidung_M%C3%BCnchen_2018_%28Martin_Rulsch%29_48_%284x5_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Laura_Dahlmeier",
+      "name": "Daniel Schwaab",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Daniel_Schwaab.jpg/120px-Daniel_Schwaab.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q169005",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Christina Obergföll",
+      "name": "Mariama Jamanka",
+      "alter": null,
+      "geburtsjahr": null,
+      "beruf": "Bobfahrer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/2018-02-26_Frankfurt_Flughafen_Ankunft_Olympiamannschaft-6039.jpg/120px-2018-02-26_Frankfurt_Flughafen_Ankunft_Olympiamannschaft-6039.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q22703959",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Heiko Schwarz",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "German Footballer",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Heiko_Schwarz",
+      "nationalitaet": "🇩🇪 Deutsch"
+    },
+    {
+      "name": "Stephan Loboué",
       "alter": 45,
       "geburtsjahr": 1981,
-      "beruf": "German Javelin Thrower",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/20150726_1723_DM_Leichtathletik_Frauen_Speerwurf_1480.jpg/330px-20150726_1723_DM_Leichtathletik_Frauen_Speerwurf_1480.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Christina_Obergf%C3%B6ll",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Roland Benschneider",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "German Footballer (Born 1980)",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Roland_Benschneider",
-      "nationalitaet": "🇩🇪 Deutsch"
-    },
-    {
-      "name": "Leni Riefenstahl",
-      "alter": 124,
-      "geburtsjahr": 1902,
-      "beruf": "German Filmmaker (1902–2003)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Leni_Riefenstahl%2C_1935.jpg/330px-Leni_Riefenstahl%2C_1935.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Leni_Riefenstahl",
+      "beruf": "Ivorian Footballer (Born 1981)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Lobou%C3%A9%2C_Stephan_RWO_10-11_WP.JPG/330px-Lobou%C3%A9%2C_Stephan_RWO_10-11_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Stephan_Lobou%C3%A9",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
