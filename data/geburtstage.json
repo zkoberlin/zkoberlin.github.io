@@ -1,41 +1,41 @@
 {
-  "datum": "23.08.2026",
-  "generiert": "2026-08-23T02:16:46Z",
+  "datum": "24.08.2026",
+  "generiert": "2026-08-24T02:14:49Z",
   "geburtstage": [
     {
-      "name": "Daniel Schwaab",
+      "name": "Stefan Bell",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Daniel_Schwaab.jpg/120px-Daniel_Schwaab.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q169005",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Stefan-Bell-2015-07.jpg/120px-Stefan-Bell-2015-07.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q263053",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mariama Jamanka",
+      "name": "Mark Uth",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Bobfahrer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/2018-02-26_Frankfurt_Flughafen_Ankunft_Olympiamannschaft-6039.jpg/120px-2018-02-26_Frankfurt_Flughafen_Ankunft_Olympiamannschaft-6039.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q22703959",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/2021_Mark_Uth_%28cropped%29.jpg/120px-2021_Mark_Uth_%28cropped%29.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q3401587",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Heiko Schwarz",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "German Footballer",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Heiko_Schwarz",
+      "name": "Robert Enke",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "German Footballer (1977–2009)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Robert_Enke_3.JPG/330px-Robert_Enke_3.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Robert_Enke",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Stephan Loboué",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "Ivorian Footballer (Born 1981)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Lobou%C3%A9%2C_Stephan_RWO_10-11_WP.JPG/330px-Lobou%C3%A9%2C_Stephan_RWO_10-11_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Stephan_Lobou%C3%A9",
+      "name": "Jürgen Macho",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Austrian Footballer And Coach",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/J%C3%BCrgen_Macho.jpg/330px-J%C3%BCrgen_Macho.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Macho",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
