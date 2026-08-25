@@ -1,41 +1,41 @@
 {
-  "datum": "24.08.2026",
-  "generiert": "2026-08-24T02:14:49Z",
+  "datum": "25.08.2026",
+  "generiert": "2026-08-25T02:10:41Z",
   "geburtstage": [
     {
-      "name": "Stefan Bell",
+      "name": "Claudia Schiffer",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Stefan-Bell-2015-07.jpg/120px-Stefan-Bell-2015-07.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q263053",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Claudia_Schiffer_20091006_Chanel_05.jpg/120px-Claudia_Schiffer_20091006_Chanel_05.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q76717",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Mark Uth",
+      "name": "Fatih Akin",
       "alter": null,
       "geburtsjahr": null,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/2021_Mark_Uth_%28cropped%29.jpg/120px-2021_Mark_Uth_%28cropped%29.jpg",
-      "wikidata": "https://www.wikidata.org/wiki/Q3401587",
+      "beruf": "Filmregisseur",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Fatih_Akin-68626.jpg/120px-Fatih_Akin-68626.jpg",
+      "wikidata": "https://www.wikidata.org/wiki/Q77061",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Robert Enke",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "German Footballer (1977–2009)",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Robert_Enke_3.JPG/330px-Robert_Enke_3.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Robert_Enke",
+      "name": "Florian Mohr",
+      "alter": 42,
+      "geburtsjahr": 1984,
+      "beruf": "German Footballer",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Mohr%2C_Florian_StP_12-13_%282%29_WP.JPG/330px-Mohr%2C_Florian_StP_12-13_%282%29_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Florian_Mohr",
       "nationalitaet": "🇩🇪 Deutsch"
     },
     {
-      "name": "Jürgen Macho",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "Austrian Footballer And Coach",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/J%C3%BCrgen_Macho.jpg/330px-J%C3%BCrgen_Macho.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Macho",
+      "name": "Philipp Mißfelder",
+      "alter": 47,
+      "geburtsjahr": 1979,
+      "beruf": "German Politician (1979–2015)",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/PhilippMissfelder2008.jpg/330px-PhilippMissfelder2008.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Mi%C3%9Ffelder",
       "nationalitaet": "🇩🇪 Deutsch"
     }
   ]
