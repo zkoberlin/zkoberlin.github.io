@@ -664,8 +664,8 @@ async function loadBtc(){
 }
 loadBtc();
 
-// ── AKTIEN LIVE (Finnhub US + Yahoo Finance EU) ──
-const FH_KEY='d83ncvhr01qkm5c8rrjgd83ncvhr01qkm5c8rrk0';
+// ── AKTIEN LIVE (Finnhub via Worker + Yahoo Finance EU) ──
+const MARKET_API='https://kalender-proxy.paul-bendzko.workers.dev/market';
 
 // Vollständiges Parqet-Portfolio – 22 Positionen
 // fhSym  = Finnhub-Symbol (US-Listing oder ADR)
@@ -711,7 +711,7 @@ function logoUrl(domain){
 
 // Finnhub Quote (US-Aktien + ADRs)
 async function fetchFinnhubQuote(sym){
-  const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(sym)}&token=${FH_KEY}`;
+  const url=`${MARKET_API}/quote?symbol=${encodeURIComponent(sym)}`;
   const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
   if(!r.ok)throw new Error('HTTP '+r.status);
   const d=await r.json();
@@ -722,7 +722,7 @@ async function fetchFinnhubQuote(sym){
 // Finnhub 52W Metric (kostenlos, separater Call)
 async function fetchFinnhub52W(sym){
   try{
-    const url=`https://finnhub.io/api/v1/stock/metric?symbol=${encodeURIComponent(sym)}&metric=all&token=${FH_KEY}`;
+    const url=`${MARKET_API}/metric?symbol=${encodeURIComponent(sym)}`;
     const r=await fetch(url,{signal:AbortSignal.timeout(6000)});
     if(!r.ok)return null;
     const d=await r.json();

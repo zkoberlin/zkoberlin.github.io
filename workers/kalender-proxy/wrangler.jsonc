@@ -14,6 +14,7 @@
   "secrets": {
     "required": [
       "ANTHROPIC_API_SECRET",
+      "FINNHUB_API_SECRET",
       "GMAIL_ICAL_URL",
       "HELLOMED_ICAL_URL",
       "KIDS_SHEET_URL"

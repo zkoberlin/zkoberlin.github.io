@@ -7,6 +7,7 @@ function createEnv() {
   const store = new Map();
   return {
     ANTHROPIC_API_SECRET: "test-api-key",
+    FINNHUB_API_SECRET: "test-finnhub-key",
     GMAIL_ICAL_URL: "https://calendar.example.test/gmail.ics",
     HELLOMED_ICAL_URL: "https://calendar.example.test/hellomed.ics",
     KIDS_SHEET_URL: "https://sheets.example.test/kids.csv",
@@ -90,6 +91,43 @@ test("resolves a named feed through its secret binding", async () => {
     assert.equal(response.status, 200);
     assert.equal(requestedUrl, env.GMAIL_ICAL_URL);
     assert.match(await response.text(), /BEGIN:VCALENDAR/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("rejects market symbols outside the portfolio allowlist", async () => {
+  const response = await worker.fetch(
+    new Request("https://worker.example.test/market/quote?symbol=UNKNOWN", {
+      headers: { Origin: "http://localhost:8000" },
+    }),
+    createEnv(),
+  );
+
+  assert.equal(response.status, 400);
+});
+
+test("loads an allowed market quote without exposing the provider key", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestedUrl = "";
+
+  globalThis.fetch = async (url) => {
+    requestedUrl = String(url);
+    return new Response(JSON.stringify({ c: 123, pc: 120, dp: 2.5 }));
+  };
+
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/market/quote?symbol=MSFT", {
+        headers: { Origin: "http://localhost:8000" },
+      }),
+      createEnv(),
+    );
+
+    assert.equal(response.status, 200);
+    assert.match(requestedUrl, /symbol=MSFT/);
+    assert.match(requestedUrl, /token=test-finnhub-key/);
+    assert.doesNotMatch(await response.text(), /test-finnhub-key/);
   } finally {
     globalThis.fetch = originalFetch;
   }

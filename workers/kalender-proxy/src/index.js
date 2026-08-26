@@ -3,6 +3,11 @@ const DEVELOPMENT_ORIGINS = new Set([
   "http://localhost:8000",
   "http://127.0.0.1:8000",
 ]);
+const FINNHUB_SYMBOLS = new Set([
+  "MSFT", "GOOGL", "ASML", "NVO", "PG", "WTKWY", "MELI", "SIEGY",
+  "HVRRF", "RACE", "TSLA", "NU", "CTAS", "AXP", "HESAY", "NFLX",
+  "ZTS", "RR", "CLOV",
+]);
 
 function isAllowedOrigin(origin) {
   return !origin || origin === PRODUCTION_ORIGIN || DEVELOPMENT_ORIGINS.has(origin);
@@ -155,6 +160,41 @@ async function handleHoroscope(env, origin) {
   return new Response(result, { status: 200, headers: responseHeaders(origin) });
 }
 
+async function handleMarketData(url, env, origin) {
+  const symbol = (url.searchParams.get("symbol") || "").toUpperCase();
+  const resource = url.pathname === "/market/quote" ? "quote" : "stock/metric";
+
+  if (!FINNHUB_SYMBOLS.has(symbol)) {
+    return jsonResponse({ error: "Symbol not allowed" }, 400, origin);
+  }
+
+  const upstreamUrl = new URL(`https://finnhub.io/api/v1/${resource}`);
+  upstreamUrl.searchParams.set("symbol", symbol);
+  if (resource === "stock/metric") upstreamUrl.searchParams.set("metric", "all");
+  upstreamUrl.searchParams.set("token", env.FINNHUB_API_SECRET);
+
+  const upstream = await fetch(upstreamUrl, {
+    cf: {
+      cacheEverything: true,
+      cacheTtl: resource === "quote" ? 60 : 21_600,
+    },
+  });
+
+  if (!upstream.ok) {
+    console.error(JSON.stringify({
+      message: "market provider failed",
+      resource,
+      status: upstream.status,
+    }));
+    return jsonResponse({ error: "Market data unavailable" }, 502, origin);
+  }
+
+  return new Response(upstream.body, {
+    status: 200,
+    headers: responseHeaders(origin),
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -172,6 +212,13 @@ export default {
 
       if (url.pathname === "/horoscope" && request.method === "GET") {
         return await handleHoroscope(env, origin);
+      }
+
+      if (
+        request.method === "GET"
+        && (url.pathname === "/market/quote" || url.pathname === "/market/metric")
+      ) {
+        return await handleMarketData(url, env, origin);
       }
 
       if (request.method === "GET") {

@@ -20,6 +20,7 @@ Dieses Register beschreibt die externen Datenflüsse des Hubs und seiner Unterse
 | `kalender-proxy /feeds/kids` | KalenderPaul | Lesen | private Familientermine | Tabellen-URL als Worker-Secret; CORS-Originliste | **Kritisch:** authentifizieren und minimale erforderliche Felder ausliefern. |
 | `kalender-proxy /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | KV, Größen- und JSON-Prüfung, CORS-Originliste | **Kritisch:** Schreib- und Lesezugriff authentifizieren; Rate Limit ergänzen. |
 | `kalender-proxy /horoscope` | Hub | Lesen; Worker schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Worker-Secret, KV-Cache | **Mittel:** Rate Limit und klaren Fehler-/Cachepfad ergänzen. |
+| `kalender-proxy /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Worker-Secret, Symbol-Allowlist, Edge-Cache | **Mittel:** Schlüssel beim Anbieter rotieren und Rate Limit ergänzen. |
 
 Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
@@ -34,7 +35,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Nameday APIs und AllOrigins | Namenstag-Fallback | Lesen | öffentliche Daten | mehrere Anbieter | **Mittel:** öffentlichen CORS-Proxy entfernen; lokale Datei als alleinige Quelle bevorzugen. |
 | OpenHolidays | Schulferien-Fallback | Lesen | öffentliche Daten | lokale Ferien-Datei | **Niedrig:** lokale Datei bevorzugen und Aktualität anzeigen. |
 | CoinGecko | Bitcoin-Kurs | Lesen | öffentliche Marktdaten | Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt anzeigen. |
-| Finnhub | Aktienkurse | Lesen | API-Zugang im Browsercode | Yahoo-Fallback | **Hoch:** Schlüssel rotieren und serverseitig in Worker-Secret verschieben. |
+| Finnhub | Aktienkurse | Lesen | API-Zugang als Worker-Secret | Yahoo-Fallback | **Mittel:** offengelegten Alt-Schlüssel beim Anbieter rotieren. |
 | Yahoo Finance über öffentliche CORS-Proxys | Kurs-Fallback | Lesen | Depot-Symbole werden an Proxys übertragen | mehrere Proxyanbieter | **Hoch:** eigenen Worker verwenden; öffentliche Proxys entfernen. |
 | EZB | Wechselkurse | Lesen | öffentliche Marktdaten | Standardwerte / Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt dokumentieren. |
 | Google Sheet für Familienrhythmus | Hub-Anzeige | Lesen | Tabellen-ID im Browser | keine belastbare Zugriffsschicht | **Hoch:** über authentifizierten Worker ausliefern. |
@@ -86,4 +87,3 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 3. Finanz- und Börsenzugänge rotieren und serverseitig kapseln.
 4. XSS-Flächen und externe Ressourcen mit CSP härten.
 5. Hub-Code nach Datenbereich modularisieren und gemeinsame Infrastruktur einführen.
-
