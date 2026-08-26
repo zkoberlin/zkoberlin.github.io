@@ -3,14 +3,37 @@
   const AUTH_ENDPOINT = "https://kalender-proxy.paul-bendzko.workers.dev/auth/me";
   const BASE_SCOPES = "openid email";
   const CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
+  const SESSION_KEY = "paul_google_session_v1";
 
   let accessToken = "";
   let expiresAt = 0;
   let profile = null;
   let calendarAccess = false;
 
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
+    if (saved?.accessToken && Number(saved.expiresAt) > Date.now()) {
+      accessToken = saved.accessToken;
+      expiresAt = Number(saved.expiresAt);
+      profile = saved.profile || null;
+      calendarAccess = Boolean(saved.calendarAccess);
+    } else {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+  } catch {
+    sessionStorage.removeItem(SESSION_KEY);
+  }
+
   function isSignedIn() {
-    return Boolean(accessToken) && Date.now() < expiresAt;
+    const valid = Boolean(accessToken) && Date.now() < expiresAt;
+    if (!valid && accessToken) {
+      accessToken = "";
+      expiresAt = 0;
+      profile = null;
+      calendarAccess = false;
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+    return valid;
   }
 
   function render() {
@@ -59,6 +82,12 @@
     expiresAt = Date.now() + Math.max(0, tokenResponse.expires_in - 60) * 1000;
     calendarAccess = String(tokenResponse.scope || "").includes(CALENDAR_SCOPE);
     profile = verification.user;
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+      accessToken,
+      expiresAt,
+      profile,
+      calendarAccess,
+    }));
     render();
     window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
     return { accessToken, expiresAt, profile };
@@ -90,7 +119,12 @@
     const button = event.target.closest("[data-auth-button]");
     if (button) handleButton(button);
   });
-  document.addEventListener("DOMContentLoaded", render);
+  document.addEventListener("DOMContentLoaded", () => {
+    render();
+    if (isSignedIn()) {
+      window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
+    }
+  });
 
   window.HubAuth = {
     signIn,
