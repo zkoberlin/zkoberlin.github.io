@@ -791,13 +791,14 @@ async function loadStocks(){
           if(q&&q.price>0)return{...s,sym:s.fhSym,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52};
         }catch(e){}
       }
-      // 2. Yahoo Finance via CORS-Proxies (EU-Listings)
-      if(s.yfSym){
+      // 2. Yahoo Finance als Fallback (EU-Listing oder dasselbe US-Symbol)
+      const yahooSymbol=s.yfSym||s.fhSym;
+      if(yahooSymbol){
         try{
-          const q=await fetchYahooQuote(s.yfSym);
+          const q=await fetchYahooQuote(yahooSymbol);
           if(q&&q.price>0){
             const cur=q.currency==='CHF'?'CHF':'EUR';
-            return{...s,sym:s.yfSym.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,cur};
+            return{...s,sym:yahooSymbol.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,cur};
           }
         }catch(e){}
       }

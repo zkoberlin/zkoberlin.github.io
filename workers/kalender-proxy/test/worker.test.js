@@ -132,3 +132,26 @@ test("loads an allowed market quote without exposing the provider key", async ()
     globalThis.fetch = originalFetch;
   }
 });
+
+test("serves a fresh market quote from KV without calling the provider", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  await env.KALENDER_KV.put("market:quote:MSFT", JSON.stringify({
+    storedAt: Date.now(),
+    data: { c: 125, pc: 120, dp: 4.16 },
+  }));
+  globalThis.fetch = async () => {
+    throw new Error("provider should not be called");
+  };
+
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/market/quote?symbol=MSFT"),
+      env,
+    );
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).c, 125);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

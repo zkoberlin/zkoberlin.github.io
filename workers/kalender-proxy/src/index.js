@@ -163,9 +163,22 @@ async function handleHoroscope(env, origin) {
 async function handleMarketData(url, env, origin) {
   const symbol = (url.searchParams.get("symbol") || "").toUpperCase();
   const resource = url.pathname === "/market/quote" ? "quote" : "stock/metric";
+  const cacheKey = `market:${resource}:${symbol}`;
+  const freshFor = resource === "quote" ? 300 : 86_400;
 
   if (!FINNHUB_SYMBOLS.has(symbol)) {
     return jsonResponse({ error: "Symbol not allowed" }, 400, origin);
+  }
+
+  const cachedRaw = await env.KALENDER_KV.get(cacheKey);
+  let cached = null;
+  try {
+    cached = cachedRaw ? JSON.parse(cachedRaw) : null;
+  } catch {
+    cached = null;
+  }
+  if (cached?.storedAt && Date.now() - cached.storedAt < freshFor * 1000) {
+    return jsonResponse(cached.data, 200, origin);
   }
 
   const upstreamUrl = new URL(`https://finnhub.io/api/v1/${resource}`);
@@ -173,12 +186,7 @@ async function handleMarketData(url, env, origin) {
   if (resource === "stock/metric") upstreamUrl.searchParams.set("metric", "all");
   upstreamUrl.searchParams.set("token", env.FINNHUB_API_SECRET);
 
-  const upstream = await fetch(upstreamUrl, {
-    cf: {
-      cacheEverything: true,
-      cacheTtl: resource === "quote" ? 60 : 21_600,
-    },
-  });
+  const upstream = await fetch(upstreamUrl);
 
   if (!upstream.ok) {
     console.error(JSON.stringify({
@@ -186,13 +194,15 @@ async function handleMarketData(url, env, origin) {
       resource,
       status: upstream.status,
     }));
+    if (cached?.data) return jsonResponse(cached.data, 200, origin);
     return jsonResponse({ error: "Market data unavailable" }, 502, origin);
   }
 
-  return new Response(upstream.body, {
-    status: 200,
-    headers: responseHeaders(origin),
+  const data = await upstream.json();
+  await env.KALENDER_KV.put(cacheKey, JSON.stringify({ storedAt: Date.now(), data }), {
+    expirationTtl: resource === "quote" ? 86_400 : 604_800,
   });
+  return jsonResponse(data, 200, origin);
 }
 
 export default {
