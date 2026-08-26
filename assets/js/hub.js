@@ -33,7 +33,9 @@ function applyTheme(t){
   const isDark=stored==='dark'||(stored==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
   document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
   document.getElementById('themeBtn').textContent=THEME_ICONS[stored]||'🌓';
-  document.getElementById('themeBtn').title=stored==='light'?'Manuell Hell':stored==='dark'?'Manuell Dunkel':'Auto (System)';
+  const themeLabel=stored==='light'?'Hell – wechseln zu Dunkel':stored==='dark'?'Dunkel – wechseln zu Automatik':'Automatik – wechseln zu Hell';
+  document.getElementById('themeBtn').title=themeLabel;
+  document.getElementById('themeBtn').setAttribute('aria-label',themeLabel);
   if(stored!=='auto')localStorage.setItem(THEME_KEY,stored);
   else localStorage.removeItem(THEME_KEY);
 }
@@ -47,15 +49,32 @@ window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
   if(!localStorage.getItem(THEME_KEY))applyTheme('auto');
 });
 
-// ── CLOCK ──
+// ── CLOCK & GREETING ──
 const now=new Date();
-function tick(){const n=new Date();document.getElementById('clock').textContent=`${pad(n.getHours())}:${pad(n.getMinutes())}`;}
-tick();setInterval(tick,1000);
-
-// ── GREETING ──
-const h=now.getHours();
-document.getElementById('greet').textContent=(h<12?'Guten Morgen':h<18?'Guten Tag':'Guten Abend')+', Paul 👋';
-document.getElementById('hdate').textContent=`${WD[now.getDay()]}, ${now.getDate()}. ${MK[now.getMonth()]} ${now.getFullYear()}`;
+const GREETINGS={
+  night:['Noch wach, Paul? 🌙','Nachtschicht, Paul? 🦉','Ganz schön spät, Paul ✨'],
+  morning:['Guten Morgen, Paul ☕','Moin Paul – auf geht’s! 🌤️','Früh dran, Paul! 🚀','Morgen, Paul – erst Kaffee? ☕'],
+  noon:['Mahlzeit, Paul! 🍽️','Hallo Paul – Halbzeit! ☀️','Mittagsmodus an, Paul 😎'],
+  afternoon:['Guten Tag, Paul 👋','Na Paul, läuft der Laden? ⚡','Weiter geht’s, Paul 💪','Schönen Nachmittag, Paul 🌤️'],
+  evening:['Guten Abend, Paul 🌆','Feierabend in Sicht, Paul? 😌','Abendmodus an, Paul 🌙','Na Paul, noch eine Runde? ✨'],
+};
+function greetingPeriod(hour){
+  if(hour<5)return'night';
+  if(hour<11)return'morning';
+  if(hour<14)return'noon';
+  if(hour<18)return'afternoon';
+  return'evening';
+}
+function updateHeaderTime(){
+  const current=new Date();
+  const greetings=GREETINGS[greetingPeriod(current.getHours())];
+  const dayKey=current.getFullYear()*372+(current.getMonth()+1)*31+current.getDate();
+  document.getElementById('clock').textContent=`${pad(current.getHours())}:${pad(current.getMinutes())}`;
+  document.getElementById('greet').textContent=greetings[dayKey%greetings.length];
+  document.getElementById('hdate').textContent=`${WD[current.getDay()]}, ${current.getDate()}. ${MK[current.getMonth()]} ${current.getFullYear()}`;
+}
+updateHeaderTime();
+setInterval(updateHeaderTime,30000);
 document.getElementById('todayStr').textContent=`${now.getDate()}. ${MON[now.getMonth()]}`;
 const kw=getKW(now);
 document.getElementById('kwStr').textContent=`KW ${kw} · ${now.getFullYear()}`;
