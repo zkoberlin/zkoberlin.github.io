@@ -17,6 +17,7 @@ function updateCsPreview(id,text){
 
 const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const MK=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const MON_SHORT=['JAN','FEB','MÄR','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ'];
 const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 const WK=['So','Mo','Di','Mi','Do','Fr','Sa'];
 function pad(n){return String(n).padStart(2,'0');}
@@ -72,21 +73,21 @@ function updateHeaderTime(){
   document.getElementById('clock').textContent=`${pad(current.getHours())}:${pad(current.getMinutes())}`;
   document.getElementById('greet').textContent=greetings[dayKey%greetings.length];
   document.getElementById('hdate').textContent=`${WD[current.getDay()]}, ${current.getDate()}. ${MK[current.getMonth()]} ${current.getFullYear()}`;
+  updateCalendarDate(current);
+}
+function updateCalendarDate(current){
+  document.getElementById('todayStr').textContent=`${current.getDate()}. ${MON[current.getMonth()]}`;
+  const calendarWeek=getKW(current);
+  document.getElementById('kwStr').textContent=`KW ${calendarWeek} · ${current.getFullYear()}`;
+  document.getElementById('calIconDay').textContent=current.getDate();
+  document.getElementById('calIconMonth').textContent=MON_SHORT[current.getMonth()];
+  const kwEl=document.getElementById('kw');if(kwEl)kwEl.textContent=calendarWeek;
+  const finMonthEl=document.getElementById('finMonth');if(finMonthEl)finMonthEl.textContent=`${MON[current.getMonth()]} ${current.getFullYear()}`;
+  const kwRangeEl=document.getElementById('kwR');if(kwRangeEl)kwRangeEl.textContent=kwRange(current);
 }
 updateHeaderTime();
 setInterval(updateHeaderTime,30000);
-document.getElementById('todayStr').textContent=`${now.getDate()}. ${MON[now.getMonth()]}`;
-const kw=getKW(now);
-document.getElementById('kwStr').textContent=`KW ${kw} · ${now.getFullYear()}`;
-document.getElementById('kw').textContent=kw;
-document.getElementById('finMonth').textContent=`${MON[now.getMonth()]} ${now.getFullYear()}`;
 function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
-document.getElementById('kwR').textContent=kwRange(now);
-// Calendar SVG icon
-const MON_SHORT=['JAN','FEB','MÄR','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ'];
-const calDay=document.getElementById('calIconDay');const calMon=document.getElementById('calIconMonth');
-if(calDay)calDay.textContent=now.getDate();
-if(calMon)calMon.textContent=MON_SHORT[now.getMonth()];
 
 // ── TAGESIMPULS ──
 const DAILY_IMPULSES={
