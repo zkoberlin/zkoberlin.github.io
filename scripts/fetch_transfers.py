@@ -20,7 +20,9 @@ import urllib.error
 from datetime import datetime, timezone
 from functools import cmp_to_key
 
-RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "bae1b274b8mshca821d4bf0f443ap1d55dajsn49af254f551d")
+RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "").strip()
+if not RAPIDAPI_KEY:
+    raise SystemExit("RAPIDAPI_KEY ist nicht gesetzt")
 TEAM_ID      = "8149"
 TEAM_ID_INT  = 8149
 BASE_URL     = "https://free-api-live-football-data.p.rapidapi.com"

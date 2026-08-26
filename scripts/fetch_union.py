@@ -55,12 +55,12 @@ from datetime import datetime, timezone
 API_KEY = os.environ.get("RAPIDAPI_KEY","").strip()
 if not API_KEY:
     print("ERROR: RAPIDAPI_KEY nicht gesetzt", file=sys.stderr); sys.exit(1)
-print(f"RapidAPI Key: {API_KEY[:6]}...{API_KEY[-4:]} (len={len(API_KEY)})")
+print("RapidAPI Key: gesetzt")
 
 # ── football-data.org ──
 FD_KEY = os.environ.get("FOOTBALLDATA_KEY","").strip()
 if FD_KEY:
-    print(f"football-data.org Key: {FD_KEY[:6]}...{FD_KEY[-4:]} (len={len(FD_KEY)})")
+    print("football-data.org Key: gesetzt")
 else:
     print("WARN: FOOTBALLDATA_KEY nicht gesetzt — H2H nur aus aktueller Saison", file=sys.stderr)
 
