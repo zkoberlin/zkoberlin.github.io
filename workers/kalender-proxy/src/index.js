@@ -8,6 +8,12 @@ const FINNHUB_SYMBOLS = new Set([
   "HVRRF", "RACE", "TSLA", "NU", "CTAS", "AXP", "HESAY", "NFLX",
   "ZTS", "RR", "CLOV",
 ]);
+const PRIVATE_PATHS = new Set([
+  "/feeds/gmail",
+  "/feeds/hellomed",
+  "/feeds/kids",
+  "/snapshot",
+]);
 
 function isAllowedOrigin(origin) {
   return !origin || origin === PRODUCTION_ORIGIN || DEVELOPMENT_ORIGINS.has(origin);
@@ -245,8 +251,7 @@ export default {
     }
 
     try {
-      const privateFeed = request.method === "GET" && Boolean(getFeedUrl(url.pathname, env));
-      if (url.pathname === "/snapshot" || privateFeed) {
+      if (PRIVATE_PATHS.has(url.pathname)) {
         const user = await verifyGoogleUser(request, env);
         if (!user) return jsonResponse({ error: "Unauthorized" }, 401, origin);
       }
