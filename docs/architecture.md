@@ -22,6 +22,13 @@ Eine neue Reiseseite ist vorgesehen, aber noch nicht Bestandteil dieses Reposito
 - `.github/workflows/` führt ausgewählte Aktualisierungsskripte automatisch aus.
 - `docs/` enthält die technische Projektdokumentation.
 
-## Nächster technischer Schritt
+## Statische Ressourcen
 
-CSS und JavaScript befinden sich aktuell größtenteils direkt in den HTML-Dateien. Sie werden später kontrolliert und Seite für Seite in die vorgesehenen `assets/`-Ordner ausgelagert.
+Der Hub ist bereits nach Verantwortlichkeiten aufgeteilt:
+
+- `assets/css/hub.css` enthält das Hub-Design.
+- `assets/js/hub.js` enthält die allgemeine Hub-Logik.
+- `assets/js/hub-alcohol.js` enthält den Alkohol-Tracker und seine Diagrammlogik.
+- Das kleine Theme-Skript bleibt im Dokumentkopf, damit das gespeicherte Farbschema vor dem ersten Rendering angewendet wird.
+
+Finanzen und Kalender enthalten CSS und JavaScript derzeit noch direkt in ihren HTML-Dateien. Sie werden als eigene, separat prüfbare Schritte ausgelagert.

@@ -1,0 +1,729 @@
+// ── ALKOHOL TRACKER v5.12.3 ──
+
+var _atkCharts = {};
+var _atkCurrentPeriod = {a:'today'};
+
+var TAGE   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+var MONATE = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var ATK_LIMIT  = 8;
+var ATK_SCRIPT = 'https://script.google.com/macros/s/AKfycbxwLXDcZPeW2682xSo0yEczAJ8ipANpbtrKXWmlV8Z5a5pA5i2DCITG7IYC407BrP_kvw/exec';
+var _atkSyncing = false;
+var _atkSyncTimer = null;
+
+/* ── LOCAL CACHE (offline-fähig) ── */
+function atkLoadData() {
+  try { return JSON.parse(localStorage.getItem('atkData_v1') || '{}'); }
+  catch(e) { return {}; }
+}
+function atkSaveData(d) {
+  try { localStorage.setItem('atkData_v1', JSON.stringify(d)); }
+  catch(e) {}
+}
+
+/* ── SHEET HELPERS ── */
+function atkDateKey(d)  { return d.toISOString().slice(0,10); }
+function atkToday()     { return atkDateKey(new Date()); }
+function atkFmt(u)      { return u.toFixed(1).replace('.', ','); }
+
+function atkSetSyncStatus(txt, color) {
+  var el = document.getElementById('atkSyncStatus');
+  if (el) { el.textContent = txt; el.style.color = color || 'var(--t3)'; }
+}
+
+/* ── PULL FROM SHEET → rebuild localStorage ── */
+function atkNormalizeDate(raw) {
+  // raw kann sein: "2026-05-20", "20.05.2026", Date-ähnlicher String
+  if (!raw) return '';
+  var s = String(raw).trim();
+  // ISO format yyyy-MM-dd
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  // German format dd.MM.yyyy
+  if (/^\d{2}\.\d{2}\.\d{4}/.test(s)) {
+    var p = s.split('.');
+    return p[2].slice(0,4) + '-' + p[1] + '-' + p[0];
+  }
+  // Fallback: parse as date
+  try {
+    var d = new Date(s);
+    if (!isNaN(d.getTime())) return atkDateKey(d);
+  } catch(e) {}
+  return '';
+}
+
+function atkNormalizeTime(raw) {
+  if (!raw) return '00:00';
+  var s = String(raw).trim();
+  // HH:MM format already
+  if (/^\d{2}:\d{2}/.test(s)) return s.slice(0,5);
+  // Might be a decimal from Sheets time cell (e.g. 0.604166 = 14:30)
+  var n = parseFloat(s);
+  if (!isNaN(n) && n >= 0 && n < 1) {
+    var totalMin = Math.round(n * 1440);
+    var h = Math.floor(totalMin / 60);
+    var m = totalMin % 60;
+    return ('0'+h).slice(-2) + ':' + ('0'+m).slice(-2);
+  }
+  return s.slice(0,5) || '00:00';
+}
+
+function atkPullSheet(callback) {
+  atkSetSyncStatus('↻ Sync…', 'var(--blue)');
+  fetch(ATK_SCRIPT)
+    .then(function(r){ return r.json(); })
+    .then(function(json) {
+      if (!json.ok) { atkSetSyncStatus('⚠ Sync-Fehler', '#e24b4a'); return; }
+      var data = {};
+      var validRows = 0;
+      var skipped = 0;
+      for (var i = 0; i < json.rows.length; i++) {
+        var row = json.rows[i];
+        var dk = atkNormalizeDate(row.date);
+        if (!dk) { skipped++; console.warn('atk: kein Datum für Zeile', i, row); continue; }
+        if (!data[dk]) data[dk] = { entries: [] };
+        data[dk].entries.push({
+          id:    row.id    || '',
+          units: parseFloat(row.units) || 0,
+          label: row.label || '',
+          time:  atkNormalizeTime(row.time),
+          ts:    row.ts   || 0
+        });
+        validRows++;
+      }
+
+      // Sicherheit: nur speichern wenn Sheet echte Daten hat
+      // Nie mit weniger Einträgen überschreiben als lokal vorhanden
+      var localData = atkLoadData();
+      var localCount = Object.keys(localData).reduce(function(s,k){ return s + (localData[k].entries ? localData[k].entries.length : 0); }, 0);
+      var sheetCount = validRows;
+
+      if (sheetCount === 0 && localCount > 0) {
+        // Sheet leer / alle Zeilen ungültig → local behalten, Fehler loggen
+        console.warn('atk: Sheet hat 0 gültige Zeilen, ' + skipped + ' übersprungen. Lokale Daten bleiben erhalten.');
+        atkSetSyncStatus('⚠ Sheet leer – lokal behalten', '#f59e0b');
+        setTimeout(function(){ atkSetSyncStatus(''); }, 4000);
+        if (callback) callback();
+        return;
+      }
+
+      atkSaveData(data);
+      var today = atkToday();
+      var todayU = data[today] ? data[today].entries.reduce(function(s,e){ return s+e.units; },0) : 0;
+      atkSetSyncStatus('✓ ' + sheetCount + ' Einträge · heute ' + atkFmt(todayU) + ' g', '#3a9e5f');
+      setTimeout(function(){ atkSetSyncStatus(''); }, 3000);
+      if (callback) callback();
+    })
+    .catch(function(err) {
+      console.warn('atk pull error:', err);
+      atkSetSyncStatus('Offline', 'var(--t3)');
+      if (callback) callback();
+    });
+}
+
+/* ── PUSH ONE ENTRY TO SHEET ── */
+function atkPushEntry(entry, dateKey) {
+  var body = {
+    action: 'log',
+    date:   dateKey,
+    time:   entry.time,
+    id:     entry.id,
+    label:  entry.label,
+    units:  entry.units,
+    ts:     entry.ts
+  };
+  fetch(ATK_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify(body)
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(json){
+    if (json.ok) {
+      atkSetSyncStatus('✓ Gespeichert', '#3a9e5f');
+      setTimeout(function(){ atkSetSyncStatus(''); }, 2000);
+    } else {
+      atkSetSyncStatus('⚠ Sheet-Fehler', '#e24b4a');
+    }
+  })
+  .catch(function(){
+    atkSetSyncStatus('Offline – lokal gespeichert', 'var(--t3)');
+  });
+}
+
+/* ── PUSH DELETE TO SHEET ── */
+function atkPushDelete(dateKey, ts) {
+  fetch(ATK_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify({ action: 'delete', date: dateKey, ts: ts })
+  }).catch(function(){});
+}
+
+/* ── LOG ENTRY ── */
+function atkLog(id, units, label, design) {
+  var data = atkLoadData();
+  var tk   = atkToday();
+  if (!data[tk]) data[tk] = { entries: [] };
+  var now  = new Date();
+  var hm   = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+  var ts   = Date.now();
+  var entry = { id: id, units: units, label: label, time: hm, ts: ts };
+  data[tk].entries.push(entry);
+  atkSaveData(data);
+  atkRenderAll();
+  atkPushEntry(entry, tk);
+}
+
+function atkUndo(idx) {
+  var data = atkLoadData();
+  var tk   = atkToday();
+  if (data[tk] && data[tk].entries && data[tk].entries[idx] != null) {
+    var entry = data[tk].entries[idx];
+    data[tk].entries.splice(idx, 1);
+    atkSaveData(data);
+    atkRenderAll();
+    if (entry.ts) atkPushDelete(tk, entry.ts);
+  }
+}
+
+/* ── GET ENTRIES / UNITS ── */
+function atkGetEntries(data, dk) {
+  return (data[dk] && data[dk].entries) ? data[dk].entries : [];
+}
+function atkGetUnits(data, dk) {
+  return atkGetEntries(data, dk).reduce(function(s,e){ return s + e.units; }, 0);
+}
+
+/* ── WEEK HELPERS ── */
+function atkWeekKeys(offset) {
+  offset = offset || 0;
+  var keys   = [];
+  var now    = new Date();
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7) - (offset * 7));
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    keys.push(atkDateKey(d));
+  }
+  return keys;
+}
+
+/* ══════════════════════════════════════════
+   STREAK ENGINE
+══════════════════════════════════════════ */
+function atkLoadRecords() {
+  try { return JSON.parse(localStorage.getItem('atkRecords_v1') || '{}'); }
+  catch(e) { return {}; }
+}
+function atkSaveRecords(r) {
+  try { localStorage.setItem('atkRecords_v1', JSON.stringify(r)); } catch(e) {}
+}
+
+function atkComputeStreaks(data) {
+  // Build sorted list of all date-keys that exist in data
+  var allKeys = Object.keys(data).sort();
+  if (!allKeys.length) return { soberCur:0, drinkCur:0, soberBest:0, drinkBest:0 };
+
+  // Walk backwards from today to compute current streaks
+  var td = atkToday();
+  var soberCur = 0, drinkCur = 0;
+  var soberDone = false, drinkDone = false;
+  var d = new Date(td);
+
+  for (var i = 0; i < 1000; i++) {
+    var dk = atkDateKey(d);
+    var u  = atkGetUnits(data, dk);
+    if (!soberDone) {
+      if (u === 0) { soberCur++; }
+      else { soberDone = true; }
+    }
+    if (!drinkDone) {
+      if (u > 0) { drinkCur++; }
+      else if (i > 0) { drinkDone = true; } // allow gap on "today" if nothing logged yet
+    }
+    if (soberDone && drinkDone) break;
+    // only go back as far as earliest data key
+    if (dk <= allKeys[0] && i > 0) break;
+    d.setDate(d.getDate() - 1);
+  }
+
+  // Walk ALL data to find best ever streaks
+  // Build a dense calendar from first to last data key
+  var first = new Date(allKeys[0]);
+  var last  = new Date(td);
+  var soberBest = 0, drinkBest = 0;
+  var sc = 0, dc = 0;
+  var cur = new Date(first);
+  while (cur <= last) {
+    var k = atkDateKey(cur);
+    var u = atkGetUnits(data, k);
+    if (u === 0) { sc++; dc = 0; }
+    else         { dc++; sc = 0; }
+    if (sc > soberBest) soberBest = sc;
+    if (dc > drinkBest) drinkBest = dc;
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  return { soberCur: soberCur, drinkCur: drinkCur, soberBest: soberBest, drinkBest: drinkBest };
+}
+
+function atkComputeTotals(data) {
+  // Total days ever recorded as sober (units===0) vs. drinking (units>0),
+  // across the entire range from the first tracked day until today.
+  var allKeys = Object.keys(data).sort();
+  if (!allKeys.length) return { soberTotal:0, drinkTotal:0 };
+
+  var first = new Date(allKeys[0]);
+  var last  = new Date(atkToday());
+  var soberTotal = 0, drinkTotal = 0;
+  var cur = new Date(first);
+  while (cur <= last) {
+    var k = atkDateKey(cur);
+    var u = atkGetUnits(data, k);
+    if (u === 0) soberTotal++; else drinkTotal++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return { soberTotal: soberTotal, drinkTotal: drinkTotal };
+}
+
+function atkFmtDate(isoStr) {
+  if (!isoStr) return '';
+  var d = new Date(isoStr);
+  return d.getDate() + '. ' + MONATE[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function atkRenderStreaks() {
+  var el = document.getElementById('atkStreaks');
+  if (!el) return;
+
+  var data    = atkLoadData();
+  var records = atkLoadRecords();
+  var s       = atkComputeStreaks(data);
+  var totals  = atkComputeTotals(data);
+
+  // Check and update records
+  var recordBroken = { sober: false, drink: false };
+  if (s.soberBest > (records.soberBest || 0)) {
+    records.soberBest     = s.soberBest;
+    records.soberBestDate = atkToday();
+    recordBroken.sober    = true;
+  }
+  if (s.drinkBest > (records.drinkBest || 0)) {
+    records.drinkBest     = s.drinkBest;
+    records.drinkBestDate = atkToday();
+    recordBroken.drink    = true;
+  }
+  atkSaveRecords(records);
+
+  var soberIsRecord  = s.soberCur > 0 && s.soberCur >= (records.soberBest || 0);
+  var drinkIsRecord  = s.drinkCur > 0 && s.drinkCur >= (records.drinkBest || 0);
+
+  function chipHtml(opts) {
+    // opts: { num, numColor, label, sub, recordVal, recordDate, recordColor, isRecord, trophy }
+    var chipClass = 'atk-streak-chip';
+    if (opts.isRecord && opts.recordColor === 'green') chipClass += ' record-sober';
+    else if (opts.isRecord && opts.recordColor === 'drink') chipClass += ' record-drinking';
+    var recordHtml = '';
+    if (opts.recordVal > 1) {
+      var breakTxt = opts.isRecord && recordBroken[opts.recordColor === 'green' ? 'sober' : 'drink']
+        ? '🏆 Neuer Rekord!'
+        : ('Rekord: ' + opts.recordVal + ' Tage' + (opts.recordDate ? ' · ' + atkFmtDate(opts.recordDate) : ''));
+      recordHtml = '<div class="atk-streak-record' + (opts.recordColor !== 'green' ? ' drink' : '') + '">' + breakTxt + '</div>';
+    }
+    var trophyHtml = opts.isRecord ? '<div class="atk-streak-trophy">🏆</div>' : '';
+    var totalHtml = (opts.total != null) ? '<div class="atk-streak-total">Insgesamt ' + opts.total + (opts.total === 1 ? ' Tag' : ' Tage') + '</div>' : '';
+    return '<div class="' + chipClass + '">' + trophyHtml +
+      '<div class="atk-streak-lbl">' + opts.label + '</div>' +
+      '<div class="atk-streak-num ' + opts.numColor + '">' + opts.num + (opts.num === 1 ? ' Tag' : ' Tage') + '</div>' +
+      '<div class="atk-streak-sub">' + opts.sub + '</div>' +
+      recordHtml +
+      totalHtml +
+      '</div>';
+  }
+
+  var html = '';
+
+  // Sober streak chip
+  var soberSub = s.soberCur === 0 ? 'Heute getrunken' : (s.soberCur === 1 ? 'Gestern oder heute nüchtern' : 'am Stück nüchtern');
+  html += chipHtml({
+    num: s.soberCur,
+    numColor: s.soberCur >= 3 ? 'green' : 'grey',
+    label: '🫗 Nüchtern-Serie',
+    sub: soberSub,
+    recordVal: records.soberBest || 0,
+    recordDate: records.soberBestDate,
+    recordColor: 'green',
+    isRecord: soberIsRecord,
+    total: totals.soberTotal
+  });
+
+  // Drinking streak chip
+  var drinkSub = s.drinkCur === 0 ? 'Aktuell nüchtern' : (s.drinkCur === 1 ? 'Tag getrunken' : 'Tage am Stück getrunken');
+  html += chipHtml({
+    num: s.drinkCur,
+    numColor: s.drinkCur >= 3 ? 'orange' : (s.drinkCur > 0 ? 'orange' : 'grey'),
+    label: '🍺 Trink-Serie',
+    sub: drinkSub,
+    recordVal: records.drinkBest || 0,
+    recordDate: records.drinkBestDate,
+    recordColor: 'drink',
+    isRecord: drinkIsRecord,
+    total: totals.drinkTotal
+  });
+
+  el.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
+function atkRenderAll() {
+  var data  = atkLoadData();
+  var td    = atkToday();
+  var yd    = atkDateKey(new Date(Date.now() - 86400000));
+  var wk    = atkWeekKeys(0);
+  var pwk   = atkWeekKeys(1);
+  var todayU = atkGetUnits(data, td);
+  var yestU  = atkGetUnits(data, yd);
+  var weekU  = wk.reduce(function(s,k){ return s + atkGetUnits(data,k); }, 0);
+  var entries = atkGetEntries(data, td);
+
+
+
+  // Date label
+  var el = document.getElementById('atkA-date');
+  if (el) {
+    var now = new Date();
+    el.textContent = 'Heute · ' + TAGE[now.getDay()] + ', ' + now.getDate() + '. ' + MONATE[now.getMonth()];
+  }
+
+  // Stats
+  el = document.getElementById('atkA-today'); if (el) el.textContent = atkFmt(todayU);
+  el = document.getElementById('atkA-week');  if (el) el.textContent = atkFmt(weekU);
+
+  // Week bars
+  var wbarsEl = document.getElementById('atkA-weekBars');
+  var maxW    = Math.max.apply(null, wk.map(function(k){ return atkGetUnits(data,k); }).concat([ATK_LIMIT]));
+  if (wbarsEl) {
+    var fills = wbarsEl.querySelectorAll('.atk-week-bar-fill');
+    for (var i = 0; i < 7; i++) {
+      var u = atkGetUnits(data, wk[i]);
+      if (fills[i]) fills[i].style.width = Math.min(100, (u / maxW) * 100) + '%';
+    }
+  }
+  var wdaysEl = document.getElementById('atkA-weekDays');
+  if (wdaysEl) {
+    wdaysEl.innerHTML = '';
+    for (var i = 0; i < 7; i++) {
+      var d   = new Date(wk[i]);
+      var div = document.createElement('div');
+      div.className   = 'atk-week-day' + (wk[i] === td ? ' today' : '');
+      div.textContent = TAGE[d.getDay()];
+      wdaysEl.appendChild(div);
+    }
+  }
+
+  // Log
+  var logA = document.getElementById('atkA-log');
+  if (logA) {
+    if (!entries.length) {
+      logA.innerHTML = '<div class="atk-log-empty">Noch nichts eingetragen</div>';
+    } else {
+      var html  = '';
+      var shown = entries.slice().reverse().slice(0, 5);
+      for (var i = 0; i < shown.length; i++) {
+        var e        = shown[i];
+        var realIdx  = entries.length - 1 - i;
+        html += '<div class="atk-log-row">' +
+          '<div class="atk-log-left"><div class="atk-log-dot"></div>' + e.label + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' g</span>' +
+          '<span class="atk-log-undo" onclick="atkUndo(' + realIdx + ')">↩</span>' +
+          '</div></div>';
+      }
+      logA.innerHTML = html;
+    }
+  }
+
+  // Streaks
+  atkRenderStreaks();
+}
+
+/* ── DESIGN SWITCH (kept for compat) ── */
+function atkToggleMobile() {
+  var detail = document.getElementById('atkDetail');
+  var lbl    = document.getElementById('atkExpandLabel');
+  var chev   = document.getElementById('atkExpandChev');
+  if (!detail) return;
+  var isOpen = detail.classList.toggle('open');
+  if (lbl)  lbl.textContent  = isOpen ? '− Schließen' : '+ Eintragen & Verlauf';
+  if (chev) chev.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+  // Render graph when opening
+  if (isOpen) {
+    atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
+  }
+}
+
+function atkSwitchDesign(d, tabEl) {
+  var panels = document.querySelectorAll('.atk-panel');
+  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+  var tabs = document.querySelectorAll('.atk-tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+  var target = document.getElementById('atkPanel' + d.toUpperCase());
+  if (target) target.classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  atkRenderAll();
+}
+
+/* ── GRAPH TOGGLE (mobile) ── */
+function atkToggleGraph(d) {
+  // kept for compat — graph is now inline in atk-detail
+  atkRenderGraph(d, _atkCurrentPeriod[d] || 'today');
+}
+
+/* ── PERIOD ROW ── */
+function atkSetPeriod(design, periodId, el) {
+  _atkCurrentPeriod[design] = periodId;
+  var row = document.getElementById('atk' + design.toUpperCase() + '-periods');
+  if (row) {
+    var btns = row.querySelectorAll('.atk-period-btn');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  }
+  if (el) el.classList.add('active');
+  atkRenderGraph(design, periodId);
+}
+
+function atkBuildPeriodRow(design, activePeriod) {
+  var periods = [
+    {id:'today',   label:'Heute'},
+    {id:'gestern', label:'Gestern'},
+    {id:'woche',   label:'Woche'},
+    {id:'letzt_w', label:'Letzte Wo.'},
+    {id:'monat',   label:'Monat'},
+    {id:'ytd',     label:'YTD'},
+    {id:'start',   label:'Seit Beginn'}
+  ];
+  var row = document.getElementById('atk' + design.toUpperCase() + '-periods');
+  if (!row) return;
+  row.innerHTML = '';
+  for (var i = 0; i < periods.length; i++) {
+    var p   = periods[i];
+    var btn = document.createElement('div');
+    btn.className   = 'atk-period-btn' + (p.id === activePeriod ? ' active' : '');
+    btn.textContent = p.label;
+    btn.setAttribute('onclick', 'atkSetPeriod("' + design + '","' + p.id + '",this)');
+    row.appendChild(btn);
+  }
+}
+
+/* ── GRAPH RENDER ── */
+var _atkCharts        = {};
+
+function atkRenderGraph(design, periodId) {
+  atkBuildPeriodRow(design, periodId);
+
+  var data    = atkLoadData();
+  var td      = atkToday();
+  var yd      = atkDateKey(new Date(Date.now() - 86400000));
+  var labels  = [], curVals = [], prevVals = [];
+
+  if (periodId === 'today' || periodId === 'gestern') {
+    var dk      = periodId === 'today' ? td : yd;
+    var entries = atkGetEntries(data, dk);
+    for (var h = 0; h < 24; h++) {
+      labels.push(h + 'h');
+      var sum = 0;
+      for (var e = 0; e < entries.length; e++) {
+        if (parseInt(entries[e].time) === h) sum += entries[e].units;
+      }
+      curVals.push(parseFloat(sum.toFixed(1)));
+    }
+  } else if (periodId === 'woche' || periodId === 'letzt_w') {
+    var off  = periodId === 'woche' ? 0 : 1;
+    var wk   = atkWeekKeys(off);
+    var pwk  = atkWeekKeys(off + 1);
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(wk[i]);
+      labels.push(TAGE[d.getDay()]);
+      curVals.push(parseFloat(atkGetUnits(data, wk[i]).toFixed(1)));
+      prevVals.push(parseFloat(atkGetUnits(data, pwk[i]).toFixed(1)));
+    }
+  } else if (periodId === 'monat') {
+    var now        = new Date();
+    var daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    var daysInPrev  = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    for (var i = 1; i <= daysInMonth; i++) {
+      labels.push(i + '.');
+      curVals.push(parseFloat(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth(), i))).toFixed(1)));
+      if (i <= daysInPrev)
+        prevVals.push(parseFloat(atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), now.getMonth() - 1, i))).toFixed(1)));
+    }
+  } else if (periodId === 'ytd') {
+    var now = new Date();
+    for (var m = 0; m <= now.getMonth(); m++) {
+      labels.push(MONATE[m]);
+      var dim = new Date(now.getFullYear(), m + 1, 0).getDate();
+      var s = 0, ps = 0;
+      for (var d = 1; d <= dim; d++) {
+        s  += atkGetUnits(data, atkDateKey(new Date(now.getFullYear(), m, d)));
+        ps += atkGetUnits(data, atkDateKey(new Date(now.getFullYear() - 1, m, d)));
+      }
+      curVals.push(parseFloat(s.toFixed(1)));
+      prevVals.push(parseFloat(ps.toFixed(1)));
+    }
+  } else { // start
+    var allKeys = Object.keys(data).sort();
+    if (!allKeys.length) { labels = ['–']; curVals = [0]; }
+    else {
+      var mm = {};
+      for (var i = 0; i < allKeys.length; i++) {
+        var mk = allKeys[i].slice(0,7);
+        mm[mk] = (mm[mk] || 0) + atkGetUnits(data, allKeys[i]);
+      }
+      var months = Object.keys(mm).sort();
+      for (var i = 0; i < months.length; i++) {
+        var parts = months[i].split('-');
+        labels.push(MONATE[parseInt(parts[1])-1] + ' ' + parts[0].slice(2));
+        curVals.push(parseFloat(mm[months[i]].toFixed(1)));
+      }
+    }
+  }
+
+  // Compare summary
+  var compareEl = document.getElementById('atk' + design.toUpperCase() + '-compare');
+  if (compareEl) {
+    var curSum  = parseFloat(curVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
+    var prevSum = parseFloat(prevVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
+    var diff    = parseFloat((curSum - prevSum).toFixed(1));
+    var html    = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' g</span>';
+    if (prevSum > 0) {
+      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' g</span>';
+      html += '<span style="font-weight:700;color:' + (diff <= 0 ? '#3a9e5f' : '#e24b4a') + '">' +
+        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' g</span>';
+    }
+    if (showTrend && trendVals.length > 1) {
+      var tSlope = trendVals[trendVals.length-1] - trendVals[0];
+      html += '<span><span class="atk-cmp-dot trend"></span> Trend: ' + (tSlope > 0.05 ? '↗ steigend' : tSlope < -0.05 ? '↘ fallend' : '→ stabil') + '</span>';
+    }
+    compareEl.innerHTML = html;
+  }
+
+  // Draw chart
+  var ctx = document.getElementById('atk' + design.toUpperCase() + '-chart');
+  if (!ctx) return;
+  if (typeof Chart === 'undefined') {
+    ctx.parentElement.innerHTML = '<div style="font-size:11px;color:var(--t3);text-align:center;padding:20px 0">Chart.js lädt…</div>';
+    return;
+  }
+  if (_atkCharts[design]) { try { _atkCharts[design].destroy(); } catch(e){} }
+
+  var isDark    = document.documentElement.getAttribute('data-theme') === 'dark';
+  var gridColor = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
+  var tickColor = isDark ? '#8e8e93' : '#6e6e73';
+  var blue      = '#0071E3';
+  var gray      = isDark ? '#636366' : '#c7c7cc';
+  var chartType = labels.length > 14 ? 'line' : 'bar';
+
+  // Trendlinie berechnen (lineare Regression) für Monat, letzt_w, ytd, start
+  var showTrend = (periodId === 'monat' || periodId === 'letzt_w' || periodId === 'ytd' || periodId === 'start');
+  var trendVals = [];
+  if (showTrend && curVals.length > 1) {
+    var n = curVals.length;
+    var sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    for (var ti = 0; ti < n; ti++) { sumX += ti; sumY += curVals[ti]; sumXY += ti * curVals[ti]; sumXX += ti * ti; }
+    var slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX) || 0;
+    var intercept = (sumY - slope * sumX) / n;
+    for (var ti = 0; ti < n; ti++) {
+      trendVals.push(parseFloat(Math.max(0, slope * ti + intercept).toFixed(1)));
+    }
+  }
+
+  var datasets = [{
+    label: 'Aktuell',
+    data:  curVals,
+    backgroundColor: blue + '33',
+    borderColor:     blue,
+    borderWidth: 2,
+    borderRadius: chartType === 'bar' ? 4 : 0,
+    pointRadius:  chartType === 'line' ? 3 : 0,
+    pointBackgroundColor: blue,
+    fill:    chartType === 'line',
+    tension: 0.3,
+    order: 2
+  }];
+  if (prevVals.length) {
+    datasets.push({
+      label: 'Vorperiode',
+      data:  prevVals.slice(0, labels.length),
+      backgroundColor: gray + '33',
+      borderColor:     gray,
+      borderWidth: 1.5,
+      borderRadius: chartType === 'bar' ? 3 : 0,
+      pointRadius:  chartType === 'line' ? 2 : 0,
+      fill:    false,
+      tension: 0.3,
+      order: 3
+    });
+  }
+  if (trendVals.length) {
+    datasets.push({
+      label: 'Trend',
+      data:  trendVals,
+      type:  'line',
+      borderColor:  '#f59e0b',
+      borderWidth:  1.5,
+      borderDash:   [4, 3],
+      pointRadius:  0,
+      fill:         false,
+      tension:      0,
+      order:        1
+    });
+  }
+
+  _atkCharts[design] = new Chart(ctx, {
+    type: chartType,
+    data: { labels: labels, datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' g'; } } }
+      },
+      scales: {
+        x: {
+          ticks: { color: tickColor, font: { size: 10, family: 'Montserrat' }, maxRotation: 45, autoSkip: true, maxTicksLimit: 12 },
+          grid:   { display: false },
+          border: { display: false }
+        },
+        y: {
+          ticks:  { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v) + ' g'; } },
+          grid:   { color: gridColor },
+          border: { display: false },
+          min: 0
+        }
+      }
+    }
+  });
+}
+
+/* ── INIT ── */
+function atkInit() {
+  // 1. Render sofort aus lokalem Cache
+  atkRenderAll();
+  // Desktop: render graph inline immediately
+  if (window.innerWidth > 600) {
+    atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
+  }
+  // 2. Sheet im Hintergrund pullen und neu rendern
+  atkPullSheet(function() {
+    atkRenderAll();
+    if (window.innerWidth > 600) {
+      atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', atkInit);
+} else {
+  setTimeout(atkInit, 0);
+}
