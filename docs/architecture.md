@@ -23,6 +23,8 @@ Eine neue Reiseseite ist vorgesehen, aber noch nicht Bestandteil dieses Reposito
 - `workers/kalender-proxy/` enthält den Cloudflare-Worker für geschützte Kalenderquellen, Snapshots und Horoskopdaten.
 - `docs/` enthält die technische Projektdokumentation.
 
+Das vollständige Register externer Datenflüsse, Zugriffsarten und Sicherheitsmaßnahmen steht in [`interfaces.md`](interfaces.md).
+
 ## Statische Ressourcen
 
 Der Hub ist bereits nach Verantwortlichkeiten aufgeteilt:
