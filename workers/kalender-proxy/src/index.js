@@ -52,10 +52,6 @@ function getFeedUrl(pathname, env) {
   return feeds[pathname] || null;
 }
 
-function isConfiguredFeedUrl(target, env) {
-  return [env.GMAIL_ICAL_URL, env.HELLOMED_ICAL_URL, env.KIDS_SHEET_URL].includes(target);
-}
-
 async function proxyFeed(target, origin) {
   try {
     const upstream = await fetch(target, {
@@ -181,15 +177,6 @@ export default {
       if (request.method === "GET") {
         const namedFeed = getFeedUrl(url.pathname, env);
         if (namedFeed) return await proxyFeed(namedFeed, origin);
-      }
-
-      if (url.pathname === "/ical" && request.method === "GET") {
-        const target = url.searchParams.get("url") || "";
-        if (!target) return jsonResponse({ error: "Missing url parameter" }, 400, origin);
-        if (!isConfiguredFeedUrl(target, env)) {
-          return jsonResponse({ error: "Feed not allowed" }, 403, origin);
-        }
-        return await proxyFeed(target, origin);
       }
 
       return jsonResponse({ error: "Not found" }, 404, origin);

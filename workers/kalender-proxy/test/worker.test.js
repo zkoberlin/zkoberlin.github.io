@@ -32,7 +32,7 @@ test("rejects an unapproved browser origin", async () => {
   assert.equal(response.status, 403);
 });
 
-test("rejects arbitrary legacy proxy targets", async () => {
+test("does not expose the removed legacy proxy endpoint", async () => {
   const target = encodeURIComponent("https://example.org/private");
   const response = await worker.fetch(
     new Request(`https://worker.example.test/ical?url=${target}`, {
@@ -41,7 +41,7 @@ test("rejects arbitrary legacy proxy targets", async () => {
     createEnv(),
   );
 
-  assert.equal(response.status, 403);
+  assert.equal(response.status, 404);
 });
 
 test("returns null when no snapshot exists", async () => {

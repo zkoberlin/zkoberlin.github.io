@@ -10,7 +10,6 @@ Der Worker stellt die serverseitigen Datenzugriffe für Hub und Kalender bereit.
 - `GET /snapshot` – Kalender-Snapshot aus KV lesen
 - `PUT /snapshot` – Kalender-Snapshot in KV schreiben
 - `GET /horoscope` – gecachtes Tageshoroskop
-- `GET /ical?url=...` – nur während der Migration; akzeptiert ausschließlich exakt konfigurierte Quellen
 
 ## Secrets
 
@@ -33,6 +32,6 @@ npm run dev
 npm run deploy
 ```
 
-`npm run deploy` bewahrt während der Migration bereits im Cloudflare-Dashboard gesetzte Bindings mit `--keep-vars`. Das frühere Klartext-Binding wird erst nach einem erfolgreich getesteten Deployment kontrolliert entfernt.
+`npm run deploy` bewahrt bereits im Cloudflare-Dashboard gesetzte Secret-Bindings mit `--keep-vars`.
 
-Die Frontend-Migration erfolgt zweistufig: zuerst neue Endpunkte bereitstellen, danach Hub und Kalender umstellen und abschließend den alten `/ical`-Kompatibilitätspfad entfernen.
+Private Quell-URLs werden ausschließlich über die festen `/feeds/*`-Endpunkte angesprochen. Ein frei parametrierbarer Proxy-Endpunkt wird nicht bereitgestellt.
