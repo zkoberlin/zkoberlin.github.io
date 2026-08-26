@@ -313,6 +313,46 @@ async function handleYahooMarketData(url, env, origin) {
   return marketResponse(data, origin, "live", storedAt);
 }
 
+async function handleReverseLocation(url, env, origin) {
+  const rawLat = Number(url.searchParams.get("lat"));
+  const rawLon = Number(url.searchParams.get("lon"));
+  if (!Number.isFinite(rawLat) || !Number.isFinite(rawLon) || rawLat < -90 || rawLat > 90 || rawLon < -180 || rawLon > 180) {
+    return jsonResponse({ error: "Invalid coordinates" }, 400, origin);
+  }
+
+  const lat = Math.round(rawLat * 100) / 100;
+  const lon = Math.round(rawLon * 100) / 100;
+  const cacheKey = `location:reverse:${lat}:${lon}`;
+  const cached = await env.KALENDER_KV.get(cacheKey);
+  if (cached) return new Response(cached, { status: 200, headers: responseHeaders(origin) });
+
+  const upstreamUrl = new URL("https://nominatim.openstreetmap.org/reverse");
+  upstreamUrl.searchParams.set("lat", String(lat));
+  upstreamUrl.searchParams.set("lon", String(lon));
+  upstreamUrl.searchParams.set("format", "jsonv2");
+  upstreamUrl.searchParams.set("addressdetails", "1");
+  upstreamUrl.searchParams.set("zoom", "10");
+  upstreamUrl.searchParams.set("accept-language", "de");
+
+  const upstream = await fetch(upstreamUrl, {
+    headers: {
+      Referer: PRODUCTION_ORIGIN,
+      "User-Agent": "Paul-Hub/6 (https://zkoberlin.github.io)",
+    },
+    signal: AbortSignal.timeout(8_000),
+  });
+  if (!upstream.ok) return jsonResponse({ error: "Location unavailable" }, 502, origin);
+
+  const data = await upstream.json();
+  const address = data?.address || {};
+  const name = address.city || address.town || address.village || address.municipality || address.county || address.state;
+  if (!name) return jsonResponse({ error: "Location unavailable" }, 502, origin);
+
+  const result = JSON.stringify({ name: String(name).slice(0, 100), lat, lon });
+  await env.KALENDER_KV.put(cacheKey, result, { expirationTtl: 30 * 24 * 60 * 60 });
+  return new Response(result, { status: 200, headers: responseHeaders(origin) });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -343,6 +383,9 @@ export default {
 
       if (request.method === "GET" && url.pathname === "/market/yahoo") {
         return await handleYahooMarketData(url, env, origin);
+      }
+      if (request.method === "GET" && url.pathname === "/location/reverse") {
+        return await handleReverseLocation(url, env, origin);
       }
       if (request.method === "GET" && (url.pathname === "/market/quote" || url.pathname === "/market/metric")) {
         return await handleMarketData(url, env, origin);

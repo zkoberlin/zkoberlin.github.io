@@ -277,3 +277,31 @@ test("normalizes an allowed Yahoo quote and preserves its currency", async () =>
     globalThis.fetch = originalFetch;
   }
 });
+
+test("validates and resolves rounded coordinates through Nominatim", async () => {
+  const invalid = await worker.fetch(
+    new Request("https://worker.example.test/location/reverse?lat=500&lon=13"),
+    createEnv(),
+  );
+  assert.equal(invalid.status, 400);
+
+  const originalFetch = globalThis.fetch;
+  let requestedUrl = "";
+  globalThis.fetch = async (url, options) => {
+    requestedUrl = String(url);
+    assert.equal(options.headers.Referer, "https://zkoberlin.github.io");
+    return new Response(JSON.stringify({ address: { city: "Berlin" } }));
+  };
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/location/reverse?lat=52.5234&lon=13.4123"),
+      createEnv(),
+    );
+    assert.equal(response.status, 200);
+    assert.match(requestedUrl, /lat=52\.52/);
+    assert.match(requestedUrl, /lon=13\.41/);
+    assert.deepEqual(await response.json(), { name: "Berlin", lat: 52.52, lon: 13.41 });
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

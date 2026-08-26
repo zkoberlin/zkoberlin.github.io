@@ -22,7 +22,7 @@ test("blocks every private route without a token", async () => {
 });
 
 test("forwards public routes without authentication", async () => {
-  for (const path of ["/horoscope", "/market/quote", "/market/metric", "/market/yahoo"]) {
+  for (const path of ["/horoscope", "/market/quote", "/market/metric", "/market/yahoo", "/location/reverse"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 200, path);
     assert.deepEqual(await response.json(), { path }, path);

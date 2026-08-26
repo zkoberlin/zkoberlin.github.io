@@ -578,6 +578,7 @@ const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51
 const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
 
 const WEATHER_CACHE_MS=15*60*1000;
+const LOCATION_API='https://paul-gateway-v2.paul-bendzko.workers.dev/location/reverse';
 const WEATHER_BERLIN={lat:52.52,lon:13.41,city:'Berlin',personal:false};
 let activeWeatherLocation=WEATHER_BERLIN;
 let weatherInitialLoad=true;
@@ -721,12 +722,19 @@ function useCurrentWeatherLocation(){
   }
   button.disabled=true;
   button.textContent='Standort …';
-  navigator.geolocation.getCurrentPosition(pos=>{
+  navigator.geolocation.getCurrentPosition(async pos=>{
     const location={
       lat:roundedCoordinate(pos.coords.latitude),
       lon:roundedCoordinate(pos.coords.longitude),
-      city:'Mein Standort',personal:true,
+      city:'Standort wird ermittelt …',personal:true,
     };
+    try{
+      const params=new URLSearchParams({lat:String(location.lat),lon:String(location.lon)});
+      const response=await fetch(`${LOCATION_API}?${params}`,{signal:AbortSignal.timeout(8000)});
+      if(!response.ok)throw new Error(`HTTP ${response.status}`);
+      const data=await response.json();
+      if(data?.name)location.city=String(data.name);
+    }catch(e){location.city='Mein Standort';}
     setWeatherActiveLocation(location);
     fetchWetter(location,{force:true});
   },()=>{

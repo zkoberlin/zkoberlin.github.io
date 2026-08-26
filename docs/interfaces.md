@@ -33,6 +33,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | --- | --- | --- | --- | --- | --- |
 | lokale Dateien unter `data/` | Namenstage, Geburtstage, Ferientermine, Union, Transfers, Sondertage | Lesen | öffentlich | teilweise API-Fallback; Browsercache | **Niedrig:** Schema und Aktualitätsdatum je Datei dokumentieren. |
 | Open-Meteo | Wetter und Vorhersage | Lesen | Berlin oder nach bewusster Freigabe auf zwei Dezimalstellen gerundete Standortkoordinaten | 15-Minuten-Sitzungscache, automatischer Refresh, veralteter Cache bei Ausfall | **Niedrig:** sichtbare Quellenangabe aktiv; Anbieterbedingungen regelmäßig prüfen. |
+| Nominatim / OpenStreetMap über eigenes Backend | Ortsname zum freigegebenen Wetterstandort | Lesen | auf zwei Dezimalstellen gerundete Koordinaten | 30-Tage-KV-Cache, Symbol-/Werteprüfung, sichtbare OSM-Namensnennung | **Niedrig:** Anbieterpolicy und Cachewirkung regelmäßig prüfen. |
 | Wikimedia/Wikipedia | Tagesereignisse und Geburtstage | Lesen | öffentliche Daten | lokale Geburtstagsdatei beziehungsweise Ausblenden | **Niedrig:** externe Texte vor DOM-Ausgabe sicher behandeln. |
 | Nameday APIs und AllOrigins | Namenstag-Fallback | Lesen | öffentliche Daten | mehrere Anbieter | **Mittel:** öffentlichen CORS-Proxy entfernen; lokale Datei als alleinige Quelle bevorzugen. |
 | OpenHolidays | Schulferien-Fallback | Lesen | öffentliche Daten | lokale Ferien-Datei | **Niedrig:** lokale Datei bevorzugen und Aktualität anzeigen. |
