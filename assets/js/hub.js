@@ -88,9 +88,88 @@ const calDay=document.getElementById('calIconDay');const calMon=document.getElem
 if(calDay)calDay.textContent=now.getDate();
 if(calMon)calMon.textContent=MON_SHORT[now.getMonth()];
 
-// ── QUOTE ──
-const QQ=['Der beste Zeitpunkt zu beginnen war gestern. Der zweitbeste ist jetzt.','Kleine Schritte führen zu großen Zielen.','Disziplin ist die Brücke zwischen Zielen und Erfolg.','Energie folgt der Aufmerksamkeit.','Tue heute was andere nicht wollen – lebe morgen wie andere nicht können.','Fortschritt, nicht Perfektion.','Investiere in dich selbst – die beste Rendite die es gibt.','Klarheit kommt durch Handeln, nicht durch Nachdenken.','Vertraue dem Prozess.','Ruhe ist keine Schwäche – sie ist Strategie.'];
-document.getElementById('quote').textContent=QQ[now.getDate()%QQ.length];
+// ── TAGESIMPULS ──
+const DAILY_IMPULSES={
+  morning:[
+    'Erst ankommen, dann loslegen. Der Tag rennt auch ohne Vorsprung.',
+    'Ein klarer erster Schritt schlägt fünf heldenhafte Vorhaben.',
+    'Kaffee ist kein Plan – aber ein ziemlich guter Anfang.',
+    'Heute muss nicht spektakulär werden. Stimmig reicht völlig.',
+    'Mach zuerst das, worüber du heute Abend froh sein wirst.',
+    'Der Morgen gehört noch dir. Gib ihn nicht sofort dem Posteingang.',
+    'Kleine Richtungskorrektur, große Wirkung. Wie beim Navi – nur ohne Gemecker.',
+    'Beginne freundlich mit dir. Der Rest darf sich einreihen.',
+  ],
+  daytime:[
+    'Nicht alles gleichzeitig ist auch eine ziemlich gute Strategie.',
+    'Wenn alles wichtig ist, darfst du trotzdem eins zuerst machen.',
+    'Kurz durchatmen zählt als produktive Zwischenstation.',
+    'Fortschritt darf unspektakulär aussehen. Hauptsache, er bewegt sich.',
+    'Eine gute Entscheidung spart mehr Energie als zehn offene Schleifen.',
+    'Du musst den ganzen Weg nicht sehen. Die nächsten zehn Meter reichen.',
+    'Heute ruhig sauber arbeiten – Drama ist kein Qualitätsmerkmal.',
+    'Manchmal ist „fertig“ die eleganteste Form von Perfektion.',
+    'Der Kopf darf sortieren, bevor die Hände beschleunigen.',
+    'Ein Nein an der richtigen Stelle ist ein Ja zu deinem Tag.',
+  ],
+  evening:[
+    'Was heute nicht fertig wurde, darf morgen mit ausgeschlafenem Personal weitermachen.',
+    'Feierabend ist kein Systemfehler.',
+    'Der Tag muss nicht perfekt enden, nur irgendwann.',
+    'Haken dran, Schultern runter, Abend rein.',
+    'Du darfst stolz auf Dinge sein, die niemand außer dir bemerkt hat.',
+    'Jetzt ist eine gute Zeit, den inneren Projektleiter nach Hause zu schicken.',
+    'Nicht jeder offene Punkt braucht heute noch eine Pointe.',
+    'Ruhe ist kein Leerlauf. Sie lädt nur ohne Fortschrittsbalken.',
+  ],
+  weekend:[
+    'Wochenende: Heute darf der Plan auch einfach „mal sehen“ heißen.',
+    'Freie Zeit muss nichts beweisen.',
+    'Ein langsamer Tag kommt manchmal erstaunlich weit.',
+    'Heute ist Platz für Dinge, die in keiner Statistik auftauchen.',
+    'Mach etwas, das keinen Nutzen hat – außer dass es gut tut.',
+    'Der Kalender darf heute gern ein bisschen Luft enthalten.',
+    'Nichtstun mit guter Haltung ist immer noch Nichtstun. Zum Glück.',
+    'Heute zählt auch Umweg als Ausflug.',
+  ],
+  monday:[
+    'Montag ist nur ein Wochentag mit etwas zu guter PR-Abteilung.',
+    'Neue Woche, gleiche Schwerkraft – Schritt für Schritt reicht.',
+    'Montage werden besser, wenn man sie nicht persönlich nimmt.',
+    'Ein ruhiger Start ist immer noch ein Start.',
+  ],
+  friday:[
+    'Freitag: Noch sauber landen, dann darf das Wochenende übernehmen.',
+    'Heute lieber gut abschließen als hektisch neu anfangen.',
+    'Der Freitag sieht die Ziellinie. Kein Grund, jetzt zu sprinten.',
+    'Fast Wochenende – bitte den Tag trotzdem vollständig abspeichern.',
+  ],
+};
+let quoteDateKey='';
+let quoteOffset=0;
+function localDateKey(date){
+  return`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+}
+function quotePool(date){
+  const day=date.getDay();
+  if(day===0||day===6)return DAILY_IMPULSES.weekend;
+  if(day===1)return[...DAILY_IMPULSES.monday,...DAILY_IMPULSES.morning,...DAILY_IMPULSES.daytime];
+  if(day===5)return[...DAILY_IMPULSES.friday,...DAILY_IMPULSES.daytime,...DAILY_IMPULSES.evening];
+  const hour=date.getHours();
+  return hour<11?DAILY_IMPULSES.morning:hour<18?DAILY_IMPULSES.daytime:DAILY_IMPULSES.evening;
+}
+function renderDailyImpulse(forceNext=false){
+  const date=new Date();
+  const dateKey=localDateKey(date);
+  if(dateKey!==quoteDateKey){quoteDateKey=dateKey;quoteOffset=0;}
+  if(forceNext)quoteOffset++;
+  const pool=quotePool(date);
+  const ordinal=Math.floor(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())/86400000);
+  document.getElementById('quote').textContent=pool[(ordinal+quoteOffset)%pool.length];
+}
+document.getElementById('quoteNext').addEventListener('click',()=>renderDailyImpulse(true));
+renderDailyImpulse();
+setInterval(()=>renderDailyImpulse(false),30000);
 
 // ── TAG-INFO (Feiertage, Geburtstage, Skurrile Tage) ──
 async function loadDayInfo(){

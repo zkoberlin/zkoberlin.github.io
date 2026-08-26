@@ -11,6 +11,7 @@ const files = [
   'assets/js/version.js',
   'index.html',
   'kalenderpaul/index.html',
+  'kalenderpaul/assets/js/app.js',
   'finanzenpaul/index.html',
 ];
 
