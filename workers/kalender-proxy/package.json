@@ -1,0 +1,17 @@
+{
+  "name": "kalender-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "wrangler deploy --dry-run --secrets-file .dev.vars.example",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --keep-vars",
+    "test": "node --test test/*.test.js",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "wrangler": "^4.0.0"
+  }
+}

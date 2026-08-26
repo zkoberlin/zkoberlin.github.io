@@ -28,6 +28,7 @@ kalenderpaul/       Kalender-Unterseite
 assets/             Gemeinsame Styles, Skripte und Bilder
 data/               Vom Hub verwendete JSON-Daten
 scripts/            Skripte zur Aktualisierung der JSON-Daten
+workers/            Versionierter Cloudflare-Worker
 docs/               Technische Projektdokumentation
 .github/workflows/  Automatische Datenaktualisierungen
 ```

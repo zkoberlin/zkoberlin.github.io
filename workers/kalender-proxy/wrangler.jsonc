@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kalender-proxy",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "preview_urls": false,
+  "kv_namespaces": [
+    {
+      "binding": "KALENDER_KV",
+      "id": "5a64f35edc6848b2bb2b381886417c06"
+    }
+  ],
+  "secrets": {
+    "required": [
+      "ANTHROPIC_API_SECRET",
+      "GMAIL_ICAL_URL",
+      "HELLOMED_ICAL_URL",
+      "KIDS_SHEET_URL"
+    ]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "head_sampling_rate": 1
+    }
+  }
+}

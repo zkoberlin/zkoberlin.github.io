@@ -20,6 +20,7 @@ Eine neue Reiseseite ist vorgesehen, aber noch nicht Bestandteil dieses Reposito
 - `data/` enthält öffentlich ausgelieferte JSON-Daten für den Hub.
 - `scripts/` erzeugt oder aktualisiert diese JSON-Dateien.
 - `.github/workflows/` führt ausgewählte Aktualisierungsskripte automatisch aus.
+- `workers/kalender-proxy/` enthält den Cloudflare-Worker für geschützte Kalenderquellen, Snapshots und Horoskopdaten.
 - `docs/` enthält die technische Projektdokumentation.
 
 ## Statische Ressourcen
