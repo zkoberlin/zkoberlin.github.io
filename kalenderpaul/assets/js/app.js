@@ -1669,6 +1669,7 @@ function injectICalEvents(events, url='') {
 
 async function loadICalEvents() {
   if(!ICAL_SOURCES || !ICAL_SOURCES.length) return;
+  if(!window.HubAuth?.isSignedIn()) return;
 
   const statusEl = document.getElementById('ical-status');
   if(statusEl) statusEl.textContent = '🔄 Kalender wird geladen…';
@@ -1681,7 +1682,7 @@ async function loadICalEvents() {
     const label = idx === 0 ? 'Gmail iCal' : 'Hellomed iCal';
     setLoadStatus(statusId, 'loading', label + ' …');
     try {
-      const res = await fetch(source.endpoint);
+      const res = await HubAuth.authorizedFetch(source.endpoint);
       if(!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const events = parseICS(text);
@@ -1846,9 +1847,10 @@ async function loadUnionGames() {
 }
 
 async function loadKidsSheet() {
+  if(!window.HubAuth?.isSignedIn()) return;
   setLoadStatus('ls-sheet', 'loading', 'Kids Sheet …');
   try {
-    const res = await fetch('https://kalender-proxy.paul-bendzko.workers.dev/feeds/kids');
+    const res = await HubAuth.authorizedFetch('https://kalender-proxy.paul-bendzko.workers.dev/feeds/kids');
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
     
@@ -2077,6 +2079,7 @@ function diffFields(oldEv, newEv) {
 let _snapshotTime = null; // wird in checkNeueTermine gesetzt
 
 async function checkNeueTermine() {
+  if(!window.HubAuth?.isSignedIn()) return;
   const current = buildEventFingerprints();
   const seenRaw = localStorage.getItem(NEUE_SEEN_KEY);
   const seenFps = seenRaw ? JSON.parse(seenRaw) : {};
@@ -2084,7 +2087,7 @@ async function checkNeueTermine() {
   // Snapshot vom Worker laden
   let saved = null;
   try {
-    const res = await fetch(SNAPSHOT_URL, { cache: 'no-store' });
+    const res = await HubAuth.authorizedFetch(SNAPSHOT_URL, { cache: 'no-store' });
     if(res.ok) {
       const json = await res.json();
       saved = json;
@@ -2134,8 +2137,9 @@ async function checkNeueTermine() {
 }
 
 function saveSnapshot(fps) {
+  if(!window.HubAuth?.isSignedIn()) return;
   const payload = JSON.stringify({ fps, time: Date.now() });
-  fetch(SNAPSHOT_URL, {
+  HubAuth.authorizedFetch(SNAPSHOT_URL, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: payload
@@ -2265,6 +2269,13 @@ function markNeueTermineGesehen() {
 
 // Aufruf nach beiden Ladezyklen
 Promise.allSettled([_dynPromise, _icalPromise]).then(() => {
+  hideEmptyFilters();
+  checkNeueTermine();
+});
+
+window.addEventListener('hub-auth-change', async () => {
+  await Promise.allSettled([loadICalEvents(), loadKidsSheet()]);
+  renderAll();
   hideEmptyFilters();
   checkNeueTermine();
 });

@@ -1112,6 +1112,12 @@ function fmtW(d){const t=st(new Date());const df=diff(t,st(d));if(df===0)return'
 function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]}`+(d.getHours()>0?` · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`:'');}
 
 async function loadICAL(){
+  if(!window.HubAuth?.isSignedIn()){
+    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">🔒 Anmeldung erforderlich</div><div class="kal-ev-date" style="color:var(--t3)">Private Termine mit Google freischalten</div></div></div>';
+    document.getElementById('almaTitle').textContent='🔒 Private Kalenderdaten';
+    document.getElementById('almaDate').textContent='Bitte mit Google anmelden';
+    return;
+  }
   try{
     const ICAL_ENDPOINTS=[
       'https://kalender-proxy.paul-bendzko.workers.dev/feeds/gmail',
@@ -1122,7 +1128,7 @@ async function loadICAL(){
     let okCount=0;
     for(const endpoint of ICAL_ENDPOINTS){
       try{
-        const r=await fetch(endpoint,{signal:AbortSignal.timeout(10000)});
+        const r=await HubAuth.authorizedFetch(endpoint,{signal:AbortSignal.timeout(10000)});
         if(!r.ok)continue;
         const t=await r.text();
         if(t.includes('BEGIN:VCALENDAR')){evs=evs.concat(parseICS(t));okCount++;}
@@ -2276,3 +2282,4 @@ async function loadTransfers(unionData, nextMatch){
 })();
 
 loadICAL();
+window.addEventListener('hub-auth-change', loadICAL);

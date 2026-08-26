@@ -7,6 +7,7 @@
   let accessToken = "";
   let expiresAt = 0;
   let profile = null;
+  let calendarAccess = false;
 
   function isSignedIn() {
     return Boolean(accessToken) && Date.now() < expiresAt;
@@ -37,7 +38,9 @@
   }
 
   async function signIn({ calendar = false } = {}) {
-    if (isSignedIn()) return { accessToken, expiresAt, profile };
+    if (isSignedIn() && (!calendar || calendarAccess)) {
+      return { accessToken, expiresAt, profile };
+    }
     await waitForGoogle();
 
     const tokenResponse = await new Promise((resolve, reject) => {
@@ -54,10 +57,18 @@
     const verification = await verify(tokenResponse.access_token);
     accessToken = tokenResponse.access_token;
     expiresAt = Date.now() + Math.max(0, tokenResponse.expires_in - 60) * 1000;
+    calendarAccess = String(tokenResponse.scope || "").includes(CALENDAR_SCOPE);
     profile = verification.user;
     render();
     window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
     return { accessToken, expiresAt, profile };
+  }
+
+  async function authorizedFetch(input, init = {}) {
+    if (!isSignedIn()) throw new Error("Google-Anmeldung erforderlich");
+    const headers = new Headers(init.headers || {});
+    headers.set("Authorization", `Bearer ${accessToken}`);
+    return fetch(input, { ...init, headers });
   }
 
   async function handleButton(button) {
@@ -83,6 +94,7 @@
 
   window.HubAuth = {
     signIn,
+    authorizedFetch,
     isSignedIn,
     getAccessToken: () => isSignedIn() ? accessToken : "",
   };

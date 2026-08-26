@@ -23,6 +23,20 @@ function createEnv() {
   };
 }
 
+function authorizedRequest(url, init = {}) {
+  const headers = new Headers(init.headers || {});
+  headers.set("Authorization", "Bearer valid-token");
+  return new Request(url, { ...init, headers });
+}
+
+function googleProfileResponse() {
+  return new Response(JSON.stringify({
+    email: "paul@example.test",
+    email_verified: true,
+    name: "Paul",
+  }));
+}
+
 test("rejects an unapproved browser origin", async () => {
   const response = await worker.fetch(
     new Request("https://worker.example.test/snapshot", {
@@ -84,26 +98,36 @@ test("does not expose the removed legacy proxy endpoint", async () => {
 });
 
 test("returns null when no snapshot exists", async () => {
-  const response = await worker.fetch(
-    new Request("https://worker.example.test/snapshot"),
-    createEnv(),
-  );
-
-  assert.equal(response.status, 200);
-  assert.equal(await response.text(), "null");
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => googleProfileResponse();
+  try {
+    const response = await worker.fetch(
+      authorizedRequest("https://worker.example.test/snapshot"),
+      createEnv(),
+    );
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), "null");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("rejects invalid snapshot JSON", async () => {
-  const response = await worker.fetch(
-    new Request("https://worker.example.test/snapshot", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: "not-json",
-    }),
-    createEnv(),
-  );
-
-  assert.equal(response.status, 400);
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => googleProfileResponse();
+  try {
+    const response = await worker.fetch(
+      authorizedRequest("https://worker.example.test/snapshot", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: "not-json",
+      }),
+      createEnv(),
+    );
+    assert.equal(response.status, 400);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("resolves a named feed through its secret binding", async () => {
@@ -112,6 +136,7 @@ test("resolves a named feed through its secret binding", async () => {
   let requestedUrl = "";
 
   globalThis.fetch = async (url) => {
+    if (String(url).includes("openidconnect.googleapis.com")) return googleProfileResponse();
     requestedUrl = String(url);
     return new Response("BEGIN:VCALENDAR\nEND:VCALENDAR", {
       headers: { "Content-Type": "text/calendar" },
@@ -120,7 +145,7 @@ test("resolves a named feed through its secret binding", async () => {
 
   try {
     const response = await worker.fetch(
-      new Request("https://worker.example.test/feeds/gmail", {
+      authorizedRequest("https://worker.example.test/feeds/gmail", {
         headers: { Origin: "http://localhost:8000" },
       }),
       env,
@@ -131,6 +156,16 @@ test("resolves a named feed through its secret binding", async () => {
     assert.match(await response.text(), /BEGIN:VCALENDAR/);
   } finally {
     globalThis.fetch = originalFetch;
+  }
+});
+
+test("protects private feeds and snapshots without a Google token", async () => {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot"]) {
+    const response = await worker.fetch(
+      new Request(`https://worker.example.test${path}`),
+      createEnv(),
+    );
+    assert.equal(response.status, 401, path);
   }
 });
 

@@ -245,6 +245,12 @@ export default {
     }
 
     try {
+      const privateFeed = request.method === "GET" && Boolean(getFeedUrl(url.pathname, env));
+      if (url.pathname === "/snapshot" || privateFeed) {
+        const user = await verifyGoogleUser(request, env);
+        if (!user) return jsonResponse({ error: "Unauthorized" }, 401, origin);
+      }
+
       if (url.pathname === "/snapshot") {
         return await handleSnapshot(request, env, origin);
       }
