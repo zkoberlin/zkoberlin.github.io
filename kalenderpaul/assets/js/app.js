@@ -1942,8 +1942,6 @@ function toggleTheme() {
 })();
 
 // ── GOOGLE OAUTH + EVENT CREATION ─────────────────────────────────────
-const GCAL_CLIENT_ID = '272507955688-7s4g9anuhiimmooisg0iqlk940r2a0jt.apps.googleusercontent.com';
-const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar';
 let gAccessToken = null;
 let tokenExpiry = 0;
 
@@ -1952,23 +1950,17 @@ function isTokenValid() {
 }
 
 function requestToken(callback) {
-  const client = google.accounts.oauth2.initTokenClient({
-    client_id: GCAL_CLIENT_ID,
-    scope: GCAL_SCOPE,
-    hint: 'paul.bendzko@gmail.com',
-    callback: (resp) => {
-      if(resp.error) {
-        document.getElementById('addStatus').textContent = '❌ Anmeldung fehlgeschlagen: ' + resp.error;
-        console.error('OAuth error:', resp);
-        return;
-      }
-      gAccessToken = resp.access_token;
-      tokenExpiry = Date.now() + (resp.expires_in - 60) * 1000;
-      console.log('Token OK, scope:', resp.scope);
+  window.HubAuth.signIn({ calendar: true })
+    .then((session) => {
+      gAccessToken = session.accessToken;
+      tokenExpiry = session.expiresAt;
       if(callback) callback();
-    },
-  });
-  client.requestAccessToken({prompt: 'consent'});
+    })
+    .catch((error) => {
+      const status = document.getElementById('addStatus');
+      if(status) status.textContent = '❌ Anmeldung fehlgeschlagen: ' + error.message;
+      console.error('OAuth error:', error);
+    });
 }
 
 function openAppleCal() {

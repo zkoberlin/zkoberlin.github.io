@@ -1,0 +1,21 @@
+.auth-button {
+  appearance: none;
+  border: 1px solid var(--border, rgba(127, 127, 127, .25));
+  border-radius: 10px;
+  background: var(--card, rgba(127, 127, 127, .08));
+  color: var(--t, var(--text, inherit));
+  cursor: pointer;
+  font: 600 11px/1.2 Montserrat, sans-serif;
+  padding: 8px 11px;
+  white-space: nowrap;
+}
+
+.auth-button:hover { border-color: #4285f4; }
+.auth-button:disabled { cursor: wait; opacity: .65; }
+.auth-button.is-authenticated { color: #188038; border-color: rgba(24, 128, 56, .4); }
+
+@media (max-width: 600px) {
+  .auth-button { font-size: 0; padding: 8px; }
+  .auth-button::before { content: "🔐"; font-size: 14px; }
+  .auth-button.is-authenticated::before { content: "✓"; color: #188038; }
+}

@@ -11,7 +11,9 @@
 <meta http-equiv="Expires" content="0">
 <title>Kalender – Paul 2026</title>
 <link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" href="../assets/css/auth.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="../assets/js/auth.js" defer></script>
 </head>
 <body>
 
@@ -26,6 +28,7 @@
       </div>
     </div>
     <div class="header-right">
+      <button class="auth-button" type="button" data-auth-button data-auth-calendar="true">Mit Google anmelden</button>
       <a class="hub-btn" href="https://zkoberlin.github.io" title="Hub">⌂</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
       <button class="hub-btn" onclick="location.reload(true)" title="Neu laden" style="font-size:16px;line-height:1;">↺</button>
