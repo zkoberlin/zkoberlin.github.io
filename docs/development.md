@@ -39,6 +39,8 @@ python3 -m compileall -q scripts
 
 Danach Hauptseite, Finanzen und Kalender mindestens einmal lokal öffnen und die Browser-Konsole auf Fehler prüfen.
 
+Beim Kalender laden persönliche iCal- und Google-Sheets-Quellen auf `localhost` derzeit nicht, weil der vorgeschaltete Proxy den lokalen Origin nicht freigibt. Ferien- und Union-Daten können lokal geprüft werden; die vollständigen persönlichen Kalenderdaten müssen zusätzlich nach dem Deployment auf `https://zkoberlin.github.io/kalenderpaul/` kontrolliert werden.
+
 ## Formatierung
 
 Automatisches Formatieren beim Speichern ist zunächst deaktiviert, damit die großen bestehenden HTML-Dateien nicht unbeabsichtigt vollständig umformatiert werden.

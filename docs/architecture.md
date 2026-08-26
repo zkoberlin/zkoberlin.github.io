@@ -36,4 +36,9 @@ Die Finanzseite ist ebenfalls aufgeteilt:
 - `finanzenpaul/assets/css/app.css` enthält das Design der Finanzseite.
 - `finanzenpaul/assets/js/app.js` enthält ihre Anwendungslogik.
 
-Der Kalender enthält CSS und JavaScript derzeit noch direkt in seiner HTML-Datei. Er wird als eigener, separat prüfbarer Schritt ausgelagert.
+Der Kalender ist ebenfalls aufgeteilt:
+
+- `kalenderpaul/assets/css/app.css` enthält das Kalenderdesign.
+- `kalenderpaul/assets/js/app.js` enthält die Kalender- und Datenquellenlogik.
+
+Die persönlichen Kalenderquellen lassen sich lokal nicht vollständig laden, weil ihr Proxy Anfragen vom `localhost`-Origin ablehnt. Diese Datenflüsse müssen deshalb zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft werden.
