@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Website lokal starten",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "8000"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Python-Skripte prüfen",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "compileall", "-q", "scripts"],
+      "problemMatcher": []
+    }
+  ]
+}

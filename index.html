@@ -2,7 +2,7 @@
 <html lang="de" data-theme="auto">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="logo_dark.PNG">
+<link rel="icon" type="image/png" href="assets/images/logo-dark.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul · Hub</title><!-- v5.13.1 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2004,7 +2004,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 
 <!-- ═══════════════ WEITWEG ═══════════════ -->
 <div class="sec">WEITWEG</div>
-<a class="acard travel hcard" id="travelCard" href="https://zkoberlin.github.io/reiselogger/" target="_blank" rel="noopener">
+<div class="acard travel hcard" id="travelCard">
   <div class="a-top">
     <div class="a-icon o" style="background:#10233F;border:1px solid rgba(200,157,60,.36);color:#F2EAD9;overflow:hidden;">
       <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" style="width:27px;height:27px;display:block;color:#F2EAD9;">
@@ -2013,14 +2013,14 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
         <path d="M48 10c-4.4 0-8 3.6-8 8 0 6.1 8 14 8 14s8-7.9 8-14c0-4.4-3.6-8-8-8Zm0 11.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Z" fill="#C89D3C"/>
       </svg>
     </div>
-    <div class="a-status">Aktiv</div>
+    <div class="a-status">In Vorbereitung</div>
   </div>
   <div class="a-name">WEITWEG</div>
-  <div class="a-desc" id="travelDesc">Deine Reise. Deine Spuren. Deine Welt.</div>
+  <div class="a-desc" id="travelDesc">Eine neue Reiseseite entsteht.</div>
 
   <div class="travel-hero">
-    <div class="travel-hero-num" id="travelHeroNum">– km</div>
-    <div class="travel-hero-sub" id="travelHeroSub">Gesamtstrecke</div>
+    <div class="travel-hero-num" id="travelHeroNum">Demnächst</div>
+    <div class="travel-hero-sub" id="travelHeroSub">Neue Reiseseite</div>
   </div>
 
   <div class="travel-stats">
@@ -2029,8 +2029,8 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
     <div class="travel-stat"><div class="travel-stat-ico" style="color:var(--orange);display:flex;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3"/><path d="M20 12a8 8 0 0 1-14 5.3"/><path d="M17 3v4h-4"/><path d="M7 21v-4h4"/></svg></div><div class="travel-stat-val" id="travelLaps">–</div><div class="travel-stat-lbl">Erdumrund.</div></div>
   </div>
 
-  <div class="a-footer"><span id="travelUpdated">–</span><span>→</span></div>
-</a>
+  <div class="a-footer"><span id="travelUpdated">Noch nicht verlinkt</span><span>In Vorbereitung</span></div>
+</div>
 
 <!-- ═══════════════ ALKOHOL TRACKER ═══════════════ -->
 <div id="csBodyAtk" class="atk-outer">
@@ -2418,7 +2418,6 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   <a class="bn on" href="/"><span class="bn-i">🏠</span><span class="bn-l">Hub</span></a>
   <a class="bn" href="/finanzenpaul/"><span class="bn-i">💶</span><span class="bn-l">Finanzen</span></a>
   <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
-  <a class="bn" href="/reiselogger/" aria-label="WEITWEG"><span class="bn-i" style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:#10233F;border:1px solid rgba(200,157,60,.36);overflow:hidden;"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" style="width:19px;height:19px;display:block;color:#F2EAD9;"><path d="M8 15h10l6 28 8-19 8 19 6-28h10L45 52H36l-4-10-4 10H19L8 15Z" fill="currentColor"/><path d="M18 45c7-7 13-8 20-5 5 2 8 0 11-4" fill="none" stroke="#C89D3C" stroke-width="3" stroke-linecap="round" stroke-dasharray="3.5 4"/><path d="M48 10c-4.4 0-8 3.6-8 8 0 6.1 8 14 8 14s8-7.9 8-14c0-4.4-3.6-8-8-8Zm0 11.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4Z" fill="#C89D3C"/></svg></span><span class="bn-l">WEITWEG</span></a>
 </nav>
 
 <script>
@@ -3750,50 +3749,6 @@ function loadAlma(evs){
     }
   }catch(e){console.log('Alma error:',e);}
 }
-
-// ── WEITWEG — via data/reiselog.json (GitHub Action, siehe scripts/fetch_reiselog.py) ──
-async function loadTravel(){
-  const descEl=document.getElementById('travelDesc');
-  const numEl=document.getElementById('travelHeroNum');
-  const subEl=document.getElementById('travelHeroSub');
-  const koEl=document.getElementById('travelCountries');
-  const stEl=document.getElementById('travelCities');
-  const laEl=document.getElementById('travelLaps');
-  const updEl=document.getElementById('travelUpdated');
-  try{
-    const r=await fetch('data/reiselog.json',{signal:AbortSignal.timeout(6000)});
-    if(!r.ok){
-      const hint=r.status===404?'data/reiselog.json fehlt – GitHub Action einrichten':'JSON nicht erreichbar ('+r.status+')';
-      throw new Error(hint);
-    }
-    const d=await r.json();
-    if(!d.trips){
-      descEl.textContent='Noch keine Reisen erfasst';
-      numEl.textContent='0 km';
-      subEl.textContent='Gesamtstrecke';
-      koEl.textContent='0'; stEl.textContent='0'; laEl.textContent='0×';
-      updEl.textContent='–';
-      return;
-    }
-    descEl.textContent=d.trips+' Reisen weltweit erfasst';
-    numEl.textContent=Number(d.totalKm||0).toLocaleString('de-DE')+' km';
-    subEl.textContent='Gesamtstrecke · '+(d.yearStart||'–')+'–'+(d.yearEnd||'–');
-    koEl.textContent=d.countries||0;
-    stEl.textContent=d.cities||0;
-    laEl.textContent=Number(d.earthLaps||0).toLocaleString('de-DE',{maximumFractionDigits:1,minimumFractionDigits:1})+'×';
-    if(d.updated_at){
-      const upd=new Date(d.updated_at);
-      updEl.textContent='Stand: '+upd.getDate()+'.'+(upd.getMonth()+1)+'. · '+String(upd.getHours()).padStart(2,'0')+':'+String(upd.getMinutes()).padStart(2,'0')+' Uhr';
-    } else {
-      updEl.textContent='–';
-    }
-  }catch(e){
-    console.warn('WEITWEG error:',e);
-    descEl.textContent='⚠️ '+e.message;
-    numEl.textContent='– km';
-  }
-}
-loadTravel();
 
 // ── UNION BERLIN v5.2.0 — via data/union.json ──
 async function loadUnion(){
