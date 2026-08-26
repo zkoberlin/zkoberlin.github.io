@@ -577,15 +577,34 @@ loadSchulferien();
 const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
 const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
 
-async function fetchWetter(lat,lon,city){
+const WEATHER_CACHE_MS=15*60*1000;
+const WEATHER_BERLIN={lat:52.52,lon:13.41,city:'Berlin',personal:false};
+let activeWeatherLocation=WEATHER_BERLIN;
+let weatherInitialLoad=true;
+function roundedCoordinate(value){return Math.round(value*100)/100;}
+function weatherCacheKey({lat,lon}){return`hub_weather_${lat}_${lon}`;}
+function readWeatherCache(location,allowExpired=false){
   try{
-    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,wind_speed_10m,precipitation&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,uv_index_max,precipitation_probability_max,sunrise,sunset&forecast_days=4&timezone=auto`);
-    const d=await r.json();
+    const cached=JSON.parse(sessionStorage.getItem(weatherCacheKey(location))||'null');
+    return cached?.savedAt&&(allowExpired||Date.now()-cached.savedAt<WEATHER_CACHE_MS)?cached:null;
+  }catch(e){return null;}
+}
+function saveWeatherCache(location,data,savedAt){
+  try{sessionStorage.setItem(weatherCacheKey(location),JSON.stringify({data,savedAt}));}catch(e){}
+}
+function setWeatherActiveLocation(location){
+  activeWeatherLocation=location;
+  try{sessionStorage.setItem('hub_weather_active_location',JSON.stringify(location));}catch(e){}
+}
+function validateWeatherData(d){
+  return d?.current&&Number.isFinite(d.current.temperature_2m)&&Array.isArray(d?.daily?.time)&&d.daily.time.length>=4;
+}
+function renderWeather(d,location,savedAt,fromCache){
     // Current
     document.getElementById('wIcon').textContent=ic[d.current.weathercode]||'🌡️';
     document.getElementById('wTemp').textContent=`${Math.round(d.current.temperature_2m)}°C`;
-    document.getElementById('wDesc').textContent=dc[d.current.weathercode]||city;
-    document.getElementById('wCity').textContent=city;
+    document.getElementById('wDesc').textContent=dc[d.current.weathercode]||location.city;
+    document.getElementById('wCity').textContent=location.city;
     document.getElementById('wFeels').textContent=`Gefühlt ${Math.round(d.current.apparent_temperature)}°C`;
     // ── Detail Grid ──
     const todayMax=Math.round(d.daily.temperature_2m_max[0]);
@@ -630,7 +649,7 @@ async function fetchWetter(lat,lon,city){
     const fEl=document.getElementById('wForecast');
     const names=['So','Mo','Di','Mi','Do','Fr','Sa'];
     fEl.innerHTML=[1,2,3].map(i=>{
-      const date=new Date(days.time[i]);
+      const date=new Date(`${days.time[i]}T12:00:00`);
       const name=names[date.getDay()];
       const max=Math.round(days.temperature_2m_max[i]);
       const min=Math.round(days.temperature_2m_min[i]);
@@ -642,27 +661,91 @@ async function fetchWetter(lat,lon,city){
         <div class="weather-day-range">${min}° – ${max}°</div>
       </div>`;
     }).join('');
-  }catch(e){document.getElementById('wTemp').textContent='--°';}
-  if(window._lbTick)window._lbTick();
+
+  const time=new Date(savedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('weatherStatus').textContent=`Stand ${time} Uhr${fromCache?' · Cache':''}`;
+  document.getElementById('weatherRetry').hidden=true;
+  const locationButton=document.getElementById('weatherLocationBtn');
+  locationButton.textContent=location.personal?'✓ Mein Standort':'⌖ Standort';
+  locationButton.disabled=false;
+  const query=location.personal?`${location.lat},${location.lon}`:location.city;
+  document.getElementById('weatherMoreLink').href=`https://www.google.com/search?q=${encodeURIComponent(`Wetter ${query}`)}`;
 }
 
-async function loadW(){
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(async pos=>{
-      const {latitude:lat,longitude:lon}=pos.coords;
-      // Reverse geocode city name
-      try{
-        const gr=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-        const gd=await gr.json();
-        const city=gd.address?.city||gd.address?.town||gd.address?.village||'Aktuell';
-        fetchWetter(lat,lon,city);
-      }catch(e){fetchWetter(lat,lon,'Aktuell');}
-    }, ()=>fetchWetter(52.52,13.41,'Berlin'));
-  } else {
-    fetchWetter(52.52,13.41,'Berlin');
+async function fetchWetter(location,{force=false}={}){
+  try{
+    const cached=!force&&readWeatherCache(location);
+    if(cached){
+      renderWeather(cached.data,location,cached.savedAt,true);
+      return;
+    }
+    document.getElementById('weatherStatus').textContent='Wird aktualisiert …';
+    const params=new URLSearchParams({
+      latitude:String(location.lat),longitude:String(location.lon),
+      current:'temperature_2m,apparent_temperature,weathercode,wind_speed_10m',
+      daily:'weathercode,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_probability_max,sunrise,sunset',
+      forecast_days:'4',timezone:'auto',
+    });
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?${params}`,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const d=await r.json();
+    if(!validateWeatherData(d))throw new Error('Ungültige Wetterdaten');
+    const savedAt=Date.now();
+    saveWeatherCache(location,d,savedAt);
+    renderWeather(d,location,savedAt,false);
+  }catch(e){
+    const stale=readWeatherCache(location,true);
+    if(stale){
+      renderWeather(stale.data,location,stale.savedAt,true);
+      document.getElementById('weatherStatus').textContent=`Stand ${new Date(stale.savedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr · veraltet`;
+      document.getElementById('weatherRetry').hidden=false;
+      return;
+    }
+    document.getElementById('wTemp').textContent='--°';
+    document.getElementById('wDesc').textContent='Wetter nicht verfügbar';
+    document.getElementById('wFeels').textContent='';
+    document.getElementById('weatherStatus').textContent='Aktualisierung fehlgeschlagen';
+    document.getElementById('weatherRetry').hidden=false;
+    document.getElementById('weatherLocationBtn').disabled=false;
+  }finally{
+    if(weatherInitialLoad&&window._lbTick)window._lbTick();
+    weatherInitialLoad=false;
   }
 }
-loadW();
+
+function useCurrentWeatherLocation(){
+  const button=document.getElementById('weatherLocationBtn');
+  if(!navigator.geolocation){
+    document.getElementById('weatherStatus').textContent='Standort wird nicht unterstützt';
+    return;
+  }
+  button.disabled=true;
+  button.textContent='Standort …';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const location={
+      lat:roundedCoordinate(pos.coords.latitude),
+      lon:roundedCoordinate(pos.coords.longitude),
+      city:'Mein Standort',personal:true,
+    };
+    setWeatherActiveLocation(location);
+    fetchWetter(location,{force:true});
+  },()=>{
+    button.disabled=false;
+    button.textContent=activeWeatherLocation.personal?'✓ Mein Standort':'⌖ Standort';
+    document.getElementById('weatherStatus').textContent='Standort nicht freigegeben · bisherige Auswahl bleibt aktiv';
+  },{enableHighAccuracy:false,timeout:7000,maximumAge:15*60*1000});
+}
+
+try{
+  const storedLocation=JSON.parse(sessionStorage.getItem('hub_weather_active_location')||'null');
+  if(storedLocation?.personal&&Number.isFinite(storedLocation.lat)&&Number.isFinite(storedLocation.lon))activeWeatherLocation=storedLocation;
+}catch(e){}
+document.getElementById('weatherLocationBtn').addEventListener('click',useCurrentWeatherLocation);
+document.getElementById('weatherRetry').addEventListener('click',()=>fetchWetter(activeWeatherLocation,{force:true}));
+fetchWetter(activeWeatherLocation);
+setInterval(()=>{
+  if(document.visibilityState==='visible')fetchWetter(activeWeatherLocation,{force:true});
+},WEATHER_CACHE_MS);
 
 // ── FINANZEN BLUR ──
 let _finBlurred=true;

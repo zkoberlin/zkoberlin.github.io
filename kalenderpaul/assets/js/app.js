@@ -246,7 +246,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.2.0'}</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.3.0'}</span>`;
   initViewUI();
   updateViewBtns();
   renderView();

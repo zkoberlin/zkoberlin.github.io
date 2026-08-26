@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="assets/css/hub.css">
 <link rel="stylesheet" href="assets/css/auth.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/version.js?v=6.2.0" defer></script>
-<script src="assets/js/auth.js?v=6.2.0" defer></script>
+<script src="assets/js/version.js?v=6.3.0" defer></script>
+<script src="assets/js/auth.js?v=6.3.0" defer></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.2.0</div>
+      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.3.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -50,11 +50,14 @@
 
 <!-- Weather + Date -->
 <div style="display:grid;grid-template-columns:2fr 1.1fr 1.1fr;gap:10px;min-width:0;" class="weather-grid">
-    <a class="weather-card hcard" href="https://www.google.com/search?q=wetter+berlin" target="_blank">
+    <article class="weather-card">
       <div class="weather-main">
         <div class="weather-icon" id="wIcon">⏳</div>
         <div class="weather-info">
-          <div class="weather-city"><span id="wCity">Standort</span> · Wetter</div>
+          <div class="weather-city-row">
+            <div class="weather-city"><span id="wCity">Berlin</span> · Wetter</div>
+            <button class="weather-location-btn" id="weatherLocationBtn" type="button" title="Meinen Standort verwenden" aria-label="Meinen Standort für das Wetter verwenden">⌖ Standort</button>
+          </div>
           <div class="weather-temp-row">
             <div class="weather-temp" id="wTemp">--°</div>
             <div class="wtr-minmax" id="wTRangeInline" style="display:none;">
@@ -79,7 +82,7 @@
           <div class="wdetail-icon">🌧️</div>
           <div class="wdetail-val" id="wdPrecVal">–</div>
           <div class="wdetail-bar"><div class="wdetail-bar-fill" id="wdPrecBar" style="background:#60a5fa;width:0%"></div></div>
-          <div class="wdetail-lbl">Niederschlag</div>
+          <div class="wdetail-lbl">Regenwahrscheinlichkeit</div>
         </div>
         <div class="wdetail">
           <div class="wdetail-icon">💨</div>
@@ -138,7 +141,15 @@
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
         <div class="weather-day"><div class="weather-day-name">–</div><div class="weather-day-icon">⏳</div><div class="weather-day-temp">--°</div></div>
       </div>
-    </a>
+      <div class="weather-meta">
+        <span id="weatherStatus">Wird aktualisiert …</span>
+        <span class="weather-meta-links">
+          <button id="weatherRetry" class="weather-text-btn" type="button" hidden>Erneut laden</button>
+          <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open‑Meteo</a>
+          <a id="weatherMoreLink" href="https://www.google.com/search?q=wetter+berlin" target="_blank" rel="noopener noreferrer">Mehr ↗</a>
+        </span>
+      </div>
+    </article>
     <a class="mini date hcard" href="/kalenderpaul/" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
       <!-- Apple Calendar Icon -->
       <div style="width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
@@ -630,7 +641,7 @@
   <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
 </nav>
 
-<script src="assets/js/hub.js?v=6.2.0"></script>
+<script src="assets/js/hub.js?v=6.3.0"></script>
 
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
