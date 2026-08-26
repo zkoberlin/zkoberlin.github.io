@@ -1291,11 +1291,11 @@ function clearSearch() {
 // ── iCAL CONFIGURATION ───────────────────────────────────────────────
 const ICAL_SOURCES = [
   {
-    endpoint: 'https://kalender-proxy.paul-bendzko.workers.dev/feeds/gmail',
+    endpoint: 'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/gmail',
     source: 'gmail',
   },
   {
-    endpoint: 'https://kalender-proxy.paul-bendzko.workers.dev/feeds/hellomed',
+    endpoint: 'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/hellomed',
     source: 'hellomed',
   },
 ];
@@ -1850,7 +1850,7 @@ async function loadKidsSheet() {
   if(!window.HubAuth?.isSignedIn()) return;
   setLoadStatus('ls-sheet', 'loading', 'Kids Sheet …');
   try {
-    const res = await HubAuth.authorizedFetch('https://kalender-proxy.paul-bendzko.workers.dev/feeds/kids');
+    const res = await HubAuth.authorizedFetch('https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/kids');
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
     
@@ -2029,7 +2029,7 @@ window.addEventListener('scroll', () => {
 // Snapshot wird nach BEIDEN Ladezyklen gespeichert (dyn + ical)
 // Vergleich mit gespeichertem Snapshot → Badge anzeigen
 
-const SNAPSHOT_URL  = 'https://kalender-proxy.paul-bendzko.workers.dev/snapshot';
+const SNAPSHOT_URL  = 'https://paul-gateway-v2.paul-bendzko.workers.dev/snapshot';
 const NEUE_SEEN_KEY = 'kalender_snapshot_seen_v1'; // bleibt lokal (gerätespezifisch)
 
 let _neueTermineList    = [];

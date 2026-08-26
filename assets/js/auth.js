@@ -1,6 +1,6 @@
 (() => {
   const CLIENT_ID = "272507955688-7s4g9anuhiimmooisg0iqlk940r2a0jt.apps.googleusercontent.com";
-  const AUTH_ENDPOINT = "https://kalender-proxy.paul-bendzko.workers.dev/auth/me";
+  const AUTH_ENDPOINT = "https://paul-gateway-v2.paul-bendzko.workers.dev/auth/me";
   const BASE_SCOPES = "openid email";
   const CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
   const SESSION_KEY = "paul_google_session_v1";

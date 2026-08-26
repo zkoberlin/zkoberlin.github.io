@@ -318,7 +318,7 @@ async function loadHoroskop(){
 
   // Worker aufrufen — generiert + cached serverseitig in KV
   try{
-    const resp=await fetch('https://kalender-proxy.paul-bendzko.workers.dev/horoscope',{
+    const resp=await fetch('https://paul-gateway-v2.paul-bendzko.workers.dev/horoscope',{
       signal:AbortSignal.timeout(12000)
     });
     if(!resp.ok) throw new Error('Worker '+resp.status);
@@ -665,7 +665,7 @@ async function loadBtc(){
 loadBtc();
 
 // ── AKTIEN LIVE (Finnhub via Worker + Yahoo Finance EU) ──
-const MARKET_API='https://kalender-proxy.paul-bendzko.workers.dev/market';
+const MARKET_API='https://paul-gateway-v2.paul-bendzko.workers.dev/market';
 
 // Vollständiges Parqet-Portfolio – 22 Positionen
 // fhSym  = Finnhub-Symbol (US-Listing oder ADR)
@@ -1120,8 +1120,8 @@ async function loadICAL(){
   }
   try{
     const ICAL_ENDPOINTS=[
-      'https://kalender-proxy.paul-bendzko.workers.dev/feeds/gmail',
-      'https://kalender-proxy.paul-bendzko.workers.dev/feeds/hellomed',
+      'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/gmail',
+      'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/hellomed',
     ];
 
     let evs=[];
