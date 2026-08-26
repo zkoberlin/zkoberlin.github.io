@@ -69,9 +69,9 @@ function greetingPeriod(hour){
 function updateHeaderTime(){
   const current=new Date();
   const greetings=GREETINGS[greetingPeriod(current.getHours())];
-  const dayKey=current.getFullYear()*372+(current.getMonth()+1)*31+current.getDate();
+  const greetingKey=Math.floor(current.getTime()/3600000);
   document.getElementById('clock').textContent=`${pad(current.getHours())}:${pad(current.getMinutes())}`;
-  document.getElementById('greet').textContent=greetings[dayKey%greetings.length];
+  document.getElementById('greet').textContent=greetings[greetingKey%greetings.length];
   document.getElementById('hdate').textContent=`${WD[current.getDay()]}, ${current.getDate()}. ${MK[current.getMonth()]} ${current.getFullYear()}`;
   updateCalendarDate(current);
 }
