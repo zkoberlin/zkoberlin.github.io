@@ -66,8 +66,8 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Geburtstage | Wikidata/Wikipedia | keine | `data/geburtstage.json` | Schema-/Plausibilitätsprüfung ergänzen. |
 | Namenstage | Nameday API | keine | `data/namenstage.json` | Quelle und letztes erfolgreiches Update erfassen. |
 | Schulferien | OpenHolidays | keine | `data/schulferien_berlin.json` | letztes erfolgreiches Update erfassen. |
-| Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | keine Secret-Fragmente loggen; Anbieterfehler sichtbar machen. |
-| Transfers | RapidAPI | `RAPIDAPI_KEY` | `data/transfers.json` | **Hoch:** fest codierten Fallback-Schlüssel entfernen und Schlüssel rotieren. |
+| Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | Schlüssel am 26.08.2026 rotiert; RapidAPI-BASIC-Monatskontingent derzeit ausgeschöpft (HTTP 429). Bestehende JSON-Daten bleiben bis zum nächsten erfolgreichen Lauf erhalten. |
+| Transfers | RapidAPI | `RAPIDAPI_KEY` | `data/transfers.json` | fest codierter Fallback entfernt und Schlüssel am 26.08.2026 rotiert; Aktualisierung derzeit durch das ausgeschöpfte BASIC-Monatskontingent blockiert (HTTP 429). |
 
 ## Übergreifende Sicherheitsmaßnahmen
 
