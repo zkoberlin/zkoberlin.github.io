@@ -31,4 +31,9 @@ Der Hub ist bereits nach Verantwortlichkeiten aufgeteilt:
 - `assets/js/hub-alcohol.js` enthält den Alkohol-Tracker und seine Diagrammlogik.
 - Das kleine Theme-Skript bleibt im Dokumentkopf, damit das gespeicherte Farbschema vor dem ersten Rendering angewendet wird.
 
-Finanzen und Kalender enthalten CSS und JavaScript derzeit noch direkt in ihren HTML-Dateien. Sie werden als eigene, separat prüfbare Schritte ausgelagert.
+Die Finanzseite ist ebenfalls aufgeteilt:
+
+- `finanzenpaul/assets/css/app.css` enthält das Design der Finanzseite.
+- `finanzenpaul/assets/js/app.js` enthält ihre Anwendungslogik.
+
+Der Kalender enthält CSS und JavaScript derzeit noch direkt in seiner HTML-Datei. Er wird als eigener, separat prüfbarer Schritt ausgelagert.
