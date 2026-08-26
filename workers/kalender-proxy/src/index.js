@@ -43,9 +43,38 @@ function preflightResponse(origin) {
 
   const headers = responseHeaders(origin);
   headers.set("Access-Control-Allow-Methods", "GET, PUT, OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
+  headers.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
   headers.set("Access-Control-Max-Age", "86400");
   return new Response(null, { status: 204, headers });
+}
+
+function getBearerToken(request) {
+  const authorization = request.headers.get("Authorization") || "";
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  return match?.[1]?.trim() || "";
+}
+
+async function verifyGoogleUser(request, env) {
+  const token = getBearerToken(request);
+  if (!token) return null;
+
+  const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) return null;
+
+  const profile = await response.json();
+  const email = String(profile?.email || "").toLowerCase();
+  const allowedEmail = String(env.ALLOWED_GOOGLE_EMAIL || "").toLowerCase();
+  if (!profile?.email_verified || !email || email !== allowedEmail) return null;
+
+  return { email, name: profile?.name || "" };
+}
+
+async function handleAuthMe(request, env, origin) {
+  const user = await verifyGoogleUser(request, env);
+  if (!user) return jsonResponse({ error: "Unauthorized" }, 401, origin);
+  return jsonResponse({ authenticated: true, user }, 200, origin);
 }
 
 function getFeedUrl(pathname, env) {
@@ -222,6 +251,10 @@ export default {
 
       if (url.pathname === "/horoscope" && request.method === "GET") {
         return await handleHoroscope(env, origin);
+      }
+
+      if (url.pathname === "/auth/me" && request.method === "GET") {
+        return await handleAuthMe(request, env, origin);
       }
 
       if (

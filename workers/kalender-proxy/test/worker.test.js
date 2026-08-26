@@ -6,6 +6,7 @@ import worker from "../src/index.js";
 function createEnv() {
   const store = new Map();
   return {
+    ALLOWED_GOOGLE_EMAIL: "paul@example.test",
     ANTHROPIC_API_SECRET: "test-api-key",
     FINNHUB_API_SECRET: "test-finnhub-key",
     GMAIL_ICAL_URL: "https://calendar.example.test/gmail.ics",
@@ -31,6 +32,43 @@ test("rejects an unapproved browser origin", async () => {
   );
 
   assert.equal(response.status, 403);
+});
+
+test("requires a bearer token for the authentication check", async () => {
+  const response = await worker.fetch(
+    new Request("https://worker.example.test/auth/me"),
+    createEnv(),
+  );
+
+  assert.equal(response.status, 401);
+});
+
+test("accepts only the configured verified Google account", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, options) => {
+    assert.equal(options.headers.Authorization, "Bearer valid-token");
+    return new Response(JSON.stringify({
+      email: "paul@example.test",
+      email_verified: true,
+      name: "Paul",
+    }));
+  };
+
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/auth/me", {
+        headers: { Authorization: "Bearer valid-token" },
+      }),
+      createEnv(),
+    );
+
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.authenticated, true);
+    assert.equal(data.user.email, "paul@example.test");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("does not expose the removed legacy proxy endpoint", async () => {

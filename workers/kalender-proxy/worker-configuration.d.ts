@@ -3,6 +3,7 @@
 // Runtime types generated with workerd@1.20260825.1 2026-08-26 nodejs_compat
 interface __BaseEnv_Env {
 	KALENDER_KV: KVNamespace;
+	ALLOWED_GOOGLE_EMAIL: string;
 	ANTHROPIC_API_SECRET: string;
 	FINNHUB_API_SECRET: string;
 	GMAIL_ICAL_URL: string;
@@ -20,7 +21,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "ANTHROPIC_API_SECRET" | "FINNHUB_API_SECRET" | "GMAIL_ICAL_URL" | "HELLOMED_ICAL_URL" | "KIDS_SHEET_URL">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "ALLOWED_GOOGLE_EMAIL" | "ANTHROPIC_API_SECRET" | "FINNHUB_API_SECRET" | "GMAIL_ICAL_URL" | "HELLOMED_ICAL_URL" | "KIDS_SHEET_URL">> {}
 }
 
 // Begin runtime types

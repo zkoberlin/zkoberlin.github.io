@@ -12,6 +12,7 @@ Der Worker stellt die serverseitigen Datenzugriffe für Hub und Kalender bereit.
 - `GET /horoscope` – gecachtes Tageshoroskop
 - `GET /market/quote?symbol=...` – Finnhub-Kurs für freigegebene Depot-Symbole
 - `GET /market/metric?symbol=...` – Finnhub-Kennzahlen für freigegebene Depot-Symbole
+- `GET /auth/me` – prüft ein Google-OAuth-Bearer-Token gegen das freigegebene Konto
 
 ## Secrets
 
@@ -19,6 +20,7 @@ Die erforderlichen Secret-Namen stehen in `wrangler.jsonc`. Werte gehören aussc
 
 ```bash
 npm install
+npx wrangler secret put ALLOWED_GOOGLE_EMAIL
 npx wrangler secret put ANTHROPIC_API_SECRET
 npx wrangler secret put FINNHUB_API_SECRET
 npx wrangler secret put GMAIL_ICAL_URL
