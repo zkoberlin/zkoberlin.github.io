@@ -13,16 +13,17 @@ Dieses Register beschreibt die externen Datenflüsse des Hubs und seiner Unterse
 
 ## Eigene Cloudflare-Schnittstellen
 
-Der Worker `paul-private-gateway` ist als künftiger alleiniger öffentlicher Einstiegspunkt vorbereitet und lokal getestet. Seine `workers.dev`-Zuordnung lieferte am 26.08.2026 trotz erfolgreichem Upload und aktiv gemeldeter Version noch Cloudflare-404-Antworten. Das Frontend bleibt deshalb bis zur erfolgreichen Live-Aktivierung auf dem bisherigen Worker; dessen öffentliche Adresse darf erst danach deaktiviert werden.
+Der Worker `paul-gateway-v2` ist seit dem 26.08.2026 der einzige öffentliche Einstiegspunkt für Hub und KalenderPaul. Das Frontend sendet das Google-OAuth-Token als Bearer-Token; der Gateway prüft Identität und freigegebene E-Mail-Adresse. Erst danach leitet er private Anfragen über das Cloudflare Service Binding `BACKEND` an `kalender-proxy` weiter. Die öffentliche `workers.dev`-Adresse von `kalender-proxy` ist deaktiviert (`workers_dev: false`), der Worker bleibt intern über das Service Binding erreichbar.
 
 | Schnittstelle | Verwendung | Zugriff | Daten | Schutz heute | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- | --- |
-| `kalender-proxy /feeds/gmail` | Hub und KalenderPaul | Lesen | private Kalendertermine | feste Upstream-URL als Worker-Secret; CORS-Originliste | **Kritisch:** CORS ist keine Authentifizierung. Cloudflare Access oder signierte Sitzung ergänzen. |
-| `kalender-proxy /feeds/hellomed` | Hub und KalenderPaul | Lesen | private Kalendertermine | feste Upstream-URL als Worker-Secret; CORS-Originliste | **Kritisch:** wie Gmail-Feed authentifizieren. |
-| `kalender-proxy /feeds/kids` | KalenderPaul | Lesen | private Familientermine | Tabellen-URL als Worker-Secret; CORS-Originliste | **Kritisch:** authentifizieren und minimale erforderliche Felder ausliefern. |
-| `kalender-proxy /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | KV, Größen- und JSON-Prüfung, CORS-Originliste | **Kritisch:** Schreib- und Lesezugriff authentifizieren; Rate Limit ergänzen. |
-| `kalender-proxy /horoscope` | Hub | Lesen; Worker schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Worker-Secret, KV-Cache | **Mittel:** Rate Limit und klaren Fehler-/Cachepfad ergänzen. |
-| `kalender-proxy /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Worker-Secret, Symbol-Allowlist, KV-Cache | **Mittel:** eigener Schlüssel am 26.08.2026 rotiert; Anbieterlimits weiter beobachten. |
+| `paul-gateway-v2 /feeds/gmail` | Hub und KalenderPaul | Lesen | private Kalendertermine | Google-Authentifizierung; Upstream-URL als Backend-Secret; internes Service Binding | **Niedrig:** Token- und Fehlerfälle beim Abschnittstest weiter prüfen. |
+| `paul-gateway-v2 /feeds/hellomed` | Hub und KalenderPaul | Lesen | private Kalendertermine | Google-Authentifizierung; Upstream-URL als Backend-Secret; internes Service Binding | **Niedrig:** wie Gmail-Feed regelmäßig live prüfen. |
+| `paul-gateway-v2 /feeds/kids` | KalenderPaul | Lesen | private Familientermine | Google-Authentifizierung; Tabellen-URL als Backend-Secret; internes Service Binding | **Mittel:** minimale ausgelieferte Felder beim Kalender-Review prüfen. |
+| `paul-gateway-v2 /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | Google-Authentifizierung; KV, Größen- und JSON-Prüfung; internes Service Binding | **Mittel:** Rate Limit und Konfliktverhalten ergänzen beziehungsweise testen. |
+| `paul-gateway-v2 /auth/me` | Hub und KalenderPaul | Lesen | Google-Kontoprofil zur Sitzungsprüfung | Google-Tokenprüfung und E-Mail-Allowlist | **Niedrig:** abgelaufene und widerrufene Tokens gezielt testen. |
+| `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret, KV-Cache | **Mittel:** Rate Limit und klaren Fehler-/Cachepfad ergänzen. |
+| `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret, Symbol-Allowlist, KV-Cache | **Mittel:** Anbieterlimits weiter beobachten. |
 
 Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
@@ -52,7 +53,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Google Identity Services und Calendar API | Termine bearbeiten | OAuth, Schreiben | öffentlicher OAuth-Client, Benutzer-Token im Arbeitsspeicher | **Hoch:** erlaubte Origins/Redirects prüfen, minimale Scopes verwenden und Fehlerfälle dokumentieren. |
 | OpenHolidays | Feiertage und Schulferien | Lesen | öffentlich | **Niedrig:** Timeout, Cache und lokales Fallback vereinheitlichen. |
 | OpenLigaDB | Union-Spielplan | Lesen | öffentlich | **Niedrig:** lokale `union.json` als verlässliche Primärquelle prüfen. |
-| Cloudflare-Kalender-Proxy | private Feeds, Kids und Snapshot | Lesen/Schreiben | siehe eigene Cloudflare-Schnittstellen | **Kritisch:** gemeinsame Authentifizierung einführen. |
+| Cloudflare-Gateway und internes Kalender-Backend | private Feeds, Kids und Snapshot | Lesen/Schreiben | siehe eigene Cloudflare-Schnittstellen | Google-Authentifizierung aktiv; Backend nicht öffentlich erreichbar. **Offen:** Rate Limit und Konfliktfälle beim Snapshot. |
 
 ## FinanzenPaul-Schnittstellen
 
@@ -84,8 +85,18 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
 ## Empfohlene Reihenfolge
 
-1. Authentifizierung für Kalenderfeeds und Snapshot festlegen und umsetzen.
-2. Alkohol-Tracker hinter eine geschützte Serverschnittstelle verlagern.
-3. Finanz- und Börsenzugänge rotieren und serverseitig kapseln.
+1. Alkohol-Tracker hinter eine geschützte Serverschnittstelle verlagern.
+2. Finanzzugänge rotieren und serverseitig kapseln.
+3. Snapshot-Zugriff mit Rate Limit und sauberem Konfliktverhalten härten.
 4. XSS-Flächen und externe Ressourcen mit CSP härten.
 5. Hub-Code nach Datenbereich modularisieren und gemeinsame Infrastruktur einführen.
+
+## Live-Verifikation des Gateways
+
+Am 26.08.2026 wurde die veröffentlichte GitHub-Pages-Version gemeinsam im Browser geprüft:
+
+- Anmeldung lädt Gmail-, HelloMed- und Kids-Daten.
+- Die Anmeldung bleibt nach einem Seiten-Refresh für die Browsersitzung erhalten.
+- Private Gateway-Pfade antworten ohne Bearer-Token mit `401 Unauthorized`.
+- Öffentliche Pfade für Horoskop und Marktdaten antworten über `paul-gateway-v2` erfolgreich.
+- Der alte öffentliche Direktzugang zu `kalender-proxy` antwortet mit `404`.

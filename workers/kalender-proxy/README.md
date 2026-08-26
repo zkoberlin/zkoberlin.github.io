@@ -2,6 +2,8 @@
 
 Der Worker stellt die serverseitigen Datenzugriffe für Hub und Kalender bereit.
 
+Er besitzt keine öffentliche `workers.dev`-Route und ist ausschließlich über das Service Binding `BACKEND` des Workers `paul-gateway-v2` erreichbar. Private Anfragen werden bereits am Gateway per Google-Identität und E-Mail-Allowlist authentifiziert.
+
 ## Endpunkte
 
 - `GET /feeds/gmail` – privater Gmail-iCal-Feed

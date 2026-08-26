@@ -19,3 +19,12 @@ Absolute Pfade wie `/finanzenpaul/` beziehen sich auf die Domainwurzel. Relative
 ## Automatische Datenaktualisierung
 
 Die GitHub Actions unter `.github/workflows/` aktualisieren einzelne JSON-Dateien unabhängig vom Website-Deployment und committen Änderungen zurück in das Repository.
+
+## Cloudflare Worker
+
+- `paul-gateway-v2` ist der öffentliche Einstiegspunkt für Hub und KalenderPaul.
+- `kalender-proxy` ist mit `workers_dev: false` nicht direkt öffentlich erreichbar.
+- Der Gateway greift über das Service Binding `BACKEND` auf `kalender-proxy` zu.
+- Dashboard-Secrets werden bei Deployments mit `wrangler deploy --keep-vars` bewahrt.
+
+Nach Änderungen an einem Worker werden mindestens ein öffentlicher Pfad (`200`), ein privater Pfad ohne Token (`401`) und der veröffentlichte angemeldete Browserfluss geprüft.

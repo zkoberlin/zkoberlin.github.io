@@ -20,7 +20,8 @@ Eine neue Reiseseite ist vorgesehen, aber noch nicht Bestandteil dieses Reposito
 - `data/` enthält öffentlich ausgelieferte JSON-Daten für den Hub.
 - `scripts/` erzeugt oder aktualisiert diese JSON-Dateien.
 - `.github/workflows/` führt ausgewählte Aktualisierungsskripte automatisch aus.
-- `workers/kalender-proxy/` enthält den Cloudflare-Worker für geschützte Kalenderquellen, Snapshots und Horoskopdaten.
+- `workers/private-gateway/` enthält den einzigen öffentlichen Cloudflare-Einstiegspunkt mit Google-Authentifizierung.
+- `workers/kalender-proxy/` enthält das nicht öffentlich erreichbare Backend für Kalenderquellen, Snapshots, Horoskop- und Marktdaten.
 - `docs/` enthält die technische Projektdokumentation.
 
 Das vollständige Register externer Datenflüsse, Zugriffsarten und Sicherheitsmaßnahmen steht in [`interfaces.md`](interfaces.md).
@@ -44,4 +45,4 @@ Der Kalender ist ebenfalls aufgeteilt:
 - `kalenderpaul/assets/css/app.css` enthält das Kalenderdesign.
 - `kalenderpaul/assets/js/app.js` enthält die Kalender- und Datenquellenlogik.
 
-Der Kalender-Proxy akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.
+Der öffentliche Gateway akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Private Pfade verlangen ein gültiges Google-OAuth-Token des freigegebenen Kontos. Der Gateway erreicht das Backend ausschließlich über ein Cloudflare Service Binding. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.
