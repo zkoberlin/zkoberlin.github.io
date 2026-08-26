@@ -23,7 +23,7 @@ Der Worker `paul-gateway-v2` ist seit dem 26.08.2026 der einzige öffentliche Ei
 | `paul-gateway-v2 /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | Google-Authentifizierung; KV, Größen- und JSON-Prüfung; internes Service Binding | **Mittel:** Rate Limit und Konfliktverhalten ergänzen beziehungsweise testen. |
 | `paul-gateway-v2 /auth/me` | Hub und KalenderPaul | Lesen | Google-Kontoprofil zur Sitzungsprüfung | Google-Tokenprüfung und E-Mail-Allowlist | **Niedrig:** abgelaufene und widerrufene Tokens gezielt testen. |
 | `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret, KV-Cache | **Mittel:** Rate Limit und klaren Fehler-/Cachepfad ergänzen. |
-| `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret, Symbol-Allowlist, KV-Cache | **Mittel:** Anbieterlimits weiter beobachten. |
+| `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret; Finnhub und Yahoo nur serverseitig; Symbol-Allowlist; KV-Cache | **Niedrig:** Anbieterlimits und veraltete Cache-Antworten weiter beobachten. |
 
 Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
@@ -38,8 +38,8 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Nameday APIs und AllOrigins | Namenstag-Fallback | Lesen | öffentliche Daten | mehrere Anbieter | **Mittel:** öffentlichen CORS-Proxy entfernen; lokale Datei als alleinige Quelle bevorzugen. |
 | OpenHolidays | Schulferien-Fallback | Lesen | öffentliche Daten | lokale Ferien-Datei | **Niedrig:** lokale Datei bevorzugen und Aktualität anzeigen. |
 | CoinGecko | Bitcoin-Kurs | Lesen | öffentliche Marktdaten | Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt anzeigen. |
-| Finnhub | Aktienkurse | Lesen | API-Zugang als Worker-Secret | KV-Cache und Yahoo-Fallback | **Mittel:** Schlüssel am 26.08.2026 rotiert; öffentlichen Proxy-Fallback später durch eigenen Worker ersetzen. |
-| Yahoo Finance über öffentliche CORS-Proxys | Kurs-Fallback | Lesen | Depot-Symbole werden an Proxys übertragen | mehrere Proxyanbieter | **Hoch:** eigenen Worker verwenden; öffentliche Proxys entfernen. |
+| Finnhub | Aktienkurse | Lesen | API-Zugang als Backend-Secret | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Anbieterlimits und Datenalter weiter beobachten. |
+| Yahoo Finance über eigenes Backend | Kurs-Fallback und europäische Listings | Lesen | serverseitiger Abruf ausschließlich erlaubter Depot-Symbole | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Verfügbarkeit und Antwortschema regelmäßig testen. |
 | EZB | Wechselkurse | Lesen | öffentliche Marktdaten | Standardwerte / Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt dokumentieren. |
 | Google Sheet für Familienrhythmus | Hub-Anzeige | Lesen | Tabellen-ID im Browser | keine belastbare Zugriffsschicht | **Hoch:** über authentifizierten Worker ausliefern. |
 | Google Apps Script Alkohol-Tracker | Datensynchronisation | Lesen, Schreiben, Löschen | persönliche Gesundheits-/Konsumdaten; öffentliche Script-URL | `localStorage` als Offlinekopie | **Kritisch:** authentifizieren, Eingaben serverseitig validieren und hinter Worker verlagern. |

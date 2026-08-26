@@ -735,7 +735,7 @@ async function fetchFinnhubQuote(sym){
   if(!r.ok)throw new Error('HTTP '+r.status);
   const d=await r.json();
   if(!d||!d.c||d.c===0)return null;
-  return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100),high52:null,low52:null};
+  return{price:d.c,prevClose:d.pc,pct:d.dp??((d.c-d.pc)/d.pc*100),high52:null,low52:null,dataState:r.headers.get('X-Market-Data')||'unknown',storedAt:Number(r.headers.get('X-Market-Stored-At'))||null};
 }
 
 // Finnhub 52W Metric (kostenlos, separater Call)
@@ -751,32 +751,14 @@ async function fetchFinnhub52W(sym){
   }catch(e){return null;}
 }
 
-// Yahoo Finance via mehrere CORS-Proxies (EU-Listings ohne US-ADR)
+// Yahoo Finance wird serverseitig über den eigenen Worker geladen.
 async function fetchYahooQuote(yfSym){
-  const yBase=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=5d`;
-  const yBase2=`https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1d&range=5d`;
-  const proxies=[
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yBase)}`,
-    `https://corsproxy.io/?${encodeURIComponent(yBase)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yBase2)}`,
-    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(yBase)}`,
-  ];
-  for(const url of proxies){
-    try{
-      const r=await fetch(url,{signal:AbortSignal.timeout(12000)});
-      if(!r.ok)continue;
-      const txt=await r.text();
-      if(!txt||txt.length<20)continue;
-      const d=JSON.parse(txt);
-      const meta=d?.chart?.result?.[0]?.meta;
-      if(!meta||!meta.regularMarketPrice)continue;
-      const price=meta.regularMarketPrice;
-      const prev=meta.chartPreviousClose??meta.previousClose??price;
-      const pct=prev?((price-prev)/prev)*100:0;
-      return{price,pct,high52:meta.fiftyTwoWeekHigh??null,low52:meta.fiftyTwoWeekLow??null,currency:meta.currency??'EUR'};
-    }catch(e){continue;}
-  }
-  return null;
+  const url=`${MARKET_API}/yahoo?symbol=${encodeURIComponent(yfSym)}`;
+  const r=await fetch(url,{signal:AbortSignal.timeout(10000)});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const d=await r.json();
+  if(!d||!Number.isFinite(d.price)||d.price<=0)return null;
+  return{price:d.price,pct:d.changePercent,high52:d.high52,low52:d.low52,currency:d.currency||'EUR',marketTime:d.marketTime,dataState:r.headers.get('X-Market-Data')||'unknown',storedAt:Number(r.headers.get('X-Market-Stored-At'))||null};
 }
 
 async function getEurRates(){
@@ -793,7 +775,12 @@ async function getEurRates(){
   }
 }
 
+let stocksLoading=false;
+let stocksHaveData=false;
+let stocksInitialLoad=true;
 async function loadStocks(){
+  if(stocksLoading)return;
+  stocksLoading=true;
   const hlEl=document.getElementById('stocksHighlights');
   const allEl=document.getElementById('stocksAll');
   const metaEl=document.getElementById('stocksMeta');
@@ -801,34 +788,35 @@ async function loadStocks(){
   try{
     const ratesPromise=getEurRates();
 
-    // Alle Quotes parallel: Finnhub zuerst, Yahoo als Fallback, fbEur als letzter Ausweg
-    const quotePromises=STOCKS.map(async(s)=>{
-      // 1. Finnhub (US-Listing oder ADR)
+    // Finnhub parallel laden; Yahoo-Fallbacks danach bewusst nacheinander,
+    // damit der Anbieter nicht durch einen Request-Burst gedrosselt wird.
+    const results=await Promise.all(STOCKS.map(async(s)=>{
       if(s.fhSym){
         try{
           const q=await fetchFinnhubQuote(s.fhSym);
-          if(q&&q.price>0)return{...s,sym:s.fhSym,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52};
+          if(q&&q.price>0)return{...s,sym:s.fhSym,price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,dataState:q.dataState,storedAt:q.storedAt};
         }catch(e){}
       }
-      // 2. Yahoo Finance als Fallback (EU-Listing oder dasselbe US-Symbol)
+      return null;
+    }));
+
+    for(let i=0;i<STOCKS.length;i++){
+      if(results[i])continue;
+      const s=STOCKS[i];
       const yahooSymbol=s.yfSym||s.fhSym;
       if(yahooSymbol){
         try{
           const q=await fetchYahooQuote(yahooSymbol);
           if(q&&q.price>0){
-            const cur=q.currency==='CHF'?'CHF':'EUR';
-            return{...s,sym:yahooSymbol.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,cur};
+            results[i]={...s,sym:yahooSymbol.split('.')[0],price:q.price,pct:q.pct,high52:q.high52,low52:q.low52,cur:q.currency||'EUR',dataState:q.dataState,storedAt:q.storedAt,marketTime:q.marketTime};
+            continue;
           }
         }catch(e){}
       }
-      // 3. Hardcodierter Fallback (Parqet-Preis, statisch)
       if(s.fbEur!=null){
-        return{...s,sym:(s.fhSym||s.yfSym?.split('.')[0]||s.name),price:s.fbEur,pct:s.fbPct??0,high52:null,low52:null,cur:'EUR',isFallback:true};
+        results[i]={...s,sym:(s.fhSym||s.yfSym?.split('.')[0]||s.name),price:s.fbEur,pct:s.fbPct??0,high52:null,low52:null,cur:'EUR',isFallback:true};
       }
-      return null;
-    });
-
-    const results=await Promise.all(quotePromises);
+    }
     const rawRows=results.filter(Boolean);
 
     if(!rawRows.length)throw new Error('Keine Daten');
@@ -854,14 +842,18 @@ async function loadStocks(){
     renderStocksRows(rows,fmtEur,fmtPct,shortSym);
 
     const fallbackCount=rows.filter(r=>r.isFallback).length;
-    const ts=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
+    const staleCount=rows.filter(r=>r.dataState==='stale').length;
+    const newestStoredAt=Math.max(0,...rows.map(r=>r.storedAt||0));
+    const ts=new Date(newestStoredAt||Date.now()).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
+    const dataLabel=staleCount?'teils verzögert':'gecacht, max. 5 Min.';
     if(metaEl){
       metaEl.style.display='flex';
-      const hint=fallbackCount?` · ${fallbackCount}× statisch`:' · live';
-      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub + Yahoo${hint} · ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
+      const hint=fallbackCount?` · ${fallbackCount}× statisch`:'';
+      metaEl.innerHTML=`<div class="stocks-meta-dot"></div><span style="font-size:8.5px;color:var(--t3);">Finnhub + Yahoo${hint} · ${dataLabel} · Stand ${ts} · ${rows.length} Positionen · alle in EUR</span>`;
     }
 
-    renderTicker(rows,fmtEur,fmtPct);
+    renderTicker(rows,fmtEur,fmtPct,{timestamp:ts,stale:staleCount>0});
+    stocksHaveData=true;
 
     // 52W nachladen (non-blocking)
     (async()=>{
@@ -875,8 +867,14 @@ async function loadStocks(){
 
   }catch(e){
     if(hlEl)hlEl.innerHTML=`<div style="font-size:10px;color:var(--t3);padding:6px 2px;">Kurse konnten nicht geladen werden.</div>`;
+    if(!stocksHaveData){
+      const strip=document.getElementById('stockTicker');
+      if(strip)strip.style.display='none';
+    }
   }
-  if(window._lbTick)window._lbTick();
+  stocksLoading=false;
+  if(stocksInitialLoad&&window._lbTick)window._lbTick();
+  stocksInitialLoad=false;
 }
 
 function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
@@ -916,7 +914,7 @@ function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
       </div>
       <div style="text-align:right;flex-shrink:0;">
         <div class="stock-highlight-price">${fmtEur(r.priceEur)}</div>
-        <div class="stock-highlight-pct ${r.pct>=0?'g':'r'}" style="margin-top:2px;">${fmtPct(r.pct)}</div>
+        <div class="stock-highlight-pct ${r.pct>=0?'g':'r'}" style="margin-top:2px;">${fmtPct(r.pct)}${r.isFallback?' · statisch':''}</div>
       </div>
     </div>`).join('');
 
@@ -933,15 +931,18 @@ function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
       </div>
       <div style="text-align:right;flex-shrink:0;">
         <div class="stock-row-price">${fmtEur(r.priceEur)}</div>
-        <div class="stock-row-pct ${r.pct>=0?'g':'r'}" style="font-size:8.5px;">${fmtPct(r.pct)}</div>
+        <div class="stock-row-pct ${r.pct>=0?'g':'r'}" style="font-size:8.5px;">${fmtPct(r.pct)}${r.isFallback?' · statisch':''}</div>
       </div>
     </div>`).join('');
 }
 
 loadStocks();
+setInterval(()=>{
+  if(document.visibilityState==='visible')loadStocks();
+},300000);
 
 // ── TICKER STRIP ──
-function renderTicker(rows,fmtEur,fmtPct){
+function renderTicker(rows,fmtEur,fmtPct,meta={}){
   const track=document.getElementById('tickerTrack');
   const strip=document.getElementById('stockTicker');
   if(!track||!rows||!rows.length)return;
@@ -956,7 +957,11 @@ function renderTicker(rows,fmtEur,fmtPct){
   };
 
   // Sortierung: alphabetisch für TV-Ticker
-  const sorted=[...rows].sort((a,b)=>tickerSym(a).localeCompare(tickerSym(b)));
+  const sorted=rows.filter(r=>!r.isFallback).sort((a,b)=>tickerSym(a).localeCompare(tickerSym(b)));
+  if(!sorted.length){
+    if(strip)strip.style.display='none';
+    return;
+  }
 
   const html=sorted.map(r=>`
     <div class="ticker-item">
@@ -964,8 +969,9 @@ function renderTicker(rows,fmtEur,fmtPct){
       <span class="ticker-item-price">${_fmtEur(r.priceEur??r.price)}</span>
       <span class="ticker-item-pct ${r.pct>=0?'g':'r'}">${r.pct>=0?'▲':'▼'} ${Math.abs(r.pct).toFixed(2).replace('.',',')}%</span>
     </div>`).join('');
-  track.innerHTML=html+html; // doppelt für nahtlosen Loop
-  if(strip)strip.classList.remove('loading');
+  const status=`<div class="ticker-item ticker-item-status">Stand ${meta.timestamp||'–'}${meta.stale?' · teils verzögert':' · max. 5 Min.'}</div>`;
+  track.innerHTML=`<div class="ticker-sequence">${status}${html}</div><div class="ticker-sequence ticker-copy" aria-hidden="true">${status}${html}</div>`;
+  if(strip){strip.style.display='';strip.classList.remove('loading');}
 }
 async function loadKids(){
   try{

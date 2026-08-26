@@ -14,6 +14,7 @@ Er besitzt keine öffentliche `workers.dev`-Route und ist ausschließlich über 
 - `GET /horoscope` – gecachtes Tageshoroskop
 - `GET /market/quote?symbol=...` – Finnhub-Kurs für freigegebene Depot-Symbole
 - `GET /market/metric?symbol=...` – Finnhub-Kennzahlen für freigegebene Depot-Symbole
+- `GET /market/yahoo?symbol=...` – normalisierter Yahoo-Fallback für freigegebene Depot-Symbole
 - `GET /auth/me` – prüft ein Google-OAuth-Bearer-Token gegen das freigegebene Konto
 
 ## Secrets

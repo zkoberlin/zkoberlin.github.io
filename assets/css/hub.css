@@ -785,6 +785,7 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   will-change:transform;
 }
 .ticker-track:hover{animation-play-state:paused;}
+.ticker-sequence{display:inline-flex;align-items:center;height:28px;}
 @keyframes tickerScroll{
   0%{transform:translateX(0);}
   100%{transform:translateX(-50%);}
@@ -803,6 +804,12 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 .ticker-item-pct{font-variant-numeric:tabular-nums;font-size:9px;font-weight:700;}
 .ticker-item-pct.g{color:#34d399;}
 .ticker-item-pct.r{color:#f87171;}
+.ticker-item-status{color:rgba(255,255,255,.62);font-size:9px;font-weight:500;}
+@media(prefers-reduced-motion:reduce){
+  .ticker-track{animation:none;max-width:100%;overflow-x:auto;scrollbar-width:none;}
+  .ticker-track::-webkit-scrollbar{display:none;}
+  .ticker-track .ticker-copy{display:none;}
+}
 /* Logos in der Kachel */
 .stock-chip-logo{width:18px;height:18px;border-radius:4px;object-fit:contain;flex-shrink:0;background:var(--card2);}
 .stock-row-logo{width:15px;height:15px;border-radius:3px;object-fit:contain;flex-shrink:0;background:var(--card2);}
@@ -1784,4 +1791,3 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
   .uc-season-chevron{display:none!important;}
   .uc-season-details{max-height:none!important;}
 }
-

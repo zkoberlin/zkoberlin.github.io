@@ -11,7 +11,7 @@ const PRIVATE_PATHS = new Set([
   "/snapshot",
 ]);
 
-const PUBLIC_PATHS = new Set(["/horoscope", "/market/quote", "/market/metric"]);
+const PUBLIC_PATHS = new Set(["/horoscope", "/market/quote", "/market/metric", "/market/yahoo"]);
 
 function headers(origin) {
   const result = new Headers({

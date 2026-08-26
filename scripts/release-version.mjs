@@ -14,11 +14,16 @@ const files = [
   'finanzenpaul/index.html',
 ];
 
+const versionSource = await readFile('assets/js/version.js', 'utf8');
+const currentVersion = versionSource.match(/const version = '(\d+\.\d+\.\d+)';/)?.[1];
+if (!currentVersion) {
+  console.error('Aktuelle Version konnte nicht ermittelt werden.');
+  process.exit(1);
+}
+
 for (const file of files) {
   const current = await readFile(file, 'utf8');
-  const updated = current
-    .replace(/const version = '\d+\.\d+\.\d+';/, `const version = '${nextVersion}';`)
-    .replaceAll(/\?v=\d+\.\d+\.\d+/g, `?v=${nextVersion}`);
+  const updated = current.replaceAll(currentVersion, nextVersion);
   await writeFile(file, updated);
 }
 

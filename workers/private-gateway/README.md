@@ -7,6 +7,7 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/horoscope`
 - `/market/quote`
 - `/market/metric`
+- `/market/yahoo`
 
 ## Geschützte Pfade
 

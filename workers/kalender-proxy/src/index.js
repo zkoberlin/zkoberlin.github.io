@@ -8,6 +8,10 @@ const FINNHUB_SYMBOLS = new Set([
   "HVRRF", "RACE", "TSLA", "NU", "CTAS", "AXP", "HESAY", "NFLX",
   "ZTS", "RR", "CLOV",
 ]);
+const YAHOO_SYMBOLS = new Set([
+  ...FINNHUB_SYMBOLS,
+  "DB1.DE", "LOTB.BR", "WKL.AS", "SIE.DE", "HNR1.DE", "RMS.PA", "BKW.SW",
+]);
 const PRIVATE_PATHS = new Set([
   "/feeds/gmail",
   "/feeds/hellomed",
@@ -40,6 +44,14 @@ function jsonResponse(data, status, origin) {
     status,
     headers: responseHeaders(origin),
   });
+}
+
+function marketResponse(data, origin, state, storedAt) {
+  const headers = responseHeaders(origin);
+  headers.set("Access-Control-Expose-Headers", "X-Market-Data, X-Market-Stored-At");
+  headers.set("X-Market-Data", state);
+  if (storedAt) headers.set("X-Market-Stored-At", String(storedAt));
+  return new Response(JSON.stringify(data), { status: 200, headers });
 }
 
 function preflightResponse(origin) {
@@ -213,7 +225,7 @@ async function handleMarketData(url, env, origin) {
     cached = null;
   }
   if (cached?.storedAt && Date.now() - cached.storedAt < freshFor * 1000) {
-    return jsonResponse(cached.data, 200, origin);
+    return marketResponse(cached.data, origin, "cached", cached.storedAt);
   }
 
   const upstreamUrl = new URL(`https://finnhub.io/api/v1/${resource}`);
@@ -229,15 +241,76 @@ async function handleMarketData(url, env, origin) {
       resource,
       status: upstream.status,
     }));
-    if (cached?.data) return jsonResponse(cached.data, 200, origin);
+    if (cached?.data) return marketResponse(cached.data, origin, "stale", cached.storedAt);
     return jsonResponse({ error: "Market data unavailable" }, 502, origin);
   }
 
   const data = await upstream.json();
-  await env.KALENDER_KV.put(cacheKey, JSON.stringify({ storedAt: Date.now(), data }), {
+  const storedAt = Date.now();
+  await env.KALENDER_KV.put(cacheKey, JSON.stringify({ storedAt, data }), {
     expirationTtl: resource === "quote" ? 86_400 : 604_800,
   });
-  return jsonResponse(data, 200, origin);
+  return marketResponse(data, origin, "live", storedAt);
+}
+
+async function handleYahooMarketData(url, env, origin) {
+  const symbol = (url.searchParams.get("symbol") || "").toUpperCase();
+  if (!YAHOO_SYMBOLS.has(symbol)) {
+    return jsonResponse({ error: "Symbol not allowed" }, 400, origin);
+  }
+
+  const cacheKey = `market:yahoo:${symbol}`;
+  const cachedRaw = await env.KALENDER_KV.get(cacheKey);
+  let cached = null;
+  try {
+    cached = cachedRaw ? JSON.parse(cachedRaw) : null;
+  } catch {
+    cached = null;
+  }
+  if (cached?.storedAt && Date.now() - cached.storedAt < 300_000) {
+    return marketResponse(cached.data, origin, "cached", cached.storedAt);
+  }
+
+  const upstreamUrl = new URL(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}`);
+  upstreamUrl.searchParams.set("interval", "1d");
+  upstreamUrl.searchParams.set("range", "5d");
+
+  let upstream;
+  try {
+    upstream = await fetch(upstreamUrl, { signal: AbortSignal.timeout(8_000) });
+  } catch (error) {
+    console.error(JSON.stringify({ message: "yahoo provider failed", symbol, error: String(error) }));
+    if (cached?.data) return marketResponse(cached.data, origin, "stale", cached.storedAt);
+    return jsonResponse({ error: "Market data unavailable" }, 502, origin);
+  }
+
+  if (!upstream.ok) {
+    console.error(JSON.stringify({ message: "yahoo provider failed", symbol, status: upstream.status }));
+    if (cached?.data) return marketResponse(cached.data, origin, "stale", cached.storedAt);
+    return jsonResponse({ error: "Market data unavailable" }, 502, origin);
+  }
+
+  const providerData = await upstream.json();
+  const meta = providerData?.chart?.result?.[0]?.meta;
+  const price = Number(meta?.regularMarketPrice);
+  if (!Number.isFinite(price) || price <= 0) {
+    if (cached?.data) return marketResponse(cached.data, origin, "stale", cached.storedAt);
+    return jsonResponse({ error: "Market data unavailable" }, 502, origin);
+  }
+
+  const previousClose = Number(meta.chartPreviousClose ?? meta.previousClose ?? price);
+  const data = {
+    price,
+    previousClose,
+    changePercent: previousClose ? ((price - previousClose) / previousClose) * 100 : 0,
+    high52: Number(meta.fiftyTwoWeekHigh) || null,
+    low52: Number(meta.fiftyTwoWeekLow) || null,
+    currency: String(meta.currency || "EUR").toUpperCase(),
+    marketTime: Number(meta.regularMarketTime) || null,
+  };
+  const storedAt = Date.now();
+  await env.KALENDER_KV.put(cacheKey, JSON.stringify({ storedAt, data }), { expirationTtl: 86_400 });
+  return marketResponse(data, origin, "live", storedAt);
 }
 
 export default {
@@ -268,10 +341,10 @@ export default {
         return await handleAuthMe(request, env, origin);
       }
 
-      if (
-        request.method === "GET"
-        && (url.pathname === "/market/quote" || url.pathname === "/market/metric")
-      ) {
+      if (request.method === "GET" && url.pathname === "/market/yahoo") {
+        return await handleYahooMarketData(url, env, origin);
+      }
+      if (request.method === "GET" && (url.pathname === "/market/quote" || url.pathname === "/market/metric")) {
         return await handleMarketData(url, env, origin);
       }
 

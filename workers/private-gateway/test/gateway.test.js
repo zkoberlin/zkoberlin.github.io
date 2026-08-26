@@ -22,9 +22,11 @@ test("blocks every private route without a token", async () => {
 });
 
 test("forwards public routes without authentication", async () => {
-  const response = await worker.fetch(new Request("https://gateway.test/horoscope"), env());
-  assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), { path: "/horoscope" });
+  for (const path of ["/horoscope", "/market/quote", "/market/metric", "/market/yahoo"]) {
+    const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
+    assert.equal(response.status, 200, path);
+    assert.deepEqual(await response.json(), { path }, path);
+  }
 });
 
 test("forwards a private route for the verified account", async () => {

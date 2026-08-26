@@ -228,3 +228,52 @@ test("serves a fresh market quote from KV without calling the provider", async (
     globalThis.fetch = originalFetch;
   }
 });
+
+test("rejects Yahoo symbols outside the portfolio allowlist", async () => {
+  const response = await worker.fetch(
+    new Request("https://worker.example.test/market/yahoo?symbol=UNKNOWN"),
+    createEnv(),
+  );
+  assert.equal(response.status, 400);
+});
+
+test("normalizes an allowed Yahoo quote and preserves its currency", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestedUrl = "";
+  globalThis.fetch = async (url) => {
+    requestedUrl = String(url);
+    return new Response(JSON.stringify({
+      chart: {
+        result: [{
+          meta: {
+            regularMarketPrice: 200,
+            chartPreviousClose: 190,
+            fiftyTwoWeekHigh: 220,
+            fiftyTwoWeekLow: 150,
+            currency: "USD",
+            regularMarketTime: 1234567890,
+          },
+        }],
+      },
+    }));
+  };
+
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/market/yahoo?symbol=MSFT", {
+        headers: { Origin: "http://localhost:8000" },
+      }),
+      createEnv(),
+    );
+    assert.equal(response.status, 200);
+    assert.match(requestedUrl, /query1\.finance\.yahoo\.com/);
+    assert.match(requestedUrl, /MSFT/);
+    const data = await response.json();
+    assert.equal(data.currency, "USD");
+    assert.equal(data.price, 200);
+    assert.ok(Math.abs(data.changePercent - 5.2631578947) < 0.0001);
+    assert.equal(response.headers.get("X-Market-Data"), "live");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
