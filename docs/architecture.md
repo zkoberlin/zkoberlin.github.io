@@ -42,4 +42,4 @@ Der Kalender ist ebenfalls aufgeteilt:
 - `kalenderpaul/assets/css/app.css` enthält das Kalenderdesign.
 - `kalenderpaul/assets/js/app.js` enthält die Kalender- und Datenquellenlogik.
 
-Die persönlichen Kalenderquellen lassen sich lokal nicht vollständig laden, weil ihr Proxy Anfragen vom `localhost`-Origin ablehnt. Diese Datenflüsse müssen deshalb zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft werden.
+Der Kalender-Proxy akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.

@@ -1112,18 +1112,16 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 async function loadICAL(){
   try{
-    // iCal URLs – private Google Calendar Feeds via Cloudflare Worker Proxy
-    const ICAL_URLS=[
-      'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics',
-      'https://calendar.google.com/calendar/ical/bendzko%40hellomed.com/private-47446a2b152be60bee5ced55d79b08eb/basic.ics',
+    const ICAL_ENDPOINTS=[
+      'https://kalender-proxy.paul-bendzko.workers.dev/feeds/gmail',
+      'https://kalender-proxy.paul-bendzko.workers.dev/feeds/hellomed',
     ];
 
     let evs=[];
     let okCount=0;
-    for(const url of ICAL_URLS){
+    for(const endpoint of ICAL_ENDPOINTS){
       try{
-        const proxyUrl='https://kalender-proxy.paul-bendzko.workers.dev/ical?url='+encodeURIComponent(url);
-        const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(10000)});
+        const r=await fetch(endpoint,{signal:AbortSignal.timeout(10000)});
         if(!r.ok)continue;
         const t=await r.text();
         if(t.includes('BEGIN:VCALENDAR')){evs=evs.concat(parseICS(t));okCount++;}
@@ -2277,4 +2275,3 @@ async function loadTransfers(unionData, nextMatch){
 })();
 
 loadICAL();
-

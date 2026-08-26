@@ -1289,10 +1289,16 @@ function clearSearch() {
 }
 
 // ── iCAL CONFIGURATION ───────────────────────────────────────────────
-const ICAL_URLS = [
-  'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-fecf43d0f4a219cce35b72d2266a5650/basic.ics',
-  'https://calendar.google.com/calendar/ical/bendzko%40hellomed.com/private-47446a2b152be60bee5ced55d79b08eb/basic.ics',
-];; // z.B. 'https://calendar.google.com/calendar/ical/paul.bendzko%40gmail.com/private-xxxx/basic.ics'
+const ICAL_SOURCES = [
+  {
+    endpoint: 'https://kalender-proxy.paul-bendzko.workers.dev/feeds/gmail',
+    source: 'gmail',
+  },
+  {
+    endpoint: 'https://kalender-proxy.paul-bendzko.workers.dev/feeds/hellomed',
+    source: 'hellomed',
+  },
+];
 
 // ── iCAL PARSER ──────────────────────────────────────────────────────
 function extractTime(title) {
@@ -1662,7 +1668,7 @@ function injectICalEvents(events, url='') {
 }
 
 async function loadICalEvents() {
-  if(!ICAL_URLS || !ICAL_URLS.length) return;
+  if(!ICAL_SOURCES || !ICAL_SOURCES.length) return;
 
   const statusEl = document.getElementById('ical-status');
   if(statusEl) statusEl.textContent = '🔄 Kalender wird geladen…';
@@ -1670,23 +1676,22 @@ async function loadICalEvents() {
   let totalEvents = 0;
   let errors = 0;
 
-  await Promise.all(ICAL_URLS.map(async (url, idx) => {
+  await Promise.all(ICAL_SOURCES.map(async (source, idx) => {
     const statusId = idx === 0 ? 'ls-ical1' : 'ls-ical2';
     const label = idx === 0 ? 'Gmail iCal' : 'Hellomed iCal';
     setLoadStatus(statusId, 'loading', label + ' …');
     try {
-      const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(url);
-      const res = await fetch(proxyUrl);
+      const res = await fetch(source.endpoint);
       if(!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const events = parseICS(text);
-      injectICalEvents(events, url);
+      injectICalEvents(events, source.source);
       totalEvents += events.length;
       setLoadStatus(statusId, 'ok', `✓ ${label} (${events.length})`);
     } catch(err) {
       errors++;
       setLoadStatus(statusId, 'err', `✗ ${label}`);
-      console.warn('iCal load error for', url, ':', err.message);
+      console.warn('iCal load error for', source.source, ':', err.message);
     }
   }));
 
@@ -1843,12 +1848,7 @@ async function loadUnionGames() {
 async function loadKidsSheet() {
   setLoadStatus('ls-sheet', 'loading', 'Kids Sheet …');
   try {
-    // Google Sheets as CSV - works if sheet is publicly readable
-    const sheetId = '1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
-    const tabName = 'Kids';
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
-    const proxyUrl = 'https://kalender-proxy.paul-bendzko.workers.dev/ical?url=' + encodeURIComponent(sheetUrl);
-    const res = await fetch(proxyUrl);
+    const res = await fetch('https://kalender-proxy.paul-bendzko.workers.dev/feeds/kids');
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const csv = await res.text();
     
