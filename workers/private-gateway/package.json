@@ -1,0 +1,14 @@
+{
+  "name": "paul-private-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "wrangler deploy --dry-run --secrets-file .dev.vars.example",
+    "deploy": "wrangler deploy --keep-vars"
+  },
+  "devDependencies": {
+    "wrangler": "4.126.0"
+  }
+}

@@ -13,6 +13,8 @@ Dieses Register beschreibt die externen Datenflüsse des Hubs und seiner Unterse
 
 ## Eigene Cloudflare-Schnittstellen
 
+Der Worker `paul-private-gateway` ist als künftiger alleiniger öffentlicher Einstiegspunkt vorbereitet und lokal getestet. Seine `workers.dev`-Zuordnung lieferte am 26.08.2026 trotz erfolgreichem Upload und aktiv gemeldeter Version noch Cloudflare-404-Antworten. Das Frontend bleibt deshalb bis zur erfolgreichen Live-Aktivierung auf dem bisherigen Worker; dessen öffentliche Adresse darf erst danach deaktiviert werden.
+
 | Schnittstelle | Verwendung | Zugriff | Daten | Schutz heute | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- | --- |
 | `kalender-proxy /feeds/gmail` | Hub und KalenderPaul | Lesen | private Kalendertermine | feste Upstream-URL als Worker-Secret; CORS-Originliste | **Kritisch:** CORS ist keine Authentifizierung. Cloudflare Access oder signierte Sitzung ergänzen. |

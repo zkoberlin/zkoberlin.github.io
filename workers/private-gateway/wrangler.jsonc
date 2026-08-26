@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "paul-private-gateway",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-26",
+  "preview_urls": false,
+  "services": [
+    {
+      "binding": "BACKEND",
+      "service": "kalender-proxy"
+    }
+  ],
+  "secrets": {
+    "required": ["ALLOWED_GOOGLE_EMAIL"]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 }
+  }
+}
