@@ -88,6 +88,17 @@ function updateCalendarDate(current){
 updateHeaderTime();
 setInterval(updateHeaderTime,30000);
 function kwRange(d){const day=d.getDay()||7;const m=new Date(d);m.setDate(d.getDate()-day+1);const s=new Date(m);s.setDate(m.getDate()+6);return`${m.getDate()}. ${MK[m.getMonth()]} – ${s.getDate()}. ${MK[s.getMonth()]}`;}
+const calendarCard=document.querySelector('[data-calendar-card]');
+if(calendarCard){
+  calendarCard.addEventListener('click',event=>{
+    if(!event.target.closest('a,button'))location.href='/kalenderpaul/';
+  });
+  calendarCard.addEventListener('keydown',event=>{
+    if(event.target===calendarCard&&(event.key==='Enter'||event.key===' ')){
+      event.preventDefault();location.href='/kalenderpaul/';
+    }
+  });
+}
 
 // ── TAGESIMPULS ──
 const DAILY_IMPULSES={
@@ -299,69 +310,69 @@ function toggleHist(){
 
 // ── PROMI GEBURTSTAGE ──
 function renderPromis(list, el){
+  el.replaceChildren();
   if(!list.length){
-    el.innerHTML='<div style="font-size:10px;color:var(--t3);">Heute keine Daten</div>';
+    const empty=document.createElement('div');
+    empty.style.cssText='font-size:10px;color:var(--t3);';
+    empty.textContent='Heute keine Daten';
+    el.appendChild(empty);
     return;
   }
-  el.innerHTML=list.map(p=>{
-    const fotoHtml=p.foto
-      ?`<img class="promi-foto" src="${p.foto}" alt="${p.name}" onerror="this.outerHTML='<div class=\\'promi-foto-placeholder\\'>🎂</div>'">`
-      :`<div class="promi-foto-placeholder">🎂</div>`;
-    const alter=p.alter?`· ${p.alter}`:'';
-    const beruf=(p.beruf||'').replace(/\s*\(Born\s+\d{4}\)/gi,'').trim();
-    const flagHtml=p.nationalitaet?`<span class="promi-flag" title="${p.nationalitaet}">🇩🇪</span>`:'';
-    return`<div class="promi-chip">
-      ${fotoHtml}
-      <div class="promi-info">
-        <div class="promi-name"><span style="overflow:hidden;text-overflow:ellipsis;">${p.name}</span>${flagHtml}</div>
-        <div class="promi-meta">${beruf} ${alter}</div>
-      </div>
-    </div>`;
-  }).join('<div style="height:1px;background:var(--border);margin:1px 0;"></div>');
-}
-
-async function fetchPromiWikipedia(el){
-  // Direkter Wikipedia-Fallback wenn JSON veraltet oder nicht verfügbar
-  try{
-    const now=new Date();
-    const m=String(now.getMonth()+1).padStart(2,'0');
-    const d=String(now.getDate()).padStart(2,'0');
-    const res=await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/births/${m}/${d}`,
-      {signal:AbortSignal.timeout(8000)});
-    if(!res.ok) throw new Error('Wikipedia '+res.status);
-    const data=await res.json();
-    const births=data.births||[];
-    const KEYWORDS=['actor','actress','singer','musician','rapper','songwriter',
-      'footballer','soccer','basketball','tennis','athlete','boxer','swimmer',
-      'racing driver','golfer','politician','president','chancellor','minister',
-      'director','performer','entertainer'];
-    const list=[];
-    for(const entry of births){
-      if(list.length>=3) break;
-      const yr=entry.year;
-      const pages=entry.pages||[];
-      if(!pages.length||!yr) continue;
-      const page=pages[0];
-      const desc=(page.description||'').toLowerCase();
-      const ext=(page.extract||'').toLowerCase();
-      if(!KEYWORDS.some(k=>desc.includes(k)||ext.includes(k))) continue;
-      if(ext.includes('died')||ext.includes('death')) continue;
-      list.push({
-        name:page.titles?.normalized||'',
-        alter:now.getFullYear()-parseInt(yr),
-        beruf:(page.description||'Persönlichkeit'),
-        foto:page.thumbnail?.source||null
-      });
+  list.forEach((p,index)=>{
+    if(index){
+      const separator=document.createElement('div');
+      separator.style.cssText='height:1px;background:var(--border);margin:1px 0;';
+      el.appendChild(separator);
     }
-    renderPromis(list,el);
-  }catch(e){
-    console.warn('Wikipedia Fallback fehlgeschlagen:',e);
-    el.innerHTML='<div style="font-size:10px;color:var(--t3);">–</div>';
-  }
+    const profile=document.createElement('a');
+    profile.className='promi-chip promi-profile';
+    profile.href=p.wikidata;
+    profile.target='_blank';
+    profile.rel='noopener noreferrer';
+    profile.setAttribute('aria-label',`${p.name} – Profil öffnen`);
+
+    const placeholder=document.createElement('div');
+    placeholder.className='promi-foto-placeholder';
+    placeholder.textContent='🎂';
+    if(p.foto){
+      const image=document.createElement('img');
+      image.className='promi-foto';
+      image.src=p.foto;
+      image.alt='';
+      image.loading='lazy';
+      image.referrerPolicy='no-referrer';
+      image.addEventListener('error',()=>image.replaceWith(placeholder),{once:true});
+      profile.appendChild(image);
+    }else profile.appendChild(placeholder);
+
+    const info=document.createElement('div');
+    info.className='promi-info';
+    const name=document.createElement('div');
+    name.className='promi-name';
+    const nameText=document.createElement('span');
+    nameText.style.cssText='overflow:hidden;text-overflow:ellipsis;';
+    nameText.textContent=p.name;
+    name.appendChild(nameText);
+    if(p.nationalitaet){
+      const flag=document.createElement('span');
+      flag.className='promi-flag';
+      flag.title=p.nationalitaet;
+      flag.textContent=p.nationalitaet.split(' ')[0];
+      name.appendChild(flag);
+    }
+    const meta=document.createElement('div');
+    meta.className='promi-meta';
+    meta.textContent=`${p.beruf}${Number.isInteger(p.alter)?` · ${p.alter}`:''}`;
+    info.append(name,meta);
+    profile.appendChild(info);
+    el.appendChild(profile);
+  });
 }
 
+let birthdayDateKey='';
 async function loadPromiGeburtstage(){
   const el=document.getElementById('bdayVal');
+  const metaEl=document.getElementById('bdayMeta');
   try{
     // Cache-Busting: täglich neue JSON (Querystring = heutiges Datum)
     const now=new Date();
@@ -376,21 +387,35 @@ async function loadPromiGeburtstage(){
     const [jd,jm,jy]=jsonDatum.split('.').map(Number);
     const isToday=(jd===now.getDate()&&jm===(now.getMonth()+1)&&jy===now.getFullYear());
 
-    if(!isToday){
-      // GitHub Action noch nicht gelaufen → direkt Wikipedia abfragen
-      console.info('geburtstage.json ist veraltet ('+jsonDatum+') → Wikipedia-Fallback');
-      await fetchPromiWikipedia(el);
-      return;
-    }
-
-    renderPromis(data.geburtstage||[], el);
+    if(!isToday)throw new Error(`Datenstand ${jsonDatum||'unbekannt'} ist nicht aktuell`);
+    const list=Array.isArray(data.geburtstage)?data.geburtstage:[];
+    if(list.length!==4)throw new Error('Ungültige Anzahl Geburtstage');
+    renderPromis(list,el);
+    const generated=new Date(data.generiert);
+    const generatedText=Number.isNaN(generated.getTime())?'heute':generated.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
+    metaEl.textContent=`Wikipedia · Stand ${generatedText}`;
+    birthdayDateKey=cb;
 
   }catch(e){
-    console.warn('Promi-Geburtstage Fehler:',e,'→ Wikipedia-Fallback');
-    await fetchPromiWikipedia(el);
+    console.warn('Promi-Geburtstage Fehler:',e);
+    el.replaceChildren();
+    const message=document.createElement('div');
+    message.style.cssText='font-size:10px;color:var(--t3);';
+    message.textContent='Geburtstage werden aktualisiert.';
+    el.appendChild(message);
+    metaEl.replaceChildren();
+    const retry=document.createElement('button');
+    retry.type='button';retry.textContent='Erneut laden';
+    retry.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();loadPromiGeburtstage();});
+    metaEl.appendChild(retry);
   }
 }
 loadPromiGeburtstage();
+setInterval(()=>{
+  const current=new Date();
+  const key=`${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+  if(key!==birthdayDateKey)loadPromiGeburtstage();
+},60000);
 
 // ── HOROSKOP Zwillinge – via Cloudflare Worker, 1× täglich gecached ──
 async function loadHoroskop(){

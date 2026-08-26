@@ -1,42 +1,46 @@
 {
   "datum": "26.08.2026",
-  "generiert": "2026-08-26T02:16:59Z",
+  "generiert": "2026-08-26T21:09:41Z",
   "geburtstage": [
     {
-      "name": "Lars Stindl",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "German Association Football Player",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lars_Stindl.jpg/330px-Lars_Stindl.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lars_Stindl",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Lil Tecca",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Rapper/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Lil_Tecca_2019.png/330px-Lil_Tecca_2019.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lil_Tecca",
+      "nationalitaet": null,
+      "quelle": "Wikipedia"
     },
     {
-      "name": "Sebastian Bönig",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "German Footballer And Coach",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Sebastian_B%C3%B6nig_%2834176785226%29.jpg/330px-Sebastian_B%C3%B6nig_%2834176785226%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_B%C3%B6nig",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Patrick Williams",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/PatrickWilliamsFSU2019_%28cropped%29.jpg/330px-PatrickWilliamsFSU2019_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Williams_(basketball)",
+      "nationalitaet": null,
+      "quelle": "Wikipedia"
     },
     {
-      "name": "Torsten Schmitz",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "German Boxer",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Torsten_Schmitz_boxer_%28cropped%29.jpg/330px-Torsten_Schmitz_boxer_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Torsten_Schmitz",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Naz Reid",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Naz_Reid_%2851733687822%29_%28cropped%29.jpg/330px-Naz_Reid_%2851733687822%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Naz_Reid",
+      "nationalitaet": null,
+      "quelle": "Wikipedia"
     },
     {
-      "name": "Alain Peyrefitte",
-      "alter": 101,
-      "geburtsjahr": 1925,
-      "beruf": "French Scholar And Politician",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/79/Alain_Peyrefitte.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Alain_Peyrefitte",
-      "nationalitaet": "🇩🇪 Deutsch"
+      "name": "Charlie Gillespie",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/CharlieGillespie-byPhilipRomano.jpg/330px-CharlieGillespie-byPhilipRomano.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Charlie_Gillespie",
+      "nationalitaet": null,
+      "quelle": "Wikipedia"
     }
   ]
 }

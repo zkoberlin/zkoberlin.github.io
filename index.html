@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="assets/css/hub.css">
 <link rel="stylesheet" href="assets/css/auth.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/version.js?v=6.4.3" defer></script>
-<script src="assets/js/auth.js?v=6.4.3" defer></script>
+<script src="assets/js/version.js?v=6.5.0" defer></script>
+<script src="assets/js/auth.js?v=6.5.0" defer></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.4.3</div>
+      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.5.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -151,7 +151,7 @@
         </span>
       </div>
     </article>
-    <a class="mini date hcard" href="/kalenderpaul/" aria-label="KalenderPaul öffnen" style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
+    <section class="mini date hcard" role="link" tabindex="0" aria-label="KalenderPaul öffnen" data-calendar-card style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
       <!-- Apple Calendar Icon -->
       <div style="width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
         <svg width="44" height="44" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="border-radius:10px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);">
@@ -179,6 +179,7 @@
         <div id="bdayVal" style="display:flex;flex-direction:column;gap:5px;">
           <div style="font-size:10px;color:var(--t3);">Lädt…</div>
         </div>
+        <div class="bday-meta" id="bdayMeta"></div>
       </div>
       <!-- Horoskop Zwillinge – KI-generiert, 1× täglich gecached -->
       <div style="width:100%;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);" id="horoSection">
@@ -188,7 +189,7 @@
         </div>
         <div id="horoMeta" style="font-size:8.5px;color:var(--t3);margin-top:4px;display:none;"></div>
       </div>
-    </a>
+    </section>
     <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;min-width:0;overflow:hidden;" id="dayInfoCard">
       <div style="display:flex;flex-direction:column;gap:0;width:100%;height:100%;min-width:0;overflow:hidden;word-break:break-word;">
         <!-- Feiertag (only when applicable) -->
@@ -642,7 +643,7 @@
   <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
 </nav>
 
-<script src="assets/js/hub.js?v=6.4.3"></script>
+<script src="assets/js/hub.js?v=6.5.0"></script>
 
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>

@@ -34,7 +34,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | lokale Dateien unter `data/` | Namenstage, Geburtstage, Ferientermine, Union, Transfers, Sondertage | Lesen | öffentlich | teilweise API-Fallback; Browsercache | **Niedrig:** Schema und Aktualitätsdatum je Datei dokumentieren. |
 | Open-Meteo | Wetter und Vorhersage | Lesen | Berlin oder nach bewusster Freigabe auf zwei Dezimalstellen gerundete Standortkoordinaten | 15-Minuten-Sitzungscache, automatischer Refresh, veralteter Cache bei Ausfall | **Niedrig:** sichtbare Quellenangabe aktiv; Anbieterbedingungen regelmäßig prüfen. |
 | Nominatim / OpenStreetMap über eigenes Backend | Ortsname zum freigegebenen Wetterstandort | Lesen | auf zwei Dezimalstellen gerundete Koordinaten | 30-Tage-KV-Cache, Symbol-/Werteprüfung, sichtbare OSM-Namensnennung | **Niedrig:** Anbieterpolicy und Cachewirkung regelmäßig prüfen. |
-| Wikimedia/Wikipedia | Tagesereignisse und Geburtstage | Lesen | öffentliche Daten | lokale Geburtstagsdatei beziehungsweise Ausblenden | **Niedrig:** externe Texte vor DOM-Ausgabe sicher behandeln. |
+| Wikimedia/Wikipedia | Tagesereignisse und Geburtstags-Pipeline | Lesen | öffentliche Daten | validierte lokale Geburtstagsdatei; keine direkte Geburtstagsabfrage im Browser | **Niedrig:** externe Texte werden über sichere DOM-Methoden ausgegeben. |
 | Nameday APIs und AllOrigins | Namenstag-Fallback | Lesen | öffentliche Daten | mehrere Anbieter | **Mittel:** öffentlichen CORS-Proxy entfernen; lokale Datei als alleinige Quelle bevorzugen. |
 | OpenHolidays | Schulferien-Fallback | Lesen | öffentliche Daten | lokale Ferien-Datei | **Niedrig:** lokale Datei bevorzugen und Aktualität anzeigen. |
 | CoinGecko | Bitcoin-Kurs | Lesen | öffentliche Marktdaten | Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt anzeigen. |
@@ -66,7 +66,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
 | Pipeline | Anbieter | Secret-Namen | Ausgabe | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- |
-| Geburtstage | Wikidata/Wikipedia | keine | `data/geburtstage.json` | Schema-/Plausibilitätsprüfung ergänzen. |
+| Geburtstage | Wikipedia mit Lebendstatus-, Alters- und Schema-Prüfung | keine | `data/geburtstage.json` | letzte gültige Datei bleibt bei Pipelinefehler erhalten. |
 | Namenstage | Nameday API | keine | `data/namenstage.json` | Quelle und letztes erfolgreiches Update erfassen. |
 | Schulferien | OpenHolidays | keine | `data/schulferien_berlin.json` | letztes erfolgreiches Update erfassen. |
 | Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | Schlüssel am 26.08.2026 rotiert; RapidAPI-BASIC-Monatskontingent derzeit ausgeschöpft (HTTP 429). Bestehende JSON-Daten bleiben bis zum nächsten erfolgreichen Lauf erhalten. |
