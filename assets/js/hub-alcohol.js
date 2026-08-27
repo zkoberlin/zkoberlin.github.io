@@ -557,11 +557,12 @@ function atkRenderGraph(design, periodId) {
   }
   if (_atkCharts[design]) { try { _atkCharts[design].destroy(); } catch(e){} }
 
-  var isDark    = document.documentElement.getAttribute('data-theme') === 'dark';
-  var gridColor = isDark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
-  var tickColor = isDark ? '#8e8e93' : '#6e6e73';
-  var blue      = '#0071E3';
-  var gray      = isDark ? '#636366' : '#c7c7cc';
+  var selectedTheme = document.documentElement.getAttribute('data-theme');
+  var isDark    = selectedTheme === 'dark' || (selectedTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  var gridColor = isDark ? 'rgba(255,255,255,.14)' : 'rgba(0,0,0,.06)';
+  var tickColor = isDark ? '#c7c7cc' : '#6e6e73';
+  var blue      = isDark ? '#409cff' : '#0071E3';
+  var gray      = isDark ? '#98989d' : '#c7c7cc';
   var chartType = labels.length > 14 ? 'line' : 'bar';
 
   // Trendlinie berechnen (lineare Regression) für Monat, letzt_w, ytd, start
