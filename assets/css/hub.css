@@ -14,11 +14,12 @@
   --sh:0 4px 12px rgba(0,0,0,.05);
   --sh-h:0 6px 32px rgba(0,0,0,.13);
   --r:18px;--r2:13px;--r3:9px;
+  --text:var(--t);--surface2:var(--card2);--gold:#9a6700;--font-body:'Montserrat',sans-serif;
 }
 @media(prefers-color-scheme:dark){
   html:not([data-theme="light"]):root{
-    --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
-    --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
+    --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.13);
+    --t:#f5f5f7;--t2:#c7c7cc;--t3:#98989d;--gold:#f2c14e;
     --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
     --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
     --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
@@ -31,8 +32,8 @@
   }
 }
 html[data-theme="dark"]:root{
-  --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.07);
-  --t:#f5f5f7;--t2:#98989d;--t3:#48484a;
+  --bg:#0e0e10;--card:#1c1c1e;--card2:#2a2a2c;--border:rgba(255,255,255,.13);
+  --t:#f5f5f7;--t2:#c7c7cc;--t3:#98989d;--gold:#f2c14e;
   --blue:#409cff;--blue-l:rgba(64,156,255,.12);--blue-b:rgba(64,156,255,.30);
   --green:#30d158;--green-l:rgba(48,209,88,.12);--green-b:rgba(48,209,88,.30);
   --neon:rgba(48,209,88,.14);--neon-b:rgba(48,209,88,.38);
