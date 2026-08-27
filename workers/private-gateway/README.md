@@ -16,6 +16,7 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/feeds/hellomed`
 - `/feeds/kids`
 - `/snapshot`
+- `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/auth/me`
 
 Die Frontend-Migration ist seit dem 26.08.2026 abgeschlossen. Hub und KalenderPaul verwenden `paul-gateway-v2.paul-bendzko.workers.dev`. Die öffentliche `workers.dev`-Adresse des Backend-Workers ist deaktiviert; das Service Binding bleibt davon unberührt.

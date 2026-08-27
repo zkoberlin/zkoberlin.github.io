@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "paul-private-gateway",
+  "name": "paul-gateway-v2",
   "main": "src/index.js",
   "compatibility_date": "2026-08-26",
   "preview_urls": false,
@@ -8,10 +8,14 @@
     {
       "binding": "BACKEND",
       "service": "kalender-proxy"
+    },
+    {
+      "binding": "TRAILYX",
+      "service": "trailyx-api-dev"
     }
   ],
   "secrets": {
-    "required": ["ALLOWED_GOOGLE_EMAIL"]
+    "required": ["ALLOWED_GOOGLE_EMAIL", "HUB_PREVIEW_SECRET"]
   },
   "observability": {
     "enabled": true,

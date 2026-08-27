@@ -11,13 +11,48 @@ function env() {
         return new Response(JSON.stringify({ path: new URL(request.url).pathname }));
       },
     },
+    HUB_PREVIEW_SECRET: "integration-secret",
+    TRAILYX: {
+      async fetch(request) {
+        assert.equal(new URL(request.url).pathname, "/internal/hub-preview");
+        assert.equal(request.headers.get("X-Hub-Preview-Key"), "integration-secret");
+        assert.equal(request.headers.has("Authorization"), false);
+        return Response.json({
+          schemaVersion: 1,
+          year: 2026,
+          nextTrip: { destinationCity: "Wien", destinationCountry: "Österreich", startDate: "2026-09-10", endDate: "2026-09-14" },
+          lastTrip: null,
+          stats: { distanceKm: 880, trips: 1, countries: 1, cities: 1 },
+          generatedAt: "2026-08-27T12:00:00Z",
+        });
+      },
+    },
   };
 }
 
 test("blocks every private route without a token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot", "/trailyx-preview"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
+  }
+});
+
+test("returns the minimal TrailYX preview for the verified account", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({
+    email: "paul@example.test",
+    email_verified: true,
+    name: "Paul",
+  }));
+  try {
+    const response = await worker.fetch(new Request("https://gateway.test/trailyx-preview", {
+      headers: { Authorization: "Bearer valid-token" },
+    }), env());
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.deepEqual(data.stats, { distanceKm: 880, trips: 1, countries: 1, cities: 1 });
+  } finally {
+    globalThis.fetch = originalFetch;
   }
 });
 

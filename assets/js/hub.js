@@ -809,6 +809,55 @@ function fmtFerienRange(start,end){
   return`${s} – ${e} · ${dur} Tage`;
 }
 loadSchulferien();
+
+// ── TRAILYX-VORSCHAU ──
+const TRAILYX_PREVIEW_API='https://paul-gateway-v2.paul-bendzko.workers.dev/trailyx-preview';
+function formatTravelDateRange(start,end){
+  const options={day:'2-digit',month:'2-digit',year:'numeric'};
+  const from=new Date(`${start}T12:00:00`).toLocaleDateString('de-DE',options);
+  const to=new Date(`${end}T12:00:00`).toLocaleDateString('de-DE',options);
+  return start===end?from:`${from} – ${to}`;
+}
+function validTravelPreview(data){
+  const tripValid=trip=>trip===null||(trip&&typeof trip.destinationCity==='string'&&typeof trip.destinationCountry==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(trip.startDate)&&/^\d{4}-\d{2}-\d{2}$/.test(trip.endDate));
+  const stats=data?.stats;
+  return data?.schemaVersion===1&&Number.isInteger(data?.year)&&tripValid(data.nextTrip)&&tripValid(data.lastTrip)&&stats&&
+    [stats.distanceKm,stats.trips,stats.countries,stats.cities].every(value=>Number.isInteger(value)&&value>=0)&&!Number.isNaN(Date.parse(data.generatedAt));
+}
+function renderTravelTrip(prefix,trip,emptyText){
+  document.getElementById(`${prefix}Name`).textContent=trip?`${trip.destinationCity} · ${trip.destinationCountry}`:emptyText;
+  document.getElementById(`${prefix}Date`).textContent=trip?formatTravelDateRange(trip.startDate,trip.endDate):'–';
+}
+async function loadTrailyxPreview(){
+  const status=document.getElementById('travelStatus');
+  if(!window.HubAuth?.isSignedIn()){
+    status.textContent='Anmeldung erforderlich';
+    return;
+  }
+  status.textContent='Wird geladen';
+  try{
+    const response=await window.HubAuth.authorizedFetch(TRAILYX_PREVIEW_API,{signal:AbortSignal.timeout(6000)});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();
+    if(!validTravelPreview(data))throw new Error('Ungültiges Schema');
+    renderTravelTrip('travelNext',data.nextTrip,'Keine Reise geplant');
+    renderTravelTrip('travelLast',data.lastTrip,'Noch keine abgeschlossene Reise');
+    document.getElementById('travelKm').textContent=new Intl.NumberFormat('de-DE').format(data.stats.distanceKm);
+    document.getElementById('travelTrips').textContent=data.stats.trips;
+    document.getElementById('travelCountries').textContent=data.stats.countries;
+    document.getElementById('travelCities').textContent=data.stats.cities;
+    document.getElementById('travelUpdated').textContent=`${data.year} · Stand ${new Date(data.generatedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}`;
+    status.textContent='Aktuell';
+  }catch(error){
+    console.warn('TrailYX-Vorschau:',error);
+    status.textContent='Nicht verfügbar';
+    renderTravelTrip('travelNext',null,'TrailYX öffnen');
+    renderTravelTrip('travelLast',null,'Daten gerade nicht verfügbar');
+  }
+}
+window.addEventListener('hub-auth-change',loadTrailyxPreview);
+document.addEventListener('DOMContentLoaded',loadTrailyxPreview);
+
 const ic={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',80:'🌦️',81:'🌧️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
 const dc={0:'Klar',1:'Überwiegend klar',2:'Teils bewölkt',3:'Bedeckt',45:'Nebel',48:'Nebel',51:'Nieselregen',53:'Nieselregen',55:'Starker Nieselregen',61:'Leichter Regen',63:'Regen',65:'Starker Regen',71:'Leichter Schnee',73:'Schnee',75:'Starker Schnee',80:'Regenschauer',81:'Starke Schauer',82:'Gewitter',95:'Gewitter',96:'Gewitter',99:'Schweres Gewitter'};
 

@@ -12,7 +12,9 @@ Das Projekt ist eine statische GitHub-Pages-Website ohne Build-Schritt. Jede Sei
 | `/finanzenpaul/` | Persönliche Finanzübersicht |
 | `/kalenderpaul/` | Kalenderübersicht |
 
-Eine neue Reiseseite ist vorgesehen, aber noch nicht Bestandteil dieses Repositories. Die entsprechende Fläche auf dem Hub ist bis dahin nicht verlinkt.
+Die Reisefläche des Hubs verlinkt auf die eigenständige Anwendung TrailYX. Eine
+kleine geschützte Vorschau wird nach Hub-Anmeldung über den privaten Gateway und
+ein Service Binding geladen; TrailYX selbst bleibt ein separates Repository.
 
 ## Verzeichnisse
 

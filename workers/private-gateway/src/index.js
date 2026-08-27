@@ -9,6 +9,7 @@ const PRIVATE_PATHS = new Set([
   "/feeds/hellomed",
   "/feeds/kids",
   "/snapshot",
+  "/trailyx-preview",
 ]);
 
 const PUBLIC_PATHS = new Set(["/horoscope", "/market/quote", "/market/metric", "/market/yahoo", "/location/reverse"]);
@@ -31,6 +32,19 @@ function json(data, status, origin) {
 
 function bearerToken(request) {
   return (request.headers.get("Authorization") || "").match(/^Bearer\s+(.+)$/i)?.[1]?.trim() || "";
+}
+
+function validTrailyxPreview(data) {
+  const validTrip = (trip) => trip === null || (
+    trip && typeof trip.destinationCity === "string" && typeof trip.destinationCountry === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(trip.startDate) && /^\d{4}-\d{2}-\d{2}$/.test(trip.endDate)
+  );
+  const stats = data?.stats;
+  return data?.schemaVersion === 1 && Number.isInteger(data?.year) &&
+    validTrip(data?.nextTrip) && validTrip(data?.lastTrip) &&
+    stats && [stats.distanceKm, stats.trips, stats.countries, stats.cities]
+      .every((value) => Number.isInteger(value) && value >= 0) &&
+    !Number.isNaN(Date.parse(data?.generatedAt));
 }
 
 async function verifyGoogleUser(request, env) {
@@ -74,6 +88,22 @@ export default {
       if (!user) return json({ error: "Unauthorized" }, 401, origin);
     } else if (!PUBLIC_PATHS.has(url.pathname)) {
       return json({ error: "Not found" }, 404, origin);
+    }
+
+    if (url.pathname === "/trailyx-preview") {
+      if (request.method !== "GET") return json({ error: "Method not allowed" }, 405, origin);
+      try {
+        const response = await env.TRAILYX.fetch(new Request("https://trailyx.internal/internal/hub-preview", {
+          headers: { "X-Hub-Preview-Key": env.HUB_PREVIEW_SECRET },
+        }));
+        if (!response.ok) return json({ error: "TrailYX preview unavailable" }, 502, origin);
+        const data = await response.json();
+        return validTrailyxPreview(data)
+          ? json(data, 200, origin)
+          : json({ error: "TrailYX preview unavailable" }, 502, origin);
+      } catch {
+        return json({ error: "TrailYX preview unavailable" }, 502, origin);
+      }
     }
 
     return env.BACKEND.fetch(request);
