@@ -22,7 +22,7 @@ ein Service Binding geladen; TrailYX selbst bleibt ein separates Repository.
 - `data/` enthält öffentlich ausgelieferte JSON-Daten für den Hub.
 - `scripts/` erzeugt oder aktualisiert diese JSON-Dateien.
 - `.github/workflows/` führt ausgewählte Aktualisierungsskripte automatisch aus.
-- `workers/private-gateway/` enthält den einzigen öffentlichen Cloudflare-Einstiegspunkt mit Google-Authentifizierung.
+- `workers/private-gateway/` enthält den einzigen öffentlichen Cloudflare-Einstiegspunkt mit Google-Authentifizierung und verwaltet die privaten Alkohol-Tracker-Daten über ein D1-Binding.
 - `workers/kalender-proxy/` enthält das nicht öffentlich erreichbare Backend für Kalenderquellen, Snapshots, Horoskop- und Marktdaten.
 - `docs/` enthält die technische Projektdokumentation.
 
@@ -34,7 +34,7 @@ Der Hub ist bereits nach Verantwortlichkeiten aufgeteilt:
 
 - `assets/css/hub.css` enthält das Hub-Design.
 - `assets/js/hub.js` enthält die allgemeine Hub-Logik.
-- `assets/js/hub-alcohol.js` enthält den Alkohol-Tracker und seine Diagrammlogik.
+- `assets/js/hub-alcohol.js` enthält den Alkohol-Tracker und seine Diagrammlogik; Daten werden nur im Arbeitsspeicher gehalten und authentifiziert aus D1 geladen.
 - Das kleine Theme-Skript bleibt im Dokumentkopf, damit das gespeicherte Farbschema vor dem ersten Rendering angewendet wird.
 
 Die Finanzseite ist ebenfalls aufgeteilt:

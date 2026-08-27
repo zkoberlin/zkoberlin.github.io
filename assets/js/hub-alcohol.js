@@ -6,18 +6,18 @@ var _atkCurrentPeriod = {a:'today'};
 var TAGE   = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 var MONATE = ['Jan','Feb','Mrz','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 var ATK_LIMIT  = 8;
-var ATK_SCRIPT = 'https://script.google.com/macros/s/AKfycbxwLXDcZPeW2682xSo0yEczAJ8ipANpbtrKXWmlV8Z5a5pA5i2DCITG7IYC407BrP_kvw/exec';
+var ATK_API = 'https://paul-gateway-v2.paul-bendzko.workers.dev/alcohol';
 var _atkSyncing = false;
 var _atkSyncTimer = null;
+var _atkData = {};
+var _atkRecords = {};
 
-/* ── LOCAL CACHE (offline-fähig) ── */
+/* ── NUR SITZUNGSSPEICHER: sensible Historie bleibt nicht im Browser ── */
 function atkLoadData() {
-  try { return JSON.parse(localStorage.getItem('atkData_v1') || '{}'); }
-  catch(e) { return {}; }
+  return _atkData;
 }
 function atkSaveData(d) {
-  try { localStorage.setItem('atkData_v1', JSON.stringify(d)); }
-  catch(e) {}
+  _atkData = d;
 }
 
 /* ── SHEET HELPERS ── */
@@ -30,145 +30,76 @@ function atkSetSyncStatus(txt, color) {
   if (el) { el.textContent = txt; el.style.color = color || 'var(--t3)'; }
 }
 
-/* ── PULL FROM SHEET → rebuild localStorage ── */
-function atkNormalizeDate(raw) {
-  // raw kann sein: "2026-05-20", "20.05.2026", Date-ähnlicher String
-  if (!raw) return '';
-  var s = String(raw).trim();
-  // ISO format yyyy-MM-dd
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
-  // German format dd.MM.yyyy
-  if (/^\d{2}\.\d{2}\.\d{4}/.test(s)) {
-    var p = s.split('.');
-    return p[2].slice(0,4) + '-' + p[1] + '-' + p[0];
+/* ── PULL AUS GESCHÜTZTEM CLOUDFLARE-GATEWAY ── */
+function atkPullCloud(callback) {
+  if (!window.HubAuth || !window.HubAuth.isSignedIn()) {
+    atkSaveData({});
+    atkSetSyncStatus('Anmeldung erforderlich', 'var(--t3)');
+    if (callback) callback();
+    return;
   }
-  // Fallback: parse as date
-  try {
-    var d = new Date(s);
-    if (!isNaN(d.getTime())) return atkDateKey(d);
-  } catch(e) {}
-  return '';
-}
-
-function atkNormalizeTime(raw) {
-  if (!raw) return '00:00';
-  var s = String(raw).trim();
-  // HH:MM format already
-  if (/^\d{2}:\d{2}/.test(s)) return s.slice(0,5);
-  // Might be a decimal from Sheets time cell (e.g. 0.604166 = 14:30)
-  var n = parseFloat(s);
-  if (!isNaN(n) && n >= 0 && n < 1) {
-    var totalMin = Math.round(n * 1440);
-    var h = Math.floor(totalMin / 60);
-    var m = totalMin % 60;
-    return ('0'+h).slice(-2) + ':' + ('0'+m).slice(-2);
-  }
-  return s.slice(0,5) || '00:00';
-}
-
-function atkPullSheet(callback) {
   atkSetSyncStatus('↻ Sync…', 'var(--blue)');
-  fetch(ATK_SCRIPT)
+  window.HubAuth.authorizedFetch(ATK_API, { signal: AbortSignal.timeout(7000) })
     .then(function(r){ return r.json(); })
     .then(function(json) {
-      if (!json.ok) { atkSetSyncStatus('⚠ Sync-Fehler', '#e24b4a'); return; }
+      if (json.schemaVersion !== 1 || !Array.isArray(json.entries)) throw new Error('Ungültiges Schema');
       var data = {};
-      var validRows = 0;
-      var skipped = 0;
-      for (var i = 0; i < json.rows.length; i++) {
-        var row = json.rows[i];
-        var dk = atkNormalizeDate(row.date);
-        if (!dk) { skipped++; console.warn('atk: kein Datum für Zeile', i, row); continue; }
+      for (var i = 0; i < json.entries.length; i++) {
+        var row = json.entries[i];
+        var dk = String(row.date || '');
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(dk)) throw new Error('Ungültiges Datum');
         if (!data[dk]) data[dk] = { entries: [] };
         data[dk].entries.push({
-          id:    row.id    || '',
-          units: parseFloat(row.units) || 0,
+          entryId: row.entryId || '',
+          id:    row.drinkCode || '',
+          units: Number(row.units) || 0,
           label: row.label || '',
-          time:  atkNormalizeTime(row.time),
-          ts:    row.ts   || 0
+          time:  row.time || '00:00'
         });
-        validRows++;
       }
-
-      // Sicherheit: nur speichern wenn Sheet echte Daten hat
-      // Nie mit weniger Einträgen überschreiben als lokal vorhanden
-      var localData = atkLoadData();
-      var localCount = Object.keys(localData).reduce(function(s,k){ return s + (localData[k].entries ? localData[k].entries.length : 0); }, 0);
-      var sheetCount = validRows;
-
-      if (sheetCount === 0 && localCount > 0) {
-        // Sheet leer / alle Zeilen ungültig → local behalten, Fehler loggen
-        console.warn('atk: Sheet hat 0 gültige Zeilen, ' + skipped + ' übersprungen. Lokale Daten bleiben erhalten.');
-        atkSetSyncStatus('⚠ Sheet leer – lokal behalten', '#f59e0b');
-        setTimeout(function(){ atkSetSyncStatus(''); }, 4000);
-        if (callback) callback();
-        return;
-      }
-
       atkSaveData(data);
-      var today = atkToday();
-      var todayU = data[today] ? data[today].entries.reduce(function(s,e){ return s+e.units; },0) : 0;
-      atkSetSyncStatus('✓ ' + sheetCount + ' Einträge · heute ' + atkFmt(todayU) + ' g', '#3a9e5f');
+      atkSetSyncStatus('✓ ' + json.entries.length + ' Einträge synchronisiert', '#3a9e5f');
       setTimeout(function(){ atkSetSyncStatus(''); }, 3000);
       if (callback) callback();
     })
     .catch(function(err) {
-      console.warn('atk pull error:', err);
-      atkSetSyncStatus('Offline', 'var(--t3)');
+      console.warn('atk cloud pull:', err);
+      atkSetSyncStatus('Nicht verfügbar', '#e24b4a');
       if (callback) callback();
     });
 }
 
-/* ── PUSH ONE ENTRY TO SHEET ── */
-function atkPushEntry(entry, dateKey) {
-  var body = {
-    action: 'log',
-    date:   dateKey,
-    time:   entry.time,
-    id:     entry.id,
-    label:  entry.label,
-    units:  entry.units,
-    ts:     entry.ts
-  };
-  fetch(ATK_SCRIPT, {
+/* ── EINTRAG SERVERSEITIG SPEICHERN ── */
+function atkPushEntry(drinkCode) {
+  return window.HubAuth.authorizedFetch(ATK_API, {
     method: 'POST',
-    body: JSON.stringify(body)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ drinkCode: drinkCode })
   })
-  .then(function(r){ return r.json(); })
-  .then(function(json){
-    if (json.ok) {
-      atkSetSyncStatus('✓ Gespeichert', '#3a9e5f');
-      setTimeout(function(){ atkSetSyncStatus(''); }, 2000);
-    } else {
-      atkSetSyncStatus('⚠ Sheet-Fehler', '#e24b4a');
-    }
-  })
-  .catch(function(){
-    atkSetSyncStatus('Offline – lokal gespeichert', 'var(--t3)');
-  });
+    .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
 }
 
-/* ── PUSH DELETE TO SHEET ── */
-function atkPushDelete(dateKey, ts) {
-  fetch(ATK_SCRIPT, {
-    method: 'POST',
-    body: JSON.stringify({ action: 'delete', date: dateKey, ts: ts })
-  }).catch(function(){});
+function atkPushDelete(entryId) {
+  return window.HubAuth.authorizedFetch(ATK_API, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ entryId: entryId })
+  });
 }
 
 /* ── LOG ENTRY ── */
 function atkLog(id, units, label, design) {
-  var data = atkLoadData();
-  var tk   = atkToday();
-  if (!data[tk]) data[tk] = { entries: [] };
-  var now  = new Date();
-  var hm   = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
-  var ts   = Date.now();
-  var entry = { id: id, units: units, label: label, time: hm, ts: ts };
-  data[tk].entries.push(entry);
-  atkSaveData(data);
-  atkRenderAll();
-  atkPushEntry(entry, tk);
+  if (!window.HubAuth || !window.HubAuth.isSignedIn()) { atkSetSyncStatus('Bitte zuerst anmelden', '#e24b4a'); return; }
+  atkSetSyncStatus('↻ Speichern…', 'var(--blue)');
+  atkPushEntry(id).then(function(json){
+    var entry = json.entry;
+    var data = atkLoadData();
+    if (!data[entry.date]) data[entry.date] = { entries: [] };
+    data[entry.date].entries.push({ entryId:entry.entryId, id:entry.drinkCode, units:entry.units, label:entry.label, time:entry.time });
+    atkSaveData(data);
+    atkRenderAll();
+    atkSetSyncStatus('✓ Gespeichert', '#3a9e5f');
+  }).catch(function(){ atkSetSyncStatus('⚠ Speichern fehlgeschlagen', '#e24b4a'); });
 }
 
 function atkUndo(idx) {
@@ -176,10 +107,14 @@ function atkUndo(idx) {
   var tk   = atkToday();
   if (data[tk] && data[tk].entries && data[tk].entries[idx] != null) {
     var entry = data[tk].entries[idx];
-    data[tk].entries.splice(idx, 1);
-    atkSaveData(data);
-    atkRenderAll();
-    if (entry.ts) atkPushDelete(tk, entry.ts);
+    atkSetSyncStatus('↻ Löschen…', 'var(--blue)');
+    atkPushDelete(entry.entryId).then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      data[tk].entries.splice(idx, 1);
+      atkSaveData(data);
+      atkRenderAll();
+      atkSetSyncStatus('✓ Gelöscht', '#3a9e5f');
+    }).catch(function(){ atkSetSyncStatus('⚠ Löschen fehlgeschlagen', '#e24b4a'); });
   }
 }
 
@@ -210,11 +145,10 @@ function atkWeekKeys(offset) {
    STREAK ENGINE
 ══════════════════════════════════════════ */
 function atkLoadRecords() {
-  try { return JSON.parse(localStorage.getItem('atkRecords_v1') || '{}'); }
-  catch(e) { return {}; }
+  return _atkRecords;
 }
 function atkSaveRecords(r) {
-  try { localStorage.setItem('atkRecords_v1', JSON.stringify(r)); } catch(e) {}
+  _atkRecords = r;
 }
 
 function atkComputeStreaks(data) {
@@ -435,7 +369,7 @@ function atkRenderAll() {
         html += '<div class="atk-log-row">' +
           '<div class="atk-log-left"><div class="atk-log-dot"></div>' + e.label + '</div>' +
           '<div style="display:flex;align-items:center;gap:8px">' +
-          '<span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' g</span>' +
+          '<span style="color:var(--t3)">' + e.time + ' · ' + atkFmt(e.units) + ' Einh.</span>' +
           '<span class="atk-log-undo" onclick="atkUndo(' + realIdx + ')">↩</span>' +
           '</div></div>';
       }
@@ -593,11 +527,11 @@ function atkRenderGraph(design, periodId) {
     var curSum  = parseFloat(curVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
     var prevSum = parseFloat(prevVals.reduce(function(s,v){ return s+v; }, 0).toFixed(1));
     var diff    = parseFloat((curSum - prevSum).toFixed(1));
-    var html    = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' g</span>';
+    var html    = '<span><span class="atk-cmp-dot"></span> Aktuell: ' + atkFmt(curSum) + ' Einh.</span>';
     if (prevSum > 0) {
-      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' g</span>';
+      html += '<span><span class="atk-cmp-dot prev"></span> Vorperiode: ' + atkFmt(prevSum) + ' Einh.</span>';
       html += '<span style="font-weight:700;color:' + (diff <= 0 ? '#3a9e5f' : '#e24b4a') + '">' +
-        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' g</span>';
+        (diff === 0 ? '±0' : (diff > 0 ? '+' : '') + atkFmt(diff)) + ' Einh.</span>';
     }
     if (showTrend && trendVals.length > 1) {
       var tSlope = trendVals[trendVals.length-1] - trendVals[0];
@@ -686,7 +620,7 @@ function atkRenderGraph(design, periodId) {
       maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' g'; } } }
+        tooltip: { callbacks: { label: function(c){ return atkFmt(c.parsed.y || 0) + ' Einh.'; } } }
       },
       scales: {
         x: {
@@ -695,7 +629,7 @@ function atkRenderGraph(design, periodId) {
           border: { display: false }
         },
         y: {
-          ticks:  { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v) + ' g'; } },
+          ticks:  { color: tickColor, font: { size: 10, family: 'Montserrat' }, callback: function(v){ return atkFmt(v) + ' Einh.'; } },
           grid:   { color: gridColor },
           border: { display: false },
           min: 0
@@ -707,20 +641,24 @@ function atkRenderGraph(design, periodId) {
 
 /* ── INIT ── */
 function atkInit() {
-  // 1. Render sofort aus lokalem Cache
+  localStorage.removeItem('atkData_v1');
+  localStorage.removeItem('atkRecords_v1');
   atkRenderAll();
   // Desktop: render graph inline immediately
   if (window.innerWidth > 600) {
     atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
   }
-  // 2. Sheet im Hintergrund pullen und neu rendern
-  atkPullSheet(function() {
+  atkPullCloud(function() {
     atkRenderAll();
     if (window.innerWidth > 600) {
       atkRenderGraph('a', _atkCurrentPeriod['a'] || 'today');
     }
   });
 }
+
+window.addEventListener('hub-auth-change', function(){
+  atkPullCloud(function(){ atkRenderAll(); });
+});
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', atkInit);

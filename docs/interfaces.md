@@ -23,6 +23,7 @@ Der Worker `paul-gateway-v2` ist seit dem 26.08.2026 der einzige öffentliche Ei
 | `paul-gateway-v2 /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | Google-Authentifizierung; KV, Größen- und JSON-Prüfung; internes Service Binding | **Mittel:** Rate Limit und Konfliktverhalten ergänzen beziehungsweise testen. |
 | `paul-gateway-v2 /auth/me` | Hub und KalenderPaul | Lesen | Google-Kontoprofil zur Sitzungsprüfung | Google-Tokenprüfung und E-Mail-Allowlist | **Niedrig:** abgelaufene und widerrufene Tokens gezielt testen. |
 | `paul-gateway-v2 /trailyx-preview` | Hub | Lesen | nächste und letzte Reise mit Zeitraum, Gesamtdistanz und verwendeten Verkehrsmitteln sowie Jahreswerte | Google-Authentifizierung; minimiertes Schema v2; internes Service Binding und separates Integrationssecret; keine Notizen, Fotos, Etappendetails oder Reiseliste | **Niedrig:** unauthentifizierten Zugriff und Schema bei Releases erneut prüfen. |
+| `paul-gateway-v2 /alcohol` | Hub | Lesen, Schreiben und Löschen | persönliche Konsumdaten in Cloudflare D1 | Google-Authentifizierung; serverseitiger Getränkekatalog; D1 nur als Worker-Binding; kein persistenter Browsercache; fehlende Tage gelten als alkoholfrei | **Niedrig:** Rate Limit und regelmäßige D1-Sicherung ergänzen. |
 | `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret; Berliner Tagesdatum; validierter Tagescache; letzter gültiger Text und fünfminütiger Fehler-Backoff | **Niedrig:** öffentliche Nutzung und Anbieterlimits beobachten. |
 | `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret; Finnhub und Yahoo nur serverseitig; Symbol-Allowlist; KV-Cache | **Niedrig:** Anbieterlimits und veraltete Cache-Antworten weiter beobachten. |
 
@@ -43,7 +44,6 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Yahoo Finance über eigenes Backend | Kurs-Fallback und europäische Listings | Lesen | serverseitiger Abruf ausschließlich erlaubter Depot-Symbole | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Verfügbarkeit und Antwortschema regelmäßig testen. |
 | EZB | Wechselkurse | Lesen | öffentliche Marktdaten | Standardwerte / Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt dokumentieren. |
 | Google Sheet für Familienrhythmus | Hub-Anzeige | Lesen | Tabellen-ID im Browser | keine belastbare Zugriffsschicht | **Hoch:** über authentifizierten Worker ausliefern. |
-| Google Apps Script Alkohol-Tracker | Datensynchronisation | Lesen, Schreiben, Löschen | persönliche Gesundheits-/Konsumdaten; öffentliche Script-URL | `localStorage` als Offlinekopie | **Kritisch:** authentifizieren, Eingaben serverseitig validieren und hinter Worker verlagern. |
 | Google Favicons, Wikimedia, FotMob, Transfermarkt-CDN | Logos und Bilder | Lesen | öffentliche Bilddaten | Emoji/Platzhalter | **Mittel:** Remote-Hosts reduzieren oder Assets lokal spiegeln. |
 | Google Fonts und cdnjs/Chart.js | Schriftarten und Laufzeitbibliothek | Lesen | Drittanbieterressourcen | keine lokale Kopie | **Mittel:** selbst hosten oder Integrität und CSP sauber konfigurieren. |
 
@@ -87,7 +87,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
 ## Empfohlene Reihenfolge
 
-1. Alkohol-Tracker hinter eine geschützte Serverschnittstelle verlagern.
+1. Finanzdaten-Zugang hinter eine geschützte Serverschnittstelle verlagern.
 2. Finanzzugänge rotieren und serverseitig kapseln.
 3. Snapshot-Zugriff mit Rate Limit und sauberem Konfliktverhalten härten.
 4. XSS-Flächen und externe Ressourcen mit CSP härten.

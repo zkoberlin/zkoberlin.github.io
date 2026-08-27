@@ -14,6 +14,13 @@
       "service": "trailyx-api-dev"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "HUB_DB",
+      "database_name": "paul-hub-private",
+      "database_id": "5d95f9d2-f677-4804-8c99-f730c69b36b6"
+    }
+  ],
   "secrets": {
     "required": ["ALLOWED_GOOGLE_EMAIL", "HUB_PREVIEW_SECRET"]
   },
