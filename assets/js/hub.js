@@ -819,14 +819,20 @@ function formatTravelDateRange(start,end){
   return start===end?from:`${from} – ${to}`;
 }
 function validTravelPreview(data){
-  const tripValid=trip=>trip===null||(trip&&typeof trip.destinationCity==='string'&&typeof trip.destinationCountry==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(trip.startDate)&&/^\d{4}-\d{2}-\d{2}$/.test(trip.endDate));
+  const tripValid=trip=>trip===null||(trip&&typeof trip.destinationCity==='string'&&typeof trip.destinationCountry==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(trip.startDate)&&/^\d{4}-\d{2}-\d{2}$/.test(trip.endDate)&&Number.isInteger(trip.distanceKm)&&trip.distanceKm>=0&&Array.isArray(trip.transportModes)&&trip.transportModes.every(mode=>typeof mode==='string'));
   const stats=data?.stats;
-  return data?.schemaVersion===1&&Number.isInteger(data?.year)&&tripValid(data.nextTrip)&&tripValid(data.lastTrip)&&stats&&
+  return data?.schemaVersion===2&&Number.isInteger(data?.year)&&tripValid(data.nextTrip)&&tripValid(data.lastTrip)&&stats&&
     [stats.distanceKm,stats.trips,stats.countries,stats.cities].every(value=>Number.isInteger(value)&&value>=0)&&!Number.isNaN(Date.parse(data.generatedAt));
+}
+const travelModeNames={zug:'Zug',bahn:'Zug',train:'Zug',flugzeug:'Flugzeug',plane:'Flugzeug',flight:'Flugzeug',auto:'Auto',car:'Auto',bus:'Bus',fahrrad:'Fahrrad',bike:'Fahrrad',zu_fuss:'Zu Fuß',walk:'Zu Fuß',schiff:'Schiff',faehre:'Fähre',ferry:'Fähre',public_transport:'ÖPNV',oepnv:'ÖPNV',motorrad:'Motorrad',motorcycle:'Motorrad'};
+function formatTravelMode(mode){
+  const key=String(mode).trim().toLocaleLowerCase('de-DE').replace(/[ -]/g,'_').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ä/g,'ae').replace(/ß/g,'ss');
+  return travelModeNames[key]||String(mode).trim();
 }
 function renderTravelTrip(prefix,trip,emptyText){
   document.getElementById(`${prefix}Name`).textContent=trip?`${trip.destinationCity} · ${trip.destinationCountry}`:emptyText;
   document.getElementById(`${prefix}Date`).textContent=trip?formatTravelDateRange(trip.startDate,trip.endDate):'–';
+  document.getElementById(`${prefix}Meta`).textContent=trip?`${new Intl.NumberFormat('de-DE').format(trip.distanceKm)} km · ${trip.transportModes.map(formatTravelMode).join(' · ')||'Verkehrsmittel offen'}`:'–';
 }
 async function loadTrailyxPreview(){
   const status=document.getElementById('travelStatus');

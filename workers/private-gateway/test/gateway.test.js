@@ -18,9 +18,9 @@ function env() {
         assert.equal(request.headers.get("X-Hub-Preview-Key"), "integration-secret");
         assert.equal(request.headers.has("Authorization"), false);
         return Response.json({
-          schemaVersion: 1,
+          schemaVersion: 2,
           year: 2026,
-          nextTrip: { destinationCity: "Wien", destinationCountry: "Österreich", startDate: "2026-09-10", endDate: "2026-09-14" },
+          nextTrip: { destinationCity: "Wien", destinationCountry: "Österreich", startDate: "2026-09-10", endDate: "2026-09-14", distanceKm: 692, transportModes: ["Zug", "ÖPNV"] },
           lastTrip: null,
           stats: { distanceKm: 880, trips: 1, countries: 1, cities: 1 },
           generatedAt: "2026-08-27T12:00:00Z",

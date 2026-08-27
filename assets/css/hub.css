@@ -411,6 +411,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .travel-trip-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);}
 .travel-trip-name{font-size:12px;font-weight:700;color:var(--t);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .travel-trip-date{font-size:9px;color:var(--t2);margin-top:2px;font-variant-numeric:tabular-nums;}
+.travel-trip-meta{font-size:8.5px;color:var(--gold);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;}
 .travel-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 15px 14px;}
 .travel-stat{background:var(--card2);border-radius:var(--r3);padding:8px 6px;text-align:center;}
 .travel-stat-ico{height:16px;margin-bottom:3px;color:#e8a23d;display:flex;align-items:center;justify-content:center;}

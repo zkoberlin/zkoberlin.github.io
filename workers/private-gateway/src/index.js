@@ -37,10 +37,15 @@ function bearerToken(request) {
 function validTrailyxPreview(data) {
   const validTrip = (trip) => trip === null || (
     trip && typeof trip.destinationCity === "string" && typeof trip.destinationCountry === "string" &&
-    /^\d{4}-\d{2}-\d{2}$/.test(trip.startDate) && /^\d{4}-\d{2}-\d{2}$/.test(trip.endDate)
+    /^\d{4}-\d{2}-\d{2}$/.test(trip.startDate) && /^\d{4}-\d{2}-\d{2}$/.test(trip.endDate) &&
+    (data?.schemaVersion === 1 || (
+      Number.isInteger(trip.distanceKm) && trip.distanceKm >= 0 &&
+      Array.isArray(trip.transportModes) && trip.transportModes.length <= 8 &&
+      trip.transportModes.every((mode) => typeof mode === "string" && mode.length > 0 && mode.length <= 40)
+    ))
   );
   const stats = data?.stats;
-  return data?.schemaVersion === 1 && Number.isInteger(data?.year) &&
+  return (data?.schemaVersion === 1 || data?.schemaVersion === 2) && Number.isInteger(data?.year) &&
     validTrip(data?.nextTrip) && validTrip(data?.lastTrip) &&
     stats && [stats.distanceKm, stats.trips, stats.countries, stats.cities]
       .every((value) => Number.isInteger(value) && value >= 0) &&
