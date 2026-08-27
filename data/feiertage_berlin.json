@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "region": "DE-BE",
+  "jahre": [
+    2026,
+    2027
+  ],
+  "stand": "2026-08-27T12:44:13Z",
+  "quelle": {
+    "name": "OpenHolidays API",
+    "url": "https://www.openholidaysapi.org/en/"
+  },
+  "feiertage": [
+    {
+      "datum": "2026-01-01",
+      "name": "Neujahr",
+      "bundesweit": true,
+      "quelleId": "9ac6fd8b-aec4-41f0-916b-f03af58ecdab"
+    },
+    {
+      "datum": "2026-03-08",
+      "name": "Internationaler Frauentag",
+      "bundesweit": false,
+      "quelleId": "f66c8c81-2ea3-43b4-8398-f3dc4ef0f62a"
+    },
+    {
+      "datum": "2026-04-03",
+      "name": "Karfreitag",
+      "bundesweit": true,
+      "quelleId": "f80fd9dc-41b4-4203-8fea-2cf36d365fbb"
+    },
+    {
+      "datum": "2026-04-06",
+      "name": "Ostermontag",
+      "bundesweit": true,
+      "quelleId": "8d8ad831-8d60-429f-ad46-7f842c9fe2d9"
+    },
+    {
+      "datum": "2026-05-01",
+      "name": "Tag der Arbeit",
+      "bundesweit": true,
+      "quelleId": "6f661249-94cb-4a54-a063-20dde86ebde6"
+    },
+    {
+      "datum": "2026-05-14",
+      "name": "Christi Himmelfahrt",
+      "bundesweit": true,
+      "quelleId": "0905ed2a-46a7-4731-87e2-a8c53c42b0e2"
+    },
+    {
+      "datum": "2026-05-25",
+      "name": "Pfingstmontag",
+      "bundesweit": true,
+      "quelleId": "ce6dcd62-b512-4075-be98-73ffc3dee4db"
+    },
+    {
+      "datum": "2026-10-03",
+      "name": "Tag der Deutschen Einheit",
+      "bundesweit": true,
+      "quelleId": "555eaa64-b8f6-44ce-850b-6af0d75555e9"
+    },
+    {
+      "datum": "2026-12-25",
+      "name": "1. Weihnachtsfeiertag",
+      "bundesweit": true,
+      "quelleId": "b37c8536-925e-455c-9e61-8e2b984a74d1"
+    },
+    {
+      "datum": "2026-12-26",
+      "name": "2. Weihnachtsfeiertag",
+      "bundesweit": true,
+      "quelleId": "fafc28cf-c8fc-4290-97b0-99904f920d4f"
+    },
+    {
+      "datum": "2027-01-01",
+      "name": "Neujahr",
+      "bundesweit": true,
+      "quelleId": "a9951b88-fbfa-4634-8b80-39c60abb2a0c"
+    },
+    {
+      "datum": "2027-03-08",
+      "name": "Internationaler Frauentag",
+      "bundesweit": false,
+      "quelleId": "1ddfa412-ebda-4571-a6fd-aa8e2ba340d5"
+    },
+    {
+      "datum": "2027-03-26",
+      "name": "Karfreitag",
+      "bundesweit": true,
+      "quelleId": "f5967e35-9fbb-4cd9-ae3d-622f6cf90028"
+    },
+    {
+      "datum": "2027-03-29",
+      "name": "Ostermontag",
+      "bundesweit": true,
+      "quelleId": "fcd0558e-3e01-4902-b785-d8bd45baba24"
+    },
+    {
+      "datum": "2027-05-01",
+      "name": "Tag der Arbeit",
+      "bundesweit": true,
+      "quelleId": "5dce4648-d6e6-400a-936e-b85edbf85622"
+    },
+    {
+      "datum": "2027-05-06",
+      "name": "Christi Himmelfahrt",
+      "bundesweit": true,
+      "quelleId": "889b46cc-0934-44a1-9468-d88f880acc94"
+    },
+    {
+      "datum": "2027-05-17",
+      "name": "Pfingstmontag",
+      "bundesweit": true,
+      "quelleId": "689daf70-cc0e-44d6-a501-8a17d4a551dc"
+    },
+    {
+      "datum": "2027-10-03",
+      "name": "Tag der Deutschen Einheit",
+      "bundesweit": true,
+      "quelleId": "3e88b5c4-993a-4bd1-9f9a-149545598bc6"
+    },
+    {
+      "datum": "2027-12-25",
+      "name": "1. Weihnachtsfeiertag",
+      "bundesweit": true,
+      "quelleId": "ba7542be-fca8-427b-ac2d-797470860c62"
+    },
+    {
+      "datum": "2027-12-26",
+      "name": "2. Weihnachtsfeiertag",
+      "bundesweit": true,
+      "quelleId": "ee8fc25d-db77-48d9-a74f-6374d74642fa"
+    }
+  ]
+}

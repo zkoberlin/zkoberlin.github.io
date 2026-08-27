@@ -355,32 +355,74 @@ async function loadHistory(current,force=false){
   }
 }
 
+function validHolidayData(data,currentYear){
+  if(data?.schemaVersion!==1||data?.region!=='DE-BE'||!Array.isArray(data?.jahre)||!data.jahre.includes(currentYear))return false;
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(data?.stand||'')||!String(data?.quelle?.url||'').startsWith('https://'))return false;
+  if(!Array.isArray(data.feiertage)||data.feiertage.length<20||data.feiertage.length>30)return false;
+  const dates=new Set();
+  return data.feiertage.every(entry=>{
+    const keys=Object.keys(entry||{}).sort().join(',');
+    if(keys!=='bundesweit,datum,name,quelleId'||dates.has(entry.datum))return false;
+    dates.add(entry.datum);
+    return /^\d{4}-\d{2}-\d{2}$/.test(entry.datum)
+      &&typeof entry.name==='string'&&entry.name.trim()&&entry.name.length<=100
+      &&typeof entry.bundesweit==='boolean'&&typeof entry.quelleId==='string'&&Boolean(entry.quelleId);
+  });
+}
+
+function renderHoliday(entry,data,isStale=false){
+  const section=document.getElementById('feiertagSection');
+  document.getElementById('feiertagVal').textContent=`${entry.name} · gesetzlicher Feiertag`;
+  const meta=document.getElementById('feiertagMeta');
+  meta.replaceChildren();
+  const generated=new Date(data.stand);
+  const label=document.createElement('span');
+  label.textContent=`Berlin${entry.bundesweit?' · bundesweit':''}${isStale?' · gespeicherter Stand':''} · ${generated.toLocaleDateString('de-DE')}`;
+  meta.append(label,document.createTextNode(' · '));
+  const source=document.createElement('a');
+  source.href=data.quelle.url;
+  source.target='_blank';
+  source.rel='noopener noreferrer';
+  source.textContent='OpenHolidays ↗';
+  meta.appendChild(source);
+  section.style.display='block';
+  document.getElementById('specialSection').style.borderTop='1px solid var(--border)';
+  document.getElementById('specialSection').style.paddingTop='8px';
+}
+
+async function loadHoliday(current){
+  const section=document.getElementById('feiertagSection');
+  section.style.display='none';
+  document.getElementById('specialSection').style.borderTop='';
+  document.getElementById('specialSection').style.paddingTop='';
+  const dateKey=`${current.getFullYear()}-${String(current.getMonth()+1).padStart(2,'0')}-${String(current.getDate()).padStart(2,'0')}`;
+  try{
+    const response=await fetch(`data/feiertage_berlin.json?v=${window.PAUL_APP_VERSION||'1'}`,{signal:AbortSignal.timeout(4000)});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(!validHolidayData(data,current.getFullYear()))throw new Error('Ungültiges Schema');
+    try{localStorage.setItem('holidays_berlin_latest',JSON.stringify(data));}catch(error){}
+    const entry=data.feiertage.find(item=>item.datum===dateKey);
+    if(entry)renderHoliday(entry,data);
+  }catch(error){
+    console.warn('Feiertage Fehler:',error);
+    try{
+      const cached=JSON.parse(localStorage.getItem('holidays_berlin_latest')||'null');
+      if(validHolidayData(cached,current.getFullYear())){
+        const entry=cached.feiertage.find(item=>item.datum===dateKey);
+        if(entry)renderHoliday(entry,cached,true);
+      }
+    }catch(storageError){}
+  }
+}
+
 let dayInfoDateKey='';
 async function loadDayInfo(){
   const current=new Date();
   const d=current.getDate(), m=current.getMonth()+1;
   const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   dayInfoDateKey=`${current.getFullYear()}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  const holidaySection=document.getElementById('feiertagSection');
-  holidaySection.style.display='none';
-  document.getElementById('specialSection').style.borderTop='';
-  document.getElementById('specialSection').style.paddingTop='';
-
-  // Berlin Feiertage 2026
-  const feiertage={
-    '01-01':'🎆 Neujahr','03-08':'♀️ Internationaler Frauentag','04-03':'✝️ Karfreitag',
-    '04-06':'🐣 Ostermontag','05-01':'✊ Tag der Arbeit',
-    '05-14':'⛪ Christi Himmelfahrt','05-25':'🙏 Pfingstmontag','10-03':'🇩🇪 Tag der Deutschen Einheit',
-    '12-25':'🎄 1. Weihnachtstag','12-26':'🎄 2. Weihnachtstag'
-  };
-
-  const feiertagHeute = feiertage[key] || null;
-  if(feiertagHeute){
-    document.getElementById('feiertagSection').style.display='block';
-    document.getElementById('feiertagVal').textContent=feiertagHeute+' · frei!';
-    document.getElementById('specialSection').style.borderTop='1px solid var(--border)';
-    document.getElementById('specialSection').style.paddingTop='8px';
-  }
+  await loadHoliday(current);
 
   // ── "Heute ist" – aus data/special-days.json ──
   try {

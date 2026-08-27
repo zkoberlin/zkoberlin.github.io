@@ -5,6 +5,7 @@ Die Dateien in `data/` werden öffentlich über GitHub Pages ausgeliefert. Dort 
 | Datei | Aktualisierung |
 | --- | --- |
 | `geburtstage.json` | `scripts/fetch_geburtstage.py` und GitHub Action |
+| `feiertage_berlin.json` | `scripts/fetch_feiertage_berlin.py`; aktuelles und folgendes Jahr, monatliche/manuelle GitHub Action |
 | `namenstage.json` | Versionierte, vollständig validierte Jahresdatei. Aktuell redaktioneller Grundbestand; monatliche/manuelle GitHub Action ersetzt ihn erst nach 366 erfolgreichen Abalin-V2-Antworten. |
 | `schulferien_berlin.json` | `scripts/fetch_schulferien.py` und GitHub Action |
 | `transfers.json` | `scripts/fetch_transfers.py`; Automation derzeit saisonal pausiert |
