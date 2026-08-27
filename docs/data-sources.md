@@ -9,7 +9,7 @@ Die Dateien in `data/` werden öffentlich über GitHub Pages ausgeliefert. Dort 
 | `schulferien_berlin.json` | `scripts/fetch_schulferien.py` und GitHub Action |
 | `transfers.json` | `scripts/fetch_transfers.py`; Automation derzeit saisonal pausiert |
 | `union.json` | `scripts/fetch_union.py` und GitHub Action |
-| `special-days.json` | Statische Projektdaten |
+| `special-days.json` | Validierte statische Projektdaten (Schema v2); bewegliche Hinweise werden im Frontend berechnet |
 
 Die frühere Datei `reiselog.json` und ihre Aktualisierungspipeline wurden entfernt. Eine neue Reiseseite und ihre Datenanbindung werden später separat geplant.
 

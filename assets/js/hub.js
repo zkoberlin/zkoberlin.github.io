@@ -184,14 +184,61 @@ renderDailyImpulse();
 setInterval(()=>renderDailyImpulse(false),30000);
 
 // ── TAG-INFO (Feiertage, Geburtstage, Skurrile Tage) ──
-async function loadDayInfo(){
-  const d=now.getDate(), m=now.getMonth()+1;
-  const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+function dynamicSpecialDay(current){
+  const month=current.getMonth()+1;
+  const day=current.getDate();
+  const weekday=current.getDay();
+  if(month===5&&weekday===0&&day>=8&&day<=14){
+    return {emoji:'💐',titel:'Muttertag',kategorie:'beweglicher Gedenktag',region:'Deutschland',quelle:null};
+  }
+  if(month===2&&day===29){
+    return {emoji:'🗓️',titel:'Schalttag – heute gibt es 24 Stunden extra',kategorie:'Kalenderbesonderheit',region:'International',quelle:null};
+  }
+  return null;
+}
 
-  const sprueche=[
-    ['☀️ Sonntag – Auszeit!'],['☕ Guten Montag!'],['💪 Dienstag!'],
-    ['🐪 Humpday!'],['🎉 Donnerstag!'],['🥳 Freitag! TGIF!'],['😴 Samstag!']
-  ];
+function validSpecialDayData(data){
+  if(data?.schemaVersion!==2||!/^\d{4}-\d{2}-\d{2}$/.test(data?.stand||'')||!data?.tage||typeof data.tage!=='object')return false;
+  const entries=Object.entries(data.tage);
+  if(entries.length!==365||entries.some(([key])=>! /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(key)))return false;
+  return entries.every(([,entry])=>{
+    const keys=Object.keys(entry||{}).sort().join(',');
+    return keys==='emoji,kategorie,quelle,region,titel'
+      &&['emoji','titel','kategorie','region'].every(field=>typeof entry[field]==='string'&&entry[field].trim())
+      &&(entry.quelle===null||(typeof entry.quelle==='string'&&entry.quelle.startsWith('https://')));
+  });
+}
+
+function renderSpecialDay(entry,stand){
+  const value=document.getElementById('specialVal');
+  const meta=document.getElementById('specialMeta');
+  value.textContent=`${entry.emoji} ${entry.titel}`;
+  meta.replaceChildren();
+  const label=document.createElement('span');
+  label.textContent=`${entry.kategorie} · ${entry.region}`;
+  meta.appendChild(label);
+  if(entry.quelle){
+    meta.appendChild(document.createTextNode(' · '));
+    const source=document.createElement('a');
+    source.href=entry.quelle;
+    source.target='_blank';
+    source.rel='noopener noreferrer';
+    source.textContent='Quelle ↗';
+    meta.appendChild(source);
+  }
+  if(stand)meta.title=`Datenstand ${stand.split('-').reverse().join('.')}`;
+}
+
+let dayInfoDateKey='';
+async function loadDayInfo(){
+  const current=new Date();
+  const d=current.getDate(), m=current.getMonth()+1;
+  const key=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  dayInfoDateKey=`${current.getFullYear()}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const holidaySection=document.getElementById('feiertagSection');
+  holidaySection.style.display='none';
+  document.getElementById('specialSection').style.borderTop='';
+  document.getElementById('specialSection').style.paddingTop='';
 
   // Berlin Feiertage 2026
   const feiertage={
@@ -211,12 +258,17 @@ async function loadDayInfo(){
 
   // ── "Heute ist" – aus data/special-days.json ──
   try {
-    const res = await fetch('data/special-days.json',{signal:AbortSignal.timeout(4000)});
+    const res = await fetch(`data/special-days.json?v=${window.PAUL_APP_VERSION||'2'}`,{signal:AbortSignal.timeout(4000)});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const special = await res.json();
-    document.getElementById('specialVal').textContent = special[key] || sprueche[now.getDay()][0];
+    if(!validSpecialDayData(special))throw new Error('Ungültiges Schema');
+    const entry=dynamicSpecialDay(current)||special.tage[key];
+    if(!entry)throw new Error('Kein Eintrag');
+    renderSpecialDay(entry,special.stand);
   } catch(e) {
-    document.getElementById('specialVal').textContent = sprueche[now.getDay()][0];
+    console.warn('Tageshinweis Fehler:',e);
+    document.getElementById('specialVal').textContent='Kein Tageshinweis verfügbar';
+    document.getElementById('specialMeta').textContent='Lokale Daten konnten nicht geladen werden';
   }
 
   // ── Namenstag – lokale JSON (via GitHub Actions) + API-Fallbacks ──
@@ -298,6 +350,11 @@ async function loadDayInfo(){
 }
 
 loadDayInfo();
+setInterval(()=>{
+  const current=new Date();
+  const key=`${current.getFullYear()}-${String(current.getMonth()+1).padStart(2,'0')}-${String(current.getDate()).padStart(2,'0')}`;
+  if(key!==dayInfoDateKey)loadDayInfo();
+},60000);
 
 function toggleHist(){
   const body=document.getElementById('histBody');

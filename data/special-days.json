@@ -1,367 +1,2561 @@
 {
-  "01-01": "🥂 Neujahr – frischer Start!",
-  "01-02": "😴 Erholungs-Tag (nach Silvester)",
-  "01-03": "🍫 Schokoladenfondue-Tag",
-  "01-04": "🍕 Nationaler Spaghetti-Tag",
-  "01-05": "🐦 Vogelbeobachtungs-Tag",
-  "01-06": "👑 Heilige Drei Könige",
-  "01-07": "☕ Altes Weihnachten (orthodox)",
-  "01-08": "🛁 Bubble Bath Day – Schaumbad!",
-  "01-09": "🎮 Play God Day",
-  "01-10": "🌿 Zimmerpflanzen-Tag",
-  "01-11": "🙏 Weltdankestag",
-  "01-12": "🔍 Agatha Christie Day",
-  "01-13": "💫 Make Your Dream Come True Day",
-  "01-14": "🥪 Pastrami Sandwich Day",
-  "01-15": "🤐 Sticker Day – kleb was drauf!",
-  "01-16": "🎩 Ditch Resolutions Day",
-  "01-17": "🐻 Winnie the Pooh Day",
-  "01-18": "🍿 Nationaler Popcorn-Tag",
-  "01-19": "🧀 Nationaler Camembert-Tag",
-  "01-20": "🤗 Nationaler Umarmungs-Tag",
-  "01-21": "🦁 Beantworte Katzen-Fragen-Tag",
-  "01-22": "🍰 Nationaler Kuchentag",
-  "01-23": "🥧 Nationaler Pie-Tag",
-  "01-24": "🍕 Internationaler Pizza-Tag! 🍕",
-  "01-25": "🥞 Nationaler Pfannkuchen-Tag",
-  "01-26": "😂 Ohne-Grund-Lachen-Tag",
-  "01-27": "🍫 Schokoladenkuchen-Tag",
-  "01-28": "🎱 Fun at Work Day",
-  "01-29": "🧁 Nationaler Cupcake-Tag",
-  "01-30": "🎤 Croissant-Tag",
-  "01-31": "🔄 Backward Day – alles rückwärts!",
-  "02-01": "🤡 Nationaler Clown-Tag",
-  "02-02": "🦔 Murmeltiertag – Groundhog Day!",
-  "02-03": "🎶 Goldene Schallplatten-Tag",
-  "02-04": "🌍 Weltkrebstag",
-  "02-05": "🍫 Welt-Nutella-Tag 🍫",
-  "02-06": "😊 Lame Duck Day",
-  "02-07": "🌹 Rose Day",
-  "02-08": "🛡️ Safer Internet Day",
-  "02-09": "🍕 Pizza Day (nochmal – verdient!)",
-  "02-10": "👟 Sneaker Day",
-  "02-11": "👔 Weißes-Hemd-Tag",
-  "02-12": "🌱 Darwin Day – Evolution!",
-  "02-13": "📻 Welt-Radio-Tag",
-  "02-14": "💝 Valentinstag – Liebe liegt in der Luft! 💕",
-  "02-15": "💔 Singles Awareness Day",
-  "02-16": "🐻 Tu-einem-Griesgram-einen-Gefallen-Tag",
-  "02-17": "🤗 Tag der zufälligen Freundlichkeit",
-  "02-18": "🔭 Pluto-Tag",
-  "02-19": "🍬 Schokoladen-Minze-Tag",
-  "02-20": "⚖️ Welt-Tag der sozialen Gerechtigkeit",
-  "02-21": "🌍 Internationaler Muttersprachentag",
-  "02-22": "🐱 Internationaler Katzen-Tag!",
-  "02-23": "🍌 Bananenbrot-Tag",
-  "02-24": "🍹 Nationaler Barkeeper-Tag",
-  "02-25": "🧘 No Brainer Day – abschalten!",
-  "02-26": "🌰 Pistazien-Tag",
-  "02-27": "🐻 Eisbären-Tag",
-  "02-28": "🎗️ Seltener Krankheiten-Tag",
-  "03-01": "🌸 Weltlob-Tag",
-  "03-02": "📚 Dr. Seuss Geburtstag",
-  "03-03": "🦁 Welt-Wildtier-Tag",
-  "03-04": "🤗 Hug a GI Day",
-  "03-05": "🎭 Vielfältigkeits-Tag",
-  "03-06": "🍪 Oreo-Keks-Tag",
-  "03-07": "🥣 Nationaler Müsli-Tag",
-  "03-08": "♀️ Internationaler Frauentag",
-  "03-09": "🎀 Barbies Geburtstag (1959)",
-  "03-10": "🎮 Mario Day – Its-a me!",
-  "03-11": "🥞 Nationaler Pancake-Tag",
-  "03-12": "🌸 Blumen-Pflanzen-Tag",
-  "03-13": "🍌 Nationaler Schmuck-Tag",
-  "03-14": "🥧 Pi-Tag: 3,14159… Kuchen!",
-  "03-15": "🏛️ Ides of March – Vorsicht Julius!",
-  "03-16": "🍺 Alles-richtig-machen-Tag",
-  "03-17": "☘️ St. Patricks Day – alles wird grün!",
-  "03-18": "😳 Awkward Moments Day",
-  "03-19": "🌹 Tag des Heiligen Josef",
-  "03-20": "☀️ Frühlingsanfang – endlich warm!",
-  "03-21": "📝 Welt-Poesie-Tag",
-  "03-22": "💧 Welt-Wasser-Tag",
-  "03-23": "🌦️ Welt-Meteorologie-Tag",
-  "03-24": "🍫 Schokolade-mit-Rosinen-Tag",
-  "03-25": "🧇 Waffel-Tag – Waffeln backen!",
-  "03-26": "🎉 Erfinde-deinen-eigenen-Feiertag-Tag",
-  "03-27": "🎭 Welt-Theater-Tag",
-  "03-28": "🍓 Irgendetwas-am-Stiel-Tag",
-  "03-29": "🎮 Nationaler Spielzeug-Tag",
-  "03-30": "🦆 Spaziergang-im-Park-Tag",
-  "03-31": "🐣 Aprilscherz-Vorbereitung!",
-  "04-01": "🃏 April, April! Heute ist alles erlaubt 😄",
-  "04-02": "🌍 Welt-Autismus-Tag",
-  "04-03": "🍫 Schokoladenmousse-Tag",
-  "04-04": "🐔 Lauf-um-die-Dinge-herum-Tag",
-  "04-05": "🗺️ Lies-eine-Straßenkarte-Tag",
-  "04-06": "😢 Sorry-Charlie-Tag",
-  "04-07": "🌍 Welt-Gesundheits-Tag",
-  "04-08": "🐦 Zeichne-einen-Vogel-Tag",
-  "04-09": "🦄 Einhorn-Tag! 🦄",
-  "04-10": "👫 Geschwister-Tag – ruf an!",
-  "04-11": "🎵 Barbershop Quartet Day",
-  "04-12": "🚀 Juri Gagarin Tag – erster Mensch im All!",
-  "04-13": "🔤 Scrabble-Tag",
-  "04-14": "☁️ Schau-in-den-Himmel-Tag",
-  "04-15": "💰 Steuertag (USA) – zum Glück nicht hier",
-  "04-16": "🍳 Eggs Benedict Day",
-  "04-17": "✍️ Haiku-Poesie-Tag",
-  "04-18": "🏛️ Tag der Monumente",
-  "04-19": "🧄 Knoblauch-Tag – Vampirschutz inklusive!",
-  "04-20": "👀 Sieht-aus-wie-jemand-Tag",
-  "04-21": "🐎 Queens Birthday (UK)",
-  "04-22": "🌍 Earth Day – die Erde braucht uns",
-  "04-23": "📚 Shakespeare Day & Welt-Buch-Tag",
-  "04-24": "🐧 Welt-Pinguin-Tag",
-  "04-25": "🦒 Welt-Malaria-Tag",
-  "04-26": "🥨 Nationaler Brezel-Tag",
-  "04-27": "📖 Erzähl-eine-Geschichte-Tag",
-  "04-28": "🌺 Große-Poesie-Lesung-Tag",
-  "04-29": "💃 Internationaler Tanztag",
-  "04-30": "💇 Frisur-Wertschätzungs-Tag",
-  "05-01": "✊ Tag der Arbeit – verdient frei!",
-  "05-02": "👶 Nationaler Babytag",
-  "05-03": "🌍 Weltpressefreiheitstag",
-  "05-04": "🚀 Star Wars Day – May the 4th be with you!",
-  "05-05": "🍣 Internationaler Sushi-Tag 🍣",
-  "05-06": "🍰 Kein-Diät-Tag – schlemmen erlaubt!",
-  "05-07": "🎵 Beethovens Tauftag",
-  "05-08": "🕊️ Tag der Befreiung · Rotes Kreuz Tag",
-  "05-09": "🧦 No Socks Day – Socken sind überbewertet! 🧦",
-  "05-10": "👩 Muttertag – ruf Mama an! 💐",
-  "05-11": "🍽️ Iss-was-du-willst-Tag",
-  "05-12": "🏥 Florence Nightingale Day",
-  "05-13": "🍀 Kleeblatt-Tag",
-  "05-14": "🚲 Fahrrad-Tag",
-  "05-15": "🌍 Internationaler Familientag",
-  "05-16": "📖 Nationaler Biografie-Tag",
-  "05-17": "🌈 Tag gegen Homophobie & Transphobie",
-  "05-18": "🏛️ Internationaler Museumstag",
-  "05-19": "☀️ May Ray Day – Sonne genießen!",
-  "05-20": "🐝 Weltbienentag – rettet die Bienen!",
-  "05-21": "🌍 Tag der kulturellen Vielfalt",
-  "05-22": "🌿 Welt-Biodiversitäts-Tag",
-  "05-23": "🐢 Welt-Schildkröten-Tag 🐢",
-  "05-24": "🔍 Schnitzeljagd-Tag",
-  "05-25": "🎭 Towel Day – Dont Panic! (Hitchhikers Guide)",
-  "05-26": "🍔 Hamburger-Tag! 🍔",
-  "05-27": "🌍 Welt-Hunger-Tag",
-  "05-28": "🍔 Hamburger-Tag (er ist zu gut für einen Tag!)",
-  "05-29": "🛏️ Kopfkissen-auf-den-Kühlschrank-Tag",
-  "05-30": "🪣 My Bucket List Day",
-  "05-31": "🚭 Weltnichtrauchertag",
-  "06-01": "👶 Internationaler Kindertag",
-  "06-02": "🏃 Verlass-das-Büro-früher-Tag",
-  "06-03": "🍩 Nationaler Donut-Tag 🍩",
-  "06-04": "🧀 Nationaler Käse-Tag",
-  "06-05": "🌿 Weltumwelttag",
-  "06-06": "🎬 Drive-in-Kino-Tag",
-  "06-07": "🍫 Schokoladen-Eis-Tag",
-  "06-08": "🌊 Welt-Ozean-Tag",
-  "06-09": "🦆 Donald Duck Day",
-  "06-10": "🍹 Eistee-Tag",
-  "06-11": "🌽 Mais-am-Kolben-Tag",
-  "06-12": "🍷 Loving Day",
-  "06-13": "🦅 Welt-Albatros-Tag",
-  "06-14": "🚩 Flag Day (USA)",
-  "06-15": "👴 Welt-Tag gegen Älterdiskriminierung",
-  "06-16": "🥗 Frisches-Gemüse-Tag",
-  "06-17": "🥦 Iss-dein-Gemüse-Tag",
-  "06-18": "🧺 Internationaler Picknick-Tag",
-  "06-19": "🕊️ Juneteenth",
-  "06-20": "🌍 Weltflüchtlingstag",
-  "06-21": "☀️ Sommersonnenwende – längster Tag des Jahres!",
-  "06-22": "🌳 Welt-Regenwald-Tag",
-  "06-23": "🌍 Internationaler Witwen-Tag",
-  "06-24": "🧚 Internationaler Feen-Tag",
-  "06-25": "⚓ Tag der Seeleute",
-  "06-26": "☮️ Weltdrogenbekämpfungstag",
-  "06-27": "🎣 Internationaler Angeltag",
-  "06-28": "🏔️ Paul Bunyan Day",
-  "06-29": "🐦 Kolibri-Tag",
-  "06-30": "☄️ Asteroid Day – schau mal hoch!",
-  "07-01": "🍁 Canada Day",
-  "07-02": "🛸 Welt-UFO-Tag – Augen auf!",
-  "07-03": "🫘 Iss-Bohnen-Tag",
-  "07-04": "🎆 US Independence Day – Feuerwerk!",
-  "07-05": "🏃 Nationaler Workaholic-Tag",
-  "07-06": "💋 Internationaler Kuss-Tag",
-  "07-07": "🍫 Welt-Schokoladentag 🍫",
-  "07-08": "🎮 Videospiel-Tag",
-  "07-09": "🍪 Zucker-Keks-Tag",
-  "07-10": "🐻 Teddybär-Picknick-Tag",
-  "07-11": "🌍 Weltbevölkerungstag",
-  "07-12": "🌸 Einfachheits-Tag",
-  "07-13": "🍟 Pommes-Tag! 🍟",
-  "07-14": "🎭 Bastille-Tag – Vive la France!",
-  "07-15": "🐛 Gummiwurm-Tag",
-  "07-16": "🐍 Welt-Schlangen-Tag",
-  "07-17": "😊 Welt-Emoji-Tag 😊🎉",
-  "07-18": "🌍 Nelson Mandela International Day",
-  "07-19": "👅 Streck-deine-Zunge-raus-Tag",
-  "07-20": "🚀 Moon Day – Mondlandung 1969!",
-  "07-21": "🍟 Nationaler Junk Food Day",
-  "07-22": "🥧 Pi-Näherungs-Tag (22/7)",
-  "07-23": "👵 Wunderschöne-Oma-Tag",
-  "07-24": "🥃 Tequila-Tag – Prost!",
-  "07-25": "🧵 Faden-einfädeln-Tag",
-  "07-26": "🎤 One Voice Day",
-  "07-27": "👖 Hosen-spazieren-führen-Tag",
-  "07-28": "🌍 Welt-Hepatitis-Tag",
-  "07-29": "🐯 Internationaler Tiger-Tag",
-  "07-30": "🤝 Freundschaftstag – ruf an!",
-  "07-31": "🥑 Avocado-Tag",
-  "08-01": "🌿 Welt-Lungenkrebstag",
-  "08-02": "🍦 Eis-Sandwich-Tag",
-  "08-03": "🍉 Welt-Wassermelonen-Tag 🍉",
-  "08-04": "🍪 Chocolate Chip Cookie Day",
-  "08-05": "🐕 Arbeite-wie-ein-Hund-Tag",
-  "08-06": "🍺 Root Beer Float Day",
-  "08-07": "🏠 Leuchtturm-Tag",
-  "08-08": "🐱 Internationaler Katzentag! 🐱",
-  "08-09": "🌍 Tag der indigenen Völker",
-  "08-10": "😴 Faulheits-Tag – verdient!",
-  "08-11": "🃏 Präsidentenwitz-Tag",
-  "08-12": "🎸 Weltjugendtag",
-  "08-13": "✋ Linkshänder-Tag",
-  "08-14": "🕊️ VJ Day",
-  "08-15": "🧘 Entspannungs-Tag – einfach sein",
-  "08-16": "🎸 Elvis-Gedenktag",
-  "08-17": "🐈‍⬛ Schwarze-Katze-Wertschätzungs-Tag",
-  "08-18": "🎭 Bad Poetry Day",
-  "08-19": "📸 Welt-Fotografietag",
-  "08-20": "🍋 Limonade-Tag",
-  "08-21": "👴 Seniorentag",
-  "08-22": "😇 Sei-ein-Engel-Tag",
-  "08-23": "🌬️ Reite-den-Wind-Tag",
-  "08-24": "🧇 Waffel-Tag (nochmal!)",
-  "08-25": "🍌 Banana Split Day",
-  "08-26": "🐕 Internationaler Hunde-Tag 🐕",
-  "08-27": "❓ Just-Because-Day – einfach so!",
-  "08-28": "🖱️ Race-Your-Mouse-Tag",
-  "08-29": "☢️ Tag gegen Atomtests",
-  "08-30": "🍡 Toast-Marshmallow-Tag",
-  "08-31": "🌟 Draußen-essen-Tag",
-  "09-01": "🎒 Schulstart – viel Erfolg!",
-  "09-02": "🥥 Welt-Kokosnuss-Tag",
-  "09-03": "🏙️ Wolkenkratzer-Tag",
-  "09-04": "📰 Zeitungsträger-Tag",
-  "09-05": "💝 Welt-Wohltätigkeits-Tag",
-  "09-06": "⏰ Kämpfe-gegen-Prokrastination-Tag",
-  "09-07": "☀️ Egal-ob-Regen-Tag",
-  "09-08": "📖 Welt-Alphabetisierungs-Tag",
-  "09-09": "🐻 Teddybär-Tag",
-  "09-10": "🌊 Welt-Suizidprävention-Tag",
-  "09-11": "🕊️ Patriot Day",
-  "09-12": "🎮 Nationaler Videospiele-Tag",
-  "09-13": "🍫 Internationaler Schokoladentag 🍫",
-  "09-14": "🥖 Baguette-Tag",
-  "09-15": "🔵 Internationaler Punkt-Tag",
-  "09-16": "🥑 Guacamole-Tag – Avocados feiern!",
-  "09-17": "🎸 Internationaler Country-Musik-Tag",
-  "09-18": "📱 Welt-Wasserstoff-Tag",
-  "09-19": "🏴‍☠️ Sprich-wie-ein-Pirat-Tag – Arrr! ☠️",
-  "09-20": "🌍 Welt-Aufräum-Tag",
-  "09-21": "☮️ Internationaler Friedenstag",
-  "09-22": "🍂 Herbstanfang – bunte Blätter!",
-  "09-23": "☑️ Checklisten-Tag",
-  "09-24": "✍️ Interpunktions-Tag",
-  "09-25": "💭 Welt-Traum-Tag",
-  "09-26": "🌍 Welt-Kontrazeption-Tag",
-  "09-27": "✈️ Welt-Tourismus-Tag",
-  "09-28": "🐱 Welt-Tollwut-Tag",
-  "09-29": "❤️ Welt-Herztag",
-  "09-30": "🌍 Internationaler Übersetzungs-Tag",
-  "10-01": "🎵 Welt-Musik-Tag",
-  "10-02": "🌍 Welt-Habitat-Tag",
-  "10-03": "🇩🇪 Tag der Deutschen Einheit – frei!",
-  "10-04": "🐾 Welt-Tierschutztag",
-  "10-05": "👩‍🏫 Welt-Lehrer-Tag",
-  "10-06": "🇩🇪🇺🇸 Deutsch-Amerikanischer Tag",
-  "10-07": "🍭 Welt-Zuckerwatte-Tag",
-  "10-08": "🐙 Welt-Oktopus-Tag 🐙",
-  "10-09": "📮 Welt-Posttag",
-  "10-10": "🧠 Welt-Mental-Gesundheitstag",
-  "10-11": "👧 Internationaler Mädchen-Tag",
-  "10-12": "🥚 Welt-Ei-Tag",
-  "10-13": "🤨 Internationaler Skeptiker-Tag",
-  "10-14": "📏 Welt-Normen-Tag",
-  "10-15": "🧼 Welt-Händewaschen-Tag – bitte waschen!",
-  "10-16": "🍞 Welt-Brot-Tag",
-  "10-17": "🌍 Tag zur Beseitigung von Armut",
-  "10-18": "🍬 Welt-Menopause-Tag",
-  "10-19": "🤔 Bewerte-dein-Leben-Tag",
-  "10-20": "📊 Welt-Statistik-Tag",
-  "10-21": "🍎 Apple Day",
-  "10-22": "🎨 Nationaler Farben-Tag",
-  "10-23": "⚗️ Mole Day (6:02 Uhr!)",
-  "10-24": "🌍 UN-Tag",
-  "10-25": "🍝 Welt-Nudel-Tag 🍝",
-  "10-26": "🎃 Kürbis-Tag",
-  "10-27": "⚓ Navy Day",
-  "10-28": "🍫 Nochmal Schokolade – warum nicht?",
-  "10-29": "🌍 Welt-Psoriasis-Tag",
-  "10-30": "👻 Gruseliger-Kühlschrank-Abend",
-  "10-31": "🎃 Halloween – gruselige Nacht! 👻",
-  "11-01": "🌍 Allerheiligen",
-  "11-02": "🌍 Allerseelen",
-  "11-03": "🥪 Sandwich-Tag – sandwich time!",
-  "11-04": "🌍 Welt-Wissenschafts-Tag",
-  "11-05": "🎆 Guy Fawkes Night – Bonfire Night!",
-  "11-06": "🎵 Saxophon-Tag",
-  "11-07": "🌍 Welt-Krebsbewusstseins-Tag",
-  "11-08": "🍳 Koche-was-Gewagtes-Tag",
-  "11-09": "🌍 Welt-Freiheits-Tag",
-  "11-10": "🦋 Welt-Jugend-Wissenschafts-Tag",
-  "11-11": "🥐 St. Martin – Laternenumzug! 🏮",
-  "11-12": "🌍 Welt-Pneumonie-Tag",
-  "11-13": "🤝 Welt-Freundlichkeits-Tag – sei nett!",
-  "11-14": "🌍 Welt-Diabetes-Tag",
-  "11-15": "♻️ America Recycles Day",
-  "11-16": "🌍 Internationaler Toleranz-Tag",
-  "11-17": "🎓 Internationaler Studenten-Tag",
-  "11-18": "🐭 Mickey Mouse Geburtstag 1928!",
-  "11-19": "🚽 Welt-Toiletten-Tag – ja, wirklich! 🚽",
-  "11-20": "👶 Welt-Kindertag (UN)",
-  "11-21": "📺 Welt-Fernseh-Tag",
-  "11-22": "🚗 Fahr-eine-Runde-Tag",
-  "11-23": "🔢 Fibonacci-Tag (1,1,2,3)",
-  "11-24": "🦕 Evolutions-Tag",
-  "11-25": "🌍 Tag gegen Gewalt an Frauen",
-  "11-26": "🎂 Kuchen-Tag",
-  "11-27": "🪡 Pins and Needles Day",
-  "11-28": "🍞 French Toast Day",
-  "11-29": "🛒 Black Friday – Schnäppchen jagen!",
-  "11-30": "🏠 Bleib-zu-Hause-obwohl-du-gesund-bist-Tag",
-  "12-01": "🎗️ Welt-Aids-Tag",
-  "12-02": "💻 Welt-Computer-Alphabetisierungs-Tag",
-  "12-03": "🌍 Welt-Behinderter-Tag",
-  "12-04": "🍪 Nationaler Keks-Tag 🍪",
-  "12-05": "🌍 Welt-Boden-Tag",
-  "12-06": "🎅 Nikolaustag – Stiefel raus!",
-  "12-07": "🕍 Pearl Harbor Gedenktag",
-  "12-08": "⏰ Zeitreisender-Tag",
-  "12-09": "🌍 Anti-Korruptions-Tag",
-  "12-10": "🌍 Menschenrechts-Tag",
-  "12-11": "🏔️ Internationaler Bergtag",
-  "12-12": "🌺 Weihnachtsstern-Tag",
-  "12-13": "🍦 Eis-Tag im Winter (warum nicht?)",
-  "12-14": "🐒 Affen-Tag – Monkey Day! 🐒",
-  "12-15": "📜 Bill of Rights Day (USA)",
-  "12-16": "🍫 Schokolade-überzogene-alles-Tag 🍫",
-  "12-17": "🐕 Underdog Day",
-  "12-18": "📞 Buddy-the-Elf-Telefon-Tag",
-  "12-19": "🌲 Such-einen-Tannenbaum-Tag",
-  "12-20": "🎵 Weihnachtslieder-Tag",
-  "12-21": "❄️ Wintersonnenwende – kürzester Tag!",
-  "12-22": "🎭 Dattel-Nuss-Brot-Tag",
-  "12-23": "❄️ Schneeflocken-Ausschneiden-Tag",
-  "12-24": "🎅 Heiligabend – Vorfreude!",
-  "12-25": "🎄 Frohe Weihnachten! 🎁",
-  "12-26": "🎁 Boxing Day",
-  "12-27": "✂️ Schneeflocken-Basteln-Tag",
-  "12-28": "🃏 Karten-Spielen-Tag",
-  "12-29": "🫙 Pfeffersuppe-Tag",
-  "12-30": "🥓 Speck-Tag – Bacon!",
-  "12-31": "🥂 Silvester – auf ein neues Jahr! 🎆"
+  "schemaVersion": 2,
+  "stand": "2026-08-27",
+  "tage": {
+    "01-01": {
+      "emoji": "🥂",
+      "titel": "Neujahr – frischer Start!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-02": {
+      "emoji": "😴",
+      "titel": "Erholungs-Tag (nach Silvester)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-03": {
+      "emoji": "🍫",
+      "titel": "Schokoladenfondue-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-04": {
+      "emoji": "🍕",
+      "titel": "Nationaler Spaghetti-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-05": {
+      "emoji": "🐦",
+      "titel": "Vogelbeobachtungs-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-06": {
+      "emoji": "👑",
+      "titel": "Heilige Drei Könige",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-07": {
+      "emoji": "☕",
+      "titel": "Altes Weihnachten (orthodox)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-08": {
+      "emoji": "🛁",
+      "titel": "Bubble Bath Day – Schaumbad!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-09": {
+      "emoji": "🎮",
+      "titel": "Play God Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-10": {
+      "emoji": "🌿",
+      "titel": "Zimmerpflanzen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-11": {
+      "emoji": "🙏",
+      "titel": "Weltdankestag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "01-12": {
+      "emoji": "🔍",
+      "titel": "Agatha Christie Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-13": {
+      "emoji": "💫",
+      "titel": "Make Your Dream Come True Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-14": {
+      "emoji": "🥪",
+      "titel": "Pastrami Sandwich Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-15": {
+      "emoji": "🤐",
+      "titel": "Sticker Day – kleb was drauf!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-16": {
+      "emoji": "🎩",
+      "titel": "Ditch Resolutions Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-17": {
+      "emoji": "🐻",
+      "titel": "Winnie the Pooh Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-18": {
+      "emoji": "🍿",
+      "titel": "Nationaler Popcorn-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-19": {
+      "emoji": "🧀",
+      "titel": "Nationaler Camembert-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-20": {
+      "emoji": "🤗",
+      "titel": "Nationaler Umarmungs-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-21": {
+      "emoji": "🦁",
+      "titel": "Beantworte Katzen-Fragen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-22": {
+      "emoji": "🍰",
+      "titel": "Nationaler Kuchentag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-23": {
+      "emoji": "🥧",
+      "titel": "Nationaler Pie-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-24": {
+      "emoji": "🍕",
+      "titel": "Internationaler Pizza-Tag! 🍕",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-25": {
+      "emoji": "🥞",
+      "titel": "Nationaler Pfannkuchen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-26": {
+      "emoji": "😂",
+      "titel": "Ohne-Grund-Lachen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-27": {
+      "emoji": "🍫",
+      "titel": "Schokoladenkuchen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-28": {
+      "emoji": "🎱",
+      "titel": "Fun at Work Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-29": {
+      "emoji": "🧁",
+      "titel": "Nationaler Cupcake-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "01-30": {
+      "emoji": "🎤",
+      "titel": "Croissant-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "01-31": {
+      "emoji": "🔄",
+      "titel": "Backward Day – alles rückwärts!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-01": {
+      "emoji": "🤡",
+      "titel": "Nationaler Clown-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-02": {
+      "emoji": "🦔",
+      "titel": "Murmeltiertag – Groundhog Day!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-03": {
+      "emoji": "🎶",
+      "titel": "Goldene Schallplatten-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-04": {
+      "emoji": "🌍",
+      "titel": "Weltkrebstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "02-05": {
+      "emoji": "🍫",
+      "titel": "Welt-Nutella-Tag 🍫",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "02-06": {
+      "emoji": "😊",
+      "titel": "Lame Duck Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-07": {
+      "emoji": "🌹",
+      "titel": "Rose Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-08": {
+      "emoji": "🛡️",
+      "titel": "Safer Internet Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-09": {
+      "emoji": "🍕",
+      "titel": "Pizza Day (nochmal – verdient!)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-10": {
+      "emoji": "👟",
+      "titel": "Sneaker Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-11": {
+      "emoji": "👔",
+      "titel": "Weißes-Hemd-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-12": {
+      "emoji": "🌱",
+      "titel": "Darwin Day – Evolution!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-13": {
+      "emoji": "📻",
+      "titel": "Welt-Radio-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "02-14": {
+      "emoji": "💝",
+      "titel": "Valentinstag – Liebe liegt in der Luft! 💕",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-15": {
+      "emoji": "💔",
+      "titel": "Singles Awareness Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-16": {
+      "emoji": "🐻",
+      "titel": "Tu-einem-Griesgram-einen-Gefallen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-17": {
+      "emoji": "🤗",
+      "titel": "Tag der zufälligen Freundlichkeit",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-18": {
+      "emoji": "🔭",
+      "titel": "Pluto-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-19": {
+      "emoji": "🍬",
+      "titel": "Schokoladen-Minze-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-20": {
+      "emoji": "⚖️",
+      "titel": "Welt-Tag der sozialen Gerechtigkeit",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "02-21": {
+      "emoji": "🌍",
+      "titel": "Internationaler Muttersprachentag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "02-22": {
+      "emoji": "⚜️",
+      "titel": "Thinking Day der Pfadfinderinnen",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "02-23": {
+      "emoji": "🍌",
+      "titel": "Bananenbrot-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-24": {
+      "emoji": "🍹",
+      "titel": "Nationaler Barkeeper-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-25": {
+      "emoji": "🧘",
+      "titel": "No Brainer Day – abschalten!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "02-26": {
+      "emoji": "🌰",
+      "titel": "Pistazien-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-27": {
+      "emoji": "🐻",
+      "titel": "Eisbären-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "02-28": {
+      "emoji": "🎗️",
+      "titel": "Seltener Krankheiten-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-01": {
+      "emoji": "🌸",
+      "titel": "Weltlob-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "03-02": {
+      "emoji": "📚",
+      "titel": "Dr. Seuss Geburtstag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-03": {
+      "emoji": "🦁",
+      "titel": "Welt-Wildtier-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-04": {
+      "emoji": "🤗",
+      "titel": "Hug a GI Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-05": {
+      "emoji": "🎭",
+      "titel": "Vielfältigkeits-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-06": {
+      "emoji": "🍪",
+      "titel": "Oreo-Keks-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-07": {
+      "emoji": "🥣",
+      "titel": "Nationaler Müsli-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-08": {
+      "emoji": "♀️",
+      "titel": "Internationaler Frauentag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-09": {
+      "emoji": "🎀",
+      "titel": "Barbies Geburtstag (1959)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-10": {
+      "emoji": "🎮",
+      "titel": "Mario Day – Its-a me!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-11": {
+      "emoji": "🥞",
+      "titel": "Nationaler Pancake-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-12": {
+      "emoji": "🌸",
+      "titel": "Blumen-Pflanzen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-13": {
+      "emoji": "🍌",
+      "titel": "Nationaler Schmuck-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-14": {
+      "emoji": "🥧",
+      "titel": "Pi-Tag: 3,14159… Kuchen!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-15": {
+      "emoji": "🏛️",
+      "titel": "Ides of March – Vorsicht Julius!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-16": {
+      "emoji": "🍺",
+      "titel": "Alles-richtig-machen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-17": {
+      "emoji": "☘️",
+      "titel": "St. Patricks Day – alles wird grün!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-18": {
+      "emoji": "😳",
+      "titel": "Awkward Moments Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-19": {
+      "emoji": "🌹",
+      "titel": "Tag des Heiligen Josef",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-20": {
+      "emoji": "☀️",
+      "titel": "Frühlingsanfang – endlich warm!",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-21": {
+      "emoji": "📝",
+      "titel": "Welt-Poesie-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-22": {
+      "emoji": "💧",
+      "titel": "Welt-Wasser-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-23": {
+      "emoji": "🌦️",
+      "titel": "Welt-Meteorologie-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "03-24": {
+      "emoji": "🍫",
+      "titel": "Schokolade-mit-Rosinen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-25": {
+      "emoji": "🧇",
+      "titel": "Våffeldagen – schwedischer Waffeltag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Schweden",
+      "quelle": null
+    },
+    "03-26": {
+      "emoji": "🎉",
+      "titel": "Erfinde-deinen-eigenen-Feiertag-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-27": {
+      "emoji": "🎭",
+      "titel": "Welt-Theater-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "03-28": {
+      "emoji": "🍓",
+      "titel": "Irgendetwas-am-Stiel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-29": {
+      "emoji": "🎮",
+      "titel": "Nationaler Spielzeug-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "03-30": {
+      "emoji": "🦆",
+      "titel": "Spaziergang-im-Park-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "03-31": {
+      "emoji": "🐣",
+      "titel": "Aprilscherz-Vorbereitung!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-01": {
+      "emoji": "🃏",
+      "titel": "April, April! Heute ist alles erlaubt 😄",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-02": {
+      "emoji": "🌍",
+      "titel": "Welt-Autismus-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "04-03": {
+      "emoji": "🍫",
+      "titel": "Schokoladenmousse-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-04": {
+      "emoji": "🐔",
+      "titel": "Lauf-um-die-Dinge-herum-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-05": {
+      "emoji": "🗺️",
+      "titel": "Lies-eine-Straßenkarte-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-06": {
+      "emoji": "😢",
+      "titel": "Sorry-Charlie-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-07": {
+      "emoji": "🌍",
+      "titel": "Welt-Gesundheits-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "04-08": {
+      "emoji": "🐦",
+      "titel": "Zeichne-einen-Vogel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-09": {
+      "emoji": "🦄",
+      "titel": "Einhorn-Tag! 🦄",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-10": {
+      "emoji": "👫",
+      "titel": "Geschwister-Tag – ruf an!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-11": {
+      "emoji": "🎵",
+      "titel": "Barbershop Quartet Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "04-12": {
+      "emoji": "🚀",
+      "titel": "Juri Gagarin Tag – erster Mensch im All!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-13": {
+      "emoji": "🔤",
+      "titel": "Scrabble-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-14": {
+      "emoji": "☁️",
+      "titel": "Schau-in-den-Himmel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-15": {
+      "emoji": "💰",
+      "titel": "Steuertag (USA) – zum Glück nicht hier",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-16": {
+      "emoji": "🍳",
+      "titel": "Eggs Benedict Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "04-17": {
+      "emoji": "✍️",
+      "titel": "Haiku-Poesie-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-18": {
+      "emoji": "🏛️",
+      "titel": "Tag der Monumente",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-19": {
+      "emoji": "🧄",
+      "titel": "Knoblauch-Tag – Vampirschutz inklusive!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-20": {
+      "emoji": "👀",
+      "titel": "Sieht-aus-wie-jemand-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-21": {
+      "emoji": "🐎",
+      "titel": "Queens Birthday (UK)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "04-22": {
+      "emoji": "🌍",
+      "titel": "Earth Day – die Erde braucht uns",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "04-23": {
+      "emoji": "📚",
+      "titel": "Shakespeare Day & Welt-Buch-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "04-24": {
+      "emoji": "🐧",
+      "titel": "Welt-Pinguin-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "04-25": {
+      "emoji": "🦒",
+      "titel": "Welt-Malaria-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "04-26": {
+      "emoji": "🥨",
+      "titel": "Nationaler Brezel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "04-27": {
+      "emoji": "📖",
+      "titel": "Erzähl-eine-Geschichte-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-28": {
+      "emoji": "🌺",
+      "titel": "Große-Poesie-Lesung-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "04-29": {
+      "emoji": "💃",
+      "titel": "Internationaler Tanztag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "04-30": {
+      "emoji": "💇",
+      "titel": "Frisur-Wertschätzungs-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-01": {
+      "emoji": "✊",
+      "titel": "Tag der Arbeit – verdient frei!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-02": {
+      "emoji": "👶",
+      "titel": "Nationaler Babytag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-03": {
+      "emoji": "🌍",
+      "titel": "Weltpressefreiheitstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "05-04": {
+      "emoji": "🚀",
+      "titel": "Star Wars Day – May the 4th be with you!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-05": {
+      "emoji": "🍣",
+      "titel": "Internationaler Sushi-Tag 🍣",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-06": {
+      "emoji": "🍰",
+      "titel": "Kein-Diät-Tag – schlemmen erlaubt!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-07": {
+      "emoji": "🎵",
+      "titel": "Beethovens Tauftag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-08": {
+      "emoji": "🕊️",
+      "titel": "Tag der Befreiung · Rotes Kreuz Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-09": {
+      "emoji": "🧦",
+      "titel": "No Socks Day – Socken sind überbewertet! 🧦",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-10": {
+      "emoji": "🎗️",
+      "titel": "Welt-Lupus-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": "https://worldlupusday.org/"
+    },
+    "05-11": {
+      "emoji": "🍽️",
+      "titel": "Iss-was-du-willst-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-12": {
+      "emoji": "🏥",
+      "titel": "Florence Nightingale Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-13": {
+      "emoji": "🍀",
+      "titel": "Kleeblatt-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-14": {
+      "emoji": "🚲",
+      "titel": "Fahrrad-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-15": {
+      "emoji": "🌍",
+      "titel": "Internationaler Familientag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "05-16": {
+      "emoji": "📖",
+      "titel": "Nationaler Biografie-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-17": {
+      "emoji": "🌈",
+      "titel": "Tag gegen Homophobie & Transphobie",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-18": {
+      "emoji": "🏛️",
+      "titel": "Internationaler Museumstag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-19": {
+      "emoji": "☀️",
+      "titel": "May Ray Day – Sonne genießen!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-20": {
+      "emoji": "🐝",
+      "titel": "Weltbienentag – rettet die Bienen!",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "05-21": {
+      "emoji": "🌍",
+      "titel": "Tag der kulturellen Vielfalt",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "05-22": {
+      "emoji": "🌿",
+      "titel": "Welt-Biodiversitäts-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "05-23": {
+      "emoji": "🐢",
+      "titel": "Welt-Schildkröten-Tag 🐢",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "05-24": {
+      "emoji": "🔍",
+      "titel": "Schnitzeljagd-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-25": {
+      "emoji": "🎭",
+      "titel": "Towel Day – Dont Panic! (Hitchhikers Guide)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-26": {
+      "emoji": "✈️",
+      "titel": "Papierflieger-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-27": {
+      "emoji": "🌍",
+      "titel": "Welt-Hunger-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "05-28": {
+      "emoji": "🍔",
+      "titel": "National Hamburger Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-29": {
+      "emoji": "🛏️",
+      "titel": "Kopfkissen-auf-den-Kühlschrank-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "05-30": {
+      "emoji": "🪣",
+      "titel": "My Bucket List Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "05-31": {
+      "emoji": "🚭",
+      "titel": "Weltnichtrauchertag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-01": {
+      "emoji": "👶",
+      "titel": "Internationaler Kindertag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-02": {
+      "emoji": "🏃",
+      "titel": "Verlass-das-Büro-früher-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-03": {
+      "emoji": "🍩",
+      "titel": "Nationaler Donut-Tag 🍩",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-04": {
+      "emoji": "🧀",
+      "titel": "Nationaler Käse-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-05": {
+      "emoji": "🌿",
+      "titel": "Weltumwelttag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-06": {
+      "emoji": "🎬",
+      "titel": "Drive-in-Kino-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-07": {
+      "emoji": "🍫",
+      "titel": "Schokoladen-Eis-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-08": {
+      "emoji": "🌊",
+      "titel": "Welt-Ozean-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-09": {
+      "emoji": "🦆",
+      "titel": "Donald Duck Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-10": {
+      "emoji": "🍹",
+      "titel": "Eistee-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-11": {
+      "emoji": "🌽",
+      "titel": "Mais-am-Kolben-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-12": {
+      "emoji": "🍷",
+      "titel": "Loving Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-13": {
+      "emoji": "🦅",
+      "titel": "Welt-Albatros-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "06-14": {
+      "emoji": "🚩",
+      "titel": "Flag Day (USA)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-15": {
+      "emoji": "👴",
+      "titel": "Welt-Tag gegen Älterdiskriminierung",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "06-16": {
+      "emoji": "🥗",
+      "titel": "Frisches-Gemüse-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-17": {
+      "emoji": "🥦",
+      "titel": "Iss-dein-Gemüse-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-18": {
+      "emoji": "🧺",
+      "titel": "Internationaler Picknick-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-19": {
+      "emoji": "🕊️",
+      "titel": "Juneteenth",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-20": {
+      "emoji": "🌍",
+      "titel": "Weltflüchtlingstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-21": {
+      "emoji": "☀️",
+      "titel": "Sommersonnenwende – längster Tag des Jahres!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-22": {
+      "emoji": "🌳",
+      "titel": "Welt-Regenwald-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "06-23": {
+      "emoji": "🌍",
+      "titel": "Internationaler Witwen-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-24": {
+      "emoji": "🧚",
+      "titel": "Internationaler Feen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-25": {
+      "emoji": "⚓",
+      "titel": "Tag der Seeleute",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-26": {
+      "emoji": "☮️",
+      "titel": "Weltdrogenbekämpfungstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "06-27": {
+      "emoji": "🎣",
+      "titel": "Internationaler Angeltag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-28": {
+      "emoji": "🏔️",
+      "titel": "Paul Bunyan Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "06-29": {
+      "emoji": "🐦",
+      "titel": "Kolibri-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "06-30": {
+      "emoji": "☄️",
+      "titel": "Asteroid Day – schau mal hoch!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-01": {
+      "emoji": "🍁",
+      "titel": "Canada Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-02": {
+      "emoji": "🛸",
+      "titel": "Welt-UFO-Tag – Augen auf!",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "07-03": {
+      "emoji": "🫘",
+      "titel": "Iss-Bohnen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-04": {
+      "emoji": "🎆",
+      "titel": "US Independence Day – Feuerwerk!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-05": {
+      "emoji": "🏃",
+      "titel": "Nationaler Workaholic-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-06": {
+      "emoji": "💋",
+      "titel": "Internationaler Kuss-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-07": {
+      "emoji": "🍫",
+      "titel": "Welt-Schokoladentag 🍫",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "07-08": {
+      "emoji": "🎮",
+      "titel": "Videospiel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-09": {
+      "emoji": "🍪",
+      "titel": "Zucker-Keks-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-10": {
+      "emoji": "🐻",
+      "titel": "Teddybär-Picknick-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-11": {
+      "emoji": "🌍",
+      "titel": "Weltbevölkerungstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "07-12": {
+      "emoji": "🌸",
+      "titel": "Einfachheits-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-13": {
+      "emoji": "🍟",
+      "titel": "Pommes-Tag! 🍟",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-14": {
+      "emoji": "🎭",
+      "titel": "Bastille-Tag – Vive la France!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-15": {
+      "emoji": "🐛",
+      "titel": "Gummiwurm-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-16": {
+      "emoji": "🐍",
+      "titel": "Welt-Schlangen-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "07-17": {
+      "emoji": "😊",
+      "titel": "Welt-Emoji-Tag 😊🎉",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "07-18": {
+      "emoji": "🌍",
+      "titel": "Nelson Mandela International Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-19": {
+      "emoji": "👅",
+      "titel": "Streck-deine-Zunge-raus-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-20": {
+      "emoji": "🚀",
+      "titel": "Moon Day – Mondlandung 1969!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-21": {
+      "emoji": "🍟",
+      "titel": "Nationaler Junk Food Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-22": {
+      "emoji": "🥧",
+      "titel": "Pi-Näherungs-Tag (22/7)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-23": {
+      "emoji": "👵",
+      "titel": "Wunderschöne-Oma-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-24": {
+      "emoji": "🥃",
+      "titel": "Tequila-Tag – Prost!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-25": {
+      "emoji": "🧵",
+      "titel": "Faden-einfädeln-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-26": {
+      "emoji": "🎤",
+      "titel": "One Voice Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-27": {
+      "emoji": "👖",
+      "titel": "Hosen-spazieren-führen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "07-28": {
+      "emoji": "🌍",
+      "titel": "Welt-Hepatitis-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "07-29": {
+      "emoji": "🐯",
+      "titel": "Internationaler Tiger-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "07-30": {
+      "emoji": "🤝",
+      "titel": "Freundschaftstag – ruf an!",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "07-31": {
+      "emoji": "🥑",
+      "titel": "Avocado-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-01": {
+      "emoji": "🌿",
+      "titel": "Welt-Lungenkrebstag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "08-02": {
+      "emoji": "🍦",
+      "titel": "Eis-Sandwich-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-03": {
+      "emoji": "🍉",
+      "titel": "Welt-Wassermelonen-Tag 🍉",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "08-04": {
+      "emoji": "🍪",
+      "titel": "Chocolate Chip Cookie Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-05": {
+      "emoji": "🐕",
+      "titel": "Arbeite-wie-ein-Hund-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-06": {
+      "emoji": "🍺",
+      "titel": "Root Beer Float Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-07": {
+      "emoji": "🏠",
+      "titel": "Leuchtturm-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-08": {
+      "emoji": "🐱",
+      "titel": "Internationaler Katzentag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "08-09": {
+      "emoji": "🌍",
+      "titel": "Tag der indigenen Völker",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "08-10": {
+      "emoji": "😴",
+      "titel": "Faulheits-Tag – verdient!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-11": {
+      "emoji": "🃏",
+      "titel": "Präsidentenwitz-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-12": {
+      "emoji": "🎸",
+      "titel": "Weltjugendtag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "08-13": {
+      "emoji": "✋",
+      "titel": "Linkshänder-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-14": {
+      "emoji": "🕊️",
+      "titel": "VJ Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-15": {
+      "emoji": "🧘",
+      "titel": "Entspannungs-Tag – einfach sein",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-16": {
+      "emoji": "🎸",
+      "titel": "Elvis-Gedenktag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-17": {
+      "emoji": "🐈‍⬛",
+      "titel": "Schwarze-Katze-Wertschätzungs-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-18": {
+      "emoji": "🎭",
+      "titel": "Bad Poetry Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-19": {
+      "emoji": "📸",
+      "titel": "Welt-Fotografietag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "08-20": {
+      "emoji": "🍋",
+      "titel": "Limonade-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-21": {
+      "emoji": "👴",
+      "titel": "Seniorentag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-22": {
+      "emoji": "😇",
+      "titel": "Sei-ein-Engel-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-23": {
+      "emoji": "🌬️",
+      "titel": "Reite-den-Wind-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "08-24": {
+      "emoji": "🧇",
+      "titel": "National Waffle Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-25": {
+      "emoji": "🍌",
+      "titel": "Banana Split Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-26": {
+      "emoji": "🐕",
+      "titel": "Internationaler Hunde-Tag 🐕",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-27": {
+      "emoji": "❓",
+      "titel": "Just-Because-Day – einfach so!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "08-28": {
+      "emoji": "🖱️",
+      "titel": "Race-Your-Mouse-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-29": {
+      "emoji": "☢️",
+      "titel": "Tag gegen Atomtests",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-30": {
+      "emoji": "🍡",
+      "titel": "Toast-Marshmallow-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "08-31": {
+      "emoji": "🌟",
+      "titel": "Draußen-essen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-01": {
+      "emoji": "🎒",
+      "titel": "Schulstart – viel Erfolg!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-02": {
+      "emoji": "🥥",
+      "titel": "Welt-Kokosnuss-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-03": {
+      "emoji": "🏙️",
+      "titel": "Wolkenkratzer-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-04": {
+      "emoji": "📰",
+      "titel": "Zeitungsträger-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-05": {
+      "emoji": "💝",
+      "titel": "Welt-Wohltätigkeits-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-06": {
+      "emoji": "⏰",
+      "titel": "Kämpfe-gegen-Prokrastination-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-07": {
+      "emoji": "☀️",
+      "titel": "Egal-ob-Regen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-08": {
+      "emoji": "📖",
+      "titel": "Welt-Alphabetisierungs-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-09": {
+      "emoji": "🐻",
+      "titel": "Teddybär-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-10": {
+      "emoji": "🌊",
+      "titel": "Welt-Suizidprävention-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-11": {
+      "emoji": "🕊️",
+      "titel": "Patriot Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "09-12": {
+      "emoji": "🎮",
+      "titel": "Nationaler Videospiele-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "09-13": {
+      "emoji": "🍫",
+      "titel": "Internationaler Schokoladentag 🍫",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "09-14": {
+      "emoji": "🥖",
+      "titel": "Baguette-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-15": {
+      "emoji": "🔵",
+      "titel": "Internationaler Punkt-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-16": {
+      "emoji": "🥑",
+      "titel": "Guacamole-Tag – Avocados feiern!",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-17": {
+      "emoji": "🎸",
+      "titel": "Internationaler Country-Musik-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "09-18": {
+      "emoji": "📱",
+      "titel": "Welt-Wasserstoff-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-19": {
+      "emoji": "🏴‍☠️",
+      "titel": "Sprich-wie-ein-Pirat-Tag – Arrr! ☠️",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-20": {
+      "emoji": "🌍",
+      "titel": "Welt-Aufräum-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-21": {
+      "emoji": "☮️",
+      "titel": "Internationaler Friedenstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-22": {
+      "emoji": "🍂",
+      "titel": "Herbstanfang – bunte Blätter!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-23": {
+      "emoji": "☑️",
+      "titel": "Checklisten-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-24": {
+      "emoji": "✍️",
+      "titel": "Interpunktions-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "09-25": {
+      "emoji": "💭",
+      "titel": "Welt-Traum-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-26": {
+      "emoji": "🌍",
+      "titel": "Welt-Kontrazeption-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-27": {
+      "emoji": "✈️",
+      "titel": "Welt-Tourismus-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "09-28": {
+      "emoji": "🐱",
+      "titel": "Welt-Tollwut-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-29": {
+      "emoji": "❤️",
+      "titel": "Welt-Herztag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "09-30": {
+      "emoji": "🌍",
+      "titel": "Internationaler Übersetzungs-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-01": {
+      "emoji": "🎵",
+      "titel": "Welt-Musik-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-02": {
+      "emoji": "🌍",
+      "titel": "Welt-Habitat-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-03": {
+      "emoji": "🇩🇪",
+      "titel": "Tag der Deutschen Einheit – frei!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-04": {
+      "emoji": "🐾",
+      "titel": "Welt-Tierschutztag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-05": {
+      "emoji": "👩‍🏫",
+      "titel": "Welt-Lehrer-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-06": {
+      "emoji": "🇩🇪🇺🇸",
+      "titel": "Deutsch-Amerikanischer Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-07": {
+      "emoji": "🍭",
+      "titel": "Welt-Zuckerwatte-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-08": {
+      "emoji": "🐙",
+      "titel": "Welt-Oktopus-Tag 🐙",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-09": {
+      "emoji": "📮",
+      "titel": "Welt-Posttag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-10": {
+      "emoji": "🧠",
+      "titel": "Welt-Mental-Gesundheitstag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-11": {
+      "emoji": "👧",
+      "titel": "Internationaler Mädchen-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-12": {
+      "emoji": "🥚",
+      "titel": "Welt-Ei-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-13": {
+      "emoji": "🤨",
+      "titel": "Internationaler Skeptiker-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "10-14": {
+      "emoji": "📏",
+      "titel": "Welt-Normen-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-15": {
+      "emoji": "🧼",
+      "titel": "Welt-Händewaschen-Tag – bitte waschen!",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-16": {
+      "emoji": "🍞",
+      "titel": "Welt-Brot-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-17": {
+      "emoji": "🌍",
+      "titel": "Tag zur Beseitigung von Armut",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-18": {
+      "emoji": "🍬",
+      "titel": "Welt-Menopause-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-19": {
+      "emoji": "🤔",
+      "titel": "Bewerte-dein-Leben-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-20": {
+      "emoji": "📊",
+      "titel": "Welt-Statistik-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-21": {
+      "emoji": "🍎",
+      "titel": "Apple Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "10-22": {
+      "emoji": "🎨",
+      "titel": "Nationaler Farben-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "10-23": {
+      "emoji": "⚗️",
+      "titel": "Mole Day (6:02 Uhr!)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "10-24": {
+      "emoji": "🌍",
+      "titel": "UN-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "10-25": {
+      "emoji": "🍝",
+      "titel": "Welt-Nudel-Tag 🍝",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-26": {
+      "emoji": "🎃",
+      "titel": "Kürbis-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-27": {
+      "emoji": "⚓",
+      "titel": "Navy Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "10-28": {
+      "emoji": "🍫",
+      "titel": "Nochmal Schokolade – warum nicht?",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-29": {
+      "emoji": "🌍",
+      "titel": "Welt-Psoriasis-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "10-30": {
+      "emoji": "👻",
+      "titel": "Gruseliger-Kühlschrank-Abend",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "10-31": {
+      "emoji": "🎃",
+      "titel": "Halloween – gruselige Nacht! 👻",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-01": {
+      "emoji": "🌍",
+      "titel": "Allerheiligen",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-02": {
+      "emoji": "🌍",
+      "titel": "Allerseelen",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-03": {
+      "emoji": "🥪",
+      "titel": "Sandwich-Tag – sandwich time!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-04": {
+      "emoji": "🌍",
+      "titel": "Welt-Wissenschafts-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-05": {
+      "emoji": "🎆",
+      "titel": "Guy Fawkes Night – Bonfire Night!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-06": {
+      "emoji": "🎵",
+      "titel": "Saxophon-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-07": {
+      "emoji": "🌍",
+      "titel": "Welt-Krebsbewusstseins-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-08": {
+      "emoji": "🍳",
+      "titel": "Koche-was-Gewagtes-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-09": {
+      "emoji": "🌍",
+      "titel": "Welt-Freiheits-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-10": {
+      "emoji": "🦋",
+      "titel": "Welt-Jugend-Wissenschafts-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-11": {
+      "emoji": "🥐",
+      "titel": "St. Martin – Laternenumzug! 🏮",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-12": {
+      "emoji": "🌍",
+      "titel": "Welt-Pneumonie-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-13": {
+      "emoji": "🤝",
+      "titel": "Welt-Freundlichkeits-Tag – sei nett!",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-14": {
+      "emoji": "🌍",
+      "titel": "Welt-Diabetes-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "11-15": {
+      "emoji": "♻️",
+      "titel": "America Recycles Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "11-16": {
+      "emoji": "🌍",
+      "titel": "Internationaler Toleranz-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "11-17": {
+      "emoji": "🎓",
+      "titel": "Internationaler Studenten-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "11-18": {
+      "emoji": "🐭",
+      "titel": "Mickey Mouse Geburtstag 1928!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-19": {
+      "emoji": "🚽",
+      "titel": "Welt-Toiletten-Tag – ja, wirklich! 🚽",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "11-20": {
+      "emoji": "👶",
+      "titel": "Welt-Kindertag (UN)",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "11-21": {
+      "emoji": "📺",
+      "titel": "Welt-Fernseh-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "11-22": {
+      "emoji": "🚗",
+      "titel": "Fahr-eine-Runde-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-23": {
+      "emoji": "🔢",
+      "titel": "Fibonacci-Tag (1,1,2,3)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-24": {
+      "emoji": "🦕",
+      "titel": "Evolutions-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-25": {
+      "emoji": "🌍",
+      "titel": "Tag gegen Gewalt an Frauen",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "11-26": {
+      "emoji": "🎂",
+      "titel": "Kuchen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "11-27": {
+      "emoji": "🪡",
+      "titel": "Pins and Needles Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "11-28": {
+      "emoji": "🍞",
+      "titel": "French Toast Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "11-29": {
+      "emoji": "🛒",
+      "titel": "Black Friday – Schnäppchen jagen!",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "11-30": {
+      "emoji": "🏠",
+      "titel": "Bleib-zu-Hause-obwohl-du-gesund-bist-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-01": {
+      "emoji": "🎗️",
+      "titel": "Welt-Aids-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "12-02": {
+      "emoji": "💻",
+      "titel": "Welt-Computer-Alphabetisierungs-Tag",
+      "kategorie": "Aktionstag",
+      "region": "International",
+      "quelle": null
+    },
+    "12-03": {
+      "emoji": "🌍",
+      "titel": "Welt-Behinderter-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "12-04": {
+      "emoji": "🍪",
+      "titel": "Nationaler Keks-Tag 🍪",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-05": {
+      "emoji": "🌍",
+      "titel": "Welt-Boden-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "12-06": {
+      "emoji": "🎅",
+      "titel": "Nikolaustag – Stiefel raus!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-07": {
+      "emoji": "🕍",
+      "titel": "Pearl Harbor Gedenktag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-08": {
+      "emoji": "⏰",
+      "titel": "Zeitreisender-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-09": {
+      "emoji": "🌍",
+      "titel": "Anti-Korruptions-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-10": {
+      "emoji": "🌍",
+      "titel": "Menschenrechts-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "12-11": {
+      "emoji": "🏔️",
+      "titel": "Internationaler Bergtag",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-12": {
+      "emoji": "🌺",
+      "titel": "Weihnachtsstern-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-13": {
+      "emoji": "🍦",
+      "titel": "Eis-Tag im Winter (warum nicht?)",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-14": {
+      "emoji": "🐒",
+      "titel": "Affen-Tag – Monkey Day! 🐒",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-15": {
+      "emoji": "📜",
+      "titel": "Bill of Rights Day (USA)",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-16": {
+      "emoji": "🍫",
+      "titel": "Schokolade-überzogene-alles-Tag 🍫",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-17": {
+      "emoji": "🐕",
+      "titel": "Underdog Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-18": {
+      "emoji": "📞",
+      "titel": "Buddy-the-Elf-Telefon-Tag",
+      "kategorie": "offizieller Aktionstag",
+      "region": "International",
+      "quelle": "https://www.un.org/en/observances/list-days-weeks"
+    },
+    "12-19": {
+      "emoji": "🌲",
+      "titel": "Such-einen-Tannenbaum-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-20": {
+      "emoji": "🎵",
+      "titel": "Weihnachtslieder-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-21": {
+      "emoji": "❄️",
+      "titel": "Wintersonnenwende – kürzester Tag!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-22": {
+      "emoji": "🎭",
+      "titel": "Dattel-Nuss-Brot-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-23": {
+      "emoji": "❄️",
+      "titel": "Schneeflocken-Ausschneiden-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-24": {
+      "emoji": "🎅",
+      "titel": "Heiligabend – Vorfreude!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-25": {
+      "emoji": "🎄",
+      "titel": "Frohe Weihnachten! 🎁",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-26": {
+      "emoji": "🎁",
+      "titel": "Boxing Day",
+      "kategorie": "Kalenderfundstück",
+      "region": "USA",
+      "quelle": null
+    },
+    "12-27": {
+      "emoji": "✂️",
+      "titel": "Schneeflocken-Basteln-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-28": {
+      "emoji": "🃏",
+      "titel": "Karten-Spielen-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-29": {
+      "emoji": "🫙",
+      "titel": "Pfeffersuppe-Tag",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-30": {
+      "emoji": "🥓",
+      "titel": "Speck-Tag – Bacon!",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    },
+    "12-31": {
+      "emoji": "🥂",
+      "titel": "Silvester – auf ein neues Jahr! 🎆",
+      "kategorie": "Kalenderfundstück",
+      "region": "Verschiedene",
+      "quelle": null
+    }
+  }
 }

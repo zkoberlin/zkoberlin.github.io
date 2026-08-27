@@ -1,6 +1,6 @@
 # Schnittstellen- und Sicherheitsregister
 
-Stand: 26.08.2026
+Stand: 27.08.2026
 
 Dieses Register beschreibt die externen Datenflüsse des Hubs und seiner Unterseiten. Es dokumentiert keine Secret-Werte. Öffentlich ausgelieferter Browser-Code wird grundsätzlich als öffentlich einsehbar behandelt.
 
@@ -31,7 +31,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
 | Dienst | Zweck | Zugriff | Daten / Zugang | Fallback und Cache | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- | --- |
-| lokale Dateien unter `data/` | Namenstage, Geburtstage, Ferientermine, Union, Transfers, Sondertage | Lesen | öffentlich | teilweise API-Fallback; Browsercache | **Niedrig:** Schema und Aktualitätsdatum je Datei dokumentieren. |
+| lokale Dateien unter `data/` | Namenstage, Geburtstage, Ferientermine, Union, Transfers, Tageshinweise | Lesen | öffentlich | Tageshinweise mit validiertem Schema, Kategorie, Region und optionaler Quelle; teilweise API-Fallback; Browsercache | **Niedrig:** verbleibende Dateien ebenfalls auf versionierte Schemas umstellen. |
 | Open-Meteo | Wetter und Vorhersage | Lesen | Berlin oder nach bewusster Freigabe auf zwei Dezimalstellen gerundete Standortkoordinaten | 15-Minuten-Sitzungscache, automatischer Refresh, veralteter Cache bei Ausfall | **Niedrig:** sichtbare Quellenangabe aktiv; Anbieterbedingungen regelmäßig prüfen. |
 | Nominatim / OpenStreetMap über eigenes Backend | Ortsname zum freigegebenen Wetterstandort | Lesen | auf zwei Dezimalstellen gerundete Koordinaten | 30-Tage-KV-Cache, Symbol-/Werteprüfung, sichtbare OSM-Namensnennung | **Niedrig:** Anbieterpolicy und Cachewirkung regelmäßig prüfen. |
 | Wikimedia/Wikipedia | Tagesereignisse und Geburtstags-Pipeline | Lesen | öffentliche Daten | validierte lokale Geburtstagsdatei; keine direkte Geburtstagsabfrage im Browser | **Niedrig:** externe Texte werden über sichere DOM-Methoden ausgegeben. |
