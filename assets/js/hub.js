@@ -873,6 +873,7 @@ async function loadTrailyxPreview(){
     if(!response.ok)throw new Error(`HTTP ${response.status}`);
     const data=await response.json();
     if(!validTravelPreview(data))throw new Error('Ungültiges Schema');
+    document.getElementById('travelDesc').textContent=`Deine Reiseübersicht für ${data.year}.`;
     renderTravelTrip('travelNext',data.nextTrip,'Keine Reise geplant');
     renderTravelTrip('travelLast',data.lastTrip,'Noch keine abgeschlossene Reise');
     document.getElementById('travelKm').textContent=new Intl.NumberFormat('de-DE').format(data.stats.distanceKm);
