@@ -229,6 +229,35 @@ function renderSpecialDay(entry,stand){
   if(stand)meta.title=`Datenstand ${stand.split('-').reverse().join('.')}`;
 }
 
+function validNamedayData(data){
+  if(data?.schemaVersion!==2||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(data?.stand||'')||!data?.tage||typeof data.tage!=='object')return false;
+  if(!data.quelle||typeof data.quelle.name!=='string'||!String(data.quelle.url||'').startsWith('https://'))return false;
+  const entries=Object.entries(data.tage);
+  if(entries.length!==366)return false;
+  return entries.every(([key,entry])=>/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(key)
+    &&Object.keys(entry||{}).sort().join(',')==='namen,quelle'
+    &&Array.isArray(entry.namen)&&entry.namen.length>0&&entry.namen.length<=20
+    &&entry.namen.every(name=>typeof name==='string'&&name.trim()&&name.length<=80)
+    &&typeof entry.quelle==='string'&&entry.quelle.trim());
+}
+
+function renderNameday(entry,data){
+  document.getElementById('namenstagVal').textContent=entry.namen.join(', ');
+  const meta=document.getElementById('namenstagMeta');
+  meta.replaceChildren();
+  const generated=new Date(data.stand);
+  const label=document.createElement('span');
+  label.textContent=`Deutscher Namenstagskalender · Stand ${generated.toLocaleDateString('de-DE')}`;
+  meta.append(label,document.createTextNode(' · '));
+  const source=document.createElement('a');
+  source.href=data.quelle.url;
+  source.target='_blank';
+  source.rel='noopener noreferrer';
+  source.textContent='Quelle ↗';
+  meta.appendChild(source);
+  meta.title=entry.quelle;
+}
+
 let dayInfoDateKey='';
 async function loadDayInfo(){
   const current=new Date();
@@ -271,54 +300,19 @@ async function loadDayInfo(){
     document.getElementById('specialMeta').textContent='Lokale Daten konnten nicht geladen werden';
   }
 
-  // ── Namenstag – lokale JSON (via GitHub Actions) + API-Fallbacks ──
+  // ── Namenstag – ausschließlich validierte lokale Jahresdatei ──
   try {
-    const key2=`${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    let found = false;
-
-    // 1. Primär: lokale JSON
-    try {
-      const res2 = await fetch('data/namenstage.json', {signal: AbortSignal.timeout(3000)});
-      if(res2.ok){
-        const map = await res2.json();
-        const name = map[key2];
-        if(name){ document.getElementById('namenstagVal').textContent = name; found = true; }
-      }
-    } catch(e2) {}
-
-    // 2. Fallback A: nameday.abalin.net (via allorigins CORS-Proxy)
-    if(!found){
-      try {
-        const apiUrl=`https://nameday.abalin.net/api/V1/today?country=de`;
-        const proxyUrl=`https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
-        const res = await fetch(proxyUrl, {signal: AbortSignal.timeout(5000)});
-        if(res.ok){
-          const json = await res.json();
-          const names = json?.data?.de;
-          if(names){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
-        }
-      } catch(e3) {}
-    }
-
-    // 3. Fallback B: nameday.info (direkt – oft CORS-offen)
-    if(!found){
-      try {
-        const res = await fetch(`https://api.nameday.info/nameday/DE/${m}/${d}`, {signal: AbortSignal.timeout(4000)});
-        if(res.ok){
-          const json = await res.json();
-          const names = json?.data || json?.namedays || [];
-          if(names && names.length){ document.getElementById('namenstagVal').textContent = Array.isArray(names)?names.join(', '):names; found = true; }
-        }
-      } catch(e4) {}
-    }
-
-    if(!found){
-      document.getElementById('namenstagSection').style.display='none';
-      document.getElementById('namenstagSection').previousElementSibling.style.display='none';
-    }
+    const response=await fetch(`data/namenstage.json?v=${window.PAUL_APP_VERSION||'2'}`,{signal:AbortSignal.timeout(4000)});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(!validNamedayData(data))throw new Error('Ungültiges Schema');
+    const entry=data.tage[key];
+    if(!entry)throw new Error('Kein Eintrag');
+    renderNameday(entry,data);
   } catch(e) {
-    document.getElementById('namenstagSection').style.display='none';
-    document.getElementById('namenstagSection').previousElementSibling.style.display='none';
+    console.warn('Namenstag Fehler:',e);
+    document.getElementById('namenstagVal').textContent='Keine Namenstagsdaten verfügbar';
+    document.getElementById('namenstagMeta').textContent='Lokale Jahresdatei konnte nicht geladen werden';
   }
 
   // ── Heute in der Geschichte – Wikipedia On This Day API ──

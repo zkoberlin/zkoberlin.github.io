@@ -2,19 +2,26 @@ name: Update Namenstage
 
 on:
   schedule:
-    # Täglich 04:00 UTC (= 06:00 CEST / 05:00 CET)
-    - cron: '0 4 * * *'
+    # Monatlich am 1. um 03:30 UTC; Namenstage ändern sich nicht täglich.
+    - cron: '30 3 1 * *'
   workflow_dispatch:  # Manuell auslösbar
+
+concurrency:
+  group: namenstage-update
+  cancel-in-progress: false
 
 jobs:
   update-namenstage:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write  # Nötig für git commit
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,4 +37,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/namenstage.json
           git diff --cached --quiet || git commit -m "chore: Namenstage aktualisiert [skip ci]"
-          git push
+          git pull --rebase origin main
+          git push origin main

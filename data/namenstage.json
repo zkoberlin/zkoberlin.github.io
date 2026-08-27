@@ -1,368 +1,2224 @@
 {
-  "01-01": "Maria",
-  "01-02": "Gregor",
-  "01-03": "Genoveva",
-  "01-04": "Angela",
-  "01-05": "Simeon",
-  "01-06": "Kaspar, Melchior, Balthasar",
-  "01-07": "Valentin",
-  "01-08": "Erhard",
-  "01-09": "Hadrian",
-  "01-10": "Agatho",
-  "01-11": "Paulinus",
-  "01-12": "Tatjana",
-  "01-13": "Hilarius",
-  "01-14": "Felix",
-  "01-15": "Maurus",
-  "01-16": "Marcellus",
-  "01-17": "Antonius",
-  "01-18": "Priska",
-  "01-19": "Marius",
-  "01-20": "Fabian, Sebastian",
-  "01-21": "Agnes",
-  "01-22": "Vinzenz",
-  "01-23": "Ildefons",
-  "01-24": "Franz de Sales",
-  "01-25": "Paulus",
-  "01-26": "Timotheus",
-  "01-27": "Angela",
-  "01-28": "Thomas v. Aquin",
-  "01-29": "Gildas",
-  "01-30": "Martina",
-  "01-31": "Johannes Bosco",
-  "02-01": "Brigitte",
-  "02-02": "Mariä Lichtmess",
-  "02-03": "Blasius",
-  "02-04": "Andreas",
-  "02-05": "Agatha",
-  "02-06": "Dorothea",
-  "02-07": "Richard",
-  "02-08": "Hieronymus",
-  "02-09": "Apollonia",
-  "02-10": "Scholastika",
-  "02-11": "Benedikt",
-  "02-12": "Eulalia",
-  "02-13": "Benigna",
-  "02-14": "Valentin",
-  "02-15": "Siegfried",
-  "02-16": "Juliana",
-  "02-17": "Alexius",
-  "02-18": "Bernadette",
-  "02-19": "Bonifatius",
-  "02-20": "Eleutherius",
-  "02-21": "Peregrin",
-  "02-22": "Petrus",
-  "02-23": "Polykarp",
-  "02-24": "Matthias",
-  "02-25": "Walburga",
-  "02-26": "Mechthild",
-  "02-27": "Gabriel",
-  "02-28": "Roman",
-  "02-29": "Oswald",
-  "03-01": "Albin",
-  "03-02": "Karl",
-  "03-03": "Kunigunde",
-  "03-04": "Kasimir",
-  "03-05": "Theophil",
-  "03-06": "Fridolin",
-  "03-07": "Perpetua",
-  "03-08": "Johann",
-  "03-09": "Franziska",
-  "03-10": "Alexander",
-  "03-11": "Rosina",
-  "03-12": "Gregor",
-  "03-13": "Leander",
-  "03-14": "Mathilde",
-  "03-15": "Klemens",
-  "03-16": "Herbert",
-  "03-17": "Gertrud, Patrick",
-  "03-18": "Cyrill",
-  "03-19": "Josef",
-  "03-20": "Wolfram",
-  "03-21": "Benedikt",
-  "03-22": "Lea",
-  "03-23": "Turibius",
-  "03-24": "Katharina",
-  "03-25": "Maria Verkündigung",
-  "03-26": "Emanuele",
-  "03-27": "Rupert",
-  "03-28": "Guntram",
-  "03-29": "Berthold",
-  "03-30": "Quirinus",
-  "03-31": "Benjamin",
-  "04-01": "Hugo",
-  "04-02": "Franz von Paula",
-  "04-03": "Richard",
-  "04-04": "Isidor",
-  "04-05": "Vinzenz",
-  "04-06": "Notker",
-  "04-07": "Hermann",
-  "04-08": "Walter",
-  "04-09": "Maria Cleophas",
-  "04-10": "Ezechiel",
-  "04-11": "Stanislaus",
-  "04-12": "Julius",
-  "04-13": "Martin",
-  "04-14": "Tiburtius",
-  "04-15": "Anastasia",
-  "04-16": "Bernadette",
-  "04-17": "Rudolf",
-  "04-18": "Apollonius",
-  "04-19": "Emma",
-  "04-20": "Agnes",
-  "04-21": "Anselm",
-  "04-22": "Soter",
-  "04-23": "Georg",
-  "04-24": "Fidelis",
-  "04-25": "Markus",
-  "04-26": "Kletus",
-  "04-27": "Zita",
-  "04-28": "Peter",
-  "04-29": "Katharina",
-  "04-30": "Pius",
-  "05-01": "Josef",
-  "05-02": "Athanasius",
-  "05-03": "Philipp, Jakobus",
-  "05-04": "Florian",
-  "05-05": "Gothard",
-  "05-06": "Petronax",
-  "05-07": "Gisela",
-  "05-08": "Stanislaus",
-  "05-09": "Beatus",
-  "05-10": "Antoninus",
-  "05-11": "Mamertus",
-  "05-12": "Pankratius",
-  "05-13": "Servatius",
-  "05-14": "Bonifatius",
-  "05-15": "Sophie",
-  "05-16": "Brendan",
-  "05-17": "Paschalis",
-  "05-18": "Johannes",
-  "05-19": "Cölestin",
-  "05-20": "Bernhardin",
-  "05-21": "Konstantin",
-  "05-22": "Rita",
-  "05-23": "Desiderius",
-  "05-24": "Donatian",
-  "05-25": "Urban",
-  "05-26": "Philipp Neri",
-  "05-27": "Augustin",
-  "05-28": "Wilhelm",
-  "05-29": "Maximilian",
-  "05-30": "Ferdinand",
-  "05-31": "Petronella",
-  "06-01": "Justinus",
-  "06-02": "Erasmus",
-  "06-03": "Karl",
-  "06-04": "Klothilde",
-  "06-05": "Bonifatius",
-  "06-06": "Norbert",
-  "06-07": "Robert",
-  "06-08": "Medardus",
-  "06-09": "Ephräm",
-  "06-10": "Landebert",
-  "06-11": "Barnabas",
-  "06-12": "Leo",
-  "06-13": "Antonius",
-  "06-14": "Rufinus",
-  "06-15": "Vitus",
-  "06-16": "Benno",
-  "06-17": "Raniero",
-  "06-18": "Markus",
-  "06-19": "Romuald",
-  "06-20": "Silvester",
-  "06-21": "Alois",
-  "06-22": "Paulinus",
-  "06-23": "Edeltrud",
-  "06-24": "Johannes d. T.",
-  "06-25": "Eleonore",
-  "06-26": "Vigilius",
-  "06-27": "Cyrill",
-  "06-28": "Irenäus",
-  "06-29": "Peter, Paul",
-  "06-30": "Paulus",
-  "07-01": "Theobald",
-  "07-02": "Martinianus",
-  "07-03": "Thomas",
-  "07-04": "Ulrich",
-  "07-05": "Antonius",
-  "07-06": "Isaias",
-  "07-07": "Willibald",
-  "07-08": "Kilian",
-  "07-09": "Veronica",
-  "07-10": "Amalia",
-  "07-11": "Benedikt",
-  "07-12": "Fortunat",
-  "07-13": "Heinrich",
-  "07-14": "Kamillus",
-  "07-15": "Bonaventura",
-  "07-16": "Maria vom Berge Karmel",
-  "07-17": "Alexius",
-  "07-18": "Friedrich",
-  "07-19": "Arsenius",
-  "07-20": "Margareta",
-  "07-21": "Lorenz",
-  "07-22": "Maria Magdalena",
-  "07-23": "Birgitta",
-  "07-24": "Christoph",
-  "07-25": "Jakobus",
-  "07-26": "Anna, Joachim",
-  "07-27": "Pantaleon",
-  "07-28": "Nazarius",
-  "07-29": "Martha",
-  "07-30": "Beatrix",
-  "07-31": "Ignatius",
-  "08-01": "Alfons",
-  "08-02": "Eusebius",
-  "08-03": "Lydia",
-  "08-04": "Dominikus",
-  "08-05": "Maria Schnee",
-  "08-06": "Verklärung des Herrn",
-  "08-07": "Cajetan",
-  "08-08": "Dominikus",
-  "08-09": "Romanus",
-  "08-10": "Laurentius",
-  "08-11": "Klara",
-  "08-12": "Johanna",
-  "08-13": "Hippolyt",
-  "08-14": "Maximilian Kolbe",
-  "08-15": "Mariä Himmelfahrt",
-  "08-16": "Rochus",
-  "08-17": "Hyazinth",
-  "08-18": "Helena",
-  "08-19": "Johannes Eudes",
-  "08-20": "Bernhard",
-  "08-21": "Pius X.",
-  "08-22": "Immaculatum",
-  "08-23": "Rosa",
-  "08-24": "Bartholomäus",
-  "08-25": "Ludwig",
-  "08-26": "Zephyrin",
-  "08-27": "Monika",
-  "08-28": "Augustinus",
-  "08-29": "Johannes Enthauptung",
-  "08-30": "Felizitas",
-  "08-31": "Raimund",
-  "09-01": "Verena",
-  "09-02": "Ingrid",
-  "09-03": "Gregor",
-  "09-04": "Rosalia",
-  "09-05": "Laurentius",
-  "09-06": "Magnus",
-  "09-07": "Regina",
-  "09-08": "Mariä Geburt",
-  "09-09": "Petrus",
-  "09-10": "Nikolaus",
-  "09-11": "Felix",
-  "09-12": "Mariä Namen",
-  "09-13": "Johannes Chrysostomus",
-  "09-14": "Kreuzerhöhung",
-  "09-15": "Maria Schmerzen",
-  "09-16": "Kornelius, Cyprian",
-  "09-17": "Hildegard, Robert",
-  "09-18": "Irene",
-  "09-19": "Januarius",
-  "09-20": "Eustachius",
-  "09-21": "Matthäus",
-  "09-22": "Mauritius",
-  "09-23": "Linus",
-  "09-24": "Gerhard",
-  "09-25": "Hermann",
-  "09-26": "Kosmas, Damian",
-  "09-27": "Vinzenz",
-  "09-28": "Wenzel",
-  "09-29": "Michael, Gabriel, Rafael",
-  "09-30": "Hieronymus",
-  "10-01": "Theresia",
-  "10-02": "Schutzengel",
-  "10-03": "Thomas",
-  "10-04": "Franz v. Assisi",
-  "10-05": "Faustina",
-  "10-06": "Bruno",
-  "10-07": "Rosenkranz-Maria",
-  "10-08": "Pelagia",
-  "10-09": "Dionys",
-  "10-10": "Paulinus",
-  "10-11": "Alexander",
-  "10-12": "Maximilian",
-  "10-13": "Eduard",
-  "10-14": "Kalixtus",
-  "10-15": "Theresia v. Ávila",
-  "10-16": "Hedwig, Gall",
-  "10-17": "Ignatius",
-  "10-18": "Lukas",
-  "10-19": "Paul",
-  "10-20": "Wendelin",
-  "10-21": "Ursula",
-  "10-22": "Kordula",
-  "10-23": "Johannes",
-  "10-24": "Antonius",
-  "10-25": "Krispin",
-  "10-26": "Evarist",
-  "10-27": "Sabine",
-  "10-28": "Simon, Judas",
-  "10-29": "Narcissus",
-  "10-30": "Alfons",
-  "10-31": "Wolfgang",
-  "11-01": "Allerheiligen",
-  "11-02": "Allerseelen",
-  "11-03": "Hubertus",
-  "11-04": "Karl Borromäus",
-  "11-05": "Zacharias",
-  "11-06": "Leonhard",
-  "11-07": "Willibrord",
-  "11-08": "Gottfried",
-  "11-09": "Theodor",
-  "11-10": "Leo",
-  "11-11": "Martin",
-  "11-12": "Josaphat",
-  "11-13": "Stanislaus",
-  "11-14": "Nikolaus Tavelić",
-  "11-15": "Albertus Magnus",
-  "11-16": "Margareta, Gertrud",
-  "11-17": "Hildegard, Elisabeth",
-  "11-18": "Odo",
-  "11-19": "Elisabeth",
-  "11-20": "Edmund",
-  "11-21": "Mariä Tempelgang",
-  "11-22": "Cäcilia",
-  "11-23": "Klemens",
-  "11-24": "Flora",
-  "11-25": "Katharina",
-  "11-26": "Silvester",
-  "11-27": "Virgil",
-  "11-28": "Jak. d. Märtyrer",
-  "11-29": "Saturnin",
-  "11-30": "Andreas",
-  "12-01": "Eligius",
-  "12-02": "Bibiana",
-  "12-03": "Franz Xaver",
-  "12-04": "Barbara",
-  "12-05": "Gerald",
-  "12-06": "Nikolaus",
-  "12-07": "Ambrosius",
-  "12-08": "Mariä Empfängnis",
-  "12-09": "Peter",
-  "12-10": "Melchiades",
-  "12-11": "Damasus",
-  "12-12": "Johanna",
-  "12-13": "Luzia",
-  "12-14": "Johannes",
-  "12-15": "Christiana",
-  "12-16": "Adelheid",
-  "12-17": "Lazarus",
-  "12-18": "Gratian",
-  "12-19": "Fausta",
-  "12-20": "Ursizin",
-  "12-21": "Thomas",
-  "12-22": "Franziska",
-  "12-23": "Dagobert",
-  "12-24": "Adam, Eva",
-  "12-25": "Christus Geburt",
-  "12-26": "Stephan",
-  "12-27": "Johannes",
-  "12-28": "Unschuldige Kinder",
-  "12-29": "Thomas Becket",
-  "12-30": "Sabinus",
-  "12-31": "Silvester"
+  "quelle": {
+    "name": "Redaktioneller Grundbestand",
+    "url": "https://github.com/zkoberlin/zkoberlin.github.io/blob/main/data/namenstage.json",
+    "version": "Bestand"
+  },
+  "schemaVersion": 2,
+  "stand": "2026-08-27T12:32:17Z",
+  "tage": {
+    "01-01": {
+      "namen": [
+        "Maria"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-02": {
+      "namen": [
+        "Gregor"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-03": {
+      "namen": [
+        "Genoveva"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-04": {
+      "namen": [
+        "Angela"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-05": {
+      "namen": [
+        "Simeon"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-06": {
+      "namen": [
+        "Kaspar",
+        "Melchior",
+        "Balthasar"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-07": {
+      "namen": [
+        "Valentin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-08": {
+      "namen": [
+        "Erhard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-09": {
+      "namen": [
+        "Hadrian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-10": {
+      "namen": [
+        "Agatho"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-11": {
+      "namen": [
+        "Paulinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-12": {
+      "namen": [
+        "Tatjana"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-13": {
+      "namen": [
+        "Hilarius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-14": {
+      "namen": [
+        "Felix"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-15": {
+      "namen": [
+        "Maurus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-16": {
+      "namen": [
+        "Marcellus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-17": {
+      "namen": [
+        "Antonius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-18": {
+      "namen": [
+        "Priska"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-19": {
+      "namen": [
+        "Marius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-20": {
+      "namen": [
+        "Fabian",
+        "Sebastian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-21": {
+      "namen": [
+        "Agnes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-22": {
+      "namen": [
+        "Vinzenz"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-23": {
+      "namen": [
+        "Ildefons"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-24": {
+      "namen": [
+        "Franz de Sales"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-25": {
+      "namen": [
+        "Paulus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-26": {
+      "namen": [
+        "Timotheus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-27": {
+      "namen": [
+        "Angela"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-28": {
+      "namen": [
+        "Thomas v. Aquin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-29": {
+      "namen": [
+        "Gildas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-30": {
+      "namen": [
+        "Martina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "01-31": {
+      "namen": [
+        "Johannes Bosco"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-01": {
+      "namen": [
+        "Brigitte"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-02": {
+      "namen": [
+        "Mariä Lichtmess"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-03": {
+      "namen": [
+        "Blasius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-04": {
+      "namen": [
+        "Andreas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-05": {
+      "namen": [
+        "Agatha"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-06": {
+      "namen": [
+        "Dorothea"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-07": {
+      "namen": [
+        "Richard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-08": {
+      "namen": [
+        "Hieronymus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-09": {
+      "namen": [
+        "Apollonia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-10": {
+      "namen": [
+        "Scholastika"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-11": {
+      "namen": [
+        "Benedikt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-12": {
+      "namen": [
+        "Eulalia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-13": {
+      "namen": [
+        "Benigna"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-14": {
+      "namen": [
+        "Valentin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-15": {
+      "namen": [
+        "Siegfried"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-16": {
+      "namen": [
+        "Juliana"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-17": {
+      "namen": [
+        "Alexius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-18": {
+      "namen": [
+        "Bernadette"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-19": {
+      "namen": [
+        "Bonifatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-20": {
+      "namen": [
+        "Eleutherius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-21": {
+      "namen": [
+        "Peregrin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-22": {
+      "namen": [
+        "Petrus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-23": {
+      "namen": [
+        "Polykarp"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-24": {
+      "namen": [
+        "Matthias"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-25": {
+      "namen": [
+        "Walburga"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-26": {
+      "namen": [
+        "Mechthild"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-27": {
+      "namen": [
+        "Gabriel"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-28": {
+      "namen": [
+        "Roman"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "02-29": {
+      "namen": [
+        "Oswald"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-01": {
+      "namen": [
+        "Albin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-02": {
+      "namen": [
+        "Karl"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-03": {
+      "namen": [
+        "Kunigunde"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-04": {
+      "namen": [
+        "Kasimir"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-05": {
+      "namen": [
+        "Theophil"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-06": {
+      "namen": [
+        "Fridolin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-07": {
+      "namen": [
+        "Perpetua"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-08": {
+      "namen": [
+        "Johann"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-09": {
+      "namen": [
+        "Franziska"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-10": {
+      "namen": [
+        "Alexander"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-11": {
+      "namen": [
+        "Rosina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-12": {
+      "namen": [
+        "Gregor"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-13": {
+      "namen": [
+        "Leander"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-14": {
+      "namen": [
+        "Mathilde"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-15": {
+      "namen": [
+        "Klemens"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-16": {
+      "namen": [
+        "Herbert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-17": {
+      "namen": [
+        "Gertrud",
+        "Patrick"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-18": {
+      "namen": [
+        "Cyrill"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-19": {
+      "namen": [
+        "Josef"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-20": {
+      "namen": [
+        "Wolfram"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-21": {
+      "namen": [
+        "Benedikt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-22": {
+      "namen": [
+        "Lea"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-23": {
+      "namen": [
+        "Turibius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-24": {
+      "namen": [
+        "Katharina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-25": {
+      "namen": [
+        "Maria Verkündigung"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-26": {
+      "namen": [
+        "Emanuele"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-27": {
+      "namen": [
+        "Rupert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-28": {
+      "namen": [
+        "Guntram"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-29": {
+      "namen": [
+        "Berthold"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-30": {
+      "namen": [
+        "Quirinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "03-31": {
+      "namen": [
+        "Benjamin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-01": {
+      "namen": [
+        "Hugo"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-02": {
+      "namen": [
+        "Franz von Paula"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-03": {
+      "namen": [
+        "Richard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-04": {
+      "namen": [
+        "Isidor"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-05": {
+      "namen": [
+        "Vinzenz"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-06": {
+      "namen": [
+        "Notker"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-07": {
+      "namen": [
+        "Hermann"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-08": {
+      "namen": [
+        "Walter"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-09": {
+      "namen": [
+        "Maria Cleophas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-10": {
+      "namen": [
+        "Ezechiel"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-11": {
+      "namen": [
+        "Stanislaus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-12": {
+      "namen": [
+        "Julius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-13": {
+      "namen": [
+        "Martin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-14": {
+      "namen": [
+        "Tiburtius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-15": {
+      "namen": [
+        "Anastasia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-16": {
+      "namen": [
+        "Bernadette"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-17": {
+      "namen": [
+        "Rudolf"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-18": {
+      "namen": [
+        "Apollonius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-19": {
+      "namen": [
+        "Emma"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-20": {
+      "namen": [
+        "Agnes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-21": {
+      "namen": [
+        "Anselm"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-22": {
+      "namen": [
+        "Soter"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-23": {
+      "namen": [
+        "Georg"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-24": {
+      "namen": [
+        "Fidelis"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-25": {
+      "namen": [
+        "Markus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-26": {
+      "namen": [
+        "Kletus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-27": {
+      "namen": [
+        "Zita"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-28": {
+      "namen": [
+        "Peter"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-29": {
+      "namen": [
+        "Katharina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "04-30": {
+      "namen": [
+        "Pius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-01": {
+      "namen": [
+        "Josef"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-02": {
+      "namen": [
+        "Athanasius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-03": {
+      "namen": [
+        "Philipp",
+        "Jakobus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-04": {
+      "namen": [
+        "Florian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-05": {
+      "namen": [
+        "Gothard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-06": {
+      "namen": [
+        "Petronax"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-07": {
+      "namen": [
+        "Gisela"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-08": {
+      "namen": [
+        "Stanislaus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-09": {
+      "namen": [
+        "Beatus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-10": {
+      "namen": [
+        "Antoninus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-11": {
+      "namen": [
+        "Mamertus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-12": {
+      "namen": [
+        "Pankratius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-13": {
+      "namen": [
+        "Servatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-14": {
+      "namen": [
+        "Bonifatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-15": {
+      "namen": [
+        "Sophie"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-16": {
+      "namen": [
+        "Brendan"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-17": {
+      "namen": [
+        "Paschalis"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-18": {
+      "namen": [
+        "Johannes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-19": {
+      "namen": [
+        "Cölestin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-20": {
+      "namen": [
+        "Bernhardin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-21": {
+      "namen": [
+        "Konstantin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-22": {
+      "namen": [
+        "Rita"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-23": {
+      "namen": [
+        "Desiderius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-24": {
+      "namen": [
+        "Donatian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-25": {
+      "namen": [
+        "Urban"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-26": {
+      "namen": [
+        "Philipp Neri"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-27": {
+      "namen": [
+        "Augustin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-28": {
+      "namen": [
+        "Wilhelm"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-29": {
+      "namen": [
+        "Maximilian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-30": {
+      "namen": [
+        "Ferdinand"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "05-31": {
+      "namen": [
+        "Petronella"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-01": {
+      "namen": [
+        "Justinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-02": {
+      "namen": [
+        "Erasmus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-03": {
+      "namen": [
+        "Karl"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-04": {
+      "namen": [
+        "Klothilde"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-05": {
+      "namen": [
+        "Bonifatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-06": {
+      "namen": [
+        "Norbert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-07": {
+      "namen": [
+        "Robert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-08": {
+      "namen": [
+        "Medardus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-09": {
+      "namen": [
+        "Ephräm"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-10": {
+      "namen": [
+        "Landebert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-11": {
+      "namen": [
+        "Barnabas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-12": {
+      "namen": [
+        "Leo"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-13": {
+      "namen": [
+        "Antonius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-14": {
+      "namen": [
+        "Rufinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-15": {
+      "namen": [
+        "Vitus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-16": {
+      "namen": [
+        "Benno"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-17": {
+      "namen": [
+        "Raniero"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-18": {
+      "namen": [
+        "Markus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-19": {
+      "namen": [
+        "Romuald"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-20": {
+      "namen": [
+        "Silvester"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-21": {
+      "namen": [
+        "Alois"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-22": {
+      "namen": [
+        "Paulinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-23": {
+      "namen": [
+        "Edeltrud"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-24": {
+      "namen": [
+        "Johannes d. T"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-25": {
+      "namen": [
+        "Eleonore"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-26": {
+      "namen": [
+        "Vigilius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-27": {
+      "namen": [
+        "Cyrill"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-28": {
+      "namen": [
+        "Irenäus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-29": {
+      "namen": [
+        "Peter",
+        "Paul"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "06-30": {
+      "namen": [
+        "Paulus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-01": {
+      "namen": [
+        "Theobald"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-02": {
+      "namen": [
+        "Martinianus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-03": {
+      "namen": [
+        "Thomas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-04": {
+      "namen": [
+        "Ulrich"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-05": {
+      "namen": [
+        "Antonius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-06": {
+      "namen": [
+        "Isaias"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-07": {
+      "namen": [
+        "Willibald"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-08": {
+      "namen": [
+        "Kilian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-09": {
+      "namen": [
+        "Veronica"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-10": {
+      "namen": [
+        "Amalia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-11": {
+      "namen": [
+        "Benedikt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-12": {
+      "namen": [
+        "Fortunat"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-13": {
+      "namen": [
+        "Heinrich"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-14": {
+      "namen": [
+        "Kamillus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-15": {
+      "namen": [
+        "Bonaventura"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-16": {
+      "namen": [
+        "Maria vom Berge Karmel"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-17": {
+      "namen": [
+        "Alexius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-18": {
+      "namen": [
+        "Friedrich"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-19": {
+      "namen": [
+        "Arsenius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-20": {
+      "namen": [
+        "Margareta"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-21": {
+      "namen": [
+        "Lorenz"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-22": {
+      "namen": [
+        "Maria Magdalena"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-23": {
+      "namen": [
+        "Birgitta"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-24": {
+      "namen": [
+        "Christoph"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-25": {
+      "namen": [
+        "Jakobus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-26": {
+      "namen": [
+        "Anna",
+        "Joachim"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-27": {
+      "namen": [
+        "Pantaleon"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-28": {
+      "namen": [
+        "Nazarius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-29": {
+      "namen": [
+        "Martha"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-30": {
+      "namen": [
+        "Beatrix"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "07-31": {
+      "namen": [
+        "Ignatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-01": {
+      "namen": [
+        "Alfons"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-02": {
+      "namen": [
+        "Eusebius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-03": {
+      "namen": [
+        "Lydia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-04": {
+      "namen": [
+        "Dominikus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-05": {
+      "namen": [
+        "Maria Schnee"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-06": {
+      "namen": [
+        "Verklärung des Herrn"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-07": {
+      "namen": [
+        "Cajetan"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-08": {
+      "namen": [
+        "Dominikus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-09": {
+      "namen": [
+        "Romanus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-10": {
+      "namen": [
+        "Laurentius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-11": {
+      "namen": [
+        "Klara"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-12": {
+      "namen": [
+        "Johanna"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-13": {
+      "namen": [
+        "Hippolyt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-14": {
+      "namen": [
+        "Maximilian Kolbe"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-15": {
+      "namen": [
+        "Mariä Himmelfahrt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-16": {
+      "namen": [
+        "Rochus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-17": {
+      "namen": [
+        "Hyazinth"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-18": {
+      "namen": [
+        "Helena"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-19": {
+      "namen": [
+        "Johannes Eudes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-20": {
+      "namen": [
+        "Bernhard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-21": {
+      "namen": [
+        "Pius X"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-22": {
+      "namen": [
+        "Immaculatum"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-23": {
+      "namen": [
+        "Rosa"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-24": {
+      "namen": [
+        "Bartholomäus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-25": {
+      "namen": [
+        "Ludwig"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-26": {
+      "namen": [
+        "Zephyrin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-27": {
+      "namen": [
+        "Monika"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-28": {
+      "namen": [
+        "Augustinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-29": {
+      "namen": [
+        "Johannes Enthauptung"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-30": {
+      "namen": [
+        "Felizitas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "08-31": {
+      "namen": [
+        "Raimund"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-01": {
+      "namen": [
+        "Verena"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-02": {
+      "namen": [
+        "Ingrid"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-03": {
+      "namen": [
+        "Gregor"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-04": {
+      "namen": [
+        "Rosalia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-05": {
+      "namen": [
+        "Laurentius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-06": {
+      "namen": [
+        "Magnus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-07": {
+      "namen": [
+        "Regina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-08": {
+      "namen": [
+        "Mariä Geburt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-09": {
+      "namen": [
+        "Petrus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-10": {
+      "namen": [
+        "Nikolaus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-11": {
+      "namen": [
+        "Felix"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-12": {
+      "namen": [
+        "Mariä Namen"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-13": {
+      "namen": [
+        "Johannes Chrysostomus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-14": {
+      "namen": [
+        "Kreuzerhöhung"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-15": {
+      "namen": [
+        "Maria Schmerzen"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-16": {
+      "namen": [
+        "Kornelius",
+        "Cyprian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-17": {
+      "namen": [
+        "Hildegard",
+        "Robert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-18": {
+      "namen": [
+        "Irene"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-19": {
+      "namen": [
+        "Januarius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-20": {
+      "namen": [
+        "Eustachius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-21": {
+      "namen": [
+        "Matthäus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-22": {
+      "namen": [
+        "Mauritius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-23": {
+      "namen": [
+        "Linus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-24": {
+      "namen": [
+        "Gerhard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-25": {
+      "namen": [
+        "Hermann"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-26": {
+      "namen": [
+        "Kosmas",
+        "Damian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-27": {
+      "namen": [
+        "Vinzenz"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-28": {
+      "namen": [
+        "Wenzel"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-29": {
+      "namen": [
+        "Michael",
+        "Gabriel",
+        "Rafael"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "09-30": {
+      "namen": [
+        "Hieronymus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-01": {
+      "namen": [
+        "Theresia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-02": {
+      "namen": [
+        "Schutzengel"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-03": {
+      "namen": [
+        "Thomas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-04": {
+      "namen": [
+        "Franz v. Assisi"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-05": {
+      "namen": [
+        "Faustina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-06": {
+      "namen": [
+        "Bruno"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-07": {
+      "namen": [
+        "Rosenkranz-Maria"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-08": {
+      "namen": [
+        "Pelagia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-09": {
+      "namen": [
+        "Dionys"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-10": {
+      "namen": [
+        "Paulinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-11": {
+      "namen": [
+        "Alexander"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-12": {
+      "namen": [
+        "Maximilian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-13": {
+      "namen": [
+        "Eduard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-14": {
+      "namen": [
+        "Kalixtus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-15": {
+      "namen": [
+        "Theresia v. Ávila"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-16": {
+      "namen": [
+        "Hedwig",
+        "Gall"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-17": {
+      "namen": [
+        "Ignatius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-18": {
+      "namen": [
+        "Lukas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-19": {
+      "namen": [
+        "Paul"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-20": {
+      "namen": [
+        "Wendelin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-21": {
+      "namen": [
+        "Ursula"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-22": {
+      "namen": [
+        "Kordula"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-23": {
+      "namen": [
+        "Johannes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-24": {
+      "namen": [
+        "Antonius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-25": {
+      "namen": [
+        "Krispin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-26": {
+      "namen": [
+        "Evarist"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-27": {
+      "namen": [
+        "Sabine"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-28": {
+      "namen": [
+        "Simon",
+        "Judas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-29": {
+      "namen": [
+        "Narcissus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-30": {
+      "namen": [
+        "Alfons"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "10-31": {
+      "namen": [
+        "Wolfgang"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-01": {
+      "namen": [
+        "Allerheiligen"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-02": {
+      "namen": [
+        "Allerseelen"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-03": {
+      "namen": [
+        "Hubertus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-04": {
+      "namen": [
+        "Karl Borromäus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-05": {
+      "namen": [
+        "Zacharias"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-06": {
+      "namen": [
+        "Leonhard"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-07": {
+      "namen": [
+        "Willibrord"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-08": {
+      "namen": [
+        "Gottfried"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-09": {
+      "namen": [
+        "Theodor"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-10": {
+      "namen": [
+        "Leo"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-11": {
+      "namen": [
+        "Martin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-12": {
+      "namen": [
+        "Josaphat"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-13": {
+      "namen": [
+        "Stanislaus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-14": {
+      "namen": [
+        "Nikolaus Tavelić"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-15": {
+      "namen": [
+        "Albertus Magnus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-16": {
+      "namen": [
+        "Margareta",
+        "Gertrud"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-17": {
+      "namen": [
+        "Hildegard",
+        "Elisabeth"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-18": {
+      "namen": [
+        "Odo"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-19": {
+      "namen": [
+        "Elisabeth"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-20": {
+      "namen": [
+        "Edmund"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-21": {
+      "namen": [
+        "Mariä Tempelgang"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-22": {
+      "namen": [
+        "Cäcilia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-23": {
+      "namen": [
+        "Klemens"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-24": {
+      "namen": [
+        "Flora"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-25": {
+      "namen": [
+        "Katharina"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-26": {
+      "namen": [
+        "Silvester"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-27": {
+      "namen": [
+        "Virgil"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-28": {
+      "namen": [
+        "Jak. d. Märtyrer"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-29": {
+      "namen": [
+        "Saturnin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "11-30": {
+      "namen": [
+        "Andreas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-01": {
+      "namen": [
+        "Eligius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-02": {
+      "namen": [
+        "Bibiana"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-03": {
+      "namen": [
+        "Franz Xaver"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-04": {
+      "namen": [
+        "Barbara"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-05": {
+      "namen": [
+        "Gerald"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-06": {
+      "namen": [
+        "Nikolaus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-07": {
+      "namen": [
+        "Ambrosius"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-08": {
+      "namen": [
+        "Mariä Empfängnis"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-09": {
+      "namen": [
+        "Peter"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-10": {
+      "namen": [
+        "Melchiades"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-11": {
+      "namen": [
+        "Damasus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-12": {
+      "namen": [
+        "Johanna"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-13": {
+      "namen": [
+        "Luzia"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-14": {
+      "namen": [
+        "Johannes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-15": {
+      "namen": [
+        "Christiana"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-16": {
+      "namen": [
+        "Adelheid"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-17": {
+      "namen": [
+        "Lazarus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-18": {
+      "namen": [
+        "Gratian"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-19": {
+      "namen": [
+        "Fausta"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-20": {
+      "namen": [
+        "Ursizin"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-21": {
+      "namen": [
+        "Thomas"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-22": {
+      "namen": [
+        "Franziska"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-23": {
+      "namen": [
+        "Dagobert"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-24": {
+      "namen": [
+        "Adam",
+        "Eva"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-25": {
+      "namen": [
+        "Christus Geburt"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-26": {
+      "namen": [
+        "Stephan"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-27": {
+      "namen": [
+        "Johannes"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-28": {
+      "namen": [
+        "Unschuldige Kinder"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-29": {
+      "namen": [
+        "Thomas Becket"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-30": {
+      "namen": [
+        "Sabinus"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    },
+    "12-31": {
+      "namen": [
+        "Silvester"
+      ],
+      "quelle": "Redaktioneller Grundbestand"
+    }
+  }
 }
