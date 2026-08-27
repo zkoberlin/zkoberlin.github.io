@@ -17,6 +17,44 @@ import time
 import os
 import tempfile
 
+NATIONALITAETEN = [
+    ("american", "US", "🇺🇸", "US-amerikanisch"),
+    ("canadian", "CA", "🇨🇦", "Kanadisch"),
+    ("german", "DE", "🇩🇪", "Deutsch"),
+    ("austrian", "AT", "🇦🇹", "Österreichisch"),
+    ("swiss", "CH", "🇨🇭", "Schweizerisch"),
+    ("british", "GB", "🇬🇧", "Britisch"),
+    ("english", "GB-ENG", "🏴", "Englisch"),
+    ("scottish", "GB-SCT", "🏴", "Schottisch"),
+    ("welsh", "GB-WLS", "🏴", "Walisisch"),
+    ("irish", "IE", "🇮🇪", "Irisch"),
+    ("french", "FR", "🇫🇷", "Französisch"),
+    ("italian", "IT", "🇮🇹", "Italienisch"),
+    ("spanish", "ES", "🇪🇸", "Spanisch"),
+    ("portuguese", "PT", "🇵🇹", "Portugiesisch"),
+    ("dutch", "NL", "🇳🇱", "Niederländisch"),
+    ("belgian", "BE", "🇧🇪", "Belgisch"),
+    ("danish", "DK", "🇩🇰", "Dänisch"),
+    ("swedish", "SE", "🇸🇪", "Schwedisch"),
+    ("norwegian", "NO", "🇳🇴", "Norwegisch"),
+    ("finnish", "FI", "🇫🇮", "Finnisch"),
+    ("polish", "PL", "🇵🇱", "Polnisch"),
+    ("czech", "CZ", "🇨🇿", "Tschechisch"),
+    ("greek", "GR", "🇬🇷", "Griechisch"),
+    ("turkish", "TR", "🇹🇷", "Türkisch"),
+    ("russian", "RU", "🇷🇺", "Russisch"),
+    ("ukrainian", "UA", "🇺🇦", "Ukrainisch"),
+    ("australian", "AU", "🇦🇺", "Australisch"),
+    ("new zealand", "NZ", "🇳🇿", "Neuseeländisch"),
+    ("brazilian", "BR", "🇧🇷", "Brasilianisch"),
+    ("argentine", "AR", "🇦🇷", "Argentinisch"),
+    ("mexican", "MX", "🇲🇽", "Mexikanisch"),
+    ("japanese", "JP", "🇯🇵", "Japanisch"),
+    ("chinese", "CN", "🇨🇳", "Chinesisch"),
+    ("south korean", "KR", "🇰🇷", "Südkoreanisch"),
+    ("indian", "IN", "🇮🇳", "Indisch"),
+]
+
 # ── HTTP-Request mit Retry bei 429 ─────────────────────────────────────────
 def get_json(url, headers=None, timeout=30, retries=3):
     for attempt in range(retries):
@@ -79,7 +117,7 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
         thumbnail = page.get("thumbnail", {}).get("source", None)
         alter = year - int(year_born)
         beruf = translate_occupation(description)
-        is_german = description.startswith("german ") or " german " in f" {description} "
+        nationalitaeten = extract_nationalities(description)
         alle.append({
             "name":          title,
             "alter":         alter,
@@ -87,16 +125,18 @@ def fetch_via_wikipedia(month, day, year, seen_names, needed=4):
             "beruf":         beruf,
             "foto":          thumbnail,
             "wikidata":      page.get("content_urls", {}).get("desktop", {}).get("page", ""),
-            "nationalitaet": "🇩🇪 Deutsch" if is_german else None,
+            "nationalitaet": format_nationalities(nationalitaeten),
+            "nationalitaeten": nationalitaeten,
             "quelle":        "Wikipedia",
         })
 
     # Deutsche zuerst, dann nach Originalreihenfolge (API sortiert nach Relevanz)
-    alle.sort(key=lambda x: 0 if x.get("nationalitaet") else 1)
+    alle.sort(key=lambda x: 0 if any(n["code"] == "DE" for n in x["nationalitaeten"]) else 1)
 
     output = alle[:needed]
     for p in output:
-        flag = "🇩🇪 " if p.get("nationalitaet") else ""
+        flag = "".join(n["flagge"] for n in p.get("nationalitaeten", []))
+        flag = f"{flag} " if flag else ""
         print(f"     ✓ {flag}{p['name']} ({p['alter']}) [Wikipedia]")
         seen_names.add(p["name"])
     return output
@@ -108,6 +148,7 @@ def translate_occupation(description):
         (("association football", "footballer", "soccer"), "Fußballer/in"),
         (("basketball",), "Basketballer/in"),
         (("tennis",), "Tennisspieler/in"),
+        (("golfer",), "Golfer/in"),
         (("boxer", "boxing"), "Boxer/in"),
         (("racing driver",), "Rennfahrer/in"),
         (("athlete",), "Sportler/in"),
@@ -123,6 +164,29 @@ def translate_occupation(description):
         if any(keyword in text for keyword in keywords):
             return label
     return "Persönlichkeit"
+
+
+def extract_nationalities(description):
+    """Erkennt nur Nationalitätsadjektive am Anfang der Kurzbeschreibung."""
+    prefix = re.split(
+        r"\b(?:actor|actress|singer|musician|rapper|songwriter|footballer|"
+        r"basketball|tennis|athlete|boxer|swimmer|driver|golfer|politician|"
+        r"president|chancellor|minister|director|performer|entertainer)\b",
+        description.lower(), maxsplit=1
+    )[0][:80]
+    matches = []
+    for adjective, code, flag, label in NATIONALITAETEN:
+        if re.search(rf"(?<![a-z]){re.escape(adjective)}(?![a-z])", prefix):
+            matches.append({"code": code, "flagge": flag, "name": label})
+    return matches
+
+
+def format_nationalities(nationalities):
+    if not nationalities:
+        return None
+    flags = "".join(item["flagge"] for item in nationalities)
+    names = "/".join(item["name"] for item in nationalities)
+    return f"{flags} {names}"
 
 # ── Hauptfunktion ──────────────────────────────────────────────────────────
 def validate_output(result, year):
@@ -147,6 +211,14 @@ def validate_output(result, year):
             raise ValueError(f"Quellenlink fehlt bei {name}")
         if entry.get("foto") is not None and not str(entry["foto"]).startswith("https://"):
             raise ValueError(f"Ungültige Foto-URL bei {name}")
+        nationalities = entry.get("nationalitaeten")
+        if not isinstance(nationalities, list):
+            raise ValueError(f"Nationalitäten fehlen bei {name}")
+        for nationality in nationalities:
+            if set(nationality) != {"code", "flagge", "name"}:
+                raise ValueError(f"Ungültige Nationalität bei {name}")
+            if not all(isinstance(nationality[key], str) and nationality[key] for key in nationality):
+                raise ValueError(f"Unvollständige Nationalität bei {name}")
 
 
 def main():
@@ -179,9 +251,9 @@ def main():
         if os.path.exists(temp_path):
             os.unlink(temp_path)
 
-    de_count = sum(1 for e in output if e.get("nationalitaet"))
+    flag_count = sum(1 for e in output if e.get("nationalitaeten"))
     beruf_summary = ", ".join(e.get("beruf", "?") for e in output)
-    print(f"\n✅ data/geburtstage.json – {len(output)} Einträge ({de_count}x 🇩🇪)")
+    print(f"\n✅ data/geburtstage.json – {len(output)} Einträge ({flag_count} mit Landesflagge)")
     print(f"   Mix: {beruf_summary}")
 
 if __name__ == "__main__":

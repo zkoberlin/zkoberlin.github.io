@@ -66,7 +66,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
 | Pipeline | Anbieter | Secret-Namen | Ausgabe | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- |
-| Geburtstage | Wikipedia mit Lebendstatus-, Alters- und Schema-Prüfung | keine | `data/geburtstage.json` | letzte gültige Datei bleibt bei Pipelinefehler erhalten. |
+| Geburtstage | Wikipedia mit Lebendstatus-, Alters-, Länder- und Schema-Prüfung | keine | `data/geburtstage.json` | Nationalitäten werden nur aus eindeutigen Kurzbeschreibungen abgeleitet; mehrere Länder sind möglich, unklare Fälle bleiben leer. Letzte gültige Datei bleibt bei Pipelinefehler erhalten. |
 | Namenstage | Nameday API | keine | `data/namenstage.json` | Quelle und letztes erfolgreiches Update erfassen. |
 | Schulferien | OpenHolidays | keine | `data/schulferien_berlin.json` | letztes erfolgreiches Update erfassen. |
 | Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | Schlüssel am 26.08.2026 rotiert; RapidAPI-BASIC-Monatskontingent derzeit ausgeschöpft (HTTP 429). Bestehende JSON-Daten bleiben bis zum nächsten erfolgreichen Lauf erhalten. |

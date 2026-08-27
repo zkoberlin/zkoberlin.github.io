@@ -353,11 +353,12 @@ function renderPromis(list, el){
     nameText.style.cssText='overflow:hidden;text-overflow:ellipsis;';
     nameText.textContent=p.name;
     name.appendChild(nameText);
-    if(p.nationalitaet){
+    const nationalities=Array.isArray(p.nationalitaeten)?p.nationalitaeten:[];
+    if(nationalities.length||p.nationalitaet){
       const flag=document.createElement('span');
       flag.className='promi-flag';
-      flag.title=p.nationalitaet;
-      flag.textContent=p.nationalitaet.split(' ')[0];
+      flag.title=nationalities.map(n=>n.name).join(', ')||p.nationalitaet;
+      flag.textContent=nationalities.map(n=>n.flagge).join('')||p.nationalitaet.split(' ')[0];
       name.appendChild(flag);
     }
     const meta=document.createElement('div');
