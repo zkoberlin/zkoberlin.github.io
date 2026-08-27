@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="assets/css/hub.css">
 <link rel="stylesheet" href="assets/css/auth.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/version.js?v=6.8.0" defer></script>
-<script src="assets/js/auth.js?v=6.8.0" defer></script>
+<script src="assets/js/version.js?v=6.9.0" defer></script>
+<script src="assets/js/auth.js?v=6.9.0" defer></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.8.0</div>
+      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.9.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -215,12 +215,13 @@
         <div style="border-top:1px solid var(--border);margin:9px 0;"></div>
         <!-- Historisches Ereignis – ausklappbar -->
         <div id="histSection">
-          <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleHist()">
+          <button class="history-toggle" id="histToggle" type="button" aria-expanded="false" aria-controls="histBody">
             <span>📜 Heute in der Geschichte</span>
             <span id="histToggleIcon" style="font-size:10px;color:var(--t3);transition:transform .2s;">▾</span>
-          </div>
+          </button>
           <div id="histBody" style="overflow:hidden;max-height:0;transition:max-height .35s ease;">
             <div style="font-size:11px;font-weight:500;color:var(--t2);margin-top:5px;line-height:1.4;" id="histVal">–</div>
+            <div class="history-meta" id="histMeta"></div>
           </div>
         </div>
       </div>
@@ -645,7 +646,7 @@
   <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
 </nav>
 
-<script src="assets/js/hub.js?v=6.8.0"></script>
+<script src="assets/js/hub.js?v=6.9.0"></script>
 
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>

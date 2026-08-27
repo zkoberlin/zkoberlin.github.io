@@ -258,6 +258,103 @@ function renderNameday(entry,data){
   meta.title=entry.quelle;
 }
 
+function validHistoryEvent(event){
+  return event&&Number.isInteger(event.year)&&event.year>=-3000&&event.year<=new Date().getFullYear()
+    &&typeof event.text==='string'&&event.text.trim().length>=20&&event.text.trim().length<=700
+    &&typeof event.url==='string'&&event.url.startsWith('https://de.wikipedia.org/wiki/')
+    &&/^\d{4}-\d{2}-\d{2}$/.test(event.date||'');
+}
+
+function renderHistory(event,isStale=false){
+  const value=document.getElementById('histVal');
+  const meta=document.getElementById('histMeta');
+  value.replaceChildren();
+  const year=document.createElement('span');
+  year.style.cssText='font-weight:700;color:var(--t);';
+  year.textContent=`${event.year}:`;
+  value.append(year,document.createTextNode(` ${event.text.trim()}`));
+  meta.replaceChildren();
+  const label=document.createElement('span');
+  label.textContent=isStale?'Wikipedia · letzte gespeicherte Auswahl':'Wikipedia · heutige Auswahl';
+  meta.append(label,document.createTextNode(' · '));
+  const source=document.createElement('a');
+  source.href=event.url;
+  source.target='_blank';
+  source.rel='noopener noreferrer';
+  source.textContent='Artikel öffnen ↗';
+  meta.appendChild(source);
+}
+
+function renderHistoryError(){
+  const value=document.getElementById('histVal');
+  const meta=document.getElementById('histMeta');
+  value.textContent='Historisches Ereignis momentan nicht verfügbar';
+  meta.replaceChildren();
+  const retry=document.createElement('button');
+  retry.type='button';
+  retry.textContent='Erneut laden';
+  retry.addEventListener('click',()=>loadHistory(new Date(),true));
+  meta.appendChild(retry);
+}
+
+function setHistoryExpanded(expanded){
+  const body=document.getElementById('histBody');
+  const toggle=document.getElementById('histToggle');
+  const icon=document.getElementById('histToggleIcon');
+  body.style.maxHeight=expanded?'240px':'0';
+  toggle.setAttribute('aria-expanded',String(expanded));
+  icon.style.transform=expanded?'rotate(180deg)':'';
+}
+
+async function loadHistory(current,force=false){
+  const month=current.getMonth()+1;
+  const day=current.getDate();
+  const dateKey=`${current.getFullYear()}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const cacheKey=`history_${dateKey}`;
+  try{if(!force){
+    const cached=JSON.parse(localStorage.getItem(cacheKey)||'null');
+    if(validHistoryEvent(cached)&&cached.date===dateKey){
+      renderHistory(cached);
+      if(window.innerWidth>600)setHistoryExpanded(true);
+      return;
+    }
+  }}catch(error){}
+
+  try{
+    const response=await fetch(`https://api.wikimedia.org/feed/v1/wikipedia/de/onthisday/events/${month}/${day}`,{signal:AbortSignal.timeout(7000)});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    const candidates=(Array.isArray(data?.events)?data.events:[]).map(event=>({
+      year:Number(event.year),
+      text:String(event.text||event.pages?.[0]?.description||'').trim(),
+      url:(event.pages||[]).map(page=>page?.content_urls?.desktop?.page).find(url=>typeof url==='string'&&url.startsWith('https://de.wikipedia.org/wiki/'))||'',
+      date:dateKey,
+    })).filter(validHistoryEvent);
+    if(!candidates.length)throw new Error('Keine gültigen Ereignisse');
+    const ordinal=Math.floor(Date.UTC(current.getFullYear(),current.getMonth(),current.getDate())/86400000);
+    const selected=candidates[Math.abs(ordinal)%candidates.length];
+    renderHistory(selected);
+    if(window.innerWidth>600)setHistoryExpanded(true);
+    try{
+      Object.keys(localStorage).filter(key=>key.startsWith('history_')&&key!=='history_latest'&&key!==cacheKey).forEach(key=>localStorage.removeItem(key));
+      localStorage.setItem(cacheKey,JSON.stringify(selected));
+      localStorage.setItem('history_latest',JSON.stringify(selected));
+    }catch(error){}
+  }catch(error){
+    console.warn('Geschichtsereignis Fehler:',error);
+    try{
+      const latest=JSON.parse(localStorage.getItem('history_latest')||'null');
+      if(validHistoryEvent(latest)){
+        renderHistory(latest,true);
+        if(window.innerWidth>600)setHistoryExpanded(true);
+        return;
+      }
+    }catch(storageError){}
+    renderHistoryError();
+    setHistoryExpanded(true);
+  }
+}
+
 let dayInfoDateKey='';
 async function loadDayInfo(){
   const current=new Date();
@@ -315,32 +412,7 @@ async function loadDayInfo(){
     document.getElementById('namenstagMeta').textContent='Lokale Jahresdatei konnte nicht geladen werden';
   }
 
-  // ── Heute in der Geschichte – Wikipedia On This Day API ──
-  try {
-    const res = await fetch(`https://api.wikimedia.org/feed/v1/wikipedia/de/onthisday/events/${m}/${d}`);
-    const json = await res.json();
-    const events = json?.events;
-    if(events && events.length){
-      // Pick a random event with a year
-      const ev = events[Math.floor(Math.random() * Math.min(events.length, 5))];
-      const year = ev.year;
-      const desc = ev.text || (ev.pages?.[0]?.description) || '';
-      document.getElementById('histVal').innerHTML = `<span style="font-weight:700;color:var(--t);">${year}:</span> ${desc}`;
-      // Expand on desktop, collapsed on mobile
-      const histBody=document.getElementById('histBody');
-      if(window.innerWidth>600){
-        histBody.style.maxHeight='200px';
-        const icon=document.getElementById('histToggleIcon');
-        if(icon)icon.style.transform='rotate(180deg)';
-      }
-    } else {
-      document.getElementById('histSection').style.display='none';
-      document.getElementById('histSection').previousElementSibling.style.display='none';
-    }
-  } catch(e) {
-    document.getElementById('histSection').style.display='none';
-    document.getElementById('histSection').previousElementSibling.style.display='none';
-  }
+  await loadHistory(current);
 }
 
 loadDayInfo();
@@ -350,14 +422,9 @@ setInterval(()=>{
   if(key!==dayInfoDateKey)loadDayInfo();
 },60000);
 
-function toggleHist(){
-  const body=document.getElementById('histBody');
-  const icon=document.getElementById('histToggleIcon');
-  if(!body)return;
-  const isOpen=body.style.maxHeight&&body.style.maxHeight!=='0px';
-  body.style.maxHeight=isOpen?'0':'200px';
-  if(icon)icon.style.transform=isOpen?'':'rotate(180deg)';
-}
+document.getElementById('histToggle').addEventListener('click',event=>{
+  setHistoryExpanded(event.currentTarget.getAttribute('aria-expanded')!=='true');
+});
 
 // ── PROMI GEBURTSTAGE ──
 function renderPromis(list, el){
