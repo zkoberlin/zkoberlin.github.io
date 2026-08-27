@@ -68,11 +68,19 @@ test("stores and deletes alcohol entries only through the verified route", async
     const created = await worker.fetch(new Request("https://gateway.test/alcohol", {
       method: "POST",
       headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
-      body: JSON.stringify({ drinkCode: "bier03", units: 999 }),
+      body: JSON.stringify({ drinkCode: "bier03", units: 999, occurredOn: "2026-08-20" }),
     }), testEnv);
     assert.equal(created.status, 201);
     const createdData = await created.json();
     assert.equal(createdData.entry.units, 1.3);
+    assert.equal(createdData.entry.date, "2026-08-20");
+
+    const future = await worker.fetch(new Request("https://gateway.test/alcohol", {
+      method: "POST",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ drinkCode: "bier03", occurredOn: "2999-01-01" }),
+    }), testEnv);
+    assert.equal(future.status, 400);
 
     const listed = await worker.fetch(new Request("https://gateway.test/alcohol", {
       headers: { Authorization: "Bearer valid-token" },

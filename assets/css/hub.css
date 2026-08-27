@@ -623,6 +623,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .atk-a-today{text-align:right;}
 .atk-a-num{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.5px;font-family:var(--font-head);}
 .atk-a-numunit{font-size:12px;font-weight:500;color:var(--t3);}
+.atk-entry-date{display:flex;align-items:center;gap:7px;padding:10px 16px 0;font-size:10px;color:var(--t2)}
+.atk-entry-date label{font-weight:700}.atk-entry-date input{min-height:30px;padding:4px 8px;border:1px solid var(--border);border-radius:8px;background:var(--card2);color:var(--text);font:inherit;color-scheme:light dark}.atk-entry-date button{min-height:30px;padding:4px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card2);color:var(--blue);font:inherit;font-weight:700;cursor:pointer}
 .atk-pills{display:flex;gap:7px;flex-wrap:wrap;padding:10px 16px 0;}
 .atk-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:var(--card2);font-size:11.5px;font-weight:600;color:var(--text);cursor:pointer;font-family:var(--font-head);transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent;}
 .atk-pill:hover{border-color:var(--blue);color:var(--blue);}

@@ -21,7 +21,7 @@ function atkSaveData(d) {
 }
 
 /* ── SHEET HELPERS ── */
-function atkDateKey(d)  { return d.toISOString().slice(0,10); }
+function atkDateKey(d)  { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function atkToday()     { return atkDateKey(new Date()); }
 function atkFmt(u)      { return u.toFixed(1).replace('.', ','); }
 
@@ -70,11 +70,11 @@ function atkPullCloud(callback) {
 }
 
 /* ── EINTRAG SERVERSEITIG SPEICHERN ── */
-function atkPushEntry(drinkCode) {
+function atkPushEntry(drinkCode, occurredOn) {
   return window.HubAuth.authorizedFetch(ATK_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ drinkCode: drinkCode })
+    body: JSON.stringify({ drinkCode: drinkCode, occurredOn: occurredOn })
   })
     .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
 }
@@ -90,16 +90,24 @@ function atkPushDelete(entryId) {
 /* ── LOG ENTRY ── */
 function atkLog(id, units, label, design) {
   if (!window.HubAuth || !window.HubAuth.isSignedIn()) { atkSetSyncStatus('Bitte zuerst anmelden', '#e24b4a'); return; }
+  var dateInput = document.getElementById('atkEntryDate');
+  var occurredOn = dateInput && dateInput.value ? dateInput.value : atkToday();
   atkSetSyncStatus('↻ Speichern…', 'var(--blue)');
-  atkPushEntry(id).then(function(json){
+  atkPushEntry(id, occurredOn).then(function(json){
     var entry = json.entry;
     var data = atkLoadData();
     if (!data[entry.date]) data[entry.date] = { entries: [] };
     data[entry.date].entries.push({ entryId:entry.entryId, id:entry.drinkCode, units:entry.units, label:entry.label, time:entry.time });
     atkSaveData(data);
     atkRenderAll();
-    atkSetSyncStatus('✓ Gespeichert', '#3a9e5f');
+    var savedDate = new Date(entry.date + 'T12:00:00').toLocaleDateString('de-DE');
+    atkSetSyncStatus('✓ Für ' + savedDate + ' gespeichert', '#3a9e5f');
   }).catch(function(){ atkSetSyncStatus('⚠ Speichern fehlgeschlagen', '#e24b4a'); });
+}
+
+function atkResetEntryDate() {
+  var input = document.getElementById('atkEntryDate');
+  if (input) input.value = atkToday();
 }
 
 function atkUndo(idx) {
@@ -643,6 +651,8 @@ function atkRenderGraph(design, periodId) {
 function atkInit() {
   localStorage.removeItem('atkData_v1');
   localStorage.removeItem('atkRecords_v1');
+  var entryDate = document.getElementById('atkEntryDate');
+  if (entryDate) { entryDate.value = atkToday(); entryDate.max = atkToday(); }
   atkRenderAll();
   // Desktop: render graph inline immediately
   if (window.innerWidth > 600) {

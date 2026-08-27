@@ -58,6 +58,12 @@ function berlinNow() {
   return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
 }
 
+function validIsoDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 async function alcoholResponse(request, env, origin) {
   if (request.method === "GET") {
     const result = await env.HUB_DB.prepare(
@@ -72,11 +78,15 @@ async function alcoholResponse(request, env, origin) {
     const drink = ALCOHOL_CATALOG[String(payload?.drinkCode ?? "")];
     if (!drink) return json({ error: "Invalid drink" }, 400, origin);
     const now = berlinNow();
+    const occurredOn = String(payload?.occurredOn || now.date);
+    if (!validIsoDate(occurredOn) || occurredOn > now.date) {
+      return json({ error: "Invalid date" }, 400, origin);
+    }
     const entryId = crypto.randomUUID();
     await env.HUB_DB.prepare(
       "INSERT INTO alcohol_entries (entry_id, occurred_on, occurred_time, drink_code, label, standard_units, source_timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    ).bind(entryId, now.date, now.time, String(payload.drinkCode), drink.label, drink.units, Date.now()).run();
-    return json({ entry: { entryId, date: now.date, time: now.time, drinkCode: String(payload.drinkCode), label: drink.label, units: drink.units } }, 201, origin);
+    ).bind(entryId, occurredOn, now.time, String(payload.drinkCode), drink.label, drink.units, Date.now()).run();
+    return json({ entry: { entryId, date: occurredOn, time: now.time, drinkCode: String(payload.drinkCode), label: drink.label, units: drink.units } }, 201, origin);
   }
 
   if (request.method === "DELETE") {
