@@ -825,6 +825,31 @@ function validTravelPreview(data){
     [stats.distanceKm,stats.trips,stats.countries,stats.cities].every(value=>Number.isInteger(value)&&value>=0)&&!Number.isNaN(Date.parse(data.generatedAt));
 }
 const travelModeNames={zug:'Zug',bahn:'Zug',train:'Zug',flugzeug:'Flugzeug',plane:'Flugzeug',flight:'Flugzeug',auto:'Auto',car:'Auto',bus:'Bus',fahrrad:'Fahrrad',bike:'Fahrrad',zu_fuss:'Zu Fuß',walk:'Zu Fuß',schiff:'Schiff',faehre:'Fähre',ferry:'Fähre',public_transport:'ÖPNV',oepnv:'ÖPNV',motorrad:'Motorrad',motorcycle:'Motorrad'};
+const travelModeIcons={
+  train:['train','<rect x="5" y="4" width="14" height="13" rx="3"/><path d="M5 11h14"/><circle cx="8.5" cy="14" r="1"/><circle cx="15.5" cy="14" r="1"/><path d="M8 20l-2 2M16 20l2 2"/>'],
+  plane:['plane','<path d="M10.5 3v6.3L3 12.2v1.6l7.5-1.4v4.7l-2.2 1.6v1.3l3.7-1 3.7 1v-1.3l-2.2-1.6v-4.7l7.5 1.4v-1.6l-7.5-2.9V3z"/>'],
+  car:['car','<path d="M4 17V12l2-5h12l2 5v5M2 17h20"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/>'],
+  'electric-car':['electric-car','<path d="M4 17V12l2-5h12l2 5v5M2 17h20"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/><path d="m13 8-2 4h2l-1 3 4-5h-2l1-2"/>'],
+  motorcycle:['motorcycle','<circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-6h4l4 6M9 17h6l-3-6M14 8h3l2 2M9 8h3"/>'],
+  bike:['bike','<circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-8h4l3 8M10 9h3"/>'],
+  bus:['bus','<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3 12h18"/><circle cx="7.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/>'],
+  walk:['walk','<circle cx="12" cy="4.5" r="2"/><path d="M12 7v6l-3 4M12 10l4 3M9 21l3-8 3 8"/>'],
+  ship:['ship','<path d="M4 11h16l-2 7H6zM8 11V6h8v5M12 6V3M3 21c1.5 0 2.5-1 3.5-1s2 1 3.5 1 2.5-1 3.5-1 2 1 3.5 1 2.5-1 3.5-1"/>'],
+  transport:['transport','<path d="M4 7h14M14 3l4 4-4 4M20 17H6M10 13l-4 4 4 4"/>'],
+};
+function travelModeKey(mode){
+  const key=String(mode).trim().toLocaleLowerCase('de-DE').replace(/[ -]/g,'_').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ä/g,'ae').replace(/ß/g,'ss');
+  if(['zug','bahn','train'].includes(key))return'train';
+  if(['flugzeug','plane','flight'].includes(key))return'plane';
+  if(['auto','car'].includes(key))return'car';
+  if(['e_auto','electric_car'].includes(key))return'electric-car';
+  if(['motorrad','motorcycle'].includes(key))return'motorcycle';
+  if(['fahrrad','bike'].includes(key))return'bike';
+  if(['public_transport','oepnv','bus'].includes(key))return'bus';
+  if(['zu_fuss','walk'].includes(key))return'walk';
+  if(['schiff','faehre','ferry','ship'].includes(key))return'ship';
+  return'transport';
+}
 function formatTravelMode(mode){
   const key=String(mode).trim().toLocaleLowerCase('de-DE').replace(/[ -]/g,'_').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ä/g,'ae').replace(/ß/g,'ss');
   return travelModeNames[key]||String(mode).trim();
@@ -833,6 +858,8 @@ function renderTravelTrip(prefix,trip,emptyText){
   document.getElementById(`${prefix}Name`).textContent=trip?`${trip.destinationCity} · ${trip.destinationCountry}`:emptyText;
   document.getElementById(`${prefix}Date`).textContent=trip?formatTravelDateRange(trip.startDate,trip.endDate):'–';
   document.getElementById(`${prefix}Meta`).textContent=trip?`${new Intl.NumberFormat('de-DE').format(trip.distanceKm)} km · ${trip.transportModes.map(formatTravelMode).join(' · ')||'Verkehrsmittel offen'}`:'–';
+  const modes=document.getElementById(`${prefix}Modes`);
+  modes.innerHTML=trip?trip.transportModes.slice(0,3).map(mode=>{const key=travelModeKey(mode);const icon=travelModeIcons[key]||travelModeIcons.transport;return`<span class="travel-mode-icon ${key}"><svg viewBox="0 0 24 24" aria-hidden="true">${icon[1]}</svg></span>`}).join(''):'';
 }
 async function loadTrailyxPreview(){
   const status=document.getElementById('travelStatus');
