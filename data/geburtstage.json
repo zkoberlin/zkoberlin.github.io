@@ -1,45 +1,45 @@
 {
-  "datum": "26.08.2026",
-  "generiert": "2026-08-26T21:09:41Z",
+  "datum": "27.08.2026",
+  "generiert": "2026-08-27T10:42:51Z",
   "geburtstage": [
     {
-      "name": "Lil Tecca",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Rapper/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Lil_Tecca_2019.png/330px-Lil_Tecca_2019.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lil_Tecca",
-      "nationalitaet": null,
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Patrick Williams",
+      "name": "Franz Wagner",
       "alter": 25,
       "geburtsjahr": 2001,
       "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/PatrickWilliamsFSU2019_%28cropped%29.jpg/330px-PatrickWilliamsFSU2019_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Williams_(basketball)",
-      "nationalitaet": null,
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93138.jpg/330px-2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93138.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Franz_Wagner",
+      "nationalitaet": "🇩🇪 Deutsch",
       "quelle": "Wikipedia"
     },
     {
-      "name": "Naz Reid",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Naz_Reid_%2851733687822%29_%28cropped%29.jpg/330px-Naz_Reid_%2851733687822%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Naz_Reid",
-      "nationalitaet": null,
+      "name": "Kim Petras",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Kim_Petras_%2842743719761%29.jpg/330px-Kim_Petras_%2842743719761%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kim_Petras",
+      "nationalitaet": "🇩🇪 Deutsch",
       "quelle": "Wikipedia"
     },
     {
-      "name": "Charlie Gillespie",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/CharlieGillespie-byPhilipRomano.jpg/330px-CharlieGillespie-byPhilipRomano.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Charlie_Gillespie",
-      "nationalitaet": null,
+      "name": "Dietmar Hamann",
+      "alter": 53,
+      "geburtsjahr": 1973,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/81/Hamann%2C_Dietmar_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Dietmar_Hamann",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Bernhard Langer",
+      "alter": 69,
+      "geburtsjahr": 1957,
+      "beruf": "Persönlichkeit",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Bernhard_Langer.jpg/330px-Bernhard_Langer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bernhard_Langer",
+      "nationalitaet": "🇩🇪 Deutsch",
       "quelle": "Wikipedia"
     }
   ]
