@@ -169,6 +169,72 @@ test("protects private feeds and snapshots without a Google token", async () => 
   }
 });
 
+test("generates and validates a horoscope using the Berlin calendar date", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  globalThis.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    assert.match(request.messages[0].content, /Zwillinge/);
+    return new Response(JSON.stringify({
+      content: [{ text: "Heute bringt ein ruhiger Gedanke überraschend viel Klarheit. Geh den nächsten Schritt mit Neugier an." }],
+    }));
+  };
+
+  try {
+    const response = await worker.fetch(new Request("https://worker.example.test/horoscope"), env);
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.match(data.date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(data.state, "live");
+    assert.ok(data.generatedAt);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("migrates a valid legacy day cache into the latest fallback", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  const today = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+  await env.KALENDER_KV.put(`horoscope_${today}`, JSON.stringify({
+    text: "Ein vorhandener Tagestext bleibt auch nach der Schema-Umstellung zuverlässig verfügbar.",
+    date: today,
+  }));
+  globalThis.fetch = async () => { throw new Error("provider should not be called"); };
+
+  try {
+    const response = await worker.fetch(new Request("https://worker.example.test/horoscope"), env);
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).state, "cached");
+    assert.ok(await env.KALENDER_KV.get("horoscope_latest"));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("serves the last valid horoscope when the provider fails", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  await env.KALENDER_KV.put("horoscope_latest", JSON.stringify({
+    text: "Die letzte Ausgabe bleibt lesbar, während im Hintergrund eine neue vorbereitet wird.",
+    date: "2026-08-26",
+    generatedAt: "2026-08-26T08:00:00.000Z",
+  }));
+  globalThis.fetch = async () => new Response("unavailable", { status: 503 });
+
+  try {
+    const response = await worker.fetch(new Request("https://worker.example.test/horoscope"), env);
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.state, "stale");
+    assert.equal(data.date, "2026-08-26");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("rejects market symbols outside the portfolio allowlist", async () => {
   const response = await worker.fetch(
     new Request("https://worker.example.test/market/quote?symbol=UNKNOWN", {

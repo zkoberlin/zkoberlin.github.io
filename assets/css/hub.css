@@ -103,6 +103,7 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .promi-profile:hover .promi-name{text-decoration:underline;}
 .bday-meta{margin-top:6px;color:var(--t3);font-size:8px;line-height:1.35;}
 .bday-meta button{border:0;background:none;color:var(--blue);font:inherit;padding:0;cursor:pointer;}
+#horoMeta button{border:0;background:none;color:var(--blue);font:inherit;padding:0;cursor:pointer;}
 /* Day info mini – blue border */
 div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-icon{font-size:22px;flex-shrink:0;}

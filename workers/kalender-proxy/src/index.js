@@ -46,6 +46,36 @@ function jsonResponse(data, status, origin) {
   });
 }
 
+function berlinDateParts(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("de-DE", {
+    timeZone: "Europe/Berlin",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  }).formatToParts(now).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  const monthNumber = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Berlin",
+    month: "2-digit",
+  }).format(now);
+  return {
+    key: `${parts.year}-${monthNumber}-${parts.day}`,
+    label: `${parts.weekday}, ${Number(parts.day)}. ${parts.month} ${parts.year}`,
+  };
+}
+
+function normalizeHoroscopeText(value) {
+  if (typeof value !== "string") return "";
+  const text = value.replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim();
+  return text.length >= 20 && text.length <= 500 ? text : "";
+}
+
+function horoscopeResponse(data, origin) {
+  const headers = responseHeaders(origin);
+  headers.set("Cache-Control", "public, max-age=300");
+  return new Response(JSON.stringify(data), { status: 200, headers });
+}
+
 function marketResponse(data, origin, state, storedAt) {
   const headers = responseHeaders(origin);
   headers.set("Access-Control-Expose-Headers", "X-Market-Data, X-Market-Stored-At");
@@ -159,52 +189,103 @@ async function handleSnapshot(request, env, origin) {
 }
 
 async function handleHoroscope(env, origin) {
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const { key: today, label: date } = berlinDateParts(now);
   const kvKey = `horoscope_${today}`;
-  const cached = await env.KALENDER_KV.get(kvKey);
+  const latestKey = "horoscope_latest";
+  const failureKey = `horoscope_failure_${today}`;
+  const cachedRaw = await env.KALENDER_KV.get(kvKey);
 
-  if (cached) {
-    return new Response(cached, { status: 200, headers: responseHeaders(origin) });
+  if (cachedRaw) {
+    try {
+      const cached = JSON.parse(cachedRaw);
+      const text = normalizeHoroscopeText(cached?.text);
+      if (text && cached?.date === today) {
+        const value = {
+          text,
+          date: today,
+          generatedAt: cached.generatedAt || null,
+        };
+        await env.KALENDER_KV.put(latestKey, JSON.stringify(value), { expirationTtl: 60 * 60 * 24 * 14 });
+        return horoscopeResponse({
+          ...value,
+          state: "cached",
+        }, origin);
+      }
+    } catch {
+      console.error(JSON.stringify({ message: "invalid horoscope cache", date: today }));
+    }
   }
 
-  const weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-  const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
-  const now = new Date();
-  const date = `${weekdays[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`;
+  const staleRaw = await env.KALENDER_KV.get(latestKey);
+  let stale = null;
+  try {
+    const parsed = staleRaw ? JSON.parse(staleRaw) : null;
+    const text = normalizeHoroscopeText(parsed?.text);
+    if (text && parsed?.date) stale = { ...parsed, text, generatedAt: parsed.generatedAt || null };
+  } catch {
+    stale = null;
+  }
 
-  const apiResponse = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": env.ANTHROPIC_API_SECRET,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5",
-      max_tokens: 200,
-      system: "Du bist ein einfühlsamer Astrologe. Antworte nur mit dem Horoskop-Text auf Deutsch, ohne JSON, Anführungszeichen oder Präambel. Maximal zwei kurze Sätze. Persönlich, alltagsnah, leicht positiv, aber ehrlich.",
-      messages: [{
-        role: "user",
-        content: `Schreibe das heutige Tageshoroskop für eine Person mit Sternzeichen Zwillinge. Heute ist ${date}. Beziehe dich konkret auf den Wochentag und die aktuelle Jahreszeit. Maximal zwei Sätze.`,
-      }],
-    }),
-  });
+  if (await env.KALENDER_KV.get(failureKey)) {
+    if (stale) return horoscopeResponse({ ...stale, state: "stale" }, origin);
+    return jsonResponse({ error: "Horoscope temporarily unavailable" }, 503, origin);
+  }
 
-  if (!apiResponse.ok) {
+  let apiResponse;
+  try {
+    apiResponse = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": env.ANTHROPIC_API_SECRET,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5",
+        max_tokens: 200,
+        system: "Du bist ein einfühlsamer Astrologe. Antworte nur mit dem Horoskop-Text auf Deutsch, ohne JSON, Anführungszeichen oder Präambel. Maximal zwei kurze Sätze. Persönlich, alltagsnah, leicht positiv, aber ehrlich.",
+        messages: [{
+          role: "user",
+          content: `Schreibe das heutige Tageshoroskop für eine Person mit Sternzeichen Zwillinge. Heute ist ${date}. Beziehe dich konkret auf den Wochentag und die aktuelle Jahreszeit. Maximal zwei Sätze.`,
+        }],
+      }),
+      signal: AbortSignal.timeout(10_000),
+    });
+  } catch (error) {
+    console.error(JSON.stringify({ message: "horoscope provider request failed", error: String(error) }));
+  }
+
+  if (!apiResponse?.ok) {
     console.error(JSON.stringify({
       message: "horoscope provider failed",
-      status: apiResponse.status,
+      status: apiResponse?.status || 0,
     }));
+    await env.KALENDER_KV.put(failureKey, "1", { expirationTtl: 300 });
+    if (stale) return horoscopeResponse({ ...stale, state: "stale" }, origin);
     return jsonResponse({ error: "Horoscope unavailable" }, 502, origin);
   }
 
-  const apiData = await apiResponse.json();
-  const text = apiData?.content?.[0]?.text || "";
-  if (!text) return jsonResponse({ error: "Horoscope unavailable" }, 502, origin);
+  let apiData;
+  try {
+    apiData = await apiResponse.json();
+  } catch {
+    await env.KALENDER_KV.put(failureKey, "1", { expirationTtl: 300 });
+    if (stale) return horoscopeResponse({ ...stale, state: "stale" }, origin);
+    return jsonResponse({ error: "Horoscope unavailable" }, 502, origin);
+  }
+  const text = normalizeHoroscopeText(apiData?.content?.[0]?.text);
+  if (!text) {
+    await env.KALENDER_KV.put(failureKey, "1", { expirationTtl: 300 });
+    if (stale) return horoscopeResponse({ ...stale, state: "stale" }, origin);
+    return jsonResponse({ error: "Horoscope unavailable" }, 502, origin);
+  }
 
-  const result = JSON.stringify({ text, date: today });
+  const value = { text, date: today, generatedAt: now.toISOString() };
+  const result = JSON.stringify(value);
   await env.KALENDER_KV.put(kvKey, result, { expirationTtl: 60 * 60 * 28 });
-  return new Response(result, { status: 200, headers: responseHeaders(origin) });
+  await env.KALENDER_KV.put(latestKey, result, { expirationTtl: 60 * 60 * 24 * 14 });
+  return horoscopeResponse({ ...value, state: "live" }, origin);
 }
 
 async function handleMarketData(url, env, origin) {

@@ -22,7 +22,7 @@ Der Worker `paul-gateway-v2` ist seit dem 26.08.2026 der einzige öffentliche Ei
 | `paul-gateway-v2 /feeds/kids` | KalenderPaul | Lesen | private Familientermine | Google-Authentifizierung; Tabellen-URL als Backend-Secret; internes Service Binding | **Mittel:** minimale ausgelieferte Felder beim Kalender-Review prüfen. |
 | `paul-gateway-v2 /snapshot` | KalenderPaul | Lesen und Schreiben | Kalender-Snapshot | Google-Authentifizierung; KV, Größen- und JSON-Prüfung; internes Service Binding | **Mittel:** Rate Limit und Konfliktverhalten ergänzen beziehungsweise testen. |
 | `paul-gateway-v2 /auth/me` | Hub und KalenderPaul | Lesen | Google-Kontoprofil zur Sitzungsprüfung | Google-Tokenprüfung und E-Mail-Allowlist | **Niedrig:** abgelaufene und widerrufene Tokens gezielt testen. |
-| `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret, KV-Cache | **Mittel:** Rate Limit und klaren Fehler-/Cachepfad ergänzen. |
+| `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret; Berliner Tagesdatum; validierter Tagescache; letzter gültiger Text und fünfminütiger Fehler-Backoff | **Niedrig:** öffentliche Nutzung und Anbieterlimits beobachten. |
 | `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret; Finnhub und Yahoo nur serverseitig; Symbol-Allowlist; KV-Cache | **Niedrig:** Anbieterlimits und veraltete Cache-Antworten weiter beobachten. |
 
 Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.

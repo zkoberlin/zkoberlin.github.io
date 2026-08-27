@@ -419,27 +419,63 @@ setInterval(()=>{
 },60000);
 
 // ── HOROSKOP Zwillinge – via Cloudflare Worker, 1× täglich gecached ──
-async function loadHoroskop(){
+function berlinDateKey(date=new Date()){
+  return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
+}
+function validHoroscope(data){
+  return data&&typeof data.text==='string'&&data.text.trim().length>=20&&data.text.trim().length<=500&&/^\d{4}-\d{2}-\d{2}$/.test(data.date||'');
+}
+function renderHoroscope(data,el,metaEl,isStale=false){
+  el.replaceChildren();
+  const text=document.createElement('span');
+  text.style.fontStyle='italic';
+  text.textContent=data.text.trim();
+  el.appendChild(text);
+  if(!metaEl)return;
+  metaEl.replaceChildren();
+  const generated=data.generatedAt?new Date(data.generatedAt):null;
+  const time=!generated||Number.isNaN(generated.getTime())?'':` · ${generated.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})} Uhr`;
+  const label=document.createElement('span');
+  label.textContent=isStale?`✦ KI-generiert · letzte Ausgabe${time}`:`✦ KI-generiert · heute${time}`;
+  metaEl.appendChild(label);
+  metaEl.style.display='block';
+}
+function renderHoroscopeError(el,metaEl){
+  el.replaceChildren();
+  const message=document.createElement('span');
+  message.style.cssText='color:var(--t3);font-size:10px;';
+  message.textContent='Horoskop momentan nicht verfügbar';
+  el.appendChild(message);
+  if(!metaEl)return;
+  metaEl.replaceChildren();
+  const retry=document.createElement('button');
+  retry.type='button';
+  retry.textContent='Erneut laden';
+  retry.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();loadHoroskop(true);});
+  metaEl.appendChild(retry);
+  metaEl.style.display='block';
+}
+let horoscopeDateKey='';
+async function loadHoroskop(force=false){
   const el=document.getElementById('horoVal');
   const metaEl=document.getElementById('horoMeta');
   if(!el) return;
 
-  const today=new Date();
-  const dateKey=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const dateKey=berlinDateKey();
   const cacheKey=`horo_zwillinge_${dateKey}`;
 
   // localStorage-Cache prüfen — kein Worker-Call nötig wenn schon da
-  try{
+  try{if(!force){
     const cached=localStorage.getItem(cacheKey);
     if(cached){
       const obj=JSON.parse(cached);
-      if(obj.text){
-        el.innerHTML=`<span style="font-style:italic;">${obj.text}</span>`;
-        if(metaEl){metaEl.textContent='✦ KI-generiert · heute';metaEl.style.display='block';}
+      if(validHoroscope(obj)&&obj.date===dateKey){
+        renderHoroscope(obj,el,metaEl);
+        horoscopeDateKey=dateKey;
         return;
       }
     }
-  }catch(e){}
+  }}catch(e){}
 
   // Worker aufrufen — generiert + cached serverseitig in KV
   try{
@@ -448,24 +484,36 @@ async function loadHoroskop(){
     });
     if(!resp.ok) throw new Error('Worker '+resp.status);
     const data=await resp.json();
-    const text=data.text||'';
-    if(!text) throw new Error('Kein Text');
+    if(!validHoroscope(data))throw new Error('Ungültige Antwort');
 
-    el.innerHTML=`<span style="font-style:italic;">${text}</span>`;
-    if(metaEl){metaEl.textContent='✦ KI-generiert · heute';metaEl.style.display='block';}
+    const isStale=data.state==='stale'||data.date!==dateKey;
+    renderHoroscope(data,el,metaEl,isStale);
+    horoscopeDateKey=dateKey;
 
     // Auch lokal cachen — alte Keys aufräumen
     try{
-      Object.keys(localStorage).filter(k=>k.startsWith('horo_zwillinge_')&&k!==cacheKey).forEach(k=>localStorage.removeItem(k));
-      localStorage.setItem(cacheKey,JSON.stringify({text,date:dateKey}));
+      if(!isStale)localStorage.setItem(cacheKey,JSON.stringify(data));
+      localStorage.setItem('horo_zwillinge_latest',JSON.stringify(data));
     }catch(e){}
 
   }catch(e){
     console.warn('Horoskop Fehler:',e);
-    el.innerHTML='<span style="color:var(--t3);font-size:10px;">Horoskop momentan nicht verfügbar</span>';
+    try{
+      const latest=JSON.parse(localStorage.getItem('horo_zwillinge_latest')||'null');
+      if(validHoroscope(latest)){
+        renderHoroscope(latest,el,metaEl,true);
+        horoscopeDateKey=dateKey;
+        return;
+      }
+    }catch(storageError){}
+    renderHoroscopeError(el,metaEl);
   }
 }
 loadHoroskop();
+setInterval(()=>{
+  const current=berlinDateKey();
+  if(current!==horoscopeDateKey)loadHoroskop();
+},60000);
 
 (function(){
   const now2=new Date();
