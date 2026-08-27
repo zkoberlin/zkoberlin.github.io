@@ -1173,7 +1173,7 @@ loadBtc();
 // ── AKTIEN LIVE (Finnhub via Worker + Yahoo Finance EU) ──
 const MARKET_API='https://paul-gateway-v2.paul-bendzko.workers.dev/market';
 
-// Vollständiges Parqet-Portfolio – 22 Positionen
+// Ausgewählte Depotpositionen – 19 Werte
 // fhSym  = Finnhub-Symbol (US-Listing oder ADR)
 // yfSym  = Yahoo Finance Symbol (EU-Listing, CORS-Proxy-Fallback)
 // fbEur  = Parqet-Fallback-Preis in EUR (falls beide APIs fehlschlagen)
@@ -1191,7 +1191,6 @@ const STOCKS=[
   {name:'Siemens',           fhSym:'SIEGY',  yfSym:'SIE.DE',  logo:'siemens.com',          cur:'USD', fbEur:258.67,  fbPct:0},
   {name:'Hannover Rück',     fhSym:'HVRRF',  yfSym:'HNR1.DE', logo:'hannover-re.com',      cur:'USD', fbEur:236.70,  fbPct:0},
   {name:'Ferrari',           fhSym:'RACE',   yfSym:null,      logo:'ferrari.com',          cur:'USD', fbEur:null,    fbPct:null},
-  {name:'Tesla',             fhSym:'TSLA',   yfSym:null,      logo:'tesla.com',            cur:'USD', fbEur:null,    fbPct:null},
   {name:'Nubank',            fhSym:'NU',     yfSym:null,      logo:'nu.com.br',            cur:'USD', fbEur:null,    fbPct:null},
   {name:'Cintas',            fhSym:'CTAS',   yfSym:null,      logo:'cintas.com',           cur:'USD', fbEur:null,    fbPct:null},
   {name:'American Express',  fhSym:'AXP',    yfSym:null,      logo:'americanexpress.com',  cur:'USD', fbEur:null,    fbPct:null},
@@ -1199,8 +1198,6 @@ const STOCKS=[
   {name:'Netflix',           fhSym:'NFLX',   yfSym:null,      logo:'netflix.com',          cur:'USD', fbEur:null,    fbPct:null},
   {name:'BKW',               fhSym:null,     yfSym:'BKW.SW',  logo:'bkw.ch',              cur:'EUR', fbEur:163.10,  fbPct:0},
   {name:'Zoetis',            fhSym:'ZTS',    yfSym:null,      logo:'zoetis.com',           cur:'USD', fbEur:null,    fbPct:null},
-  {name:'Richtech Robotics', fhSym:'RR',     yfSym:null,      logo:'richtechrobotics.com', cur:'USD', fbEur:null,    fbPct:null},
-  {name:'Clover Health',     fhSym:'CLOV',   yfSym:null,      logo:'cloverhealth.com',     cur:'USD', fbEur:null,    fbPct:null},
 ];
 
 function toggleStocksAll(){

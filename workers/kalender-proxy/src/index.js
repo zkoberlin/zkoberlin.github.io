@@ -5,8 +5,7 @@ const DEVELOPMENT_ORIGINS = new Set([
 ]);
 const FINNHUB_SYMBOLS = new Set([
   "MSFT", "GOOGL", "ASML", "NVO", "PG", "WTKWY", "MELI", "SIEGY",
-  "HVRRF", "RACE", "TSLA", "NU", "CTAS", "AXP", "HESAY", "NFLX",
-  "ZTS", "RR", "CLOV",
+  "HVRRF", "RACE", "NU", "CTAS", "AXP", "HESAY", "NFLX", "ZTS",
 ]);
 const YAHOO_SYMBOLS = new Set([
   ...FINNHUB_SYMBOLS,
