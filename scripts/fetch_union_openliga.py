@@ -70,8 +70,16 @@ def main():
         opponent_team=next_match["team2"] if next_match["team1"]["teamId"]==UNION_ID else next_match["team1"]
         opponent_id=opponent_team["teamId"]
         recent=recent_view(opponent_id)
+        h2h_matches=matches+(previous_matches or [])+fetch(f"getmatchdata/{LEAGUE}/{season-2}")
+        h2h=[]
+        for match in h2h_matches:
+            team_ids=(match["team1"]["teamId"],match["team2"]["teamId"])
+            final=score(match) if match.get("matchIsFinished") else None
+            if final and UNION_ID in team_ids and opponent_id in team_ids:
+                h2h.append(opponent_match_view(match,UNION_ID,final))
+        h2h=sorted(h2h,key=lambda item:item["date"])[-3:]
         opponent_row=next((r for r in table_view if r["teamId"]==opponent_id),None)
-        opponent_view={"id":opponent_id,"name":opponent_team["teamName"],"shortName":opponent_team.get("shortName"),"logo":opponent_team.get("teamIconUrl"),"standing":opponent_row,**recent}
+        opponent_view={"id":opponent_id,"name":opponent_team["teamName"],"shortName":opponent_team.get("shortName"),"logo":opponent_team.get("teamIconUrl"),"standing":opponent_row,"headToHead":h2h,**recent}
     output={"schemaVersion":3,"generatedAt":now.replace(microsecond=0).isoformat().replace("+00:00","Z"),"source":{"name":"OpenLigaDB","url":"https://openligadb.de/","leagueShortcut":LEAGUE},"season":{"startYear":season,"label":f"{season}/{str(season+1)[-2:]}","currentMatchday":group.get("groupOrderID")},"team":{"id":UNION_ID,"name":row["teamName"],"shortName":row.get("shortName"),"logo":row.get("teamIconUrl"),**union_recent},"status":"active" if started else "preseason","standing":{"rank":next((i for i,r in enumerate(ranked,1) if r["teamInfoId"]==UNION_ID),None) if started else None,"played":row["matches"],"won":row["won"],"drawn":row["draw"],"lost":row["lost"],"goalsFor":row["goals"],"goalsAgainst":row["opponentGoals"],"goalDifference":row["goalDiff"],"points":row["points"],"form":form},"lastMatch":match_view(*completed[-1]) if completed else None,"nextMatch":match_view(next_match) if next_match else None,"nextOpponent":opponent_view,"table":table_view}
     os.makedirs(os.path.dirname(OUT),exist_ok=True); fd,tmp=tempfile.mkstemp(prefix="union-",suffix=".json",dir=os.path.dirname(OUT))
     try:

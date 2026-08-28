@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-08-28T14:04:54Z",
+  "generatedAt": "2026-08-28T14:10:47Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -114,6 +114,53 @@
       "points": 0,
       "isUnion": false
     },
+    "headToHead": [
+      {
+        "id": 72433,
+        "date": "2025-03-09T14:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": false,
+        "opponent": {
+          "id": 91,
+          "name": "Eintracht Frankfurt",
+          "shortName": "Frankfurt",
+          "logo": "https://i.imgur.com/X8NFkOb.png"
+        },
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "result": "W"
+      },
+      {
+        "id": 77284,
+        "date": "2025-09-21T13:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": false,
+        "opponent": {
+          "id": 91,
+          "name": "Eintracht Frankfurt",
+          "shortName": "Frankfurt",
+          "logo": "https://i.imgur.com/X8NFkOb.png"
+        },
+        "goalsFor": 4,
+        "goalsAgainst": 3,
+        "result": "W"
+      },
+      {
+        "id": 77442,
+        "date": "2026-02-06T19:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": true,
+        "opponent": {
+          "id": 91,
+          "name": "Eintracht Frankfurt",
+          "shortName": "Frankfurt",
+          "logo": "https://i.imgur.com/X8NFkOb.png"
+        },
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "result": "D"
+      }
+    ],
     "form": "LDLLD",
     "lastMatches": [
       {
