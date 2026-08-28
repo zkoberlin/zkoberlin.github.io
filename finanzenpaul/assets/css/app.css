@@ -110,6 +110,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-s
 .dr+.dr{border-top:0.5px solid var(--sep2);}
 .dico{font-size:18px;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:var(--card2);}
 .dico img{width:22px;height:22px;border-radius:5px;object-fit:cover;}
+.finance-icon-svg{width:21px;height:21px;display:block;fill:none;stroke:var(--acc);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .dlbl{font-size:13px;color:var(--t1);width:170px;flex-shrink:0;display:flex;align-items:center;gap:4px;}
 .dlbl.dim{color:var(--t3);}
 .dsl{flex:1;}
@@ -216,6 +217,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 .mr+.mr{border-top:0.5px solid var(--sep2);}
 .mico{font-size:22px;width:42px;height:42px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
 .mico img{width:28px;height:28px;border-radius:6px;object-fit:cover;}
+.mico .finance-icon-svg{width:25px;height:25px;}
 .mrm{flex:1;min-width:0;}
 .mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
 .mrlbl{font-size:15px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:4px;}

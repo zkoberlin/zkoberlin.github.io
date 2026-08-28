@@ -12,10 +12,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="stylesheet" href="assets/css/app.css">
-<script src="../assets/js/version.js?v=6.29.0" defer></script>
-<script src="../assets/js/auth.js?v=6.29.0" defer></script>
+<script src="../assets/js/version.js?v=6.29.1" defer></script>
+<script src="../assets/js/auth.js?v=6.29.1" defer></script>
 </head>
 <body>
+
+<svg aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden">
+  <symbol id="fi-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></symbol>
+  <symbol id="fi-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></symbol>
+  <symbol id="fi-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.7 2.9 8 7 10 4.1-2 7-5.3 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></symbol>
+  <symbol id="fi-scales" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M5 7h14M7 7l-3 6h6L7 7Zm10 0-3 6h6l-3-6Z"/></symbol>
+  <symbol id="fi-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></symbol>
+  <symbol id="fi-family" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20c.4-4 2.3-6 5.5-6s5.1 2 5.5 6M13 20c.3-3 1.6-4.5 4-4.5s3.7 1.5 4 4.5"/></symbol>
+  <symbol id="fi-piggy" viewBox="0 0 24 24"><path d="M5 10c1.2-3 4-5 7.5-5 4.4 0 7.5 2.8 7.5 6.5 0 2.3-1.1 4.2-3 5.4V20h-3v-2H9v2H6v-3.4c-1.2-.8-2-2-2.5-3.6H2v-3h3Z"/><path d="M15 5V3c-1.6 0-2.8.5-3.5 1.7M16.5 10h.01"/></symbol>
+  <symbol id="fi-phone" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2"/><path d="M10 5h4M11 19h2"/></symbol>
+</svg>
 
 <!-- ══ MODAL ══ -->
 <div id="modal" onclick="if(event.target===this)CM()">
@@ -67,7 +78,7 @@
   <div class="d-topbar">
     <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
     <span class="d-topbar-title">Finanzplanung</span>
-    <span class="d-topbar-sub">Paul · <span data-app-version>v6.29.0</span></span>
+    <span class="d-topbar-sub">Paul · <span data-app-version>v6.29.1</span></span>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -117,7 +128,7 @@
       </div>
       <div id="dbody-wohnen">
       <div class="dr" id="dr-miete" style="cursor:pointer;" onclick="OE('miete')">
-        <span class="dico">🏠</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-home"/></svg></span>
         <span class="dlbl" id="dlbl-miete">Miete</span>
         <input type="range" class="dsl" min="500" max="2500" step="10" value="0" id="dsl-miete" oninput="DI('miete',this.value,event)">
         <span class="dval" id="dval-miete">–</span>
@@ -135,7 +146,7 @@
         <span class="dval" id="dval-internet">–</span>
       </div>
       <div class="dr" id="dr-lebensmittel" style="cursor:pointer;" onclick="OE('lebensmittel')">
-        <span class="dico">🛒</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-cart"/></svg></span>
         <span class="dlbl" id="dlbl-lebensmittel">Lebensmittel</span>
         <input type="range" class="dsl" min="100" max="900" step="10" value="0" id="dsl-lebensmittel" oninput="DI('lebensmittel',this.value,event)">
         <span class="dval" id="dval-lebensmittel">–</span>
@@ -149,13 +160,13 @@
       </div>
       <div id="dbody-versicherungen">
       <div class="dr" id="dr-haftpflicht" style="cursor:pointer;" onclick="OE('haftpflicht')">
-        <span class="dico">🛡️</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-shield"/></svg></span>
         <span class="dlbl" id="dlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
         <input type="range" class="dsl" min="0" max="20" step="0.01" value="0" id="dsl-haftpflicht" oninput="DI('haftpflicht',this.value,event)">
         <span class="dval" id="dval-haftpflicht">–</span>
       </div>
       <div class="dr" id="dr-rechtsschutz" style="cursor:pointer;" onclick="OE('rechtsschutz')">
-        <span class="dico">⚖️</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-scales"/></svg></span>
         <span class="dlbl" id="dlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
         <input type="range" class="dsl" min="0" max="50" step="0.01" value="0" id="dsl-rechtsschutz" oninput="DI('rechtsschutz',this.value,event)">
         <span class="dval" id="dval-rechtsschutz">–</span>
@@ -175,7 +186,7 @@
       </div>
       <div id="dbody-kredite">
         <div class="dr" id="dr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
-          <span class="dico">💳</span>
+          <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-card"/></svg></span>
           <span class="dlbl" id="dlbl-kredit">Kredit Rate</span>
           <input type="range" class="dsl" min="0" max="800" step="10" value="0" id="dsl-kredit" oninput="DI('kredit',this.value,event)">
           <span class="dval" id="dval-kredit">–</span>
@@ -202,25 +213,25 @@
       </div>
       <div id="dbody-familie">
       <div class="dr" id="dr-unterhalt" style="cursor:pointer;" onclick="OE('unterhalt')">
-        <span class="dico">👨‍👧‍👦</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-family"/></svg></span>
         <span class="dlbl" id="dlbl-unterhalt">Unterhalt</span>
         <input type="range" class="dsl" min="0" max="600" step="10" value="0" id="dsl-unterhalt" oninput="DI('unterhalt',this.value,event)">
         <span class="dval" id="dval-unterhalt">–</span>
       </div>
       <div class="dr" id="dr-kids" style="cursor:pointer;" onclick="OE('kids')">
-        <span class="dico">🐷</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-piggy"/></svg></span>
         <span class="dlbl" id="dlbl-kids">Sparen Kids</span>
         <input type="range" class="dsl" min="0" max="300" step="10" value="0" id="dsl-kids" oninput="DI('kids',this.value,event)">
         <span class="dval" id="dval-kids">–</span>
       </div>
       <div class="dr" id="dr-handyemil" style="cursor:pointer;" onclick="OE('handyemil')">
-        <span class="dico">📱</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-phone"/></svg></span>
         <span class="dlbl" id="dlbl-handyemil">Handy Emil</span>
         <input type="range" class="dsl" min="0" max="20" step="0.5" value="0" id="dsl-handyemil" oninput="DI('handyemil',this.value,event)">
         <span class="dval" id="dval-handyemil">–</span>
       </div>
       <div class="dr" id="dr-handyrosa" style="cursor:pointer;" onclick="OE('handyrosa')">
-        <span class="dico">📱</span>
+        <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-phone"/></svg></span>
         <span class="dlbl" id="dlbl-handyrosa">Handy Rosa</span>
         <input type="range" class="dsl" min="0" max="20" step="0.5" value="0" id="dsl-handyrosa" oninput="DI('handyrosa',this.value,event)">
         <span class="dval" id="dval-handyrosa">–</span>
@@ -396,7 +407,7 @@
 <div class="m-layout">
   <div class="m-topbar">
     <div class="m-topbar-inner">
-      <div class="m-topbar-title">Finanzen · Paul <span data-app-version style="font-size:10px;opacity:.55;">v6.29.0</span></div>
+      <div class="m-topbar-title">Finanzen · Paul <span data-app-version style="font-size:10px;opacity:.55;">v6.29.1</span></div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
         <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
@@ -464,7 +475,7 @@
     <div class="mseclbl"><span class="mseclbl-txt">🏠 Wohnen</span><span class="msectot" id="mtot-wohnen">–</span></div>
     <div class="msec" id="mbody-wohnen">
       <div class="mr" id="mr-miete" style="cursor:pointer;" onclick="OE('miete')">
-        <span class="mico">🏠</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-home"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-miete">Miete</div>
@@ -494,7 +505,7 @@
         </div>
       </div>
       <div class="mr" id="mr-lebensmittel" style="cursor:pointer;" onclick="OE('lebensmittel')">
-        <span class="mico">🛒</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-cart"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-lebensmittel">Lebensmittel</div>
@@ -508,7 +519,7 @@
     <div class="mseclbl"><span class="mseclbl-txt">🛡️ Versicherungen</span><span class="msectot" id="mtot-versicherungen">–</span></div>
     <div class="msec" id="mbody-versicherungen">
       <div class="mr" id="mr-haftpflicht" style="cursor:pointer;" onclick="OE('haftpflicht')">
-        <span class="mico">🛡️</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-shield"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
@@ -518,7 +529,7 @@
         </div>
       </div>
       <div class="mr" id="mr-rechtsschutz" style="cursor:pointer;" onclick="OE('rechtsschutz')">
-        <span class="mico">⚖️</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-scales"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
@@ -542,7 +553,7 @@
     <div class="mseclbl"><span class="mseclbl-txt">💳 Kredite & Finanzen</span><span class="msectot" id="mtot-kredite">–</span></div>
     <div class="msec" id="mbody-kredite">
       <div class="mr" id="mr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
-        <span class="mico">💳</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-card"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-kredit">Kredit Rate</div>
@@ -576,7 +587,7 @@
     <div class="mseclbl"><span class="mseclbl-txt">👨‍👧‍👦 Familie</span><span class="msectot" id="mtot-familie">–</span></div>
     <div class="msec" id="mbody-familie">
       <div class="mr" id="mr-unterhalt" style="cursor:pointer;" onclick="OE('unterhalt')">
-        <span class="mico">👨‍👧‍👦</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-family"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-unterhalt">Unterhalt</div>
@@ -586,7 +597,7 @@
         </div>
       </div>
       <div class="mr" id="mr-kids" style="cursor:pointer;" onclick="OE('kids')">
-        <span class="mico">🐷</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-piggy"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-kids">Sparen Kids</div>
@@ -596,7 +607,7 @@
         </div>
       </div>
       <div class="mr" id="mr-handyemil" style="cursor:pointer;" onclick="OE('handyemil')">
-        <span class="mico">📱</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-phone"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-handyemil">Handy Emil</div>
@@ -606,7 +617,7 @@
         </div>
       </div>
       <div class="mr" id="mr-handyrosa" style="cursor:pointer;" onclick="OE('handyrosa')">
-        <span class="mico">📱</span>
+        <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-phone"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
             <div class="mrlbl" id="mrlbl-handyrosa">Handy Rosa</div>
@@ -803,7 +814,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=6.29.0"></script>
+<script src="assets/js/app.js?v=6.29.1"></script>
 
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">

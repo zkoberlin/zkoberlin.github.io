@@ -76,9 +76,7 @@ function updateHeaderTime(){
   updateCalendarDate(current);
 }
 function updateCalendarDate(current){
-  document.getElementById('todayStr').textContent=`${current.getDate()}. ${MON[current.getMonth()]}`;
   const calendarWeek=getKW(current);
-  document.getElementById('kwStr').textContent=`KW ${calendarWeek} · ${current.getFullYear()}`;
   document.getElementById('calIconDay').textContent=current.getDate();
   document.getElementById('calIconMonth').textContent=MON_SHORT[current.getMonth()];
   const kwEl=document.getElementById('kw');if(kwEl)kwEl.textContent=calendarWeek;
