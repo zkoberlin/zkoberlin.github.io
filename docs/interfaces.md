@@ -65,7 +65,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Dienst | Zweck | Zugriff | Daten / Zugang | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- |
 | Cloudflare D1 über `paul-gateway-v2` | Finanzdaten synchronisieren | Lesen, Schreiben | vollständiger validierter Finanzstand | **Niedrig:** Google-Authentifizierung und Worker-Binding; Hub erhält nur eine minimierte Vorschau. |
-| JSONBin (stillgelegt) | keine aktive Verwendung | keiner | frühere Zugangsdaten werden nach erfolgreichem D1-Laden aus dem Browser entfernt | **Offen außerhalb des Hubs:** bisherigen Master-Key beim Anbieter widerrufen beziehungsweise rotieren. |
+| JSONBin (stillgelegt) | keine aktive Verwendung | keiner | frühere Zugangsdaten werden nach erfolgreichem D1-Laden aus dem Browser entfernt; der zuvor verwendete Master-Key wurde am 28.08.2026 regeneriert und damit ungültig | **Niedrig:** private Alt-Bins bleiben vorläufig als manuelles Backup bestehen und sind nicht mehr mit dem Hub verbunden. |
 | Google Favicons | Anbieterlogos | Lesen | angefragte Domains | **Mittel:** unnötige Drittanbieteraufrufe vermeiden oder Icons lokal speichern. |
 
 ## Automatische Aktualisierungen
