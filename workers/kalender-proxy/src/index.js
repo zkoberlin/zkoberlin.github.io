@@ -154,6 +154,70 @@ async function proxyFeed(target, origin) {
   }
 }
 
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (quoted) {
+      if (char === '"' && text[index + 1] === '"') { cell += '"'; index += 1; }
+      else if (char === '"') quoted = false;
+      else cell += char;
+    } else if (char === '"') quoted = true;
+    else if (char === ",") { row.push(cell); cell = ""; }
+    else if (char === "\n") { row.push(cell.replace(/\r$/, "")); rows.push(row); row = []; cell = ""; }
+    else cell += char;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+
+function germanSheetDate(value) {
+  const match = String(value || "").trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  const iso = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  const parsed = new Date(`${iso}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === iso ? iso : null;
+}
+
+async function handleKidsFeed(target, origin) {
+  try {
+    const upstream = await fetch(target, {
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; KalenderProxy/2.0)" },
+      cf: { cacheEverything: false, cacheTtl: 0 },
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!upstream.ok) return jsonResponse({ error: "Kids schedule unavailable" }, 502, origin);
+    const rows = parseCsv(await upstream.text()).slice(1);
+    const today = berlinDateParts(new Date()).key;
+    const fromDate = new Date(`${today}T00:00:00Z`);
+    fromDate.setUTCDate(fromDate.getUTCDate() - 31);
+    const untilDate = new Date(`${today}T00:00:00Z`);
+    untilDate.setUTCDate(untilDate.getUTCDate() + 400);
+    const from = fromDate.toISOString().slice(0, 10);
+    const until = untilDate.toISOString().slice(0, 10);
+    const seen = new Set();
+    const days = [];
+    for (const row of rows) {
+      const date = germanSheetDate(row[0]);
+      if (!date || date < from || date > until || seen.has(date)) continue;
+      const rawCaretaker = String(row[2] || "").trim();
+      const caretaker = rawCaretaker === "Paul" ? "Paul" : rawCaretaker === "Dani" ? "Dani" : "unknown";
+      seen.add(date);
+      days.push({ date, caretaker });
+    }
+    days.sort((a, b) => a.date.localeCompare(b.date));
+    if (!days.length) return jsonResponse({ error: "Kids schedule unavailable" }, 502, origin);
+    return jsonResponse({ schemaVersion: 1, days, generatedAt: new Date().toISOString() }, 200, origin);
+  } catch (error) {
+    console.error(JSON.stringify({ message: "kids feed failed", error: error instanceof Error ? error.message : String(error) }));
+    return jsonResponse({ error: "Kids schedule unavailable" }, 502, origin);
+  }
+}
+
 async function handleSnapshot(request, env, origin) {
   if (request.method === "GET") {
     const data = await env.KALENDER_KV.get("snapshot");
@@ -472,6 +536,7 @@ export default {
       }
 
       if (request.method === "GET") {
+        if (url.pathname === "/feeds/kids") return await handleKidsFeed(env.KIDS_SHEET_URL, origin);
         const namedFeed = getFeedUrl(url.pathname, env);
         if (namedFeed) return await proxyFeed(namedFeed, origin);
       }

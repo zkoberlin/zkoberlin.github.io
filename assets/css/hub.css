@@ -326,6 +326,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-badge{font-family:'Inter',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
 .er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
 .er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
+.er-badge.unknown{color:var(--orange);border-color:var(--orange-b);background:var(--orange-l);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
 .er-num{padding:16px 20px;border-right:1px solid var(--border);}
 .er-num:last-child{border-right:none;}
@@ -343,9 +344,11 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-day{flex:1;border-radius:5px;display:flex;align-items:center;justify-content:center;}
 .er-day.paul{background:var(--green-l);border:1px solid var(--green-b);}
 .er-day.dani{background:var(--card2);border:1px solid var(--border);}
+.er-day.unknown{background:var(--orange-l);border:1px dashed var(--orange-b);}
 .er-day.today{outline:2px solid var(--blue);outline-offset:1px;}
 .er-dl{font-size:7px;font-weight:700;color:var(--t3);}
 .er-day.paul .er-dl{color:var(--green);}
+.er-day.unknown .er-dl{color:var(--orange);}.er-plan-message{width:100%;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:10px;}
 .er-dates{display:flex;gap:3px;margin-top:4px;}
 .er-date-slot{flex:1;text-align:center;font-size:6.5px;color:transparent;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;}
 .er-date-slot.show{color:var(--t2);}

@@ -159,6 +159,49 @@ test("resolves a named feed through its secret binding", async () => {
   }
 });
 
+test("returns only the validated minimal kids schedule", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  const today = new Date();
+  const sheetDate = (offset) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() + offset);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+  const isoDate = (offset) => {
+    const date = new Date(today);
+    date.setDate(date.getDate() + offset);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  };
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("openidconnect.googleapis.com")) return googleProfileResponse();
+    assert.equal(String(url), env.KIDS_SHEET_URL);
+    return new Response([
+      '"was war","Tag","Name","","Infos","Kommentar Paul","Kommentar Dani"',
+      `"${sheetDate(0)}","Heute","Paul","","privat","nicht ausliefern","ebenfalls privat"`,
+      `"${sheetDate(1)}","Morgen","Dani","","privat","nicht ausliefern","ebenfalls privat"`,
+      `"${sheetDate(2)}","Danach","Beide","","privat","nicht ausliefern","ebenfalls privat"`,
+    ].join("\n"), { headers: { "Content-Type": "text/csv" } });
+  };
+  try {
+    const response = await worker.fetch(
+      authorizedRequest("https://worker.example.test/feeds/kids", { headers: { Origin: "http://localhost:8000" } }),
+      env,
+    );
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.schemaVersion, 1);
+    assert.deepEqual(data.days, [
+      { date: isoDate(0), caretaker: "Paul" },
+      { date: isoDate(1), caretaker: "Dani" },
+      { date: isoDate(2), caretaker: "unknown" },
+    ]);
+    assert.equal(JSON.stringify(data).includes("nicht ausliefern"), false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("protects private feeds and snapshots without a Google token", async () => {
   for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot"]) {
     const response = await worker.fetch(

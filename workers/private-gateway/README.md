@@ -14,7 +14,7 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 
 - `/feeds/gmail`
 - `/feeds/hellomed`
-- `/feeds/kids`
+- `/feeds/kids` (minimierter Aufenthaltsplan ohne Sheet-Kommentare)
 - `/snapshot`
 - `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/alcohol` (`GET`, `POST`, `DELETE`; persönliche Einträge in D1)

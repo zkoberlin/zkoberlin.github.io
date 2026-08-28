@@ -1,5 +1,5 @@
 (function () {
-  const version = '6.12.5';
+  const version = '6.13.0';
   window.PAUL_APP_VERSION = version;
 
   function renderVersion() {

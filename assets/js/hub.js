@@ -1458,17 +1458,24 @@ function renderTicker(rows,fmtEur,fmtPct,meta={}){
   track.innerHTML=`<div class="ticker-sequence">${status}${html}</div><div class="ticker-sequence ticker-copy" aria-hidden="true">${status}${html}</div>`;
   if(strip){strip.style.display='';strip.classList.remove('loading');}
 }
+const KIDS_API='https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/kids';
 async function loadKids(){
   try{
-    const ID='1272WyGImvHjWNlSCK1f0oPs5pgJBbmLEtsfvT3q44dE';
-    const r=await fetch(`https://docs.google.com/spreadsheets/d/${ID}/gviz/tq?tqx=out:csv`);
-    const csv=await r.text();
-    const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',').map(c=>c.replace(/^"|"$/g,'')));
+    if(!window.HubAuth?.isSignedIn()){
+      document.getElementById('erBadge').textContent='Anmeldung erforderlich';
+      document.getElementById('erBadge').className='er-badge unknown';
+      document.getElementById('erTrack').innerHTML='<div class="er-plan-message">Nach Anmeldung verfügbar</div>';
+      updateCsPreview('er','Anmeldung erforderlich');
+      return;
+    }
+    const r=await window.HubAuth.authorizedFetch(KIDS_API,{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const data=await r.json();
+    if(data?.schemaVersion!==1||!Array.isArray(data.days)||data.days.length>500||!data.days.every(day=>/^\d{4}-\d{2}-\d{2}$/.test(day?.date)&&['Paul','Dani','unknown'].includes(day?.caretaker)))throw new Error('Ungültiges Schema');
     const today=st(new Date());
-    const entries=rows.map(r=>{
-      const p=r[0]?.trim().split('/');if(!p||p.length<3)return null;
-      const d=st(new Date(`${p[2]}-${p[1]}-${p[0]}`));
-      return isNaN(d)?null:{date:d,who:r[2]?.trim()};
+    const entries=data.days.map(day=>{
+      const d=st(new Date(`${day.date}T12:00:00`));
+      return isNaN(d)?null:{date:d,who:day.caretaker};
     }).filter(Boolean).sort((a,b)=>a.date-b.date);
 
     // Build 14-day timeline
@@ -1479,18 +1486,19 @@ async function loadKids(){
     for(let i=0;i<14;i++){
       const d=new Date(today);d.setDate(today.getDate()+i);
       const e=entries.find(e=>diff(d,e.date)===0);
-      const isPaul=e?.who==='Paul';
-      dayData.push({d,isPaul});
+      const state=e?.who==='Paul'?'paul':e?.who==='Dani'?'dani':'unknown';
+      const isPaul=state==='paul';
+      dayData.push({d,state});
       const div=document.createElement('div');
-      div.className='er-day '+(isPaul?'paul':'dani')+(i===0?' today':'');
-      div.title=`${WK[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${isPaul?'Bei Paul':'Bei Dani'}`;
+      div.className='er-day '+state+(i===0?' today':'');
+      div.title=`${WK[d.getDay()]} ${d.getDate()}.${d.getMonth()+1} – ${state==='paul'?'Bei Paul':state==='dani'?'Bei Dani':'Plan offen'}`;
       div.innerHTML=`<span class="er-dl">${WK[d.getDay()][0]}</span>`;
       track.appendChild(div);
     }
     // Date labels: show dd.M. at start of each block (transition or index 0)
     for(let i=0;i<14;i++){
-      const isStart=i===0||(dayData[i].isPaul!==dayData[i-1].isPaul);
-      const isEnd=i===13||(dayData[i].isPaul!==dayData[i+1].isPaul);
+      const isStart=i===0||(dayData[i].state!==dayData[i-1].state);
+      const isEnd=i===13||(dayData[i].state!==dayData[i+1].state);
       const slot=document.createElement('div');
       const d=dayData[i].d;
       const lbl=(isStart||isEnd)?`${d.getDate()}.${d.getMonth()+1}`:'';
@@ -1502,12 +1510,23 @@ async function loadKids(){
     const todayWho=entries.find(e=>diff(today,e.date)===0)?.who||'?';
     // Update badge: show who has the kids RIGHT NOW
     const badge=document.getElementById('erBadge');
-    badge.textContent=todayWho==='Paul'?'Bei Paul 🏠':'Bei Dani 🏡';
-    badge.className='er-badge '+(todayWho==='Paul'?'paul':'dani');
+    badge.textContent=todayWho==='Paul'?'Bei Paul 🏠':todayWho==='Dani'?'Bei Dani 🏡':'Plan offen';
+    badge.className='er-badge '+(todayWho==='Paul'?'paul':todayWho==='Dani'?'dani':'unknown');
 
     const fut=entries.filter(e=>e.date>=today);
 
-    if(todayWho==='Paul'){
+    if(!['Paul','Dani'].includes(todayWho)){
+      document.getElementById('c1lbl').textContent='Heute';
+      document.getElementById('c1n').textContent='–';
+      document.getElementById('c1n').className='er-n';
+      document.getElementById('c1s').textContent='Keine eindeutige Zuordnung';
+      document.getElementById('c2lbl').textContent='Aufenthaltsplan';
+      document.getElementById('c2n').textContent='–';
+      document.getElementById('c2n').className='er-n';
+      document.getElementById('c2s').textContent='Daten prüfen';
+      document.getElementById('erNext').innerHTML='<span>⚠️</span><span>Plan für heute nicht verfügbar</span>';
+      updateCsPreview('er','Plan für heute nicht verfügbar');
+    } else if(todayWho==='Paul'){
       // Kids are HERE → show remaining days + when next Paul-block starts after Dani
       let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
       document.getElementById('c1lbl').textContent='Noch bei Paul';
@@ -1558,6 +1577,7 @@ async function loadKids(){
   }
 }
 loadKids();
+window.addEventListener('hub-auth-change',loadKids);
 
 // ── iCAL ──
 function parseICS(txt){
