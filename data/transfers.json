@@ -1,72 +1,50 @@
 {
-  "transfers": [
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T13:00:38Z",
+  "season": "2026/27",
+  "windowId": "summer-2026",
+  "source": {
+    "name": "Bundesliga",
+    "url": "https://www.bundesliga.com/de/bundesliga/news/offizieller-transfermarkt-alle-wechsel-transfers-ubersicht-11850/"
+  },
+  "windows": [
     {
-      "name": "Derrick Köhn",
-      "player_id": 860260,
-      "photo_url": "https://images.fotmob.com/image_resources/playerimages/860260.png",
-      "position": "LWB",
-      "type": "in",
-      "club_name": "Galatasaray",
-      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8637.png",
-      "club_id": 8637,
-      "fee": "4,0 Mio. €",
-      "market_value": "2,4 Mio. €",
-      "date": "2025-08-19T21:04:45Z"
+      "id": "summer-2026",
+      "label": "Sommertransferfenster",
+      "startsAt": "2026-07-01T00:00:00+02:00",
+      "endsAt": "2026-08-31T23:59:59+02:00"
     },
     {
-      "name": "Dmytro Bogdanov",
-      "player_id": 1640793,
-      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1640793.png",
-      "position": "",
-      "type": "in",
-      "club_name": "Dynamo Dresden",
-      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8480.png",
-      "club_id": 8480,
-      "fee": "Unbekannt",
-      "market_value": "270 Tsd. €",
-      "date": "2025-08-14T12:46:46Z"
-    },
-    {
-      "name": "Matheo Raab",
-      "player_id": 1156148,
-      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1156148.png",
-      "position": "GK",
-      "type": "in",
-      "club_name": "Hamburger SV",
-      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9790.png",
-      "club_id": 9790,
-      "fee": "410 Tsd. €",
-      "market_value": "620 Tsd. €",
-      "date": "2025-07-11T12:54:57Z"
-    },
-    {
-      "name": "Ilyas Ansah",
-      "player_id": 1515977,
-      "photo_url": "https://images.fotmob.com/image_resources/playerimages/1515977.png",
-      "position": "ST",
-      "type": "in",
-      "club_name": "Paderborn",
-      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8460.png",
-      "club_id": 8460,
-      "fee": "4,0 Mio. €",
-      "market_value": "4,1 Mio. €",
-      "date": "2025-06-07T16:52:15Z"
-    },
-    {
-      "name": "Stanley N'Soki",
-      "player_id": 907495,
-      "photo_url": "https://images.fotmob.com/image_resources/playerimages/907495.png",
-      "position": "CB",
-      "type": "loan",
-      "club_name": "Hoffenheim",
-      "club_logo": "https://images.fotmob.com/image_resources/logo/teamlogo/8226.png",
-      "club_id": 8226,
-      "fee": "Leihe",
-      "market_value": "2,2 Mio. €",
-      "date": "2025-07-24T14:23:51Z"
+      "id": "winter-2027",
+      "label": "Wintertransferfenster",
+      "startsAt": "2027-01-01T00:00:00+01:00",
+      "endsAt": "2027-02-01T20:00:00+01:00"
     }
   ],
-  "updated_at": "2026-06-07T10:32:44.335263+00:00",
-  "team_id": "8149",
-  "source": "RapidAPI / free-api-live-football-data"
+  "arrivals": [
+    "Felix Uduokhai (Beşiktaş Istanbul)",
+    "Michel Aebischer (Pisa SC)",
+    "Emmanuel Latte Lath (Atlanta United, Leihe)",
+    "Stanley Nsoki (TSG Hoffenheim, nach Leihe fest verpflichtet)",
+    "Zeno Van Den Bosch (Royal Antwerpen)",
+    "Marvin Friedrich (Borussia Mönchengladbach)",
+    "Julien Friedrich (Altglienicke, Leihe beendet)",
+    "Marin Ljubičić (Fortuna Düsseldorf, Leihe beendet)",
+    "Oluwaseun Ogbemudia (Waldhof Mannheim, Leihe beendet)",
+    "Linus Güther",
+    "Mekhi Gray",
+    "Tim Blaszczak (alle eigene Jugend)"
+  ],
+  "departures": [
+    "Tim Blaszczak (FSV Luckenwalde, Leihe)",
+    "Dmytro Bogdanov (FC Energie Cottbus, Leihe)",
+    "Chris Bedia (al-Nasr Sports Club, zuvor an BSC Young Boys verliehen)",
+    "David Preu (VfB Stuttgart U21)",
+    "László Bénes (KAA Gent, zuvor an Kayserispor verliehen)",
+    "Yannic Stein (FC Hansa Rostock, zuvor an Babelsberg 03 verliehen)",
+    "Danilo Doekhi (Lazio Rom)",
+    "Alex Král (FC Kopenhagen)",
+    "Diogo Leite (Vertragsende)",
+    "Leon Prosche (Erzgebirge Aue, Leihe)"
+  ]
 }

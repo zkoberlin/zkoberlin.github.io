@@ -78,7 +78,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Namenstage | Nameday API V2 | keine | `data/namenstage.json` | exakt 366 validierte Tage, atomarer Austausch; letzter vollständiger Bestand bleibt bei jedem Teilausfall erhalten. |
 | Schulferien Berlin | OpenHolidays | keine | `data/schulferien_berlin.json` | Schema, Region, Zeitraum, Pflichtferien, Quelle und Datenstand werden geprüft; Austausch erfolgt atomar und der letzte gültige Bestand bleibt bei jedem Fehler erhalten. Der Browser nutzt ausschließlich die lokale Datei oder deren letzten validierten Cache. |
 | Union | OpenLigaDB | keine Secrets | `data/union.json` | Öffentliche Kernquelle für Saison, Tabelle sowie letztes/nächstes Spiel. Unvollständige oder inkonsistente Antworten ersetzen die letzte gültige Datei nicht. |
-| Transfers | RapidAPI | `RAPIDAPI_KEY` | `data/transfers.json` | fest codierter Fallback entfernt und Schlüssel am 26.08.2026 rotiert; Aktualisierung derzeit durch das ausgeschöpfte BASIC-Monatskontingent blockiert (HTTP 429). |
+| Transfers | offizielle Bundesliga-Transferübersicht | keine Secrets | `data/transfers.json` | Nur im konfigurierten Sommer- oder Winterfenster sichtbar. Quelle, Union-Abschnitt und Mindestumfang werden validiert; atomarer Austausch erhält bei Struktur- oder Abruffehlern den letzten gültigen Snapshot. |
 
 ## Übergreifende Sicherheitsmaßnahmen
 
