@@ -15,6 +15,7 @@ const PRIVATE_PATHS = new Set([
   "/feeds/gmail",
   "/feeds/hellomed",
   "/feeds/kids",
+  "/feeds/alma",
   "/snapshot",
 ]);
 
@@ -215,6 +216,89 @@ async function handleKidsFeed(target, origin) {
   } catch (error) {
     console.error(JSON.stringify({ message: "kids feed failed", error: error instanceof Error ? error.message : String(error) }));
     return jsonResponse({ error: "Kids schedule unavailable" }, 502, origin);
+  }
+}
+
+function unfoldIcs(text) {
+  return String(text || "").replace(/\r?\n[ \t]/g, "");
+}
+
+function icsValue(block, property) {
+  const match = block.match(new RegExp(`(?:^|\\r?\\n)${property}(?:;[^:]*)?:([^\\r\\n]*)`, "i"));
+  return match?.[1]?.trim() || "";
+}
+
+function icsDate(value) {
+  const match = String(value || "").match(/^(\d{4})(\d{2})(\d{2})/);
+  if (!match) return null;
+  const iso = `${match[1]}-${match[2]}-${match[3]}`;
+  const parsed = new Date(`${iso}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === iso ? iso : null;
+}
+
+function previousIsoDay(value) {
+  const date = new Date(`${value}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() - 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function parseAlmaVisits(text, from, until) {
+  const visits = [];
+  for (const block of unfoldIcs(text).split("BEGIN:VEVENT").slice(1)) {
+    const summary = icsValue(block, "SUMMARY").replace(/\\[nN]/g, " ").replace(/\\,/g, ",");
+    const normalized = summary.toLocaleLowerCase("de-DE");
+    if ((!normalized.includes("schwerin") && !normalized.includes("alma")) || /geburt|birthday|bday/.test(normalized)) continue;
+    const rawStart = icsValue(block, "DTSTART");
+    const rawEnd = icsValue(block, "DTEND");
+    const startDate = icsDate(rawStart);
+    if (!startDate) continue;
+    let endDate = icsDate(rawEnd) || startDate;
+    if (/^\d{8}$/.test(rawEnd)) endDate = previousIsoDay(endDate);
+    if (endDate < startDate) endDate = startDate;
+    if (endDate < from || startDate > until) continue;
+    visits.push({ startDate, endDate });
+  }
+  return visits;
+}
+
+async function fetchCalendarText(target) {
+  const upstream = await fetch(target, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; KalenderProxy/2.0)" },
+    cf: { cacheEverything: false, cacheTtl: 0 },
+    signal: AbortSignal.timeout(8_000),
+  });
+  if (!upstream.ok) throw new Error(`calendar upstream ${upstream.status}`);
+  const declaredLength = Number(upstream.headers.get("Content-Length") || 0);
+  if (declaredLength > 1_000_000) throw new Error("calendar upstream too large");
+  const text = await upstream.text();
+  if (text.length > 1_000_000 || !text.includes("BEGIN:VCALENDAR")) throw new Error("invalid calendar upstream");
+  return text;
+}
+
+async function handleAlmaFeed(env, origin) {
+  try {
+    const today = berlinDateParts(new Date()).key;
+    const fromDate = new Date(`${today}T00:00:00Z`);
+    fromDate.setUTCDate(fromDate.getUTCDate() - 31);
+    const untilDate = new Date(`${today}T00:00:00Z`);
+    untilDate.setUTCDate(untilDate.getUTCDate() + 730);
+    const from = fromDate.toISOString().slice(0, 10);
+    const until = untilDate.toISOString().slice(0, 10);
+    const results = await Promise.allSettled([
+      fetchCalendarText(env.GMAIL_ICAL_URL),
+      fetchCalendarText(env.HELLOMED_ICAL_URL),
+    ]);
+    const calendars = results.filter((result) => result.status === "fulfilled").map((result) => result.value);
+    if (!calendars.length) return jsonResponse({ error: "Alma visits unavailable" }, 502, origin);
+    const unique = new Map();
+    for (const calendar of calendars) {
+      for (const visit of parseAlmaVisits(calendar, from, until)) unique.set(`${visit.startDate}|${visit.endDate}`, visit);
+    }
+    const visits = [...unique.values()].sort((a, b) => a.startDate.localeCompare(b.startDate));
+    return jsonResponse({ schemaVersion: 1, visits, generatedAt: new Date().toISOString() }, 200, origin);
+  } catch (error) {
+    console.error(JSON.stringify({ message: "alma feed failed", error: error instanceof Error ? error.message : String(error) }));
+    return jsonResponse({ error: "Alma visits unavailable" }, 502, origin);
   }
 }
 
@@ -537,6 +621,7 @@ export default {
 
       if (request.method === "GET") {
         if (url.pathname === "/feeds/kids") return await handleKidsFeed(env.KIDS_SHEET_URL, origin);
+        if (url.pathname === "/feeds/alma") return await handleAlmaFeed(env, origin);
         const namedFeed = getFeedUrl(url.pathname, env);
         if (namedFeed) return await proxyFeed(namedFeed, origin);
       }

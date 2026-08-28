@@ -380,6 +380,12 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* Unified alma card */
 .alma-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(249,115,22,.28);box-shadow:var(--sh);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .18s,box-shadow .18s,border-color .18s;}
 .alma-card:hover{transform:translateY(-2px);border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
+.alma-top{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--orange-l),transparent 70%);}
+.alma-eyebrow{font-family:var(--font-head);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--orange);margin-bottom:3px;}
+.alma-card-title{font-family:var(--font-head);font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.alma-status{font-family:var(--font-head);font-size:9px;font-weight:700;color:var(--orange);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:20px;padding:5px 9px;white-space:nowrap;}
+.alma-status.current{color:var(--green);background:var(--green-l);border-color:var(--green-b);}
+.alma-status.locked{color:var(--t2);background:var(--card2);border-color:var(--border);}
 /* Header strip inside unified card */
 .alma-card-head{background:linear-gradient(135deg,var(--orange),#fb923c);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
 .alma-card-head-title{font-family:var(--font-head);font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px;}
@@ -387,7 +393,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* Section within unified card = big countdown row */
 .alma-section{display:flex;align-items:stretch;}
 .alma-section+.alma-section{border-top:1px solid var(--border);}
-.alma-section-left{background:linear-gradient(135deg,var(--orange),#fb923c);padding:16px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:80px;flex-shrink:0;}
+.alma-section-left{background:linear-gradient(145deg,#f97316,#fb923c);padding:17px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:88px;flex-shrink:0;}
 .alma-section-n{font-size:40px;font-weight:300;letter-spacing:-2px;line-height:1;color:#fff;font-variant-numeric:tabular-nums;}
 .alma-section-unit{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.75);margin-top:3px;}
 .alma-section-emoji{font-size:24px;}
@@ -397,7 +403,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-section-date{font-size:11px;color:var(--t2);}
 .alma-section-range{font-size:10px;color:var(--orange);margin-top:1px;font-variant-numeric:tabular-nums;}
 /* Small row (übernächster / bday) */
-.alma-row{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--border);}
+.alma-row{display:flex;align-items:center;gap:10px;padding:12px 15px;border-top:1px solid var(--border);}
 .alma-row-icon{width:32px;height:32px;border-radius:9px;background:var(--orange-l);border:1px solid var(--orange-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .alma-row-icon.pink{background:rgba(219,39,119,.10);border-color:rgba(219,39,119,.2);}
 .alma-row-lbl{font-family:var(--font-head);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
@@ -814,6 +820,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .er-next{margin:0 10px 10px;padding:9px 10px;}
   .er-bdays{padding:10px 12px 12px;}
   .er-calendar-block{padding:10px 14px 12px;}
+
+  .alma-top{align-items:flex-start;padding:13px 14px 11px;}
+  .alma-status{font-size:8.5px;}
+  .alma-section-left{min-width:78px;padding:15px 12px;}
 
   /* Alma Section */
   .alma-section-n{font-size:32px;}

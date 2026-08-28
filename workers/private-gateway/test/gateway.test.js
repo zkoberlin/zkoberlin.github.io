@@ -50,7 +50,7 @@ function env() {
 }
 
 test("blocks every private route without a token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot", "/trailyx-preview", "/alcohol"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/snapshot", "/trailyx-preview", "/alcohol"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
   }

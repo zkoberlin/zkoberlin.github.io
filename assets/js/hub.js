@@ -1671,8 +1671,6 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 async function loadICAL(){
   if(!window.HubAuth?.isSignedIn()){
     document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">🔒 Anmeldung erforderlich</div><div class="kal-ev-date" style="color:var(--t3)">Private Termine mit Google freischalten</div></div></div>';
-    document.getElementById('almaTitle').textContent='🔒 Private Kalenderdaten';
-    document.getElementById('almaDate').textContent='Bitte mit Google anmelden';
     return;
   }
   try{
@@ -1694,9 +1692,6 @@ async function loadICAL(){
 
     if(okCount===0)throw new Error('iCal nicht erreichbar');
     const today=st(new Date());
-
-    // ── Alma ──
-    loadAlma(evs);
 
     // ── Kalender Kachel ──
     const now3 = new Date();
@@ -1773,121 +1768,115 @@ async function loadICAL(){
   }catch(e){
     console.warn('iCal load error:',e);
     document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div><div class="kal-ev-date" style="color:var(--t3)">Bitte Kalender-App direkt öffnen</div></div></div>';
-    document.getElementById('almaTitle').textContent='⚠️ iCal nicht erreichbar';
-    document.getElementById('almaDate').textContent='Kalender prüfen';
   }
   if(window._lbTick)window._lbTick();
 }
 
 // ── ALMA ──
-function loadAlma(evs){
-  try{
-    const today=st(new Date());
-    const now2=new Date();
-    const all=evs.filter(e=>e.sum.toLowerCase().includes('schwerin')).sort((a,b)=>a.date-b.date);
-    const future=all.filter(e=>st(e.date)>=today);
+const ALMA_API='https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/alma';
+const ALMA_BIRTHDAY={year:2023,month:10,day:24};
 
-    // Alma birthday countdown (always shown)
-    const almaYear=now2.getMonth()>=9&&(now2.getMonth()>9||now2.getDate()>24)?2027:2026;
-    const almaBday=new Date(almaYear,9,24);
-    const bdayMs=almaBday-now2;
-    const bdayDays=Math.floor(bdayMs/86400000);
-    const bdayH=Math.floor((bdayMs%86400000)/3600000);
-    const bdayMin=Math.floor((bdayMs%3600000)/60000);
-    document.getElementById('almaBdayVal').textContent=`${bdayDays} Tage · ${bdayH} Std · ${bdayMin} Min`;
-
-    // Check if currently in Schwerin
-    const todayEv=all.find(e=>{
-      const start=st(e.date);
-      const end=e.dateEnd?st(e.dateEnd):start;
-      return today>=start&&today<=end;
-    });
-
-    let tripEnd=null;
-    if(todayEv){
-      if(todayEv.dateEnd){tripEnd=new Date(todayEv.dateEnd);}
-      else{
-        let checkDay=new Date(today);tripEnd=new Date(today);
-        while(true){
-          const next=new Date(checkDay);next.setDate(checkDay.getDate()+1);
-          const hasNext=all.find(e=>diff(next,st(e.date))===0);
-          if(hasNext){tripEnd=new Date(next);checkDay=new Date(next);}else break;
-        }
-      }
-    }
-
-    if(todayEv&&tripEnd){
-      // CURRENTLY IN SCHWERIN
-      const daysLeft=diff(today,tripEnd);
-      const msLeft=tripEnd.getTime()+86400000-now2.getTime();
-      const hoursLeft=Math.floor(msLeft/3600000);
-      const minsLeft=Math.floor((msLeft%3600000)/60000);
-
-      document.getElementById('almaMain').querySelector('.alma-section-left').style.background='linear-gradient(135deg,#f97316,#fb923c)';
-      document.getElementById('almaMain').querySelector('.alma-section-emoji').textContent='🧡';
-      document.getElementById('almaN').textContent=daysLeft===0?'🥹':daysLeft;
-      document.getElementById('almaN').style.fontSize=daysLeft>9?'32px':'40px';
-      document.getElementById('almaUnit').textContent=daysLeft===0?'Letzter Tag':daysLeft===1?'Tag noch':'Tage noch';
-      document.getElementById('almaLbl').textContent='Du bist aktuell bei Alma 🧡';
-      document.getElementById('almaTitle').textContent=todayEv.sum;
-      document.getElementById('almaDate').textContent=`Bis ${WD[tripEnd.getDay()]}, ${tripEnd.getDate()}. ${MK[tripEnd.getMonth()]}`;
-      document.getElementById('almaRange').textContent=`${hoursLeft} Std · ${minsLeft} Min verbleibend`;
-      updateCsPreview('alma', `Gerade in Schwerin 🧡 · noch ${daysLeft===0?'heute':daysLeft+' Tage'}`);
-
-      // Show next trip in almaNext row
-      const next=future.find(e=>st(e.date)>tripEnd);
-      if(next){
-        const d=diff(today,st(next.date));
-        document.getElementById('almaNext').style.display='flex';
-        document.getElementById('almaNextLbl').textContent='Nächster Besuch';
-        document.getElementById('almaNextTitle').textContent=next.sum;
-        document.getElementById('almaNextDate').textContent=fmtFull(next.date);
-        document.getElementById('almaNextCounter').textContent=`in ${d} Tagen`;
-      }
-
-    } else {
-      // NOT in Schwerin
-      const next=future[0];
-      const overNext=future[1];
-
-      if(!next){
-        document.getElementById('almaN').textContent='?';
-        document.getElementById('almaLbl').textContent='Nächster Besuch';
-        document.getElementById('almaTitle').textContent='Kein Termin geplant';
-        document.getElementById('almaDate').textContent='–';
-        return;
-      }
-
-      const nextMs=st(next.date).getTime()-now2.getTime();
-      const nextDays=Math.floor(nextMs/86400000);
-      const nextH=Math.floor((nextMs%86400000)/3600000);
-      const nextMin=Math.floor((nextMs%3600000)/60000);
-      const nextWk=Math.floor(nextDays/7);
-      const nextRemDays=nextDays%7;
-      let countdownStr='';
-      if(nextWk>0)countdownStr+=nextWk+'W ';
-      countdownStr+=nextRemDays+'T · '+nextH+'Std · '+nextMin+'Min';
-
-      document.getElementById('almaN').textContent=nextDays;
-      document.getElementById('almaN').style.fontSize=nextDays>99?'28px':nextDays>9?'36px':'40px';
-      document.getElementById('almaUnit').textContent='Tage';
-      document.getElementById('almaLbl').textContent='Nächster Besuch · Schwerin';
-      document.getElementById('almaTitle').textContent=next.sum;
-      document.getElementById('almaDate').textContent=fmtFull(next.date);
-      document.getElementById('almaRange').textContent=countdownStr;
-      updateCsPreview('alma', `Nächster Besuch in ${nextDays} Tagen · ${next.sum}`);
-
-      if(overNext){
-        const d2=diff(today,st(overNext.date));
-        document.getElementById('almaNext').style.display='flex';
-        document.getElementById('almaNextLbl').textContent='Übernächster Besuch';
-        document.getElementById('almaNextTitle').textContent=overNext.sum;
-        document.getElementById('almaNextDate').textContent=fmtFull(overNext.date);
-        document.getElementById('almaNextCounter').textContent=`in ${d2} Tagen`;
-      }
-    }
-  }catch(e){console.log('Alma error:',e);}
+function renderAlmaBirthday(){
+  const today=st(new Date());
+  let year=today.getFullYear();
+  let birthday=new Date(year,ALMA_BIRTHDAY.month-1,ALMA_BIRTHDAY.day);
+  if(birthday<today){year++;birthday=new Date(year,ALMA_BIRTHDAY.month-1,ALMA_BIRTHDAY.day);}
+  const days=diff(today,birthday);
+  const age=year-ALMA_BIRTHDAY.year;
+  document.getElementById('almaBdayLbl').textContent=`Almas ${age}. Geburtstag · 24. Oktober`;
+  document.getElementById('almaBdayVal').textContent=days===0?'Heute wird gefeiert 🎉':days===1?'Morgen wird gefeiert':'Vorfreude auf den Geburtstag';
+  document.getElementById('almaBdayDate').textContent=`${WD[birthday.getDay()]}, ${birthday.getDate()}. ${MK[birthday.getMonth()]} ${year}`;
+  document.getElementById('almaBdayCounter').textContent=days===0?'Heute':days===1?'Morgen':`in ${days} Tagen`;
 }
+
+function validAlmaData(data){
+  if(data?.schemaVersion!==1||!Array.isArray(data.visits)||data.visits.length>100||Number.isNaN(Date.parse(data.generatedAt)))return false;
+  return data.visits.every(visit=>Object.keys(visit||{}).sort().join(',')==='endDate,startDate'
+    &&/^\d{4}-\d{2}-\d{2}$/.test(visit.startDate)&&/^\d{4}-\d{2}-\d{2}$/.test(visit.endDate)&&visit.startDate<=visit.endDate);
+}
+
+function almaVisitDate(value){return st(new Date(`${value}T12:00:00`));}
+function almaDateRange(visit){
+  const start=almaVisitDate(visit.startDate),end=almaVisitDate(visit.endDate);
+  return visit.startDate===visit.endDate?fmtFull(start):`${WD[start.getDay()]}, ${start.getDate()}. ${MK[start.getMonth()]} – ${WD[end.getDay()]}, ${end.getDate()}. ${MK[end.getMonth()]}`;
+}
+
+async function loadAlma(){
+  renderAlmaBirthday();
+  const status=document.getElementById('almaStatus');
+  const nextRow=document.getElementById('almaNext');
+  nextRow.style.display='none';
+  if(!window.HubAuth?.isSignedIn()){
+    status.textContent='Anmeldung erforderlich';status.className='alma-status locked';
+    document.getElementById('almaN').textContent='–';document.getElementById('almaUnit').textContent='';
+    document.getElementById('almaLbl').textContent='Privater Besuchsplan';
+    document.getElementById('almaTitle').textContent='Nach Anmeldung verfügbar';
+    document.getElementById('almaDate').textContent='';document.getElementById('almaRange').textContent='';
+    updateCsPreview('alma','Anmeldung erforderlich');return;
+  }
+  try{
+    const response=await HubAuth.authorizedFetch(ALMA_API,{signal:AbortSignal.timeout(8000)});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();if(!validAlmaData(data))throw new Error('Ungültiges Schema');
+    const today=st(new Date());
+    const visits=data.visits.map(visit=>({...visit,start:almaVisitDate(visit.startDate),end:almaVisitDate(visit.endDate)}));
+    const current=visits.find(visit=>today>=visit.start&&today<=visit.end);
+    const future=visits.filter(visit=>visit.start>today);
+    const next=current?future.find(visit=>visit.start>current.end):future[0];
+    const overNext=next?future.find(visit=>visit.start>next.end):null;
+
+    if(current){
+      const remaining=diff(today,current.end);
+      status.textContent='Gerade zusammen';status.className='alma-status current';
+      document.getElementById('almaN').textContent=remaining===0?'🧡':remaining;
+      document.getElementById('almaN').style.fontSize=remaining>9?'32px':'40px';
+      document.getElementById('almaUnit').textContent=remaining===0?'Letzter Tag':remaining===1?'Tag noch':'Tage noch';
+      document.getElementById('almaLbl').textContent='Aktuell bei Alma';
+      document.getElementById('almaTitle').textContent='Zeit in Schwerin 🧡';
+      document.getElementById('almaDate').textContent=`bis ${WD[current.end.getDay()]}, ${current.end.getDate()}. ${MK[current.end.getMonth()]}`;
+      document.getElementById('almaRange').textContent=almaDateRange(current);
+      updateCsPreview('alma',remaining===0?'Gerade in Schwerin · letzter Tag':`Gerade in Schwerin · noch ${remaining} ${remaining===1?'Tag':'Tage'}`);
+    }else if(next){
+      const days=diff(today,next.start);
+      status.textContent='Nächster Besuch';status.className='alma-status';
+      document.getElementById('almaN').textContent=days;
+      document.getElementById('almaN').style.fontSize=days>99?'28px':days>9?'36px':'40px';
+      document.getElementById('almaUnit').textContent=days===1?'Tag':'Tage';
+      document.getElementById('almaLbl').textContent='Bis zur nächsten Zeit mit Alma';
+      document.getElementById('almaTitle').textContent='Besuch in Schwerin';
+      document.getElementById('almaDate').textContent=almaDateRange(next);
+      const duration=diff(next.start,next.end)+1;
+      document.getElementById('almaRange').textContent=`${duration} ${duration===1?'Tag':'Tage'} zusammen`;
+      updateCsPreview('alma',`Nächster Besuch in ${days} ${days===1?'Tag':'Tagen'}`);
+    }else{
+      status.textContent='Plan offen';status.className='alma-status locked';
+      document.getElementById('almaN').textContent='–';document.getElementById('almaUnit').textContent='';
+      document.getElementById('almaLbl').textContent='Besuchsplan';
+      document.getElementById('almaTitle').textContent='Noch kein weiterer Termin';
+      document.getElementById('almaDate').textContent='';document.getElementById('almaRange').textContent='';
+      updateCsPreview('alma','Noch kein weiterer Besuch geplant');
+    }
+
+    const secondary=current?next:overNext;
+    if(secondary){
+      const days=diff(today,secondary.start);
+      nextRow.style.display='flex';
+      document.getElementById('almaNextLbl').textContent=current?'Danach wieder':'Weiterer Besuch';
+      document.getElementById('almaNextTitle').textContent='Schwerin';
+      document.getElementById('almaNextDate').textContent=almaDateRange(secondary);
+      document.getElementById('almaNextCounter').textContent=`in ${days} ${days===1?'Tag':'Tagen'}`;
+    }
+  }catch(error){
+    console.warn('Alma Fehler:',error);
+    status.textContent='Nicht erreichbar';status.className='alma-status locked';
+    document.getElementById('almaN').textContent='–';document.getElementById('almaUnit').textContent='';
+    document.getElementById('almaLbl').textContent='Besuchsplan';document.getElementById('almaTitle').textContent='Daten momentan nicht verfügbar';
+    document.getElementById('almaDate').textContent='Bitte später erneut versuchen';document.getElementById('almaRange').textContent='';
+    updateCsPreview('alma','Besuchsplan nicht erreichbar');
+  }
+}
+loadAlma();
+window.addEventListener('hub-auth-change',loadAlma);
 
 // ── UNION BERLIN v5.2.0 — via data/union.json ──
 async function loadUnion(){

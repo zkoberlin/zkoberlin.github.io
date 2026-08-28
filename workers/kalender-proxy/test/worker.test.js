@@ -202,8 +202,50 @@ test("returns only the validated minimal kids schedule", async () => {
   }
 });
 
+test("returns only minimized Alma visit ranges from private calendars", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("openidconnect.googleapis.com")) return googleProfileResponse();
+    return new Response([
+      "BEGIN:VCALENDAR",
+      "BEGIN:VEVENT",
+      "DTSTART;VALUE=DATE:20260911",
+      "DTEND;VALUE=DATE:20260914",
+      "SUMMARY:Alma in Schwerin – private details",
+      "DESCRIPTION:Das darf nicht ausgeliefert werden",
+      "END:VEVENT",
+      "BEGIN:VEVENT",
+      "DTSTART;VALUE=DATE:20261024",
+      "DTEND;VALUE=DATE:20261025",
+      "SUMMARY:Alma Geburtstag",
+      "END:VEVENT",
+      "BEGIN:VEVENT",
+      "DTSTART;VALUE=DATE:20261101",
+      "SUMMARY:Vertraulicher anderer Termin",
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n"), { headers: { "Content-Type": "text/calendar" } });
+  };
+  try {
+    const response = await worker.fetch(
+      authorizedRequest("https://worker.example.test/feeds/alma", { headers: { Origin: "http://localhost:8000" } }),
+      env,
+    );
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.schemaVersion, 1);
+    assert.deepEqual(data.visits, [{ startDate: "2026-09-11", endDate: "2026-09-13" }]);
+    assert.equal(JSON.stringify(data).includes("private details"), false);
+    assert.equal(JSON.stringify(data).includes("Beschreibung"), false);
+    assert.equal(JSON.stringify(data).includes("Geburtstag"), false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test("protects private feeds and snapshots without a Google token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/snapshot"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/snapshot"]) {
     const response = await worker.fetch(
       new Request(`https://worker.example.test${path}`),
       createEnv(),

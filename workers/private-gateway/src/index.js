@@ -8,6 +8,7 @@ const PRIVATE_PATHS = new Set([
   "/feeds/gmail",
   "/feeds/hellomed",
   "/feeds/kids",
+  "/feeds/alma",
   "/snapshot",
   "/trailyx-preview",
   "/alcohol",
