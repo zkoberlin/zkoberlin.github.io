@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-28T13:00:38Z",
+  "generatedAt": "2026-08-28T13:13:28Z",
   "season": "2026/27",
   "windowId": "summer-2026",
   "source": {
@@ -46,5 +46,49 @@
     "Alex Král (FC Kopenhagen)",
     "Diogo Leite (Vertragsende)",
     "Leon Prosche (Erzgebirge Aue, Leihe)"
+  ],
+  "featuredArrivals": [
+    {
+      "name": "Felix Uduokhai",
+      "detail": "Beşiktaş Istanbul",
+      "photo": "https://www.fc-union-berlin.de/image/2596768d-7983-4730-93af-4dc58cf1d8d3?ts=1787817351&s=ScuzMGI15f66sTqrMo4jxM&format=jpg"
+    },
+    {
+      "name": "Michel Aebischer",
+      "detail": "Pisa SC",
+      "photo": "https://www.fc-union-berlin.de/image/9a6aa588-9700-4c21-9d6b-4af0334963ed?ts=1787125259&s=8xDLimn8bgxhQIhrcXmYIY&format=jpg"
+    },
+    {
+      "name": "Emmanuel Latte Lath",
+      "detail": "Atlanta United, Leihe",
+      "photo": "https://www.fc-union-berlin.de/og/200fb452-49a1-40d6-9036-aa821aa148a0?ts=1785659148&s=9LSzCY-fLkFh7Ged1GQkjO"
+    },
+    {
+      "name": "Stanley Nsoki",
+      "detail": "TSG Hoffenheim, nach Leihe fest verpflichtet",
+      "photo": "https://assets.bundesliga.com/player/dfl-obj-j019uo-dfl-clu-00000v-dfl-sea-0001k9-body.png"
+    }
+  ],
+  "featuredDepartures": [
+    {
+      "name": "Tim Blaszczak",
+      "detail": "FSV Luckenwalde, Leihe",
+      "photo": "https://www.fc-union-berlin.de/image/e075d6ed-d14e-4b21-b62d-6175d1766081?ts=1787764886&s=vLPl0LAWU62-9NFm3PFlnq&format=jpg"
+    },
+    {
+      "name": "Dmytro Bogdanov",
+      "detail": "FC Energie Cottbus, Leihe",
+      "photo": "https://www.fc-union-berlin.de/image/d8995feb-aaf1-45df-9da9-870246c0d6c0?ts=1787124547&s=JprZ1VsioLuN3uSyp2CGJT&format=jpg"
+    },
+    {
+      "name": "Chris Bedia",
+      "detail": "al-Nasr Sports Club, zuvor an BSC Young Boys verliehen",
+      "photo": "https://www.fc-union-berlin.de/og/2998e60b-359d-414d-8c19-d6f0e7d5f0f0?ts=1743527520&s=4fOQvauD0Umep8LtvZrbyn"
+    },
+    {
+      "name": "David Preu",
+      "detail": "VfB Stuttgart U21",
+      "photo": "https://www.fc-union-berlin.de/og/ee8f4148-4b7f-4303-ae06-8ab2e1622483?ts=1782940255&s=bzkMtzTLG6GZkIgkvv1HuR"
+    }
   ]
 }
