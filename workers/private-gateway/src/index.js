@@ -9,6 +9,8 @@ const PRIVATE_PATHS = new Set([
   "/feeds/hellomed",
   "/feeds/kids",
   "/feeds/alma",
+  "/feeds/calendar-preview",
+  "/calendar-preferences",
   "/snapshot",
   "/trailyx-preview",
   "/alcohol",
@@ -45,6 +47,36 @@ const ALCOHOL_CATALOG = Object.freeze({
   schnaps4: { label: "🥃 Schnaps 4cl", units: 1.3 },
   mix03: { label: "🍹 Mix 0,3l", units: 1.2 },
 });
+
+const CALENDAR_CATEGORY_IDS = new Set(["maja", "birthday", "family", "sport", "culture", "health", "travel", "other"]);
+const DEFAULT_CALENDAR_CATEGORIES = ["maja", "birthday", "culture", "health", "travel", "other"];
+
+async function calendarPreferencesResponse(request, env, origin) {
+  if (request.method === "GET") {
+    const row = await env.HUB_DB.prepare("SELECT value_json AS value FROM hub_preferences WHERE preference_key = ?").bind("calendar_categories").first();
+    let selected = DEFAULT_CALENDAR_CATEGORIES;
+    try {
+      const parsed = row?.value ? JSON.parse(row.value) : null;
+      if (Array.isArray(parsed) && parsed.every((item) => CALENDAR_CATEGORY_IDS.has(item))) selected = [...new Set(parsed)];
+    } catch {}
+    return json({ schemaVersion: 1, selected }, 200, origin);
+  }
+  if (request.method === "PUT") {
+    const declaredLength = Number(request.headers.get("Content-Length") || 0);
+    if (declaredLength > 2000) return json({ error: "Payload too large" }, 413, origin);
+    let payload;
+    try { payload = await request.json(); } catch { return json({ error: "Invalid JSON" }, 400, origin); }
+    if (!Array.isArray(payload?.selected) || payload.selected.length > CALENDAR_CATEGORY_IDS.size || !payload.selected.every((item) => CALENDAR_CATEGORY_IDS.has(item))) {
+      return json({ error: "Invalid categories" }, 400, origin);
+    }
+    const selected = [...new Set(payload.selected)];
+    await env.HUB_DB.prepare(
+      "INSERT INTO hub_preferences (preference_key, value_json, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP) ON CONFLICT(preference_key) DO UPDATE SET value_json = excluded.value_json, updated_at = CURRENT_TIMESTAMP",
+    ).bind("calendar_categories", JSON.stringify(selected)).run();
+    return json({ schemaVersion: 1, selected }, 200, origin);
+  }
+  return json({ error: "Method not allowed" }, 405, origin);
+}
 
 function berlinNow() {
   const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
@@ -184,6 +216,14 @@ export default {
         return await alcoholResponse(request, env, origin);
       } catch {
         return json({ error: "Alcohol tracker unavailable" }, 503, origin);
+      }
+    }
+
+    if (url.pathname === "/calendar-preferences") {
+      try {
+        return await calendarPreferencesResponse(request, env, origin);
+      } catch {
+        return json({ error: "Calendar preferences unavailable" }, 503, origin);
       }
     }
 

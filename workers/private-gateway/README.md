@@ -16,6 +16,8 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/feeds/hellomed`
 - `/feeds/kids` (minimierter Aufenthaltsplan ohne Sheet-Kommentare)
 - `/feeds/alma` (nur Beginn und Ende relevanter Besuche, ohne übrige Kalenderdaten)
+- `/feeds/calendar-preview` (höchstens 60 kategorisierte Vorschautermine ohne Orte und Beschreibungen)
+- `/calendar-preferences` (D1-gespeicherte Auswahl sichtbarer Kalenderkategorien)
 - `/snapshot`
 - `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/alcohol` (`GET`, `POST`, `DELETE`; persönliche Einträge in D1)

@@ -16,6 +16,7 @@ const PRIVATE_PATHS = new Set([
   "/feeds/hellomed",
   "/feeds/kids",
   "/feeds/alma",
+  "/feeds/calendar-preview",
   "/snapshot",
 ]);
 
@@ -308,6 +309,94 @@ async function handleAlmaFeed(env, origin) {
   } catch (error) {
     console.error(JSON.stringify({ message: "alma feed failed", error: error instanceof Error ? error.message : String(error) }));
     return jsonResponse({ error: "Alma visits unavailable" }, 502, origin);
+  }
+}
+
+const CALENDAR_CATEGORIES = Object.freeze({
+  maja: "Mit Maja",
+  birthday: "Geburtstage",
+  family: "Familie",
+  sport: "Sport",
+  culture: "Kultur",
+  health: "Gesundheit",
+  travel: "Reisen",
+  other: "Sonstiges",
+});
+
+function calendarCategory(summary, source) {
+  const value = summary.toLocaleLowerCase("de-DE");
+  if (value.includes("maja")) return "maja";
+  if (/geburt|birthday|bday|🎂|🎁/.test(value)) return "birthday";
+  if (/kids|rosa|emil|alma|schwerin|familie/.test(value)) return "family";
+  if (/union|fußball|fussball|bundesliga|dfb|champions league|europa league|sport/.test(value)) return "sport";
+  if (/konzert|theater|kino|oper|museum|festival|🎵|🎶|🎤|🎭/.test(value)) return "culture";
+  if (source === "hellomed" || /arzt|zahnarzt|therapie|impfung|praxis|klinik|gesund/.test(value)) return "health";
+  if (/reise|flug|airport|hotel|bahn|zug|urlaub/.test(value)) return "travel";
+  return "other";
+}
+
+function safeCalendarTitle(value) {
+  return String(value || "").replace(/\\[nN]/g, " ").replace(/\\,/g, ",").replace(/[\u0000-\u001F\u007F<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
+function calendarMoment(rawValue) {
+  const value = String(rawValue || "");
+  const match = value.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?Z?)?/);
+  if (!match) return null;
+  const date = `${match[1]}-${match[2]}-${match[3]}`;
+  if (!match[4]) return { date, time: null, allDay: true };
+  if (value.endsWith("Z")) {
+    const instant = new Date(`${date}T${match[4]}:${match[5]}:${match[6] || "00"}Z`);
+    if (Number.isNaN(instant.getTime())) return null;
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(instant).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+    return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}`, allDay: false };
+  }
+  return { date, time: `${match[4]}:${match[5]}`, allDay: false };
+}
+
+function parseCalendarPreview(text, source, from, until) {
+  const events = [];
+  for (const block of unfoldIcs(text).split("BEGIN:VEVENT").slice(1)) {
+    const title = safeCalendarTitle(icsValue(block, "SUMMARY"));
+    const moment = calendarMoment(icsValue(block, "DTSTART"));
+    if (!title || !moment || moment.date < from || moment.date > until) continue;
+    events.push({ date: moment.date, time: moment.time, allDay: moment.allDay, title, category: calendarCategory(title, source) });
+  }
+  return events;
+}
+
+async function handleCalendarPreview(env, origin) {
+  try {
+    const today = berlinDateParts(new Date()).key;
+    const untilDate = new Date(`${today}T00:00:00Z`);
+    untilDate.setUTCDate(untilDate.getUTCDate() + 180);
+    const until = untilDate.toISOString().slice(0, 10);
+    const sources = [
+      ["gmail", env.GMAIL_ICAL_URL],
+      ["hellomed", env.HELLOMED_ICAL_URL],
+    ];
+    const results = await Promise.allSettled(sources.map(([, target]) => fetchCalendarText(target)));
+    const unique = new Map();
+    for (const [index, result] of results.entries()) {
+      if (result.status === "rejected") {
+        console.error(JSON.stringify({ message: "calendar preview source failed", source: sources[index][0], error: result.reason instanceof Error ? result.reason.message : String(result.reason) }));
+        continue;
+      }
+      for (const event of parseCalendarPreview(result.value, sources[index][0], today, until)) {
+        unique.set(`${event.date}|${event.time || ""}|${event.title}`, event);
+      }
+    }
+    if (results.every((result) => result.status === "rejected")) return jsonResponse({ error: "Calendar preview unavailable" }, 502, origin);
+    const events = [...unique.values()].sort((a, b) => `${a.date}T${a.time || "00:00"}`.localeCompare(`${b.date}T${b.time || "00:00"}`)).slice(0, 60);
+    const counts = Object.fromEntries(Object.keys(CALENDAR_CATEGORIES).map((key) => [key, events.filter((event) => event.category === key).length]));
+    const categories = Object.entries(CALENDAR_CATEGORIES).map(([id, label]) => ({ id, label, count: counts[id] }));
+    return jsonResponse({ schemaVersion: 1, events, categories, generatedAt: new Date().toISOString() }, 200, origin);
+  } catch (error) {
+    console.error(JSON.stringify({ message: "calendar preview failed", error: error instanceof Error ? error.message : String(error) }));
+    return jsonResponse({ error: "Calendar preview unavailable" }, 502, origin);
   }
 }
 
@@ -631,6 +720,7 @@ export default {
       if (request.method === "GET") {
         if (url.pathname === "/feeds/kids") return await handleKidsFeed(env.KIDS_SHEET_URL, origin);
         if (url.pathname === "/feeds/alma") return await handleAlmaFeed(env, origin);
+        if (url.pathname === "/feeds/calendar-preview") return await handleCalendarPreview(env, origin);
         const namedFeed = getFeedUrl(url.pathname, env);
         if (namedFeed) return await proxyFeed(namedFeed, origin);
       }

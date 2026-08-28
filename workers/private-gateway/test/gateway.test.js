@@ -5,6 +5,7 @@ import worker from "../src/index.js";
 
 function env() {
   const alcoholEntries = [];
+  const preferences = new Map();
   return {
     ALLOWED_GOOGLE_EMAIL: "paul@example.test",
     BACKEND: {
@@ -19,8 +20,11 @@ function env() {
         return {
           bind(...args) { values = args; return this; },
           async all() { return { results: alcoholEntries.slice() }; },
+          async first() { return preferences.has(values[0]) ? { value: preferences.get(values[0]) } : null; },
           async run() {
-            if (sql.startsWith("INSERT")) {
+            if (sql.startsWith("INSERT INTO hub_preferences")) {
+              preferences.set(values[0], values[1]);
+            } else if (sql.startsWith("INSERT")) {
               alcoholEntries.push({ entryId: values[0], date: values[1], time: values[2], drinkCode: values[3], label: values[4], units: values[5] });
             } else if (sql.startsWith("DELETE")) {
               const index = alcoholEntries.findIndex((entry) => entry.entryId === values[0]);
@@ -50,7 +54,7 @@ function env() {
 }
 
 test("blocks every private route without a token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/snapshot", "/trailyx-preview", "/alcohol"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/calendar-preferences", "/snapshot", "/trailyx-preview", "/alcohol"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
   }
@@ -97,6 +101,34 @@ test("stores and deletes alcohol entries only through the verified route", async
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("stores validated calendar category preferences", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ email: "paul@example.test", email_verified: true, name: "Paul" }));
+  const testEnv = env();
+  try {
+    const defaults = await worker.fetch(new Request("https://gateway.test/calendar-preferences", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    assert.equal(defaults.status, 200);
+    assert.ok((await defaults.json()).selected.includes("maja"));
+
+    const saved = await worker.fetch(new Request("https://gateway.test/calendar-preferences", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ selected: ["maja", "travel"] }),
+    }), testEnv);
+    assert.deepEqual((await saved.json()).selected, ["maja", "travel"]);
+
+    const listed = await worker.fetch(new Request("https://gateway.test/calendar-preferences", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    assert.deepEqual((await listed.json()).selected, ["maja", "travel"]);
+
+    const invalid = await worker.fetch(new Request("https://gateway.test/calendar-preferences", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ selected: ["private-notes"] }),
+    }), testEnv);
+    assert.equal(invalid.status, 400);
+  } finally { globalThis.fetch = originalFetch; }
 });
 
 test("returns the minimal TrailYX preview for the verified account", async () => {

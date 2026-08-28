@@ -10,6 +10,7 @@ Er besitzt keine öffentliche `workers.dev`-Route und ist ausschließlich über 
 - `GET /feeds/hellomed` – privater Hellomed-iCal-Feed
 - `GET /feeds/kids` – Kids-Tabelle als CSV
 - `GET /feeds/alma` – minimierte Alma-Besuchszeiträume aus den privaten Kalendern
+- `GET /feeds/calendar-preview` – kategorisierte, minimierte Termin-Vorschau ohne Orte, Beschreibungen oder übrige Kalenderdaten
 - `GET /snapshot` – Kalender-Snapshot aus KV lesen
 - `PUT /snapshot` – Kalender-Snapshot in KV schreiben
 - `GET /horoscope` – gecachtes Tageshoroskop

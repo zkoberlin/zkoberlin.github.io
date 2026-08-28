@@ -245,8 +245,31 @@ test("returns only minimized Alma visit ranges from private calendars", async ()
   }
 });
 
+test("returns categorized and sanitized calendar preview events", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  const date = new Date();date.setDate(date.getDate() + 2);
+  const rawDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("openidconnect.googleapis.com")) return googleProfileResponse();
+    const summary = String(url) === env.HELLOMED_ICAL_URL ? "Zahnarzt <Kontrolle>" : "Konzert mit Maja";
+    return new Response(["BEGIN:VCALENDAR", "BEGIN:VEVENT", `DTSTART;VALUE=DATE:${rawDate}`, `SUMMARY:${summary}`, "DESCRIPTION:privat", "END:VEVENT", "END:VCALENDAR"].join("\r\n"));
+  };
+  try {
+    const response = await worker.fetch(authorizedRequest("https://worker.example.test/feeds/calendar-preview", { headers: { Origin: "http://localhost:8000" } }), env);
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.schemaVersion, 1);
+    assert.equal(data.events.length, 2);
+    assert.deepEqual(data.events.map((event) => event.category).sort(), ["health", "maja"]);
+    assert.equal(JSON.stringify(data).includes("<Kontrolle>"), false);
+    assert.equal(JSON.stringify(data).includes("privat"), false);
+    assert.equal(data.categories.find((category) => category.id === "health").count, 1);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
 test("protects private feeds and snapshots without a Google token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/snapshot"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/snapshot"]) {
     const response = await worker.fetch(
       new Request(`https://worker.example.test${path}`),
       createEnv(),

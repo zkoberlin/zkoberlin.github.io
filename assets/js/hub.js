@@ -1668,109 +1668,100 @@ function parseICS(txt){
 function fmtW(d){const t=st(new Date());const df=diff(t,st(d));if(df===0)return'Heute';if(df===1)return'Morgen';if(df===2)return'Übermorgen';return`${WK[d.getDay()]}. ${d.getDate()}. ${MK[d.getMonth()]}`;}
 function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]}`+(d.getHours()>0?` · ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr`:'');}
 
+const CALENDAR_PREVIEW_API='https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/calendar-preview';
+const CALENDAR_PREFERENCES_API='https://paul-gateway-v2.paul-bendzko.workers.dev/calendar-preferences';
+const CALENDAR_DEFAULT_CATEGORIES=['maja','birthday','culture','health','travel','other'];
+const CALENDAR_CATEGORY_META={
+  maja:{icon:'💗',color:'#db2777'},birthday:{icon:'🎂',color:'#af52de'},family:{icon:'👨‍👩‍👧',color:'#1a56db'},
+  sport:{icon:'⚽',color:'#e8001c'},culture:{icon:'🎭',color:'#16a34a'},health:{icon:'🩺',color:'#00a6a6'},
+  travel:{icon:'✈️',color:'#f97316'},other:{icon:'📌',color:'#6e6e73'},
+};
+let calendarPreviewData=null;
+let calendarSelectedCategories=new Set(CALENDAR_DEFAULT_CATEGORIES);
+
+function validCalendarPreview(data){
+  const ids=new Set(Object.keys(CALENDAR_CATEGORY_META));
+  return data?.schemaVersion===1&&Array.isArray(data.events)&&data.events.length<=60&&Array.isArray(data.categories)
+    &&data.events.every(event=>/^\d{4}-\d{2}-\d{2}$/.test(event?.date)&&(event.time===null||/^\d{2}:\d{2}$/.test(event.time))
+      &&typeof event.title==='string'&&event.title.length>0&&event.title.length<=120&&ids.has(event.category)&&typeof event.allDay==='boolean')
+    &&data.categories.every(category=>ids.has(category?.id)&&typeof category.label==='string'&&Number.isInteger(category.count)&&category.count>=0)
+    &&!Number.isNaN(Date.parse(data.generatedAt));
+}
+
+function calendarEventDate(event){return new Date(`${event.date}T${event.time||'12:00'}:00`);}
+function calendarEventIsPast(event){
+  const now=new Date(),date=calendarEventDate(event);
+  return event.allDay?st(date)<st(now):date.getTime()<now.getTime()-30*60*1000;
+}
+
+function renderCalendarEvents(){
+  const list=document.getElementById('kalEvList');list.replaceChildren();
+  if(!calendarPreviewData)return;
+  const events=calendarPreviewData.events.filter(event=>calendarSelectedCategories.has(event.category)&&!calendarEventIsPast(event)).slice(0,6);
+  if(!events.length){
+    const empty=document.createElement('div');empty.className='kal-empty';empty.textContent=calendarSelectedCategories.size?'Keine passenden Termine im Vorschauzeitraum':'Keine Kategorie ausgewählt';list.appendChild(empty);
+    updateCsPreview('apps','Kalender · keine passenden Termine');return;
+  }
+  for(const event of events){
+    const date=calendarEventDate(event),when=fmtW(date),meta=CALENDAR_CATEGORY_META[event.category]||CALENDAR_CATEGORY_META.other;
+    const row=document.createElement('div');row.className=`kal-ev${when==='Heute'?' today':''}${event.category==='maja'?' maja-ev':''}${event.category==='birthday'?' bday-ev':''}`;
+    const dot=document.createElement('div');dot.className='kal-ev-dot';dot.style.background=meta.color;
+    const info=document.createElement('div');info.className='kal-ev-info';
+    const label=document.createElement('div');label.className='kal-ev-lbl';label.textContent=`${meta.icon} ${calendarPreviewData.categories.find(category=>category.id===event.category)?.label||'Termin'}`;
+    const title=document.createElement('div');title.className='kal-ev-title';title.textContent=event.title;
+    const dateText=document.createElement('div');dateText.className='kal-ev-date';dateText.textContent=`${WD[date.getDay()]}, ${date.getDate()}. ${MK[date.getMonth()]}${event.time?` · ${event.time} Uhr`:''}`;
+    const relative=document.createElement('div');relative.className='kal-ev-when';relative.textContent=when;
+    info.append(label,title,dateText);row.append(dot,info,relative);list.appendChild(row);
+  }
+  const first=events[0];updateCsPreview('apps',`Kalender: ${first.title} · ${fmtW(calendarEventDate(first))}`);
+}
+
+function renderCalendarFilters(){
+  const chips=document.getElementById('kalFilterChips');chips.replaceChildren();
+  for(const category of calendarPreviewData?.categories||[]){
+    const button=document.createElement('button');button.type='button';button.className=`calendar-filter-chip${calendarSelectedCategories.has(category.id)?' on':''}`;
+    const meta=CALENDAR_CATEGORY_META[category.id]||CALENDAR_CATEGORY_META.other;
+    button.append(document.createTextNode(`${meta.icon} ${category.label} `));const count=document.createElement('span');count.textContent=category.count;button.appendChild(count);
+    button.addEventListener('click',async()=>{
+      calendarSelectedCategories.has(category.id)?calendarSelectedCategories.delete(category.id):calendarSelectedCategories.add(category.id);
+      renderCalendarFilters();renderCalendarEvents();
+      const state=document.getElementById('kalFilterState');state.textContent='Wird gespeichert…';state.className='calendar-filter-state saving';
+      try{
+        const response=await HubAuth.authorizedFetch(CALENDAR_PREFERENCES_API,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({selected:[...calendarSelectedCategories]})});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        state.textContent='Auswahl gespeichert.';state.className='calendar-filter-state saved';
+      }catch(error){state.textContent='Speichern nicht möglich.';state.className='calendar-filter-state';}
+    });
+    chips.appendChild(button);
+  }
+}
+
 async function loadICAL(){
+  const list=document.getElementById('kalEvList');
+  const filterButton=document.getElementById('kalFilterBtn');
   if(!window.HubAuth?.isSignedIn()){
-    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">🔒 Anmeldung erforderlich</div><div class="kal-ev-date" style="color:var(--t3)">Private Termine mit Google freischalten</div></div></div>';
-    return;
+    filterButton.disabled=true;document.getElementById('kalFilterPanel').hidden=true;filterButton.setAttribute('aria-expanded','false');
+    list.replaceChildren();const empty=document.createElement('div');empty.className='kal-empty';empty.textContent='🔒 Private Termine nach Anmeldung verfügbar';list.appendChild(empty);return;
   }
   try{
-    const ICAL_ENDPOINTS=[
-      'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/gmail',
-      'https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/hellomed',
-    ];
-
-    let evs=[];
-    let okCount=0;
-    for(const endpoint of ICAL_ENDPOINTS){
-      try{
-        const r=await HubAuth.authorizedFetch(endpoint,{signal:AbortSignal.timeout(10000)});
-        if(!r.ok)continue;
-        const t=await r.text();
-        if(t.includes('BEGIN:VCALENDAR')){evs=evs.concat(parseICS(t));okCount++;}
-      }catch(e){continue;}
-    }
-
-    if(okCount===0)throw new Error('iCal nicht erreichbar');
-    const today=st(new Date());
-
-    // ── Kalender Kachel ──
-    const now3 = new Date();
-    const nowMin = now3.getHours() * 60 + now3.getMinutes();
-    const isOverToday = (e) => {
-      const eDay = st(e.date);
-      if(eDay > today) return false;   // Zukunft → nicht vorbei
-      if(eDay < today) return true;    // Vergangenheit → vorbei
-      // Heute: Ganztags-Events nie ausblenden
-      if(!e.hasTime) return false;
-      const evMin = e.date.getHours() * 60 + e.date.getMinutes();
-      return nowMin > evMin + 30; // 30 Min Puffer nach Startzeit
-    };
-    const isFiltered=s=>{
-      const l=s.toLowerCase();
-      return l.includes('kids bei')||l.includes('bei dani')||l.includes('bei paul')||l.includes('wechsel')||l.includes('kids')||l.includes('schwerin')||l.includes('alma')||l.includes('geburts')||l.includes('birthday')||l.includes('bday');
-    };
-    const maja=evs.filter(e=>!isOverToday(e)&&e.col==='#db2777').sort((a,b)=>a.date-b.date)[0];
-    const union2=evs.filter(e=>!isOverToday(e)&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-    const bday=evs.filter(e=>!isOverToday(e)&&e.col==='#af52de').sort((a,b)=>a.date-b.date)[0];
-    const others2=evs.filter(e=>!isOverToday(e)&&!['#db2777','#e8001c','#af52de'].includes(e.col)&&!isFiltered(e.sum)&&e.col!=='#af52de').sort((a,b)=>a.date-b.date);
-
-    // 1. Maja always first
-    // 2-6. Next 5 events (no maja, no union, no bday, no filtered)
-    // 7. Next bday if NOT this month
-    const displayEvs=[];
-    if(maja)displayEvs.push({...maja,_type:'maja'});
-    const reserved=new Set([maja?.sum].filter(Boolean));
-    const fillOthers=others2.filter(e=>!reserved.has(e.sum)&&e.col!=='#af52de');
-    fillOthers.slice(0,5).forEach(e=>displayEvs.push({...e,_type:'other'}));
-    // Bday: only if not this month
-    if(bday){
-      const bdayMonth=st(bday.date).getMonth();
-      const curMonth=new Date().getMonth();
-      if(bdayMonth!==curMonth)displayEvs.push({...bday,_type:'bday'});
-    }
-
-    const kalList=document.getElementById('kalEvList');
-    if(displayEvs.length===0){
-      kalList.innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">Keine Termine geplant</div></div></div>';
-    } else {
-      kalList.innerHTML=displayEvs.map(e=>{
-        const when=fmtW(e.date);const isToday=when==='Heute';
-        let cls='kal-ev';
-        if(isToday)cls+=' today';
-        if(e._type==='union')cls+=' union-ev';
-        if(e._type==='maja')cls+=' maja-ev';
-        if(e._type==='bday')cls+=' bday-ev';
-        const lbl=e._type==='union'?'⚽ 1. FC Union Berlin':e._type==='maja'?'💗 Mit Maja':e._type==='bday'?'🎂 Geburtstag':'';
-        return`<div class="${cls}">
-          <div class="kal-ev-dot" style="background:${e.col}"></div>
-          <div class="kal-ev-info">
-            ${lbl?`<div class="kal-ev-lbl">${lbl}</div>`:''}
-            <div class="kal-ev-title">${e.sum}</div>
-            <div class="kal-ev-date">${fmtFull(e.date)}</div>
-          </div>
-          <div class="kal-ev-when">${when}</div>
-        </div>`;
-      }).join('');
-    }
-
-    // ── Apps preview ──
-    if(displayEvs.length>0){
-      const first=displayEvs[0];
-      const when2=fmtW(first.date);
-      updateCsPreview('apps',`Kalender: ${first.sum} · ${when2}`);
-    } else {
-      updateCsPreview('apps','Kalender · Finanzen · Aktien');
-    }
-
-    // ── Union card footer ──
-    const unionCard=evs.filter(e=>st(e.date)>=today&&e.col==='#e8001c').sort((a,b)=>a.date-b.date)[0];
-
-  }catch(e){
-    console.warn('iCal load error:',e);
-    document.getElementById('kalEvList').innerHTML='<div class="kal-ev" style="margin:0 11px 6px;"><div class="kal-ev-info"><div class="kal-ev-title" style="color:var(--t3)">⚠️ Kalender nicht erreichbar</div><div class="kal-ev-date" style="color:var(--t3)">Bitte Kalender-App direkt öffnen</div></div></div>';
+    filterButton.disabled=false;
+    const [previewResponse,preferencesResponse]=await Promise.all([
+      HubAuth.authorizedFetch(CALENDAR_PREVIEW_API,{signal:AbortSignal.timeout(15000)}),
+      HubAuth.authorizedFetch(CALENDAR_PREFERENCES_API,{signal:AbortSignal.timeout(8000)}),
+    ]);
+    if(!previewResponse.ok)throw new Error(`Preview HTTP ${previewResponse.status}`);
+    const preview=await previewResponse.json();if(!validCalendarPreview(preview))throw new Error('Ungültiges Preview-Schema');calendarPreviewData=preview;
+    if(preferencesResponse.ok){const prefs=await preferencesResponse.json();if(prefs?.schemaVersion===1&&Array.isArray(prefs.selected))calendarSelectedCategories=new Set(prefs.selected.filter(id=>CALENDAR_CATEGORY_META[id]));}
+    renderCalendarFilters();renderCalendarEvents();
+  }catch(error){
+    console.warn('Kalender-Vorschau Fehler:',error);list.replaceChildren();const empty=document.createElement('div');empty.className='kal-empty';empty.textContent='⚠️ Kalender momentan nicht erreichbar';list.appendChild(empty);
   }
   if(window._lbTick)window._lbTick();
 }
+
+document.getElementById('kalFilterBtn')?.addEventListener('click',event=>{
+  event.preventDefault();event.stopPropagation();const panel=document.getElementById('kalFilterPanel');const open=panel.hidden;panel.hidden=!open;event.currentTarget.setAttribute('aria-expanded',String(open));
+});
 
 // ── ALMA ──
 const ALMA_API='https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/alma';
