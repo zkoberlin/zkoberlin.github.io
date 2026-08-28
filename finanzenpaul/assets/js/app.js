@@ -56,8 +56,6 @@ function LOAD(){
 
 // ══ GESCHÜTZTER CLOUDFLARE-SYNC ══
 const FINANCE_API='https://paul-gateway-v2.paul-bendzko.workers.dev/finance';
-const JB_KEY_STORE = 'fp3_jb_key';
-const JB_BIN_STORE = 'fp3_jb_bin';
 let syncTimer = null;
 let financeBootstrapped = false;
 
@@ -87,18 +85,9 @@ async function cloudSave(data) {
   }
 }
 
-async function legacyJsonBinLoad() {
-  const jbKey=localStorage.getItem(JB_KEY_STORE)||'';
-  const jbBin=localStorage.getItem(JB_BIN_STORE)||'';
-  if(!jbKey || !jbBin) return null;
-  try {
-    const r = await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest', {
-      headers:{'X-Master-Key':jbKey}
-    });
-    if(!r.ok) return null;
-    const j = await r.json();
-    return j.record;
-  } catch(e) { return null; }
+function clearLegacyCredentials(){
+  localStorage.removeItem('fp3_jb_key');
+  localStorage.removeItem('fp3_jb_bin');
 }
 
 function applyCloudPayload(data){
@@ -122,13 +111,11 @@ async function bootstrapFinanceSync(){
   setSync('saving','Sicher laden…');
   try{
     const response=await HubAuth.authorizedFetch(FINANCE_API,{signal:AbortSignal.timeout(8000)});
-    if(response.ok){applyCloudPayload(await response.json());financeBootstrapped=true;setSync('saved','Sicher geladen ✓');setTimeout(()=>setSync('idle'),2000);return;}
+    if(response.ok){applyCloudPayload(await response.json());clearLegacyCredentials();financeBootstrapped=true;setSync('saved','Sicher geladen ✓');setTimeout(()=>setSync('idle'),2000);return;}
     if(response.status!==404)throw new Error('HTTP '+response.status);
-    // Einmalige, verlustfreie Migration: erst JSONBin, sonst vorhandener lokaler Stand.
-    const legacy=await legacyJsonBinLoad();
-    const source=legacy?.s?legacy:financePayload();
+    const source=financePayload();
     applyCloudPayload(source);
-    if(await cloudSave({...source,v:3,ts:new Date().toISOString()})){financeBootstrapped=true;setSync('saved','Sicher migriert ✓');}
+    if(await cloudSave({...source,v:3,ts:new Date().toISOString()})){clearLegacyCredentials();financeBootstrapped=true;setSync('saved','Sicher eingerichtet ✓');}
   }catch(e){setSync(navigator.onLine?'error':'offline');}
 }
 
