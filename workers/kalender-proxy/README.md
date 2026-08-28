@@ -11,6 +11,7 @@ Er besitzt keine öffentliche `workers.dev`-Route und ist ausschließlich über 
 - `GET /feeds/kids` – Kids-Tabelle als CSV
 - `GET /feeds/alma` – minimierte Alma-Besuchszeiträume aus den privaten Kalendern
 - `GET /feeds/calendar-preview` – kategorisierte, minimierte Termin-Vorschau ohne Orte, Beschreibungen oder übrige Kalenderdaten
+- `GET /portfolio-preview` – geschützte, serverseitig gebündelte Watchlist-Kurse und 52-Wochen-Spannen in EUR
 - `GET /snapshot` – Kalender-Snapshot aus KV lesen
 - `PUT /snapshot` – Kalender-Snapshot in KV schreiben
 - `GET /horoscope` – gecachtes Tageshoroskop

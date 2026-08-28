@@ -29,8 +29,9 @@ Der Worker `paul-gateway-v2` ist seit dem 26.08.2026 der einzige öffentliche Ei
 | `paul-gateway-v2 /alcohol` | Hub | Lesen, Schreiben und Löschen | persönliche Konsumdaten in Cloudflare D1 | Google-Authentifizierung; serverseitiger Getränkekatalog; D1 nur als Worker-Binding; kein persistenter Browsercache; fehlende Tage gelten als alkoholfrei | **Niedrig:** Rate Limit und regelmäßige D1-Sicherung ergänzen. |
 | `paul-gateway-v2 /finance` | FinanzenPaul | Lesen und Schreiben | vollständiger persönlicher Finanzplan | Google-Authentifizierung; streng validiertes und größenbegrenztes Schema; D1 ausschließlich als Worker-Binding; bestehender Stand wurde live auf Speichern und erneutes Laden geprüft | **Niedrig:** regelmäßige D1-Sicherung ergänzen. |
 | `paul-gateway-v2 /finance-preview` | Hub | Lesen | Puffer, freier Anteil und Sparquote | Google-Authentifizierung; serverseitig aus dem D1-Stand berechnete Minimalantwort ohne Einnahmen, Einzelposten, Namen oder Kategorien | **Niedrig:** Preview-Schema bei Änderungen an der Finanzlogik mitprüfen. |
+| `paul-gateway-v2 /portfolio-preview` | Hub | Lesen | Namen und Symbole der persönlichen Watchlist, EUR-Kurse, Tagesänderungen, 52-Wochen-Spannen und Datenalter | Google-Authentifizierung; Anbieter- und Wechselkursabrufe nur im Backend; keine Stückzahlen, Einstandswerte oder Vermögenssummen; einzelne Ausfälle werden isoliert | **Niedrig:** Watchlist ist nach Anmeldung sichtbar; Anbieterlimits und Teilverfügbarkeit beobachten. |
 | `paul-gateway-v2 /horoscope` | Hub | Lesen; Backend schreibt Cache | generierter öffentlicher Text | Anthropic-Schlüssel als Backend-Secret; Berliner Tagesdatum; validierter Tagescache; letzter gültiger Text und fünfminütiger Fehler-Backoff | **Niedrig:** öffentliche Nutzung und Anbieterlimits beobachten. |
-| `paul-gateway-v2 /market/*` | Hub | Lesen | öffentliche Kurse, privater Anbieterzugang | Finnhub-Schlüssel als Backend-Secret; Finnhub und Yahoo nur serverseitig; Symbol-Allowlist; KV-Cache | **Niedrig:** Anbieterlimits und veraltete Cache-Antworten weiter beobachten. |
+| interne Backend-Pfade `/market/*` | `portfolio-preview` | Lesen | öffentliche Kurse, privater Anbieterzugang | nicht mehr über den öffentlichen Gateway erreichbar; Finnhub-Schlüssel als Backend-Secret; Symbol-Allowlist und KV-Cache | **Niedrig:** ausschließlich Baustein der geschützten Portfolio-Vorschau. |
 
 Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 
@@ -47,8 +48,8 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | CoinGecko | Bitcoin-Kurs | Lesen | öffentliche Marktdaten | Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt anzeigen. |
 | Finnhub | Aktienkurse | Lesen | API-Zugang als Backend-Secret | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Anbieterlimits und Datenalter weiter beobachten. |
 | Yahoo Finance über eigenes Backend | Kurs-Fallback und europäische Listings | Lesen | serverseitiger Abruf ausschließlich erlaubter Depot-Symbole | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Verfügbarkeit und Antwortschema regelmäßig testen. |
-| EZB | Wechselkurse | Lesen | öffentliche Marktdaten | Standardwerte / Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt dokumentieren. |
-| Google Favicons, Wikimedia, FotMob, Transfermarkt-CDN | Logos und Bilder | Lesen | öffentliche Bilddaten | Emoji/Platzhalter | **Mittel:** Remote-Hosts reduzieren oder Assets lokal spiegeln. |
+| EZB | Wechselkurse | Lesen, nur Backend | öffentliche Marktdaten | zwölf Stunden KV-Cache; letzter gültiger Stand bei Ausfall; ohne validen Stand keine irreführende Umrechnung | **Niedrig:** Browser kontaktiert die EZB nicht mehr direkt. |
+| Wikimedia, FotMob, Transfermarkt-CDN | Logos und Bilder | Lesen | öffentliche Bilddaten | Emoji/Platzhalter | **Mittel:** Remote-Hosts weiter reduzieren oder Assets lokal spiegeln; Aktienlogos wurden durch lokale Monogramme ersetzt. |
 | Google Fonts und cdnjs/Chart.js | Schriftarten und Laufzeitbibliothek | Lesen | Drittanbieterressourcen | keine lokale Kopie | **Mittel:** selbst hosten oder Integrität und CSP sauber konfigurieren. |
 
 ## KalenderPaul-Schnittstellen

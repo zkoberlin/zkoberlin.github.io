@@ -13,12 +13,13 @@ const PRIVATE_PATHS = new Set([
   "/calendar-preferences",
   "/finance",
   "/finance-preview",
+  "/portfolio-preview",
   "/snapshot",
   "/trailyx-preview",
   "/alcohol",
 ]);
 
-const PUBLIC_PATHS = new Set(["/horoscope", "/market/quote", "/market/metric", "/market/yahoo", "/location/reverse"]);
+const PUBLIC_PATHS = new Set(["/horoscope", "/location/reverse"]);
 
 function headers(origin) {
   const result = new Headers({

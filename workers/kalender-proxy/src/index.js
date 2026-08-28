@@ -11,12 +11,34 @@ const YAHOO_SYMBOLS = new Set([
   ...FINNHUB_SYMBOLS,
   "DB1.DE", "LOTB.BR", "WKL.AS", "SIE.DE", "HNR1.DE", "RMS.PA", "BKW.SW",
 ]);
+const PORTFOLIO_ASSETS = Object.freeze([
+  { name: "Microsoft", finnhub: "MSFT", currency: "USD" },
+  { name: "Alphabet", finnhub: "GOOGL", currency: "USD" },
+  { name: "ASML", finnhub: "ASML", currency: "USD" },
+  { name: "Novo Nordisk", finnhub: "NVO", currency: "USD" },
+  { name: "Deutsche Börse", yahoo: "DB1.DE", currency: "EUR" },
+  { name: "Procter & Gamble", finnhub: "PG", currency: "USD" },
+  { name: "Lotus Bakeries", yahoo: "LOTB.BR", currency: "EUR" },
+  { name: "Wolters Kluwer", finnhub: "WTKWY", yahoo: "WKL.AS", currency: "USD" },
+  { name: "Mercado Libre", finnhub: "MELI", currency: "USD" },
+  { name: "Siemens", finnhub: "SIEGY", yahoo: "SIE.DE", currency: "USD" },
+  { name: "Hannover Rück", finnhub: "HVRRF", yahoo: "HNR1.DE", currency: "USD" },
+  { name: "Ferrari", finnhub: "RACE", currency: "USD" },
+  { name: "Nubank", finnhub: "NU", currency: "USD" },
+  { name: "Cintas", finnhub: "CTAS", currency: "USD" },
+  { name: "American Express", finnhub: "AXP", currency: "USD" },
+  { name: "Hermès", finnhub: "HESAY", yahoo: "RMS.PA", currency: "USD" },
+  { name: "Netflix", finnhub: "NFLX", currency: "USD" },
+  { name: "BKW", yahoo: "BKW.SW", currency: "CHF" },
+  { name: "Zoetis", finnhub: "ZTS", currency: "USD" },
+]);
 const PRIVATE_PATHS = new Set([
   "/feeds/gmail",
   "/feeds/hellomed",
   "/feeds/kids",
   "/feeds/alma",
   "/feeds/calendar-preview",
+  "/portfolio-preview",
   "/snapshot",
 ]);
 
@@ -639,6 +661,93 @@ async function handleYahooMarketData(url, env, origin) {
   return marketResponse(data, origin, "live", storedAt);
 }
 
+async function portfolioRates(env) {
+  const cacheKey = "market:ecb:eur-rates";
+  const cachedRaw = await env.KALENDER_KV.get(cacheKey);
+  let cached = null;
+  try { cached = cachedRaw ? JSON.parse(cachedRaw) : null; } catch {}
+  if (cached?.storedAt && Date.now() - cached.storedAt < 12 * 60 * 60 * 1000) return cached;
+  try {
+    const response = await fetch("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml", { signal: AbortSignal.timeout(8_000) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const xml = await response.text();
+    if (xml.length > 100_000) throw new Error("ECB response too large");
+    const rates = { EUR: 1 };
+    for (const match of xml.matchAll(/currency=['"]([A-Z]{3})['"]\s+rate=['"]([\d.]+)['"]/g)) rates[match[1]] = Number(match[2]);
+    if (!Number.isFinite(rates.USD) || !Number.isFinite(rates.CHF)) throw new Error("ECB rates incomplete");
+    const value = { storedAt: Date.now(), rates };
+    await env.KALENDER_KV.put(cacheKey, JSON.stringify(value), { expirationTtl: 7 * 24 * 60 * 60 });
+    return value;
+  } catch (error) {
+    console.error(JSON.stringify({ message: "ECB rates unavailable", error: String(error) }));
+    return cached?.rates ? cached : null;
+  }
+}
+
+async function responseJson(response) {
+  if (!response.ok) return null;
+  try { return await response.json(); } catch { return null; }
+}
+
+async function handlePortfolioPreview(env, origin) {
+  const rateData = await portfolioRates(env);
+  if (!rateData?.rates) return jsonResponse({ error: "Portfolio unavailable" }, 503, origin);
+  const positions = await Promise.all(PORTFOLIO_ASSETS.map(async (asset) => {
+    try {
+    let quote = null;
+    let metric = null;
+    let currency = asset.currency;
+    let symbol = asset.finnhub || asset.yahoo;
+    let dataState = "unknown";
+    let storedAt = 0;
+    if (asset.finnhub) {
+      const quoteUrl = new URL(`https://portfolio.internal/market/quote?symbol=${encodeURIComponent(asset.finnhub)}`);
+      const metricUrl = new URL(`https://portfolio.internal/market/metric?symbol=${encodeURIComponent(asset.finnhub)}`);
+      const [quoteResponse, metricResponse] = await Promise.all([
+        handleMarketData(quoteUrl, env, origin),
+        handleMarketData(metricUrl, env, origin),
+      ]);
+      quote = await responseJson(quoteResponse);
+      metric = await responseJson(metricResponse);
+      dataState = quoteResponse.headers.get("X-Market-Data") || "unknown";
+      storedAt = Number(quoteResponse.headers.get("X-Market-Stored-At")) || 0;
+    }
+    if ((!quote?.c || quote.c <= 0) && (asset.yahoo || asset.finnhub)) {
+      const yahooSymbol = asset.yahoo || asset.finnhub;
+      const yahooUrl = new URL(`https://portfolio.internal/market/yahoo?symbol=${encodeURIComponent(yahooSymbol)}`);
+      const yahooResponse = await handleYahooMarketData(yahooUrl, env, origin);
+      const yahoo = await responseJson(yahooResponse);
+      if (yahoo?.price > 0) {
+        quote = { c: yahoo.price, pc: yahoo.previousClose, dp: yahoo.changePercent };
+        metric = { metric: { "52WeekHigh": yahoo.high52, "52WeekLow": yahoo.low52 } };
+        currency = yahoo.currency || asset.currency;
+        symbol = yahooSymbol;
+        dataState = yahooResponse.headers.get("X-Market-Data") || "unknown";
+        storedAt = Number(yahooResponse.headers.get("X-Market-Stored-At")) || 0;
+      }
+    }
+    const rate = rateData.rates[currency];
+    if (!quote?.c || !Number.isFinite(rate) || rate <= 0) return null;
+      return {
+      name: asset.name,
+      symbol,
+      priceEur: Math.round(quote.c / rate * 100) / 100,
+      changePercent: Math.round(Number(quote.dp || 0) * 100) / 100,
+      low52: Number(metric?.metric?.["52WeekLow"]) ? Math.round(Number(metric.metric["52WeekLow"]) / rate * 100) / 100 : null,
+      high52: Number(metric?.metric?.["52WeekHigh"]) ? Math.round(Number(metric.metric["52WeekHigh"]) / rate * 100) / 100 : null,
+      state: dataState,
+      updatedAt: storedAt ? new Date(storedAt).toISOString() : null,
+      };
+    } catch (error) {
+      console.error(JSON.stringify({ message: "portfolio position unavailable", symbol: asset.finnhub || asset.yahoo, error: String(error) }));
+      return null;
+    }
+  }));
+  const available = positions.filter(Boolean);
+  if (!available.length) return jsonResponse({ error: "Portfolio unavailable" }, 503, origin);
+  return jsonResponse({ schemaVersion: 1, positions: available, expectedPositions: PORTFOLIO_ASSETS.length, generatedAt: new Date().toISOString() }, 200, origin);
+}
+
 async function handleReverseLocation(url, env, origin) {
   const rawLat = Number(url.searchParams.get("lat"));
   const rawLon = Number(url.searchParams.get("lon"));
@@ -709,6 +818,9 @@ export default {
 
       if (request.method === "GET" && url.pathname === "/market/yahoo") {
         return await handleYahooMarketData(url, env, origin);
+      }
+      if (request.method === "GET" && url.pathname === "/portfolio-preview") {
+        return await handlePortfolioPreview(env, origin);
       }
       if (request.method === "GET" && url.pathname === "/location/reverse") {
         return await handleReverseLocation(url, env, origin);

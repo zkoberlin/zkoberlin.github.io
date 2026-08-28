@@ -20,6 +20,7 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/calendar-preferences` (D1-gespeicherte Auswahl sichtbarer Kalenderkategorien)
 - `/finance` (`GET`, `PUT`; vollständiger validierter Finanzstand in D1)
 - `/finance-preview` (ausschließlich Puffer, freier Anteil und Sparquote ohne Einzelposten)
+- `/portfolio-preview` (serverseitig gebündelte Watchlist-Kurse ohne Stückzahlen, Einstandswerte oder Vermögen)
 - `/snapshot`
 - `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/alcohol` (`GET`, `POST`, `DELETE`; persönliche Einträge in D1)

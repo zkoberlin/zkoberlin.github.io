@@ -593,6 +593,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .stock-row-pct.r{color:var(--red);}
 .stocks-meta{font-size:8.5px;color:var(--t3);padding:4px 2px 6px;display:flex;align-items:center;gap:4px;}
 .stocks-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.stocks-empty{padding:18px 12px;border:1px dashed var(--border);border-radius:var(--r3);font-size:11px;color:var(--t2);text-align:center;}
 /* ── AKTIEN-KACHEL (eigenständig) ── */
 .acard.stocks{border-color:rgba(0,113,227,.22);}
 .acard.stocks:hover{border-color:var(--blue-b);box-shadow:0 0 0 2px var(--blue-l),var(--sh-h);}
@@ -604,6 +605,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .stock-highlight-rank{font-size:9px;font-weight:800;color:var(--t3);min-width:14px;text-align:center;}
 .stock-highlight.top1 .stock-highlight-rank{color:var(--blue);}
 .stock-highlight-logo{width:20px;height:20px;border-radius:5px;object-fit:contain;flex-shrink:0;background:var(--card);}
+.stock-monogram{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--blue-l);border:1px solid var(--blue-b);color:var(--blue);font-size:9px;font-weight:800;letter-spacing:-.2px;}
+.stock-monogram.small{width:24px;height:24px;border-radius:7px;font-size:8px;}
 .stock-highlight-name{font-size:11px;font-weight:600;color:var(--t);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stock-highlight-sym{font-size:9px;color:var(--t3);font-weight:500;margin-left:3px;}
 .stock-highlight-price{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t);white-space:nowrap;}
@@ -622,6 +625,30 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* row-level 52w for list */
 .stock-row-52w{display:flex;align-items:center;gap:3px;margin-top:1px;}
 .stock-row-52w-lbl{font-size:7.5px;color:var(--t3);font-variant-numeric:tabular-nums;}
+@media(min-width:900px){
+  .acard.stocks .a-top{padding-bottom:8px;}
+  .acard.stocks .a-name{font-size:19px;}
+  .acard.stocks .a-desc{font-size:11px;}
+  .stocks-card-wrap{padding:4px 18px 16px;}
+  .stocks-highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:15px;}
+  .stock-highlight{min-height:92px;padding:13px 14px;display:grid;grid-template-columns:auto auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-content:center;}
+  .stock-highlight-rank{grid-row:1/-1;font-size:11px;}
+  .stock-highlight .stock-monogram{grid-row:1/-1;width:38px;height:38px;border-radius:11px;font-size:11px;}
+  .stock-highlight-name{font-size:13px;white-space:normal;overflow:visible;}
+  .stock-highlight>div:last-child{grid-column:3;display:flex;align-items:center;justify-content:space-between;text-align:left!important;margin-top:5px;gap:10px;}
+  .stock-highlight-price{font-size:15px;}
+  .stock-highlight-pct{font-size:11px!important;padding:4px 8px;}
+  .stock-52w{grid-column:1/-1;margin-top:5px;}
+  .stocks-divider{margin-bottom:4px;}
+  .stocks-all{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 22px;}
+  .stock-row{min-height:60px;padding:9px 4px;gap:10px;}
+  .stock-row-name{font-size:12px;color:var(--t);font-weight:600;}
+  .stock-row-price{font-size:12px;}
+  .stock-row-pct{font-size:10px!important;}
+  .stock-row-52w{margin-top:4px;}
+  .stock-row-52w-lbl{font-size:8.5px;}
+  .stocks-meta{font-size:10px;padding:12px 3px 1px;}
+}
 
 /* ── PROMI GEBURTSTAG CHIPS ── */
 .promi-chip{display:flex;align-items:center;gap:6px;padding:4px 0;}

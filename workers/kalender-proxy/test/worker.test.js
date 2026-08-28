@@ -453,6 +453,37 @@ test("normalizes an allowed Yahoo quote and preserves its currency", async () =>
   }
 });
 
+test("returns a protected minimal portfolio preview without holdings", async () => {
+  const originalFetch = globalThis.fetch;
+  const env = createEnv();
+  const now = Date.now();
+  await env.KALENDER_KV.put("market:ecb:eur-rates", JSON.stringify({ storedAt: now, rates: { EUR: 1, USD: 1.1, CHF: 0.95 } }));
+  const finnhub = ["MSFT", "GOOGL", "ASML", "NVO", "PG", "WTKWY", "MELI", "SIEGY", "HVRRF", "RACE", "NU", "CTAS", "AXP", "HESAY", "NFLX", "ZTS"];
+  for (const symbol of finnhub) {
+    await env.KALENDER_KV.put(`market:quote:${symbol}`, JSON.stringify({ storedAt: now, data: { c: 110, pc: 100, dp: 10 } }));
+    await env.KALENDER_KV.put(`market:stock/metric:${symbol}`, JSON.stringify({ storedAt: now, data: { metric: { "52WeekHigh": 130, "52WeekLow": 80 } } }));
+  }
+  for (const symbol of ["DB1.DE", "LOTB.BR", "BKW.SW"]) {
+    await env.KALENDER_KV.put(`market:yahoo:${symbol}`, JSON.stringify({ storedAt: now, data: { price: 200, previousClose: 190, changePercent: 5.26, high52: 220, low52: 150, currency: symbol === "BKW.SW" ? "CHF" : "EUR" } }));
+  }
+  globalThis.fetch = async (url) => {
+    assert.match(String(url), /openidconnect\.googleapis\.com/);
+    return googleProfileResponse();
+  };
+  try {
+    const denied = await worker.fetch(new Request("https://worker.example.test/portfolio-preview"), env);
+    assert.equal(denied.status, 401);
+    const response = await worker.fetch(authorizedRequest("https://worker.example.test/portfolio-preview"), env);
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.schemaVersion, 1);
+    assert.equal(data.positions.length, 19);
+    assert.equal(data.positions[0].priceEur, 100);
+    assert.equal("quantity" in data.positions[0], false);
+    assert.equal("value" in data.positions[0], false);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
 test("validates and resolves rounded coordinates through Nominatim", async () => {
   const invalid = await worker.fetch(
     new Request("https://worker.example.test/location/reverse?lat=500&lon=13"),

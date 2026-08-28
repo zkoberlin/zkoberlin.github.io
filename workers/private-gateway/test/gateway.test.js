@@ -60,7 +60,7 @@ function env() {
 }
 
 test("blocks every private route without a token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/calendar-preferences", "/snapshot", "/trailyx-preview", "/alcohol", "/finance", "/finance-preview"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/calendar-preferences", "/snapshot", "/trailyx-preview", "/alcohol", "/finance", "/finance-preview", "/portfolio-preview"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
   }
@@ -199,10 +199,17 @@ test("returns the minimal TrailYX preview for the verified account", async () =>
 });
 
 test("forwards public routes without authentication", async () => {
-  for (const path of ["/horoscope", "/market/quote", "/market/metric", "/market/yahoo", "/location/reverse"]) {
+  for (const path of ["/horoscope", "/location/reverse"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 200, path);
     assert.deepEqual(await response.json(), { path }, path);
+  }
+});
+
+test("does not expose individual market routes through the gateway", async () => {
+  for (const path of ["/market/quote?symbol=MSFT", "/market/metric?symbol=MSFT", "/market/yahoo?symbol=MSFT"]) {
+    const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
+    assert.equal(response.status, 404, path);
   }
 });
 
