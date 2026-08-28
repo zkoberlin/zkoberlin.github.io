@@ -297,21 +297,25 @@ function setAlert(aid,tid,type,txt){
 }
 
 function RWF(ein,total,rest,inv,notg,url,sond,puf){
+  const allocated=inv+notg+url+sond;
   const rows=[
-    {l:'Einnahmen',v:ein,c:'#34C759'},{l:'Ausgaben',v:-total,c:'#FF3B30'},
-    {l:'Investieren',v:-inv,c:'#007AFF'},{l:'Notgroschen',v:-notg,c:'#5856D6'},
-    {l:'Urlaub',v:-url,c:'#FF9500'},{l:'Sonder',v:-sond,c:'#AF52DE'},
-    {l:'Puffer',v:Math.max(0,puf),c:'#30D158'},
-  ].filter(r=>Math.abs(r.v)>0.005);
+    {l:'Einnahmen',v:ein,c:'#34C759',detail:'Start'},
+    {l:'Nach Ausgaben',v:rest,c:'#FF9500',detail:'− '+F(total)},
+    {l:'Freier Puffer',v:puf,c:puf>=0?'#30D158':'#FF3B30',detail:'− '+F(allocated)+' verteilt'},
+  ];
   ['d-wf','m-wf'].forEach(id=>{
     const el=document.getElementById(id); if(!el)return;
     const pfx=id.startsWith('d')?'wf':'m-wf';
     el.innerHTML=rows.map(r=>{
-      const pct=Math.min(100,Math.abs(r.v)/ein*100).toFixed(1);
-      const sign=r.v>=0?'+ ':'− ';
-      return `<div class="${pfx}r"><span class="${pfx}l">${r.l}</span><div class="${pfx}bw"><div class="${pfx}b" style="width:${pct}%;background:${r.c};"></div></div><span class="${pfx}v">${sign}${F(Math.abs(r.v))}</span><span class="${pfx}pct">${pct}%</span></div>`;
+      const ratio=ein>0?r.v/ein*100:0;
+      const pct=Math.min(100,Math.abs(ratio));
+      const displayPct=ratio.toFixed(1).replace('.',',')+' %';
+      return `<div class="${pfx}r"><span class="${pfx}l"><b>${r.l}</b><small>${r.detail}</small></span><div class="${pfx}bw"><div class="${pfx}b" style="width:${pct}%;background:${r.c};"></div></div><span class="${pfx}v">${F(r.v)}</span><span class="${pfx}pct">${displayPct}</span></div>`;
     }).join('');
   });
+  const expenseRate=ein>0?Math.round(total/ein*100):0;
+  set('d-analysis-note',expenseRate+' % Fixkosten');
+  set('m-analysis-note',expenseRate+' % Fixkosten');
 }
 
 function RPIE(ct){
@@ -335,8 +339,10 @@ function RPIE(ct){
   ['d-pleg','m-pleg'].forEach(id=>{
     const el=document.getElementById(id); if(!el)return;
     const pfx=id.startsWith('d')?'':'m-';
-    el.innerHTML=labels.map((l,i)=>`<span class="${pfx}pli"><span class="${pfx}pld" style="background:${colors[i]}"></span><span>${l}</span>&nbsp;<span style="font-weight:600;color:var(--t1);">${FI(data[i])}</span>&nbsp;<span style="color:var(--t3);font-size:10px;">${pcts[i]}%</span></span>`).join('');
+    el.innerHTML=labels.map((l,i)=>`<span class="${pfx}pli"><span class="${pfx}pld" style="background:${colors[i]}"></span><span class="pie-legend-label">${l}</span><strong>${FI(data[i])}</strong><small>${pcts[i]} %</small></span>`).join('');
   });
+  set('d-pie-total',FI(tot));
+  set('m-pie-total',FI(tot));
 }
 
 function NC(el,id){
