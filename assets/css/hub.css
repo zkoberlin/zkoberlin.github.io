@@ -357,6 +357,22 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-ld{width:7px;height:7px;border-radius:2px;}
 .er-next{margin:0 14px 14px;padding:10px 12px;border:1px solid var(--blue-b);border-radius:var(--r3);background:var(--blue-l);font-size:11.5px;color:var(--t2);display:flex;align-items:center;gap:9px;}
 .er-next strong{color:var(--t);font-weight:600;}
+.er-bdays{border-top:1px solid var(--border);padding:10px 20px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.er-bday-card{min-width:0;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:10px 11px;box-shadow:inset 3px 0 0 var(--blue);}
+.er-bday-card.rosa{box-shadow:inset 3px 0 0 var(--pink);}
+.er-bday-label,.er-calendar-label{font-family:var(--font-head);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:4px;}
+.er-bday-value{font-size:15px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;}
+.er-bday-card.rosa .er-bday-value{color:var(--pink);}
+.er-bday-age{font-size:10px;color:var(--t2);margin-top:2px;}
+.er-calendar-block{border-top:1px solid var(--border);padding:11px 20px 13px;}
+.er-calendar-block.compact{padding-top:10px;background:linear-gradient(135deg,var(--blue-l),transparent 72%);}
+.er-calendar-content{display:flex;align-items:center;gap:10px;margin-top:7px;}
+.er-calendar-icon{width:44px;height:44px;border-radius:var(--r3);background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.er-calendar-countdown{font-size:14px;font-weight:700;letter-spacing:-.2px;font-variant-numeric:tabular-nums;}
+.er-calendar-name{font-size:11px;font-weight:600;color:var(--t);margin-top:1px;}
+.er-calendar-meta{font-size:10px;color:var(--t3);margin-top:2px;}
+.er-holiday-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.er-holiday-countdown{font-size:11px;font-weight:700;color:var(--blue);white-space:nowrap;font-variant-numeric:tabular-nums;}
 
 /* ── ALMA ── */
 .alma-wrap{display:flex;flex-direction:column;gap:8px;}
@@ -796,6 +812,8 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .er-n{font-size:36px!important;}
   .er-num{padding:12px 14px;}
   .er-next{margin:0 10px 10px;padding:9px 10px;}
+  .er-bdays{padding:10px 12px 12px;}
+  .er-calendar-block{padding:10px 14px 12px;}
 
   /* Alma Section */
   .alma-section-n{font-size:32px;}

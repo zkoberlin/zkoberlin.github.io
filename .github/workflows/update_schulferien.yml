@@ -2,19 +2,26 @@ name: Update Schulferien Berlin
  
 on:
   schedule:
-    # Täglich um 03:00 UTC
-    - cron: "0 3 * * *"
+    # Monatlich am 2. um 03:30 UTC; zusätzlich jederzeit manuell
+    - cron: "30 3 2 * *"
   workflow_dispatch:   # auch manuell auslösbar
+
+concurrency:
+  group: schulferien-berlin-update
+  cancel-in-progress: false
  
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write   # Repo Read & Write muss in Settings aktiviert sein
  
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
  
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -33,6 +40,7 @@ jobs:
             echo "Keine Änderungen – nichts zu committen."
           else
             git commit -m "chore: schulferien_berlin.json aktualisiert [bot]"
+            git pull --rebase origin main
             git push
           fi
  

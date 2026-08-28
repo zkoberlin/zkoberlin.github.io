@@ -685,7 +685,7 @@ setInterval(()=>{
     if(d<today) d.setFullYear(y+1);
     return d;
   }
-  function daysUntil(d){return Math.round((d-today)/86400000);}
+  function daysUntil(d){return Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);}
   function age(birthYear,month,day){
     const next=nextBday(month,day);
     return next.getFullYear()-birthYear;
@@ -696,58 +696,58 @@ setInterval(()=>{
   const emilDays=daysUntil(emilNext);
   const emilNextAge=age(2011,3,30);
   document.getElementById('emilBday').textContent=emilDays===0?'🎉 Heute!':emilDays===1?'Morgen!':emilDays+' Tage';
-  document.getElementById('emilAge').textContent='wird '+emilNextAge+' Jahre alt';
+  document.getElementById('emilAge').textContent=`wird ${emilNextAge} Jahre alt · ${emilNext.getFullYear()}`;
 
   // Rosa: 29.04.2016
   const rosaNext=nextBday(4,29);
   const rosaDays=daysUntil(rosaNext);
   const rosaNextAge=age(2016,4,29);
   document.getElementById('rosaBday').textContent=rosaDays===0?'🎉 Heute!':rosaDays===1?'Morgen!':rosaDays+' Tage';
-  document.getElementById('rosaAge').textContent='wird '+rosaNextAge+' Jahre alt';
+  document.getElementById('rosaAge').textContent=`wird ${rosaNextAge} Jahre alt · ${rosaNext.getFullYear()}`;
 })();
 
 // ── SCHULFERIEN BERLIN ──
-// Daten kommen aus data/schulferien_berlin.json (täglich via GitHub Actions aktualisiert)
-// Fallback: openholidaysapi.org direkt
+function validSchoolHolidayData(data,currentYear){
+  if(data?.schemaVersion!==1||data?.region!=='DE-BE'||!Array.isArray(data?.jahre)||!data.jahre.includes(currentYear))return false;
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(data?.stand||'')||!String(data?.quelle?.url||'').startsWith('https://'))return false;
+  if(!Array.isArray(data.ferien)||data.ferien.length<12||data.ferien.length>24)return false;
+  const seen=new Set();
+  return data.ferien.every(entry=>{
+    if(Object.keys(entry||{}).sort().join(',')!=='end,name,quelleId,start')return false;
+    const key=`${entry.name}|${entry.start}|${entry.end}`;
+    if(seen.has(key))return false;seen.add(key);
+    return typeof entry.name==='string'&&entry.name.trim().length>0&&entry.name.length<=100
+      &&/^\d{4}-\d{2}-\d{2}$/.test(entry.start)&&/^\d{4}-\d{2}-\d{2}$/.test(entry.end)
+      &&entry.start<=entry.end&&typeof entry.quelleId==='string'&&Boolean(entry.quelleId);
+  });
+}
+
+function parseLocalDay(value){return new Date(`${value}T12:00:00`);}
+
 async function loadSchulferien(){
   const now2=new Date();
   const today=new Date(now2.getFullYear(),now2.getMonth(),now2.getDate());
   const iconEl=document.getElementById('ferienIcon');
-
-  let ferien=[];
-
-  // 1. Primär: lokale JSON
+  let data;
   try{
-    const r=await fetch('data/schulferien_berlin.json',{signal:AbortSignal.timeout(5000)});
-    if(!r.ok) throw new Error('JSON nicht erreichbar');
-    const raw=await r.json();
-    ferien=raw.map(f=>({
-      name:f.name,
-      start:new Date(f.start),
-      end:new Date(f.end)
-    }));
+    const r=await fetch(`data/schulferien_berlin.json?v=${window.PAUL_APP_VERSION||'1'}`,{signal:AbortSignal.timeout(5000)});
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    data=await r.json();
+    if(!validSchoolHolidayData(data,today.getFullYear()))throw new Error('Ungültiges Schema');
+    try{localStorage.setItem('school_holidays_berlin_latest',JSON.stringify(data));}catch(error){}
   }catch(e){
-    // 2. Fallback: openholidaysapi.org live
     try{
-      const yr=now2.getFullYear();
-      const url=`https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE&validFrom=${yr}-01-01&validTo=${yr+1}-12-31`;
-      const r2=await fetch(url,{signal:AbortSignal.timeout(7000)});
-      if(!r2.ok) throw new Error('API '+r2.status);
-      const raw2=await r2.json();
-      ferien=raw2.map(f=>({
-        name:(f.name&&f.name[0]&&f.name[0].text)||f.id||'Ferien',
-        start:new Date(f.startDate),
-        end:new Date(f.endDate)
-      }));
-      console.log('Schulferien: Fallback openholidaysapi.org OK');
-    }catch(e2){
+      const cached=JSON.parse(localStorage.getItem('school_holidays_berlin_latest')||'null');
+      if(!validSchoolHolidayData(cached,today.getFullYear()))throw new Error('Kein gültiger Cache');
+      data=cached;
+    }catch(cacheError){
       document.getElementById('ferienName').textContent='Daten nicht verfügbar';
       document.getElementById('ferienCountdown').textContent='–';
       document.getElementById('ferienDates').textContent='–';
       return;
     }
   }
-
+  const ferien=data.ferien.map(f=>({name:f.name,start:parseLocalDay(f.start),end:parseLocalDay(f.end)}));
   ferien.sort((a,b)=>a.start-b.start);
 
   // Check if currently IN Ferien
@@ -765,7 +765,7 @@ async function loadSchulferien(){
     }
     countdownEl.style.color='var(--green)';
     document.getElementById('ferienName').textContent='🎉 '+fmtFerienName(current.name)+' – laufen gerade!';
-    document.getElementById('ferienDates').textContent=fmtFerienRange(current.start,current.end);
+    document.getElementById('ferienDates').textContent=`${fmtFerienRange(current.start,current.end)} · Berlin`;
     iconEl.innerHTML='<span style="font-size:20px;">🎉</span>';
     iconEl.style.background='var(--green-l)';
     iconEl.style.borderColor='var(--green-b)';
@@ -782,12 +782,35 @@ async function loadSchulferien(){
     document.getElementById('ferienCountdown').textContent=cdText;
     document.getElementById('ferienCountdown').style.color=daysUntilF<=0?'var(--green)':'var(--blue)';
     document.getElementById('ferienName').textContent=fmtFerienName(next.name);
-    document.getElementById('ferienDates').textContent=fmtFerienRange(next.start,next.end);
+    document.getElementById('ferienDates').textContent=`${fmtFerienRange(next.start,next.end)} · Berlin`;
     const MKF=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
     const fDay=next.start.getDate();
     const fMon=MKF[next.start.getMonth()].toUpperCase();
     iconEl.style.cssText='width:44px;height:44px;flex-shrink:0;overflow:hidden;border-radius:9px;border:none;background:transparent;padding:0;display:block;';
     iconEl.innerHTML=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect width="44" height="44" rx="9" fill="white"/><rect y="0" width="44" height="16" fill="#e8001c"/><rect y="7" width="44" height="9" fill="#e8001c"/><text x="22" y="12" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="7" font-weight="700" fill="white" letter-spacing=".4">${fMon}</text><text x="22" y="35" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="20" font-weight="300" fill="#1D1D1F">${fDay}</text></svg>`;
+  }
+}
+
+async function loadNextBerlinHoliday(){
+  const nameEl=document.getElementById('erHolidayName');
+  const dateEl=document.getElementById('erHolidayDate');
+  const countdownEl=document.getElementById('erHolidayCountdown');
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  try{
+    const response=await fetch(`data/feiertage_berlin.json?v=${window.PAUL_APP_VERSION||'1'}`,{signal:AbortSignal.timeout(4000)});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const data=await response.json();
+    if(!validHolidayData(data,today.getFullYear()))throw new Error('Ungültiges Schema');
+    const next=data.feiertage.map(entry=>({...entry,date:parseLocalDay(entry.datum)})).find(entry=>entry.date>=today);
+    if(!next)throw new Error('Kein Feiertag verfügbar');
+    const days=Math.round((Date.UTC(next.date.getFullYear(),next.date.getMonth(),next.date.getDate())-Date.UTC(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);
+    nameEl.textContent=next.name;
+    dateEl.textContent=`${WD[next.date.getDay()]}, ${next.date.getDate()}. ${MK[next.date.getMonth()]}${next.bundesweit?' · bundesweit':' · Berlin'}`;
+    countdownEl.textContent=days===0?'Heute 🎉':days===1?'Morgen':`in ${days} Tagen`;
+  }catch(error){
+    console.warn('Feiertags-Countdown Fehler:',error);
+    nameEl.textContent='Daten nicht verfügbar';dateEl.textContent='–';countdownEl.textContent='–';
   }
 }
 function fmtFerienName(n){
@@ -809,6 +832,7 @@ function fmtFerienRange(start,end){
   return`${s} – ${e} · ${dur} Tage`;
 }
 loadSchulferien();
+loadNextBerlinHoliday();
 
 // ── TRAILYX-VORSCHAU ──
 const TRAILYX_PREVIEW_API='https://paul-gateway-v2.paul-bendzko.workers.dev/trailyx-preview';

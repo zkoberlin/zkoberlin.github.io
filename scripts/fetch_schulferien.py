@@ -1,94 +1,129 @@
 #!/usr/bin/env python3
-"""
-Holt Berliner Schulferien von openholidaysapi.org und schreibt
-das Ergebnis als /data/schulferien_berlin.json ins Repo.
-
-API-Doku: https://openholidaysapi.org/swagger/index.html
-Endpunkt:  GET /SchoolHolidays
-Parameter: countryIsoCode=DE, subdivisionCode=DE-BE, languageIsoCode=DE
-"""
+"""Erstellt eine vollständig validierte Berliner Schulferiendatei."""
 
 import json
+import os
+import re
+import tempfile
 import time
 import urllib.request
-import urllib.error
-from datetime import date, timedelta
+from datetime import date, datetime, timezone
 
-OUTPUT_PATH = "data/schulferien_berlin.json"
+OUTPUT = "data/schulferien_berlin.json"
 BASE_URL = "https://openholidaysapi.org/SchoolHolidays"
+SOURCE_URL = "https://www.openholidaysapi.org/en/"
+EXPECTED_KINDS = {"Winterferien", "Osterferien", "Sommerferien", "Herbstferien", "Weihnachtsferien"}
 
-def fetch_year(year: int, retries: int = 3) -> list:
-    """Holt Schulferien für ein Kalenderjahr. Retry bei 429."""
+
+def fetch_period(start_year, end_year, retries=3):
     url = (
-        f"{BASE_URL}"
-        f"?countryIsoCode=DE"
-        f"&subdivisionCode=DE-BE"
-        f"&languageIsoCode=DE"
-        f"&validFrom={year}-01-01"
-        f"&validTo={year}-12-31"
+        f"{BASE_URL}?countryIsoCode=DE&subdivisionCode=DE-BE&languageIsoCode=DE"
+        f"&validFrom={start_year}-01-01&validTo={end_year}-12-31"
     )
-    wait_times = [20, 40, 60]
     for attempt in range(retries):
         try:
-            req = urllib.request.Request(url, headers={"Accept": "application/json"})
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                return json.loads(resp.read().decode())
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < retries - 1:
-                wait = wait_times[attempt]
-                print(f"  429 – warte {wait}s …")
-                time.sleep(wait)
-            else:
-                print(f"  HTTP-Fehler {e.code} für Jahr {year}: {e}")
-                return []
-        except Exception as e:
-            print(f"  Fehler für Jahr {year}: {e}")
-            return []
-    return []
+            request = urllib.request.Request(url, headers={
+                "Accept": "application/json",
+                "User-Agent": "Paul-Hub-Schulferien/1.0",
+            })
+            with urllib.request.urlopen(request, timeout=15) as response:
+                if response.status != 200:
+                    raise RuntimeError(f"HTTP {response.status}")
+                return json.loads(response.read().decode("utf-8"))
+        except Exception as error:
+            if attempt == retries - 1:
+                raise RuntimeError(f"OpenHolidays nicht erreichbar: {error}") from error
+            time.sleep(3 * (attempt + 1))
 
-def parse_entry(entry: dict) -> dict | None:
-    """Wandelt einen API-Eintrag in ein schlankes Dict um."""
+
+def localized_name(entry):
+    names = entry.get("name")
+    if not isinstance(names, list):
+        return ""
+    value = next((item.get("text") for item in names if item.get("language") == "DE"), None)
+    value = value or next((item.get("text") for item in names if item.get("text")), "")
+    return re.sub(r"[\x00-\x1f\x7f<>]", "", str(value)).strip()[:100]
+
+
+def parse_entry(entry, years):
+    name = localized_name(entry)
+    start = str(entry.get("startDate", ""))[:10]
+    end = str(entry.get("endDate", ""))[:10]
+    if not name or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", start) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", end):
+        raise ValueError(f"Ungültiger Ferieneintrag: {entry}")
+    start_date, end_date = date.fromisoformat(start), date.fromisoformat(end)
+    if start_date > end_date or not ({start_date.year, end_date.year} & years):
+        raise ValueError(f"Unplausibler Ferienzeitraum: {entry}")
+    return {"name": name, "start": start, "end": end, "quelleId": str(entry.get("id", ""))}
+
+
+def validate(result, years):
+    if result.get("schemaVersion") != 1 or result.get("region") != "DE-BE":
+        raise ValueError("Ungültiges Schulferien-Schema oder Region")
+    if result.get("jahre") != sorted(years):
+        raise ValueError("Ungültiger Schulferien-Zeitraum")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", result.get("stand", "")):
+        raise ValueError("Ungültiger Datenstand")
+    source = result.get("quelle")
+    if not isinstance(source, dict) or not str(source.get("url", "")).startswith("https://"):
+        raise ValueError("Ungültige Quelle")
+    holidays = result.get("ferien")
+    if not isinstance(holidays, list) or len(holidays) < 12 or len(holidays) > 24:
+        raise ValueError("Schulferiendatei ist unvollständig oder unplausibel")
+    seen = set()
+    for item in holidays:
+        if set(item) != {"name", "start", "end", "quelleId"} or not item["quelleId"]:
+            raise ValueError("Ungültiger Schulferieneintrag")
+        key = (item["name"], item["start"], item["end"])
+        if key in seen:
+            raise ValueError("Doppelter Schulferieneintrag")
+        seen.add(key)
+    for year in years:
+        year_start, year_end = date(year, 1, 1), date(year, 12, 31)
+        annual = [
+            item for item in holidays
+            if date.fromisoformat(item["start"]) <= year_end
+            and date.fromisoformat(item["end"]) >= year_start
+        ]
+        names = {item["name"] for item in annual}
+        if len(annual) < 6 or not EXPECTED_KINDS.issubset(names):
+            raise ValueError(f"Schulferienjahr {year} ist unvollständig")
+
+
+def write_atomic(result):
+    output_dir = os.path.dirname(os.path.abspath(OUTPUT))
+    os.makedirs(output_dir, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix="schulferien-", suffix=".json", dir=output_dir)
     try:
-        name_list = entry.get("name", [])
-        name = next(
-            (n["text"] for n in name_list if n.get("language") == "DE"),
-            name_list[0]["text"] if name_list else "Schulferien"
-        )
-        start = entry["startDate"][:10]   # "YYYY-MM-DD"
-        end   = entry["endDate"][:10]
-        return {"name": name, "start": start, "end": end}
-    except (KeyError, IndexError, TypeError) as e:
-        print(f"  Parse-Fehler: {e} — {entry}")
-        return None
+        with os.fdopen(fd, "w", encoding="utf-8") as file:
+            json.dump(result, file, ensure_ascii=False, indent=2)
+            file.write("\n")
+        os.replace(temporary, OUTPUT)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
 
 def main():
-    today = date.today()
-    years = [today.year, today.year + 1]
-    print(f"Hole Schulferien Berlin für: {years}")
+    current_year = date.today().year
+    years = {current_year, current_year + 1}
+    raw = fetch_period(min(years), max(years))
+    if not isinstance(raw, list):
+        raise ValueError("OpenHolidays-Antwort ist keine Liste")
+    entries = [parse_entry(item, years) for item in raw]
+    entries.sort(key=lambda item: (item["start"], item["end"], item["name"]))
+    result = {
+        "schemaVersion": 1,
+        "region": "DE-BE",
+        "jahre": sorted(years),
+        "stand": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "quelle": {"name": "OpenHolidays API", "url": SOURCE_URL},
+        "ferien": entries,
+    }
+    validate(result, years)
+    write_atomic(result)
+    print(f"✅ {len(entries)} Berliner Schulferien für {min(years)}–{max(years)} validiert")
 
-    raw = []
-    for y in years:
-        print(f"  Jahr {y} …")
-        raw.extend(fetch_year(y))
-        time.sleep(1)   # höfliche Pause
-
-    entries = []
-    seen = set()
-    for item in raw:
-        parsed = parse_entry(item)
-        if parsed:
-            key = (parsed["name"], parsed["start"])
-            if key not in seen:
-                seen.add(key)
-                entries.append(parsed)
-
-    # Chronologisch sortieren
-    entries.sort(key=lambda x: x["start"])
-
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(entries, f, ensure_ascii=False, indent=2)
-
-    print(f"✅  {len(entries)} Einträge → {OUTPUT_PATH}")
 
 if __name__ == "__main__":
     main()

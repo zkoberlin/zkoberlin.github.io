@@ -1,77 +1,105 @@
-[
-  {
-    "name": "Weihnachtsferien",
-    "start": "2025-12-22",
-    "end": "2026-01-02"
+{
+  "schemaVersion": 1,
+  "region": "DE-BE",
+  "jahre": [
+    2026,
+    2027
+  ],
+  "stand": "2026-08-28T09:34:15Z",
+  "quelle": {
+    "name": "OpenHolidays API",
+    "url": "https://www.openholidaysapi.org/en/"
   },
-  {
-    "name": "Winterferien",
-    "start": "2026-02-02",
-    "end": "2026-02-07"
-  },
-  {
-    "name": "Osterferien",
-    "start": "2026-03-30",
-    "end": "2026-04-10"
-  },
-  {
-    "name": "Unterrichtsfreier Tag",
-    "start": "2026-05-15",
-    "end": "2026-05-15"
-  },
-  {
-    "name": "Pfingstferien",
-    "start": "2026-05-26",
-    "end": "2026-05-26"
-  },
-  {
-    "name": "Sommerferien",
-    "start": "2026-07-09",
-    "end": "2026-08-22"
-  },
-  {
-    "name": "Herbstferien",
-    "start": "2026-10-19",
-    "end": "2026-10-31"
-  },
-  {
-    "name": "Weihnachtsferien",
-    "start": "2026-12-23",
-    "end": "2027-01-02"
-  },
-  {
-    "name": "Winterferien",
-    "start": "2027-02-01",
-    "end": "2027-02-06"
-  },
-  {
-    "name": "Osterferien",
-    "start": "2027-03-22",
-    "end": "2027-04-02"
-  },
-  {
-    "name": "Unterrichtsfreier Tag",
-    "start": "2027-05-07",
-    "end": "2027-05-07"
-  },
-  {
-    "name": "Pfingstferien",
-    "start": "2027-05-18",
-    "end": "2027-05-19"
-  },
-  {
-    "name": "Sommerferien",
-    "start": "2027-07-01",
-    "end": "2027-08-14"
-  },
-  {
-    "name": "Herbstferien",
-    "start": "2027-10-11",
-    "end": "2027-10-23"
-  },
-  {
-    "name": "Weihnachtsferien",
-    "start": "2027-12-22",
-    "end": "2027-12-31"
-  }
-]
+  "ferien": [
+    {
+      "name": "Weihnachtsferien",
+      "start": "2025-12-22",
+      "end": "2026-01-02",
+      "quelleId": "7625e071-8456-45c2-b9dd-caedc7a2216d"
+    },
+    {
+      "name": "Winterferien",
+      "start": "2026-02-02",
+      "end": "2026-02-07",
+      "quelleId": "f892e4b2-b7a7-4551-9d44-0abb4956d3fb"
+    },
+    {
+      "name": "Osterferien",
+      "start": "2026-03-30",
+      "end": "2026-04-10",
+      "quelleId": "af270df7-839c-46b2-b771-29eb74774300"
+    },
+    {
+      "name": "Unterrichtsfreier Tag",
+      "start": "2026-05-15",
+      "end": "2026-05-15",
+      "quelleId": "d245729d-4b1d-49b9-a1ff-111232f40665"
+    },
+    {
+      "name": "Pfingstferien",
+      "start": "2026-05-26",
+      "end": "2026-05-26",
+      "quelleId": "e60483a3-8323-4e98-8b8b-da6c8c92b23b"
+    },
+    {
+      "name": "Sommerferien",
+      "start": "2026-07-09",
+      "end": "2026-08-22",
+      "quelleId": "2086af10-7357-4c2b-bcf9-9a82c7522642"
+    },
+    {
+      "name": "Herbstferien",
+      "start": "2026-10-19",
+      "end": "2026-10-31",
+      "quelleId": "1fa16795-e96d-4215-8a8d-7632bdaa5285"
+    },
+    {
+      "name": "Weihnachtsferien",
+      "start": "2026-12-23",
+      "end": "2027-01-02",
+      "quelleId": "18964f8f-3b17-4833-b359-1ac051bf7e3d"
+    },
+    {
+      "name": "Winterferien",
+      "start": "2027-02-01",
+      "end": "2027-02-06",
+      "quelleId": "7fe6645d-4208-4c33-a761-79b45642fa3b"
+    },
+    {
+      "name": "Osterferien",
+      "start": "2027-03-22",
+      "end": "2027-04-02",
+      "quelleId": "f6eabbe8-efd7-4b08-9b68-2f4e04201733"
+    },
+    {
+      "name": "Unterrichtsfreier Tag",
+      "start": "2027-05-07",
+      "end": "2027-05-07",
+      "quelleId": "d79c9878-f98f-46fe-86b4-48ee7b662c12"
+    },
+    {
+      "name": "Pfingstferien",
+      "start": "2027-05-18",
+      "end": "2027-05-19",
+      "quelleId": "28bd66fc-2b82-49c0-b282-081c92042426"
+    },
+    {
+      "name": "Sommerferien",
+      "start": "2027-07-01",
+      "end": "2027-08-14",
+      "quelleId": "5e52b846-36bd-4251-97f6-eb77d05415a1"
+    },
+    {
+      "name": "Herbstferien",
+      "start": "2027-10-11",
+      "end": "2027-10-23",
+      "quelleId": "a570b0d7-8f03-42b9-a735-a7c9b0436f10"
+    },
+    {
+      "name": "Weihnachtsferien",
+      "start": "2027-12-22",
+      "end": "2027-12-31",
+      "quelleId": "ce4fd324-e06b-4071-ba48-575f2e62449c"
+    }
+  ]
+}

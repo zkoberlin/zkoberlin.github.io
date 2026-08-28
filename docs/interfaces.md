@@ -38,7 +38,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Nominatim / OpenStreetMap über eigenes Backend | Ortsname zum freigegebenen Wetterstandort | Lesen | auf zwei Dezimalstellen gerundete Koordinaten | 30-Tage-KV-Cache, Symbol-/Werteprüfung, sichtbare OSM-Namensnennung | **Niedrig:** Anbieterpolicy und Cachewirkung regelmäßig prüfen. |
 | Wikimedia/Wikipedia | Tagesereignisse und Geburtstags-Pipeline | Lesen | öffentliche Daten | Geschichtsereignis mit Schema-, Text-, Jahres- und URL-Prüfung, stabile Tagesauswahl und lokaler letzter gültiger Wert; validierte lokale Geburtstagsdatei | **Niedrig:** externe Texte werden über sichere DOM-Methoden ausgegeben und sichtbar zugeordnet. |
 | Nameday API V2 | Namenstags-Pipeline | Lesen, nur in GitHub Actions | öffentliche deutsche Namenstage | Browser liest ausschließlich die validierte lokale Jahresdatei; vollständiger Altbestand bleibt bei API-Ausfall erhalten. Live-Prüfung am 27.08.2026: Anbieter antwortete mit HTTP 502, Grundbestand blieb unverändert. | **Niedrig:** monatlichen Lauf und Anbieterstatus beobachten. |
-| OpenHolidays | Berliner Feiertags- und Schulferien-Pipelines | Lesen | öffentliche Daten | Feiertage für aktuelles und folgendes Jahr vollständig validiert und lokal ausgeliefert; Schulferien mit lokaler Datei und Browser-Fallback | **Niedrig:** Schulferien im späteren Abschnitt ebenfalls auf die kontrollierte lokale Architektur umstellen. |
+| OpenHolidays | Berliner Feiertags- und Schulferien-Pipelines | Lesen | öffentliche Daten | Beide Datenbestände werden für aktuelles und folgendes Jahr vollständig validiert, atomar ersetzt und lokal ausgeliefert. Der Browser kontaktiert OpenHolidays nicht direkt. | **Niedrig:** automatisierte Aktualisierung und sichtbaren Datenstand regelmäßig kontrollieren. |
 | CoinGecko | Bitcoin-Kurs | Lesen | öffentliche Marktdaten | Anzeige fällt aus | **Niedrig:** Cache und Datenzeitpunkt anzeigen. |
 | Finnhub | Aktienkurse | Lesen | API-Zugang als Backend-Secret | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Anbieterlimits und Datenalter weiter beobachten. |
 | Yahoo Finance über eigenes Backend | Kurs-Fallback und europäische Listings | Lesen | serverseitiger Abruf ausschließlich erlaubter Depot-Symbole | fünf Minuten KV-Cache, älterer Cache bei Anbieterausfall | **Niedrig:** Verfügbarkeit und Antwortschema regelmäßig testen. |
@@ -51,7 +51,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Dienst | Zweck | Zugriff | Daten / Zugang | Risiko / nächster Schritt |
 | --- | --- | --- | --- | --- |
 | Google Identity Services und Calendar API | Termine bearbeiten | OAuth, Schreiben | öffentlicher OAuth-Client, Benutzer-Token im Arbeitsspeicher | **Hoch:** erlaubte Origins/Redirects prüfen, minimale Scopes verwenden und Fehlerfälle dokumentieren. |
-| OpenHolidays | Feiertage und Schulferien | Lesen | öffentlich | **Niedrig:** Timeout, Cache und lokales Fallback vereinheitlichen. |
+| OpenHolidays | Feiertage und Schulferien | Lesen | öffentlich | **Niedrig:** ausschließlich automatisierte, validierte lokale Dateien; letzter gültiger Browsercache dient als Ausfallreserve. |
 | OpenLigaDB | Union-Spielplan | Lesen | öffentlich | **Niedrig:** lokale `union.json` als verlässliche Primärquelle prüfen. |
 | Cloudflare-Gateway und internes Kalender-Backend | private Feeds, Kids und Snapshot | Lesen/Schreiben | siehe eigene Cloudflare-Schnittstellen | Google-Authentifizierung aktiv; Backend nicht öffentlich erreichbar. **Offen:** Rate Limit und Konfliktfälle beim Snapshot. |
 
@@ -69,7 +69,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Geburtstage | Wikipedia mit Lebendstatus-, Alters-, Länder- und Schema-Prüfung | keine | `data/geburtstage.json` | Nationalitäten werden nur aus eindeutigen Kurzbeschreibungen abgeleitet; mehrere Länder sind möglich, unklare Fälle bleiben leer. Letzte gültige Datei bleibt bei Pipelinefehler erhalten. |
 | Feiertage Berlin | OpenHolidays | keine | `data/feiertage_berlin.json` | aktuelles und folgendes Jahr, Pflichtfeiertage und Berlin-Gültigkeit geprüft; atomarer Austausch. |
 | Namenstage | Nameday API V2 | keine | `data/namenstage.json` | exakt 366 validierte Tage, atomarer Austausch; letzter vollständiger Bestand bleibt bei jedem Teilausfall erhalten. |
-| Schulferien | OpenHolidays | keine | `data/schulferien_berlin.json` | letztes erfolgreiches Update erfassen. |
+| Schulferien Berlin | OpenHolidays | keine | `data/schulferien_berlin.json` | Schema, Region, Zeitraum, Pflichtferien, Quelle und Datenstand werden geprüft; Austausch erfolgt atomar und der letzte gültige Bestand bleibt bei jedem Fehler erhalten. Der Browser nutzt ausschließlich die lokale Datei oder deren letzten validierten Cache. |
 | Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | Schlüssel am 26.08.2026 rotiert; RapidAPI-BASIC-Monatskontingent derzeit ausgeschöpft (HTTP 429). Bestehende JSON-Daten bleiben bis zum nächsten erfolgreichen Lauf erhalten. |
 | Transfers | RapidAPI | `RAPIDAPI_KEY` | `data/transfers.json` | fest codierter Fallback entfernt und Schlüssel am 26.08.2026 rotiert; Aktualisierung derzeit durch das ausgeschöpfte BASIC-Monatskontingent blockiert (HTTP 429). |
 
