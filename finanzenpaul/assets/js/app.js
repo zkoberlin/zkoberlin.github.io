@@ -424,10 +424,22 @@ function AP(){
 }
 
 const BODY_MAP={Wohnen:'wohnen',Versicherungen:'versicherungen',Familie:'familie',Abos:'abos',Freizeit:'freizeit'};
+const CUSTOM_BRANDS=[
+  {match:/\bhbo\s*max\b/i,domain:'hbomax.com',fallback:'🎬'},
+  {match:/\burban\s*sports(?:\s*club)?\b/i,domain:'urbansportsclub.com',fallback:'🏋️'},
+];
+const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+function customIconMarkup(name){
+  const brand=CUSTOM_BRANDS.find(entry=>entry.match.test(String(name||'')));
+  if(brand)return `<img src="https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64" alt="" onerror="this.parentNode.textContent='${brand.fallback}'">`;
+  return '<svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-edit"/></svg>';
+}
 function renderCR(it){
   const cat=BODY_MAP[it.cat]||'abos';
   const star=it.freq==='yearly'?' <span style="color:#FF3B30;font-size:10px;font-weight:700;">*</span>':it.freq==='quarterly'?' <span style="color:#FF9500;font-size:10px;font-weight:700;">*</span>':'';
   const max=Math.max(it.monthly*5,50);
+  const safeName=escapeHtml(it.name);
+  const icon=customIconMarkup(it.name);
 
   // Desktop row
   const db=document.getElementById('dbody-'+cat);
@@ -435,7 +447,7 @@ function renderCR(it){
     const d=document.createElement('div');d.className='dr';d.id='dr-'+it.k;
     d.style.cursor='pointer';
     d.onclick=(e)=>{if(e.target.tagName!=='INPUT')OE(it.k);};
-    d.innerHTML=`<span class="dico">✏️</span><span class="dlbl" id="dlbl-${it.k}">${it.name}${star}</span><input type="range" class="dsl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="dsl-${it.k}" oninput="DI('${it.k}',this.value,event)"><span class="dval" id="dval-${it.k}">${F(it.monthly)}</span>`;
+    d.innerHTML=`<span class="dico">${icon}</span><span class="dlbl" id="dlbl-${it.k}">${safeName}${star}</span><input type="range" class="dsl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="dsl-${it.k}" oninput="DI('${it.k}',this.value,event)"><span class="dval" id="dval-${it.k}">${F(it.monthly)}</span>`;
     db.appendChild(d);
   }
   // Mobile row
@@ -444,7 +456,7 @@ function renderCR(it){
     const m=document.createElement('div');m.className='mr';m.id='mr-'+it.k;
     m.style.cursor='pointer';
     m.onclick=(e)=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON')OE(it.k);};
-    m.innerHTML=`<span class="mico">✏️</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${it.name}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput="MI('${it.k}',this.value,event)"></div>`;
+    m.innerHTML=`<span class="mico">${icon}</span><div class="mrm"><div class="mr-top"><div class="mrlbl" id="mrlbl-${it.k}">${safeName}${star}</div><span class="mrval" id="mrval-${it.k}">${F(it.monthly)}</span></div><input type="range" class="msl" min="0" max="${max}" step="0.01" value="${it.monthly}" id="msl-${it.k}" oninput="MI('${it.k}',this.value,event)"></div>`;
     mb.appendChild(m);
   }
 }

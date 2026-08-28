@@ -79,6 +79,8 @@ function updateCalendarDate(current){
   const calendarWeek=getKW(current);
   document.getElementById('calIconDay').textContent=current.getDate();
   document.getElementById('calIconMonth').textContent=MON_SHORT[current.getMonth()];
+  document.getElementById('todayWeekday').textContent=WD[current.getDay()];
+  document.getElementById('todayMeta').textContent=`${current.getFullYear()} · KW ${calendarWeek}`;
   const kwEl=document.getElementById('kw');if(kwEl)kwEl.textContent=calendarWeek;
   const finMonthEl=document.getElementById('finMonth');if(finMonthEl)finMonthEl.textContent=`${MON[current.getMonth()]} ${current.getFullYear()}`;
   const kwRangeEl=document.getElementById('kwR');if(kwRangeEl)kwRangeEl.textContent=kwRange(current);
