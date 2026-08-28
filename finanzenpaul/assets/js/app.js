@@ -2,15 +2,17 @@ const F=v=>(Math.round(v*100)/100).toLocaleString('de-DE',{minimumFractionDigits
 const FI=v=>Math.round(v).toLocaleString('de-DE')+' €';
 const R2=v=>Math.round(v*100)/100;
 
-const ITEMS=[{k:"miete",cat:"Wohnen",def:1808},{k:"strom",cat:"Wohnen",def:43},{k:"internet",cat:"Wohnen",def:45},{k:"lebensmittel",cat:"Wohnen",def:450},{k:"schufa",cat:"Wohnen",def:4.95},{k:"ing",cat:"Wohnen",def:1.49},{k:"haftpflicht",cat:"Versicherungen",def:9.08},{k:"rechtsschutz",cat:"Versicherungen",def:31.42},{k:"kredit",cat:"Versicherungen",def:320},{k:"gez",cat:"Versicherungen",def:18.33},{k:"unterhalt",cat:"Familie",def:360},{k:"kids",cat:"Familie",def:150},{k:"handyemil",cat:"Familie",def:7.99},{k:"handyrosa",cat:"Familie",def:7.99},{k:"ukv",cat:"Familie",def:9.89},{k:"sparta",cat:"Familie",def:15},{k:"bling",cat:"Familie",def:2.67},{k:"unionemil",cat:"Familie",def:3.5},{k:"handypaul",cat:"Abos",def:11},{k:"icloud",cat:"Abos",def:9.99},{k:"spotify",cat:"Abos",def:21.99},{k:"finanzguru",cat:"Abos",def:2.99},{k:"claude",cat:"Abos",def:22},{k:"unionmitgl",cat:"Abos",def:10},{k:"amazon",cat:"Abos",def:7.42},{k:"parqet",cat:"Abos",def:4.5},{k:"futbology",cat:"Abos",def:0.83},{k:"fotmob",cat:"Abos",def:0.71},{k:"bvg",cat:"Freizeit",def:63},{k:"dauerkarte",cat:"Freizeit",def:21.67},{k:"garmin",cat:"Freizeit",def:7.42}];
+// Public bundle contains structure only. Personal values come from local storage
+// or from the authenticated Cloudflare endpoint.
+const ITEMS=[{k:"miete",cat:"Wohnen",def:0},{k:"strom",cat:"Wohnen",def:0},{k:"internet",cat:"Wohnen",def:0},{k:"lebensmittel",cat:"Wohnen",def:0},{k:"schufa",cat:"Wohnen",def:0},{k:"ing",cat:"Wohnen",def:0},{k:"haftpflicht",cat:"Versicherungen",def:0},{k:"rechtsschutz",cat:"Versicherungen",def:0},{k:"kredit",cat:"Versicherungen",def:0},{k:"gez",cat:"Versicherungen",def:0},{k:"unterhalt",cat:"Familie",def:0},{k:"kids",cat:"Familie",def:0},{k:"handyemil",cat:"Familie",def:0},{k:"handyrosa",cat:"Familie",def:0},{k:"ukv",cat:"Familie",def:0},{k:"sparta",cat:"Familie",def:0},{k:"bling",cat:"Familie",def:0},{k:"unionemil",cat:"Familie",def:0},{k:"handypaul",cat:"Abos",def:0},{k:"icloud",cat:"Abos",def:0},{k:"spotify",cat:"Abos",def:0},{k:"finanzguru",cat:"Abos",def:0},{k:"claude",cat:"Abos",def:0},{k:"unionmitgl",cat:"Abos",def:0},{k:"amazon",cat:"Abos",def:0},{k:"parqet",cat:"Abos",def:0},{k:"futbology",cat:"Abos",def:0},{k:"fotmob",cat:"Abos",def:0},{k:"bvg",cat:"Freizeit",def:0},{k:"dauerkarte",cat:"Freizeit",def:0},{k:"garmin",cat:"Freizeit",def:0}];
 
 const CC={'Wohnen':'#2563EB','Versicherungen':'#D97706','Kredite & Finanzen':'#DC2626','Familie':'#DB2777','Abos':'#7C3AED','Freizeit':'#059669'};
 
 // STATE
 const S={};
 ITEMS.forEach(x=>{S[x.k]={v:x.def,on:true,cat:x.cat};});
-S.gehalt={v:3887}; S.zusatz={v:0,on:false};
-S.invest={v:0}; S.notgr={v:100}; S.urlaub={v:100}; S.sonder={v:0};
+S.gehalt={v:0}; S.zusatz={v:0,on:false};
+S.invest={v:0}; S.notgr={v:0}; S.urlaub={v:0}; S.sonder={v:0};
 let CI=[]; // custom items
 let PC=null,MC_=null; // pie charts
 let mFreq='monthly',mCat=null;
@@ -577,37 +579,37 @@ let editKey = null;
 let editIsCustom = false;
 
 const ITEM_META = {
-  'miete': {label:'Miete',defVal:1808,min:500,max:2500,step:10,freq:'monthly'},
-  'strom': {label:'Strom',defVal:43,min:10,max:120,step:1,freq:'monthly'},
-  'internet': {label:'Telekom Internet',defVal:45,min:10,max:80,step:1,freq:'monthly'},
-  'lebensmittel': {label:'Lebensmittel',defVal:450,min:100,max:900,step:10,freq:'monthly'},
-  'schufa': {label:'Schufa',defVal:4.95,min:0,max:15,step:0.5,freq:'monthly'},
-  'ing': {label:'ING Gebühren',defVal:1.49,min:0,max:10,step:0.5,freq:'monthly'},
-  'haftpflicht': {label:'Haftpflicht/Hausrat',defVal:109,min:0,max:500,step:1,freq:'yearly'},
-  'rechtsschutz': {label:'Rechtsschutz',defVal:377,min:0,max:1000,step:1,freq:'yearly'},
-  'kredit': {label:'Kredit Rate',defVal:320,min:0,max:800,step:10,freq:'monthly'},
-  'gez': {label:'GEZ',defVal:55,min:0,max:200,step:1,freq:'quarterly'},
-  'unterhalt': {label:'Unterhalt',defVal:360,min:0,max:600,step:10,freq:'monthly'},
-  'kids': {label:'Sparen Kids',defVal:150,min:0,max:300,step:10,freq:'monthly'},
-  'handyemil': {label:'Handy Emil',defVal:7.99,min:0,max:20,step:0.5,freq:'monthly'},
-  'handyrosa': {label:'Handy Rosa',defVal:7.99,min:0,max:20,step:0.5,freq:'monthly'},
-  'ukv': {label:'UKV Emil',defVal:9.89,min:0,max:20,step:0.5,freq:'monthly'},
-  'sparta': {label:'Sparta Emil',defVal:15,min:0,max:30,step:1,freq:'monthly'},
-  'bling': {label:'Bling Emil',defVal:32,min:0,max:200,step:1,freq:'yearly'},
-  'unionemil': {label:'Union Beitrag Emil',defVal:42,min:0,max:200,step:1,freq:'yearly'},
-  'handypaul': {label:'Handy Paul',defVal:11,min:0,max:30,step:1,freq:'monthly'},
-  'icloud': {label:'iCloud',defVal:9.99,min:0,max:15,step:0.5,freq:'monthly'},
-  'spotify': {label:'Spotify',defVal:21.99,min:0,max:30,step:0.5,freq:'monthly'},
-  'finanzguru': {label:'Finanzguru',defVal:2.99,min:0,max:10,step:0.5,freq:'monthly'},
-  'claude': {label:'Claude',defVal:22,min:0,max:40,step:1,freq:'monthly'},
-  'unionmitgl': {label:'Union Mitgliedschaft',defVal:10,min:0,max:20,step:1,freq:'monthly'},
-  'amazon': {label:'Amazon Prime',defVal:89,min:0,max:300,step:1,freq:'yearly'},
-  'parqet': {label:'Parqet',defVal:54,min:0,max:200,step:1,freq:'yearly'},
-  'futbology': {label:'Futbology',defVal:9.99,min:0,max:100,step:0.01,freq:'yearly'},
-  'fotmob': {label:'FotMob',defVal:8.49,min:0,max:100,step:0.01,freq:'yearly'},
-  'bvg': {label:'BVG Ticket',defVal:63,min:0,max:120,step:1,freq:'monthly'},
-  'dauerkarte': {label:'Dauerkarte Union',defVal:260,min:0,max:1000,step:1,freq:'yearly'},
-  'garmin': {label:'Garmin',defVal:89,min:0,max:300,step:1,freq:'yearly'},
+  'miete': {label:'Miete',defVal:0,min:500,max:2500,step:10,freq:'monthly'},
+  'strom': {label:'Strom',defVal:0,min:10,max:120,step:1,freq:'monthly'},
+  'internet': {label:'Vodafone Internet',defVal:0,min:0,max:80,step:1,freq:'monthly'},
+  'lebensmittel': {label:'Lebensmittel',defVal:0,min:100,max:900,step:10,freq:'monthly'},
+  'schufa': {label:'Schufa',defVal:0,min:0,max:15,step:0.5,freq:'monthly'},
+  'ing': {label:'ING Gebühren',defVal:0,min:0,max:10,step:0.5,freq:'monthly'},
+  'haftpflicht': {label:'Haftpflicht/Hausrat',defVal:0,min:0,max:500,step:1,freq:'yearly'},
+  'rechtsschutz': {label:'Rechtsschutz',defVal:0,min:0,max:1000,step:1,freq:'yearly'},
+  'kredit': {label:'Kredit Rate',defVal:0,min:0,max:800,step:10,freq:'monthly'},
+  'gez': {label:'GEZ',defVal:0,min:0,max:200,step:1,freq:'quarterly'},
+  'unterhalt': {label:'Unterhalt',defVal:0,min:0,max:600,step:10,freq:'monthly'},
+  'kids': {label:'Sparen Kids',defVal:0,min:0,max:300,step:10,freq:'monthly'},
+  'handyemil': {label:'Handy Emil',defVal:0,min:0,max:20,step:0.5,freq:'monthly'},
+  'handyrosa': {label:'Handy Rosa',defVal:0,min:0,max:20,step:0.5,freq:'monthly'},
+  'ukv': {label:'UKV Emil',defVal:0,min:0,max:20,step:0.5,freq:'monthly'},
+  'sparta': {label:'Sparta Emil',defVal:0,min:0,max:30,step:1,freq:'monthly'},
+  'bling': {label:'Bling Emil',defVal:0,min:0,max:200,step:1,freq:'yearly'},
+  'unionemil': {label:'Union Beitrag Emil',defVal:0,min:0,max:200,step:1,freq:'yearly'},
+  'handypaul': {label:'Handy Paul',defVal:0,min:0,max:30,step:1,freq:'monthly'},
+  'icloud': {label:'iCloud',defVal:0,min:0,max:15,step:0.5,freq:'monthly'},
+  'spotify': {label:'Spotify',defVal:0,min:0,max:30,step:0.5,freq:'monthly'},
+  'finanzguru': {label:'Finanzguru',defVal:0,min:0,max:10,step:0.5,freq:'monthly'},
+  'claude': {label:'Claude',defVal:0,min:0,max:40,step:1,freq:'monthly'},
+  'unionmitgl': {label:'Union Mitgliedschaft',defVal:0,min:0,max:20,step:1,freq:'monthly'},
+  'amazon': {label:'Amazon Prime',defVal:0,min:0,max:300,step:1,freq:'yearly'},
+  'parqet': {label:'Parqet',defVal:0,min:0,max:200,step:1,freq:'yearly'},
+  'futbology': {label:'Futbology',defVal:0,min:0,max:100,step:0.01,freq:'yearly'},
+  'fotmob': {label:'FotMob',defVal:0,min:0,max:100,step:0.01,freq:'yearly'},
+  'bvg': {label:'BVG Ticket',defVal:0,min:0,max:120,step:1,freq:'monthly'},
+  'dauerkarte': {label:'Dauerkarte Union',defVal:0,min:0,max:1000,step:1,freq:'yearly'},
+  'garmin': {label:'Garmin',defVal:0,min:0,max:300,step:1,freq:'yearly'},
 };
 
 function OE(k) {
