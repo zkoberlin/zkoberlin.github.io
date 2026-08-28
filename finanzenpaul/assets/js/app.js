@@ -424,6 +424,26 @@ function AP(){
 }
 
 const BODY_MAP={Wohnen:'wohnen',Versicherungen:'versicherungen',Familie:'familie',Abos:'abos',Freizeit:'freizeit'};
+const frequencyBadge=freq=>freq==='yearly'?'<span class="freq-badge yearly">Jahr</span>':freq==='quarterly'?'<span class="freq-badge quarterly">Quartal</span>':'';
+const EXPENSE_SECTIONS=['wohnen','versicherungen','kredite','familie','abos','freizeit'];
+function toggleExpenseSection(key){
+  const body=document.getElementById('mbody-'+key);
+  const button=document.querySelector(`[data-expense-section="${key}"]`);
+  if(!body||!button)return;
+  const collapsed=!body.classList.contains('collapsed');
+  body.classList.toggle('collapsed',collapsed);
+  button.setAttribute('aria-expanded',String(!collapsed));
+  const state=Object.fromEntries(EXPENSE_SECTIONS.map(section=>[section,document.getElementById('mbody-'+section)?.classList.contains('collapsed')||false]));
+  localStorage.setItem('fp_expense_sections',JSON.stringify(state));
+}
+function restoreExpenseSections(){
+  let state={};try{state=JSON.parse(localStorage.getItem('fp_expense_sections')||'{}');}catch(error){}
+  EXPENSE_SECTIONS.forEach(key=>{
+    const collapsed=Boolean(state[key]);
+    document.getElementById('mbody-'+key)?.classList.toggle('collapsed',collapsed);
+    document.querySelector(`[data-expense-section="${key}"]`)?.setAttribute('aria-expanded',String(!collapsed));
+  });
+}
 const CUSTOM_BRANDS=[
   {match:/\bhbo\s*max\b/i,domain:'hbomax.com',fallback:'🎬'},
   {match:/\burban\s*sports(?:\s*club)?\b/i,domain:'urbansportsclub.com',fallback:'🏋️'},
@@ -436,7 +456,7 @@ function customIconMarkup(name){
 }
 function renderCR(it){
   const cat=BODY_MAP[it.cat]||'abos';
-  const star=it.freq==='yearly'?' <span style="color:#FF3B30;font-size:10px;font-weight:700;">*</span>':it.freq==='quarterly'?' <span style="color:#FF9500;font-size:10px;font-weight:700;">*</span>':'';
+  const star=frequencyBadge(it.freq);
   const max=Math.max(it.monthly*5,50);
   const safeName=escapeHtml(it.name);
   const icon=customIconMarkup(it.name);
@@ -783,7 +803,7 @@ function SE() {
     ci.name=document.getElementById('em-name').value.trim()||ci.name;
     ci.amt=amt; ci.freq=mFreq; ci.monthly=monthly; ci.cat=mCat;
     S[k].v=monthly; S[k].cat=mCat;
-    ['dlbl-','mrlbl-'].forEach(p=>{const e=document.getElementById(p+k);if(e){const star=mFreq==='yearly'?' <span style="color:#FF3B30;font-size:10px;font-weight:700;">*</span>':mFreq==='quarterly'?' <span style="color:#FF9500;font-size:10px;font-weight:700;">*</span>':'';e.innerHTML=ci.name+star;}});
+    ['dlbl-','mrlbl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.innerHTML=escapeHtml(ci.name)+frequencyBadge(mFreq);});
   } else {
     S[k].v=monthly;
   }
@@ -833,4 +853,4 @@ function IM(e){
   r.readAsText(f);e.target.value='';
 }
 
-LOAD();RC();
+LOAD();RC();restoreExpenseSections();

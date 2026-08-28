@@ -11,9 +11,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="assets/css/app.css?v=6.31.0">
-<script src="../assets/js/version.js?v=6.31.0" defer></script>
-<script src="../assets/js/auth.js?v=6.31.0" defer></script>
+<link rel="stylesheet" href="assets/css/app.css?v=6.32.0">
+<script src="../assets/js/version.js?v=6.32.0" defer></script>
+<script src="../assets/js/auth.js?v=6.32.0" defer></script>
 </head>
 <body>
 
@@ -78,7 +78,7 @@
 <div class="d-layout">
   <div class="d-topbar">
     <a href="https://zkoberlin.github.io" class="d-hub-link" title="Zurück zum Hub">← Hub</a>
-    <div class="d-brand"><span class="d-topbar-title">Finanzplanung</span><span class="d-topbar-sub">Paul · <span data-app-version>v6.31.0</span></span></div>
+    <div class="d-brand"><span class="d-topbar-title">Finanzplanung</span><span class="d-topbar-sub">Paul · <span data-app-version>v6.32.0</span></span></div>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -168,19 +168,19 @@
       <div id="dbody-versicherungen">
       <div class="dr" id="dr-haftpflicht" style="cursor:pointer;" onclick="OE('haftpflicht')">
         <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-shield"/></svg></span>
-        <span class="dlbl" id="dlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-haftpflicht">Haftpflicht/Hausrat <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="20" step="0.01" value="0" id="dsl-haftpflicht" oninput="DI('haftpflicht',this.value,event)">
         <span class="dval" id="dval-haftpflicht">–</span>
       </div>
       <div class="dr" id="dr-rechtsschutz" style="cursor:pointer;" onclick="OE('rechtsschutz')">
         <span class="dico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-scales"/></svg></span>
-        <span class="dlbl" id="dlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-rechtsschutz">Rechtsschutz <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="50" step="0.01" value="0" id="dsl-rechtsschutz" oninput="DI('rechtsschutz',this.value,event)">
         <span class="dval" id="dval-rechtsschutz">–</span>
       </div>
       <div class="dr" id="dr-gez" style="cursor:pointer;" onclick="OE('gez')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=rundfunkbeitrag.de&sz=64" onerror="this.parentNode.textContent='📺'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-gez">GEZ <span class="freq-badge quarterly">Quartal</span></span>
         <input type="range" class="dsl" min="0" max="30" step="0.01" value="0" id="dsl-gez" oninput="DI('gez',this.value,event)">
         <span class="dval" id="dval-gez">–</span>
       </div>
@@ -257,13 +257,13 @@
       </div>
       <div class="dr" id="dr-bling" style="cursor:pointer;" onclick="OE('bling')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=bling.eu&sz=64" onerror="this.parentNode.textContent='💰'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-bling">Bling Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-bling">Bling Emil <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="5" step="0.01" value="0" id="dsl-bling" oninput="DI('bling',this.value,event)">
         <span class="dval" id="dval-bling">–</span>
       </div>
       <div class="dr" id="dr-unionemil" style="cursor:pointer;" onclick="OE('unionemil')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-unionemil">Union Beitrag Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-unionemil">Union Beitrag Emil <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="5" step="0.01" value="0" id="dsl-unionemil" oninput="DI('unionemil',this.value,event)">
         <span class="dval" id="dval-unionemil">–</span>
       </div>
@@ -313,25 +313,25 @@
       </div>
       <div class="dr" id="dr-amazon" style="cursor:pointer;" onclick="OE('amazon')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=amazon.de&sz=64" onerror="this.parentNode.textContent='📦'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-amazon">Amazon Prime <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-amazon">Amazon Prime <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="15" step="0.01" value="0" id="dsl-amazon" oninput="DI('amazon',this.value,event)">
         <span class="dval" id="dval-amazon">–</span>
       </div>
       <div class="dr" id="dr-parqet" style="cursor:pointer;" onclick="OE('parqet')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=parqet.com&sz=64" onerror="this.parentNode.textContent='📈'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-parqet">Parqet <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-parqet">Parqet <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="10" step="0.01" value="0" id="dsl-parqet" oninput="DI('parqet',this.value,event)">
         <span class="dval" id="dval-parqet">–</span>
       </div>
       <div class="dr" id="dr-futbology" style="cursor:pointer;" onclick="OE('futbology')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=futbology.com&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-futbology">Futbology <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-futbology">Futbology <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="5" step="0.01" value="0" id="dsl-futbology" oninput="DI('futbology',this.value,event)">
         <span class="dval" id="dval-futbology">–</span>
       </div>
       <div class="dr" id="dr-fotmob" style="cursor:pointer;" onclick="OE('fotmob')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fotmob.com&sz=64" onerror="this.parentNode.textContent='📊'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-fotmob">FotMob <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-fotmob">FotMob <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="5" step="0.01" value="0" id="dsl-fotmob" oninput="DI('fotmob',this.value,event)">
         <span class="dval" id="dval-fotmob">–</span>
       </div>
@@ -351,13 +351,13 @@
       </div>
       <div class="dr" id="dr-dauerkarte" style="cursor:pointer;" onclick="OE('dauerkarte')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='🎟️'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-dauerkarte">Dauerkarte Union <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-dauerkarte">Dauerkarte Union <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="30" step="0.01" value="0" id="dsl-dauerkarte" oninput="DI('dauerkarte',this.value,event)">
         <span class="dval" id="dval-dauerkarte">–</span>
       </div>
       <div class="dr" id="dr-garmin" style="cursor:pointer;" onclick="OE('garmin')">
         <span class="dico"><img src="https://www.google.com/s2/favicons?domain=garmin.com&sz=64" onerror="this.parentNode.textContent='⌚'" style="width:22px;height:22px;border-radius:5px;object-fit:cover;"></span>
-        <span class="dlbl" id="dlbl-garmin">Garmin <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></span>
+        <span class="dlbl" id="dlbl-garmin">Garmin <span class="freq-badge yearly">Jahr</span></span>
         <input type="range" class="dsl" min="0" max="15" step="0.01" value="0" id="dsl-garmin" oninput="DI('garmin',this.value,event)">
         <span class="dval" id="dval-garmin">–</span>
       </div>
@@ -414,7 +414,7 @@
 <div class="m-layout">
   <div class="m-topbar">
     <div class="m-topbar-inner">
-      <div class="m-topbar-copy"><div class="m-topbar-title">Finanzen · Paul</div><div class="m-topbar-sub"><span data-app-version>v6.31.0</span> · Budgetplanung</div></div>
+      <div class="m-topbar-copy"><div class="m-topbar-title">Finanzen · Paul</div><div class="m-topbar-sub"><span data-app-version>v6.32.0</span> · Budgetplanung</div></div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" class="m-hub-btn" title="Zum Hub" aria-label="Zum Hub">⌂</a>
         <button type="button" id="m-theme-btn" class="m-icon-btn" onclick="toggleTheme()" title="Hell/Dunkel" aria-label="Darstellung wechseln">🌙</button>
@@ -478,7 +478,7 @@
     <!-- AUSGABEN PAGE -->
     <div class="m-page" id="mp-ausgaben">
 
-    <div class="mseclbl"><span class="mseclbl-txt">🏠 Wohnen</span><span class="msectot" id="mtot-wohnen">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="wohnen" aria-expanded="true" aria-controls="mbody-wohnen" onclick="toggleExpenseSection('wohnen')"><span class="mseclbl-txt">🏠 Wohnen</span><span class="msec-meta"><span class="msectot" id="mtot-wohnen">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-wohnen">
       <div class="mr" id="mr-miete" style="cursor:pointer;" onclick="OE('miete')">
         <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-home"/></svg></span>
@@ -522,13 +522,13 @@
       </div>
     </div>
 
-    <div class="mseclbl"><span class="mseclbl-txt">🛡️ Versicherungen</span><span class="msectot" id="mtot-versicherungen">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="versicherungen" aria-expanded="true" aria-controls="mbody-versicherungen" onclick="toggleExpenseSection('versicherungen')"><span class="mseclbl-txt">🛡️ Versicherungen</span><span class="msec-meta"><span class="msectot" id="mtot-versicherungen">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-versicherungen">
       <div class="mr" id="mr-haftpflicht" style="cursor:pointer;" onclick="OE('haftpflicht')">
         <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-shield"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-haftpflicht">Haftpflicht/Hausrat <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-haftpflicht">Haftpflicht/Hausrat <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-haftpflicht">–</span>
           </div>
           <input type="range" class="msl" min="0" max="20" step="0.01" value="0" id="msl-haftpflicht" oninput="MI('haftpflicht',this.value,event)">
@@ -538,7 +538,7 @@
         <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-scales"/></svg></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-rechtsschutz">Rechtsschutz <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-rechtsschutz">Rechtsschutz <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-rechtsschutz">–</span>
           </div>
           <input type="range" class="msl" min="0" max="50" step="0.01" value="0" id="msl-rechtsschutz" oninput="MI('rechtsschutz',this.value,event)">
@@ -548,7 +548,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=rundfunkbeitrag.de&sz=64" onerror="this.parentNode.textContent='📺'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-gez">GEZ <span style="color:#F59E0B;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-gez">GEZ <span class="freq-badge quarterly">Quartal</span></div>
             <span class="mrval" id="mrval-gez">–</span>
           </div>
           <input type="range" class="msl" min="0" max="30" step="0.01" value="0" id="msl-gez" oninput="MI('gez',this.value,event)">
@@ -556,7 +556,7 @@
       </div>
     </div>
 
-    <div class="mseclbl"><span class="mseclbl-txt">💳 Kredite & Finanzen</span><span class="msectot" id="mtot-kredite">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="kredite" aria-expanded="true" aria-controls="mbody-kredite" onclick="toggleExpenseSection('kredite')"><span class="mseclbl-txt">💳 Kredite &amp; Finanzen</span><span class="msec-meta"><span class="msectot" id="mtot-kredite">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-kredite">
       <div class="mr" id="mr-kredit" style="cursor:pointer;" onclick="OE('kredit')">
         <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-card"/></svg></span>
@@ -590,7 +590,7 @@
       </div>
     </div>
 
-    <div class="mseclbl"><span class="mseclbl-txt">👨‍👧‍👦 Familie</span><span class="msectot" id="mtot-familie">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="familie" aria-expanded="true" aria-controls="mbody-familie" onclick="toggleExpenseSection('familie')"><span class="mseclbl-txt">👨‍👧‍👦 Familie</span><span class="msec-meta"><span class="msectot" id="mtot-familie">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-familie">
       <div class="mr" id="mr-unterhalt" style="cursor:pointer;" onclick="OE('unterhalt')">
         <span class="mico"><svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-family"/></svg></span>
@@ -656,7 +656,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=bling.eu&sz=64" onerror="this.parentNode.textContent='💰'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-bling">Bling Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-bling">Bling Emil <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-bling">–</span>
           </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0" id="msl-bling" oninput="MI('bling',this.value,event)">
@@ -666,7 +666,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-unionemil">Union Beitrag Emil <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-unionemil">Union Beitrag Emil <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-unionemil">–</span>
           </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0" id="msl-unionemil" oninput="MI('unionemil',this.value,event)">
@@ -674,7 +674,7 @@
       </div>
     </div>
 
-    <div class="mseclbl"><span class="mseclbl-txt">📱 Abos</span><span class="msectot" id="mtot-abos">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="abos" aria-expanded="true" aria-controls="mbody-abos" onclick="toggleExpenseSection('abos')"><span class="mseclbl-txt">📱 Abos</span><span class="msec-meta"><span class="msectot" id="mtot-abos">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-abos">
       <div class="mr" id="mr-handypaul" style="cursor:pointer;" onclick="OE('handypaul')">
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=vodafone.de&sz=64" onerror="this.parentNode.textContent='📶'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
@@ -740,7 +740,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=amazon.de&sz=64" onerror="this.parentNode.textContent='📦'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-amazon">Amazon Prime <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-amazon">Amazon Prime <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-amazon">–</span>
           </div>
           <input type="range" class="msl" min="0" max="15" step="0.01" value="0" id="msl-amazon" oninput="MI('amazon',this.value,event)">
@@ -750,7 +750,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=parqet.com&sz=64" onerror="this.parentNode.textContent='📈'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-parqet">Parqet <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-parqet">Parqet <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-parqet">–</span>
           </div>
           <input type="range" class="msl" min="0" max="10" step="0.01" value="0" id="msl-parqet" oninput="MI('parqet',this.value,event)">
@@ -760,7 +760,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=futbology.com&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-futbology">Futbology <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-futbology">Futbology <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-futbology">–</span>
           </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0" id="msl-futbology" oninput="MI('futbology',this.value,event)">
@@ -770,7 +770,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fotmob.com&sz=64" onerror="this.parentNode.textContent='📊'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-fotmob">FotMob <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-fotmob">FotMob <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-fotmob">–</span>
           </div>
           <input type="range" class="msl" min="0" max="5" step="0.01" value="0" id="msl-fotmob" oninput="MI('fotmob',this.value,event)">
@@ -778,7 +778,7 @@
       </div>
     </div>
 
-    <div class="mseclbl"><span class="mseclbl-txt">⚽ Freizeit</span><span class="msectot" id="mtot-freizeit">–</span></div>
+    <button class="mseclbl" type="button" data-expense-section="freizeit" aria-expanded="true" aria-controls="mbody-freizeit" onclick="toggleExpenseSection('freizeit')"><span class="mseclbl-txt">⚽ Freizeit</span><span class="msec-meta"><span class="msectot" id="mtot-freizeit">–</span><span class="msec-chevron">⌄</span></span></button>
     <div class="msec" id="mbody-freizeit">
       <div class="mr" id="mr-bvg" style="cursor:pointer;" onclick="OE('bvg')">
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=bvg.de&sz=64" onerror="this.parentNode.textContent='🚇'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
@@ -794,7 +794,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=fc-union-berlin.de&sz=64" onerror="this.parentNode.textContent='⚽'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-dauerkarte">Dauerkarte Union <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-dauerkarte">Dauerkarte Union <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-dauerkarte">–</span>
           </div>
           <input type="range" class="msl" min="0" max="30" step="0.01" value="0" id="msl-dauerkarte" oninput="MI('dauerkarte',this.value,event)">
@@ -804,7 +804,7 @@
         <span class="mico"><img src="https://www.google.com/s2/favicons?domain=garmin.com&sz=64" onerror="this.parentNode.textContent='⌚'" style="width:28px;height:28px;border-radius:7px;object-fit:cover;"></span>
         <div class="mrm">
           <div class="mr-top">
-            <div class="mrlbl" id="mrlbl-garmin">Garmin <span style="color:#EF4444;font-size:10px;font-weight:700;">*</span></div>
+            <div class="mrlbl" id="mrlbl-garmin">Garmin <span class="freq-badge yearly">Jahr</span></div>
             <span class="mrval" id="mrval-garmin">–</span>
           </div>
           <input type="range" class="msl" min="0" max="15" step="0.01" value="0" id="msl-garmin" oninput="MI('garmin',this.value,event)">
@@ -820,7 +820,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=6.31.0"></script>
+<script src="assets/js/app.js?v=6.32.0"></script>
 
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">

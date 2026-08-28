@@ -245,6 +245,10 @@ html.theme-dark .m-topbar{background:rgba(0,0,0,0.9);}
 .mr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
 .mrlbl{font-size:15px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:4px;}
 .mrlbl.dim{color:var(--t3);}
+.freq-badge{display:inline-flex;align-items:center;min-height:18px;padding:2px 6px;border-radius:99px;font-size:8px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;vertical-align:middle;}
+.freq-badge.yearly{color:var(--red);background:rgba(255,59,48,.11);}
+.freq-badge.quarterly{color:var(--amb);background:rgba(255,149,0,.12);}
+.dlbl .freq-badge{margin-left:2px;}
 .mrval{font-size:15px;font-weight:700;color:var(--t1);white-space:nowrap;}
 .msl{width:100%;}
 .mr-tog{display:none;}
@@ -255,9 +259,13 @@ html.theme-dark .m-topbar{background:rgba(0,0,0,0.9);}
 .m-slbl-tot{font-size:11px;font-weight:700;color:var(--acc);background:rgba(0,122,255,.10);padding:5px 9px;border-radius:99px;white-space:nowrap;}
 .m-section-heading{display:flex;align-items:flex-end;justify-content:space-between;width:100%;}
 .m-section-hint{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;}
-.mseclbl{display:flex;justify-content:space-between;align-items:center;padding:24px 20px 10px;}
+.mseclbl{width:100%;display:flex;justify-content:space-between;align-items:center;padding:24px 20px 10px;border:0;background:transparent;font-family:var(--font);cursor:pointer;text-align:left;}
 .mseclbl-txt{font-size:20px;font-weight:700;letter-spacing:-0.4px;color:var(--t1);}
 .msectot{font-size:13px;font-weight:600;color:var(--t3);background:var(--card2);padding:4px 12px;border-radius:99px;white-space:nowrap;}
+.msec-meta{display:flex;align-items:center;gap:8px;}
+.msec-chevron{font-size:15px;color:var(--t3);transition:transform .2s ease;}
+.mseclbl[aria-expanded="false"] .msec-chevron{transform:rotate(-90deg);}
+.msec.collapsed{display:none;}
 .m-gheroe{margin:0 16px 10px;padding:18px;border-radius:18px;background:var(--card);border:0.5px solid var(--sep2);box-shadow:0 4px 14px rgba(0,0,0,.05);}
 .m-ghlbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:3px;}
 .m-ghval{font-size:24px;font-weight:700;color:var(--acc);letter-spacing:-0.5px;margin-bottom:10px;}
