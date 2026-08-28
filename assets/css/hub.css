@@ -121,6 +121,23 @@ main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-dire
 .holiday-meta a:hover{text-decoration:underline;}
 /* Day info mini – blue border */
 div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
+
+/* Shared card header language — intentionally not used by TrailYX or Union */
+.hub-card-head{--head-accent:var(--blue);--head-tint:var(--blue-l);width:100%;min-height:68px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--head-tint),transparent 72%);box-sizing:border-box;}
+.hub-card-head--compact{min-height:58px;padding:11px 14px;}
+.hub-card-head--blue{--head-accent:var(--blue);--head-tint:var(--blue-l);}
+.hub-card-head--green{--head-accent:var(--green);--head-tint:var(--green-l);}
+.hub-card-head--orange{--head-accent:var(--orange);--head-tint:var(--orange-l);}
+.hub-card-head--amber{--head-accent:#b7791f;--head-tint:rgba(245,158,11,.10);}
+.hub-card-head--red{--head-accent:var(--red);--head-tint:rgba(232,0,28,.08);}
+.hub-card-head--violet{--head-accent:#7c3aed;--head-tint:rgba(124,58,237,.09);}
+.hub-card-head-copy{flex:1;min-width:0;}
+.hub-card-eyebrow{font-family:var(--font-head);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--head-accent);margin-bottom:3px;}
+.hub-card-title{font-family:var(--font-head);font-size:15px;font-weight:700;letter-spacing:-.3px;color:var(--t);line-height:1.2;}
+.hub-card-subtitle{font-size:9.5px;color:var(--t2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hub-card-status{font-family:var(--font-head);font-size:9px;font-weight:700;color:var(--head-accent);background:var(--head-tint);border:1px solid color-mix(in srgb,var(--head-accent) 30%,transparent);border-radius:20px;padding:5px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.35px;}
+.daily-card-content{width:100%;padding:12px 14px 14px;box-sizing:border-box;}
+.finance-head-actions{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0;}
 .mini-icon{font-size:22px;flex-shrink:0;}
 .mini-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
 .mini-val{font-size:16px;font-weight:700;letter-spacing:-.4px;}
@@ -321,7 +338,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 /* ── EMIL & ROSA ── */
 .er{background:var(--card);border-radius:var(--r);border:1px solid rgba(52,199,89,.28);box-shadow:var(--sh);overflow:hidden;width:100%;}
-.er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--green-l),transparent 68%);}
+.er-top{padding:15px 20px 13px;}
 .er-eyebrow{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--green);margin-bottom:3px}.er-title{font-size:15px;font-weight:700;letter-spacing:-.3px;}
 .er-badge{font-family:'Inter',monospace;font-size:10px;font-weight:700;padding:5px 10px 5px 22px;border-radius:20px;border:1px solid;position:relative;white-space:nowrap}.er-badge::before{content:'';position:absolute;left:9px;top:50%;width:6px;height:6px;border-radius:50%;background:currentColor;transform:translateY(-50%);box-shadow:0 0 0 3px color-mix(in srgb,currentColor 14%,transparent)}
 .er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
@@ -380,7 +397,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 /* Unified alma card */
 .alma-card{background:var(--card);border-radius:var(--r);border:1px solid rgba(249,115,22,.28);box-shadow:var(--sh);overflow:hidden;text-decoration:none;color:inherit;display:block;transition:transform .18s,box-shadow .18s,border-color .18s;}
 .alma-card:hover{transform:translateY(-2px);border-color:var(--orange-b);box-shadow:0 0 0 2px var(--orange-l),var(--sh-h);}
-.alma-top{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--orange-l),transparent 70%);}
+.alma-top{padding:14px 16px 12px;}
 .alma-eyebrow{font-family:var(--font-head);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--orange);margin-bottom:3px;}
 .alma-card-title{font-family:var(--font-head);font-size:15px;font-weight:700;letter-spacing:-.3px;}
 .alma-status{font-family:var(--font-head);font-size:9px;font-weight:700;color:var(--orange);background:var(--orange-l);border:1px solid var(--orange-b);border-radius:20px;padding:5px 9px;white-space:nowrap;}
@@ -464,7 +481,9 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 @media(max-width:520px){.travel-trips{grid-template-columns:1fr}.travel-stat{padding:8px 3px}.travel-stat-val{font-size:13px}.travel-stat-lbl{font-size:7.5px}}
 .acard:active{transform:scale(.98);}
 
-.a-top{padding:15px 15px 10px;display:flex;align-items:flex-start;justify-content:space-between;}
+.a-top{padding:13px 15px;align-items:center;justify-content:flex-start;}
+.a-top .a-icon{flex-shrink:0;}
+.a-top .calendar-actions{margin-left:auto;}
 .a-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
 .a-icon.g{background:var(--green-l);}
 .a-icon.b{background:var(--blue-l);}
@@ -687,7 +706,7 @@ html[data-theme="dark"] .atk-outer{--t2:#c7c7cc;--t3:#98989d;--border:rgba(255,2
 .atk-panel{display:none;}
 .atk-panel.active{display:block;}
 .atk-a{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;}
-.atk-a-top{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px 0;}
+.atk-a-top{align-items:center;padding:13px 16px;}
 .atk-a-title{font-size:13px;font-weight:700;color:var(--t);letter-spacing:-.2px;font-family:var(--font-head);}
 .atk-a-sub{font-size:10px;color:var(--t3);margin-top:1px;}
 .atk-a-today{text-align:right;}

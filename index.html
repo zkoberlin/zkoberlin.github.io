@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/hub.css?v=6.20.0">
+<link rel="stylesheet" href="assets/css/hub.css?v=6.21.0">
 <link rel="stylesheet" href="assets/css/auth.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/version.js?v=6.20.0" defer></script>
-<script src="assets/js/auth.js?v=6.20.0" defer></script>
+<script src="assets/js/version.js?v=6.21.0" defer></script>
+<script src="assets/js/auth.js?v=6.21.0" defer></script>
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <div class="h-clock-wrap">
       <div class="h-clock" id="clock">--:--</div>
       <div class="h-date" id="hdate">--</div>
-      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.20.0</div>
+      <div data-app-version style="font-family:'Montserrat',monospace;font-size:9px;color:var(--t3);letter-spacing:.3px;text-align:right;margin-top:1px;">v6.21.0</div>
     </div>
   </div>
   <div id="loadBar"><div id="loadBarFill"></div></div>
@@ -51,6 +51,10 @@
 <!-- Weather + Date -->
 <div style="display:grid;grid-template-columns:2fr 1.1fr 1.1fr;gap:10px;min-width:0;" class="weather-grid">
     <article class="weather-card">
+      <div class="hub-card-head hub-card-head--blue">
+        <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Wetter</div><div class="hub-card-title">Aktuelle Wetterlage</div></div>
+        <div class="hub-card-status">Live</div>
+      </div>
       <div class="weather-main">
         <div class="weather-icon" id="wIcon">⏳</div>
         <div class="weather-info">
@@ -151,7 +155,11 @@
         </span>
       </div>
     </article>
-    <section class="mini date hcard" role="link" tabindex="0" aria-label="KalenderPaul öffnen" data-calendar-card style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:14px 14px;min-width:0;overflow:hidden;">
+    <section class="mini date hcard" role="link" tabindex="0" aria-label="KalenderPaul öffnen" data-calendar-card style="flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding:0;min-width:0;overflow:hidden;">
+      <div class="hub-card-head hub-card-head--red hub-card-head--compact">
+        <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Kalender</div><div class="hub-card-title">Heute</div></div>
+      </div>
+      <div class="daily-card-content">
       <!-- Apple Calendar Icon -->
       <div style="width:100%;display:flex;align-items:center;justify-content:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
         <svg width="44" height="44" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="border-radius:10px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);">
@@ -189,8 +197,13 @@
         </div>
         <div id="horoMeta" style="font-size:8.5px;color:var(--t3);margin-top:4px;display:none;"></div>
       </div>
+      </div>
     </section>
-    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:14px 14px;min-width:0;overflow:hidden;" id="dayInfoCard">
+    <div class="mini" style="flex-direction:column;align-items:flex-start;gap:0;justify-content:space-between;padding:0;min-width:0;overflow:hidden;" id="dayInfoCard">
+      <div class="hub-card-head hub-card-head--violet hub-card-head--compact">
+        <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Tageswissen</div><div class="hub-card-title">Heute entdecken</div></div>
+      </div>
+      <div class="daily-card-content">
       <div style="display:flex;flex-direction:column;gap:0;width:100%;height:100%;min-width:0;overflow:hidden;word-break:break-word;">
         <!-- Feiertag (only when applicable) -->
         <div id="feiertagSection" style="display:none;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">
@@ -225,6 +238,7 @@
             <div class="history-meta" id="histMeta"></div>
           </div>
         </div>
+      </div>
       </div>
     </div>
 </div>
@@ -277,10 +291,11 @@
     <div class="atk-a">
 
       <!-- HEADER: immer sichtbar, auf Mobile tippbar -->
-      <div class="atk-a-top" onclick="atkToggleMobile()" style="cursor:pointer;" title="Antippen zum Aufklappen">
-        <div>
-          <div class="atk-a-title">🍺 Alkohol-Tracker</div>
-          <div class="atk-a-sub" id="atkA-date">Heute</div>
+      <div class="atk-a-top hub-card-head hub-card-head--amber" onclick="atkToggleMobile()" style="cursor:pointer;" title="Antippen zum Aufklappen">
+        <div class="hub-card-head-copy">
+          <div class="hub-card-eyebrow">Gesundheit · Übersicht</div>
+          <div class="hub-card-title">🍺 Alkohol-Tracker</div>
+          <div class="hub-card-subtitle" id="atkA-date">Heute</div>
         </div>
         <div class="atk-a-today">
           <div class="atk-a-num"><span id="atkA-today">0,0</span> <span class="atk-a-numunit">Einh.</span></div>
@@ -357,8 +372,8 @@
 <div class="cs-body" id="csBodyEr">
 <a class="hcard er-link" href="/kalenderpaul/?filter=kids+bei+paul" target="_blank">
 <div class="er" id="erCard">
-  <div class="er-top">
-    <div><div class="er-eyebrow">Aufenthaltsplan</div><div class="er-title">Heute &amp; nächster Wechsel</div></div>
+  <div class="er-top hub-card-head hub-card-head--green">
+    <div class="hub-card-head-copy"><div class="er-eyebrow hub-card-eyebrow">Aufenthaltsplan</div><div class="er-title hub-card-title">Heute &amp; nächster Wechsel</div></div>
     <div class="er-badge paul" id="erBadge">Lädt…</div>
   </div>
   <div class="er-nums">
@@ -434,8 +449,8 @@
 <div class="sec cs-sec-label">🧡 Alma · Schwerin</div>
 <div class="cs-body" id="csBodyAlma">
 <a class="alma-card" href="/kalenderpaul/?filter=schwerin" target="_blank" id="almaCard">
-  <div class="alma-top">
-    <div><div class="alma-eyebrow">Familie · Schwerin</div><div class="alma-card-title">Zeit mit Alma</div></div>
+  <div class="alma-top hub-card-head hub-card-head--orange">
+    <div class="hub-card-head-copy"><div class="alma-eyebrow hub-card-eyebrow">Familie · Schwerin</div><div class="alma-card-title hub-card-title">Zeit mit Alma</div></div>
     <div class="alma-status" id="almaStatus">Lädt…</div>
   </div>
   <div class="alma-section" id="almaMain">
@@ -487,7 +502,7 @@
   <!-- KALENDER -->
   <div class="acard kal hcard" id="calendarCard">
     <a class="calendar-card-link" href="/kalenderpaul/" aria-label="KalenderPaul öffnen"></a>
-    <div class="a-top">
+    <div class="a-top hub-card-head hub-card-head--blue">
       <div class="a-icon b">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="4" width="18" height="18" rx="3"/>
@@ -497,10 +512,9 @@
           <circle cx="9" cy="13" r="1" fill="var(--blue)" stroke="none"/>
         </svg>
       </div>
+      <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Organisation</div><div class="hub-card-title">Kalender</div><div class="hub-card-subtitle">Termine &amp; Events</div></div>
       <div class="calendar-actions"><button class="calendar-filter-btn" id="kalFilterBtn" type="button" aria-expanded="false">☰ Filter</button><div class="a-status">Aktiv</div></div>
     </div>
-    <div class="a-name">Kalender</div>
-    <div class="a-desc">Termine & Events</div>
     <div class="kal-kw-bar">
       <span class="kal-kw-num">KW <span id="kw">--</span></span>
       <span class="kal-kw-range" id="kwR">--</span>
@@ -521,7 +535,7 @@
 
   <!-- FINANZEN -->
   <a class="acard fin hcard" href="/finanzenpaul/">
-    <div class="a-top">
+    <div class="a-top hub-card-head hub-card-head--green">
       <div class="a-icon g">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
@@ -529,12 +543,8 @@
           <path d="M9 9.5A2.5 2.5 0 0 1 12 7a2.5 2.5 0 0 1 2.5 2.5c0 1.5-1 2.2-2.5 2.5-1.5.3-2.5 1-2.5 2.5A2.5 2.5 0 0 0 12 17a2.5 2.5 0 0 0 2.5-2.5"/>
         </svg>
       </div>
-      <div class="a-status">Aktiv</div>
-    </div>
-    <div class="a-name">Finanzen</div>
-    <div class="a-desc" style="display:flex;align-items:center;justify-content:space-between;padding-right:15px;">
-      <span>Budget & Ausgaben</span>
-      <button class="fin-blur-btn" id="finBlurBtn" onclick="toggleFinBlur(event)" title="Werte ausblenden">👁 Blenden</button>
+      <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Überblick</div><div class="hub-card-title">Finanzen</div><div class="hub-card-subtitle">Budget &amp; Ausgaben</div></div>
+      <div class="finance-head-actions"><div class="a-status">Aktiv</div><button class="fin-blur-btn" id="finBlurBtn" onclick="toggleFinBlur(event)" title="Werte ausblenden">👁 Blenden</button></div>
     </div>
     <!-- Kompakte Zeile: Puffer + Sparquote nebeneinander -->
     <div class="fin-row" id="finRowWrap">
@@ -574,19 +584,18 @@
 
   <!-- AKTIEN -->
   <div class="acard stocks" id="stocksCard">
-    <div class="a-top">
+    <div class="a-top hub-card-head hub-card-head--blue">
       <div class="a-icon b">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
           <polyline points="16 7 22 7 22 13"/>
         </svg>
       </div>
+      <div class="hub-card-head-copy"><div class="hub-card-eyebrow">Märkte</div><div class="hub-card-title">Portfolio · Aktien</div><div class="hub-card-subtitle">Watchlist · Tagesbewegung · 52 Wochen</div></div>
       <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
         <div class="a-status">🔒 Geschützt</div>
       </div>
     </div>
-    <div class="a-name">Portfolio · Aktien</div>
-    <div class="a-desc">Persönliche Watchlist · Tagesbewegung und 52‑Wochen-Spanne · alle Kurse in EUR</div>
 
     <div class="stocks-card-wrap" id="stocksCardWrap">
       <!-- Top 3 Highlights -->
@@ -677,11 +686,11 @@
   <a class="bn" href="/kalenderpaul/"><span class="bn-i">📅</span><span class="bn-l">Kalender</span></a>
 </nav>
 
-<script src="assets/js/hub.js?v=6.20.0"></script>
-<script src="assets/js/hub-union.js?v=6.20.0"></script>
+<script src="assets/js/hub.js?v=6.21.0"></script>
+<script src="assets/js/hub-union.js?v=6.21.0"></script>
 
 <!-- Chart.js for tracker graphs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="assets/js/hub-alcohol.js?v=6.20.0"></script>
+<script src="assets/js/hub-alcohol.js?v=6.21.0"></script>
 </body>
 </html>
