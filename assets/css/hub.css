@@ -137,6 +137,8 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .hub-card-subtitle{font-size:9.5px;color:var(--t2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .hub-card-status{font-family:var(--font-head);font-size:9px;font-weight:700;color:var(--head-accent);background:var(--head-tint);border:1px solid color-mix(in srgb,var(--head-accent) 30%,transparent);border-radius:20px;padding:5px 9px;white-space:nowrap;text-transform:uppercase;letter-spacing:.35px;}
 .daily-card-content{width:100%;padding:12px 14px 14px;box-sizing:border-box;}
+#dayInfoCard .daily-card-content{flex:1;display:flex;align-items:flex-start;}
+#dayInfoCard .daily-card-content>div{height:auto!important;min-height:0;}
 .finance-head-actions{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0;}
 .mini-icon{font-size:22px;flex-shrink:0;}
 .mini-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:2px;-webkit-font-smoothing:antialiased;}
@@ -144,7 +146,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
 /* ── SECTION ── */
-.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:10px;margin-bottom:-7px;-webkit-font-smoothing:antialiased;}
+.sec{display:none;}
 
 /* ── WEATHER CARD – Apple Redesign v5.2.8 ── */
 .weather-card{
@@ -463,6 +465,12 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .acard.travel:hover{transform:translateY(-2px);box-shadow:var(--sh-h);border-color:var(--orange-b);}
 .a-icon.o.trailyx-brand-icon{width:48px;height:48px;background:#161f38;border:1px solid rgba(232,162,61,.38);overflow:hidden;padding:2px;}
 .trailyx-brand-icon img{display:block;width:100%;height:100%;}
+.travel-card-head{min-height:78px;padding:14px 15px!important;align-items:center!important;background:linear-gradient(135deg,rgba(232,162,61,.11),transparent 72%);border-bottom:1px solid var(--border);gap:12px;}
+.travel-card-head-copy{flex:1;min-width:0;}
+.travel-card-head .a-name,.travel-card-head .a-desc{padding:0;}
+.travel-card-head .a-name{font-size:15px;margin-top:2px;}
+.travel-card-head .a-desc{padding-top:3px;font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.travel-card-kicker{font-family:var(--font-head);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:#b7791f;}
 .travel-trips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 15px 10px;}
 .travel-trip{position:relative;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 54px 9px 10px;min-width:0;}
 .travel-trip-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);}
@@ -481,7 +489,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 @media(max-width:520px){.travel-trips{grid-template-columns:1fr}.travel-stat{padding:8px 3px}.travel-stat-val{font-size:13px}.travel-stat-lbl{font-size:7.5px}}
 .acard:active{transform:scale(.98);}
 
-.a-top{padding:13px 15px;align-items:center;justify-content:flex-start;}
+.a-top{padding:13px 15px;display:flex;align-items:center;justify-content:flex-start;}
 .a-top .a-icon{flex-shrink:0;}
 .a-top .calendar-actions{margin-left:auto;}
 .a-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;}
@@ -624,6 +632,11 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .stock-highlight-rank{font-size:9px;font-weight:800;color:var(--t3);min-width:14px;text-align:center;}
 .stock-highlight.top1 .stock-highlight-rank{color:var(--blue);}
 .stock-highlight-logo{width:20px;height:20px;border-radius:5px;object-fit:contain;flex-shrink:0;background:var(--card);}
+.stock-logo-wrap{position:relative;width:28px;height:28px;flex-shrink:0;}
+.stock-logo-wrap.small{width:24px;height:24px;}
+.stock-company-logo{position:absolute;inset:0;width:100%;height:100%;padding:3px;border-radius:8px;object-fit:contain;background:#fff;border:1px solid var(--border);z-index:1;}
+.stock-logo-wrap.small .stock-company-logo{border-radius:7px;padding:2px;}
+.stock-logo-wrap .stock-monogram{position:absolute;inset:0;}
 .stock-monogram{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--blue-l);border:1px solid var(--blue-b);color:var(--blue);font-size:9px;font-weight:800;letter-spacing:-.2px;}
 .stock-monogram.small{width:24px;height:24px;border-radius:7px;font-size:8px;}
 .stock-highlight-name{font-size:11px;font-weight:600;color:var(--t);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -652,7 +665,9 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
   .stocks-highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:15px;}
   .stock-highlight{min-height:92px;padding:13px 14px;display:grid;grid-template-columns:auto auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;align-content:center;}
   .stock-highlight-rank{grid-row:1/-1;font-size:11px;}
-  .stock-highlight .stock-monogram{grid-row:1/-1;width:38px;height:38px;border-radius:11px;font-size:11px;}
+  .stock-highlight .stock-logo-wrap{grid-row:1/-1;width:38px;height:38px;}
+  .stock-highlight .stock-monogram{width:38px;height:38px;border-radius:11px;font-size:11px;}
+  .stock-highlight .stock-company-logo{border-radius:11px;padding:4px;}
   .stock-highlight-name{font-size:13px;white-space:normal;overflow:visible;}
   .stock-highlight>div:last-child{grid-column:3;display:flex;align-items:center;justify-content:space-between;text-align:left!important;margin-top:5px;gap:10px;}
   .stock-highlight-price{font-size:15px;}

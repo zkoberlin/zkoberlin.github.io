@@ -1190,6 +1190,20 @@ function stockInitials(name){
   return String(name).split(/\s+/).slice(0,2).map(part=>part[0]).join('').toUpperCase();
 }
 
+const STOCK_LOGO_DOMAINS={
+  'Microsoft':'microsoft.com','Alphabet':'abc.xyz','ASML':'asml.com','Novo Nordisk':'novonordisk.com',
+  'Deutsche Börse':'deutsche-boerse.com','Procter & Gamble':'pg.com','Lotus Bakeries':'lotusbakeries.com',
+  'Wolters Kluwer':'wolterskluwer.com','Mercado Libre':'mercadolibre.com','Siemens':'siemens.com',
+  'Hannover Rück':'hannover-re.com','Ferrari':'ferrari.com','Nubank':'nubank.com.br','Cintas':'cintas.com',
+  'American Express':'americanexpress.com','Hermès':'hermes.com','Netflix':'netflix.com','BKW':'bkw.ch','Zoetis':'zoetis.com'
+};
+function stockLogoHtml(row,small=false){
+  const domain=STOCK_LOGO_DOMAINS[row.name];
+  const fallback=`<div class="stock-monogram${small?' small':''}" aria-hidden="true">${stockInitials(row.name)}</div>`;
+  if(!domain)return `<div class="stock-logo-wrap${small?' small':''}">${fallback}</div>`;
+  return `<div class="stock-logo-wrap${small?' small':''}">${fallback}<img class="stock-company-logo" src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${row.name} Logo" loading="lazy" onerror="this.remove()"></div>`;
+}
+
 let stocksLoading=false;
 let stocksHaveData=false;
 let stocksInitialLoad=true;
@@ -1274,7 +1288,7 @@ function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
   if(hlEl)hlEl.innerHTML=top3.map((r,i)=>`
     <div class="stock-highlight${i===0?' top1':''}">
       <div class="stock-highlight-rank">${i+1}</div>
-      <div class="stock-monogram" aria-hidden="true">${stockInitials(r.name)}</div>
+      ${stockLogoHtml(r)}
       <div class="stock-highlight-name" style="min-width:0;flex:1;">
         <span style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.name}<span class="stock-highlight-sym"> ${shortSym(r.sym||r.fhSym||r.yfSym)}</span></span>
         ${w52Html(r,false)}
@@ -1288,7 +1302,7 @@ function renderStocksRows(rows,fmtEur,fmtPct,shortSym){
   const rest=rows.slice(3);
   if(allEl)allEl.innerHTML=rest.map(r=>`
     <div class="stock-row">
-      <div class="stock-monogram small" aria-hidden="true">${stockInitials(r.name)}</div>
+      ${stockLogoHtml(r,true)}
       <div style="flex:1;min-width:0;">
         <div style="display:flex;align-items:baseline;gap:4px;">
           <div class="stock-row-name">${r.name}</div>
