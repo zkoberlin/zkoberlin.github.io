@@ -855,10 +855,10 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 @media(max-width:600px){
-  .weather-grid{grid-template-columns:1fr 1fr!important;}
+  .weather-grid{grid-template-columns:1fr!important;}
   .weather-card{grid-column:1/-1;}
-  /* Minis unter Wetter: je 1/2 Breite */
-  .mini.date,div.mini#dayInfoCard{grid-column:span 1;}
+  /* Tageskarten brauchen auf kleinen Displays echte Lesebreite. */
+  .mini.date,div.mini#dayInfoCard{grid-column:1/-1;}
 }
 
 /* ── MOBILE OPTIMIERUNG (iPhone 16 Pro & kleiner) ── */
@@ -878,13 +878,50 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .weather-location-btn{min-height:32px;padding:5px 7px;}
   .history-toggle{min-height:36px;}
 
-  /* Weather Grid: Wetter voll-breit, dann zwei Mini nebeneinander */
-  .weather-grid{grid-template-columns:1fr 1fr!important;}
+  /* Wetter und Tageskarten in einer gut lesbaren Spalte */
+  .weather-grid{grid-template-columns:1fr!important;}
   .weather-card{grid-column:1/-1;}
-  /* Date + DayInfo Minis: kompakt, keine column-Direction */
+  /* Date + DayInfo Minis: kompakt und voll-breit */
   .mini.date,div.mini#dayInfoCard{
+    grid-column:1/-1;
     padding:0;
   }
+
+  /* Einheitliche Karten-Geometrie und keine klebenden Hover-Spruenge auf Touch */
+  .mini:hover,.acard.fin:hover,.acard.kal:hover,.acard.travel:hover{transform:none;}
+  .hub-card-head{min-height:64px;padding:12px 13px;gap:9px;}
+  .hub-card-head--compact{min-height:58px;padding:11px 13px;}
+  .hub-card-title{font-size:14px;}
+  .hub-card-subtitle{font-size:9px;}
+  .hub-card-status{font-size:8px;padding:5px 7px;}
+  .finance-head-actions{gap:5px;}
+  .calendar-actions{gap:5px;}
+  .calendar-filter-btn{min-height:34px;padding:6px 8px;}
+
+  /* TrailYX Kennzahlen als lesbares 2 x 2 Raster */
+  .travel-card-head{min-height:72px;padding:12px 13px!important;}
+  .travel-trips{padding:0 12px 10px;}
+  .travel-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 12px;}
+  .travel-stat{min-height:58px;padding:9px 5px;display:flex;flex-direction:column;justify-content:center;}
+  .travel-stat-val{font-size:15px;}
+  .travel-stat-lbl{font-size:8px;}
+
+  /* Formulare und Aktionszeilen bleiben auch bei 360 px bedienbar */
+  .atk-entry-date{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px;padding:10px 13px 0;}
+  .atk-entry-date button{grid-column:1/-1;min-height:38px;}
+  .atk-pills{padding-left:13px;padding-right:13px;}
+  .atk-pill{min-height:36px;padding:7px 10px;}
+  .atk-streaks{padding-left:13px;padding-right:13px;}
+  .atk-streak-chip{min-width:calc(50% - 4px);}
+
+  /* Lange Sportdaten duerfen keinen horizontalen Ueberlauf erzeugen */
+  .uc-injury-header,.uc-transfer-header{flex-wrap:wrap;}
+  .uc-injury-header a,.uc-live-transfers .uc-transfer-header a{white-space:normal;}
+  .uc-opponent-result b,.uc-opponent-result div span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .uc-h2h-summary{overflow-x:auto;padding-bottom:2px;}
+
+  /* Untere Navigation: volle Touchflaeche ohne seitliches Gedraenge */
+  .bn{flex:1;min-height:44px;padding:4px 8px;justify-content:center;}
 
   /* Wetter-Karte kompakter */
   .weather-main{padding:13px 14px;gap:11px;}
@@ -928,6 +965,24 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .uc-score,.uc-next-vs{min-width:48px;padding:3px 7px;font-size:19px;}
   .uc-next-vs{font-size:10px;}
   .uc-player-photo{width:28px;height:28px;}
+}
+
+@media(max-width:370px){
+  header{padding-left:12px;padding-right:12px;}
+  .h-left{gap:7px;min-width:0;}
+  .h-greet{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;}
+  .h-right{gap:5px;}
+  .h-clock{font-size:13px;}
+  .h-date{font-size:8px;}
+  main{padding-left:10px;padding-right:10px;}
+  .weather-main{padding-left:12px;padding-right:12px;}
+  .weather-forecast{padding-left:12px;padding-right:12px;}
+  .travel-trip{padding-right:48px;}
+  .travel-trip-modes{right:8px;}
+  .uc-body{padding-left:10px;padding-right:10px;}
+  .uc-pts-strip{padding-left:12px;padding-right:12px;}
+  .uc-opponent{padding:12px;}
+  .uc-opponent-head{gap:8px;}
 }
 
 /* Loading skeleton */
