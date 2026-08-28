@@ -262,16 +262,18 @@ function parseAlmaVisits(text, from, until) {
 }
 
 async function fetchCalendarText(target) {
+  const maximumBytes = 8_000_000;
   const upstream = await fetch(target, {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; KalenderProxy/2.0)" },
     cf: { cacheEverything: false, cacheTtl: 0 },
-    signal: AbortSignal.timeout(8_000),
+    signal: AbortSignal.timeout(15_000),
   });
   if (!upstream.ok) throw new Error(`calendar upstream ${upstream.status}`);
   const declaredLength = Number(upstream.headers.get("Content-Length") || 0);
-  if (declaredLength > 1_000_000) throw new Error("calendar upstream too large");
+  if (declaredLength > maximumBytes) throw new Error(`calendar upstream too large (${declaredLength} bytes)`);
   const text = await upstream.text();
-  if (text.length > 1_000_000 || !text.includes("BEGIN:VCALENDAR")) throw new Error("invalid calendar upstream");
+  if (text.length > maximumBytes) throw new Error(`calendar upstream too large (${text.length} chars)`);
+  if (!text.includes("BEGIN:VCALENDAR")) throw new Error("invalid calendar upstream");
   return text;
 }
 
@@ -288,6 +290,13 @@ async function handleAlmaFeed(env, origin) {
       fetchCalendarText(env.GMAIL_ICAL_URL),
       fetchCalendarText(env.HELLOMED_ICAL_URL),
     ]);
+    for (const [index, result] of results.entries()) {
+      if (result.status === "rejected") console.error(JSON.stringify({
+        message: "alma calendar source failed",
+        source: index === 0 ? "gmail" : "hellomed",
+        error: result.reason instanceof Error ? result.reason.message : String(result.reason),
+      }));
+    }
     const calendars = results.filter((result) => result.status === "fulfilled").map((result) => result.value);
     if (!calendars.length) return jsonResponse({ error: "Alma visits unavailable" }, 502, origin);
     const unique = new Map();

@@ -205,6 +205,7 @@ test("returns only the validated minimal kids schedule", async () => {
 test("returns only minimized Alma visit ranges from private calendars", async () => {
   const originalFetch = globalThis.fetch;
   const env = createEnv();
+  const privatePayload = "x".repeat(1_100_000);
   globalThis.fetch = async (url) => {
     if (String(url).includes("openidconnect.googleapis.com")) return googleProfileResponse();
     return new Response([
@@ -213,7 +214,7 @@ test("returns only minimized Alma visit ranges from private calendars", async ()
       "DTSTART;VALUE=DATE:20260911",
       "DTEND;VALUE=DATE:20260914",
       "SUMMARY:Alma in Schwerin – private details",
-      "DESCRIPTION:Das darf nicht ausgeliefert werden",
+      `DESCRIPTION:Das darf nicht ausgeliefert werden ${privatePayload}`,
       "END:VEVENT",
       "BEGIN:VEVENT",
       "DTSTART;VALUE=DATE:20261024",
