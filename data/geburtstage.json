@@ -1,48 +1,14 @@
 {
-  "datum": "27.08.2026",
-  "generiert": "2026-08-27T11:56:11Z",
+  "datum": "28.08.2026",
+  "generiert": "2026-08-28T12:20:33Z",
   "geburtstage": [
     {
-      "name": "Franz Wagner",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93138.jpg/330px-2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93138.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Franz_Wagner",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kim Petras",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Kim_Petras_%2842743719761%29.jpg/330px-Kim_Petras_%2842743719761%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kim_Petras",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Dietmar Hamann",
-      "alter": 53,
-      "geburtsjahr": 1973,
+      "name": "Ditmar Jakobs",
+      "alter": 73,
+      "geburtsjahr": 1953,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/8/81/Hamann%2C_Dietmar_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Dietmar_Hamann",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Ditmar_Jakobs",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -54,18 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Bernhard Langer",
-      "alter": 69,
-      "geburtsjahr": 1957,
-      "beruf": "Golfer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Bernhard_Langer.jpg/330px-Bernhard_Langer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bernhard_Langer",
+      "name": "Wendelin Wiedeking",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "Persönlichkeit",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/WendelinRuthWiedeking.jpg/330px-WendelinRuthWiedeking.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Wendelin_Wiedeking",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
           "code": "DE",
           "flagge": "🇩🇪",
           "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kano Fujihira",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Kano_Fujihira_Tainan_2024.jpg/330px-Kano_Fujihira_Tainan_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kano_Fujihira",
+      "nationalitaet": "🇯🇵 Japanisch",
+      "nationalitaeten": [
+        {
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Quvenzhané Wallis",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Quvenzhan%C3%A9_Wallis_2013.jpg/330px-Quvenzhan%C3%A9_Wallis_2013.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Quvenzhan%C3%A9_Wallis",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
