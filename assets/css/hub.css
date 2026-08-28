@@ -1100,6 +1100,27 @@ html[data-theme="light"] #stockTicker{background:rgba(20,20,22,.97);border-botto
 /* ── 2-Col ── */
 .uc-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 
+/* Verlässliche Live-Übersicht (OpenLigaDB Schema v2) */
+.uc-live-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.uc-live-match{background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:14px;min-width:0;}
+.uc-live-kicker{font-size:9px;font-weight:700;letter-spacing:.45px;text-transform:uppercase;color:var(--t3);margin-bottom:13px;}
+.uc-live-kicker .w{color:var(--green)}.uc-live-kicker .d{color:var(--t2)}.uc-live-kicker .l{color:var(--red)}
+.uc-live-teams{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);align-items:center;gap:10px;}
+.uc-live-team{display:flex;align-items:center;gap:9px;min-width:0;font-size:12px;color:var(--t);}
+.uc-live-team.right{flex-direction:row-reverse;text-align:right;}.uc-live-team b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uc-live-team img,.uc-tbl-row img{width:30px;height:30px;object-fit:contain;flex:0 0 auto;}
+.uc-live-score{font-size:22px;font-weight:800;text-align:center;color:var(--union);font-variant-numeric:tabular-nums;}
+.uc-live-time{margin-top:11px;text-align:center;font-size:10px;color:var(--t2);}
+.uc-live-overview>.uc-box{padding:14px;}.uc-live-table .uc-tbl-row{padding:6px 3px;font-size:11px;}
+.uc-live-table .uc-tbl-row img{width:18px;height:18px;}.uc-live-table .uc-tbl-row.me{background:rgba(232,0,28,.07);border-radius:7px;padding-left:6px;padding-right:6px;color:var(--union);}
+.uc-live-empty{font-size:11px;color:var(--t2);margin:0;}.uc-live-note{display:flex;align-items:center;gap:7px;font-size:9px;color:var(--t2);padding:2px 3px;}
+.uc-live-note>span:last-child{margin-left:auto;color:var(--t3);}.uc-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(52,199,89,.12);}
+.uc-live-unavailable{padding:18px;text-align:center;font-size:12px;color:var(--t2);background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);}
+@media(max-width:600px){
+  .uc-live-grid{grid-template-columns:1fr;gap:8px}.uc-live-match{padding:12px}.uc-live-team{font-size:10.5px}.uc-live-team img{width:26px;height:26px}.uc-live-overview{grid-template-columns:1fr}
+  .uc-live-note{align-items:flex-start;flex-wrap:wrap}.uc-live-note>span:last-child{width:100%;margin-left:14px}
+}
+
 /* ── Box ── */
 .uc-box{
   background:var(--card2);border:1px solid var(--border);

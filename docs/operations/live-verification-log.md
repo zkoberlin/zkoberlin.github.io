@@ -2,6 +2,13 @@
 
 Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases fest. Es enthält keine Zugangsdaten oder privaten Finanzwerte.
 
+## 28.08.2026 – Geschützte Portfolio-Kachel im Hub
+
+- Umgebung: produktive GitHub-Pages-Seite, Desktop-Browser und Cloudflare-Gateway
+- Geprüft: Anmeldung, lesbare Desktop-Darstellung, Top-3-Übersicht, weitere Positionen und Datenstatus
+- Sicherheit: Portfolio-Vorschau nur authentifiziert; ehemalige öffentliche Markt-Endpunkte nicht mehr verfügbar
+- Ergebnis: erfolgreich, vom Nutzer als funktionsfähig und optisch passend bestätigt
+
 ## 28.08.2026 – FinanzenPaul D1-Migration
 
 - Umgebung: produktive GitHub-Pages-Seite und Cloudflare-Gateway, persönlicher Browser

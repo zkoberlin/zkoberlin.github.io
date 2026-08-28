@@ -1729,7 +1729,7 @@ loadAlma();
 window.addEventListener('hub-auth-change',loadAlma);
 
 // ── UNION BERLIN v5.2.0 — via data/union.json ──
-async function loadUnion(){
+async function loadUnionLegacy(){
   const WDU=['So','Mo','Di','Mi','Do','Fr','Sa'];
   const MNU=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
@@ -2520,7 +2520,7 @@ async function loadUnion(){
   }
   if(window._lbTick)window._lbTick();
 }
-loadUnion();
+// Aktuelle, schema-validierte Darstellung: assets/js/hub-union.js
 
 // ── TRANSFER WINDOW — lädt data/transfers.json ──
 async function loadTransfers(unionData, nextMatch){

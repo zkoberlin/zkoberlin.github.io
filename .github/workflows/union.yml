@@ -23,10 +23,7 @@ jobs:
           python-version: '3.11'
  
       - name: Union-Daten fetchen
-        env:
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          FOOTBALLDATA_KEY: ${{ secrets.FOOTBALLDATA_KEY }}
-        run: python scripts/fetch_union.py
+        run: python scripts/fetch_union_openliga.py
  
       - name: JSON committen und pushen
         run: |

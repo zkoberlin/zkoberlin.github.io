@@ -9,7 +9,7 @@ Die Dateien in `data/` werden öffentlich über GitHub Pages ausgeliefert. Dort 
 | `namenstage.json` | Versionierte, vollständig validierte Jahresdatei. Aktuell redaktioneller Grundbestand; monatliche/manuelle GitHub Action ersetzt ihn erst nach 366 erfolgreichen Abalin-V2-Antworten. |
 | `schulferien_berlin.json` | `scripts/fetch_schulferien.py`; versioniertes, vollständig validiertes Schema für Berlin und aktuelles plus folgendes Jahr; monatliche/manuelle GitHub Action |
 | `transfers.json` | `scripts/fetch_transfers.py`; Automation derzeit saisonal pausiert |
-| `union.json` | `scripts/fetch_union.py` und GitHub Action |
+| `union.json` | `scripts/fetch_union_openliga.py` und tägliche GitHub Action; validierter und atomar ersetzter OpenLigaDB-Snapshot |
 | `special-days.json` | Validierte statische Projektdaten (Schema v2); bewegliche Hinweise werden im Frontend berechnet |
 
 Die frühere Datei `reiselog.json` und ihre Aktualisierungspipeline wurden entfernt. Eine neue Reiseseite und ihre Datenanbindung werden später separat geplant.

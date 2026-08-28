@@ -58,7 +58,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | --- | --- | --- | --- | --- |
 | Google Identity Services und Calendar API | Termine bearbeiten | OAuth, Schreiben | öffentlicher OAuth-Client, Benutzer-Token im Arbeitsspeicher | **Hoch:** erlaubte Origins/Redirects prüfen, minimale Scopes verwenden und Fehlerfälle dokumentieren. |
 | OpenHolidays | Feiertage und Schulferien | Lesen | öffentlich | **Niedrig:** ausschließlich automatisierte, validierte lokale Dateien; letzter gültiger Browsercache dient als Ausfallreserve. |
-| OpenLigaDB | Union-Spielplan | Lesen | öffentlich | **Niedrig:** lokale `union.json` als verlässliche Primärquelle prüfen. |
+| OpenLigaDB | Union-Spielplan, Tabelle und Saisonstatus | Lesen | öffentlich, ohne Schlüssel | **Niedrig:** Schema-v2-Snapshot wird erst nach vollständiger Liga-, Team- und Saisonvalidierung atomar ersetzt. |
 | Cloudflare-Gateway und internes Kalender-Backend | private Feeds, Kids und Snapshot | Lesen/Schreiben | siehe eigene Cloudflare-Schnittstellen | Google-Authentifizierung aktiv; Backend nicht öffentlich erreichbar. **Offen:** Rate Limit und Konfliktfälle beim Snapshot. |
 
 ## FinanzenPaul-Schnittstellen
@@ -77,7 +77,7 @@ Der frühere frei parametrierbare `/ical`-Proxy ist entfernt.
 | Feiertage Berlin | OpenHolidays | keine | `data/feiertage_berlin.json` | aktuelles und folgendes Jahr, Pflichtfeiertage und Berlin-Gültigkeit geprüft; atomarer Austausch. |
 | Namenstage | Nameday API V2 | keine | `data/namenstage.json` | exakt 366 validierte Tage, atomarer Austausch; letzter vollständiger Bestand bleibt bei jedem Teilausfall erhalten. |
 | Schulferien Berlin | OpenHolidays | keine | `data/schulferien_berlin.json` | Schema, Region, Zeitraum, Pflichtferien, Quelle und Datenstand werden geprüft; Austausch erfolgt atomar und der letzte gültige Bestand bleibt bei jedem Fehler erhalten. Der Browser nutzt ausschließlich die lokale Datei oder deren letzten validierten Cache. |
-| Union | RapidAPI und football-data.org | `RAPIDAPI_KEY`, `FOOTBALLDATA_KEY` | `data/union.json` | Schlüssel am 26.08.2026 rotiert; RapidAPI-BASIC-Monatskontingent derzeit ausgeschöpft (HTTP 429). Bestehende JSON-Daten bleiben bis zum nächsten erfolgreichen Lauf erhalten. |
+| Union | OpenLigaDB | keine Secrets | `data/union.json` | Öffentliche Kernquelle für Saison, Tabelle sowie letztes/nächstes Spiel. Unvollständige oder inkonsistente Antworten ersetzen die letzte gültige Datei nicht. |
 | Transfers | RapidAPI | `RAPIDAPI_KEY` | `data/transfers.json` | fest codierter Fallback entfernt und Schlüssel am 26.08.2026 rotiert; Aktualisierung derzeit durch das ausgeschöpfte BASIC-Monatskontingent blockiert (HTTP 429). |
 
 ## Übergreifende Sicherheitsmaßnahmen
