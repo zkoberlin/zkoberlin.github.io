@@ -83,7 +83,7 @@ html[data-theme="dark"] header{background:rgba(14,14,16,.90);}
 .theme-btn:hover{transform:scale(1.1);background:var(--card);}
 
 /* ── MAIN ── */
-main{max-width:860px;margin:0 auto;padding:16px 16px 90px;display:flex;flex-direction:column;gap:12px;}
+main{max-width:860px;margin:0 auto;padding:18px 16px 96px;display:flex;flex-direction:column;gap:14px;}
 
 /* ── QUOTE ── */
 .quote{background:var(--card);border-radius:var(--r2);border:1px solid var(--border);box-shadow:var(--sh);padding:11px 12px 11px 14px;display:flex;gap:9px;align-items:center;}
@@ -144,7 +144,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .mini-sub{font-size:10px;color:var(--t2);margin-top:1px;}
 
 /* ── SECTION ── */
-.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:6px;-webkit-font-smoothing:antialiased;}
+.sec{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.55px;color:var(--t3);padding-left:2px;margin-top:10px;margin-bottom:-7px;-webkit-font-smoothing:antialiased;}
 
 /* ── WEATHER CARD – Apple Redesign v5.2.8 ── */
 .weather-card{
@@ -438,7 +438,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .alma-small-counter{font-family:'Inter',monospace;font-size:11px;font-weight:500;color:var(--orange);margin-left:auto;flex-shrink:0;}
 
 /* ── APP CARDS ── */
-.app-row{display:grid;grid-template-columns:1fr;gap:10px;}
+.app-row{display:grid;grid-template-columns:1fr;gap:14px;}
 
 .acard{background:var(--card);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;}
 .acard.fin{border-color:rgba(52,199,89,.28);}
@@ -818,6 +818,7 @@ html[data-theme="dark"] .atk-outer{--t2:#c7c7cc;--t3:#98989d;--border:rgba(255,2
 @media(min-width:601px){
   .cs-header{display:none!important;}
   .cs-body{max-height:none!important;overflow:visible!important;}
+  .cs-body>.er-link,.cs-body>.alma-card,.cs-body>.app-row{width:100%;}
 }
 /* Mobile: section label hidden (replaced by cs-header) */
 @media(max-width:600px){
