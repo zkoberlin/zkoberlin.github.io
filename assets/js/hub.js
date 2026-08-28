@@ -1513,62 +1513,65 @@ async function loadKids(){
     badge.textContent=todayWho==='Paul'?'Bei Paul 🏠':todayWho==='Dani'?'Bei Dani 🏡':'Plan offen';
     badge.className='er-badge '+(todayWho==='Paul'?'paul':todayWho==='Dani'?'dani':'unknown');
 
-    const fut=entries.filter(e=>e.date>=today);
+    const dateKey=date=>`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const entryByDate=new Map(entries.map(entry=>[dateKey(entry.date),entry.who]));
+    const plannedDays=[];
+    for(let index=0;index<=400;index++){
+      const date=new Date(today);date.setDate(today.getDate()+index);
+      plannedDays.push({date,who:entryByDate.get(dateKey(date))||'unknown'});
+    }
+    const countBlock=(start,who)=>{let count=0;for(let index=start;index<plannedDays.length&&plannedDays[index].who===who;index++)count++;return count;};
+    const shortDate=date=>`${WK[date.getDay()]}. ${date.getDate()}. ${MK[date.getMonth()]}`;
+    const dayWord=count=>count===1?'Tag':'Tage';
+    const currentCount=countBlock(0,todayWho);
+    const changeIndex=plannedDays.findIndex(day=>day.who!==todayWho);
+    const nextBlock=changeIndex>0&&['Paul','Dani'].includes(plannedDays[changeIndex].who)?plannedDays[changeIndex]:null;
+    const followingIndex=nextBlock?plannedDays.findIndex((day,index)=>index>changeIndex&&day.who!==nextBlock.who):-1;
+    const followingBlock=followingIndex>changeIndex&&['Paul','Dani'].includes(plannedDays[followingIndex].who)?plannedDays[followingIndex]:null;
+    const showValue=(prefix,value,tone)=>{
+      document.getElementById(`${prefix}n`).textContent=value;
+      document.getElementById(`${prefix}n`).className=`er-n ${tone}`.trim();
+      document.getElementById(`${prefix}unit`).textContent=Number.isInteger(value)?dayWord(value):'';
+    };
 
     if(!['Paul','Dani'].includes(todayWho)){
       document.getElementById('c1lbl').textContent='Heute';
       document.getElementById('c1n').textContent='–';
       document.getElementById('c1n').className='er-n';
       document.getElementById('c1s').textContent='Keine eindeutige Zuordnung';
+      document.getElementById('c1unit').textContent='';
       document.getElementById('c2lbl').textContent='Aufenthaltsplan';
       document.getElementById('c2n').textContent='–';
       document.getElementById('c2n').className='er-n';
       document.getElementById('c2s').textContent='Daten prüfen';
+      document.getElementById('c2unit').textContent='';
       document.getElementById('erNext').innerHTML='<span>⚠️</span><span>Plan für heute nicht verfügbar</span>';
       updateCsPreview('er','Plan für heute nicht verfügbar');
     } else if(todayWho==='Paul'){
-      // Kids are HERE → show remaining days + when next Paul-block starts after Dani
-      let cnt=0;for(const e of fut){if(e.who==='Paul')cnt++;else break;}
       document.getElementById('c1lbl').textContent='Noch bei Paul';
-      document.getElementById('c1n').textContent=cnt;
-      document.getElementById('c1n').className='er-n g';
-      document.getElementById('c1s').textContent=cnt===1?'Heute letzter Tag':'inkl. heute';
-
-      // Next Paul block: how many days in a row?
-      const nd=fut.find(e=>e.who==='Dani');
-      const np=nd?fut.find(e=>e.date>nd.date&&e.who==='Paul'):null;
-      if(np){
-        // Count consecutive Paul days in that block
-        let npCnt=0;const npStart=np.date;
-        for(const e of fut.filter(e=>e.date>=npStart)){if(e.who==='Paul')npCnt++;else break;}
-        document.getElementById('c2lbl').textContent='Nächster Besuch';
-        document.getElementById('c2n').textContent=npCnt;
-        document.getElementById('c2n').className='er-n b';
-        document.getElementById('c2s').textContent=`${npCnt} Tage · ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
-      }
-      if(nd){document.getElementById('erNext').innerHTML=`<span>🔄</span><span>Wechsel zu Dani: <strong>${WK[nd.date.getDay()]}. ${nd.date.getDate()}. ${MK[nd.date.getMonth()]}</strong></span>`;}
-      updateCsPreview('er', `Bei Paul 🏠 · noch ${cnt} ${cnt===1?'Tag':'Tage'}`);
+      showValue('c1',currentCount,'g');
+      document.getElementById('c1s').textContent=currentCount===1?'Heute ist der letzte Tag':'einschließlich heute';
+      document.getElementById('c2lbl').textContent='Nächster Zeitraum bei Paul';
+      if(followingBlock?.who==='Paul'){
+        const nextPaulCount=countBlock(followingIndex,'Paul');
+        showValue('c2',nextPaulCount,'b');
+        document.getElementById('c2s').textContent=`ab ${shortDate(followingBlock.date)}`;
+      }else{showValue('c2','–','');document.getElementById('c2s').textContent='Kein weiterer Zeitraum verfügbar';}
+      document.getElementById('erNext').innerHTML=nextBlock?.who==='Dani'?`<span>🔄</span><span>Wechsel zu Dani in <strong>${changeIndex} ${dayWord(changeIndex)}</strong> · ${shortDate(nextBlock.date)}</span>`:'<span>⚠️</span><span>Kein weiterer Wechsel im Planzeitraum</span>';
+      updateCsPreview('er', `Bei Paul 🏠 · noch ${currentCount} ${dayWord(currentCount)}`);
 
     } else {
-      // Kids at Dani → show remaining days there + how many days at Paul in next block
-      let cnt=0;for(const e of fut){if(e.who==='Dani')cnt++;else break;}
-      document.getElementById('c1lbl').textContent='Noch bei Dani';
-      document.getElementById('c1n').textContent=cnt;
-      document.getElementById('c1n').className='er-n gr';
-      document.getElementById('c1s').textContent='inkl. heute';
-
-      // Next Paul block: how many consecutive days?
-      const np=fut.find(e=>e.who==='Paul');
-      if(np){
-        let npCnt=0;const npStart=np.date;
-        for(const e of fut.filter(e=>e.date>=npStart)){if(e.who==='Paul')npCnt++;else break;}
-        document.getElementById('c2lbl').textContent='Tage bei Paul danach';
-        document.getElementById('c2n').textContent=npCnt;
-        document.getElementById('c2n').className='er-n b';
-        document.getElementById('c2s').textContent=`ab ${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}`;
-        document.getElementById('erNext').innerHTML=`<span>🏠</span><span>Emil & Rosa kommen: <strong>${WK[np.date.getDay()]}. ${np.date.getDate()}. ${MK[np.date.getMonth()]}</strong></span>`;
-      }
-      updateCsPreview('er', `Bei Dani · noch ${cnt} Tage · kommen ${np?WK[np.date.getDay()]+'. '+np.date.getDate()+'. '+MK[np.date.getMonth()]:'–'}`);
+      document.getElementById('c1lbl').textContent='Bis wieder bei Paul';
+      showValue('c1',currentCount,'gr');
+      document.getElementById('c1s').textContent=currentCount===1?'morgen':'einschließlich heute';
+      document.getElementById('c2lbl').textContent='Nächster Zeitraum bei Paul';
+      if(nextBlock?.who==='Paul'){
+        const nextPaulCount=countBlock(changeIndex,'Paul');
+        showValue('c2',nextPaulCount,'b');
+        document.getElementById('c2s').textContent=`ab ${shortDate(nextBlock.date)}`;
+      }else{showValue('c2','–','');document.getElementById('c2s').textContent='Kein weiterer Zeitraum verfügbar';}
+      document.getElementById('erNext').innerHTML=nextBlock?.who==='Paul'?`<span>🏠</span><span>Wieder bei Paul in <strong>${changeIndex} ${dayWord(changeIndex)}</strong> · ${shortDate(nextBlock.date)}</span>`:'<span>⚠️</span><span>Kein weiterer Wechsel im Planzeitraum</span>';
+      updateCsPreview('er', `Bei Dani · wieder bei Paul in ${currentCount} ${dayWord(currentCount)}`);
     }
   }catch(e){
     console.warn('Kids-Sheet Fehler:',e);

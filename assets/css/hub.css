@@ -321,14 +321,14 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 
 /* ── EMIL & ROSA ── */
 .er{background:var(--card);border-radius:var(--r);border:1px solid rgba(52,199,89,.28);box-shadow:var(--sh);overflow:hidden;width:100%;}
-.er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.er-title{font-size:16px;font-weight:700;letter-spacing:-.3px;}
-.er-badge{font-family:'Inter',monospace;font-size:10px;padding:3px 11px;border-radius:20px;border:1px solid;}
+.er-top{padding:15px 20px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--green-l),transparent 68%);}
+.er-eyebrow{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--green);margin-bottom:3px}.er-title{font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.er-badge{font-family:'Inter',monospace;font-size:10px;font-weight:700;padding:5px 10px 5px 22px;border-radius:20px;border:1px solid;position:relative;white-space:nowrap}.er-badge::before{content:'';position:absolute;left:9px;top:50%;width:6px;height:6px;border-radius:50%;background:currentColor;transform:translateY(-50%);box-shadow:0 0 0 3px color-mix(in srgb,currentColor 14%,transparent)}
 .er-badge.paul{color:var(--green);border-color:var(--green);background:var(--green-l);}
 .er-badge.dani{color:var(--t2);border-color:var(--border);background:var(--card2);}
 .er-badge.unknown{color:var(--orange);border-color:var(--orange-b);background:var(--orange-l);}
 .er-nums{display:grid;grid-template-columns:1fr 1fr;}
-.er-num{padding:16px 20px;border-right:1px solid var(--border);}
+.er-num{padding:16px 20px;border-right:1px solid var(--border);min-width:0;}
 .er-num:last-child{border-right:none;}
 .er-num-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);margin-bottom:7px;-webkit-font-smoothing:antialiased;}
 .er-big{display:flex;align-items:flex-end;gap:3px;margin-bottom:3px;}
@@ -355,7 +355,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .er-leg{display:flex;gap:12px;margin-top:5px;}
 .er-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
 .er-ld{width:7px;height:7px;border-radius:2px;}
-.er-next{padding:9px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--t2);display:flex;align-items:center;gap:8px;}
+.er-next{margin:0 14px 14px;padding:10px 12px;border:1px solid var(--blue-b);border-radius:var(--r3);background:var(--blue-l);font-size:11.5px;color:var(--t2);display:flex;align-items:center;gap:9px;}
 .er-next strong{color:var(--t);font-weight:600;}
 
 /* ── ALMA ── */
@@ -789,8 +789,13 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
   .weather-forecast{padding:9px 14px 11px;gap:5px;}
 
   /* Emil & Rosa – Zahlen kleiner auf Mobile */
+  .er-top{align-items:flex-start;gap:10px;padding:13px 14px 12px;}
+  .er-title{font-size:14px;}
+  .er-badge{font-size:9px;padding:5px 8px 5px 20px;}
+  .er-badge::before{left:8px;}
   .er-n{font-size:36px!important;}
   .er-num{padding:12px 14px;}
+  .er-next{margin:0 10px 10px;padding:9px 10px;}
 
   /* Alma Section */
   .alma-section-n{font-size:32px;}
