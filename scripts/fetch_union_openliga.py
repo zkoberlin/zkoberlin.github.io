@@ -25,6 +25,19 @@ def match_view(match,final=None):
         view["unionResult"]="W" if goals[0]>goals[1] else "D" if goals[0]==goals[1] else "L"
     return view
 
+def opponent_match_view(match, team_id, final):
+    home=match["team1"]; away=match["team2"]
+    is_home=home["teamId"]==team_id
+    goals=final if is_home else final[::-1]
+    rival=away if is_home else home
+    return {
+        "id":match["matchID"], "date":match["matchDateTimeUTC"],
+        "competition":"Bundesliga", "isHome":is_home,
+        "opponent":{"id":rival["teamId"],"name":rival["teamName"],"shortName":rival.get("shortName"),"logo":rival.get("teamIconUrl")},
+        "goalsFor":goals[0], "goalsAgainst":goals[1],
+        "result":"W" if goals[0]>goals[1] else "D" if goals[0]==goals[1] else "L"
+    }
+
 def main():
     now=datetime.now(timezone.utc); season=now.year if now.month>=7 else now.year-1
     matches=fetch(f"getmatchdata/{LEAGUE}/{season}"); table=fetch(f"getbltable/{LEAGUE}/{season}"); group=fetch(f"getcurrentgroup/{LEAGUE}")
@@ -38,7 +51,22 @@ def main():
     ranked=sorted(table,key=lambda r:(-r["points"],-r["goalDiff"],-r["goals"],r["teamName"])); started=any(r["matches"] for r in table)
     table_view=[{"rank":i if started else None,"teamId":r["teamInfoId"],"name":r["teamName"],"shortName":r.get("shortName"),"logo":r.get("teamIconUrl"),"played":r["matches"],"goalsFor":r["goals"],"goalsAgainst":r["opponentGoals"],"goalDifference":r["goalDiff"],"points":r["points"],"isUnion":r["teamInfoId"]==UNION_ID} for i,r in enumerate(ranked,1)]
     form="".join(match_view(m,s)["unionResult"] for m,s in completed[-5:])
-    output={"schemaVersion":2,"generatedAt":now.replace(microsecond=0).isoformat().replace("+00:00","Z"),"source":{"name":"OpenLigaDB","url":"https://openligadb.de/","leagueShortcut":LEAGUE},"season":{"startYear":season,"label":f"{season}/{str(season+1)[-2:]}","currentMatchday":group.get("groupOrderID")},"team":{"id":UNION_ID,"name":row["teamName"],"shortName":row.get("shortName"),"logo":row.get("teamIconUrl")},"status":"active" if started else "preseason","standing":{"rank":next((i for i,r in enumerate(ranked,1) if r["teamInfoId"]==UNION_ID),None) if started else None,"played":row["matches"],"won":row["won"],"drawn":row["draw"],"lost":row["lost"],"goalsFor":row["goals"],"goalsAgainst":row["opponentGoals"],"goalDifference":row["goalDiff"],"points":row["points"],"form":form},"lastMatch":match_view(*completed[-1]) if completed else None,"nextMatch":match_view(upcoming[0]) if upcoming else None,"table":table_view}
+    next_match=upcoming[0] if upcoming else None
+    opponent_view=None
+    if next_match:
+        opponent_team=next_match["team2"] if next_match["team1"]["teamId"]==UNION_ID else next_match["team1"]
+        opponent_id=opponent_team["teamId"]
+        opponent_completed=[(m,score(m)) for m in matches if opponent_id in (m["team1"]["teamId"],m["team2"]["teamId"]) and m.get("matchIsFinished")]
+        opponent_completed=[(m,s) for m,s in opponent_completed if s]
+        if len(opponent_completed)<5:
+            previous=fetch(f"getmatchdata/{LEAGUE}/{season-1}")
+            opponent_completed=[(m,score(m)) for m in previous if opponent_id in (m["team1"]["teamId"],m["team2"]["teamId"]) and m.get("matchIsFinished")]+opponent_completed
+            opponent_completed=[(m,s) for m,s in opponent_completed if s]
+        opponent_completed=sorted(opponent_completed,key=lambda x:x[0]["matchDateTimeUTC"])[-5:]
+        recent=[opponent_match_view(m,opponent_id,s) for m,s in opponent_completed]
+        opponent_row=next((r for r in table_view if r["teamId"]==opponent_id),None)
+        opponent_view={"id":opponent_id,"name":opponent_team["teamName"],"shortName":opponent_team.get("shortName"),"logo":opponent_team.get("teamIconUrl"),"standing":opponent_row,"form":"".join(m["result"] for m in recent),"lastMatches":recent[-3:]}
+    output={"schemaVersion":3,"generatedAt":now.replace(microsecond=0).isoformat().replace("+00:00","Z"),"source":{"name":"OpenLigaDB","url":"https://openligadb.de/","leagueShortcut":LEAGUE},"season":{"startYear":season,"label":f"{season}/{str(season+1)[-2:]}","currentMatchday":group.get("groupOrderID")},"team":{"id":UNION_ID,"name":row["teamName"],"shortName":row.get("shortName"),"logo":row.get("teamIconUrl")},"status":"active" if started else "preseason","standing":{"rank":next((i for i,r in enumerate(ranked,1) if r["teamInfoId"]==UNION_ID),None) if started else None,"played":row["matches"],"won":row["won"],"drawn":row["draw"],"lost":row["lost"],"goalsFor":row["goals"],"goalsAgainst":row["opponentGoals"],"goalDifference":row["goalDiff"],"points":row["points"],"form":form},"lastMatch":match_view(*completed[-1]) if completed else None,"nextMatch":match_view(next_match) if next_match else None,"nextOpponent":opponent_view,"table":table_view}
     os.makedirs(os.path.dirname(OUT),exist_ok=True); fd,tmp=tempfile.mkstemp(prefix="union-",suffix=".json",dir=os.path.dirname(OUT))
     try:
         with os.fdopen(fd,"w",encoding="utf-8") as handle: json.dump(output,handle,ensure_ascii=False,indent=2); handle.write("\n")

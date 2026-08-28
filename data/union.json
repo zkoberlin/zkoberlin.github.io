@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "generatedAt": "2026-08-28T12:43:56Z",
+  "schemaVersion": 3,
+  "generatedAt": "2026-08-28T13:59:38Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -47,6 +47,73 @@
       "shortName": "Frankfurt",
       "logo": "https://i.imgur.com/X8NFkOb.png"
     }
+  },
+  "nextOpponent": {
+    "id": 91,
+    "name": "Eintracht Frankfurt",
+    "shortName": "Frankfurt",
+    "logo": "https://i.imgur.com/X8NFkOb.png",
+    "standing": {
+      "rank": null,
+      "teamId": 91,
+      "name": "Eintracht Frankfurt",
+      "shortName": "Frankfurt",
+      "logo": "https://i.imgur.com/X8NFkOb.png",
+      "played": 0,
+      "goalsFor": 0,
+      "goalsAgainst": 0,
+      "goalDifference": 0,
+      "points": 0,
+      "isUnion": false
+    },
+    "form": "LDLLD",
+    "lastMatches": [
+      {
+        "id": 77538,
+        "date": "2026-05-02T13:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": true,
+        "opponent": {
+          "id": 100,
+          "name": "Hamburger SV",
+          "shortName": "HSV",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg"
+        },
+        "goalsFor": 1,
+        "goalsAgainst": 2,
+        "result": "L"
+      },
+      {
+        "id": 77545,
+        "date": "2026-05-08T18:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": false,
+        "opponent": {
+          "id": 7,
+          "name": "Borussia Dortmund",
+          "shortName": "Dortmund",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png"
+        },
+        "goalsFor": 2,
+        "goalsAgainst": 3,
+        "result": "L"
+      },
+      {
+        "id": 77556,
+        "date": "2026-05-16T13:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": true,
+        "opponent": {
+          "id": 16,
+          "name": "VfB Stuttgart",
+          "shortName": "Stuttgart",
+          "logo": "https://i.imgur.com/v0tkpNx.png"
+        },
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "result": "D"
+      }
+    ]
   },
   "table": [
     {
