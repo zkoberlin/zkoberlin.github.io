@@ -6,6 +6,7 @@ import worker from "../src/index.js";
 function env() {
   const alcoholEntries = [];
   const preferences = new Map();
+  const finance = new Map();
   return {
     ALLOWED_GOOGLE_EMAIL: "paul@example.test",
     BACKEND: {
@@ -20,10 +21,15 @@ function env() {
         return {
           bind(...args) { values = args; return this; },
           async all() { return { results: alcoholEntries.slice() }; },
-          async first() { return preferences.has(values[0]) ? { value: preferences.get(values[0]) } : null; },
+          async first() {
+            if (sql.includes("FROM finance_state")) return finance.has(values[0]) ? finance.get(values[0]) : null;
+            return preferences.has(values[0]) ? { value: preferences.get(values[0]) } : null;
+          },
           async run() {
             if (sql.startsWith("INSERT INTO hub_preferences")) {
               preferences.set(values[0], values[1]);
+            } else if (sql.startsWith("INSERT INTO finance_state")) {
+              finance.set(values[0], { payload: values[1], updatedAt: "2026-08-28 12:00:00" });
             } else if (sql.startsWith("INSERT")) {
               alcoholEntries.push({ entryId: values[0], date: values[1], time: values[2], drinkCode: values[3], label: values[4], units: values[5] });
             } else if (sql.startsWith("DELETE")) {
@@ -54,10 +60,52 @@ function env() {
 }
 
 test("blocks every private route without a token", async () => {
-  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/calendar-preferences", "/snapshot", "/trailyx-preview", "/alcohol"]) {
+  for (const path of ["/feeds/gmail", "/feeds/hellomed", "/feeds/kids", "/feeds/alma", "/feeds/calendar-preview", "/calendar-preferences", "/snapshot", "/trailyx-preview", "/alcohol", "/finance", "/finance-preview"]) {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
   }
+});
+
+test("stores finance state and exposes only a minimal preview", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ email: "paul@example.test", email_verified: true, name: "Paul" }));
+  const testEnv = env();
+  const payload = {
+    v: 3,
+    ts: "2026-08-28T12:00:00.000Z",
+    s: { gehalt: { v: 4000 }, miete: { v: 1500, on: true }, invest: { v: 300 }, notgr: { v: 100 }, urlaub: { v: 50 }, sonder: { v: 0 } },
+    c: [{ k: "fitness", name: "Fitnessstudio", amt: 30, monthly: 30, freq: "monthly", cat: "Freizeit" }],
+  };
+  try {
+    const missing = await worker.fetch(new Request("https://gateway.test/finance", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    assert.equal(missing.status, 404);
+
+    const saved = await worker.fetch(new Request("https://gateway.test/finance", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }), testEnv);
+    assert.equal(saved.status, 200);
+
+    const full = await worker.fetch(new Request("https://gateway.test/finance", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    assert.deepEqual(await full.json(), payload);
+
+    const previewResponse = await worker.fetch(new Request("https://gateway.test/finance-preview", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    const preview = await previewResponse.json();
+    assert.equal(previewResponse.status, 200);
+    assert.equal(preview.buffer, 2020);
+    assert.equal(preview.savingsMonthly, 400);
+    assert.equal(preview.savingsRate, 10);
+    assert.equal("s" in preview, false);
+    assert.equal(JSON.stringify(preview).includes("Fitnessstudio"), false);
+
+    const invalid = await worker.fetch(new Request("https://gateway.test/finance", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, s: { gehalt: { v: -1 } } }),
+    }), testEnv);
+    assert.equal(invalid.status, 400);
+  } finally { globalThis.fetch = originalFetch; }
 });
 
 test("stores and deletes alcohol entries only through the verified route", async () => {

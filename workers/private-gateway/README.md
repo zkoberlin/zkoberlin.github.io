@@ -18,6 +18,8 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/feeds/alma` (nur Beginn und Ende relevanter Besuche, ohne übrige Kalenderdaten)
 - `/feeds/calendar-preview` (höchstens 60 kategorisierte Vorschautermine ohne Orte und Beschreibungen)
 - `/calendar-preferences` (D1-gespeicherte Auswahl sichtbarer Kalenderkategorien)
+- `/finance` (`GET`, `PUT`; vollständiger validierter Finanzstand in D1)
+- `/finance-preview` (ausschließlich Puffer, freier Anteil und Sparquote ohne Einzelposten)
 - `/snapshot`
 - `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/alcohol` (`GET`, `POST`, `DELETE`; persönliche Einträge in D1)

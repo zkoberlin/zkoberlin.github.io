@@ -1117,31 +1117,13 @@ function toggleFinBlur(e){
 
 // ── FINANZEN ──
 async function loadFin(){
+  const FINANCE_PREVIEW_API='https://paul-gateway-v2.paul-bendzko.workers.dev/finance-preview';
   try{
-    const jbKey=localStorage.getItem('fp3_jb_key')||'';
-    const jbBin=localStorage.getItem('fp3_jb_bin')||'';
-    let S=null;
-    if(jbKey&&jbBin){
-      try{const r=await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest',{headers:{'X-Master-Key':jbKey},signal:AbortSignal.timeout(6000)});
-      if(r.ok){const j=await r.json();S=j.record?.s||j.record||null;}}catch(e){}
-    }
-    if(!S){const raw=localStorage.getItem('fp3');if(!raw){
-      document.getElementById('pufSub').textContent='Finanzen-App einmal öffnen';
-      document.getElementById('sparQuote').textContent='–';
-      document.getElementById('sparAbs').textContent='Noch keine Daten';
-      if(window._lbTick)window._lbTick();
-      return;
-    }S=JSON.parse(raw);}
-    const g=S.gehalt?.v||0,z=(S.zusatz?.on&&S.zusatz?.v)?S.zusatz.v:0,ein=g+z;
-    let total=0;
-    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
-      if(S[k]?.on){const v=S[k].v||0,f=S[k].freq||'monthly';total+=f==='quarterly'?v/3:f==='annual'?v/12:v;}
-    });
-    const ci=JSON.parse(localStorage.getItem('fp3c')||'[]');
-    ci.forEach(it=>{if(S[it.k]?.on)total+=S[it.k].v||0;});
-    const inv=S.invest?.v||0,notg=S.notgr?.v||0,url=S.urlaub?.v||0,sond=S.sonder?.v||0;
-    const puf=ein-total-inv-notg-url-sond;
-    const pct=Math.min(100,Math.max(0,ein>0?Math.round((puf/ein)*100):0));
+    if(!window.HubAuth?.isSignedIn())throw new Error('AUTH_REQUIRED');
+    const response=await HubAuth.authorizedFetch(FINANCE_PREVIEW_API,{signal:AbortSignal.timeout(8000)});
+    if(!response.ok)throw new Error(response.status===404?'NO_DATA':'HTTP '+response.status);
+    const data=await response.json();
+    const puf=data.buffer,pct=data.freePercent,sparPct=data.savingsRate,spar=data.savingsMonthly;
     const el=document.getElementById('puffer');
     el.textContent=fmt(puf);el.className='fin-row-val '+(puf>=0?'g':'r');
     document.getElementById('finBar').style.width=pct+'%';
@@ -1149,24 +1131,23 @@ async function loadFin(){
     document.getElementById('pufSub').textContent=puf>=0?'Im Plan ✓':'Überbudget!';
     document.getElementById('finPct').textContent=pct+'% frei';
     // (ein/aus werden nur in der Finanz-App angezeigt, nicht im Hub)
-    const spar=inv+notg;
-    const sparPct=ein>0?Math.round((spar/ein)*100):0;
     document.getElementById('sparQuote').textContent=sparPct+'%';
     document.getElementById('sparAbs').textContent=fmt(spar)+' / Monat';
     document.getElementById('sparRing').style.strokeDashoffset=101-(101*sparPct/100);
-    const syncLbl=document.getElementById('syncLbl');
-    syncLbl.textContent=(jbKey&&jbBin?'JSONBin Live':'localStorage')+' · Monatlich';
-    document.getElementById('finUpdated').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr';
-    const cats={};
-    const catMap={miete:'Wohnen',strom:'Wohnen',internet:'Wohnen',lebensmittel:'Wohnen',schufa:'Wohnen',ing:'Wohnen',haftpflicht:'Versicherung',rechtsschutz:'Versicherung',kredit:'Versicherung',gez:'Versicherung',unterhalt:'Familie',kids:'Familie',handyemil:'Familie',handyrosa:'Familie',ukv:'Familie',sparta:'Familie',bling:'Familie',unionemil:'Familie',handypaul:'Abos',icloud:'Abos',spotify:'Abos',finanzguru:'Abos',claude:'Abos',unionmitgl:'Abos',amazon:'Abos',parqet:'Abos',futbology:'Abos',fotmob:'Abos',bvg:'Freizeit',dauerkarte:'Freizeit',garmin:'Freizeit'};
-    const catColors={'Wohnen':'#0071e3','Familie':'#34c759','Versicherung':'#ff9500','Abos':'#af52de','Freizeit':'#ff3b30'};
-    ['miete','strom','internet','lebensmittel','schufa','ing','haftpflicht','rechtsschutz','kredit','gez','unterhalt','kids','handyemil','handyrosa','ukv','sparta','bling','unionemil','handypaul','icloud','spotify','finanzguru','claude','unionmitgl','amazon','parqet','futbology','fotmob','bvg','dauerkarte','garmin'].forEach(k=>{
-      if(S[k]?.on){const c=catMap[k]||'Sonstiges';cats[c]=(cats[c]||0)+(S[k].v||0);}
-    });
-  }catch(e){}
+    document.getElementById('syncLbl').textContent='Cloudflare D1 · geschützt';
+    const updated=new Date(String(data.updatedAt).replace(' ','T')+'Z');
+    document.getElementById('finUpdated').textContent='Stand: '+(Number.isNaN(updated.getTime())?'sicher synchronisiert':updated.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}));
+  }catch(e){
+    document.getElementById('puffer').textContent='–';
+    document.getElementById('sparQuote').textContent='–';
+    document.getElementById('sparAbs').textContent=e.message==='AUTH_REQUIRED'?'Anmelden zum Anzeigen':'Noch keine sicheren Daten';
+    document.getElementById('pufSub').textContent=e.message==='AUTH_REQUIRED'?'Geschützte Finanzdaten':'FinanzenPaul einmal angemeldet öffnen';
+    document.getElementById('syncLbl').textContent=e.message==='AUTH_REQUIRED'?'🔒 Anmeldung erforderlich':'Cloudflare D1';
+  }
   if(window._lbTick)window._lbTick();
 }
 loadFin();
+window.addEventListener('hub-auth-change',loadFin);
 
 // ── BITCOIN LIVE ──
 async function loadBtc(){

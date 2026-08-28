@@ -10,8 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="stylesheet" href="assets/css/app.css">
-<script src="../assets/js/version.js?v=6.15.0" defer></script>
+<script src="../assets/js/version.js?v=6.16.0" defer></script>
+<script src="../assets/js/auth.js?v=6.16.0" defer></script>
 </head>
 <body>
 
@@ -65,7 +67,7 @@
   <div class="d-topbar">
     <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
     <span class="d-topbar-title">Finanzplanung</span>
-    <span class="d-topbar-sub">Paul · <span data-app-version>v6.15.0</span></span>
+    <span class="d-topbar-sub">Paul · <span data-app-version>v6.16.0</span></span>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -75,6 +77,7 @@
       <span id="d-sync-ico" style="font-size:14px;">⚙️</span>
       <span id="d-sync-lbl" style="font-size:11px;color:var(--t3);">API-Key einrichten</span>
     </div>
+    <button type="button" class="d-btn" data-auth-button>Mit Google anmelden</button>
     <button type="button" class="d-btn" onclick="OM()">＋ Hinzufügen</button>
     <button type="button" id="d-theme-btn" onclick="toggleTheme()" style="padding:5px 12px;border-radius:8px;border:none;background:var(--sep2);color:var(--t2);font-size:16px;cursor:pointer;transition:background 0.12s;" title="Hell/Dunkel umschalten">🌙</button>
     <button type="button" class="d-btn exp" onclick="EX()">↓ Export</button>
@@ -393,7 +396,7 @@
 <div class="m-layout">
   <div class="m-topbar">
     <div class="m-topbar-inner">
-      <div class="m-topbar-title">Finanzen · Paul <span data-app-version style="font-size:10px;opacity:.55;">v6.15.0</span></div>
+      <div class="m-topbar-title">Finanzen · Paul <span data-app-version style="font-size:10px;opacity:.55;">v6.16.0</span></div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
         <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
@@ -800,48 +803,17 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=6.15.0"></script>
+<script src="assets/js/app.js?v=6.16.0"></script>
 
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">
   <div style="background:var(--card);border-radius:20px;padding:28px;width:420px;max-width:94vw;border:0.5px solid var(--sep);box-shadow:0 24px 60px rgba(0,0,0,0.3);">
-    <div style="font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px;">☁️ Cloud-Sync</div>
-    <div style="font-size:13px;color:var(--t3);margin-bottom:20px;line-height:1.5;">Beide Geräte müssen denselben API-Key <strong>und</strong> dieselbe Bin-ID haben.</div>
-
-    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:8px;">JSONBin Master Key</div>
-    <div style="display:flex;gap:8px;margin-bottom:14px;">
-      <input type="password" id="jb-key-input" placeholder="$2b$10$..." style="flex:1;padding:11px 13px;font-size:14px;font-family:inherit;background:var(--card2);color:var(--t1);border:0.5px solid var(--sep);border-radius:12px;outline:none;-webkit-appearance:none;">
-      <button type="button" onclick="saveJBKey()" style="padding:11px 16px;border-radius:12px;border:none;background:var(--acc);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">Verbinden</button>
-    </div>
-
-    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--t3);margin-bottom:8px;">Bin-ID <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">(muss auf beiden Geräten identisch sein)</span></div>
-    <div style="display:flex;gap:8px;margin-bottom:6px;">
-      <input type="text" id="jb-bin-input" placeholder="Noch keine Bin-ID — wird beim ersten Speichern angelegt" style="flex:1;padding:11px 13px;font-size:13px;font-family:monospace;background:var(--card2);color:var(--t1);border:0.5px solid var(--sep);border-radius:12px;outline:none;-webkit-appearance:none;">
-      <button type="button" onclick="copyBinId()" id="btn-copy-bin" style="padding:11px 14px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--t2);font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;">📋 Kopieren</button>
-    </div>
-    <div style="font-size:12px;color:var(--t3);margin-bottom:16px;line-height:1.5;">
-      👆 Kopiere die Bin-ID vom Gerät wo sie bereits existiert und füge sie auf dem anderen Gerät ein. Dann <strong>Bin-ID speichern</strong> drücken.
-    </div>
-    <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <button type="button" onclick="saveBinId()" style="flex:1;padding:11px;border-radius:12px;border:none;background:var(--grn);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">✓ Bin-ID speichern</button>
-      <button type="button" onclick="resetBin()" style="padding:11px 14px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--red);font-size:13px;cursor:pointer;font-family:inherit;">Neue Bin</button>
-    </div>
-
-    <div id="jb-status" style="font-size:13px;color:var(--t3);text-align:center;min-height:18px;margin-bottom:14px;"></div>
-
-    <div style="background:var(--card2);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--t3);line-height:1.7;">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span>API-Key:</span>
-        <span style="color:var(--t1);font-family:monospace;" id="sm-key-display">–</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;">
-        <span>Bin-ID:</span>
-        <span style="color:var(--t1);font-family:monospace;font-size:11px;" id="sm-bin-display">–</span>
-      </div>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;">
-      <button type="button" onclick="clearJBKey()" style="font-size:12px;color:var(--red);background:none;border:none;cursor:pointer;font-family:inherit;">Alles trennen & zurücksetzen</button>
+    <div style="font-size:18px;font-weight:700;color:var(--t1);margin-bottom:6px;">🔒 Sicherer Cloud-Sync</div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:18px;line-height:1.5;">Deine Finanzdaten liegen geschützt in Cloudflare D1 und sind nur nach Anmeldung mit deinem freigegebenen Google-Konto erreichbar.</div>
+    <div id="cloud-sync-state" style="background:var(--card2);border-radius:12px;padding:14px;font-size:14px;font-weight:600;color:var(--t1);margin-bottom:12px;">Verbindung wird geprüft …</div>
+    <div style="font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:18px;">Beim ersten angemeldeten Öffnen wird der vorhandene Stand einmalig und verlustfrei übernommen. Die alte JSONBin-Kopie bleibt bis zu deinem abgeschlossenen Live-Test als Rückfalloption erhalten.</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button type="button" data-auth-button style="padding:9px 14px;border-radius:12px;border:none;background:var(--acc);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Mit Google anmelden</button>
       <button type="button" onclick="closeSM()" style="padding:9px 20px;border-radius:12px;border:0.5px solid var(--sep);background:var(--card2);color:var(--t2);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Schließen</button>
     </div>
   </div>

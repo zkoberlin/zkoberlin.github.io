@@ -11,6 +11,8 @@ const PRIVATE_PATHS = new Set([
   "/feeds/alma",
   "/feeds/calendar-preview",
   "/calendar-preferences",
+  "/finance",
+  "/finance-preview",
   "/snapshot",
   "/trailyx-preview",
   "/alcohol",
@@ -50,6 +52,65 @@ const ALCOHOL_CATALOG = Object.freeze({
 
 const CALENDAR_CATEGORY_IDS = new Set(["maja", "birthday", "family", "sport", "culture", "health", "travel", "other"]);
 const DEFAULT_CALENDAR_CATEGORIES = ["maja", "birthday", "culture", "health", "travel", "other"];
+const FINANCE_STATE_KEY = "primary";
+const FINANCE_MAX_BYTES = 100_000;
+const FINANCE_BASE_KEYS = ["miete", "strom", "internet", "lebensmittel", "schufa", "ing", "haftpflicht", "rechtsschutz", "kredit", "gez", "unterhalt", "kids", "handyemil", "handyrosa", "ukv", "sparta", "bling", "unionemil", "handypaul", "icloud", "spotify", "finanzguru", "claude", "unionmitgl", "amazon", "parqet", "futbology", "fotmob", "bvg", "dauerkarte", "garmin"];
+
+function validAmount(value) {
+  return Number.isFinite(value) && value >= 0 && value <= 10_000_000;
+}
+
+function validFinancePayload(payload) {
+  if (!payload || payload.v !== 3 || !payload.s || typeof payload.s !== "object" || Array.isArray(payload.s) || !Array.isArray(payload.c)) return false;
+  if (Object.keys(payload.s).length > 150 || payload.c.length > 60 || Number.isNaN(Date.parse(payload.ts))) return false;
+  for (const [key, item] of Object.entries(payload.s)) {
+    if (!/^[a-z0-9_-]{1,64}$/i.test(key) || !item || !validAmount(item.v) || (item.on !== undefined && typeof item.on !== "boolean")) return false;
+  }
+  return payload.c.every((item) => item && /^[a-z0-9_-]{1,64}$/i.test(item.k) &&
+    typeof item.name === "string" && item.name.trim().length > 0 && item.name.length <= 100 &&
+    validAmount(item.amt) && validAmount(item.monthly) && ["monthly", "quarterly", "yearly", "annual"].includes(item.freq) &&
+    typeof item.cat === "string" && item.cat.length > 0 && item.cat.length <= 40);
+}
+
+function financePreview(payload, updatedAt) {
+  const state = payload.s;
+  const income = (state.gehalt?.v || 0) + (state.zusatz?.on ? state.zusatz.v || 0 : 0);
+  const costs = FINANCE_BASE_KEYS.reduce((sum, key) => sum + (state[key]?.on === false ? 0 : state[key]?.v || 0), 0) +
+    payload.c.reduce((sum, item) => sum + (state[item.k]?.on === false ? 0 : item.monthly || 0), 0);
+  const savingsMonthly = (state.invest?.v || 0) + (state.notgr?.v || 0);
+  const distributions = savingsMonthly + (state.urlaub?.v || 0) + (state.sonder?.v || 0);
+  const buffer = Math.round((income - costs - distributions) * 100) / 100;
+  return {
+    schemaVersion: 1,
+    month: new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit" }).format(new Date()),
+    buffer,
+    freePercent: income > 0 ? Math.max(0, Math.min(100, Math.round(buffer / income * 100))) : 0,
+    savingsRate: income > 0 ? Math.max(0, Math.round(savingsMonthly / income * 100)) : 0,
+    savingsMonthly: Math.round(savingsMonthly * 100) / 100,
+    updatedAt,
+  };
+}
+
+async function financeResponse(request, env, origin, previewOnly = false) {
+  if (request.method === "GET") {
+    const row = await env.HUB_DB.prepare("SELECT payload_json AS payload, updated_at AS updatedAt FROM finance_state WHERE state_key = ?1").bind(FINANCE_STATE_KEY).first();
+    if (!row?.payload) return json({ error: "Finance state not found" }, 404, origin);
+    const payload = JSON.parse(row.payload);
+    return json(previewOnly ? financePreview(payload, row.updatedAt) : payload, 200, origin);
+  }
+  if (previewOnly || request.method !== "PUT") return json({ error: "Method not allowed" }, 405, origin);
+  const declaredLength = Number(request.headers.get("Content-Length") || 0);
+  if (declaredLength > FINANCE_MAX_BYTES) return json({ error: "Payload too large" }, 413, origin);
+  const body = await request.text();
+  if (new TextEncoder().encode(body).byteLength > FINANCE_MAX_BYTES) return json({ error: "Payload too large" }, 413, origin);
+  let payload;
+  try { payload = JSON.parse(body); } catch { return json({ error: "Invalid JSON" }, 400, origin); }
+  if (!validFinancePayload(payload)) return json({ error: "Invalid finance state" }, 400, origin);
+  await env.HUB_DB.prepare(
+    "INSERT INTO finance_state (state_key, payload_json, source_updated_at, updated_at) VALUES (?1, ?2, ?3, CURRENT_TIMESTAMP) ON CONFLICT(state_key) DO UPDATE SET payload_json = excluded.payload_json, source_updated_at = excluded.source_updated_at, updated_at = CURRENT_TIMESTAMP",
+  ).bind(FINANCE_STATE_KEY, JSON.stringify(payload), payload.ts).run();
+  return json({ saved: true, updatedAt: new Date().toISOString() }, 200, origin);
+}
 
 async function calendarPreferencesResponse(request, env, origin) {
   if (request.method === "GET") {
@@ -224,6 +285,14 @@ export default {
         return await calendarPreferencesResponse(request, env, origin);
       } catch {
         return json({ error: "Calendar preferences unavailable" }, 503, origin);
+      }
+    }
+
+    if (url.pathname === "/finance" || url.pathname === "/finance-preview") {
+      try {
+        return await financeResponse(request, env, origin, url.pathname === "/finance-preview");
+      } catch {
+        return json({ error: "Finance storage unavailable" }, 503, origin);
       }
     }
 

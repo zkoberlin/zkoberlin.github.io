@@ -29,41 +29,7 @@ function LOAD(){
     setVal(x.k,S[x.k].v);
     setTog(x.k,S[x.k].on);
   });
-  // Try loading from JSONBin (overrides localStorage if newer)
-  if(jbKey && jbBin) {
-    setSync('saving','Laden…');
-    jbLoad().then(data=>{
-      if(!data) { setSync('idle'); return; }
-      if(data.s) {
-        localStorage.setItem('fp3', JSON.stringify(data.s));
-        Object.keys(data.s).forEach(k=>{
-          if(S[k]){S[k].v=data.s[k].v;if(data.s[k].on!==undefined)S[k].on=data.s[k].on;}
-        });
-      }
-      if(data.c && Array.isArray(data.c)) {
-        localStorage.setItem('fp3c', JSON.stringify(data.c));
-        // re-render custom items
-        data.c.forEach(it=>{
-          if(!CI.find(x=>x.k===it.k)){CI.push(it);S[it.k]={v:it.monthly,on:true,cat:it.cat};renderCR(it);}
-        });
-      }
-      ITEMS.forEach(x=>{setSlider(x.k,S[x.k].v,S[x.k].on);setVal(x.k,S[x.k].v);setTog(x.k,S[x.k].on);});
-      // Update gehalt display
-      ['dsl-gehalt','msl-gehalt'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=S.gehalt.v;});
-      document.getElementById('d-gh-val').textContent=FI(S.gehalt.v);
-      document.getElementById('m-gh-val').textContent=FI(S.gehalt.v);
-      // Update rest distribution displays
-      ['invest','notgr','urlaub','sonder'].forEach(k=>{
-        ['dsl-','msl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.value=S[k].v;});
-        updateDistVal(k,S[k].v);
-      });
-      RC();
-      setSync('saved','Geladen ✓');
-      setTimeout(()=>setSync('idle'),2000);
-    });
-  } else if(!jbKey) {
-    setSync('nokey','API-Key einrichten →');
-  }
+  bootstrapFinanceSync();
   ['invest','notgr','urlaub','sonder'].forEach(k=>{
     const v=S[k].v;
     const de=document.getElementById('dsl-'+k); if(de) de.value=v;
@@ -88,54 +54,42 @@ function LOAD(){
   document.getElementById('m-zusatz-val').textContent=FI(S.zusatz.v);
 }
 
-// ══ JSONBIN SYNC ══
+// ══ GESCHÜTZTER CLOUDFLARE-SYNC ══
+const FINANCE_API='https://paul-gateway-v2.paul-bendzko.workers.dev/finance';
 const JB_KEY_STORE = 'fp3_jb_key';
 const JB_BIN_STORE = 'fp3_jb_bin';
-let jbKey = localStorage.getItem(JB_KEY_STORE) || '';
-let jbBin = localStorage.getItem(JB_BIN_STORE) || '';
 let syncTimer = null;
-let syncStatus = 'idle'; // idle | saving | saved | error | offline
+let financeBootstrapped = false;
 
 function setSync(status, msg) {
-  syncStatus = status;
-  const icons = {idle:'☁️', saving:'⏳', saved:'✅', error:'❌', offline:'📴', nokey:'⚙️'};
-  const msgs = {idle:'', saving:'Speichern…', saved:'Gespeichert', error:'Sync-Fehler', offline:'Offline', nokey:'API-Key einrichten'};
+  const icons = {idle:'🔒', saving:'⏳', saved:'✅', error:'❌', offline:'📴', nokey:'🔐'};
+  const msgs = {idle:'Cloudflare D1', saving:'Speichern…', saved:'Sicher gespeichert', error:'Sync-Fehler', offline:'Offline', nokey:'Anmelden für Cloud-Sync'};
   ['d-sync-ico','m-sync-ico'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=icons[status]||'☁️';});
   ['d-sync-lbl','m-sync-lbl'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=msg||msgs[status]||'';});
 }
 
-async function jbSave(data) {
-  if(!jbKey) { setSync('nokey','API-Key fehlt'); return; }
+function financePayload(){
+  return {v:3,ts:new Date().toISOString(),s:JSON.parse(localStorage.getItem('fp3')||'{}'),c:JSON.parse(localStorage.getItem('fp3c')||'[]')};
+}
+
+async function cloudSave(data) {
+  if(!window.HubAuth?.isSignedIn()) { setSync('nokey'); return false; }
   setSync('saving');
   try {
-    if(!jbBin) {
-      // Create new bin
-      const r = await fetch('https://api.jsonbin.io/v3/b', {
-        method:'POST',
-        headers:{'Content-Type':'application/json','X-Master-Key':jbKey,'X-Bin-Name':'Finanzplanung Paul','X-Bin-Private':'true'},
-        body: JSON.stringify(data)
-      });
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      const j = await r.json();
-      jbBin = j.metadata.id;
-      localStorage.setItem(JB_BIN_STORE, jbBin);
-    } else {
-      // Update existing bin
-      const r = await fetch('https://api.jsonbin.io/v3/b/'+jbBin, {
-        method:'PUT',
-        headers:{'Content-Type':'application/json','X-Master-Key':jbKey},
-        body: JSON.stringify(data)
-      });
-      if(!r.ok) throw new Error('HTTP '+r.status);
-    }
+    const r=await HubAuth.authorizedFetch(FINANCE_API,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
     setSync('saved');
     setTimeout(()=>setSync('idle'),2000);
+    return true;
   } catch(e) {
     setSync(navigator.onLine?'error':'offline');
+    return false;
   }
 }
 
-async function jbLoad() {
+async function legacyJsonBinLoad() {
+  const jbKey=localStorage.getItem(JB_KEY_STORE)||'';
+  const jbBin=localStorage.getItem(JB_BIN_STORE)||'';
   if(!jbKey || !jbBin) return null;
   try {
     const r = await fetch('https://api.jsonbin.io/v3/b/'+jbBin+'/latest', {
@@ -147,18 +101,45 @@ async function jbLoad() {
   } catch(e) { return null; }
 }
 
+function applyCloudPayload(data){
+  if(!data?.s)return;
+  localStorage.setItem('fp3',JSON.stringify(data.s));
+  localStorage.setItem('fp3c',JSON.stringify(Array.isArray(data.c)?data.c:[]));
+  Object.keys(data.s).forEach(k=>{if(S[k]){S[k].v=data.s[k].v;if(data.s[k].on!==undefined)S[k].on=data.s[k].on;}});
+  (data.c||[]).forEach(it=>{if(!CI.find(x=>x.k===it.k)){CI.push(it);S[it.k]={v:it.monthly,on:data.s[it.k]?.on!==false,cat:it.cat};renderCR(it);}});
+  ITEMS.forEach(x=>{setSlider(x.k,S[x.k].v,S[x.k].on);setVal(x.k,S[x.k].v);setTog(x.k,S[x.k].on);});
+  ['gehalt','invest','notgr','urlaub','sonder'].forEach(k=>{
+    ['dsl-','msl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.value=S[k].v;});
+    if(k!=='gehalt')updateDistVal(k,S[k].v);
+  });
+  document.getElementById('d-gh-val').textContent=FI(S.gehalt.v);
+  document.getElementById('m-gh-val').textContent=FI(S.gehalt.v);
+  RC();
+}
+
+async function bootstrapFinanceSync(){
+  if(!window.HubAuth?.isSignedIn()){setSync('nokey');return;}
+  setSync('saving','Sicher laden…');
+  try{
+    const response=await HubAuth.authorizedFetch(FINANCE_API,{signal:AbortSignal.timeout(8000)});
+    if(response.ok){applyCloudPayload(await response.json());financeBootstrapped=true;setSync('saved','Sicher geladen ✓');setTimeout(()=>setSync('idle'),2000);return;}
+    if(response.status!==404)throw new Error('HTTP '+response.status);
+    // Einmalige, verlustfreie Migration: erst JSONBin, sonst vorhandener lokaler Stand.
+    const legacy=await legacyJsonBinLoad();
+    const source=legacy?.s?legacy:financePayload();
+    applyCloudPayload(source);
+    if(await cloudSave({...source,v:3,ts:new Date().toISOString()})){financeBootstrapped=true;setSync('saved','Sicher migriert ✓');}
+  }catch(e){setSync(navigator.onLine?'error':'offline');}
+}
+
 function scheduleSave() {
   clearTimeout(syncTimer);
   syncTimer = setTimeout(()=>{
-    const payload = {
-      v:3,
-      ts: new Date().toISOString(),
-      s: JSON.parse(localStorage.getItem('fp3')||'{}'),
-      c: JSON.parse(localStorage.getItem('fp3c')||'[]')
-    };
-    jbSave(payload);
+    cloudSave(financePayload());
   }, 1500); // debounce 1.5s
 }
+
+window.addEventListener('hub-auth-change',()=>bootstrapFinanceSync());
 
 function SAVE(){
   const sv={};
@@ -819,98 +800,14 @@ function DEL_EDIT() {
 
 // SETTINGS
 function openSM() {
-  document.getElementById('jb-key-input').value = jbKey;
-  document.getElementById('jb-bin-input').value = jbBin;
   updateSMDisplay();
   document.getElementById('settings-modal').style.display='flex';
 }
 function closeSM() { document.getElementById('settings-modal').style.display='none'; }
 
 function updateSMDisplay() {
-  document.getElementById('sm-key-display').textContent = jbKey ? jbKey.slice(0,10)+'…' : '–';
-  document.getElementById('sm-bin-display').textContent = jbBin ? jbBin : 'noch keine';
-  document.getElementById('jb-bin-input').value = jbBin;
-}
-
-function copyBinId() {
-  if(!jbBin) { document.getElementById('jb-status').textContent='⚠️ Noch keine Bin-ID vorhanden — zuerst etwas speichern.'; return; }
-  navigator.clipboard.writeText(jbBin).then(()=>{
-    document.getElementById('btn-copy-bin').textContent='✅ Kopiert!';
-    setTimeout(()=>document.getElementById('btn-copy-bin').textContent='📋 Kopieren', 2000);
-  }).catch(()=>{
-    // Fallback: select the input
-    const inp = document.getElementById('jb-bin-input');
-    inp.select(); document.execCommand('copy');
-    document.getElementById('btn-copy-bin').textContent='✅ Kopiert!';
-    setTimeout(()=>document.getElementById('btn-copy-bin').textContent='📋 Kopieren', 2000);
-  });
-}
-
-function saveBinId() {
-  const binVal = document.getElementById('jb-bin-input').value.trim();
-  if(!binVal) { document.getElementById('jb-status').textContent='⚠️ Bitte Bin-ID eingeben.'; return; }
-  jbBin = binVal;
-  localStorage.setItem(JB_BIN_STORE, jbBin);
-  updateSMDisplay();
-  document.getElementById('jb-status').textContent='✅ Bin-ID gespeichert — lade jetzt deinen Stand…';
-  // Load from this bin immediately
-  jbLoad().then(data=>{
-    if(!data) { document.getElementById('jb-status').textContent='⚠️ Bin-ID gespeichert aber keine Daten gefunden.'; return; }
-    if(data.s) {
-      localStorage.setItem('fp3', JSON.stringify(data.s));
-      Object.keys(data.s).forEach(k=>{ if(S[k]){S[k].v=data.s[k].v;if(data.s[k].on!==undefined)S[k].on=data.s[k].on;} });
-    }
-    if(data.c && Array.isArray(data.c)) {
-      localStorage.setItem('fp3c', JSON.stringify(data.c));
-      data.c.forEach(it=>{ if(!CI.find(x=>x.k===it.k)){CI.push(it);S[it.k]={v:it.monthly,on:true,cat:it.cat};renderCR(it);} });
-    }
-    ITEMS.forEach(x=>{setSlider(x.k,S[x.k].v,S[x.k].on);setVal(x.k,S[x.k].v);setTog(x.k,S[x.k].on);});
-    RC();
-    document.getElementById('jb-status').textContent='✅ Erfolgreich geladen — Geräte sind jetzt synchron!';
-  });
-}
-
-function resetBin() {
-  if(!confirm('Neue Bin anlegen? Der alte Stand geht verloren.')) return;
-  jbBin = '';
-  localStorage.removeItem(JB_BIN_STORE);
-  document.getElementById('jb-bin-input').value = '';
-  updateSMDisplay();
-  document.getElementById('jb-status').textContent='Neue Bin wird beim nächsten Speichern angelegt.';
-  SAVE();
-}
-
-async function saveJBKey() {
-  const key = document.getElementById('jb-key-input').value.trim();
-  if(!key) { document.getElementById('jb-status').textContent='⚠️ Bitte Key eingeben.'; return; }
-  document.getElementById('jb-status').textContent='Verbinde…';
-  try {
-    const r = await fetch('https://api.jsonbin.io/v3/b', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','X-Master-Key':key,'X-Bin-Name':'FP-Test','X-Bin-Private':'true'},
-      body:JSON.stringify({test:true})
-    });
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const j = await r.json();
-    await fetch('https://api.jsonbin.io/v3/b/'+j.metadata.id, {method:'DELETE',headers:{'X-Master-Key':key}}).catch(()=>{});
-    jbKey = key;
-    localStorage.setItem(JB_KEY_STORE, jbKey);
-    updateSMDisplay();
-    setSync('idle');
-    document.getElementById('jb-status').textContent='✅ Key verbunden! Jetzt einmal speichern damit die Bin-ID erscheint.';
-    SAVE();
-  } catch(e) {
-    document.getElementById('jb-status').textContent='❌ Fehler: '+e.message;
-  }
-}
-
-function clearJBKey() {
-  if(!confirm('Wirklich alles zurücksetzen?')) return;
-  jbKey=''; jbBin='';
-  localStorage.removeItem(JB_KEY_STORE); localStorage.removeItem(JB_BIN_STORE);
-  updateSMDisplay();
-  setSync('nokey','API-Key einrichten');
-  document.getElementById('jb-status').textContent='Getrennt.';
+  const signedIn=Boolean(window.HubAuth?.isSignedIn());
+  document.getElementById('cloud-sync-state').textContent=signedIn?(financeBootstrapped?'✅ Sicher verbunden':'⏳ Verbindung wird aufgebaut'):'🔐 Anmeldung erforderlich';
 }
 
 // EXPORT/IMPORT
