@@ -11,9 +11,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="assets/css/app.css?v=6.30.0">
-<script src="../assets/js/version.js?v=6.30.0" defer></script>
-<script src="../assets/js/auth.js?v=6.30.0" defer></script>
+<link rel="stylesheet" href="assets/css/app.css?v=6.31.0">
+<script src="../assets/js/version.js?v=6.31.0" defer></script>
+<script src="../assets/js/auth.js?v=6.31.0" defer></script>
 </head>
 <body>
 
@@ -78,7 +78,7 @@
 <div class="d-layout">
   <div class="d-topbar">
     <a href="https://zkoberlin.github.io" class="d-hub-link" title="Zurück zum Hub">← Hub</a>
-    <div class="d-brand"><span class="d-topbar-title">Finanzplanung</span><span class="d-topbar-sub">Paul · <span data-app-version>v6.30.0</span></span></div>
+    <div class="d-brand"><span class="d-topbar-title">Finanzplanung</span><span class="d-topbar-sub">Paul · <span data-app-version>v6.31.0</span></span></div>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
@@ -367,7 +367,7 @@
 
   <div class="d-right">
     <div class="d-ps">
-      <div class="d-pcard">
+      <div class="d-pcard d-income-card">
         <div class="d-puf-lbl">Freier Puffer</div>
         <div class="d-puf-val" id="d-puf-val">–</div>
         <div class="d-alert" id="d-alert"><span class="d-alert-dot"></span><span id="d-alert-txt">–</span></div>
@@ -388,12 +388,12 @@
       </div>
     </div>
     <div class="d-ps">
-      <div class="d-plbl">Rest-Verteilung <span style="float:right;color:var(--t1);font-weight:600;font-size:11px;" id="d-restlbl">–</span></div>
+      <div class="d-plbl">Rest verteilen <span style="float:right;color:var(--acc);font-weight:700;font-size:10px;" id="d-restlbl">–</span></div>
       <div class="d-pcard">
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="d-dlbl" style="min-width:80px;">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:80px;" oninput="RI('invest',this.value,'d',event)"><span class="d-dval" id="d-invest-val">–</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="d-dlbl" style="min-width:80px;">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-notgr" style="width:80px;" oninput="RI('notgr',this.value,'d',event)"><span class="d-dval" id="d-notgr-val">–</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="d-dlbl" style="min-width:80px;">Urlaub</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-urlaub" style="width:80px;" oninput="RI('urlaub',this.value,'d',event)"><span class="d-dval" id="d-urlaub-val">–</span></div>
-        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="d-dlbl" style="min-width:80px;">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:80px;" oninput="RI('sonder',this.value,'d',event)"><span class="d-dval" id="d-sonder-val">–</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('invest')"><span class="alloc-icon">📈</span><span class="d-dlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-invest" style="width:100%;" oninput="RI('invest',this.value,'d',event)"><span class="d-dval" id="d-invest-val">–</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('notgr')"><span class="alloc-icon">🐷</span><span class="d-dlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-notgr" style="width:100%;" oninput="RI('notgr',this.value,'d',event)"><span class="d-dval" id="d-notgr-val">–</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="alloc-icon">✈️</span><span class="d-dlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-urlaub" style="width:100%;" oninput="RI('urlaub',this.value,'d',event)"><span class="d-dval" id="d-urlaub-val">–</span></div>
+        <div class="d-drow" style="cursor:pointer;" onclick="OR('sonder')"><span class="alloc-icon">✨</span><span class="d-dlbl">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="dsl-sonder" style="width:100%;" oninput="RI('sonder',this.value,'d',event)"><span class="d-dval" id="d-sonder-val">–</span></div>
       </div>
     </div>
     <div class="d-ps">
@@ -414,7 +414,7 @@
 <div class="m-layout">
   <div class="m-topbar">
     <div class="m-topbar-inner">
-      <div class="m-topbar-copy"><div class="m-topbar-title">Finanzen · Paul</div><div class="m-topbar-sub"><span data-app-version>v6.30.0</span> · Budgetplanung</div></div>
+      <div class="m-topbar-copy"><div class="m-topbar-title">Finanzen · Paul</div><div class="m-topbar-sub"><span data-app-version>v6.31.0</span> · Budgetplanung</div></div>
       <div class="m-topbar-btns">
         <a href="https://zkoberlin.github.io" class="m-hub-btn" title="Zum Hub" aria-label="Zum Hub">⌂</a>
         <button type="button" id="m-theme-btn" class="m-icon-btn" onclick="toggleTheme()" title="Hell/Dunkel" aria-label="Darstellung wechseln">🌙</button>
@@ -452,7 +452,7 @@
         </div>
       </div>
 
-      <div class="m-slbl" style="padding-top:6px;"><span class="m-slbl-inner">Einnahmen</span></div>
+      <div class="m-slbl" style="padding-top:8px;"><div class="m-section-heading"><span class="m-slbl-inner">Einnahmen</span><span class="m-section-hint">monatlich</span></div></div>
       <div class="m-gheroe">
         <div class="m-ghlbl">Gehalt netto</div>
         <div class="m-ghval" id="m-gh-val" onclick="editGehalt('m')" style="cursor:pointer;">–</div>
@@ -466,12 +466,12 @@
         </div>
       </div>
 
-      <div class="m-slbl"><span class="m-slbl-inner">Rest-Verteilung</span><span class="m-slbl-tot" id="m-restlbl">–</span></div>
+      <div class="m-slbl"><span class="m-slbl-inner">Rest verteilen</span><span class="m-slbl-tot" id="m-restlbl">–</span></div>
       <div class="m-rcard">
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('invest')"><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:90px;" oninput="RI('invest',this.value,'m',event)"><span class="m-rval" id="m-invest-val">–</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('notgr')"><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-notgr" style="width:90px;" oninput="RI('notgr',this.value,'m',event)"><span class="m-rval" id="m-notgr-val">–</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-urlaub" style="width:90px;" oninput="RI('urlaub',this.value,'m',event)"><span class="m-rval" id="m-urlaub-val">–</span></div>
-        <div class="m-rrow" style="cursor:pointer;" onclick="OR('sonder')"><span class="m-rlbl">Sonderausgaben</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:90px;" oninput="RI('sonder',this.value,'m',event)"><span class="m-rval" id="m-sonder-val">–</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('invest')"><span class="alloc-icon">📈</span><span class="m-rlbl">Investieren</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-invest" style="width:100%;" oninput="RI('invest',this.value,'m',event)"><span class="m-rval" id="m-invest-val">–</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('notgr')"><span class="alloc-icon">🐷</span><span class="m-rlbl">Notgroschen</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-notgr" style="width:100%;" oninput="RI('notgr',this.value,'m',event)"><span class="m-rval" id="m-notgr-val">–</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('urlaub')"><span class="alloc-icon">✈️</span><span class="m-rlbl">Urlaub</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-urlaub" style="width:100%;" oninput="RI('urlaub',this.value,'m',event)"><span class="m-rval" id="m-urlaub-val">–</span></div>
+        <div class="m-rrow" style="cursor:pointer;" onclick="OR('sonder')"><span class="alloc-icon">✨</span><span class="m-rlbl">Sonder</span><input type="range" min="0" max="1500" step="10" value="0" id="msl-sonder" style="width:100%;" oninput="RI('sonder',this.value,'m',event)"><span class="m-rval" id="m-sonder-val">–</span></div>
       </div>
     </div>
 
@@ -820,7 +820,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=6.30.0"></script>
+<script src="assets/js/app.js?v=6.31.0"></script>
 
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">

@@ -226,10 +226,10 @@ function RC(){
   set('dm-rest',F(rest)); set('dm-puf',F(fp));
   set('dsb-ein',FI(ein)); set('dsb-aus',F(total)); set('dsb-rest',F(rest));
   set('d-puf-val',F(fp));
-  set('d-restlbl','von '+F(rest));
+  set('d-restlbl','Verfügbar '+F(rest));
   set('mh-puf',F(fp)); set('mh-ein',FI(ein)); set('mh-aus',F(total));
   set('mh-rest',F(rest)); set('mh-quote',quote+'%');
-  set('m-restlbl','von '+F(rest));
+  set('m-restlbl','Verfügbar '+F(rest));
 
   cls('dm-rest',rest>=0?'d-mv g':'d-mv r');
   cls('dm-puf',puf>=0?'d-mv g':'d-mv r');
