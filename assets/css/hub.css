@@ -471,7 +471,7 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .travel-card-head .a-name{font-size:15px;margin-top:2px;}
 .travel-card-head .a-desc{padding-top:3px;font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .travel-card-kicker{font-family:var(--font-head);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:#b7791f;}
-.travel-trips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 15px 10px;}
+.travel-trips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px 15px 10px;}
 .travel-trip{position:relative;background:var(--card2);border:1px solid var(--border);border-radius:var(--r3);padding:9px 54px 9px 10px;min-width:0;}
 .travel-trip-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t3);}
 .travel-trip-name{font-size:12px;font-weight:700;color:var(--t);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -902,7 +902,7 @@ html[data-theme="dark"] .bnav{background:rgba(14,14,16,.92);}
 
   /* TrailYX Kennzahlen als lesbares 2 x 2 Raster */
   .travel-card-head{min-height:72px;padding:12px 13px!important;}
-  .travel-trips{padding:0 12px 10px;}
+  .travel-trips{padding:10px 12px;}
   .travel-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 12px;}
   .travel-stat{min-height:58px;padding:9px 5px;display:flex;flex-direction:column;justify-content:center;}
   .travel-stat-val{font-size:15px;}
