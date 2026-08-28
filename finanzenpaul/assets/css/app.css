@@ -217,7 +217,7 @@ input[type=range]:disabled{opacity:0.2;pointer-events:none;}
 html.theme-dark .m-topbar{background:rgba(0,0,0,0.9);}
 .m-topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px 10px;}
 .m-topbar-copy{display:flex;flex-direction:column;gap:1px;min-width:0;}
-.m-topbar-title{font-size:16px;font-weight:700;letter-spacing:-0.4px;color:var(--t1);white-space:nowrap;}
+.m-topbar-title{font-size:16px;font-weight:700;letter-spacing:-0.4px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .m-topbar-sub{font-size:9px;color:var(--t3);white-space:nowrap;}
 .m-topbar-btns{display:flex;align-items:center;gap:5px;}
 .m-icon-btn,.m-hub-btn{width:36px;height:36px;border-radius:11px;background:var(--sep2);border:none;cursor:pointer;font-size:17px;color:var(--acc);display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;}

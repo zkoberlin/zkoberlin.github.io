@@ -22,6 +22,42 @@ const FINANCE_FREQUENCIES=['monthly','quarterly','yearly'];
 const FINANCE_SPECIAL_KEYS=['gehalt','zusatz','invest','notgr','urlaub','sonder'];
 const FINANCE_ICONS=['🏠','⚡','💧','🔥','📡','🛒','🛡️','⚖️','💳','🏦','📈','💰','🧾','💶','👨‍👧‍👦','👶','🎓','📱','⌚','🐷','🎵','☁️','🎬','📺','🎮','📰','📚','⚽','🏋️','🚲','🚆','🚌','🚗','✈️','🏨','🗺️','🍽️','☕','🍺','🎟️','🎭','📷','🎨','💇','🩺','💊','🐕','🐈','🎁','✨'];
 const CATEGORY_ICONS={Wohnen:'🏠',Versicherungen:'🛡️','Kredite & Finanzen':'💳',Familie:'👨‍👧‍👦',Abos:'📱',Freizeit:'⚽'};
+const FINANCE_GREETINGS={
+  morning:[
+    'Guten Morgen, Paul – erst Kaffee, dann Cashflow ☕','Moin Paul – das Budget ist schon wach 💶',
+    'Frühstart, Paul – die Zahlen schlafen nie 📊','Guten Morgen – heute spart sich’s fast von allein 🐷',
+    'Aufstehen, Paul – der Puffer braucht Pflege 🌤️','Morgen, Finanzkapitän – Kurs halten! 🧭',
+  ],
+  noon:[
+    'Mahlzeit, Paul – Budget statt Beilagen? 🍽️','Halbzeit, Paul – der Puffer steht noch 💪',
+    'Mittagspause? Die Zahlen nicken das ab 😎','Erst Lunch, dann Bilanz, Paul 🥪',
+    'Der Cashflow gönnt sich kurz Sonne ☀️','Mittagscheck: Konto wach, Paul auch? 👀',
+  ],
+  afternoon:[
+    'Na Paul, noch alles im grünen Bereich? 🟢','Nachmittagsrunde – der Puffer zählt mit 🐷',
+    'Paul, Zeit für einen kleinen Kassensturz 🧾','Die Zahlen sind bereit, wenn du es bist 📈',
+    'Kurzer Finanzboxenstopp, Paul? 🏁','Der Tag läuft – und dein Budget gleich mit 🚀',
+  ],
+  evening:[
+    'Guten Abend, Paul – Konto ohne Krawatte 🌙','Feierabendcheck: Puffer noch an Bord? ⛵',
+    'Abendrunde, Paul – Zahlen bitte leise 🤫','Zeit für Bilanz statt Bildschirmdrama 🎬',
+    'Paul, das Budget macht noch Überstunden 💼','Ein letzter Blick – dann dürfen die Euros schlafen 😴',
+  ],
+  night:[
+    'Noch wach, Paul? Dein Budget offenbar auch 🌚','Nachtschicht im Finanzministerium, Paul? 🏛️',
+    'Psst, die Sparschweine schlafen schon 🐷','Mitternachtsbilanz – ganz ohne Taschenlampe 🔦',
+    'Paul, selbst der Cashflow braucht jetzt Pause 💤','Später Kassensturz? Ich verrate nichts 🤐',
+  ],
+};
+function financeGreetingPeriod(hour){
+  if(hour<6)return 'night';if(hour<11)return 'morning';if(hour<14)return 'noon';if(hour<18)return 'afternoon';if(hour<23)return 'evening';return 'night';
+}
+function renderFinanceGreeting(){
+  const now=new Date();const greetings=FINANCE_GREETINGS[financeGreetingPeriod(now.getHours())];
+  const dayStart=new Date(now.getFullYear(),0,0);const day=Math.floor((now-dayStart)/86400000);
+  const greeting=greetings[(day*12+Math.floor(now.getHours()/2))%greetings.length];
+  set('d-finance-greeting',greeting);set('m-finance-greeting',greeting);
+}
 const finiteMoney=(value,max=100000)=>{
   const number=Number(value);
   if(!Number.isFinite(number)||number<0||number>max)throw new Error('Ungültiger Betrag');
@@ -936,4 +972,5 @@ function IM(e){
   r.readAsText(f);e.target.value='';
 }
 
-LOAD();RC();restoreExpenseSections();
+LOAD();RC();restoreExpenseSections();renderFinanceGreeting();
+setInterval(renderFinanceGreeting,60000);
