@@ -11,9 +11,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="assets/css/app.css">
-<script src="../assets/js/version.js?v=6.29.2" defer></script>
-<script src="../assets/js/auth.js?v=6.29.2" defer></script>
+<link rel="stylesheet" href="assets/css/app.css?v=6.30.0">
+<script src="../assets/js/version.js?v=6.30.0" defer></script>
+<script src="../assets/js/auth.js?v=6.30.0" defer></script>
 </head>
 <body>
 
@@ -77,23 +77,29 @@
 <!-- ══ DESKTOP ══ -->
 <div class="d-layout">
   <div class="d-topbar">
-    <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;background:var(--sep2);border:none;color:var(--t2);font-size:13px;font-weight:500;text-decoration:none;transition:background 0.12s;margin-right:4px;" title="Zurück zum Hub">← Hub</a>
-    <span class="d-topbar-title">Finanzplanung</span>
-    <span class="d-topbar-sub">Paul · <span data-app-version>v6.29.2</span></span>
+    <a href="https://zkoberlin.github.io" class="d-hub-link" title="Zurück zum Hub">← Hub</a>
+    <div class="d-brand"><span class="d-topbar-title">Finanzplanung</span><span class="d-topbar-sub">Paul · <span data-app-version>v6.30.0</span></span></div>
     <div class="d-topbar-spacer"></div>
     <div class="d-legend">
       <span class="d-pill d-pill-j"><span class="d-pill-dot"></span>Jahreskosten ÷ 12</span>
       <span class="d-pill d-pill-q"><span class="d-pill-dot"></span>Quartal ÷ 3</span>
     </div>
-    <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;background:var(--card2);cursor:pointer;" onclick="openSM()" title="Cloud-Sync Einstellungen">
+    <button type="button" class="d-sync-btn" onclick="openSM()" title="Cloud-Sync Einstellungen">
       <span id="d-sync-ico" style="font-size:14px;">⚙️</span>
       <span id="d-sync-lbl" style="font-size:11px;color:var(--t3);">API-Key einrichten</span>
+    </button>
+    <div class="d-actions">
+      <button type="button" class="d-btn" data-auth-button>Mit Google anmelden</button>
+      <button type="button" class="d-btn" onclick="OM()">＋ Position</button>
+      <details class="d-more">
+        <summary aria-label="Weitere Aktionen" title="Weitere Aktionen">•••</summary>
+        <div class="d-more-menu">
+          <button type="button" id="d-theme-btn" onclick="toggleTheme()">🌙 Darstellung wechseln</button>
+          <button type="button" onclick="EX()">↓ Daten exportieren</button>
+          <button type="button" onclick="document.getElementById('fi').click()">↑ Daten importieren</button>
+        </div>
+      </details>
     </div>
-    <button type="button" class="d-btn" data-auth-button>Mit Google anmelden</button>
-    <button type="button" class="d-btn" onclick="OM()">＋ Hinzufügen</button>
-    <button type="button" id="d-theme-btn" onclick="toggleTheme()" style="padding:5px 12px;border-radius:8px;border:none;background:var(--sep2);color:var(--t2);font-size:16px;cursor:pointer;transition:background 0.12s;" title="Hell/Dunkel umschalten">🌙</button>
-    <button type="button" class="d-btn exp" onclick="EX()">↓ Export</button>
-    <button type="button" class="d-btn imp" onclick="document.getElementById('fi').click()">↑ Import</button>
     <input type="file" id="fi" accept=".json" style="display:none" onchange="IM(event)">
   </div>
 
@@ -408,13 +414,12 @@
 <div class="m-layout">
   <div class="m-topbar">
     <div class="m-topbar-inner">
-      <div class="m-topbar-title">Finanzen · Paul <span data-app-version style="font-size:10px;opacity:.55;">v6.29.2</span></div>
+      <div class="m-topbar-copy"><div class="m-topbar-title">Finanzen · Paul</div><div class="m-topbar-sub"><span data-app-version>v6.30.0</span> · Budgetplanung</div></div>
       <div class="m-topbar-btns">
-        <a href="https://zkoberlin.github.io" style="display:flex;align-items:center;background:none;border:none;color:var(--acc);font-size:13px;font-weight:500;text-decoration:none;padding:4px 2px;" title="Hub">← Hub</a>
-        <button type="button" id="m-theme-btn" onclick="toggleTheme()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:2px;" title="Hell/Dunkel">🌙</button>
-        <button type="button" class="m-icon-btn" onclick="openSM()" title="Cloud-Sync" style="font-size:18px;"><span id="m-sync-ico">⚙️</span></button>
-        <span id="m-sync-lbl" style="font-size:10px;color:var(--t3);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-        <button type="button" class="m-add-btn" onclick="OM()">＋</button>
+        <a href="https://zkoberlin.github.io" class="m-hub-btn" title="Zum Hub" aria-label="Zum Hub">⌂</a>
+        <button type="button" id="m-theme-btn" class="m-icon-btn" onclick="toggleTheme()" title="Hell/Dunkel" aria-label="Darstellung wechseln">🌙</button>
+        <button type="button" class="m-icon-btn" onclick="openSM()" title="Cloud-Sync" aria-label="Cloud-Sync"><span id="m-sync-ico">⚙️</span><span id="m-sync-lbl" class="sr-only"></span></button>
+        <button type="button" class="m-add-btn" onclick="OM()" title="Position hinzufügen" aria-label="Position hinzufügen">＋</button>
       </div>
     </div>
   </div>
@@ -815,7 +820,7 @@
   </div>
 </div>
 
-<script src="assets/js/app.js?v=6.29.2"></script>
+<script src="assets/js/app.js?v=6.30.0"></script>
 
 <!-- SETTINGS MODAL -->
 <div id="settings-modal" onclick="if(event.target===this)closeSM()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">

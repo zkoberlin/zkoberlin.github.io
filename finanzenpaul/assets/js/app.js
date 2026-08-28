@@ -514,7 +514,9 @@ function DC2(k){
 function updateThemeBtn(isDark) {
   ['d-theme-btn','m-theme-btn'].forEach(id=>{
     const el = document.getElementById(id);
-    if(el) el.textContent = isDark ? '☀️' : '🌙';
+    if(!el)return;
+    const icon=isDark?'☀️':'🌙';
+    el.textContent=id==='d-theme-btn'?`${icon} Darstellung wechseln`:icon;
   });
 }
 
