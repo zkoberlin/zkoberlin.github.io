@@ -21,6 +21,18 @@ const FINANCE_CATEGORIES=Object.keys(CC);
 const FINANCE_FREQUENCIES=['monthly','quarterly','yearly'];
 const FINANCE_SPECIAL_KEYS=['gehalt','zusatz','invest','notgr','urlaub','sonder'];
 const FINANCE_ICONS=['🏠','⚡','💧','🔥','📡','🛒','🛡️','⚖️','💳','🏦','📈','💰','🧾','💶','👨‍👧‍👦','👶','🎓','📱','⌚','🐷','🎵','☁️','🎬','📺','🎮','📰','📚','⚽','🏋️','🚲','🚆','🚌','🚗','✈️','🏨','🗺️','🍽️','☕','🍺','🎟️','🎭','📷','🎨','💇','🩺','💊','🐕','🐈','🎁','✨'];
+const FINANCE_ICON_SYMBOLS={
+  '🏠':'home','⚡':'bolt','💧':'water_drop','🔥':'local_fire_department','📡':'router','🛒':'shopping_cart',
+  '🛡️':'shield','⚖️':'balance','💳':'credit_card','🏦':'account_balance','📈':'trending_up','💰':'savings',
+  '🧾':'receipt_long','💶':'euro','👨‍👧‍👦':'family_restroom','👶':'child_care','🎓':'school','📱':'smartphone',
+  '⌚':'watch','🐷':'savings','🎵':'music_note','☁️':'cloud','🎬':'movie','📺':'tv','🎮':'sports_esports',
+  '📰':'newspaper','📚':'menu_book','⚽':'sports_soccer','🏋️':'fitness_center','🚲':'directions_bike','🚆':'train',
+  '🚌':'directions_bus','🚗':'directions_car','✈️':'flight','🏨':'hotel','🗺️':'map','🍽️':'restaurant',
+  '☕':'local_cafe','🍺':'sports_bar','🎟️':'confirmation_number','🎭':'theater_comedy','📷':'photo_camera',
+  '🎨':'palette','💇':'content_cut','🩺':'medical_services','💊':'medication','🐕':'pets','🐈':'cruelty_free',
+  '🎁':'redeem','✨':'auto_awesome',
+};
+const financeIconMarkup=icon=>`<span class="material-symbols-rounded finance-standard-icon" aria-hidden="true">${FINANCE_ICON_SYMBOLS[icon]||'receipt_long'}</span>`;
 const CATEGORY_ICONS={Wohnen:'🏠',Versicherungen:'🛡️','Kredite & Finanzen':'💳',Familie:'👨‍👧‍👦',Abos:'📱',Freizeit:'⚽'};
 const FINANCE_GREETINGS={
   morning:[
@@ -465,7 +477,8 @@ function renderIconPicker(id,selected){
   const picker=document.getElementById(id);if(!picker)return;
   picker.replaceChildren(...FINANCE_ICONS.map(icon=>{
     const button=document.createElement('button');button.type='button';button.className='finance-icon-option';button.textContent=icon;
-    button.setAttribute('role','option');button.setAttribute('aria-label','Icon '+icon);button.setAttribute('aria-selected',String(icon===selected));
+    button.innerHTML=financeIconMarkup(icon);
+    button.setAttribute('role','option');button.setAttribute('aria-label','Icon '+icon);button.setAttribute('title',icon);button.setAttribute('aria-selected',String(icon===selected));
     button.onclick=()=>{mIcon=icon;mIconTouched=true;renderIconPicker(id,icon);};
     return button;
   }));
@@ -547,7 +560,7 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;'
 function customIconMarkup(item){
   const brand=CUSTOM_BRANDS.find(entry=>entry.match.test(String(item?.name||'')));
   if(brand)return `<img src="https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64" alt="" onerror="this.parentNode.textContent='${brand.fallback}'">`;
-  return `<span class="custom-finance-icon" aria-hidden="true">${FINANCE_ICONS.includes(item?.icon)?item.icon:CATEGORY_ICONS[item?.cat]||'🧾'}</span>`;
+  return financeIconMarkup(FINANCE_ICONS.includes(item?.icon)?item.icon:CATEGORY_ICONS[item?.cat]||'🧾');
 }
 function renderCR(it){
   const cat=BODY_MAP[it.cat]||'abos';
