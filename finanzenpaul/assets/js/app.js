@@ -4,7 +4,7 @@ const R2=v=>Math.round(v*100)/100;
 
 // Public bundle contains structure only. Personal values come from local storage
 // or from the authenticated Cloudflare endpoint.
-const ITEMS=[{k:"miete",cat:"Wohnen",def:0},{k:"strom",cat:"Wohnen",def:0},{k:"internet",cat:"Wohnen",def:0},{k:"lebensmittel",cat:"Wohnen",def:0},{k:"schufa",cat:"Wohnen",def:0},{k:"ing",cat:"Wohnen",def:0},{k:"haftpflicht",cat:"Versicherungen",def:0},{k:"rechtsschutz",cat:"Versicherungen",def:0},{k:"kredit",cat:"Versicherungen",def:0},{k:"gez",cat:"Versicherungen",def:0},{k:"unterhalt",cat:"Familie",def:0},{k:"kids",cat:"Familie",def:0},{k:"handyemil",cat:"Familie",def:0},{k:"handyrosa",cat:"Familie",def:0},{k:"ukv",cat:"Familie",def:0},{k:"sparta",cat:"Familie",def:0},{k:"bling",cat:"Familie",def:0},{k:"unionemil",cat:"Familie",def:0},{k:"handypaul",cat:"Abos",def:0},{k:"icloud",cat:"Abos",def:0},{k:"spotify",cat:"Abos",def:0},{k:"finanzguru",cat:"Abos",def:0},{k:"claude",cat:"Abos",def:0},{k:"unionmitgl",cat:"Abos",def:0},{k:"amazon",cat:"Abos",def:0},{k:"parqet",cat:"Abos",def:0},{k:"futbology",cat:"Abos",def:0},{k:"fotmob",cat:"Abos",def:0},{k:"bvg",cat:"Freizeit",def:0},{k:"dauerkarte",cat:"Freizeit",def:0},{k:"garmin",cat:"Freizeit",def:0}];
+const ITEMS=[{k:"miete",cat:"Wohnen",def:0},{k:"strom",cat:"Wohnen",def:0},{k:"internet",cat:"Wohnen",def:0},{k:"lebensmittel",cat:"Wohnen",def:0},{k:"schufa",cat:"Kredite & Finanzen",def:0},{k:"ing",cat:"Kredite & Finanzen",def:0},{k:"haftpflicht",cat:"Versicherungen",def:0},{k:"rechtsschutz",cat:"Versicherungen",def:0},{k:"kredit",cat:"Kredite & Finanzen",def:0},{k:"gez",cat:"Versicherungen",def:0},{k:"unterhalt",cat:"Familie",def:0},{k:"kids",cat:"Familie",def:0},{k:"handyemil",cat:"Familie",def:0},{k:"handyrosa",cat:"Familie",def:0},{k:"ukv",cat:"Familie",def:0},{k:"sparta",cat:"Familie",def:0},{k:"bling",cat:"Familie",def:0},{k:"unionemil",cat:"Familie",def:0},{k:"handypaul",cat:"Abos",def:0},{k:"icloud",cat:"Abos",def:0},{k:"spotify",cat:"Abos",def:0},{k:"finanzguru",cat:"Abos",def:0},{k:"claude",cat:"Abos",def:0},{k:"unionmitgl",cat:"Abos",def:0},{k:"amazon",cat:"Abos",def:0},{k:"parqet",cat:"Abos",def:0},{k:"futbology",cat:"Abos",def:0},{k:"fotmob",cat:"Abos",def:0},{k:"bvg",cat:"Freizeit",def:0},{k:"dauerkarte",cat:"Freizeit",def:0},{k:"garmin",cat:"Freizeit",def:0}];
 
 const CC={'Wohnen':'#2563EB','Versicherungen':'#D97706','Kredite & Finanzen':'#DC2626','Familie':'#DB2777','Abos':'#7C3AED','Freizeit':'#059669'};
 
@@ -15,14 +15,56 @@ S.gehalt={v:0}; S.zusatz={v:0,on:false};
 S.invest={v:0}; S.notgr={v:0}; S.urlaub={v:0}; S.sonder={v:0};
 let CI=[]; // custom items
 let PC=null,MC_=null; // pie charts
-let mFreq='monthly',mCat=null;
+let mFreq='monthly',mCat=null,mIcon='🧾',mIconTouched=false;
+
+const FINANCE_CATEGORIES=Object.keys(CC);
+const FINANCE_FREQUENCIES=['monthly','quarterly','yearly'];
+const FINANCE_SPECIAL_KEYS=['gehalt','zusatz','invest','notgr','urlaub','sonder'];
+const FINANCE_ICONS=['🏠','⚡','💧','🔥','📡','🛒','🛡️','⚖️','💳','🏦','📈','💰','🧾','💶','👨‍👧‍👦','👶','🎓','📱','⌚','🐷','🎵','☁️','🎬','📺','🎮','📰','📚','⚽','🏋️','🚲','🚆','🚌','🚗','✈️','🏨','🗺️','🍽️','☕','🍺','🎟️','🎭','📷','🎨','💇','🩺','💊','🐕','🐈','🎁','✨'];
+const CATEGORY_ICONS={Wohnen:'🏠',Versicherungen:'🛡️','Kredite & Finanzen':'💳',Familie:'👨‍👧‍👦',Abos:'📱',Freizeit:'⚽'};
+const finiteMoney=(value,max=100000)=>{
+  const number=Number(value);
+  if(!Number.isFinite(number)||number<0||number>max)throw new Error('Ungültiger Betrag');
+  return R2(number);
+};
+function normalizeFinancePayload(payload){
+  if(!payload||typeof payload!=='object'||Array.isArray(payload))throw new Error('Ungültiges Dateiformat');
+  if(payload.v!==3||!payload.s||typeof payload.s!=='object'||Array.isArray(payload.s))throw new Error('Nicht unterstützte Finanzdatei');
+  const sourceItems=Array.isArray(payload.c)?payload.c:[];
+  if(sourceItems.length>60)throw new Error('Zu viele eigene Positionen');
+  const seen=new Set();
+  const custom=sourceItems.map(item=>{
+    if(!item||typeof item!=='object')throw new Error('Ungültige eigene Position');
+    const key=String(item.k||'');
+    const name=String(item.name||'').trim();
+    const category=String(item.cat||'');
+    const frequency=String(item.freq||'');
+    if(!/^c\d{8,20}$/.test(key)||seen.has(key))throw new Error('Ungültige Positions-ID');
+    if(!name||name.length>80)throw new Error('Ungültige Bezeichnung');
+    if(!FINANCE_CATEGORIES.includes(category)||!FINANCE_FREQUENCIES.includes(frequency))throw new Error('Ungültige Kategorie oder Zahlungsweise');
+    seen.add(key);
+    const amount=finiteMoney(item.amt);
+    const monthly=frequency==='yearly'?R2(amount/12):frequency==='quarterly'?R2(amount/3):amount;
+    const icon=FINANCE_ICONS.includes(item.icon)?item.icon:CATEGORY_ICONS[category];
+    return {k:key,name,amt:amount,freq:frequency,monthly,cat:category,icon};
+  });
+  const allowed=new Set([...ITEMS.map(item=>item.k),...FINANCE_SPECIAL_KEYS,...custom.map(item=>item.k)]);
+  const state={};
+  Object.entries(payload.s).forEach(([key,value])=>{
+    if(!allowed.has(key)||!value||typeof value!=='object')return;
+    state[key]={v:finiteMoney(value.v),on:value.on!==false};
+  });
+  custom.forEach(item=>{if(!state[item.k])state[item.k]={v:item.monthly,on:true};});
+  return {v:3,ts:typeof payload.ts==='string'?payload.ts:new Date().toISOString(),s:state,c:custom};
+}
 
 // LOAD
 function LOAD(){
   try{
-    const sv=JSON.parse(localStorage.getItem('fp3')||'{}');
+    const stored=normalizeFinancePayload({v:3,s:JSON.parse(localStorage.getItem('fp3')||'{}'),c:JSON.parse(localStorage.getItem('fp3c')||'[]')});
+    const sv=stored.s;
     Object.keys(sv).forEach(k=>{if(S[k]){S[k].v=sv[k].v;if(sv[k].on!==undefined)S[k].on=sv[k].on;}  });
-    const ci=JSON.parse(localStorage.getItem('fp3c')||'[]');
+    const ci=stored.c;
     ci.forEach(it=>{CI.push(it);S[it.k]={v:it.monthly,on:true,cat:it.cat};renderCR(it);});
   }catch(e){}
   // Apply to DOM
@@ -93,11 +135,11 @@ function clearLegacyCredentials(){
 }
 
 function applyCloudPayload(data){
-  if(!data?.s)return;
-  localStorage.setItem('fp3',JSON.stringify(data.s));
-  localStorage.setItem('fp3c',JSON.stringify(Array.isArray(data.c)?data.c:[]));
-  Object.keys(data.s).forEach(k=>{if(S[k]){S[k].v=data.s[k].v;if(data.s[k].on!==undefined)S[k].on=data.s[k].on;}});
-  (data.c||[]).forEach(it=>{if(!CI.find(x=>x.k===it.k)){CI.push(it);S[it.k]={v:it.monthly,on:data.s[it.k]?.on!==false,cat:it.cat};renderCR(it);}});
+  const safe=normalizeFinancePayload(data);
+  localStorage.setItem('fp3',JSON.stringify(safe.s));
+  localStorage.setItem('fp3c',JSON.stringify(safe.c));
+  Object.keys(safe.s).forEach(k=>{if(S[k]){S[k].v=safe.s[k].v;if(safe.s[k].on!==undefined)S[k].on=safe.s[k].on;}});
+  safe.c.forEach(it=>{if(!CI.find(x=>x.k===it.k)){CI.push(it);S[it.k]={v:it.monthly,on:safe.s[it.k]?.on!==false,cat:it.cat};renderCR(it);}});
   ITEMS.forEach(x=>{setSlider(x.k,S[x.k].v,S[x.k].on);setVal(x.k,S[x.k].v);setTog(x.k,S[x.k].on);});
   ['gehalt','invest','notgr','urlaub','sonder'].forEach(k=>{
     ['dsl-','msl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.value=S[k].v;});
@@ -372,16 +414,26 @@ function DC(el,id){
 function OM(){
   document.getElementById('inp-name').value='';
   document.getElementById('inp-amt').value='';
-  mFreq='monthly'; mCat=null;
+  mFreq='monthly'; mCat=null;mIcon='🧾';mIconTouched=false;
   document.querySelectorAll('.fbtn').forEach(b=>{b.classList.toggle('on',b.dataset.freq==='monthly');});
   document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));
+  renderIconPicker('add-icon-picker',mIcon);
   UP();
   document.getElementById('modal').classList.add('on');
   setTimeout(()=>document.getElementById('inp-name').focus(),100);
 }
 function CM(){document.getElementById('modal').classList.remove('on');}
 function SF(btn){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');mFreq=btn.dataset.freq;UP();}
-function SC(btn){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');mCat=btn.dataset.cat;UP();}
+function SC(btn){document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');mCat=btn.dataset.cat;if(!mIconTouched){mIcon=CATEGORY_ICONS[mCat]||'🧾';renderIconPicker('add-icon-picker',mIcon);}UP();}
+function renderIconPicker(id,selected){
+  const picker=document.getElementById(id);if(!picker)return;
+  picker.replaceChildren(...FINANCE_ICONS.map(icon=>{
+    const button=document.createElement('button');button.type='button';button.className='finance-icon-option';button.textContent=icon;
+    button.setAttribute('role','option');button.setAttribute('aria-label','Icon '+icon);button.setAttribute('aria-selected',String(icon===selected));
+    button.onclick=()=>{mIcon=icon;mIconTouched=true;renderIconPicker(id,icon);};
+    return button;
+  }));
+}
 
 function UP(){
   const name=document.getElementById('inp-name').value.trim();
@@ -420,11 +472,12 @@ document.getElementById('inp-amt').addEventListener('input',UP);
 function AP(){
   const name=document.getElementById('inp-name').value.trim();
   const amt=parseFloat(document.getElementById('inp-amt').value.trim().replace(',','.'));
+  if(!name||name.length>80||!Number.isFinite(amt)||amt<=0||amt>100000||!FINANCE_CATEGORIES.includes(mCat))return;
   let monthly=amt;
   if(mFreq==='yearly')monthly=R2(amt/12);
   if(mFreq==='quarterly')monthly=R2(amt/3);
   const k='c'+Date.now();
-  const it={k,name,amt,freq:mFreq,monthly,cat:mCat};
+  const it={k,name,amt,freq:mFreq,monthly,cat:mCat,icon:FINANCE_ICONS.includes(mIcon)?mIcon:CATEGORY_ICONS[mCat]};
   CI.push(it); S[k]={v:monthly,on:true,cat:mCat};
   SAVE(); renderCR(it); CM(); RC();
 }
@@ -455,17 +508,17 @@ const CUSTOM_BRANDS=[
   {match:/\burban\s*sports(?:\s*club)?\b/i,domain:'urbansportsclub.com',fallback:'🏋️'},
 ];
 const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-function customIconMarkup(name){
-  const brand=CUSTOM_BRANDS.find(entry=>entry.match.test(String(name||'')));
+function customIconMarkup(item){
+  const brand=CUSTOM_BRANDS.find(entry=>entry.match.test(String(item?.name||'')));
   if(brand)return `<img src="https://www.google.com/s2/favicons?domain=${brand.domain}&sz=64" alt="" onerror="this.parentNode.textContent='${brand.fallback}'">`;
-  return '<svg class="finance-icon-svg" aria-hidden="true"><use href="#fi-edit"/></svg>';
+  return `<span class="custom-finance-icon" aria-hidden="true">${FINANCE_ICONS.includes(item?.icon)?item.icon:CATEGORY_ICONS[item?.cat]||'🧾'}</span>`;
 }
 function renderCR(it){
   const cat=BODY_MAP[it.cat]||'abos';
   const star=frequencyBadge(it.freq);
   const max=Math.max(it.monthly*5,50);
   const safeName=escapeHtml(it.name);
-  const icon=customIconMarkup(it.name);
+  const icon=customIconMarkup(it);
 
   // Desktop row
   const db=document.getElementById('dbody-'+cat);
@@ -702,9 +755,13 @@ function OE(k) {
   });
   // Hide cat selector for builtins
   document.getElementById('em-cat-section').style.display = isCustom ? 'block' : 'none';
+  document.getElementById('em-icon-section').style.display = isCustom ? 'block' : 'none';
 
   mFreq = freq;
   mCat = cat;
+  mIcon = isCustom&&FINANCE_ICONS.includes(CI.find(i=>i.k===k)?.icon)?CI.find(i=>i.k===k).icon:CATEGORY_ICONS[cat]||'🧾';
+  mIconTouched=false;
+  if(isCustom)renderIconPicker('edit-icon-picker',mIcon);
   EU();
   document.getElementById('edit-modal').classList.add('on');
   setTimeout(()=>document.getElementById('em-amt').focus(),80);
@@ -734,6 +791,7 @@ function OR(k) {
   // Hide freq and cat — rest items are always monthly
   document.getElementById('em-freq-section').style.display = 'none';
   document.getElementById('em-cat-section').style.display = 'none';
+  document.getElementById('em-icon-section').style.display = 'none';
   document.getElementById('em-del').style.display = 'none';
 
   // Show a note
@@ -751,6 +809,7 @@ function CE() {
   // Reset hidden sections
   const fs=document.getElementById('em-freq-section');if(fs)fs.style.display='';
   const cs=document.getElementById('em-cat-section');if(cs)cs.style.display='';
+  const icons=document.getElementById('em-icon-section');if(icons)icons.style.display='';
   const del=document.getElementById('em-del');if(del)del.style.display='flex';
   const note=document.getElementById('em-note');if(note)note.textContent='';
 }
@@ -761,7 +820,9 @@ function EF(btn) {
 }
 function EC(btn) {
   document.querySelectorAll('.ecbtn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); mCat=btn.dataset.cat; EU();
+  btn.classList.add('on'); mCat=btn.dataset.cat;
+  if(!mIconTouched){mIcon=CATEGORY_ICONS[mCat]||'🧾';renderIconPicker('edit-icon-picker',mIcon);}
+  EU();
 }
 
 function EU() {
@@ -785,7 +846,7 @@ function EU() {
 function SE() {
   const raw = document.getElementById('em-amt').value.trim().replace(',','.');
   const amt = parseFloat(raw);
-  if(isNaN(amt)||amt<0) return;
+  if(!Number.isFinite(amt)||amt<0||amt>100000) return;
   let monthly=amt;
   if(mFreq==='yearly') monthly=R2(amt/12);
   else if(mFreq==='quarterly') monthly=R2(amt/3);
@@ -806,10 +867,16 @@ function SE() {
 
   if(editIsCustom) {
     const ci=CI.find(i=>i.k===k); if(!ci) return;
-    ci.name=document.getElementById('em-name').value.trim()||ci.name;
-    ci.amt=amt; ci.freq=mFreq; ci.monthly=monthly; ci.cat=mCat;
+    const nextName=document.getElementById('em-name').value.trim();
+    if(!nextName||nextName.length>80||!FINANCE_CATEGORIES.includes(mCat)||!FINANCE_FREQUENCIES.includes(mFreq))return;
+    ci.name=nextName;
+    ci.amt=amt; ci.freq=mFreq; ci.monthly=monthly; ci.cat=mCat;ci.icon=FINANCE_ICONS.includes(mIcon)?mIcon:CATEGORY_ICONS[mCat];
     S[k].v=monthly; S[k].cat=mCat;
     ['dlbl-','mrlbl-'].forEach(p=>{const e=document.getElementById(p+k);if(e)e.innerHTML=escapeHtml(ci.name)+frequencyBadge(mFreq);});
+    const iconMarkup=customIconMarkup(ci);
+    document.querySelector('#dr-'+k+' .dico')?.replaceChildren();
+    document.querySelector('#mr-'+k+' .mico')?.replaceChildren();
+    ['#dr-'+k+' .dico','#mr-'+k+' .mico'].forEach(selector=>{const e=document.querySelector(selector);if(e)e.innerHTML=iconMarkup;});
   } else {
     S[k].v=monthly;
   }
@@ -848,13 +915,23 @@ function EX(){
 }
 function IM(e){
   const f=e.target.files[0];if(!f)return;
+  if(f.size>1000000){alert('Import abgelehnt: Datei ist größer als 1 MB.');e.target.value='';return;}
   const r=new FileReader();
   r.onload=ev=>{
-    try{const p=JSON.parse(ev.target.result);
-      if(p.s)localStorage.setItem('fp3',JSON.stringify(p.s));
-      if(p.c)localStorage.setItem('fp3c',JSON.stringify(p.c));
-      location.reload();
-    }catch(err){alert('Fehler: '+err.message);}
+    try{
+      const p=normalizeFinancePayload(JSON.parse(ev.target.result));
+      localStorage.setItem('fp3',JSON.stringify(p.s));
+      localStorage.setItem('fp3c',JSON.stringify(p.c));
+      if(window.HubAuth?.isSignedIn()){
+        cloudSave({...p,ts:new Date().toISOString()}).then(saved=>{
+          if(saved)location.reload();
+          else alert('Import lokal gespeichert. Die Cloud-Synchronisierung ist fehlgeschlagen; bitte Verbindung prüfen.');
+        });
+      }else{
+        alert('Import lokal gespeichert. Für die sichere Cloud-Synchronisierung bitte anmelden.');
+        location.reload();
+      }
+    }catch(err){alert('Import abgelehnt: '+err.message);}
   };
   r.readAsText(f);e.target.value='';
 }

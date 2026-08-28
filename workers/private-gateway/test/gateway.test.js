@@ -74,7 +74,7 @@ test("stores finance state and exposes only a minimal preview", async () => {
     v: 3,
     ts: "2026-08-28T12:00:00.000Z",
     s: { gehalt: { v: 4000 }, miete: { v: 1500, on: true }, invest: { v: 300 }, notgr: { v: 100 }, urlaub: { v: 50 }, sonder: { v: 0 } },
-    c: [{ k: "fitness", name: "Fitnessstudio", amt: 30, monthly: 30, freq: "monthly", cat: "Freizeit" }],
+    c: [{ k: "fitness", name: "Fitnessstudio", amt: 30, monthly: 30, freq: "monthly", cat: "Freizeit", icon: "🏋️" }],
   };
   try {
     const missing = await worker.fetch(new Request("https://gateway.test/finance", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
@@ -105,6 +105,13 @@ test("stores finance state and exposes only a minimal preview", async () => {
       body: JSON.stringify({ ...payload, s: { gehalt: { v: -1 } } }),
     }), testEnv);
     assert.equal(invalid.status, 400);
+
+    const invalidIcon = await worker.fetch(new Request("https://gateway.test/finance", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, c: [{ ...payload.c[0], icon: "<script>" }] }),
+    }), testEnv);
+    assert.equal(invalidIcon.status, 400);
   } finally { globalThis.fetch = originalFetch; }
 });
 

@@ -56,6 +56,8 @@ const DEFAULT_CALENDAR_CATEGORIES = ["maja", "birthday", "culture", "health", "t
 const FINANCE_STATE_KEY = "primary";
 const FINANCE_MAX_BYTES = 100_000;
 const FINANCE_BASE_KEYS = ["miete", "strom", "internet", "lebensmittel", "schufa", "ing", "haftpflicht", "rechtsschutz", "kredit", "gez", "unterhalt", "kids", "handyemil", "handyrosa", "ukv", "sparta", "bling", "unionemil", "handypaul", "icloud", "spotify", "finanzguru", "claude", "unionmitgl", "amazon", "parqet", "futbology", "fotmob", "bvg", "dauerkarte", "garmin"];
+const FINANCE_CATEGORIES = new Set(["Wohnen", "Versicherungen", "Kredite & Finanzen", "Familie", "Abos", "Freizeit"]);
+const FINANCE_ICONS = new Set(['🏠','⚡','💧','🔥','📡','🛒','🛡️','⚖️','💳','🏦','📈','💰','🧾','💶','👨‍👧‍👦','👶','🎓','📱','⌚','🐷','🎵','☁️','🎬','📺','🎮','📰','📚','⚽','🏋️','🚲','🚆','🚌','🚗','✈️','🏨','🗺️','🍽️','☕','🍺','🎟️','🎭','📷','🎨','💇','🩺','💊','🐕','🐈','🎁','✨']);
 
 function validAmount(value) {
   return Number.isFinite(value) && value >= 0 && value <= 10_000_000;
@@ -70,7 +72,7 @@ function validFinancePayload(payload) {
   return payload.c.every((item) => item && /^[a-z0-9_-]{1,64}$/i.test(item.k) &&
     typeof item.name === "string" && item.name.trim().length > 0 && item.name.length <= 100 &&
     validAmount(item.amt) && validAmount(item.monthly) && ["monthly", "quarterly", "yearly", "annual"].includes(item.freq) &&
-    typeof item.cat === "string" && item.cat.length > 0 && item.cat.length <= 40);
+    FINANCE_CATEGORIES.has(item.cat) && (item.icon === undefined || FINANCE_ICONS.has(item.icon)));
 }
 
 function financePreview(payload, updatedAt) {
