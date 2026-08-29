@@ -1,71 +1,71 @@
 {
-  "datum": "28.08.2026",
-  "generiert": "2026-08-28T12:20:33Z",
+  "datum": "29.08.2026",
+  "generiert": "2026-08-29T07:30:17Z",
   "geburtstage": [
     {
-      "name": "Ditmar Jakobs",
-      "alter": 73,
-      "geburtsjahr": 1953,
+      "name": "Rio Ngumoha",
+      "alter": 18,
+      "geburtsjahr": 2008,
       "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ditmar_Jakobs",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Rio_Ngumoha_04012026_%286%29.jpg/330px-Rio_Ngumoha_04012026_%286%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Rio_Ngumoha",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Wendelin Wiedeking",
-      "alter": 74,
-      "geburtsjahr": 1952,
+      "name": "Ysaline Bonaventure",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Bonaventure_WMQ22_%2811%29_%2852191214198%29.jpg/330px-Bonaventure_WMQ22_%2811%29_%2852191214198%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ysaline_Bonaventure",
+      "nationalitaet": "🇧🇪 Belgisch",
+      "nationalitaeten": [
+        {
+          "code": "BE",
+          "flagge": "🇧🇪",
+          "name": "Belgisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lucas Cruikshank",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Persönlichkeit",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/WendelinRuthWiedeking.jpg/330px-WendelinRuthWiedeking.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Wendelin_Wiedeking",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kano Fujihira",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Kano_Fujihira_Tainan_2024.jpg/330px-Kano_Fujihira_Tainan_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kano_Fujihira",
-      "nationalitaet": "🇯🇵 Japanisch",
-      "nationalitaeten": [
-        {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Quvenzhané Wallis",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Quvenzhan%C3%A9_Wallis_2013.jpg/330px-Quvenzhan%C3%A9_Wallis_2013.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Quvenzhan%C3%A9_Wallis",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Lucas_Cruikshank_by_Gage_Skidmore.jpg/330px-Lucas_Cruikshank_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lucas_Cruikshank",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Néstor Araujo",
+      "alter": 35,
+      "geburtsjahr": 1991,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/XXIII_Memorial_Quinocho_%28RC_Celta_vs_Mainz_05%29_-_43_%28cropped%29.jpg/330px-XXIII_Memorial_Quinocho_%28RC_Celta_vs_Mainz_05%29_-_43_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/N%C3%A9stor_Araujo",
+      "nationalitaet": "🇲🇽 Mexikanisch",
+      "nationalitaeten": [
+        {
+          "code": "MX",
+          "flagge": "🇲🇽",
+          "name": "Mexikanisch"
         }
       ],
       "quelle": "Wikipedia"
