@@ -1,48 +1,14 @@
 {
-  "datum": "29.08.2026",
-  "generiert": "2026-08-29T07:30:17Z",
+  "datum": "30.08.2026",
+  "generiert": "2026-08-30T06:00:47Z",
   "geburtstage": [
     {
-      "name": "Rio Ngumoha",
-      "alter": 18,
-      "geburtsjahr": 2008,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Rio_Ngumoha_04012026_%286%29.jpg/330px-Rio_Ngumoha_04012026_%286%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rio_Ngumoha",
-      "nationalitaet": "🏴 Englisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ysaline Bonaventure",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Bonaventure_WMQ22_%2811%29_%2852191214198%29.jpg/330px-Bonaventure_WMQ22_%2811%29_%2852191214198%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ysaline_Bonaventure",
-      "nationalitaet": "🇧🇪 Belgisch",
-      "nationalitaeten": [
-        {
-          "code": "BE",
-          "flagge": "🇧🇪",
-          "name": "Belgisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Lucas Cruikshank",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Persönlichkeit",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Lucas_Cruikshank_by_Gage_Skidmore.jpg/330px-Lucas_Cruikshank_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lucas_Cruikshank",
+      "name": "Mikal Bridges",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Mikal_Bridges%2C_April_2024.jpg/330px-Mikal_Bridges%2C_April_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mikal_Bridges",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Néstor Araujo",
-      "alter": 35,
-      "geburtsjahr": 1991,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/XXIII_Memorial_Quinocho_%28RC_Celta_vs_Mainz_05%29_-_43_%28cropped%29.jpg/330px-XXIII_Memorial_Quinocho_%28RC_Celta_vs_Mainz_05%29_-_43_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/N%C3%A9stor_Araujo",
-      "nationalitaet": "🇲🇽 Mexikanisch",
+      "name": "Trevor Jackson",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Trevor_Jackson_2018.png/330px-Trevor_Jackson_2018.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Trevor_Jackson_(performer)",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "MX",
-          "flagge": "🇲🇽",
-          "name": "Mexikanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Hur Young-ji",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/YOUNGJI_KARA_2022.jpg/330px-YOUNGJI_KARA_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hur_Young-ji",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kwon So-hyun",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/160326_17_F_W_%EC%84%9C%EC%9A%B8%ED%8C%A8%EC%85%98%EC%9C%84%ED%81%AC_%ED%8F%AC%ED%86%A0%EC%9B%94_%28cropped%29.jpg/330px-160326_17_F_W_%EC%84%9C%EC%9A%B8%ED%8C%A8%EC%85%98%EC%9C%84%ED%81%AC_%ED%8F%AC%ED%86%A0%EC%9B%94_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kwon_So-hyun",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
