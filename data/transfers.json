@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-30T13:46:52Z",
+  "generatedAt": "2026-08-31T16:08:06Z",
   "season": "2026/27",
   "windowId": "summer-2026",
   "source": {
@@ -22,7 +22,7 @@
     }
   ],
   "arrivals": [
-    "Felix Uduokhai (Beşiktaş Istanbul)",
+    "Felix Uduokhai (Beşiktaş)",
     "Michel Aebischer (Pisa SC)",
     "Emmanuel Latte Lath (Atlanta United, Leihe)",
     "Stanley Nsoki (TSG Hoffenheim, nach Leihe fest verpflichtet)",
@@ -50,7 +50,7 @@
   "featuredArrivals": [
     {
       "name": "Felix Uduokhai",
-      "detail": "Beşiktaş Istanbul",
+      "detail": "Beşiktaş",
       "photo": "https://www.fc-union-berlin.de/image/2596768d-7983-4730-93af-4dc58cf1d8d3?ts=1787817351&s=ScuzMGI15f66sTqrMo4jxM&format=jpg"
     },
     {
