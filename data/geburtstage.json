@@ -1,48 +1,48 @@
 {
-  "datum": "30.08.2026",
-  "generiert": "2026-08-30T06:00:47Z",
+  "datum": "31.08.2026",
+  "generiert": "2026-08-31T06:21:05Z",
   "geburtstage": [
     {
-      "name": "Mikal Bridges",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Mikal_Bridges%2C_April_2024.jpg/330px-Mikal_Bridges%2C_April_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mikal_Bridges",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Herbert Reul",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "Politiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Reul%2C_Herbert-1.jpg/330px-Reul%2C_Herbert-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Herbert_Reul",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Trevor Jackson",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Trevor_Jackson_2018.png/330px-Trevor_Jackson_2018.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Trevor_Jackson_(performer)",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Rudolf Schenker",
+      "alter": 78,
+      "geburtsjahr": 1948,
+      "beruf": "Persönlichkeit",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Scorpions_-_03.jpg/330px-Scorpions_-_03.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Rudolf_Schenker",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Hur Young-ji",
-      "alter": 32,
-      "geburtsjahr": 1994,
+      "name": "Jang Won-young",
+      "alter": 22,
+      "geburtsjahr": 2004,
       "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/YOUNGJI_KARA_2022.jpg/330px-YOUNGJI_KARA_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hur_Young-ji",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Jang_Won-young_at_the_Bulgari_Eclettica_event_in_Seoul%2C_May_12%2C_2026_%281%29.png/330px-Jang_Won-young_at_the_Bulgari_Eclettica_event_in_Seoul%2C_May_12%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jang_Won-young",
       "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kwon So-hyun",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/160326_17_F_W_%EC%84%9C%EC%9A%B8%ED%8C%A8%EC%85%98%EC%9C%84%ED%81%AC_%ED%8F%AC%ED%86%A0%EC%9B%94_%28cropped%29.jpg/330px-160326_17_F_W_%EC%84%9C%EC%9A%B8%ED%8C%A8%EC%85%98%EC%9C%84%ED%81%AC_%ED%8F%AC%ED%86%A0%EC%9B%94_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kwon_So-hyun",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "name": "Amanda Anisimova",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Amanda_Anisimova_%282024_DC_Open%29_05_%28cropped4%29.jpg/330px-Amanda_Anisimova_%282024_DC_Open%29_05_%28cropped4%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Amanda_Anisimova",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
