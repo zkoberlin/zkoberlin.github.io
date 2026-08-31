@@ -10,6 +10,31 @@ function toggleSection(id){
   if(chev)chev.classList.toggle('open',_csState[id]);
 }
 // Preview updaters — called by data loaders after data arrives
+// ── PAGE LOAD PROGRESS ──
+// Initialize before any async loader can finish. Named tasks make repeated
+// refreshes/auth events idempotent and keep one missed callback from sticking.
+(function initLoadProgress(){
+  const tasks=new Set(['weather','finance','stocks','calendar','alma','union']);
+  const completed=new Set();
+  const bar=document.getElementById('loadBarFill');
+  const wrap=document.getElementById('loadBar');
+  if(!bar||!wrap)return;
+  let finished=false;
+  const finish=()=>{
+    if(finished)return;
+    finished=true;bar.style.width='100%';
+    setTimeout(()=>wrap.classList.add('done'),380);
+  };
+  bar.style.width='8%';
+  window._lbDone=task=>{
+    if(finished||!tasks.has(task)||completed.has(task))return;
+    completed.add(task);
+    bar.style.width=(8+Math.round((completed.size/tasks.size)*92))+'%';
+    if(completed.size===tasks.size)finish();
+  };
+  window.setTimeout(finish,20000);
+})();
+
 function updateCsPreview(id,text){
   const el=document.getElementById('csPreview'+id.charAt(0).toUpperCase()+id.slice(1));
   if(el)el.textContent=text;
@@ -1051,7 +1076,7 @@ async function fetchWetter(location,{force=false}={}){
     document.getElementById('weatherRetry').hidden=false;
     document.getElementById('weatherLocationBtn').disabled=false;
   }finally{
-    if(weatherInitialLoad&&window._lbTick)window._lbTick();
+    if(weatherInitialLoad&&window._lbDone)window._lbDone('weather');
     weatherInitialLoad=false;
   }
 }
@@ -1144,7 +1169,7 @@ async function loadFin(){
     document.getElementById('pufSub').textContent=e.message==='AUTH_REQUIRED'?'Geschützte Finanzdaten':'FinanzenPaul einmal angemeldet öffnen';
     document.getElementById('syncLbl').textContent=e.message==='AUTH_REQUIRED'?'🔒 Anmeldung erforderlich':'Cloudflare D1';
   }
-  if(window._lbTick)window._lbTick();
+  if(window._lbDone)window._lbDone('finance');
 }
 loadFin();
 window.addEventListener('hub-auth-change',loadFin);
@@ -1254,7 +1279,7 @@ async function loadStocks(){
     }
   }
   stocksLoading=false;
-  if(stocksInitialLoad&&window._lbTick)window._lbTick();
+  if(stocksInitialLoad&&window._lbDone)window._lbDone('stocks');
   stocksInitialLoad=false;
 }
 
@@ -1614,7 +1639,8 @@ async function loadICAL(){
   const filterButton=document.getElementById('kalFilterBtn');
   if(!window.HubAuth?.isSignedIn()){
     filterButton.disabled=true;document.getElementById('kalFilterPanel').hidden=true;filterButton.setAttribute('aria-expanded','false');
-    list.replaceChildren();const empty=document.createElement('div');empty.className='kal-empty';empty.textContent='🔒 Private Termine nach Anmeldung verfügbar';list.appendChild(empty);return;
+    list.replaceChildren();const empty=document.createElement('div');empty.className='kal-empty';empty.textContent='🔒 Private Termine nach Anmeldung verfügbar';list.appendChild(empty);
+    if(window._lbDone)window._lbDone('calendar');return;
   }
   try{
     filterButton.disabled=false;
@@ -1629,7 +1655,7 @@ async function loadICAL(){
   }catch(error){
     console.warn('Kalender-Vorschau Fehler:',error);list.replaceChildren();const empty=document.createElement('div');empty.className='kal-empty';empty.textContent='⚠️ Kalender momentan nicht erreichbar';list.appendChild(empty);
   }
-  if(window._lbTick)window._lbTick();
+  if(window._lbDone)window._lbDone('calendar');
 }
 
 document.getElementById('kalFilterBtn')?.addEventListener('click',event=>{
@@ -1676,7 +1702,7 @@ async function loadAlma(){
     document.getElementById('almaLbl').textContent='Privater Besuchsplan';
     document.getElementById('almaTitle').textContent='Nach Anmeldung verfügbar';
     document.getElementById('almaDate').textContent='';document.getElementById('almaRange').textContent='';
-    updateCsPreview('alma','Anmeldung erforderlich');return;
+    updateCsPreview('alma','Anmeldung erforderlich');if(window._lbDone)window._lbDone('alma');return;
   }
   try{
     const response=await HubAuth.authorizedFetch(ALMA_API,{signal:AbortSignal.timeout(8000)});
@@ -1738,6 +1764,7 @@ async function loadAlma(){
     document.getElementById('almaDate').textContent='Bitte später erneut versuchen';document.getElementById('almaRange').textContent='';
     updateCsPreview('alma','Besuchsplan nicht erreichbar');
   }
+  if(window._lbDone)window._lbDone('alma');
 }
 loadAlma();
 window.addEventListener('hub-auth-change',loadAlma);
@@ -2532,7 +2559,7 @@ async function loadUnionLegacy(){
     document.getElementById('ucBody').innerHTML=
       `<div style="padding:16px;text-align:center;font-size:12px;color:var(--t3);">⚠️ ${e.message}</div>`;
   }
-  if(window._lbTick)window._lbTick();
+  if(window._lbDone)window._lbDone('union');
 }
 // Aktuelle, schema-validierte Darstellung: assets/js/hub-union.js
 
@@ -2676,20 +2703,6 @@ async function loadTransfers(unionData, nextMatch){
   }
 }
 
-
-// ── LOAD BAR ──
-(function(){
-  const bar=document.getElementById('loadBarFill');
-  const wrap=document.getElementById('loadBar');
-  let done=0,total=5;
-  bar.style.width='8%';
-  window._lbTick=function(){
-    done++;
-    const pct=8+Math.round((done/total)*92);
-    bar.style.width=pct+'%';
-    if(done>=total)setTimeout(()=>wrap.classList.add('done'),380);
-  };
-})();
 
 loadICAL();
 window.addEventListener('hub-auth-change', loadICAL);
