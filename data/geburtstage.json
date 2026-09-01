@@ -1,48 +1,48 @@
 {
-  "datum": "31.08.2026",
-  "generiert": "2026-08-31T06:21:05Z",
+  "datum": "01.09.2026",
+  "generiert": "2026-09-01T05:48:42Z",
   "geburtstage": [
     {
-      "name": "Herbert Reul",
-      "alter": 74,
-      "geburtsjahr": 1952,
-      "beruf": "Politiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Reul%2C_Herbert-1.jpg/330px-Reul%2C_Herbert-1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Herbert_Reul",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Rudolf Schenker",
-      "alter": 78,
-      "geburtsjahr": 1948,
-      "beruf": "Persönlichkeit",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Scorpions_-_03.jpg/330px-Scorpions_-_03.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rudolf_Schenker",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jang Won-young",
-      "alter": 22,
-      "geburtsjahr": 2004,
+      "name": "Bill Kaulitz",
+      "alter": 37,
+      "geburtsjahr": 1989,
       "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Jang_Won-young_at_the_Bulgari_Eclettica_event_in_Seoul%2C_May_12%2C_2026_%281%29.png/330px-Jang_Won-young_at_the_Bulgari_Eclettica_event_in_Seoul%2C_May_12%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jang_Won-young",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/2023-09-28-Bill_Kaulitz-Deutscher_Fernsehpreis_2023_-0348_%28cropped%29_%28cropped%29.jpg/330px-2023-09-28-Bill_Kaulitz-Deutscher_Fernsehpreis_2023_-0348_%28cropped%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bill_Kaulitz",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Ralf Aussem",
+      "alter": 66,
+      "geburtsjahr": 1960,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Ralf_Aussem",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "An Yu-jin",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/IVE_Yujin_2026_GDA.jpg/330px-IVE_Yujin_2026_GDA.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/An_Yu-jin",
       "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Amanda Anisimova",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Diane Parry",
+      "alter": 24,
+      "geburtsjahr": 2002,
       "beruf": "Tennisspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Amanda_Anisimova_%282024_DC_Open%29_05_%28cropped4%29.jpg/330px-Amanda_Anisimova_%282024_DC_Open%29_05_%28cropped4%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Amanda_Anisimova",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Diane_Parry%2C_Roma_2026_%28cropped%29.jpg/330px-Diane_Parry%2C_Roma_2026_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Diane_Parry",
+      "nationalitaet": "🇫🇷 Französisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
         }
       ],
       "quelle": "Wikipedia"
