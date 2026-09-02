@@ -1,31 +1,14 @@
 {
-  "datum": "01.09.2026",
-  "generiert": "2026-09-01T05:48:42Z",
+  "datum": "02.09.2026",
+  "generiert": "2026-09-02T05:12:13Z",
   "geburtstage": [
     {
-      "name": "Bill Kaulitz",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/2023-09-28-Bill_Kaulitz-Deutscher_Fernsehpreis_2023_-0348_%28cropped%29_%28cropped%29.jpg/330px-2023-09-28-Bill_Kaulitz-Deutscher_Fernsehpreis_2023_-0348_%28cropped%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bill_Kaulitz",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ralf Aussem",
-      "alter": 66,
-      "geburtsjahr": 1960,
+      "name": "Andreas Möller",
+      "alter": 59,
+      "geburtsjahr": 1967,
       "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ralf_Aussem",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/2018-09-17_Eintracht_Frankfurt_Golf_Open_Andreas_M%C3%B6ller-8877.jpg/330px-2018-09-17_Eintracht_Frankfurt_Golf_Open_Andreas_M%C3%B6ller-8877.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andreas_M%C3%B6ller",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,35 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "An Yu-jin",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/IVE_Yujin_2026_GDA.jpg/330px-IVE_Yujin_2026_GDA.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/An_Yu-jin",
+      "name": "Michael Rother",
+      "alter": 76,
+      "geburtsjahr": 1950,
+      "beruf": "Musiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Michael_rother_2007-11-14_live2.jpg/330px-Michael_rother_2007-11-14_live2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Rother",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Nickeil Alexander-Walker",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Basketballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93067.jpg/330px-2023-08-09_Deutschland_gegen_Kanada_%28Basketball-L%C3%A4nderspiel%29_by_Sandro_Halank%E2%80%93067.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nickeil_Alexander-Walker",
+      "nationalitaet": "🇨🇦 Kanadisch",
+      "nationalitaeten": [
+        {
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Choi Ye-bin",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/240814_Choi_Ye-bin.png/330px-240814_Choi_Ye-bin.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Choi_Ye-bin",
       "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
           "code": "KR",
           "flagge": "🇰🇷",
           "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Diane Parry",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Diane_Parry%2C_Roma_2026_%28cropped%29.jpg/330px-Diane_Parry%2C_Roma_2026_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Diane_Parry",
-      "nationalitaet": "🇫🇷 Französisch",
-      "nationalitaeten": [
-        {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
         }
       ],
       "quelle": "Wikipedia"
