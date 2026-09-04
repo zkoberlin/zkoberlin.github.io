@@ -1,14 +1,14 @@
 {
-  "datum": "03.09.2026",
-  "generiert": "2026-09-03T05:16:15Z",
+  "datum": "04.09.2026",
+  "generiert": "2026-09-04T05:11:35Z",
   "geburtstage": [
     {
-      "name": "Niklas Süle",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/20180602_FIFA_Friendly_Match_Austria_vs._Germany_Niklas_S%C3%BCle_850_0725.jpg/330px-20180602_FIFA_Friendly_Match_Austria_vs._Germany_Niklas_S%C3%BCle_850_0725.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Niklas_S%C3%BCle",
+      "name": "Hanna Schwamborn",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Hanna_Schwamborn.jpg/330px-Hanna_Schwamborn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hanna_Schwamborn",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,46 +20,46 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jérôme Boateng",
-      "alter": 38,
-      "geburtsjahr": 1988,
+      "name": "Emma Brownlie",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Jerome_Boateng_Training_2019-04-10_FC_Bayern_Muenchen-2_%28cropped%29.jpg/330px-Jerome_Boateng_Training_2019-04-10_FC_Bayern_Muenchen-2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/J%C3%A9r%C3%B4me_Boateng",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Emma_Brownlie_5.JPG/330px-Emma_Brownlie_5.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Emma_Brownlie",
+      "nationalitaet": "🏴 Schottisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "GB-SCT",
+          "flagge": "🏴",
+          "name": "Schottisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jack Dylan Grazer",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/JackDylanGrazer-byPhilipRomano.jpg/330px-JackDylanGrazer-byPhilipRomano.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jack_Dylan_Grazer",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Yannick Carrasco",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/70/Yannick_Ferreira_Carrasco_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Yannick_Carrasco",
+      "nationalitaet": "🇧🇪 Belgisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "BE",
+          "flagge": "🇧🇪",
+          "name": "Belgisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kaia Gerber",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_01_%28Cropped%29.jpg/330px-Kaia_Gerber_at_the_2024_Toronto_International_Film_Festival_01_%28Cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kaia_Gerber",
+      "name": "Mark Tuan",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Rapper/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Mark_Tuan_at_ShuDaxia_event%2C_March_2%2C_2024_03.png/330px-Mark_Tuan_at_ShuDaxia_event%2C_March_2%2C_2024_03.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mark_Tuan",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
