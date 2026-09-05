@@ -356,6 +356,10 @@ export default {
       }
     }
 
-    return env.BACKEND.fetch(request);
+    const backendHeaders = new Headers(request.headers);
+    backendHeaders.delete("Authorization");
+    backendHeaders.delete("X-D1-Bookmark");
+    backendHeaders.set("X-Internal-Gateway-Auth", env.INTERNAL_GATEWAY_SECRET);
+    return env.BACKEND.fetch(new Request(request, { headers: backendHeaders }));
   },
 };

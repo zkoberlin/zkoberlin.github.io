@@ -1,1 +1,2 @@
 ALLOWED_GOOGLE_EMAIL=paul@example.test
+INTERNAL_GATEWAY_SECRET=replace-with-shared-local-test-secret

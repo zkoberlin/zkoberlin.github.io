@@ -4,3 +4,4 @@ GMAIL_ICAL_URL=https://calendar.google.com/calendar/ical/replace-with-private-fe
 HELLOMED_ICAL_URL=https://calendar.google.com/calendar/ical/replace-with-private-feed/basic.ics
 KIDS_SHEET_URL=https://docs.google.com/spreadsheets/d/replace-with-sheet-id/gviz/tq?tqx=out:csv&sheet=Kids
 ALLOWED_GOOGLE_EMAIL=paul@example.test
+INTERNAL_GATEWAY_SECRET=replace-with-shared-local-test-secret

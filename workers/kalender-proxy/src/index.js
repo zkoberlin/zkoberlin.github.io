@@ -125,6 +125,25 @@ function getBearerToken(request) {
   return match?.[1]?.trim() || "";
 }
 
+async function secureEqual(left, right) {
+  const encoder = new TextEncoder();
+  const [leftHash, rightHash] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(left)),
+    crypto.subtle.digest("SHA-256", encoder.encode(right)),
+  ]);
+  const a = new Uint8Array(leftHash);
+  const b = new Uint8Array(rightHash);
+  let difference = 0;
+  for (let index = 0; index < a.length; index += 1) difference |= a[index] ^ b[index];
+  return difference === 0;
+}
+
+async function isTrustedGatewayRequest(request, env) {
+  const provided = request.headers.get("X-Internal-Gateway-Auth") || "";
+  const expected = String(env.INTERNAL_GATEWAY_SECRET || "");
+  return Boolean(provided && expected) && secureEqual(provided, expected);
+}
+
 async function verifyGoogleUser(request, env) {
   const token = getBearerToken(request);
   if (!token) return null;
@@ -800,8 +819,11 @@ export default {
 
     try {
       if (PRIVATE_PATHS.has(url.pathname)) {
-        const user = await verifyGoogleUser(request, env);
-        if (!user) return jsonResponse({ error: "Unauthorized" }, 401, origin);
+        const trustedGateway = await isTrustedGatewayRequest(request, env);
+        if (!trustedGateway) {
+          const user = await verifyGoogleUser(request, env);
+          if (!user) return jsonResponse({ error: "Unauthorized" }, 401, origin);
+        }
       }
 
       if (url.pathname === "/snapshot") {

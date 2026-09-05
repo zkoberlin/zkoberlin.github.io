@@ -12,6 +12,7 @@ function createEnv() {
     GMAIL_ICAL_URL: "https://calendar.example.test/gmail.ics",
     HELLOMED_ICAL_URL: "https://calendar.example.test/hellomed.ics",
     KIDS_SHEET_URL: "https://sheets.example.test/kids.csv",
+    INTERNAL_GATEWAY_SECRET: "internal-test-secret",
     KALENDER_KV: {
       async get(key) {
         return store.get(key) ?? null;
@@ -103,6 +104,23 @@ test("returns null when no snapshot exists", async () => {
   try {
     const response = await worker.fetch(
       authorizedRequest("https://worker.example.test/snapshot"),
+      createEnv(),
+    );
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), "null");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("accepts a private request authenticated by the internal gateway", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error("Google verification must not run"); };
+  try {
+    const response = await worker.fetch(
+      new Request("https://worker.example.test/snapshot", {
+        headers: { "X-Internal-Gateway-Auth": "internal-test-secret" },
+      }),
       createEnv(),
     );
     assert.equal(response.status, 200);

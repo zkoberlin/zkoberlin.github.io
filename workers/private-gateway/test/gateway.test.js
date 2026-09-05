@@ -10,8 +10,11 @@ function env() {
   const sessions = new Map();
   return {
     ALLOWED_GOOGLE_EMAIL: "paul@example.test",
+    INTERNAL_GATEWAY_SECRET: "internal-test-secret",
     BACKEND: {
       async fetch(request) {
+        assert.equal(request.headers.get("Authorization"), null);
+        assert.equal(request.headers.get("X-Internal-Gateway-Auth"), "internal-test-secret");
         return new Response(JSON.stringify({ path: new URL(request.url).pathname }));
       },
     },

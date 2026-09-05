@@ -19,7 +19,8 @@
       "FINNHUB_API_SECRET",
       "GMAIL_ICAL_URL",
       "HELLOMED_ICAL_URL",
-      "KIDS_SHEET_URL"
+      "KIDS_SHEET_URL",
+      "INTERNAL_GATEWAY_SECRET"
     ]
   },
   "observability": {

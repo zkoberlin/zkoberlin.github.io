@@ -22,7 +22,7 @@
     }
   ],
   "secrets": {
-    "required": ["ALLOWED_GOOGLE_EMAIL", "HUB_PREVIEW_SECRET"]
+    "required": ["ALLOWED_GOOGLE_EMAIL", "HUB_PREVIEW_SECRET", "INTERNAL_GATEWAY_SECRET"]
   },
   "observability": {
     "enabled": true,
