@@ -82,7 +82,9 @@
         callback: (response) => response.error ? reject(new Error(response.error)) : resolve(response),
         error_callback: () => reject(new Error("Google-Anmeldung wurde abgebrochen")),
       });
-      client.requestAccessToken({ prompt: "" });
+      // A fresh 30-day Hub session starts with an explicit Google consent flow.
+      // Silent token requests can close immediately when no reusable Google session exists.
+      client.requestAccessToken({ prompt: "consent" });
     });
   }
 
