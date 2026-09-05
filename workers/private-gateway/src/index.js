@@ -245,7 +245,10 @@ async function verifyGoogleUser(request, env) {
 async function verifySessionUser(token, env) {
   if (!token.startsWith(SESSION_PREFIX)) return null;
   const hash = await tokenHash(token);
-  const row = await env.HUB_DB.prepare(
+  // Authentication must see the latest writes. An unconstrained replica can
+  // briefly miss a session created by the immediately preceding request.
+  const database = env.HUB_DB.withSession("first-primary");
+  const row = await database.prepare(
     "SELECT email, name, expires_at AS expiresAt FROM hub_sessions WHERE session_hash = ?1 AND expires_at > ?2",
   ).bind(hash, Date.now()).first();
   return row ? { email: String(row.email), name: String(row.name || "") } : null;

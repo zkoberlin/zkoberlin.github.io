@@ -17,6 +17,10 @@ function env() {
     },
     HUB_PREVIEW_SECRET: "integration-secret",
     HUB_DB: {
+      withSession(constraint) {
+        assert.equal(constraint, "first-primary");
+        return this;
+      },
       prepare(sql) {
         let values = [];
         return {
