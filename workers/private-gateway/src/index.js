@@ -242,12 +242,11 @@ async function verifyGoogleUser(request, env) {
   return { email, name: profile?.name || "" };
 }
 
-async function verifySessionUser(token, env) {
+async function verifySessionUser(request, token, env) {
   if (!token.startsWith(SESSION_PREFIX)) return null;
   const hash = await tokenHash(token);
-  // Authentication must see the latest writes. An unconstrained replica can
-  // briefly miss a session created by the immediately preceding request.
-  const database = env.HUB_DB.withSession("first-primary");
+  const bookmark = request.headers.get("X-D1-Bookmark") || "first-primary";
+  const database = env.HUB_DB.withSession(bookmark);
   const row = await database.prepare(
     "SELECT email, name, expires_at AS expiresAt FROM hub_sessions WHERE session_hash = ?1 AND expires_at > ?2",
   ).bind(hash, Date.now()).first();
@@ -257,7 +256,7 @@ async function verifySessionUser(token, env) {
 async function verifyUser(request, env) {
   const token = bearerToken(request);
   if (!token) return null;
-  return token.startsWith(SESSION_PREFIX) ? verifySessionUser(token, env) : verifyGoogleUser(request, env);
+  return token.startsWith(SESSION_PREFIX) ? verifySessionUser(request, token, env) : verifyGoogleUser(request, env);
 }
 
 async function createSession(request, env, origin) {
@@ -266,11 +265,12 @@ async function createSession(request, env, origin) {
   const token = newSessionToken();
   const hash = await tokenHash(token);
   const expiresAt = Date.now() + SESSION_LIFETIME_MS;
-  await env.HUB_DB.prepare("DELETE FROM hub_sessions WHERE expires_at <= ?1").bind(Date.now()).run();
-  await env.HUB_DB.prepare(
+  const database = env.HUB_DB.withSession("first-primary");
+  await database.prepare("DELETE FROM hub_sessions WHERE expires_at <= ?1").bind(Date.now()).run();
+  await database.prepare(
     "INSERT INTO hub_sessions (session_hash, email, name, expires_at) VALUES (?1, ?2, ?3, ?4)",
   ).bind(hash, user.email, user.name, expiresAt).run();
-  return json({ sessionToken: token, expiresAt, user }, 201, origin);
+  return json({ sessionToken: token, sessionBookmark: database.getBookmark(), expiresAt, user }, 201, origin);
 }
 
 async function deleteSession(request, env, origin) {
@@ -289,7 +289,7 @@ export default {
       if (!ALLOWED_ORIGINS.has(origin)) return json({ error: "Origin not allowed" }, 403, origin);
       const responseHeaders = headers(origin);
       responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
-      responseHeaders.set("Access-Control-Allow-Headers", "Authorization, Content-Type");
+      responseHeaders.set("Access-Control-Allow-Headers", "Authorization, Content-Type, X-D1-Bookmark");
       responseHeaders.set("Access-Control-Max-Age", "86400");
       return new Response(null, { status: 204, headers: responseHeaders });
     }

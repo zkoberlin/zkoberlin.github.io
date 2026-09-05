@@ -10,6 +10,7 @@
 
   let sessionToken = "";
   let sessionExpiresAt = 0;
+  let sessionBookmark = "";
   let profile = null;
   let calendarToken = "";
   let calendarExpiresAt = 0;
@@ -17,6 +18,7 @@
   function clearSession() {
     sessionToken = "";
     sessionExpiresAt = 0;
+    sessionBookmark = "";
     profile = null;
     localStorage.removeItem(SESSION_KEY);
   }
@@ -32,6 +34,7 @@
     if (saved?.sessionToken && Number(saved.expiresAt) > Date.now()) {
       sessionToken = saved.sessionToken;
       sessionExpiresAt = Number(saved.expiresAt);
+      sessionBookmark = String(saved.sessionBookmark || "");
       profile = saved.profile || null;
     } else clearSession();
   } catch { clearSession(); }
@@ -97,8 +100,9 @@
     const result = await response.json();
     sessionToken = result.sessionToken;
     sessionExpiresAt = Number(result.expiresAt);
+    sessionBookmark = String(result.sessionBookmark || "");
     profile = result.user;
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ sessionToken, expiresAt: sessionExpiresAt, profile }));
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ sessionToken, sessionBookmark, expiresAt: sessionExpiresAt, profile }));
   }
 
   async function signIn({ calendar = false } = {}) {
@@ -136,6 +140,7 @@
     if (!isSignedIn()) throw new Error("Google-Anmeldung erforderlich");
     const headers = new Headers(init.headers || {});
     headers.set("Authorization", `Bearer ${sessionToken}`);
+    if (sessionBookmark) headers.set("X-D1-Bookmark", sessionBookmark);
     const response = await fetch(input, { ...init, headers });
     if (response.status === 401) {
       clearSession();

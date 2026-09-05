@@ -18,8 +18,8 @@ function env() {
     HUB_PREVIEW_SECRET: "integration-secret",
     HUB_DB: {
       withSession(constraint) {
-        assert.equal(constraint, "first-primary");
-        return this;
+        assert.ok(constraint === "first-primary" || constraint === "test-bookmark");
+        return { prepare: this.prepare.bind(this), getBookmark: () => "test-bookmark" };
       },
       prepare(sql) {
         let values = [];
@@ -93,10 +93,11 @@ test("creates a 30-day session, accepts it, and revokes it on logout", async () 
     assert.equal(created.status, 201);
     const session = await created.json();
     assert.match(session.sessionToken, /^ps1_[a-f0-9]{64}$/);
+    assert.equal(session.sessionBookmark, "test-bookmark");
     assert.ok(session.expiresAt > Date.now() + 29 * 24 * 60 * 60 * 1000);
 
     const authenticated = await worker.fetch(new Request("https://gateway.test/auth/me", {
-      headers: { Authorization: `Bearer ${session.sessionToken}` },
+      headers: { Authorization: `Bearer ${session.sessionToken}`, "X-D1-Bookmark": session.sessionBookmark },
     }), testEnv);
     assert.equal(authenticated.status, 200);
     assert.equal((await authenticated.json()).user.email, "paul@example.test");
