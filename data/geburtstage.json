@@ -1,14 +1,14 @@
 {
-  "datum": "04.09.2026",
-  "generiert": "2026-09-04T05:11:35Z",
+  "datum": "05.09.2026",
+  "generiert": "2026-09-05T05:00:54Z",
   "geburtstage": [
     {
-      "name": "Hanna Schwamborn",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Hanna_Schwamborn.jpg/330px-Hanna_Schwamborn.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hanna_Schwamborn",
+      "name": "Eugen Bopp",
+      "alter": 43,
+      "geburtsjahr": 1983,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Eugen_Bopp_07-04-12.png/330px-Eugen_Bopp_07-04-12.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Eugen_Bopp",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Emma Brownlie",
-      "alter": 33,
-      "geburtsjahr": 1993,
+      "name": "Paul Breitner",
+      "alter": 75,
+      "geburtsjahr": 1951,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Emma_Brownlie_5.JPG/330px-Emma_Brownlie_5.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Emma_Brownlie",
-      "nationalitaet": "🏴 Schottisch",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Paul_Breitner.jpg/330px-Paul_Breitner.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Paul_Breitner",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "GB-SCT",
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Werner Herzog",
+      "alter": 84,
+      "geburtsjahr": 1942,
+      "beruf": "Regisseur/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Werner_Herzog_Venice_Film_Festival_2025.jpg/330px-Werner_Herzog_Venice_Film_Festival_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Werner_Herzog",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Bukayo Saka",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Bukayo_Saka_England_v_Panama_27_June_26-108_%28cropped%29.jpg/330px-Bukayo_Saka_England_v_Panama_27_June_26-108_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bukayo_Saka",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
           "flagge": "🏴",
-          "name": "Schottisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Yannick Carrasco",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/70/Yannick_Ferreira_Carrasco_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Yannick_Carrasco",
-      "nationalitaet": "🇧🇪 Belgisch",
-      "nationalitaeten": [
-        {
-          "code": "BE",
-          "flagge": "🇧🇪",
-          "name": "Belgisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Mark Tuan",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Rapper/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Mark_Tuan_at_ShuDaxia_event%2C_March_2%2C_2024_03.png/330px-Mark_Tuan_at_ShuDaxia_event%2C_March_2%2C_2024_03.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mark_Tuan",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
