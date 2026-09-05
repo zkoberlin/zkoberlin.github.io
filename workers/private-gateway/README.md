@@ -1,6 +1,6 @@
 # Private Gateway
 
-Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPaul. Private Pfade verlangen ein gültiges Google-OAuth-Token des freigegebenen Kontos. Die fachliche Verarbeitung bleibt über ein Cloudflare Service Binding im Worker `kalender-proxy`.
+Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPaul. Nach einmaliger Prüfung eines Google-OAuth-Tokens stellt er eine zufällige, 30 Tage gültige Hub-Sitzung aus. In D1 wird ausschließlich der SHA-256-Hash des Sitzungstokens gespeichert; Abmelden widerruft die Sitzung. Die fachliche Verarbeitung bleibt über ein Cloudflare Service Binding im Worker `kalender-proxy`.
 
 ## Öffentliche Pfade
 
@@ -25,5 +25,6 @@ Der Gateway ist der einzige öffentliche Einstiegspunkt für Hub und KalenderPau
 - `/trailyx-preview` (minimale Nur-Lese-Vorschau über internes Service Binding)
 - `/alcohol` (`GET`, `POST`, `DELETE`; persönliche Einträge in D1)
 - `/auth/me`
+- `/auth/session` (`POST` zum Erstellen, `DELETE` zum Widerrufen einer Sitzung)
 
 Die Frontend-Migration ist seit dem 26.08.2026 abgeschlossen. Hub und KalenderPaul verwenden `paul-gateway-v2.paul-bendzko.workers.dev`. Die öffentliche `workers.dev`-Adresse des Backend-Workers ist deaktiviert; das Service Binding bleibt davon unberührt.

@@ -20,6 +20,8 @@ const PRIVATE_PATHS = new Set([
 ]);
 
 const PUBLIC_PATHS = new Set(["/horoscope", "/location/reverse"]);
+const SESSION_PREFIX = "ps1_";
+const SESSION_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
 
 function headers(origin) {
   const result = new Headers({
@@ -39,6 +41,17 @@ function json(data, status, origin) {
 
 function bearerToken(request) {
   return (request.headers.get("Authorization") || "").match(/^Bearer\s+(.+)$/i)?.[1]?.trim() || "";
+}
+
+function newSessionToken() {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return SESSION_PREFIX + Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function tokenHash(token) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 const ALCOHOL_CATALOG = Object.freeze({
@@ -229,6 +242,41 @@ async function verifyGoogleUser(request, env) {
   return { email, name: profile?.name || "" };
 }
 
+async function verifySessionUser(token, env) {
+  if (!token.startsWith(SESSION_PREFIX)) return null;
+  const hash = await tokenHash(token);
+  const row = await env.HUB_DB.prepare(
+    "SELECT email, name, expires_at AS expiresAt FROM hub_sessions WHERE session_hash = ?1 AND expires_at > ?2",
+  ).bind(hash, Date.now()).first();
+  return row ? { email: String(row.email), name: String(row.name || "") } : null;
+}
+
+async function verifyUser(request, env) {
+  const token = bearerToken(request);
+  if (!token) return null;
+  return token.startsWith(SESSION_PREFIX) ? verifySessionUser(token, env) : verifyGoogleUser(request, env);
+}
+
+async function createSession(request, env, origin) {
+  const user = await verifyGoogleUser(request, env);
+  if (!user) return json({ error: "Unauthorized" }, 401, origin);
+  const token = newSessionToken();
+  const hash = await tokenHash(token);
+  const expiresAt = Date.now() + SESSION_LIFETIME_MS;
+  await env.HUB_DB.prepare("DELETE FROM hub_sessions WHERE expires_at <= ?1").bind(Date.now()).run();
+  await env.HUB_DB.prepare(
+    "INSERT INTO hub_sessions (session_hash, email, name, expires_at) VALUES (?1, ?2, ?3, ?4)",
+  ).bind(hash, user.email, user.name, expiresAt).run();
+  return json({ sessionToken: token, expiresAt, user }, 201, origin);
+}
+
+async function deleteSession(request, env, origin) {
+  const token = bearerToken(request);
+  if (!token.startsWith(SESSION_PREFIX)) return json({ error: "Unauthorized" }, 401, origin);
+  await env.HUB_DB.prepare("DELETE FROM hub_sessions WHERE session_hash = ?1").bind(await tokenHash(token)).run();
+  return new Response(null, { status: 204, headers: headers(origin) });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -245,15 +293,21 @@ export default {
 
     if (origin && !ALLOWED_ORIGINS.has(origin)) return json({ error: "Origin not allowed" }, 403, origin);
 
+    if (url.pathname === "/auth/session") {
+      if (request.method === "POST") return createSession(request, env, origin);
+      if (request.method === "DELETE") return deleteSession(request, env, origin);
+      return json({ error: "Method not allowed" }, 405, origin);
+    }
+
     if (url.pathname === "/auth/me" && request.method === "GET") {
-      const user = await verifyGoogleUser(request, env);
+      const user = await verifyUser(request, env);
       return user
         ? json({ authenticated: true, user }, 200, origin)
         : json({ error: "Unauthorized" }, 401, origin);
     }
 
     if (PRIVATE_PATHS.has(url.pathname)) {
-      const user = await verifyGoogleUser(request, env);
+      const user = await verifyUser(request, env);
       if (!user) return json({ error: "Unauthorized" }, 401, origin);
     } else if (!PUBLIC_PATHS.has(url.pathname)) {
       return json({ error: "Not found" }, 404, origin);

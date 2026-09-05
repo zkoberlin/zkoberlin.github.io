@@ -7,6 +7,7 @@ function env() {
   const alcoholEntries = [];
   const preferences = new Map();
   const finance = new Map();
+  const sessions = new Map();
   return {
     ALLOWED_GOOGLE_EMAIL: "paul@example.test",
     BACKEND: {
@@ -23,10 +24,20 @@ function env() {
           async all() { return { results: alcoholEntries.slice() }; },
           async first() {
             if (sql.includes("FROM finance_state")) return finance.has(values[0]) ? finance.get(values[0]) : null;
+            if (sql.includes("FROM hub_sessions")) {
+              const session = sessions.get(values[0]);
+              return session && session.expiresAt > values[1] ? session : null;
+            }
             return preferences.has(values[0]) ? { value: preferences.get(values[0]) } : null;
           },
           async run() {
-            if (sql.startsWith("INSERT INTO hub_preferences")) {
+            if (sql.startsWith("INSERT INTO hub_sessions")) {
+              sessions.set(values[0], { email: values[1], name: values[2], expiresAt: values[3] });
+            } else if (sql.startsWith("DELETE FROM hub_sessions WHERE session_hash")) {
+              sessions.delete(values[0]);
+            } else if (sql.startsWith("DELETE FROM hub_sessions")) {
+              for (const [hash, session] of sessions) if (session.expiresAt <= values[0]) sessions.delete(hash);
+            } else if (sql.startsWith("INSERT INTO hub_preferences")) {
               preferences.set(values[0], values[1]);
             } else if (sql.startsWith("INSERT INTO finance_state")) {
               finance.set(values[0], { payload: values[1], updatedAt: "2026-08-28 12:00:00" });
@@ -64,6 +75,44 @@ test("blocks every private route without a token", async () => {
     const response = await worker.fetch(new Request(`https://gateway.test${path}`), env());
     assert.equal(response.status, 401, path);
   }
+});
+
+test("creates a 30-day session, accepts it, and revokes it on logout", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ email: "paul@example.test", email_verified: true, name: "Paul" }));
+  const testEnv = env();
+  try {
+    const created = await worker.fetch(new Request("https://gateway.test/auth/session", {
+      method: "POST",
+      headers: { Authorization: "Bearer google-token" },
+    }), testEnv);
+    assert.equal(created.status, 201);
+    const session = await created.json();
+    assert.match(session.sessionToken, /^ps1_[a-f0-9]{64}$/);
+    assert.ok(session.expiresAt > Date.now() + 29 * 24 * 60 * 60 * 1000);
+
+    const authenticated = await worker.fetch(new Request("https://gateway.test/auth/me", {
+      headers: { Authorization: `Bearer ${session.sessionToken}` },
+    }), testEnv);
+    assert.equal(authenticated.status, 200);
+    assert.equal((await authenticated.json()).user.email, "paul@example.test");
+
+    const logout = await worker.fetch(new Request("https://gateway.test/auth/session", {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${session.sessionToken}` },
+    }), testEnv);
+    assert.equal(logout.status, 204);
+
+    const revoked = await worker.fetch(new Request("https://gateway.test/auth/me", {
+      headers: { Authorization: `Bearer ${session.sessionToken}` },
+    }), testEnv);
+    assert.equal(revoked.status, 401);
+
+    const unknown = await worker.fetch(new Request("https://gateway.test/auth/me", {
+      headers: { Authorization: `Bearer ps1_${"0".repeat(64)}` },
+    }), testEnv);
+    assert.equal(unknown.status, 401);
+  } finally { globalThis.fetch = originalFetch; }
 });
 
 test("stores finance state and exposes only a minimal preview", async () => {

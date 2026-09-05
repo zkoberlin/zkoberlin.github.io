@@ -26,7 +26,7 @@ ein Service Binding geladen; TrailYX selbst bleibt ein separates Repository.
 - `workers/kalender-proxy/` enthält das nicht öffentlich erreichbare Backend für Kalenderquellen, Snapshots, Horoskop- und Marktdaten.
 - `docs/` enthält die technische Projektdokumentation.
 
-Das vollständige Register externer Datenflüsse, Zugriffsarten und Sicherheitsmaßnahmen steht in [`interfaces.md`](interfaces.md).
+Das vollständige Register externer Datenflüsse, Zugriffsarten und Sicherheitsmaßnahmen steht in [`interfaces.md`](interfaces.md). Die gemeinsame Browser-Anmeldung wird nach einmaliger Google-Prüfung als widerrufbare 30-Tage-Sitzung geführt. Der Browser speichert das zufällige Sitzungstoken dauerhaft; D1 enthält nur dessen SHA-256-Hash und Ablaufzeit. Kurzlebige Google-Tokens für direkte Kalender-Schreibzugriffe bleiben davon getrennt und werden nur für die Browsersitzung gehalten.
 
 ## Statische Ressourcen
 
@@ -47,4 +47,4 @@ Der Kalender ist ebenfalls aufgeteilt:
 - `kalenderpaul/assets/css/app.css` enthält das Kalenderdesign.
 - `kalenderpaul/assets/js/app.js` enthält die Kalender- und Datenquellenlogik.
 
-Der öffentliche Gateway akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Private Pfade verlangen ein gültiges Google-OAuth-Token des freigegebenen Kontos. Der Gateway erreicht das Backend ausschließlich über ein Cloudflare Service Binding. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.
+Der öffentliche Gateway akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Das Frontend verwendet für private Pfade eine gültige, serverseitig gespeicherte Hub-Sitzung des freigegebenen Kontos. Direkte Google-OAuth-Tokens bleiben während der Migration kompatibel und dienen insbesondere zum Erstellen einer Sitzung. Der Gateway erreicht das Backend ausschließlich über ein Cloudflare Service Binding. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.

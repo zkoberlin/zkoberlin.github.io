@@ -1,38 +1,58 @@
 (() => {
   const CLIENT_ID = "272507955688-7s4g9anuhiimmooisg0iqlk940r2a0jt.apps.googleusercontent.com";
-  const AUTH_ENDPOINT = "https://paul-gateway-v2.paul-bendzko.workers.dev/auth/me";
+  const AUTH_BASE = "https://paul-gateway-v2.paul-bendzko.workers.dev/auth";
   const BASE_SCOPES = "openid email";
   const CALENDAR_SCOPE = "https://www.googleapis.com/auth/calendar";
-  const SESSION_KEY = "paul_google_session_v1";
+  const SESSION_KEY = "paul_hub_session_v2";
+  const CALENDAR_KEY = "paul_google_calendar_v1";
 
-  let accessToken = "";
-  let expiresAt = 0;
+  sessionStorage.removeItem("paul_google_session_v1");
+
+  let sessionToken = "";
+  let sessionExpiresAt = 0;
   let profile = null;
-  let calendarAccess = false;
+  let calendarToken = "";
+  let calendarExpiresAt = 0;
 
-  try {
-    const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
-    if (saved?.accessToken && Number(saved.expiresAt) > Date.now()) {
-      accessToken = saved.accessToken;
-      expiresAt = Number(saved.expiresAt);
-      profile = saved.profile || null;
-      calendarAccess = Boolean(saved.calendarAccess);
-    } else {
-      sessionStorage.removeItem(SESSION_KEY);
-    }
-  } catch {
-    sessionStorage.removeItem(SESSION_KEY);
+  function clearSession() {
+    sessionToken = "";
+    sessionExpiresAt = 0;
+    profile = null;
+    localStorage.removeItem(SESSION_KEY);
   }
 
+  function clearCalendarToken() {
+    calendarToken = "";
+    calendarExpiresAt = 0;
+    sessionStorage.removeItem(CALENDAR_KEY);
+  }
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+    if (saved?.sessionToken && Number(saved.expiresAt) > Date.now()) {
+      sessionToken = saved.sessionToken;
+      sessionExpiresAt = Number(saved.expiresAt);
+      profile = saved.profile || null;
+    } else clearSession();
+  } catch { clearSession(); }
+
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(CALENDAR_KEY) || "null");
+    if (saved?.accessToken && Number(saved.expiresAt) > Date.now()) {
+      calendarToken = saved.accessToken;
+      calendarExpiresAt = Number(saved.expiresAt);
+    } else clearCalendarToken();
+  } catch { clearCalendarToken(); }
+
   function isSignedIn() {
-    const valid = Boolean(accessToken) && Date.now() < expiresAt;
-    if (!valid && accessToken) {
-      accessToken = "";
-      expiresAt = 0;
-      profile = null;
-      calendarAccess = false;
-      sessionStorage.removeItem(SESSION_KEY);
-    }
+    const valid = Boolean(sessionToken) && Date.now() < sessionExpiresAt;
+    if (!valid && sessionToken) clearSession();
+    return valid;
+  }
+
+  function hasCalendarToken() {
+    const valid = Boolean(calendarToken) && Date.now() < calendarExpiresAt;
+    if (!valid && calendarToken) clearCalendarToken();
     return valid;
   }
 
@@ -40,7 +60,7 @@
     document.querySelectorAll("[data-auth-button]").forEach((button) => {
       button.textContent = isSignedIn() ? "✓ Angemeldet" : "Mit Google anmelden";
       button.classList.toggle("is-authenticated", isSignedIn());
-      button.title = profile?.email || "Private Daten freischalten";
+      button.title = isSignedIn() ? `${profile?.email || "Angemeldet"} · Klicken zum Abmelden` : "Private Daten freischalten";
     });
   }
 
@@ -52,21 +72,9 @@
     }
   }
 
-  async function verify(token) {
-    const response = await fetch(AUTH_ENDPOINT, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) throw new Error("Dieses Google-Konto ist nicht freigegeben");
-    return response.json();
-  }
-
-  async function signIn({ calendar = false } = {}) {
-    if (isSignedIn() && (!calendar || calendarAccess)) {
-      return { accessToken, expiresAt, profile };
-    }
+  async function requestGoogleToken(calendar) {
     await waitForGoogle();
-
-    const tokenResponse = await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const client = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: calendar ? `${BASE_SCOPES} ${CALENDAR_SCOPE}` : BASE_SCOPES,
@@ -74,37 +82,75 @@
         callback: (response) => response.error ? reject(new Error(response.error)) : resolve(response),
         error_callback: () => reject(new Error("Google-Anmeldung wurde abgebrochen")),
       });
-      client.requestAccessToken({ prompt: "consent" });
+      client.requestAccessToken({ prompt: "" });
     });
+  }
 
-    const verification = await verify(tokenResponse.access_token);
-    accessToken = tokenResponse.access_token;
-    expiresAt = Date.now() + Math.max(0, tokenResponse.expires_in - 60) * 1000;
-    calendarAccess = String(tokenResponse.scope || "").includes(CALENDAR_SCOPE);
-    profile = verification.user;
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-      accessToken,
-      expiresAt,
-      profile,
-      calendarAccess,
-    }));
+  async function establishSession(googleToken) {
+    const response = await fetch(`${AUTH_BASE}/session`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${googleToken}` },
+    });
+    if (!response.ok) throw new Error("Dieses Google-Konto ist nicht freigegeben");
+    const result = await response.json();
+    sessionToken = result.sessionToken;
+    sessionExpiresAt = Number(result.expiresAt);
+    profile = result.user;
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ sessionToken, expiresAt: sessionExpiresAt, profile }));
+  }
+
+  async function signIn({ calendar = false } = {}) {
+    if (isSignedIn() && (!calendar || hasCalendarToken())) {
+      return { accessToken: calendar ? calendarToken : sessionToken, expiresAt: calendar ? calendarExpiresAt : sessionExpiresAt, profile };
+    }
+    const tokenResponse = await requestGoogleToken(calendar);
+    if (!isSignedIn()) await establishSession(tokenResponse.access_token);
+    if (calendar) {
+      calendarToken = tokenResponse.access_token;
+      calendarExpiresAt = Date.now() + Math.max(0, tokenResponse.expires_in - 60) * 1000;
+      sessionStorage.setItem(CALENDAR_KEY, JSON.stringify({ accessToken: calendarToken, expiresAt: calendarExpiresAt }));
+    }
     render();
     window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
-    return { accessToken, expiresAt, profile };
+    return { accessToken: calendar ? calendarToken : sessionToken, expiresAt: calendar ? calendarExpiresAt : sessionExpiresAt, profile };
+  }
+
+  async function signOut() {
+    const token = sessionToken;
+    clearSession();
+    clearCalendarToken();
+    render();
+    window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile: null } }));
+    if (token) {
+      try {
+        await fetch(`${AUTH_BASE}/session`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      } catch (error) {
+        console.warn("Remote session logout failed", error);
+      }
+    }
   }
 
   async function authorizedFetch(input, init = {}) {
     if (!isSignedIn()) throw new Error("Google-Anmeldung erforderlich");
     const headers = new Headers(init.headers || {});
-    headers.set("Authorization", `Bearer ${accessToken}`);
-    return fetch(input, { ...init, headers });
+    headers.set("Authorization", `Bearer ${sessionToken}`);
+    const response = await fetch(input, { ...init, headers });
+    if (response.status === 401) {
+      clearSession();
+      render();
+      window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile: null } }));
+    }
+    return response;
   }
 
   async function handleButton(button) {
     button.disabled = true;
-    button.textContent = "Anmeldung…";
     try {
-      await signIn({ calendar: button.dataset.authCalendar === "true" });
+      if (isSignedIn()) await signOut();
+      else {
+        button.textContent = "Anmeldung…";
+        await signIn({ calendar: button.dataset.authCalendar === "true" });
+      }
     } catch (error) {
       console.error("Authentication failed", error);
       button.textContent = "Anmeldung fehlgeschlagen";
@@ -121,15 +167,14 @@
   });
   document.addEventListener("DOMContentLoaded", () => {
     render();
-    if (isSignedIn()) {
-      window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
-    }
+    if (isSignedIn()) window.dispatchEvent(new CustomEvent("hub-auth-change", { detail: { profile } }));
   });
 
   window.HubAuth = {
     signIn,
+    signOut,
     authorizedFetch,
     isSignedIn,
-    getAccessToken: () => isSignedIn() ? accessToken : "",
+    getAccessToken: () => isSignedIn() ? sessionToken : "",
   };
 })();
