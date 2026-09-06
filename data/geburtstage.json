@@ -1,71 +1,71 @@
 {
-  "datum": "05.09.2026",
-  "generiert": "2026-09-05T05:00:54Z",
+  "datum": "06.09.2026",
+  "generiert": "2026-09-06T05:14:25Z",
   "geburtstage": [
     {
-      "name": "Eugen Bopp",
-      "alter": 43,
-      "geburtsjahr": 1983,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Eugen_Bopp_07-04-12.png/330px-Eugen_Bopp_07-04-12.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Eugen_Bopp",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Asher Angel",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Asher_Angel_by_Gage_Skidmore_3.jpg/330px-Asher_Angel_by_Gage_Skidmore_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Asher_Angel",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Paul Breitner",
-      "alter": 75,
-      "geburtsjahr": 1951,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Paul_Breitner.jpg/330px-Paul_Breitner.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Paul_Breitner",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Leylah Fernandez",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Leylah_Fernandez_%282025_DC_Open%29_03_%28cropped%29.jpg/330px-Leylah_Fernandez_%282025_DC_Open%29_03_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Leylah_Fernandez",
+      "nationalitaet": "🇨🇦 Kanadisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Werner Herzog",
-      "alter": 84,
-      "geburtsjahr": 1942,
-      "beruf": "Regisseur/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Werner_Herzog_Venice_Film_Festival_2025.jpg/330px-Werner_Herzog_Venice_Film_Festival_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Werner_Herzog",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Bukayo Saka",
+      "name": "Freya Allan",
       "alter": 25,
       "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Bukayo_Saka_England_v_Panama_27_June_26-108_%28cropped%29.jpg/330px-Bukayo_Saka_England_v_Panama_27_June_26-108_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bukayo_Saka",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Actress_Freya_Allan_in_2024_%2853704843534%29.jpg/330px-Actress_Freya_Allan_in_2024_%2853704843534%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Freya_Allan",
       "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
           "code": "GB-ENG",
           "flagge": "🏴",
           "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "David Kushner",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Musiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/David_Kushner_LIVE_at_Lauv_North_America_Tour_%28cropped%29_%28cropped%29.png/330px-David_Kushner_LIVE_at_Lauv_North_America_Tour_%28cropped%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/David_Kushner_(singer-songwriter)",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
