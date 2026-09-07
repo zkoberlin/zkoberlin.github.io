@@ -1,71 +1,71 @@
 {
-  "datum": "06.09.2026",
-  "generiert": "2026-09-06T05:14:25Z",
+  "datum": "07.09.2026",
+  "generiert": "2026-09-07T05:22:56Z",
   "geburtstage": [
     {
-      "name": "Asher Angel",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Asher_Angel_by_Gage_Skidmore_3.jpg/330px-Asher_Angel_by_Gage_Skidmore_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Asher_Angel",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Lutz Heilmann",
+      "alter": 60,
+      "geburtsjahr": 1966,
+      "beruf": "Politiker/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Lutz_Heilmann",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Leylah Fernandez",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Leylah_Fernandez_%282025_DC_Open%29_03_%28cropped%29.jpg/330px-Leylah_Fernandez_%282025_DC_Open%29_03_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Leylah_Fernandez",
-      "nationalitaet": "🇨🇦 Kanadisch",
+      "name": "Andreas Thom",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bundesarchiv_Bild_183-1989-1216-015%2C_Transfer_Andreas_Thom_%28cropped%29.jpg/330px-Bundesarchiv_Bild_183-1989-1216-015%2C_Transfer_Andreas_Thom_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andreas_Thom",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Freya Allan",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Actress_Freya_Allan_in_2024_%2853704843534%29.jpg/330px-Actress_Freya_Allan_in_2024_%2853704843534%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Freya_Allan",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Tsugumi Aritomo",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Tsugumi_Aritomo_Tainan_2024.jpg/330px-Tsugumi_Aritomo_Tainan_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tsugumi_Aritomo",
+      "nationalitaet": "🇯🇵 Japanisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "David Kushner",
+      "name": "Ariarne Titmus",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Musiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/David_Kushner_LIVE_at_Lauv_North_America_Tour_%28cropped%29_%28cropped%29.png/330px-David_Kushner_LIVE_at_Lauv_North_America_Tour_%28cropped%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/David_Kushner_(singer-songwriter)",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "beruf": "Persönlichkeit",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Ariarne_Titmus",
+      "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
