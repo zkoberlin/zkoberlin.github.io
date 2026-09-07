@@ -246,7 +246,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.36.4'}</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.36.5'}</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -1852,53 +1852,36 @@ async function loadKidsSheet() {
   try {
     const res = await HubAuth.authorizedFetch('https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/kids');
     if(!res.ok) throw new Error('HTTP ' + res.status);
-    const csv = await res.text();
+    const payload = await res.json();
+    if(payload?.schemaVersion !== 1 || !Array.isArray(payload.days)) {
+      throw new Error('Ungültiges Kids-Schema');
+    }
     
     const todayKey = dk(today.getFullYear(), today.getMonth(), today.getDate());
-    const lines = csv.split('\n').slice(1); // skip header
-    
-    let kidsAdded = 0, infosAdded = 0;
-    
-    for(const line of lines) {
-      if(!line.trim()) continue;
-      // Parse CSV - handle quoted fields
-      const cols = line.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
-      const clean = cols.map(c => c.replace(/^"|"$/g, '').trim());
-      
-      const rawDate = clean[0]; // DD/MM/YYYY
-      const who = clean[2];     // Paul or Dani
-      const info = clean[4];    // Infos column E
-      
-      if(!rawDate || !who) continue;
-      
-      // Parse date DD/MM/YYYY → YYYY-MM-DD
-      const parts = rawDate.split('/');
-      if(parts.length !== 3) continue;
-      const dateKey = `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+    let kidsAdded = 0;
+
+    for(const day of payload.days) {
+      const dateKey = typeof day?.date === 'string' ? day.date : '';
+      const caretaker = day?.caretaker;
+      if(!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) continue;
+      if(!['Paul', 'Dani', 'unknown'].includes(caretaker)) continue;
       
       // Skip past dates
       if(dateKey < todayKey) continue;
       
       if(!SE[dateKey]) SE[dateKey] = [];
       
-      // Add Kids bei Paul / Kids bei Dani if not already from iCal
-      const cat = who.toLowerCase().includes('paul') ? 'e-kids' : 'e-dani';
-      const label = who.toLowerCase().includes('paul') ? '👨‍👧‍👦 Kids bei Paul' : 'Kids bei Dani';
+      const cat = caretaker === 'Paul' ? 'e-kids' : caretaker === 'Dani' ? 'e-dani' : 'e-kidev';
+      const label = caretaker === 'Paul'
+        ? '👨‍👧‍👦 Kids bei Paul'
+        : caretaker === 'Dani' ? 'Kids bei Dani' : 'Kids – Zuordnung offen';
       
-      if(!SE[dateKey].some(e => e.c === cat)) {
+      if(!SE[dateKey].some(e => e.fromSheet && e.c === cat)) {
         SE[dateKey].push({t: label, c: cat, fromSheet: true});
         kidsAdded++;
       }
-      
-      // Add info as Schule/Kids event if present
-      if(info && info.length > 2) {
-        if(!SE[dateKey].some(e => e.t.includes(info.substring(0,20)))) {
-          SE[dateKey].push({t: '📋 ' + info, c: 'e-kidev', fromSheet: true});
-          infosAdded++;
-        }
-      }
     }
-    console.log(`✅ Kids Sheet: ${kidsAdded} Tage, ${infosAdded} Infos geladen`);
+    console.log(`✅ Kids Sheet: ${kidsAdded} Tage geladen`);
     setLoadStatus('ls-sheet', 'ok', `✓ Kids Sheet (${kidsAdded} Tage)`);
   } catch(err) {
     console.warn('Google Sheets error:', err.message);
