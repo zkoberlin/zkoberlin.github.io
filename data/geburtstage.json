@@ -1,31 +1,14 @@
 {
-  "datum": "07.09.2026",
-  "generiert": "2026-09-07T05:22:56Z",
+  "datum": "08.09.2026",
+  "generiert": "2026-09-08T05:24:46Z",
   "geburtstage": [
     {
-      "name": "Lutz Heilmann",
-      "alter": 60,
-      "geburtsjahr": 1966,
-      "beruf": "Politiker/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Lutz_Heilmann",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Andreas Thom",
-      "alter": 61,
-      "geburtsjahr": 1965,
+      "name": "Markus Babbel",
+      "alter": 54,
+      "geburtsjahr": 1972,
       "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bundesarchiv_Bild_183-1989-1216-015%2C_Transfer_Andreas_Thom_%28cropped%29.jpg/330px-Bundesarchiv_Bild_183-1989-1216-015%2C_Transfer_Andreas_Thom_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Andreas_Thom",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Markus_Babbel_%E2%80%93_Tag_der_Legenden_2016_01.jpg/330px-Markus_Babbel_%E2%80%93_Tag_der_Legenden_2016_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Markus_Babbel",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,35 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Tsugumi Aritomo",
+      "name": "Thomas Kretschmann",
+      "alter": 64,
+      "geburtsjahr": 1962,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Thomas_Kretschmann_in_March_2012.jpg/330px-Thomas_Kretschmann_in_March_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Thomas_Kretschmann",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lewis Hall",
       "alter": 22,
       "geburtsjahr": 2004,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Tsugumi_Aritomo_Tainan_2024.jpg/330px-Tsugumi_Aritomo_Tainan_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tsugumi_Aritomo",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Lewis_Hall_24052026_%282%29.jpg/330px-Lewis_Hall_24052026_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lewis_Hall_(footballer)",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Ariarne Titmus",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Persönlichkeit",
+      "name": "Nicolas Cantu",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Schauspieler/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ariarne_Titmus",
-      "nationalitaet": "🇦🇺 Australisch",
+      "wikidata": "https://en.wikipedia.org/wiki/Nicolas_Cantu",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
