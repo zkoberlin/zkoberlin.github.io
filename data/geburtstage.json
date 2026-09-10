@@ -1,70 +1,59 @@
 {
-  "datum": "09.09.2026",
-  "generiert": "2026-09-09T05:28:16Z",
+  "datum": "10.09.2026",
+  "generiert": "2026-09-10T05:24:31Z",
   "geburtstage": [
     {
-      "name": "Hailey Van Lith",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d8/Hailey_Van_Lith_2025_%28cropped%29.jpg/330px-Hailey_Van_Lith_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hailey_Van_Lith",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jordan Nwora",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Jordan_Nwora_3_Anadolu_Efes_TBSL_20241229_%282%29_%28cropped%29.jpg/330px-Jordan_Nwora_3_Anadolu_Efes_TBSL_20241229_%282%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jordan_Nwora",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Gabby Williams",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/260824_Lynx_Valkries_JohnMc300_%2855486705669%29_%28cropped%29.jpg/330px-260824_Lynx_Valkries_JohnMc300_%2855486705669%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Gabby_Williams",
-      "nationalitaet": "🇺🇸🇫🇷 US-amerikanisch/Französisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        },
-        {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kelsey Asbille",
-      "alter": 35,
-      "geburtsjahr": 1991,
+      "name": "Gabriel Bateman",
+      "alter": 22,
+      "geburtsjahr": 2004,
       "beruf": "Schauspieler/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Kelsey_Asbille",
+      "wikidata": "https://en.wikipedia.org/wiki/Gabriel_Bateman",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Armando Broja",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Armando_Broja_29112025_%282%29.jpg/330px-Armando_Broja_29112025_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Armando_Broja",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Laura Taylor",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Persönlichkeit",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Laura_Taylor_(swimmer)",
+      "nationalitaet": "🇦🇺 Australisch",
+      "nationalitaeten": [
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jschlatt",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/JSCHLATT_%28Better_Edit%29_%283x4_cropped%29.jpg/330px-JSCHLATT_%28Better_Edit%29_%283x4_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jschlatt",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
