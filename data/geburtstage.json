@@ -1,14 +1,53 @@
 {
-  "datum": "10.09.2026",
-  "generiert": "2026-09-10T05:24:31Z",
+  "datum": "11.09.2026",
+  "generiert": "2026-09-11T05:22:17Z",
   "geburtstage": [
     {
-      "name": "Gabriel Bateman",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Schauspieler/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Gabriel_Bateman",
+      "name": "Leandro Bolmaro",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Leandro_Bolmaro_10_Olimpia_Milan_Euroleague_20260320_%281%29_%28cropped%29.jpg/330px-Leandro_Bolmaro_10_Olimpia_Milan_Euroleague_20260320_%281%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Leandro_Bolmaro",
+      "nationalitaet": "🇮🇹🇦🇷 Italienisch/Argentinisch",
+      "nationalitaeten": [
+        {
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
+        },
+        {
+          "code": "AR",
+          "flagge": "🇦🇷",
+          "name": "Argentinisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Harmony Tan",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/Tan_RGQ23.jpg/330px-Tan_RGQ23.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Harmony_Tan",
+      "nationalitaet": "🇫🇷 Französisch",
+      "nationalitaeten": [
+        {
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Farrah Moan",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Rupaul_Dragcon_2018-293_%2841377495904%29_%28cropped%29.png/330px-Rupaul_Dragcon_2018-293_%2841377495904%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Farrah_Moan",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -20,48 +59,14 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Armando Broja",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Jordan Ayew",
+      "alter": 35,
+      "geburtsjahr": 1991,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Armando_Broja_29112025_%282%29.jpg/330px-Armando_Broja_29112025_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Armando_Broja",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Jordan_Ayew_England_v_Ghana_23_June_2026-005.jpg/330px-Jordan_Ayew_England_v_Ghana_23_June_2026-005.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jordan_Ayew",
       "nationalitaet": null,
       "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Laura Taylor",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Persönlichkeit",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Laura_Taylor_(swimmer)",
-      "nationalitaet": "🇦🇺 Australisch",
-      "nationalitaeten": [
-        {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jschlatt",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/JSCHLATT_%28Better_Edit%29_%283x4_cropped%29.jpg/330px-JSCHLATT_%28Better_Edit%29_%283x4_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jschlatt",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
       "quelle": "Wikipedia"
     }
   ]
