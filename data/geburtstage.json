@@ -1,14 +1,36 @@
 {
-  "datum": "12.09.2026",
-  "generiert": "2026-09-12T05:12:37Z",
+  "datum": "13.09.2026",
+  "generiert": "2026-09-13T05:27:52Z",
   "geburtstage": [
     {
-      "name": "Dieter Hecking",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Dieter_Hecking_-_Pressekonferenz_zur_Vorstellung_von_Luiz_Gustavo_2013_%28cropped%29.jpg/330px-Dieter_Hecking_-_Pressekonferenz_zur_Vorstellung_von_Luiz_Gustavo_2013_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Dieter_Hecking",
+      "name": "Alice Merton",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Alice_Merton_%40_Troubadour_05_22_2024_%2853838139492%29_%28cropped%29.jpg/330px-Alice_Merton_%40_Troubadour_05_22_2024_%2853838139492%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Alice_Merton",
+      "nationalitaet": "🇨🇦🇩🇪 Kanadisch/Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        },
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Thomas Müller",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/FC_Red_Bull_Salzburg_gegen_Bayern_M%C3%BCnchen_%282025-01-06_Testspiel%29_19.jpg/330px-FC_Red_Bull_Salzburg_gegen_Bayern_M%C3%BCnchen_%282025-01-06_Testspiel%29_19.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Thomas_M%C3%BCller",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +42,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Sigmar Gabriel",
-      "alter": 67,
-      "geburtsjahr": 1959,
-      "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/MJK63118_Sigmar_Gabriel_%28Frankfurter_Buchmesse_2018%29.jpg/330px-MJK63118_Sigmar_Gabriel_%28Frankfurter_Buchmesse_2018%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sigmar_Gabriel",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ziaire Williams",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Ziaire_Williams_%2851814052094%29_%28cropped%29.jpg/330px-Ziaire_Williams_%2851814052094%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ziaire_Williams",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Sydney Sweeney",
-      "alter": 29,
-      "geburtsjahr": 1997,
+      "name": "Maria Furtwängler",
+      "alter": 60,
+      "geburtsjahr": 1966,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Sydney_Sweeney_at_Vanity_Fair_2025.jpg/330px-Sydney_Sweeney_at_Vanity_Fair_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sydney_Sweeney",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/MJK_68467_Maria_Furtw%C3%A4ngler_%28Berlinale_2020%29.jpg/330px-MJK_68467_Maria_Furtw%C3%A4ngler_%28Berlinale_2020%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Maria_Furtw%C3%A4ngler",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Yeonjun",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Yeonjun_250625.jpg/330px-Yeonjun_250625.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Yeonjun",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
