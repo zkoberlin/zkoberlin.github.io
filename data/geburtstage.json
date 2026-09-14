@@ -1,76 +1,71 @@
 {
-  "datum": "13.09.2026",
-  "generiert": "2026-09-13T05:27:52Z",
+  "datum": "14.09.2026",
+  "generiert": "2026-09-14T05:32:02Z",
   "geburtstage": [
     {
-      "name": "Alice Merton",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Alice_Merton_%40_Troubadour_05_22_2024_%2853838139492%29_%28cropped%29.jpg/330px-Alice_Merton_%40_Troubadour_05_22_2024_%2853838139492%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Alice_Merton",
-      "nationalitaet": "🇨🇦🇩🇪 Kanadisch/Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        },
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Thomas Müller",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/FC_Red_Bull_Salzburg_gegen_Bayern_M%C3%BCnchen_%282025-01-06_Testspiel%29_19.jpg/330px-FC_Red_Bull_Salzburg_gegen_Bayern_M%C3%BCnchen_%282025-01-06_Testspiel%29_19.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Thomas_M%C3%BCller",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Maria Furtwängler",
-      "alter": 60,
-      "geburtsjahr": 1966,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/MJK_68467_Maria_Furtw%C3%A4ngler_%28Berlinale_2020%29.jpg/330px-MJK_68467_Maria_Furtw%C3%A4ngler_%28Berlinale_2020%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Maria_Furtw%C3%A4ngler",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Yeonjun",
-      "alter": 27,
-      "geburtsjahr": 1999,
+      "name": "Ayo",
+      "alter": 46,
+      "geburtsjahr": 1980,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Yeonjun_250625.jpg/330px-Yeonjun_250625.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Yeonjun",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Ayo_warsaw_november2008.jpg/330px-Ayo_warsaw_november2008.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ayo_(singer)",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Günter Netzer",
+      "alter": 82,
+      "geburtsjahr": 1944,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9b/G%C3%BCnter_Netzer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/G%C3%BCnter_Netzer",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Han",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Han_of_Stray_Kids_at_the_40th_Golden_Disc_Awards%2C_January_10%2C_2026_%281%29.png/330px-Han_of_Stray_Kids_at_the_40th_Golden_Disc_Awards%2C_January_10%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Han_(musician)",
       "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
           "code": "KR",
           "flagge": "🇰🇷",
           "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Benjamin Ingrosso",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Benjamin_Ingrosso_-_Rockbj%C3%B6rnen_2024_%28cropped%29.jpg/330px-Benjamin_Ingrosso_-_Rockbj%C3%B6rnen_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Benjamin_Ingrosso",
+      "nationalitaet": "🇸🇪 Schwedisch",
+      "nationalitaeten": [
+        {
+          "code": "SE",
+          "flagge": "🇸🇪",
+          "name": "Schwedisch"
         }
       ],
       "quelle": "Wikipedia"
