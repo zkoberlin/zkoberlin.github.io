@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-13T00:39:44Z",
+  "generatedAt": "2026-09-14T00:48:33Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -123,16 +123,16 @@
     "shortName": "Bayern",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_FC_Bayern_M%C3%BCnchen_%282002%E2%80%932017%29.svg",
     "standing": {
-      "rank": 5,
+      "rank": 4,
       "teamId": 40,
       "name": "FC Bayern München",
       "shortName": "Bayern",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_FC_Bayern_M%C3%BCnchen_%282002%E2%80%932017%29.svg",
-      "played": 2,
-      "goalsFor": 5,
-      "goalsAgainst": 1,
-      "goalDifference": 4,
-      "points": 4,
+      "played": 3,
+      "goalsFor": 7,
+      "goalsAgainst": 2,
+      "goalDifference": 5,
+      "points": 7,
       "isUnion": false
     },
     "headToHead": [
@@ -182,23 +182,8 @@
         "result": "L"
       }
     ],
-    "form": "DWWWD",
+    "form": "WWWDW",
     "lastMatches": [
-      {
-        "id": 77554,
-        "date": "2026-05-16T13:30:00Z",
-        "competition": "Bundesliga",
-        "isHome": true,
-        "opponent": {
-          "id": 65,
-          "name": "1. FC Köln",
-          "shortName": "Köln",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/0/01/1._FC_Koeln_Logo_2014%E2%80%93.svg"
-        },
-        "goalsFor": 5,
-        "goalsAgainst": 1,
-        "result": "W"
-      },
       {
         "id": 83156,
         "date": "2026-08-28T18:30:00Z",
@@ -228,6 +213,21 @@
         "goalsFor": 0,
         "goalsAgainst": 0,
         "result": "D"
+      },
+      {
+        "id": 83182,
+        "date": "2026-09-13T15:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": false,
+        "opponent": {
+          "id": 198,
+          "name": "SV 07 Elversberg",
+          "shortName": "Elversberg",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png"
+        },
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "result": "W"
       }
     ]
   },
@@ -273,32 +273,45 @@
     },
     {
       "rank": 4,
-      "teamId": 198,
-      "name": "SV 07 Elversberg",
-      "shortName": "Elversberg",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
-      "played": 2,
-      "goalsFor": 7,
-      "goalsAgainst": 5,
-      "goalDifference": 2,
-      "points": 6,
-      "isUnion": false
-    },
-    {
-      "rank": 5,
       "teamId": 40,
       "name": "FC Bayern München",
       "shortName": "Bayern",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_FC_Bayern_M%C3%BCnchen_%282002%E2%80%932017%29.svg",
-      "played": 2,
-      "goalsFor": 5,
-      "goalsAgainst": 1,
-      "goalDifference": 4,
-      "points": 4,
+      "played": 3,
+      "goalsFor": 7,
+      "goalsAgainst": 2,
+      "goalDifference": 5,
+      "points": 7,
+      "isUnion": false
+    },
+    {
+      "rank": 5,
+      "teamId": 1635,
+      "name": "RB Leipzig",
+      "shortName": "Leipzig",
+      "logo": "https://i.imgur.com/Rpwsjz1.png",
+      "played": 3,
+      "goalsFor": 9,
+      "goalsAgainst": 3,
+      "goalDifference": 6,
+      "points": 6,
       "isUnion": false
     },
     {
       "rank": 6,
+      "teamId": 198,
+      "name": "SV 07 Elversberg",
+      "shortName": "Elversberg",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
+      "played": 3,
+      "goalsFor": 8,
+      "goalsAgainst": 7,
+      "goalDifference": 1,
+      "points": 6,
+      "isUnion": false
+    },
+    {
+      "rank": 7,
       "teamId": 6,
       "name": "Bayer 04 Leverkusen",
       "shortName": "Leverkusen",
@@ -311,7 +324,7 @@
       "isUnion": false
     },
     {
-      "rank": 7,
+      "rank": 8,
       "teamId": 81,
       "name": "1. FSV Mainz 05",
       "shortName": "Mainz",
@@ -324,7 +337,7 @@
       "isUnion": false
     },
     {
-      "rank": 8,
+      "rank": 9,
       "teamId": 91,
       "name": "Eintracht Frankfurt",
       "shortName": "Frankfurt",
@@ -337,7 +350,7 @@
       "isUnion": false
     },
     {
-      "rank": 9,
+      "rank": 10,
       "teamId": 134,
       "name": "SV Werder Bremen",
       "shortName": "Bremen",
@@ -350,7 +363,7 @@
       "isUnion": false
     },
     {
-      "rank": 10,
+      "rank": 11,
       "teamId": 9,
       "name": "FC Schalke 04",
       "shortName": "S04",
@@ -363,7 +376,7 @@
       "isUnion": false
     },
     {
-      "rank": 11,
+      "rank": 12,
       "teamId": 65,
       "name": "1. FC Köln",
       "shortName": "Köln",
@@ -373,19 +386,6 @@
       "goalsAgainst": 7,
       "goalDifference": -2,
       "points": 4,
-      "isUnion": false
-    },
-    {
-      "rank": 12,
-      "teamId": 1635,
-      "name": "RB Leipzig",
-      "shortName": "Leipzig",
-      "logo": "https://i.imgur.com/Rpwsjz1.png",
-      "played": 2,
-      "goalsFor": 4,
-      "goalsAgainst": 3,
-      "goalDifference": 1,
-      "points": 3,
       "isUnion": false
     },
     {
@@ -442,19 +442,6 @@
     },
     {
       "rank": 17,
-      "teamId": 100,
-      "name": "Hamburger SV",
-      "shortName": "HSV",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg",
-      "played": 2,
-      "goalsFor": 0,
-      "goalsAgainst": 7,
-      "goalDifference": -7,
-      "points": 0,
-      "isUnion": false
-    },
-    {
-      "rank": 18,
       "teamId": 87,
       "name": "Borussia Mönchengladbach",
       "shortName": "Gladbach",
@@ -463,6 +450,19 @@
       "goalsFor": 3,
       "goalsAgainst": 12,
       "goalDifference": -9,
+      "points": 0,
+      "isUnion": false
+    },
+    {
+      "rank": 18,
+      "teamId": 100,
+      "name": "Hamburger SV",
+      "shortName": "HSV",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg",
+      "played": 3,
+      "goalsFor": 0,
+      "goalsAgainst": 12,
+      "goalDifference": -12,
       "points": 0,
       "isUnion": false
     }
