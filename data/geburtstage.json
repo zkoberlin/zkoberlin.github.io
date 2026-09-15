@@ -1,14 +1,14 @@
 {
-  "datum": "14.09.2026",
-  "generiert": "2026-09-14T05:32:02Z",
+  "datum": "15.09.2026",
+  "generiert": "2026-09-15T05:32:35Z",
   "geburtstage": [
     {
-      "name": "Ayo",
-      "alter": 46,
-      "geburtsjahr": 1980,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Ayo_warsaw_november2008.jpg/330px-Ayo_warsaw_november2008.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ayo_(singer)",
+      "name": "Dennis Schröder",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/2022-07-03_Basketball%2C_M%C3%A4nner%2C_European_Qualifiers%2C_Deutschland_-_Polen_1DX_1386_by_Stepro_%28cropped%29.jpg/330px-2022-07-03_Basketball%2C_M%C3%A4nner%2C_European_Qualifiers%2C_Deutschland_-_Polen_1DX_1386_by_Stepro_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Dennis_Schr%C3%B6der",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Günter Netzer",
-      "alter": 82,
-      "geburtsjahr": 1944,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/9/9b/G%C3%BCnter_Netzer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/G%C3%BCnter_Netzer",
+      "name": "Hans-Gert Pöttering",
+      "alter": 81,
+      "geburtsjahr": 1945,
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/P%C3%B6ttering%2C_Hans-Gert-9757.jpg/330px-P%C3%B6ttering%2C_Hans-Gert-9757.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-Gert_P%C3%B6ttering",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,35 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Han",
+      "name": "Felix",
       "alter": 26,
       "geburtsjahr": 2000,
       "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Han_of_Stray_Kids_at_the_40th_Golden_Disc_Awards%2C_January_10%2C_2026_%281%29.png/330px-Han_of_Stray_Kids_at_the_40th_Golden_Disc_Awards%2C_January_10%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Han_(musician)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Stray_Kids%27_Felix_at_the_Happiz_brand_launch%2C_13_April_2026_%281%29.png/330px-Stray_Kids%27_Felix_at_the_Happiz_brand_launch%2C_13_April_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Felix_(rapper)",
+      "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Benjamin Ingrosso",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Benjamin_Ingrosso_-_Rockbj%C3%B6rnen_2024_%28cropped%29.jpg/330px-Benjamin_Ingrosso_-_Rockbj%C3%B6rnen_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Benjamin_Ingrosso",
-      "nationalitaet": "🇸🇪 Schwedisch",
+      "name": "Jaren Jackson Jr.",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Jaren_Jackson_%2851814052094%29_%28cropped%29.jpg/330px-Jaren_Jackson_%2851814052094%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jaren_Jackson_Jr.",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "SE",
-          "flagge": "🇸🇪",
-          "name": "Schwedisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
