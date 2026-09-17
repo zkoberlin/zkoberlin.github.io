@@ -1,73 +1,61 @@
 {
-  "datum": "16.09.2026",
-  "generiert": "2026-09-16T05:25:01Z",
+  "datum": "17.09.2026",
+  "generiert": "2026-09-17T05:33:35Z",
   "geburtstage": [
     {
-      "name": "Karl-Heinz Riedle",
-      "alter": 61,
-      "geburtsjahr": 1965,
+      "name": "Elina Avanesyan",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Avanesyan_WMQ23_%2853061717086%29.jpg/330px-Avanesyan_WMQ23_%2853061717086%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Elina_Avanesyan",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jaimee Fourlis",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Fourlis_WMQ22_%2821%29_%2852191652405%29.jpg/330px-Fourlis_WMQ22_%2821%29_%2852191652405%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jaimee_Fourlis",
+      "nationalitaet": "🇦🇺 Australisch",
+      "nationalitaeten": [
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kim Dong-hyun",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/27/190406_AB6IX_%EA%B9%80%EB%8F%99%ED%98%84.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Kim_Dong-hyun_(singer%2C_born_1998)",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Duje Ćaleta-Car",
+      "alter": 30,
+      "geburtsjahr": 1996,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Karl-Heinz_Riedle%2C_2012.jpg/330px-Karl-Heinz_Riedle%2C_2012.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Karl-Heinz_Riedle",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Oliver Skipp",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Oliver_Skipp_24082024_%281%29_%28cropped%29.jpg/330px-Oliver_Skipp_24082024_%281%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Oliver_Skipp",
-      "nationalitaet": "🏴 Englisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Anairis Quiñones",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Anairis_Quinones_Photo_Op_Animate%21_Columbus_2024_%28cropped%29.jpg/330px-Anairis_Quinones_Photo_Op_Animate%21_Columbus_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Anairis_Qui%C3%B1ones",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jackie Young",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Jackie_Young.jpg/330px-Jackie_Young.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jackie_Young",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Duje_Caleta-Car_Croatia_v_Portugal_2_July_2026-019.jpg/330px-Duje_Caleta-Car_Croatia_v_Portugal_2_July_2026-019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Duje_%C4%86aleta-Car",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
