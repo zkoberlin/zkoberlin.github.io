@@ -1,61 +1,73 @@
 {
-  "datum": "17.09.2026",
-  "generiert": "2026-09-17T05:33:35Z",
+  "datum": "18.09.2026",
+  "generiert": "2026-09-18T05:21:25Z",
   "geburtstage": [
     {
-      "name": "Elina Avanesyan",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Avanesyan_WMQ23_%2853061717086%29.jpg/330px-Avanesyan_WMQ23_%2853061717086%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Elina_Avanesyan",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jaimee Fourlis",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Fourlis_WMQ22_%2821%29_%2852191652405%29.jpg/330px-Fourlis_WMQ22_%2821%29_%2852191652405%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jaimee_Fourlis",
-      "nationalitaet": "🇦🇺 Australisch",
-      "nationalitaeten": [
-        {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kim Dong-hyun",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/27/190406_AB6IX_%EA%B9%80%EB%8F%99%ED%98%84.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Kim_Dong-hyun_(singer%2C_born_1998)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Duje Ćaleta-Car",
-      "alter": 30,
-      "geburtsjahr": 1996,
+      "name": "Max Meyer",
+      "alter": 31,
+      "geburtsjahr": 1995,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Duje_Caleta-Car_Croatia_v_Portugal_2_July_2026-019.jpg/330px-Duje_Caleta-Car_Croatia_v_Portugal_2_July_2026-019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Duje_%C4%86aleta-Car",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Meyer_Schalke_2015.jpg/330px-Meyer_Schalke_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Max_Meyer_(footballer)",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lewis Holtby",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/2025-03-05_Lewis_Holtby_Holstein_Kiel_pic4.jpg/330px-2025-03-05_Lewis_Holtby_Holstein_Kiel_pic4.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lewis_Holtby",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jens Henschel",
+      "alter": 62,
+      "geburtsjahr": 1964,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Bundesarchiv_Bild_183-1983-0823-306%2C_Mannschaftsfoto_HFC_Chemie.jpg/330px-Bundesarchiv_Bild_183-1983-0823-306%2C_Mannschaftsfoto_HFC_Chemie.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jens_Henschel",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jackson Robert Scott",
+      "alter": 18,
+      "geburtsjahr": 2008,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Jackson_Robert_Scott_%2854898083230%29.jpg/330px-Jackson_Robert_Scott_%2854898083230%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jackson_Robert_Scott",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
