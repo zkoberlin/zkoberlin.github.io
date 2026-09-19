@@ -1,65 +1,25 @@
 {
-  "datum": "18.09.2026",
-  "generiert": "2026-09-18T05:21:25Z",
+  "datum": "19.09.2026",
+  "generiert": "2026-09-19T05:13:23Z",
   "geburtstage": [
     {
-      "name": "Max Meyer",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Meyer_Schalke_2015.jpg/330px-Meyer_Schalke_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Max_Meyer_(footballer)",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
+      "name": "Precious Achiuwa",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Precious_Achiuwa_%2851655475460%29_%28cropped%29.jpg/330px-Precious_Achiuwa_%2851655475460%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Precious_Achiuwa",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Lewis Holtby",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/2025-03-05_Lewis_Holtby_Holstein_Kiel_pic4.jpg/330px-2025-03-05_Lewis_Holtby_Holstein_Kiel_pic4.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lewis_Holtby",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jens Henschel",
-      "alter": 62,
-      "geburtsjahr": 1964,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Bundesarchiv_Bild_183-1983-0823-306%2C_Mannschaftsfoto_HFC_Chemie.jpg/330px-Bundesarchiv_Bild_183-1983-0823-306%2C_Mannschaftsfoto_HFC_Chemie.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jens_Henschel",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jackson Robert Scott",
-      "alter": 18,
-      "geburtsjahr": 2008,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Jackson_Robert_Scott_%2854898083230%29.jpg/330px-Jackson_Robert_Scott_%2854898083230%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jackson_Robert_Scott",
+      "name": "Trae Young",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Trae_Young_%282022_All-Star_Weekend%29_%28cropped%29.jpg/330px-Trae_Young_%282022_All-Star_Weekend%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Trae_Young",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -68,6 +28,34 @@
           "name": "US-amerikanisch"
         }
       ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Dejounte Murray",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Dejounte_Murray_2022.jpg/330px-Dejounte_Murray_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Dejounte_Murray",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Chris Silva",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Chris_Silva_20260129_%282%29.jpg/330px-Chris_Silva_20260129_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Chris_Silva",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
