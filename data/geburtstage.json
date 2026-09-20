@@ -1,25 +1,31 @@
 {
-  "datum": "19.09.2026",
-  "generiert": "2026-09-19T05:13:23Z",
+  "datum": "20.09.2026",
+  "generiert": "2026-09-20T05:30:30Z",
   "geburtstage": [
     {
-      "name": "Precious Achiuwa",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Precious_Achiuwa_%2851655475460%29_%28cropped%29.jpg/330px-Precious_Achiuwa_%2851655475460%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Precious_Achiuwa",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "name": "Julian Draxler",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/a/a0/2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2278_LR10_by_Stepro_-_Julian_Draxler_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Julian_Draxler",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Trae Young",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Trae_Young_%282022_All-Star_Weekend%29_%28cropped%29.jpg/330px-Trae_Young_%282022_All-Star_Weekend%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Trae_Young",
+      "name": "Sammi Hanratty",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Sammi_Hanratty_2015.jpg/330px-Sammi_Hanratty_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sammi_Hanratty",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -31,31 +37,42 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Dejounte Murray",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Dejounte_Murray_2022.jpg/330px-Dejounte_Murray_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Dejounte_Murray",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Rob Holding",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Rob_Holding_NYCFC_v_Colorado_Mar_14_2026-30_%28cropped%29.jpg/330px-Rob_Holding_NYCFC_v_Colorado_Mar_14_2026-30_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Rob_Holding",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Chris Silva",
-      "alter": 30,
-      "geburtsjahr": 1996,
+      "name": "Kyle Anderson",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Chris_Silva_20260129_%282%29.jpg/330px-Chris_Silva_20260129_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Chris_Silva",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Kyle_Anderson_%2851664925576%29_%28cropped%29.jpg/330px-Kyle_Anderson_%2851664925576%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kyle_Anderson_(basketball)",
+      "nationalitaet": "🇺🇸🇨🇳 US-amerikanisch/Chinesisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        },
+        {
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
