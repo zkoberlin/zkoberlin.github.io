@@ -1,14 +1,14 @@
 {
-  "datum": "20.09.2026",
-  "generiert": "2026-09-20T05:30:30Z",
+  "datum": "21.09.2026",
+  "generiert": "2026-09-21T05:35:58Z",
   "geburtstage": [
     {
-      "name": "Julian Draxler",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/a/a0/2019-06-11_Fu%C3%9Fball%2C_M%C3%A4nner%2C_L%C3%A4nderspiel%2C_Deutschland-Estland_StP_2278_LR10_by_Stepro_-_Julian_Draxler_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Julian_Draxler",
+      "name": "Reinhard Marx",
+      "alter": 73,
+      "geburtsjahr": 1953,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Coat_of_arms_of_Reinhard_Marx.svg/330px-Coat_of_arms_of_Reinhard_Marx.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Reinhard_Marx",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,57 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Sammi Hanratty",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Sammi_Hanratty_2015.jpg/330px-Sammi_Hanratty_2015.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sammi_Hanratty",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Alisha Palmowski",
+      "alter": 20,
+      "geburtsjahr": 2006,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/2026-08-23_Motorsport%2C_Gro%C3%9Fer_Preis_der_Niederlande_2026%2C_F1_Academy_STP_2837.jpg/330px-2026-08-23_Motorsport%2C_Gro%C3%9Fer_Preis_der_Niederlande_2026%2C_F1_Academy_STP_2837.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Alisha_Palmowski",
+      "nationalitaet": "🇬🇧 Britisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Rob Holding",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Rob_Holding_NYCFC_v_Colorado_Mar_14_2026-30_%28cropped%29.jpg/330px-Rob_Holding_NYCFC_v_Colorado_Mar_14_2026-30_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rob_Holding",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Wang Junkai",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/%E3%80%90%E6%91%84%E4%BA%8E2017.12.19%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B%E5%B9%BF%E5%B7%9E%E8%B7%AF%E6%BC%94%E3%80%91_%E7%8E%8B%E4%BF%8A%E5%87%AF_%283%29.jpg/330px-%E3%80%90%E6%91%84%E4%BA%8E2017.12.19%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B%E5%B9%BF%E5%B7%9E%E8%B7%AF%E6%BC%94%E3%80%91_%E7%8E%8B%E4%BF%8A%E5%87%AF_%283%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Wang_Junkai",
+      "nationalitaet": "🇨🇳 Chinesisch",
       "nationalitaeten": [
-        {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kyle Anderson",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Kyle_Anderson_%2851664925576%29_%28cropped%29.jpg/330px-Kyle_Anderson_%2851664925576%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kyle_Anderson_(basketball)",
-      "nationalitaet": "🇺🇸🇨🇳 US-amerikanisch/Chinesisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        },
         {
           "code": "CN",
           "flagge": "🇨🇳",
           "name": "Chinesisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Alexander Isak",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Alexander_Isak_-_Sweden_-_Greece21_%28cropped%29.jpg/330px-Alexander_Isak_-_Sweden_-_Greece21_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Alexander_Isak",
+      "nationalitaet": "🇸🇪 Schwedisch",
+      "nationalitaeten": [
+        {
+          "code": "SE",
+          "flagge": "🇸🇪",
+          "name": "Schwedisch"
         }
       ],
       "quelle": "Wikipedia"
