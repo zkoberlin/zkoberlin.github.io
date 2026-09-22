@@ -1,14 +1,14 @@
 {
-  "datum": "21.09.2026",
-  "generiert": "2026-09-21T05:35:58Z",
+  "datum": "22.09.2026",
+  "generiert": "2026-09-22T05:32:36Z",
   "geburtstage": [
     {
-      "name": "Reinhard Marx",
-      "alter": 73,
-      "geburtsjahr": 1953,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Coat_of_arms_of_Reinhard_Marx.svg/330px-Coat_of_arms_of_Reinhard_Marx.svg.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Reinhard_Marx",
+      "name": "Sabine Lisicki",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Lisicki_WMQ19_%287%29.jpg/330px-Lisicki_WMQ19_%287%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sabine_Lisicki",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Alisha Palmowski",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/2026-08-23_Motorsport%2C_Gro%C3%9Fer_Preis_der_Niederlande_2026%2C_F1_Academy_STP_2837.jpg/330px-2026-08-23_Motorsport%2C_Gro%C3%9Fer_Preis_der_Niederlande_2026%2C_F1_Academy_STP_2837.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Alisha_Palmowski",
-      "nationalitaet": "🇬🇧 Britisch",
-      "nationalitaeten": [
-        {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Wang Junkai",
-      "alter": 27,
-      "geburtsjahr": 1999,
+      "name": "Jessie Murph",
+      "alter": 22,
+      "geburtsjahr": 2004,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/%E3%80%90%E6%91%84%E4%BA%8E2017.12.19%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B%E5%B9%BF%E5%B7%9E%E8%B7%AF%E6%BC%94%E3%80%91_%E7%8E%8B%E4%BF%8A%E5%87%AF_%283%29.jpg/330px-%E3%80%90%E6%91%84%E4%BA%8E2017.12.19%E3%80%8A%E8%A7%A3%E5%BF%A7%E6%9D%82%E8%B4%A7%E5%BA%97%E3%80%8B%E5%B9%BF%E5%B7%9E%E8%B7%AF%E6%BC%94%E3%80%91_%E7%8E%8B%E4%BF%8A%E5%87%AF_%283%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Wang_Junkai",
-      "nationalitaet": "🇨🇳 Chinesisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Jessie_Murph.jpg/330px-Jessie_Murph.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jessie_Murph",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "CN",
-          "flagge": "🇨🇳",
-          "name": "Chinesisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Alexander Isak",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Alexander_Isak_-_Sweden_-_Greece21_%28cropped%29.jpg/330px-Alexander_Isak_-_Sweden_-_Greece21_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Alexander_Isak",
-      "nationalitaet": "🇸🇪 Schwedisch",
+      "name": "Seungmin",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Seungmin_of_Stray_Kids_at_the_Incheon_Airport%2C_February_21%2C_2026_%281%29.png/330px-Seungmin_of_Stray_Kids_at_the_Incheon_Airport%2C_February_21%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Seungmin",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "SE",
-          "flagge": "🇸🇪",
-          "name": "Schwedisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Curry Barker",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/TIFF-2026-OBSESSION-CURRY-BARKER-01_%28cropped_3x4%29.png/330px-TIFF-2026-OBSESSION-CURRY-BARKER-01_%28cropped_3x4%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Curry_Barker",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
