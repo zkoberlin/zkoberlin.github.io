@@ -1,31 +1,42 @@
 {
-  "datum": "22.09.2026",
-  "generiert": "2026-09-22T05:32:36Z",
+  "datum": "23.09.2026",
+  "generiert": "2026-09-23T05:20:45Z",
   "geburtstage": [
     {
-      "name": "Sabine Lisicki",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Lisicki_WMQ19_%287%29.jpg/330px-Lisicki_WMQ19_%287%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sabine_Lisicki",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Lai Kuan-lin",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Rapper/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/1/1d/190311_%EB%9D%BC%EC%9D%B4%EA%B4%80%EB%A6%B0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Lai_Kuan-lin",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Yuqi",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/20230630_Song_Yu-qi.jpg/330px-20230630_Song_Yu-qi.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Yuqi",
+      "nationalitaet": "🇨🇳 Chinesisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jessie Murph",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Jessie_Murph.jpg/330px-Jessie_Murph.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jessie_Murph",
+      "name": "John Collins",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/John_Collins_%285397460%29_%28cropped%29.jpg/330px-John_Collins_%285397460%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/John_Collins_(basketball)",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -37,29 +48,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Seungmin",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Seungmin_of_Stray_Kids_at_the_Incheon_Airport%2C_February_21%2C_2026_%281%29.png/330px-Seungmin_of_Stray_Kids_at_the_Incheon_Airport%2C_February_21%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Seungmin",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Curry Barker",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/TIFF-2026-OBSESSION-CURRY-BARKER-01_%28cropped_3x4%29.png/330px-TIFF-2026-OBSESSION-CURRY-BARKER-01_%28cropped_3x4%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Curry_Barker",
+      "name": "Napheesa Collier",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Napheesa_Collier_vs_Indiana_Fever_%28August_2%2C_2026%29_B.jpg/330px-Napheesa_Collier_vs_Indiana_Fever_%28August_2%2C_2026%29_B.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Napheesa_Collier",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
