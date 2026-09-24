@@ -1,65 +1,71 @@
 {
-  "datum": "23.09.2026",
-  "generiert": "2026-09-23T05:20:45Z",
+  "datum": "24.09.2026",
+  "generiert": "2026-09-24T05:36:19Z",
   "geburtstage": [
     {
-      "name": "Lai Kuan-lin",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Rapper/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/1/1d/190311_%EB%9D%BC%EC%9D%B4%EA%B4%80%EB%A6%B0.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Lai_Kuan-lin",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Yuqi",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/20230630_Song_Yu-qi.jpg/330px-20230630_Song_Yu-qi.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Yuqi",
-      "nationalitaet": "🇨🇳 Chinesisch",
+      "name": "Frank Fahrenhorst",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Fahrenhorst%2C_Frank_MSV_09-10_WP.JPG/330px-Fahrenhorst%2C_Frank_MSV_09-10_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Frank_Fahrenhorst",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "CN",
-          "flagge": "🇨🇳",
-          "name": "Chinesisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "John Collins",
+      "name": "Joe Locke",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Joe_Locke_Agatha_All_Along_UK_Special_Screening_2024_01.jpg/330px-Joe_Locke_Agatha_All_Along_UK_Special_Screening_2024_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Joe_Locke",
+      "nationalitaet": "🇬🇧 Britisch",
+      "nationalitaeten": [
+        {
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Gaeul",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Gaeul_of_Ive_at_Senka_Pop-up_Event%2C_May_19%2C_2026_%281%29.png/330px-Gaeul_of_Ive_at_Senka_Pop-up_Event%2C_May_19%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Gaeul_(singer)",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Tosin Adarabioyo",
       "alter": 29,
       "geburtsjahr": 1997,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/John_Collins_%285397460%29_%28cropped%29.jpg/330px-John_Collins_%285397460%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/John_Collins_(basketball)",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tosin_Adarabioyo_FIFA_Club_World_Cup_extraction.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Tosin_Adarabioyo",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Napheesa Collier",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Napheesa_Collier_vs_Indiana_Fever_%28August_2%2C_2026%29_B.jpg/330px-Napheesa_Collier_vs_Indiana_Fever_%28August_2%2C_2026%29_B.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Napheesa_Collier",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
