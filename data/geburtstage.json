@@ -1,14 +1,14 @@
 {
-  "datum": "24.09.2026",
-  "generiert": "2026-09-24T05:36:19Z",
+  "datum": "25.09.2026",
+  "generiert": "2026-09-25T05:33:03Z",
   "geburtstage": [
     {
-      "name": "Frank Fahrenhorst",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Fahrenhorst%2C_Frank_MSV_09-10_WP.JPG/330px-Fahrenhorst%2C_Frank_MSV_09-10_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Frank_Fahrenhorst",
+      "name": "Karl-Heinz Rummenigge",
+      "alter": 71,
+      "geburtsjahr": 1955,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/2015-02-06_Rummenigge_0370_%28cropped%29.JPG/330px-2015-02-06_Rummenigge_0370_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Karl-Heinz_Rummenigge",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Joe Locke",
+      "name": "Leah Jeffries",
+      "alter": 17,
+      "geburtsjahr": 2009,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Leah_Sava_Jeffries_by_Gage_Skidmore_2.jpg/330px-Leah_Sava_Jeffries_by_Gage_Skidmore_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Leah_Jeffries",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Bella Ramsey",
       "alter": 23,
       "geburtsjahr": 2003,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Joe_Locke_Agatha_All_Along_UK_Special_Screening_2024_01.jpg/330px-Joe_Locke_Agatha_All_Along_UK_Special_Screening_2024_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Joe_Locke",
-      "nationalitaet": "🇬🇧 Britisch",
-      "nationalitaeten": [
-        {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Gaeul",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Gaeul_of_Ive_at_Senka_Pop-up_Event%2C_May_19%2C_2026_%281%29.png/330px-Gaeul_of_Ive_at_Senka_Pop-up_Event%2C_May_19%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Gaeul_(singer)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Tosin Adarabioyo",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tosin_Adarabioyo_FIFA_Club_World_Cup_extraction.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Tosin_Adarabioyo",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Bella_Ramsey-3066_%28cropped%29.jpg/330px-Bella_Ramsey-3066_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bella_Ramsey",
       "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
           "code": "GB-ENG",
           "flagge": "🏴",
           "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Cade Cunningham",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/1_cade_cunningham_2024.jpg/330px-1_cade_cunningham_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Cade_Cunningham",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
