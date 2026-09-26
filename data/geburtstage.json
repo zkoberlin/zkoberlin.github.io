@@ -1,14 +1,14 @@
 {
-  "datum": "25.09.2026",
-  "generiert": "2026-09-25T05:33:03Z",
+  "datum": "26.09.2026",
+  "generiert": "2026-09-26T05:39:50Z",
   "geburtstage": [
     {
-      "name": "Karl-Heinz Rummenigge",
-      "alter": 71,
-      "geburtsjahr": 1955,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/2015-02-06_Rummenigge_0370_%28cropped%29.JPG/330px-2015-02-06_Rummenigge_0370_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Karl-Heinz_Rummenigge",
+      "name": "Michael Ballack",
+      "alter": 50,
+      "geburtsjahr": 1976,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/10._Tag_der_Legenden_2014_69.jpg/330px-10._Tag_der_Legenden_2014_69.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Ballack",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Leah Jeffries",
-      "alter": 17,
-      "geburtsjahr": 2009,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Leah_Sava_Jeffries_by_Gage_Skidmore_2.jpg/330px-Leah_Sava_Jeffries_by_Gage_Skidmore_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Leah_Jeffries",
+      "name": "Jane Remover",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Jane_Remover_April_2025_2_%28cropped%29.png/330px-Jane_Remover_April_2025_2_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jane_Remover",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -37,29 +37,29 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Bella Ramsey",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Bella_Ramsey-3066_%28cropped%29.jpg/330px-Bella_Ramsey-3066_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bella_Ramsey",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Wang Xinyu",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Wang_Xinyu_%282023_US_Open%29_12_%28cropped%29.jpg/330px-Wang_Xinyu_%282023_US_Open%29_12_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Wang_Xinyu",
+      "nationalitaet": "🇨🇳 Chinesisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Cade Cunningham",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/1_cade_cunningham_2024.jpg/330px-1_cade_cunningham_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Cade_Cunningham",
+      "name": "Frankie Amaya",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/CINvNY_2019-05-25_-_Frankie_Amaya_%2872157708832006193%29_%28cropped%29.jpg/330px-CINvNY_2019-05-25_-_Frankie_Amaya_%2872157708832006193%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Frankie_Amaya",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
