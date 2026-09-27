@@ -1,14 +1,14 @@
 {
-  "datum": "26.09.2026",
-  "generiert": "2026-09-26T05:39:50Z",
+  "datum": "27.09.2026",
+  "generiert": "2026-09-27T05:56:03Z",
   "geburtstage": [
     {
-      "name": "Michael Ballack",
-      "alter": 50,
-      "geburtsjahr": 1976,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/10._Tag_der_Legenden_2014_69.jpg/330px-10._Tag_der_Legenden_2014_69.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Ballack",
+      "name": "Lisa Ryzih",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Lisa_Ryzih_by_Augustas_Didzgalvis.jpg/330px-Lisa_Ryzih_by_Augustas_Didzgalvis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lisa_Ryzih",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jane Remover",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Jane_Remover_April_2025_2_%28cropped%29.png/330px-Jane_Remover_April_2025_2_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jane_Remover",
+      "name": "Jenna Ortega",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Jenna_Ortega-63799_%28cropped%29.jpg/330px-Jenna_Ortega-63799_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jenna_Ortega",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -37,29 +37,29 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Wang Xinyu",
+      "name": "Caleb Love",
       "alter": 25,
       "geburtsjahr": 2001,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Wang_Xinyu_%282023_US_Open%29_12_%28cropped%29.jpg/330px-Wang_Xinyu_%282023_US_Open%29_12_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Wang_Xinyu",
-      "nationalitaet": "🇨🇳 Chinesisch",
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Caleb_Love_2.jpg/330px-Caleb_Love_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Caleb_Love",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "CN",
-          "flagge": "🇨🇳",
-          "name": "Chinesisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Frankie Amaya",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/CINvNY_2019-05-25_-_Frankie_Amaya_%2872157708832006193%29_%28cropped%29.jpg/330px-CINvNY_2019-05-25_-_Frankie_Amaya_%2872157708832006193%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Frankie_Amaya",
+      "name": "David Malukas",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/David_Malukas_2025.png/330px-David_Malukas_2025.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/David_Malukas",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
