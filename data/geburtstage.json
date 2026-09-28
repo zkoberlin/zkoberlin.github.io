@@ -1,14 +1,14 @@
 {
-  "datum": "27.09.2026",
-  "generiert": "2026-09-27T05:56:03Z",
+  "datum": "28.09.2026",
+  "generiert": "2026-09-28T06:03:02Z",
   "geburtstage": [
     {
-      "name": "Lisa Ryzih",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Lisa_Ryzih_by_Augustas_Didzgalvis.jpg/330px-Lisa_Ryzih_by_Augustas_Didzgalvis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lisa_Ryzih",
+      "name": "Dietmar Schacht",
+      "alter": 64,
+      "geburtsjahr": 1962,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Dietmar_Schacht_%282021%29.jpg/330px-Dietmar_Schacht_%282021%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Dietmar_Schacht",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,46 +20,46 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jenna Ortega",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Jenna_Ortega-63799_%28cropped%29.jpg/330px-Jenna_Ortega-63799_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jenna_Ortega",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Edmund Stoiber",
+      "alter": 85,
+      "geburtsjahr": 1941,
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/DrEdmundStoiber.jpg/330px-DrEdmundStoiber.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Edmund_Stoiber",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Caleb Love",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Caleb_Love_2.jpg/330px-Caleb_Love_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Caleb_Love",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "David Malukas",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Isack Hadjar",
+      "alter": 22,
+      "geburtsjahr": 2004,
       "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/David_Malukas_2025.png/330px-David_Malukas_2025.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/David_Malukas",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Isack_Hadjar_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_%28028A8753%29_%28cropped%29.jpg/330px-Isack_Hadjar_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_%28028A8753%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Isack_Hadjar",
+      "nationalitaet": "🇫🇷 Französisch",
+      "nationalitaeten": [
+        {
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Frankie Jonas",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Franklin_Jonas_-_Comic_Bug_2026.jpg/330px-Franklin_Jonas_-_Comic_Bug_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Frankie_Jonas",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
