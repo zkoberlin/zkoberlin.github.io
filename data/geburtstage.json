@@ -1,31 +1,14 @@
 {
-  "datum": "28.09.2026",
-  "generiert": "2026-09-28T06:03:02Z",
+  "datum": "29.09.2026",
+  "generiert": "2026-09-29T06:21:22Z",
   "geburtstage": [
     {
-      "name": "Dietmar Schacht",
-      "alter": 64,
-      "geburtsjahr": 1962,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Dietmar_Schacht_%282021%29.jpg/330px-Dietmar_Schacht_%282021%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Dietmar_Schacht",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Edmund Stoiber",
-      "alter": 85,
-      "geburtsjahr": 1941,
+      "name": "Enxhi Seli-Zacharias",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/DrEdmundStoiber.jpg/330px-DrEdmundStoiber.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Edmund_Stoiber",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Enxhi_Seli-Zacharias",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,35 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Isack Hadjar",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Isack_Hadjar_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_%28028A8753%29_%28cropped%29.jpg/330px-Isack_Hadjar_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_%28028A8753%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Isack_Hadjar",
-      "nationalitaet": "🇫🇷 Französisch",
+      "name": "Uwe Foullong",
+      "alter": 69,
+      "geburtsjahr": 1957,
+      "beruf": "Politiker/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Foullong",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Frankie Jonas",
+      "name": "Jaden McDaniels",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Franklin_Jonas_-_Comic_Bug_2026.jpg/330px-Franklin_Jonas_-_Comic_Bug_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Frankie_Jonas",
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Jaden_McDaniels_2023_Crawsover_Pro-Am_02.png/330px-Jaden_McDaniels_2023_Crawsover_Pro-Am_02.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jaden_McDaniels",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Choi Ye-na",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/CHOI_YENA_%28%EC%B5%9C%EC%98%88%EB%82%98%29_%E2%80%93_2024.09.30_%E2%80%93_P2_%28cropped%29.jpg/330px-CHOI_YENA_%28%EC%B5%9C%EC%98%88%EB%82%98%29_%E2%80%93_2024.09.30_%E2%80%93_P2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Choi_Ye-na",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
