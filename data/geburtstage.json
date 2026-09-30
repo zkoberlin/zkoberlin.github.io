@@ -1,48 +1,31 @@
 {
-  "datum": "29.09.2026",
-  "generiert": "2026-09-29T06:21:22Z",
+  "datum": "30.09.2026",
+  "generiert": "2026-09-30T06:05:23Z",
   "geburtstage": [
     {
-      "name": "Enxhi Seli-Zacharias",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Politiker/in",
+      "name": "Alberto Moleiro",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Fußballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Enxhi_Seli-Zacharias",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "wikidata": "https://en.wikipedia.org/wiki/Alberto_Moleiro",
+      "nationalitaet": "🇪🇸 Spanisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Uwe Foullong",
-      "alter": 69,
-      "geburtsjahr": 1957,
-      "beruf": "Politiker/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Uwe_Foullong",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jaden McDaniels",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Jaden_McDaniels_2023_Crawsover_Pro-Am_02.png/330px-Jaden_McDaniels_2023_Crawsover_Pro-Am_02.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jaden_McDaniels",
+      "name": "Maddie Ziegler",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Maddie_Ziegler_2024_02.jpg/330px-Maddie_Ziegler_2024_02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Maddie_Ziegler",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +37,40 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Choi Ye-na",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/CHOI_YENA_%28%EC%B5%9C%EC%98%88%EB%82%98%29_%E2%80%93_2024.09.30_%E2%80%93_P2_%28cropped%29.jpg/330px-CHOI_YENA_%28%EC%B5%9C%EC%98%88%EB%82%98%29_%E2%80%93_2024.09.30_%E2%80%93_P2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Choi_Ye-na",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "name": "Max Verstappen",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28medium_crop%29.jpg/330px-2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28medium_crop%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Max_Verstappen",
+      "nationalitaet": "🇳🇱🇧🇪 Niederländisch/Belgisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "NL",
+          "flagge": "🇳🇱",
+          "name": "Niederländisch"
+        },
+        {
+          "code": "BE",
+          "flagge": "🇧🇪",
+          "name": "Belgisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Aaron Holiday",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Aaron_Holiday_layup_with_Washington.jpeg/330px-Aaron_Holiday_layup_with_Washington.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Aaron_Holiday",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
