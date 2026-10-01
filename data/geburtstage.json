@@ -1,31 +1,48 @@
 {
-  "datum": "30.09.2026",
-  "generiert": "2026-09-30T06:05:23Z",
+  "datum": "01.10.2026",
+  "generiert": "2026-10-01T06:39:03Z",
   "geburtstage": [
     {
-      "name": "Alberto Moleiro",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Fußballer/in",
+      "name": "Jana Henke",
+      "alter": 53,
+      "geburtsjahr": 1973,
+      "beruf": "Persönlichkeit",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Alberto_Moleiro",
-      "nationalitaet": "🇪🇸 Spanisch",
+      "wikidata": "https://en.wikipedia.org/wiki/Jana_Henke",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "ES",
-          "flagge": "🇪🇸",
-          "name": "Spanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Maddie Ziegler",
+      "name": "Priah Ferguson",
+      "alter": 20,
+      "geburtsjahr": 2006,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Priah_Ferguson_in_2019.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Priah_Ferguson",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Livvy Dunne",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Maddie_Ziegler_2024_02.jpg/330px-Maddie_Ziegler_2024_02.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Maddie_Ziegler",
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Olivia_Dunne_2025_%28cropped%29.jpg/330px-Olivia_Dunne_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Livvy_Dunne",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -37,40 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Max Verstappen",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28medium_crop%29.jpg/330px-2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_%28medium_crop%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Max_Verstappen",
-      "nationalitaet": "🇳🇱🇧🇪 Niederländisch/Belgisch",
+      "name": "Mason Greenwood",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Mason_Greenwood_11_Fenerbah%C3%A7e_20260805_%284%29_%28cropped%29_%28cropped%29.JPG/330px-Mason_Greenwood_11_Fenerbah%C3%A7e_20260805_%284%29_%28cropped%29_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mason_Greenwood",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "NL",
-          "flagge": "🇳🇱",
-          "name": "Niederländisch"
-        },
-        {
-          "code": "BE",
-          "flagge": "🇧🇪",
-          "name": "Belgisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Aaron Holiday",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Aaron_Holiday_layup_with_Washington.jpeg/330px-Aaron_Holiday_layup_with_Washington.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Aaron_Holiday",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
