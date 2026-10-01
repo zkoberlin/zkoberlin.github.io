@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-30T01:52:20Z",
+  "generatedAt": "2026-10-01T01:50:11Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -9,7 +9,7 @@
   "season": {
     "startYear": 2026,
     "label": "2026/27",
-    "currentMatchday": 4
+    "currentMatchday": 5
   },
   "team": {
     "id": 80,
