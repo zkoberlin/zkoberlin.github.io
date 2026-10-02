@@ -1,48 +1,14 @@
 {
-  "datum": "01.10.2026",
-  "generiert": "2026-10-01T06:39:03Z",
+  "datum": "02.10.2026",
+  "generiert": "2026-10-02T06:22:31Z",
   "geburtstage": [
     {
-      "name": "Jana Henke",
-      "alter": 53,
-      "geburtsjahr": 1973,
-      "beruf": "Persönlichkeit",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Jana_Henke",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Priah Ferguson",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Priah_Ferguson_in_2019.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Priah_Ferguson",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Livvy Dunne",
+      "name": "Jacob Sartorius",
       "alter": 24,
       "geburtsjahr": 2002,
       "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Olivia_Dunne_2025_%28cropped%29.jpg/330px-Olivia_Dunne_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Livvy_Dunne",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Jacob_Sartorius_%28cropped%29_%28cropped%29.jpg/330px-Jacob_Sartorius_%28cropped%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Sartorius",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +20,57 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Mason Greenwood",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Mason_Greenwood_11_Fenerbah%C3%A7e_20260805_%284%29_%28cropped%29_%28cropped%29.JPG/330px-Mason_Greenwood_11_Fenerbah%C3%A7e_20260805_%284%29_%28cropped%29_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mason_Greenwood",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Quadeca",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Quadeca_Performance_%28cropped%29.jpg/330px-Quadeca_Performance_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Quadeca",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Alisson Becker",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_%28cropped%29.jpg/330px-Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Alisson_Becker",
+      "nationalitaet": "🇧🇷 Brasilianisch",
+      "nationalitaeten": [
+        {
+          "code": "BR",
+          "flagge": "🇧🇷",
+          "name": "Brasilianisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Shane Larkin",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Shane_Larkin_0_Anadolu_Efes_TBSL_20250105_%281%29.jpg/330px-Shane_Larkin_0_Anadolu_Efes_TBSL_20250105_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Shane_Larkin",
+      "nationalitaet": "🇺🇸🇹🇷 US-amerikanisch/Türkisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        },
+        {
+          "code": "TR",
+          "flagge": "🇹🇷",
+          "name": "Türkisch"
         }
       ],
       "quelle": "Wikipedia"
