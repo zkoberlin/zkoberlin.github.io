@@ -1,14 +1,14 @@
 {
-  "datum": "02.10.2026",
-  "generiert": "2026-10-02T06:22:31Z",
+  "datum": "03.10.2026",
+  "generiert": "2026-10-03T05:52:11Z",
   "geburtstage": [
     {
-      "name": "Jacob Sartorius",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Jacob_Sartorius_%28cropped%29_%28cropped%29.jpg/330px-Jacob_Sartorius_%28cropped%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Sartorius",
+      "name": "Noah Schnapp",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Noah_Schnapp_-_NBFF_2025.jpg/330px-Noah_Schnapp_-_NBFF_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Noah_Schnapp",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -20,57 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Quadeca",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Quadeca_Performance_%28cropped%29.jpg/330px-Quadeca_Performance_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Quadeca",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Alisson Becker",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_%28cropped%29.jpg/330px-Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Alisson_Becker",
-      "nationalitaet": "🇧🇷 Brasilianisch",
-      "nationalitaeten": [
-        {
-          "code": "BR",
-          "flagge": "🇧🇷",
-          "name": "Brasilianisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Shane Larkin",
-      "alter": 34,
-      "geburtsjahr": 1992,
+      "name": "Jonathan Isaac",
+      "alter": 29,
+      "geburtsjahr": 1997,
       "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Shane_Larkin_0_Anadolu_Efes_TBSL_20250105_%281%29.jpg/330px-Shane_Larkin_0_Anadolu_Efes_TBSL_20250105_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Shane_Larkin",
-      "nationalitaet": "🇺🇸🇹🇷 US-amerikanisch/Türkisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Jonathan_Isaac_%2850639147752%29.jpg/330px-Jonathan_Isaac_%2850639147752%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jonathan_Isaac",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        },
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Bang Chan",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Bang_Chan_of_Stray_Kids%2C_February_23%2C_2026_%281%29.png/330px-Bang_Chan_of_Stray_Kids%2C_February_23%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bang_Chan",
+      "nationalitaet": "🇦🇺 Australisch",
+      "nationalitaeten": [
         {
-          "code": "TR",
-          "flagge": "🇹🇷",
-          "name": "Türkisch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Ayo Edebiri",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/AyoEdebiri-byPhilipRomano2.jpg/330px-AyoEdebiri-byPhilipRomano2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ayo_Edebiri",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
