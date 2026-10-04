@@ -1,71 +1,81 @@
 {
-  "datum": "03.10.2026",
-  "generiert": "2026-10-03T05:52:11Z",
+  "datum": "04.10.2026",
+  "generiert": "2026-10-04T06:29:12Z",
   "geburtstage": [
     {
-      "name": "Noah Schnapp",
-      "alter": 22,
-      "geburtsjahr": 2004,
+      "name": "Vicky Krieps",
+      "alter": 43,
+      "geburtsjahr": 1983,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Noah_Schnapp_-_NBFF_2025.jpg/330px-Noah_Schnapp_-_NBFF_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Noah_Schnapp",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/VickyKrieps-byPhilipRomano.jpg/330px-VickyKrieps-byPhilipRomano.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Vicky_Krieps",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jonathan Isaac",
+      "name": "Christoph Waltz",
+      "alter": 70,
+      "geburtsjahr": 1956,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Christoph_Waltz_at_82nd_Venice_International_Film_Festival-1_%28cropped%29.jpg/330px-Christoph_Waltz_at_82nd_Venice_International_Film_Festival-1_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christoph_Waltz",
+      "nationalitaet": "🇺🇸🇩🇪🇦🇹 US-amerikanisch/Deutsch/Österreichisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        },
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        },
+        {
+          "code": "AT",
+          "flagge": "🇦🇹",
+          "name": "Österreichisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Yuju",
       "alter": 29,
       "geburtsjahr": 1997,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Jonathan_Isaac_%2850639147752%29.jpg/330px-Jonathan_Isaac_%2850639147752%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jonathan_Isaac",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Yuju_September_2024_%283x4_cropped%29.jpg/330px-Yuju_September_2024_%283x4_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Yuju_(singer)",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Bang Chan",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Bang_Chan_of_Stray_Kids%2C_February_23%2C_2026_%281%29.png/330px-Bang_Chan_of_Stray_Kids%2C_February_23%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bang_Chan",
-      "nationalitaet": "🇦🇺 Australisch",
-      "nationalitaeten": [
-        {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ayo Edebiri",
-      "alter": 31,
-      "geburtsjahr": 1995,
+      "name": "Ella Balinska",
+      "alter": 30,
+      "geburtsjahr": 1996,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/AyoEdebiri-byPhilipRomano2.jpg/330px-AyoEdebiri-byPhilipRomano2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ayo_Edebiri",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/EllaBalinska2019Interview.png/330px-EllaBalinska2019Interview.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ella_Balinska",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
