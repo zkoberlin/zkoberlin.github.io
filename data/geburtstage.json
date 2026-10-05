@@ -1,14 +1,14 @@
 {
-  "datum": "04.10.2026",
-  "generiert": "2026-10-04T06:29:12Z",
+  "datum": "05.10.2026",
+  "generiert": "2026-10-05T06:22:23Z",
   "geburtstage": [
     {
-      "name": "Vicky Krieps",
-      "alter": 43,
-      "geburtsjahr": 1983,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/VickyKrieps-byPhilipRomano.jpg/330px-VickyKrieps-byPhilipRomano.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Vicky_Krieps",
+      "name": "Andy Nägelein",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Andy_N%C3%A4gelein.JPG/330px-Andy_N%C3%A4gelein.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andy_N%C3%A4gelein",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,62 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Christoph Waltz",
-      "alter": 70,
-      "geburtsjahr": 1956,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Christoph_Waltz_at_82nd_Venice_International_Film_Festival-1_%28cropped%29.jpg/330px-Christoph_Waltz_at_82nd_Venice_International_Film_Festival-1_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Christoph_Waltz",
-      "nationalitaet": "🇺🇸🇩🇪🇦🇹 US-amerikanisch/Deutsch/Österreichisch",
+      "name": "Harold Faltermeyer",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "Musiker/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/35/Harold_Faltermeyer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Harold_Faltermeyer",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        },
         {
           "code": "DE",
           "flagge": "🇩🇪",
           "name": "Deutsch"
-        },
-        {
-          "code": "AT",
-          "flagge": "🇦🇹",
-          "name": "Österreichisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Yuju",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Yuju_September_2024_%283x4_cropped%29.jpg/330px-Yuju_September_2024_%283x4_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Yuju_(singer)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ella Balinska",
-      "alter": 30,
-      "geburtsjahr": 1996,
+      "name": "Jacob Tremblay",
+      "alter": 20,
+      "geburtsjahr": 2006,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/EllaBalinska2019Interview.png/330px-EllaBalinska2019Interview.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ella_Balinska",
-      "nationalitaet": "🏴 Englisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Jacob_Tremblay_by_Gage_Skidmore.jpg/330px-Jacob_Tremblay_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Tremblay",
+      "nationalitaet": "🇨🇦 Kanadisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Exequiel Palacios",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Exequiel_Palacios_Argentina_v_Spain_19_July_2026-022.jpg/330px-Exequiel_Palacios_Argentina_v_Spain_19_July_2026-022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Exequiel_Palacios",
+      "nationalitaet": "🇦🇷 Argentinisch",
+      "nationalitaeten": [
+        {
+          "code": "AR",
+          "flagge": "🇦🇷",
+          "name": "Argentinisch"
         }
       ],
       "quelle": "Wikipedia"
