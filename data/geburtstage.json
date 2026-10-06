@@ -1,71 +1,65 @@
 {
-  "datum": "05.10.2026",
-  "generiert": "2026-10-05T06:22:23Z",
+  "datum": "06.10.2026",
+  "generiert": "2026-10-06T06:58:09Z",
   "geburtstage": [
     {
-      "name": "Andy Nägelein",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Andy_N%C3%A4gelein.JPG/330px-Andy_N%C3%A4gelein.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Andy_N%C3%A4gelein",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Bronny James",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Bronny_James_Jr._%2855095342116%29_%28cropped%29.jpg/330px-Bronny_James_Jr._%2855095342116%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bronny_James",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Harold Faltermeyer",
-      "alter": 74,
-      "geburtsjahr": 1952,
-      "beruf": "Musiker/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/3/35/Harold_Faltermeyer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Harold_Faltermeyer",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Hanni",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Hanni_241022.png/330px-Hanni_241022.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hanni_(singer)",
+      "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jacob Tremblay",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Jacob_Tremblay_by_Gage_Skidmore.jpg/330px-Jacob_Tremblay_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Tremblay",
-      "nationalitaet": "🇨🇦 Kanadisch",
-      "nationalitaeten": [
-        {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        }
-      ],
+      "name": "Jonathan Kuminga",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Jonathan_Kuminga_2_%28cropped%29.jpg/330px-Jonathan_Kuminga_2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jonathan_Kuminga",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Exequiel Palacios",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Exequiel_Palacios_Argentina_v_Spain_19_July_2026-022.jpg/330px-Exequiel_Palacios_Argentina_v_Spain_19_July_2026-022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Exequiel_Palacios",
-      "nationalitaet": "🇦🇷 Argentinisch",
+      "name": "Hitomi Honda",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/SAY_MY_NAME_Honda_Hitomi_Debut_Showcase_October_2024.jpg/330px-SAY_MY_NAME_Honda_Hitomi_Debut_Showcase_October_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hitomi_Honda",
+      "nationalitaet": "🇯🇵 Japanisch",
       "nationalitaeten": [
         {
-          "code": "AR",
-          "flagge": "🇦🇷",
-          "name": "Argentinisch"
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
         }
       ],
       "quelle": "Wikipedia"
