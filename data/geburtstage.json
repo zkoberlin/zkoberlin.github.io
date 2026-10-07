@@ -1,14 +1,31 @@
 {
-  "datum": "06.10.2026",
-  "generiert": "2026-10-06T06:58:09Z",
+  "datum": "07.10.2026",
+  "generiert": "2026-10-07T06:39:02Z",
   "geburtstage": [
     {
-      "name": "Bronny James",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/Bronny_James_Jr._%2855095342116%29_%28cropped%29.jpg/330px-Bronny_James_Jr._%2855095342116%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bronny_James",
+      "name": "Trent Alexander-Arnold",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Fußballer/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Trent_Alexander-Arnold_2018_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Trent_Alexander-Arnold",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kira Kosarin",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Kira_Kosarin_dehors_Ritz_PDB_%28cropped%29.png/330px-Kira_Kosarin_dehors_Ritz_PDB_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kira_Kosarin",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -20,46 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Hanni",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Hanni_241022.png/330px-Hanni_241022.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hanni_(singer)",
-      "nationalitaet": "🇦🇺 Australisch",
+      "name": "Nicole Maines",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Nicole_Maines_by_Gage_Skidmore.jpg/330px-Nicole_Maines_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nicole_Maines",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jonathan Kuminga",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Jonathan_Kuminga_2_%28cropped%29.jpg/330px-Jonathan_Kuminga_2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jonathan_Kuminga",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Hitomi Honda",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/SAY_MY_NAME_Honda_Hitomi_Debut_Showcase_October_2024.jpg/330px-SAY_MY_NAME_Honda_Hitomi_Debut_Showcase_October_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hitomi_Honda",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "name": "Lewis Capaldi",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Glasto2025-41_%28cropped%29.jpg/330px-Glasto2025-41_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lewis_Capaldi",
+      "nationalitaet": "🏴 Schottisch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
+          "code": "GB-SCT",
+          "flagge": "🏴",
+          "name": "Schottisch"
         }
       ],
       "quelle": "Wikipedia"
