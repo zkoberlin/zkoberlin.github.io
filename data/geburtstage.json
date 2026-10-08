@@ -1,71 +1,65 @@
 {
-  "datum": "07.10.2026",
-  "generiert": "2026-10-07T06:39:02Z",
+  "datum": "08.10.2026",
+  "generiert": "2026-10-08T06:45:30Z",
   "geburtstage": [
     {
-      "name": "Trent Alexander-Arnold",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Trent_Alexander-Arnold_2018_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Trent_Alexander-Arnold",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Ángela Aguilar",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/%C3%81ngela_Aguilar_2021.jpg/330px-%C3%81ngela_Aguilar_2021.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/%C3%81ngela_Aguilar",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kira Kosarin",
+      "name": "Zheng Qinwen",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Zheng_Qinwen_%282024_US_Open%29_01_%28cropped%29.jpg/330px-Zheng_Qinwen_%282024_US_Open%29_01_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Zheng_Qinwen",
+      "nationalitaet": "🇨🇳 Chinesisch",
+      "nationalitaeten": [
+        {
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Putthipong Assaratanakul",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Sänger/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/59/Billkin_%40_LAHNMAH_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Putthipong_Assaratanakul",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Bella Thorne",
       "alter": 29,
       "geburtsjahr": 1997,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Kira_Kosarin_dehors_Ritz_PDB_%28cropped%29.png/330px-Kira_Kosarin_dehors_Ritz_PDB_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kira_Kosarin",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Bella_Thorne_OnlyFans_3.jpg/330px-Bella_Thorne_OnlyFans_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bella_Thorne",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Nicole Maines",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Nicole_Maines_by_Gage_Skidmore.jpg/330px-Nicole_Maines_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nicole_Maines",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Lewis Capaldi",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Glasto2025-41_%28cropped%29.jpg/330px-Glasto2025-41_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lewis_Capaldi",
-      "nationalitaet": "🏴 Schottisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-SCT",
-          "flagge": "🏴",
-          "name": "Schottisch"
         }
       ],
       "quelle": "Wikipedia"
