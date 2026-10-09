@@ -1,14 +1,14 @@
 {
-  "datum": "08.10.2026",
-  "generiert": "2026-10-08T06:45:30Z",
+  "datum": "09.10.2026",
+  "generiert": "2026-10-09T06:53:36Z",
   "geburtstage": [
     {
-      "name": "Ángela Aguilar",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/%C3%81ngela_Aguilar_2021.jpg/330px-%C3%81ngela_Aguilar_2021.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/%C3%81ngela_Aguilar",
+      "name": "Ben Shelton",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Ben_Shelton%2C_media_conference%2C_Swiss_Indoors_Basel_2025_%28cropped%29.jpg/330px-Ben_Shelton%2C_media_conference%2C_Swiss_Indoors_Basel_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ben_Shelton",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -20,40 +20,46 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Zheng Qinwen",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Zheng_Qinwen_%282024_US_Open%29_01_%28cropped%29.jpg/330px-Zheng_Qinwen_%282024_US_Open%29_01_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Zheng_Qinwen",
-      "nationalitaet": "🇨🇳 Chinesisch",
+      "name": "Kyla Leibel",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Persönlichkeit",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Kyla_Leibel",
+      "nationalitaet": "🇨🇦 Kanadisch",
       "nationalitaeten": [
         {
-          "code": "CN",
-          "flagge": "🇨🇳",
-          "name": "Chinesisch"
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Putthipong Assaratanakul",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Sänger/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/59/Billkin_%40_LAHNMAH_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Putthipong_Assaratanakul",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "name": "Jharrel Jerome",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Jharrel_Jerome_%2847948009887%29_%28cropped%29.jpg/330px-Jharrel_Jerome_%2847948009887%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jharrel_Jerome",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Bella Thorne",
+      "name": "Megan Moroney",
       "alter": 29,
       "geburtsjahr": 1997,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Bella_Thorne_OnlyFans_3.jpg/330px-Bella_Thorne_OnlyFans_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bella_Thorne",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Megan_Moroney",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
