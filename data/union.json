@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-09T02:49:23Z",
+  "generatedAt": "2026-10-10T02:09:22Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -123,7 +123,7 @@
     "shortName": "Elversberg",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
     "standing": {
-      "rank": 7,
+      "rank": 8,
       "teamId": 198,
       "name": "SV 07 Elversberg",
       "shortName": "Elversberg",
@@ -192,11 +192,11 @@
       "name": "Borussia Dortmund",
       "shortName": "Dortmund",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png",
-      "played": 4,
-      "goalsFor": 9,
-      "goalsAgainst": 2,
+      "played": 5,
+      "goalsFor": 11,
+      "goalsAgainst": 4,
       "goalDifference": 7,
-      "points": 12,
+      "points": 13,
       "isUnion": false
     },
     {
@@ -227,6 +227,19 @@
     },
     {
       "rank": 4,
+      "teamId": 134,
+      "name": "SV Werder Bremen",
+      "shortName": "Bremen",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/be/SV-Werder-Bremen-Logo.svg",
+      "played": 5,
+      "goalsFor": 10,
+      "goalsAgainst": 10,
+      "goalDifference": 0,
+      "points": 8,
+      "isUnion": false
+    },
+    {
+      "rank": 5,
       "teamId": 95,
       "name": "FC Augsburg",
       "shortName": "Augsburg",
@@ -239,7 +252,7 @@
       "isUnion": false
     },
     {
-      "rank": 5,
+      "rank": 6,
       "teamId": 6,
       "name": "Bayer 04 Leverkusen",
       "shortName": "Leverkusen",
@@ -252,7 +265,7 @@
       "isUnion": false
     },
     {
-      "rank": 6,
+      "rank": 7,
       "teamId": 81,
       "name": "1. FSV Mainz 05",
       "shortName": "Mainz",
@@ -265,7 +278,7 @@
       "isUnion": false
     },
     {
-      "rank": 7,
+      "rank": 8,
       "teamId": 198,
       "name": "SV 07 Elversberg",
       "shortName": "Elversberg",
@@ -274,19 +287,6 @@
       "goalsFor": 8,
       "goalsAgainst": 7,
       "goalDifference": 1,
-      "points": 7,
-      "isUnion": false
-    },
-    {
-      "rank": 8,
-      "teamId": 134,
-      "name": "SV Werder Bremen",
-      "shortName": "Bremen",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/b/be/SV-Werder-Bremen-Logo.svg",
-      "played": 4,
-      "goalsFor": 8,
-      "goalsAgainst": 8,
-      "goalDifference": 0,
       "points": 7,
       "isUnion": false
     },
