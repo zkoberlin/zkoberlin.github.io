@@ -1,65 +1,59 @@
 {
-  "datum": "09.10.2026",
-  "generiert": "2026-10-09T06:53:36Z",
+  "datum": "10.10.2026",
+  "generiert": "2026-10-10T06:29:52Z",
   "geburtstage": [
     {
-      "name": "Ben Shelton",
+      "name": "Josh Giddey",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Ben_Shelton%2C_media_conference%2C_Swiss_Indoors_Basel_2025_%28cropped%29.jpg/330px-Ben_Shelton%2C_media_conference%2C_Swiss_Indoors_Basel_2025_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ben_Shelton",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Josh_Giddey_2022.jpg/330px-Josh_Giddey_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Josh_Giddey",
+      "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kyla Leibel",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Persönlichkeit",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Kyla_Leibel",
-      "nationalitaet": "🇨🇦 Kanadisch",
-      "nationalitaeten": [
-        {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        }
-      ],
+      "name": "Brenko Lee",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Brenko_Lee_Bulldogs.jpg/330px-Brenko_Lee_Bulldogs.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Brenko_Lee",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jharrel Jerome",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Jharrel_Jerome_%2847948009887%29_%28cropped%29.jpg/330px-Jharrel_Jerome_%2847948009887%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jharrel_Jerome",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Megan Moroney",
-      "alter": 29,
-      "geburtsjahr": 1997,
+      "name": "Bae Suzy",
+      "alter": 32,
+      "geburtsjahr": 1994,
       "beruf": "Sänger/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Megan_Moroney",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Suzy_at_the_Longines_2026_new_product_presentation%2C_25_March_2026_04.png/330px-Suzy_at_the_Longines_2026_new_product_presentation%2C_25_March_2026_04.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bae_Suzy",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Mike Tobey",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Mike_Tobey_with_Gran_Canaria.jpg/330px-Mike_Tobey_with_Gran_Canaria.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mike_Tobey",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
