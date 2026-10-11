@@ -1,65 +1,71 @@
 {
-  "datum": "10.10.2026",
-  "generiert": "2026-10-10T06:29:52Z",
+  "datum": "11.10.2026",
+  "generiert": "2026-10-11T06:35:30Z",
   "geburtstage": [
     {
-      "name": "Josh Giddey",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Josh_Giddey_2022.jpg/330px-Josh_Giddey_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Josh_Giddey",
+      "name": "Sebastian Rode",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Sebastian_Rode_BVB_%28cropped%29.jpg/330px-Sebastian_Rode_BVB_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Rode",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Maja Chwalińska",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Qualifying_TransylvaniaOpen_Maja_Chwalinska_vs_Ilinca_Dalina_Amariei_6-1%2C6-1_%2854320887214%29_%28cropped_Maja_Chwalinska%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Maja_Chwali%C5%84ska",
+      "nationalitaet": "🇵🇱 Polnisch",
+      "nationalitaeten": [
+        {
+          "code": "PL",
+          "flagge": "🇵🇱",
+          "name": "Polnisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Daniel Maldini",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Daniel_Maldini",
+      "nationalitaet": "🇮🇹 Italienisch",
+      "nationalitaeten": [
+        {
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jacob Preston",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Jacob_Preston.jpg/330px-Jacob_Preston.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Preston_(rugby_league)",
       "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
           "code": "AU",
           "flagge": "🇦🇺",
           "name": "Australisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Brenko Lee",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Brenko_Lee_Bulldogs.jpg/330px-Brenko_Lee_Bulldogs.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Brenko_Lee",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Bae Suzy",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Suzy_at_the_Longines_2026_new_product_presentation%2C_25_March_2026_04.png/330px-Suzy_at_the_Longines_2026_new_product_presentation%2C_25_March_2026_04.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bae_Suzy",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Mike Tobey",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Mike_Tobey_with_Gran_Canaria.jpg/330px-Mike_Tobey_with_Gran_Canaria.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mike_Tobey",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
