@@ -1,14 +1,14 @@
 {
-  "datum": "11.10.2026",
-  "generiert": "2026-10-11T06:35:30Z",
+  "datum": "12.10.2026",
+  "generiert": "2026-10-12T06:40:52Z",
   "geburtstage": [
     {
-      "name": "Sebastian Rode",
-      "alter": 36,
-      "geburtsjahr": 1990,
+      "name": "Sergio Peter",
+      "alter": 40,
+      "geburtsjahr": 1986,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Sebastian_Rode_BVB_%28cropped%29.jpg/330px-Sebastian_Rode_BVB_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Rode",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Sergio_Peter",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Maja Chwalińska",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Qualifying_TransylvaniaOpen_Maja_Chwalinska_vs_Ilinca_Dalina_Amariei_6-1%2C6-1_%2854320887214%29_%28cropped_Maja_Chwalinska%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Maja_Chwali%C5%84ska",
-      "nationalitaet": "🇵🇱 Polnisch",
-      "nationalitaeten": [
-        {
-          "code": "PL",
-          "flagge": "🇵🇱",
-          "name": "Polnisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Daniel Maldini",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
+      "name": "Darci Lynne",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Persönlichkeit",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Daniel_Maldini",
-      "nationalitaet": "🇮🇹 Italienisch",
+      "wikidata": "https://en.wikipedia.org/wiki/Darci_Lynne",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "IT",
-          "flagge": "🇮🇹",
-          "name": "Italienisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jacob Preston",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Jacob_Preston.jpg/330px-Jacob_Preston.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jacob_Preston_(rugby_league)",
-      "nationalitaet": "🇦🇺 Australisch",
+      "name": "Iris Apatow",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Iris_Apatow_at_SXSW_Red_Carpet_premiere_of_BLOCKERS_%2839852920695%29_%28cropped%29.jpg/330px-Iris_Apatow_at_SXSW_Red_Carpet_premiere_of_BLOCKERS_%2839852920695%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Iris_Apatow",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jongho",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/240803_Jongho_%28cropped%29.jpg/330px-240803_Jongho_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jongho",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
