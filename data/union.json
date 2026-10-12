@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-11T01:36:44Z",
+  "generatedAt": "2026-10-12T02:08:38Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -123,7 +123,7 @@
     "shortName": "Dortmund",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png",
     "standing": {
-      "rank": 1,
+      "rank": 2,
       "teamId": 7,
       "name": "Borussia Dortmund",
       "shortName": "Dortmund",
@@ -219,6 +219,19 @@
   "table": [
     {
       "rank": 1,
+      "teamId": 112,
+      "name": "SC Freiburg",
+      "shortName": "Freiburg",
+      "logo": "https://i.imgur.com/r3mvi0h.png",
+      "played": 5,
+      "goalsFor": 14,
+      "goalsAgainst": 4,
+      "goalDifference": 10,
+      "points": 13,
+      "isUnion": false
+    },
+    {
+      "rank": 2,
       "teamId": 7,
       "name": "Borussia Dortmund",
       "shortName": "Dortmund",
@@ -231,7 +244,7 @@
       "isUnion": false
     },
     {
-      "rank": 2,
+      "rank": 3,
       "teamId": 40,
       "name": "FC Bayern München",
       "shortName": "Bayern",
@@ -241,19 +254,6 @@
       "goalsAgainst": 4,
       "goalDifference": 12,
       "points": 11,
-      "isUnion": false
-    },
-    {
-      "rank": 3,
-      "teamId": 112,
-      "name": "SC Freiburg",
-      "shortName": "Freiburg",
-      "logo": "https://i.imgur.com/r3mvi0h.png",
-      "played": 4,
-      "goalsFor": 12,
-      "goalsAgainst": 3,
-      "goalDifference": 9,
-      "points": 10,
       "isUnion": false
     },
     {
@@ -336,6 +336,19 @@
     },
     {
       "rank": 10,
+      "teamId": 65,
+      "name": "1. FC Köln",
+      "shortName": "Köln",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/0/01/1._FC_Koeln_Logo_2014%E2%80%93.svg",
+      "played": 5,
+      "goalsFor": 8,
+      "goalsAgainst": 10,
+      "goalDifference": -2,
+      "points": 7,
+      "isUnion": false
+    },
+    {
+      "rank": 11,
       "teamId": 16,
       "name": "VfB Stuttgart",
       "shortName": "Stuttgart",
@@ -348,7 +361,7 @@
       "isUnion": false
     },
     {
-      "rank": 11,
+      "rank": 12,
       "teamId": 100,
       "name": "Hamburger SV",
       "shortName": "HSV",
@@ -361,20 +374,20 @@
       "isUnion": false
     },
     {
-      "rank": 12,
+      "rank": 13,
       "teamId": 9,
       "name": "FC Schalke 04",
       "shortName": "S04",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/9/97/FC_Schalke_04_Logo.png",
-      "played": 4,
-      "goalsFor": 3,
-      "goalsAgainst": 4,
-      "goalDifference": -1,
+      "played": 5,
+      "goalsFor": 4,
+      "goalsAgainst": 6,
+      "goalDifference": -2,
       "points": 5,
       "isUnion": false
     },
     {
-      "rank": 13,
+      "rank": 14,
       "teamId": 91,
       "name": "Eintracht Frankfurt",
       "shortName": "Frankfurt",
@@ -384,19 +397,6 @@
       "goalsAgainst": 16,
       "goalDifference": -7,
       "points": 5,
-      "isUnion": false
-    },
-    {
-      "rank": 14,
-      "teamId": 65,
-      "name": "1. FC Köln",
-      "shortName": "Köln",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/0/01/1._FC_Koeln_Logo_2014%E2%80%93.svg",
-      "played": 4,
-      "goalsFor": 6,
-      "goalsAgainst": 9,
-      "goalDifference": -3,
-      "points": 4,
       "isUnion": false
     },
     {
@@ -444,10 +444,10 @@
       "name": "Borussia Mönchengladbach",
       "shortName": "Gladbach",
       "logo": "https://i.imgur.com/KSIk0Eu.png",
-      "played": 4,
-      "goalsFor": 6,
-      "goalsAgainst": 16,
-      "goalDifference": -10,
+      "played": 5,
+      "goalsFor": 7,
+      "goalsAgainst": 18,
+      "goalDifference": -11,
       "points": 0,
       "isUnion": false
     }
