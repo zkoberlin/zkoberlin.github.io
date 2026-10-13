@@ -1,48 +1,14 @@
 {
-  "datum": "12.10.2026",
-  "generiert": "2026-10-12T06:40:52Z",
+  "datum": "13.10.2026",
+  "generiert": "2026-10-13T07:11:12Z",
   "geburtstage": [
     {
-      "name": "Sergio Peter",
-      "alter": 40,
-      "geburtsjahr": 1986,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Sergio_Peter",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Darci Lynne",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Persönlichkeit",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Darci_Lynne",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Iris Apatow",
-      "alter": 24,
-      "geburtsjahr": 2002,
+      "name": "Caleb McLaughlin",
+      "alter": 25,
+      "geburtsjahr": 2001,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Iris_Apatow_at_SXSW_Red_Carpet_premiere_of_BLOCKERS_%2839852920695%29_%28cropped%29.jpg/330px-Iris_Apatow_at_SXSW_Red_Carpet_premiere_of_BLOCKERS_%2839852920695%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Iris_Apatow",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Caleb_McLaughlin_2025_%281%29.png/330px-Caleb_McLaughlin_2025_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Caleb_McLaughlin",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,12 +20,40 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jongho",
-      "alter": 26,
-      "geburtsjahr": 2000,
+      "name": "Cam Thomas",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Cameron_Thomas_%2851874870188%29_%28cropped%29.jpg/330px-Cameron_Thomas_%2851874870188%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Cam_Thomas",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Joshua Wong",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Joshua_Wong_%282019%29.jpg/330px-Joshua_Wong_%282019%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Joshua_Wong",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jimin",
+      "alter": 31,
+      "geburtsjahr": 1995,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/48/240803_Jongho_%28cropped%29.jpg/330px-240803_Jongho_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jongho",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Jimin_on_the_way_to_SBS_Radio%2C_31_March_2023_%282%29.jpg/330px-Jimin_on_the_way_to_SBS_Radio%2C_31_March_2023_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jimin",
       "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
