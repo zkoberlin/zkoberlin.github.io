@@ -1,14 +1,14 @@
 {
-  "datum": "13.10.2026",
-  "generiert": "2026-10-13T07:11:12Z",
+  "datum": "14.10.2026",
+  "generiert": "2026-10-14T05:34:29Z",
   "geburtstage": [
     {
-      "name": "Caleb McLaughlin",
+      "name": "Rowan Blanchard",
       "alter": 25,
       "geburtsjahr": 2001,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Caleb_McLaughlin_2025_%281%29.png/330px-Caleb_McLaughlin_2025_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Caleb_McLaughlin",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Rowan_Blanchard.jpg/330px-Rowan_Blanchard.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Rowan_Blanchard",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Cam Thomas",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Cameron_Thomas_%2851874870188%29_%28cropped%29.jpg/330px-Cameron_Thomas_%2851874870188%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Cam_Thomas",
+      "name": "Ariela Barer",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Ariela_Barer.jpg/330px-Ariela_Barer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ariela_Barer",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -37,31 +37,25 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Joshua Wong",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Joshua_Wong_%282019%29.jpg/330px-Joshua_Wong_%282019%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Joshua_Wong",
+      "name": "Ahmed Musa",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Ahmed_Musa_20180625.jpg/330px-Ahmed_Musa_20180625.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ahmed_Musa",
       "nationalitaet": null,
       "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jimin",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Jimin_on_the_way_to_SBS_Radio%2C_31_March_2023_%282%29.jpg/330px-Jimin_on_the_way_to_SBS_Radio%2C_31_March_2023_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jimin",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
+      "name": "Arca",
+      "alter": 37,
+      "geburtsjahr": 1989,
+      "beruf": "Musiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Arca_Sonar_1.jpg/330px-Arca_Sonar_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Arca_(musician)",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
