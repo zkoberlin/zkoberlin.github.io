@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-13T03:23:23Z",
+  "generatedAt": "2026-10-14T01:40:10Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -261,7 +261,7 @@
       "teamId": 6,
       "name": "Bayer 04 Leverkusen",
       "shortName": "Leverkusen",
-      "logo": "https://www.bundesliga-reisefuehrer.de/sites/default/files/B04_Standard_Logo_RGB.png",
+      "logo": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg",
       "played": 5,
       "goalsFor": 14,
       "goalsAgainst": 8,
