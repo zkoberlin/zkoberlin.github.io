@@ -1,61 +1,67 @@
 {
-  "datum": "14.10.2026",
-  "generiert": "2026-10-14T05:34:29Z",
+  "datum": "15.10.2026",
+  "generiert": "2026-10-15T05:22:02Z",
   "geburtstage": [
     {
-      "name": "Rowan Blanchard",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Rowan_Blanchard.jpg/330px-Rowan_Blanchard.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rowan_Blanchard",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ariela Barer",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Ariela_Barer.jpg/330px-Ariela_Barer.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ariela_Barer",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ahmed Musa",
-      "alter": 34,
-      "geburtsjahr": 1992,
+      "name": "Mesut Özil",
+      "alter": 38,
+      "geburtsjahr": 1988,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Ahmed_Musa_20180625.jpg/330px-Ahmed_Musa_20180625.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ahmed_Musa",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Mesut_%C3%96zil_at_Baku_before_2019_UEFA_Europe_League_Final.jpg/330px-Mesut_%C3%96zil_at_Baku_before_2019_UEFA_Europe_League_Final.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mesut_%C3%96zil",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Michél Mazingu-Dinzey",
+      "alter": 54,
+      "geburtsjahr": 1972,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Mich%C3%A9l_Mazingu-Dinzey.JPG/330px-Mich%C3%A9l_Mazingu-Dinzey.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mich%C3%A9l_Mazingu-Dinzey",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Melki Sedek Huang",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Politiker/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Melki_Sedek_Huang",
       "nationalitaet": null,
       "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Arca",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Musiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Arca_Sonar_1.jpg/330px-Arca_Sonar_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Arca_(musician)",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "name": "Bailee Madison",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Bailee_Madison_2025.jpg/330px-Bailee_Madison_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bailee_Madison",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
