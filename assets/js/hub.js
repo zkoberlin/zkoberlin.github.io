@@ -1541,8 +1541,7 @@ function parseICS(txt){
     }
     if(isNaN(date))continue;
     let col='#6e6e73';const s=sum.toLowerCase();
-    if(s.includes('maja'))col='#db2777';
-    else if(['köln','augsburg','mainz','bochum','wolfsburg','leverkusen','dortmund','münchen','stuttgart','freiburg','heidenheim','hoffenheim','frankfurt','werder','pauli','fcunion','union berlin'].some(x=>s.includes(x)))col='#e8001c';
+    if(['köln','augsburg','mainz','bochum','wolfsburg','leverkusen','dortmund','münchen','stuttgart','freiburg','heidenheim','hoffenheim','frankfurt','werder','pauli','fcunion','union berlin'].some(x=>s.includes(x)))col='#e8001c';
     else if(s.includes('konzert')||s.includes('olivia')||s.includes('🎵')||s.includes('🎶')||s.includes('🎤')||s.includes('🎭'))col='#16a34a';
     else if(s.includes('kids')||s.includes('rosa')||s.includes('emil'))col='#1a56db';
     else if(s.includes('geburtstag')||s.includes('birthday')||s.includes('bday')||s.includes('🎂')||s.includes('🎁')||s.includes('geburts'))col='#af52de';
@@ -1568,9 +1567,9 @@ function fmtFull(d){return`${WD[d.getDay()]}, ${d.getDate()}. ${MK[d.getMonth()]
 
 const CALENDAR_PREVIEW_API='https://paul-gateway-v2.paul-bendzko.workers.dev/feeds/calendar-preview';
 const CALENDAR_PREFERENCES_API='https://paul-gateway-v2.paul-bendzko.workers.dev/calendar-preferences';
-const CALENDAR_DEFAULT_CATEGORIES=['maja','birthday','culture','health','travel','other'];
+const CALENDAR_DEFAULT_CATEGORIES=['birthday','culture','health','travel','other'];
 const CALENDAR_CATEGORY_META={
-  maja:{icon:'💗',color:'#db2777'},birthday:{icon:'🎂',color:'#af52de'},family:{icon:'👨‍👩‍👧',color:'#1a56db'},
+  birthday:{icon:'🎂',color:'#af52de'},family:{icon:'👨‍👩‍👧',color:'#1a56db'},
   sport:{icon:'⚽',color:'#e8001c'},culture:{icon:'🎭',color:'#16a34a'},health:{icon:'🩺',color:'#00a6a6'},
   travel:{icon:'✈️',color:'#f97316'},other:{icon:'📌',color:'#6e6e73'},
 };
@@ -1602,7 +1601,7 @@ function renderCalendarEvents(){
   }
   for(const event of events){
     const date=calendarEventDate(event),when=fmtW(date),meta=CALENDAR_CATEGORY_META[event.category]||CALENDAR_CATEGORY_META.other;
-    const row=document.createElement('div');row.className=`kal-ev${when==='Heute'?' today':''}${event.category==='maja'?' maja-ev':''}${event.category==='birthday'?' bday-ev':''}`;
+    const row=document.createElement('div');row.className=`kal-ev${when==='Heute'?' today':''}${event.category==='birthday'?' bday-ev':''}`;
     const dot=document.createElement('div');dot.className='kal-ev-dot';dot.style.background=meta.color;
     const info=document.createElement('div');info.className='kal-ev-info';
     const label=document.createElement('div');label.className='kal-ev-lbl';label.textContent=`${meta.icon} ${calendarPreviewData.categories.find(category=>category.id===event.category)?.label||'Termin'}`;

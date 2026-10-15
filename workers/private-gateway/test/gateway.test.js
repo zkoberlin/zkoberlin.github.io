@@ -222,17 +222,29 @@ test("stores validated calendar category preferences", async () => {
   try {
     const defaults = await worker.fetch(new Request("https://gateway.test/calendar-preferences", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
     assert.equal(defaults.status, 200);
-    assert.ok((await defaults.json()).selected.includes("maja"));
+    assert.deepEqual((await defaults.json()).selected, ["birthday", "culture", "health", "travel", "other"]);
 
     const saved = await worker.fetch(new Request("https://gateway.test/calendar-preferences", {
       method: "PUT",
       headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
-      body: JSON.stringify({ selected: ["maja", "travel"] }),
+      body: JSON.stringify({ selected: ["culture", "travel"] }),
     }), testEnv);
-    assert.deepEqual((await saved.json()).selected, ["maja", "travel"]);
+    assert.deepEqual((await saved.json()).selected, ["culture", "travel"]);
 
     const listed = await worker.fetch(new Request("https://gateway.test/calendar-preferences", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
-    assert.deepEqual((await listed.json()).selected, ["maja", "travel"]);
+    assert.deepEqual((await listed.json()).selected, ["culture", "travel"]);
+
+    await testEnv.HUB_DB.prepare("INSERT INTO hub_preferences (preference_key, value_json) VALUES (?, ?)")
+      .bind("calendar_categories", JSON.stringify(["maja", "travel"])).run();
+    const migrated = await worker.fetch(new Request("https://gateway.test/calendar-preferences", { headers: { Authorization: "Bearer valid-token" } }), testEnv);
+    assert.deepEqual((await migrated.json()).selected, ["travel"]);
+
+    const removed = await worker.fetch(new Request("https://gateway.test/calendar-preferences", {
+      method: "PUT",
+      headers: { Authorization: "Bearer valid-token", "Content-Type": "application/json" },
+      body: JSON.stringify({ selected: ["maja"] }),
+    }), testEnv);
+    assert.equal(removed.status, 400);
 
     const invalid = await worker.fetch(new Request("https://gateway.test/calendar-preferences", {
       method: "PUT",

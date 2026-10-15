@@ -354,7 +354,6 @@ async function handleAlmaFeed(env, origin) {
 }
 
 const CALENDAR_CATEGORIES = Object.freeze({
-  maja: "Mit Maja",
   birthday: "Geburtstage",
   family: "Familie",
   sport: "Sport",
@@ -366,7 +365,6 @@ const CALENDAR_CATEGORIES = Object.freeze({
 
 function calendarCategory(summary, source) {
   const value = summary.toLocaleLowerCase("de-DE");
-  if (value.includes("maja")) return "maja";
   if (/geburt|birthday|bday|🎂|🎁/.test(value)) return "birthday";
   if (/kids|rosa|emil|alma|schwerin|familie/.test(value)) return "family";
   if (/union|fußball|fussball|bundesliga|dfb|champions league|europa league|sport/.test(value)) return "sport";

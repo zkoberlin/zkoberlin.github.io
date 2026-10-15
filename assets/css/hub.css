@@ -571,7 +571,6 @@ div.mini#dayInfoCard{border-color:rgba(0,113,227,.22);}
 .kal-ev.today .kal-ev-when{color:var(--green);font-weight:800;}
 .kal-ev.today .kal-ev-title{color:var(--green);}
 .kal-ev.union-ev{background:var(--union-l);border-color:rgba(232,0,28,.15);}
-.kal-ev.maja-ev{background:var(--pink-l);border-color:rgba(219,39,119,.13);}
 .kal-ev.bday-ev{background:rgba(175,82,222,.08);border-color:rgba(175,82,222,.18);}
 .kal-empty{margin:0 11px 11px;padding:13px;border:1px dashed var(--border);border-radius:var(--r3);font-size:11px;color:var(--t2);text-align:center;}
 

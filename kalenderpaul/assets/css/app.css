@@ -403,8 +403,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 .e-dani     { background: #d1d5db; color: #374151; }
 /* Schwerin – sattes Orange */
 .e-schwerin { background: #f97316; color: #fff7ed; font-weight: 700; }
-/* Mit Maja – kräftiges Magenta */
-.e-maja     { background: #db2777; color: #fff0f6; font-weight: 700; }
 /* Ausflug/Urlaub – saftiges Grün */
 .e-trip     { background: #059669; color: #ecfdf5; font-weight: 700; }
 /* Events/Veranstaltungen – tiefes Violett */
@@ -1167,7 +1165,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
   html:not([data-theme="light"]) .e-kids{background:#0a3d8f;color:#a8c8ff;}
   html:not([data-theme="light"]) .e-dani{background:#3a3a3c;color:#98989d;}
   html:not([data-theme="light"]) .e-schwerin{background:#6b3a00;color:#ffd580;}
-  html:not([data-theme="light"]) .e-maja{background:#7b1050;color:#ffb0d0;}
   html:not([data-theme="light"]) .e-trip{background:#0a4a30;color:#80e8c0;}
   html:not([data-theme="light"]) .e-hellomed{background:#8099E8;color:#fff;}
   html:not([data-theme="light"]) .e-kidev{background:#7b0a0a;color:#ffa0a0;}
@@ -1195,7 +1192,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 [data-theme="dark"] .e-kids     { background: #0a3d8f; color: #a8c8ff; }
 [data-theme="dark"] .e-dani     { background: #3a3a3c; color: #98989d; }
 [data-theme="dark"] .e-schwerin { background: #6b3a00; color: #ffd580; }
-[data-theme="dark"] .e-maja     { background: #7b1050; color: #ffb0d0; }
 [data-theme="dark"] .e-trip     { background: #0a4a30; color: #80e8c0; }
 [data-theme="dark"] .e-hellomed { background: #8099E8; color: #ffffff; }
 [data-theme="dark"] .e-kidev    { background: #7b0a0a; color: #ffa0a0; }
@@ -1257,7 +1253,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 :root[data-theme="light"] .e-kids     { background: #1a56db; color: #ffffff; }
 :root[data-theme="light"] .e-dani     { background: #d1d5db; color: #374151; }
 :root[data-theme="light"] .e-schwerin { background: #f97316; color: #fff7ed; }
-:root[data-theme="light"] .e-maja     { background: #db2777; color: #fff0f6; }
 :root[data-theme="light"] .e-trip     { background: #059669; color: #ecfdf5; }
 :root[data-theme="light"] .e-hellomed { background: #8099E8; color: #ffffff; }
 :root[data-theme="light"] .e-kidev    { background: #dc2626; color: #fff5f5; }
@@ -1406,7 +1401,6 @@ h1, h2, h3, .header-text h1, .mt, .sticky-bar-month, .fp-title, .dp h3, .dp-popu
 [data-theme="dark"] .e-kids     { background: #0a3d8f; color: #a8c8ff; font-weight:700; }
 [data-theme="dark"] .e-dani     { background: #3a3a3c; color: #98989d; }
 [data-theme="dark"] .e-schwerin { background: #6b3a00; color: #ffd580; font-weight:700; }
-[data-theme="dark"] .e-maja     { background: #7b1050; color: #ffb0d0; font-weight:700; }
 [data-theme="dark"] .e-trip     { background: #0a4a30; color: #80e8c0; font-weight:700; }
 [data-theme="dark"] .e-hellomed { background: #8099E8; color: #fff; font-weight:600; }
 [data-theme="dark"] .e-kidev   { background: #7b0a0a; color: #ffa0a0; font-weight:600; }

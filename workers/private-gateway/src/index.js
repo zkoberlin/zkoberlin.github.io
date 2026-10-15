@@ -64,8 +64,8 @@ const ALCOHOL_CATALOG = Object.freeze({
   mix03: { label: "🍹 Mix 0,3l", units: 1.2 },
 });
 
-const CALENDAR_CATEGORY_IDS = new Set(["maja", "birthday", "family", "sport", "culture", "health", "travel", "other"]);
-const DEFAULT_CALENDAR_CATEGORIES = ["maja", "birthday", "culture", "health", "travel", "other"];
+const CALENDAR_CATEGORY_IDS = new Set(["birthday", "family", "sport", "culture", "health", "travel", "other"]);
+const DEFAULT_CALENDAR_CATEGORIES = ["birthday", "culture", "health", "travel", "other"];
 const FINANCE_STATE_KEY = "primary";
 const FINANCE_MAX_BYTES = 100_000;
 const FINANCE_BASE_KEYS = ["miete", "strom", "internet", "lebensmittel", "schufa", "ing", "haftpflicht", "rechtsschutz", "kredit", "gez", "unterhalt", "kids", "handyemil", "handyrosa", "ukv", "sparta", "bling", "unionemil", "handypaul", "icloud", "spotify", "finanzguru", "claude", "unionmitgl", "amazon", "parqet", "futbology", "fotmob", "bvg", "dauerkarte", "garmin"];
@@ -134,7 +134,7 @@ async function calendarPreferencesResponse(request, env, origin) {
     let selected = DEFAULT_CALENDAR_CATEGORIES;
     try {
       const parsed = row?.value ? JSON.parse(row.value) : null;
-      if (Array.isArray(parsed) && parsed.every((item) => CALENDAR_CATEGORY_IDS.has(item))) selected = [...new Set(parsed)];
+      if (Array.isArray(parsed)) selected = [...new Set(parsed.filter((item) => CALENDAR_CATEGORY_IDS.has(item)))];
     } catch {}
     return json({ schemaVersion: 1, selected }, 200, origin);
   }

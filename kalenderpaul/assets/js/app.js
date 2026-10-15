@@ -162,7 +162,7 @@ function openDp(key, cellEl) {
 
   const colorMap = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669',
+    'e-trip':'#059669',
     'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9',
     'e-feier':'#713f12','e-union':'#b91c1c','e-sport':'#0ea5e9','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
@@ -246,7 +246,7 @@ function scrollToToday() {
 function renderAll() {
   const now = new Date();
   const hdEl = document.getElementById('headerDate');
-  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.36.5'}</span>`;
+  if(hdEl) hdEl.innerHTML = `${DN[(now.getDay()||7)-1]}, ${now.getDate()}. ${MN[now.getMonth()]} ${now.getFullYear()} <span class="version-badge version-badge-mobile" data-app-version>v${window.PAUL_APP_VERSION||'6.36.6'}</span>`;
   initViewUI();
   updateViewBtns();
   renderView();
@@ -277,7 +277,7 @@ let viewOffset = 0;
 
 const colorMap = {
   'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-  'e-maja':'#db2777','e-trip':'#059669',
+  'e-trip':'#059669',
   'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9',
   'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
 };
@@ -569,7 +569,7 @@ function renderWocheView(cal, base) {
 
   const colorMapW = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+    'e-trip':'#059669','e-hellomed':'#8099E8',
     'e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9','e-feier':'#713f12',
     'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
@@ -656,7 +656,7 @@ function openDpBelowGrid(key, gridEl) {
 
   const colorMap2 = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669',
+    'e-trip':'#059669',
     'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9',
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };
@@ -849,13 +849,13 @@ function expandDay(cell, e) {
 // ── EVENT DETAIL MODAL ───────────────────────────────────────────────
 const catColorMap = {
   'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
-  'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+  'e-trip':'#059669','e-hellomed':'#8099E8',
   'e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9','e-feier':'#713f12',
   'e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
 };
 const catNameMap = {
   'e-kids':'Kids bei Paul','e-dani':'Kids bei Dani','e-schwerin':'Schwerin',
-  'e-maja':'Maja','e-trip':'Ausflug/Urlaub','e-hellomed':'Hellomed',
+  'e-trip':'Ausflug/Urlaub','e-hellomed':'Hellomed',
   'e-kidev':'Schule/Kids-Event','e-bday':'Geburtstag','e-feier':'Feiertag/Ferien',
   'e-union':'1. FC Union Berlin','e-konzert':'Konzert/Event','e-haus':'Besichtigung'
 };
@@ -972,14 +972,14 @@ function collapseDay() {
 // ── FILTER ───────────────────────────────────────────────────────────
 const catLabels = {
   'e-kids':'Kids bei Paul','e-dani':'Kids bei Dani','e-schwerin':'Schwerin',
-  'e-maja':'Maja','e-trip':'Ausflug/Urlaub',
+  'e-trip':'Ausflug/Urlaub',
   'e-hellomed':'Hellomed','e-kidev':'Schule/Kids-Event','e-sport':'Sport','e-haus':'Besichtigungen',
   'e-feier':'Feiertage & Schulferien Berlin','e-union':'1. FC Union Berlin',
   'e-konzert':'Konzerte & Events','e-bday':'Geburtstage'
 };
 const catColors = {
   'e-kids':'#1a56db','e-dani':'#9ca3af','e-schwerin':'#f97316',
-  'e-maja':'#db2777','e-trip':'#059669',
+  'e-trip':'#059669',
   'e-hellomed':'#8099E8','e-kidev':'#dc2626','e-haus':'#00a0e3',
   'e-feier':'#713f12','e-union':'#b91c1c',
   'e-konzert':'#16a34a','e-bday':'#9ca3af','e-sport':'#0ea5e9'
@@ -1030,7 +1030,7 @@ function showFilterResults(cat, matches) {
   clearFilterResults();
 
   const color = (typeof catColors !== 'undefined' && catColors[cat]) || '#0071E3';
-  const _lm={'e-kids':'Kids Paul','e-dani':'Kids Dani','e-maja':'Maja','e-schwerin':'Schwerin','e-union':'Union Berlin','e-trip':'Ausflug/Urlaub','e-feier':'Feiertage','e-kidev':'Schule/Kids','e-hellomed':'Hellomed','e-konzert':'Konzert/Event','e-haus':'Besichtigung','e-bday':'Geburtstag','e-sport':'Sport'};
+  const _lm={'e-kids':'Kids Paul','e-dani':'Kids Dani','e-schwerin':'Schwerin','e-union':'Union Berlin','e-trip':'Ausflug/Urlaub','e-feier':'Feiertage','e-kidev':'Schule/Kids','e-hellomed':'Hellomed','e-konzert':'Konzert/Event','e-haus':'Besichtigung','e-bday':'Geburtstag','e-sport':'Sport'};
   const label = (typeof catLabels !== 'undefined' && catLabels[cat]) || _lm[cat] || cat;
 
   const wrap = document.createElement('div');
@@ -1310,14 +1310,14 @@ function extractTime(title) {
 // ── KATEGORIE-LABEL HELPER ───────────────────────────────────────────
 const _catLabelShort = {
   'e-kids':'Kids Paul','e-dani':'Kids Dani','e-schwerin':'Schwerin',
-  'e-maja':'Maja','e-trip':'Urlaub','e-hellomed':'Hellomed',
+  'e-trip':'Urlaub','e-hellomed':'Hellomed',
   'e-kidev':'Schule','e-sport':'Sport','e-haus':'Haus',
   'e-feier':'Feiertag','e-union':'Union','e-konzert':'Konzert',
   'e-bday':'Bday'
 };
 const _catLabelColor = {
   'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-  'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+  'e-trip':'#059669','e-hellomed':'#8099E8',
   'e-kidev':'#dc2626','e-sport':'#0ea5e9','e-haus':'#00a0e3',
   'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a',
   'e-bday':'#9ca3af'
@@ -1564,7 +1564,6 @@ function catsFromTitle(title) {
   if(t.includes('kids bei dani'))      cats.push('e-dani');
   else if(t.includes('kids'))          cats.push('e-kids');
   if(t.includes('sport')||t.includes('beat81')||t.includes('radtour')||/\btour\b/.test(t)||/lauf/.test(t)||/rennen/.test(t)||/wettkampf/.test(t)) cats.push('e-sport');
-  if(t.includes('maja')||t.includes('kawi')||t.includes('sing dela')||t.includes('finch')||t.includes('olivia')||t.includes('geburtstagsdrinks')) cats.push('e-maja');
   if(t.includes('konzert')||t.includes('bierwalker')||t.includes('markus krebs')||t.includes('6k united')) cats.push('e-konzert');
   if(t.includes('alma')||t.includes('spendenlauf')||t.includes('schule')||t.includes('rosa')||t.includes('emil')||t.includes('kiefer')||t.includes('prophylaxe')||t.includes('eltern')) cats.push('e-kidev');
   if(t.includes('besichtigung')||t.includes('berlinovo')) cats.push('e-haus');
@@ -2177,7 +2176,7 @@ function openNeueTermineSheet() {
 
   const colorMap2 = {
     'e-kids':'#1a56db','e-dani':'#6b7280','e-schwerin':'#f97316',
-    'e-maja':'#db2777','e-trip':'#059669','e-hellomed':'#8099E8',
+    'e-trip':'#059669','e-hellomed':'#8099E8',
     'e-kidev':'#dc2626','e-bday':'#9ca3af','e-sport':'#0ea5e9',
     'e-feier':'#713f12','e-union':'#b91c1c','e-konzert':'#16a34a','e-haus':'#00a0e3'
   };

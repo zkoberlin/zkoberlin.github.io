@@ -279,7 +279,8 @@ test("returns categorized and sanitized calendar preview events", async () => {
     const data = await response.json();
     assert.equal(data.schemaVersion, 1);
     assert.equal(data.events.length, 2);
-    assert.deepEqual(data.events.map((event) => event.category).sort(), ["health", "maja"]);
+    assert.deepEqual(data.events.map((event) => event.category).sort(), ["culture", "health"]);
+    assert.ok(data.categories.every((category) => category.id !== "maja"));
     assert.equal(JSON.stringify(data).includes("<Kontrolle>"), false);
     assert.equal(JSON.stringify(data).includes("privat"), false);
     assert.equal(data.categories.find((category) => category.id === "health").count, 1);
