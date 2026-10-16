@@ -1,14 +1,14 @@
 {
-  "datum": "15.10.2026",
-  "generiert": "2026-10-15T05:22:02Z",
+  "datum": "16.10.2026",
+  "generiert": "2026-10-16T05:14:04Z",
   "geburtstage": [
     {
-      "name": "Mesut Özil",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Mesut_%C3%96zil_at_Baku_before_2019_UEFA_Europe_League_Final.jpg/330px-Mesut_%C3%96zil_at_Baku_before_2019_UEFA_Europe_League_Final.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mesut_%C3%96zil",
+      "name": "Philipp Kohlschreiber",
+      "alter": 43,
+      "geburtsjahr": 1983,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Kohlschreiber_WM16_%2814%29_%2827802915683%29.jpg/330px-Kohlschreiber_WM16_%2814%29_%2827802915683%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Kohlschreiber",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Michél Mazingu-Dinzey",
-      "alter": 54,
-      "geburtsjahr": 1972,
+      "name": "Mehmet Scholl",
+      "alter": 56,
+      "geburtsjahr": 1970,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Mich%C3%A9l_Mazingu-Dinzey.JPG/330px-Mich%C3%A9l_Mazingu-Dinzey.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mich%C3%A9l_Mazingu-Dinzey",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/16-04-11-Pressekonferenz_ARD_und_ZDF_Fu%C3%9Fball-EM_2016_RalfR-WAT_7057.jpg/330px-16-04-11-Pressekonferenz_ARD_und_ZDF_Fu%C3%9Fball-EM_2016_RalfR-WAT_7057.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mehmet_Scholl",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,23 +37,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Melki Sedek Huang",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Politiker/in",
+      "name": "Ruby Rose Turner",
+      "alter": 21,
+      "geburtsjahr": 2005,
+      "beruf": "Sänger/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Melki_Sedek_Huang",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Bailee Madison",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Bailee_Madison_2025.jpg/330px-Bailee_Madison_2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bailee_Madison",
+      "wikidata": "https://en.wikipedia.org/wiki/Ruby_Rose_Turner",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -62,6 +51,17 @@
           "name": "US-amerikanisch"
         }
       ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Willian Pacho",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Willian_Pacho_Ecuador_v_Germany_25_June_2026-228.jpg/330px-Willian_Pacho_Ecuador_v_Germany_25_June_2026-228.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Willian_Pacho",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
