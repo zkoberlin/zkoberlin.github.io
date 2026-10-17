@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-16T01:01:36Z",
+  "generatedAt": "2026-10-17T01:08:40Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -310,6 +310,19 @@
     },
     {
       "rank": 8,
+      "teamId": 91,
+      "name": "Eintracht Frankfurt",
+      "shortName": "Frankfurt",
+      "logo": "https://i.imgur.com/X8NFkOb.png",
+      "played": 6,
+      "goalsFor": 10,
+      "goalsAgainst": 16,
+      "goalDifference": -6,
+      "points": 8,
+      "isUnion": false
+    },
+    {
+      "rank": 9,
       "teamId": 81,
       "name": "1. FSV Mainz 05",
       "shortName": "Mainz",
@@ -322,7 +335,7 @@
       "isUnion": false
     },
     {
-      "rank": 9,
+      "rank": 10,
       "teamId": 198,
       "name": "SV 07 Elversberg",
       "shortName": "Elversberg",
@@ -335,20 +348,20 @@
       "isUnion": false
     },
     {
-      "rank": 10,
+      "rank": 11,
       "teamId": 65,
       "name": "1. FC Köln",
       "shortName": "Köln",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/0/01/1._FC_Koeln_Logo_2014%E2%80%93.svg",
-      "played": 5,
+      "played": 6,
       "goalsFor": 8,
-      "goalsAgainst": 10,
-      "goalDifference": -2,
+      "goalsAgainst": 11,
+      "goalDifference": -3,
       "points": 7,
       "isUnion": false
     },
     {
-      "rank": 11,
+      "rank": 12,
       "teamId": 16,
       "name": "VfB Stuttgart",
       "shortName": "Stuttgart",
@@ -361,7 +374,7 @@
       "isUnion": false
     },
     {
-      "rank": 12,
+      "rank": 13,
       "teamId": 100,
       "name": "Hamburger SV",
       "shortName": "HSV",
@@ -374,7 +387,7 @@
       "isUnion": false
     },
     {
-      "rank": 13,
+      "rank": 14,
       "teamId": 9,
       "name": "FC Schalke 04",
       "shortName": "S04",
@@ -383,19 +396,6 @@
       "goalsFor": 4,
       "goalsAgainst": 6,
       "goalDifference": -2,
-      "points": 5,
-      "isUnion": false
-    },
-    {
-      "rank": 14,
-      "teamId": 91,
-      "name": "Eintracht Frankfurt",
-      "shortName": "Frankfurt",
-      "logo": "https://i.imgur.com/X8NFkOb.png",
-      "played": 5,
-      "goalsFor": 9,
-      "goalsAgainst": 16,
-      "goalDifference": -7,
       "points": 5,
       "isUnion": false
     },
