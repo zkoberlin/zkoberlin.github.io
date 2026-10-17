@@ -1,48 +1,36 @@
 {
-  "datum": "16.10.2026",
-  "generiert": "2026-10-16T05:14:04Z",
+  "datum": "17.10.2026",
+  "generiert": "2026-10-17T05:09:04Z",
   "geburtstage": [
     {
-      "name": "Philipp Kohlschreiber",
-      "alter": 43,
-      "geburtsjahr": 1983,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Kohlschreiber_WM16_%2814%29_%2827802915683%29.jpg/330px-Kohlschreiber_WM16_%2814%29_%2827802915683%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Kohlschreiber",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Mehmet Scholl",
-      "alter": 56,
-      "geburtsjahr": 1970,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/16-04-11-Pressekonferenz_ARD_und_ZDF_Fu%C3%9Fball-EM_2016_RalfR-WAT_7057.jpg/330px-16-04-11-Pressekonferenz_ARD_und_ZDF_Fu%C3%9Fball-EM_2016_RalfR-WAT_7057.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mehmet_Scholl",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ruby Rose Turner",
-      "alter": 21,
-      "geburtsjahr": 2005,
+      "name": "Lily",
+      "alter": 24,
+      "geburtsjahr": 2002,
       "beruf": "Sänger/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ruby_Rose_Turner",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/NMIXX_in_Oakland_-_Lily_focus.jpg/330px-NMIXX_in_Oakland_-_Lily_focus.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lily_(singer%2C_born_2002)",
+      "nationalitaet": "🇦🇺🇰🇷 Australisch/Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
+        },
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Robert Williams III",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Robert_Williams_%2851687558126%29_%28cropped%29.jpg/330px-Robert_Williams_%2851687558126%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Robert_Williams_III",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,14 +42,31 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Willian Pacho",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Kenneth Omeruo",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Willian_Pacho_Ecuador_v_Germany_25_June_2026-228.jpg/330px-Willian_Pacho_Ecuador_v_Germany_25_June_2026-228.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Willian_Pacho",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/1/12/Argentina-Nigeria_%283%29_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Kenneth_Omeruo",
       "nationalitaet": null,
       "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Vincent Poirier",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Vincent_Poirier_17_Anadolu_Efes_TBSL_20250105_%281%29.jpg/330px-Vincent_Poirier_17_Anadolu_Efes_TBSL_20250105_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Vincent_Poirier",
+      "nationalitaet": "🇫🇷 Französisch",
+      "nationalitaeten": [
+        {
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
