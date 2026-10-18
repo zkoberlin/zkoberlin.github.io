@@ -1,36 +1,48 @@
 {
-  "datum": "17.10.2026",
-  "generiert": "2026-10-17T05:09:04Z",
+  "datum": "18.10.2026",
+  "generiert": "2026-10-18T05:14:22Z",
   "geburtstage": [
     {
-      "name": "Lily",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/NMIXX_in_Oakland_-_Lily_focus.jpg/330px-NMIXX_in_Oakland_-_Lily_focus.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lily_(singer%2C_born_2002)",
-      "nationalitaet": "🇦🇺🇰🇷 Australisch/Südkoreanisch",
+      "name": "Pascal Wehrlein",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-05-10_Motorsport%2C_ABB_FIA_Formula_E_World_Championship%2C_Berlin_E-Prix_2024_STP_2554_by_Stepro.jpg/330px-2024-05-10_Motorsport%2C_ABB_FIA_Formula_E_World_Championship%2C_Berlin_E-Prix_2024_STP_2554_by_Stepro.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Pascal_Wehrlein",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
-        },
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Robert Williams III",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Robert_Williams_%2851687558126%29_%28cropped%29.jpg/330px-Robert_Williams_%2851687558126%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Robert_Williams_III",
+      "name": "Michael Stich",
+      "alter": 58,
+      "geburtsjahr": 1968,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Michael_Stich_%28cropped%29.jpg/330px-Michael_Stich_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Stich",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Sophie Thatcher",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Sophie_Thatcher_at_Deauville_film_festival_2026_for_Her_Private_Hell_%28tight_crop%29.jpg/330px-Sophie_Thatcher_at_Deauville_film_festival_2026_for_Her_Private_Hell_%28tight_crop%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sophie_Thatcher",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -42,29 +54,23 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kenneth Omeruo",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Fußballer/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/1/12/Argentina-Nigeria_%283%29_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Kenneth_Omeruo",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Vincent Poirier",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Vincent_Poirier_17_Anadolu_Efes_TBSL_20250105_%281%29.jpg/330px-Vincent_Poirier_17_Anadolu_Efes_TBSL_20250105_%281%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Vincent_Poirier",
-      "nationalitaet": "🇫🇷 Französisch",
+      "name": "Janalynn Castelino",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Janalynn_Castelino_at_an_event_in_2023.jpg/330px-Janalynn_Castelino_at_an_event_in_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Janalynn_Castelino",
+      "nationalitaet": "🇮🇹🇮🇳 Italienisch/Indisch",
       "nationalitaeten": [
         {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
+        },
+        {
+          "code": "IN",
+          "flagge": "🇮🇳",
+          "name": "Indisch"
         }
       ],
       "quelle": "Wikipedia"
