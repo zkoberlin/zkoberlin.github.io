@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-18T00:41:38Z",
+  "generatedAt": "2026-10-19T00:54:16Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -67,7 +67,7 @@
   },
   "status": "active",
   "standing": {
-    "rank": 16,
+    "rank": 17,
     "played": 6,
     "won": 1,
     "drawn": 2,
@@ -249,10 +249,10 @@
       "name": "SC Freiburg",
       "shortName": "Freiburg",
       "logo": "https://i.imgur.com/r3mvi0h.png",
-      "played": 5,
-      "goalsFor": 14,
-      "goalsAgainst": 4,
-      "goalDifference": 10,
+      "played": 6,
+      "goalsFor": 15,
+      "goalsAgainst": 6,
+      "goalDifference": 9,
       "points": 13,
       "isUnion": false
     },
@@ -262,11 +262,11 @@
       "name": "Bayer 04 Leverkusen",
       "shortName": "Leverkusen",
       "logo": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg",
-      "played": 5,
-      "goalsFor": 14,
-      "goalsAgainst": 8,
-      "goalDifference": 6,
-      "points": 10,
+      "played": 6,
+      "goalsFor": 16,
+      "goalsAgainst": 9,
+      "goalDifference": 7,
+      "points": 13,
       "isUnion": false
     },
     {
@@ -388,6 +388,19 @@
     },
     {
       "rank": 14,
+      "teamId": 175,
+      "name": "TSG Hoffenheim",
+      "shortName": "Hoffenheim",
+      "logo": "https://i.imgur.com/gF0PfEl.png",
+      "played": 6,
+      "goalsFor": 11,
+      "goalsAgainst": 14,
+      "goalDifference": -3,
+      "points": 6,
+      "isUnion": false
+    },
+    {
+      "rank": 15,
       "teamId": 9,
       "name": "FC Schalke 04",
       "shortName": "S04",
@@ -400,7 +413,7 @@
       "isUnion": false
     },
     {
-      "rank": 15,
+      "rank": 16,
       "teamId": 31,
       "name": "SC Paderborn 07",
       "shortName": "Paderborn",
@@ -413,7 +426,7 @@
       "isUnion": false
     },
     {
-      "rank": 16,
+      "rank": 17,
       "teamId": 80,
       "name": "1. FC Union Berlin",
       "shortName": "Union Berlin",
@@ -426,28 +439,15 @@
       "isUnion": true
     },
     {
-      "rank": 17,
-      "teamId": 175,
-      "name": "TSG Hoffenheim",
-      "shortName": "Hoffenheim",
-      "logo": "https://i.imgur.com/gF0PfEl.png",
-      "played": 5,
-      "goalsFor": 9,
-      "goalsAgainst": 13,
-      "goalDifference": -4,
-      "points": 3,
-      "isUnion": false
-    },
-    {
       "rank": 18,
       "teamId": 87,
       "name": "Borussia Mönchengladbach",
       "shortName": "Gladbach",
       "logo": "https://i.imgur.com/KSIk0Eu.png",
-      "played": 5,
-      "goalsFor": 7,
-      "goalsAgainst": 18,
-      "goalDifference": -11,
+      "played": 6,
+      "goalsFor": 8,
+      "goalsAgainst": 20,
+      "goalDifference": -12,
       "points": 0,
       "isUnion": false
     }
