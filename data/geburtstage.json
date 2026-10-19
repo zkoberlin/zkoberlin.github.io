@@ -1,48 +1,42 @@
 {
-  "datum": "18.10.2026",
-  "generiert": "2026-10-18T05:14:22Z",
+  "datum": "19.10.2026",
+  "generiert": "2026-10-19T05:26:01Z",
   "geburtstage": [
     {
-      "name": "Pascal Wehrlein",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/2024-05-10_Motorsport%2C_ABB_FIA_Formula_E_World_Championship%2C_Berlin_E-Prix_2024_STP_2554_by_Stepro.jpg/330px-2024-05-10_Motorsport%2C_ABB_FIA_Formula_E_World_Championship%2C_Berlin_E-Prix_2024_STP_2554_by_Stepro.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Pascal_Wehrlein",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Antonia",
+      "alter": 21,
+      "geburtsjahr": 2005,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/75/Antonia_Nocca_%28May_2025%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Antonia_(Italian_singer)",
+      "nationalitaet": "🇮🇹 Italienisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Michael Stich",
-      "alter": 58,
-      "geburtsjahr": 1968,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Michael_Stich_%28cropped%29.jpg/330px-Michael_Stich_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Michael_Stich",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
+      "name": "Sammis Reyes",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Sammis_Reyes_%2851801839952%29.jpg/330px-Sammis_Reyes_%2851801839952%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sammis_Reyes",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Sophie Thatcher",
-      "alter": 26,
-      "geburtsjahr": 2000,
+      "name": "Hunter King",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Sophie_Thatcher_at_Deauville_film_festival_2026_for_Her_Private_Hell_%28tight_crop%29.jpg/330px-Sophie_Thatcher_at_Deauville_film_festival_2026_for_Her_Private_Hell_%28tight_crop%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sophie_Thatcher",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Hunter_King",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,23 +48,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Janalynn Castelino",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Janalynn_Castelino_at_an_event_in_2023.jpg/330px-Janalynn_Castelino_at_an_event_in_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Janalynn_Castelino",
-      "nationalitaet": "🇮🇹🇮🇳 Italienisch/Indisch",
+      "name": "Lil Durk",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Lil_Durk_in_2022.png/330px-Lil_Durk_in_2022.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lil_Durk",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "IT",
-          "flagge": "🇮🇹",
-          "name": "Italienisch"
-        },
-        {
-          "code": "IN",
-          "flagge": "🇮🇳",
-          "name": "Indisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
