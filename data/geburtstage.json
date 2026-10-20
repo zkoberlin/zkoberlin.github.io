@@ -1,42 +1,31 @@
 {
-  "datum": "19.10.2026",
-  "generiert": "2026-10-19T05:26:01Z",
+  "datum": "20.10.2026",
+  "generiert": "2026-10-20T05:27:56Z",
   "geburtstage": [
     {
-      "name": "Antonia",
-      "alter": 21,
-      "geburtsjahr": 2005,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/7/75/Antonia_Nocca_%28May_2025%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Antonia_(Italian_singer)",
-      "nationalitaet": "🇮🇹 Italienisch",
-      "nationalitaeten": [
-        {
-          "code": "IT",
-          "flagge": "🇮🇹",
-          "name": "Italienisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Sammis Reyes",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Sammis_Reyes_%2851801839952%29.jpg/330px-Sammis_Reyes_%2851801839952%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sammis_Reyes",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Hunter King",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Schauspieler/in",
+      "name": "Carney Chukwuemeka",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Fußballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Hunter_King",
+      "wikidata": "https://en.wikipedia.org/wiki/Carney_Chukwuemeka",
+      "nationalitaet": "🇦🇹 Österreichisch",
+      "nationalitaeten": [
+        {
+          "code": "AT",
+          "flagge": "🇦🇹",
+          "name": "Österreichisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Paige Bueckers",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Paige_Bueckers_2025_4_%28cropped%29.jpg/330px-Paige_Bueckers_2025_4_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Paige_Bueckers",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -48,18 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Lil Durk",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Lil_Durk_in_2022.png/330px-Lil_Durk_in_2022.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lil_Durk",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Chuu",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/20251002_Chuu_%EC%B8%84_03.jpg/330px-20251002_Chuu_%EC%B8%84_03.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Chuu",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jordan Ridley",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Jordan_Ridley",
+      "nationalitaet": "🇦🇺 Australisch",
+      "nationalitaeten": [
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
