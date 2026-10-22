@@ -1,14 +1,14 @@
 {
-  "datum": "21.10.2026",
-  "generiert": "2026-10-21T05:28:42Z",
+  "datum": "22.10.2026",
+  "generiert": "2026-10-22T05:32:59Z",
   "geburtstage": [
     {
-      "name": "Kerstin Andreae",
-      "alter": 58,
-      "geburtsjahr": 1968,
+      "name": "Jan Köstering",
+      "alter": 29,
+      "geburtsjahr": 1997,
       "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Kerstin_Andreae_%286321548155%29.jpg/330px-Kerstin_Andreae_%286321548155%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kerstin_Andreae",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Jan_K%C3%B6stering",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,48 +20,54 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Cameron Burgess",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Cameron_Burgess_Australia_v_USA_19_June_2026-21.jpg/330px-Cameron_Burgess_Australia_v_USA_19_June_2026-21.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Cameron_Burgess",
-      "nationalitaet": "🇦🇺 Australisch",
+      "name": "Henry Lauterbach",
+      "alter": 69,
+      "geburtsjahr": 1957,
+      "beruf": "Sportler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Bundesarchiv_Bild_183-Z0802-014%2C_Henry_Lauterbach.jpg/330px-Bundesarchiv_Bild_183-Z0802-014%2C_Henry_Lauterbach.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Henry_Lauterbach",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Doja Cat",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Doja_Cat_x_Amazon1.1_%28cropped%29.jpg/330px-Doja_Cat_x_Amazon1.1_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Doja_Cat",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Antoinette Guedia Mouafo",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Persönlichkeit",
+      "name": "Manfred Trojahn",
+      "alter": 77,
+      "geburtsjahr": 1949,
+      "beruf": "Musiker/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Antoinette_Guedia_Mouafo",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "wikidata": "https://en.wikipedia.org/wiki/Manfred_Trojahn",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jo Yuri",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/082125_Jo_Yuri_for_Maradi_Mercredi_photo_call_01.png/330px-082125_Jo_Yuri_for_Maradi_Mercredi_photo_call_01.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jo_Yuri",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
