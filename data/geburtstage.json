@@ -1,71 +1,71 @@
 {
-  "datum": "22.10.2026",
-  "generiert": "2026-10-22T05:32:59Z",
+  "datum": "23.10.2026",
+  "generiert": "2026-10-23T05:30:51Z",
   "geburtstage": [
     {
-      "name": "Jan Köstering",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Politiker/in",
+      "name": "Carolin Schiewe",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/2018-05-27_Fu%C3%9Fball%2C_Allianz_Frauen-Bundesliga%2C_FF_USV_Jena_-_SC_Freiburg_StP_6533_by_Stepro.jpg/330px-2018-05-27_Fu%C3%9Fball%2C_Allianz_Frauen-Bundesliga%2C_FF_USV_Jena_-_SC_Freiburg_StP_6533_by_Stepro.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Carolin_Schiewe",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Niccolò Pisilli",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Fußballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Jan_K%C3%B6stering",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "wikidata": "https://en.wikipedia.org/wiki/Niccol%C3%B2_Pisilli",
+      "nationalitaet": "🇮🇹 Italienisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Henry Lauterbach",
-      "alter": 69,
-      "geburtsjahr": 1957,
-      "beruf": "Sportler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Bundesarchiv_Bild_183-Z0802-014%2C_Henry_Lauterbach.jpg/330px-Bundesarchiv_Bild_183-Z0802-014%2C_Henry_Lauterbach.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Henry_Lauterbach",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Manfred Trojahn",
-      "alter": 77,
-      "geburtsjahr": 1949,
-      "beruf": "Musiker/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Manfred_Trojahn",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jo Yuri",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Ningning",
+      "alter": 24,
+      "geburtsjahr": 2002,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/082125_Jo_Yuri_for_Maradi_Mercredi_photo_call_01.png/330px-082125_Jo_Yuri_for_Maradi_Mercredi_photo_call_01.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jo_Yuri",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/072926_Ningning_at_Gucci_photocall_05.png/330px-072926_Ningning_at_Gucci_photocall_05.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ningning",
+      "nationalitaet": "🇨🇳 Chinesisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Amandla Stenberg",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Amandla_Stenberg_by_Gage_Skidmore.jpg/330px-Amandla_Stenberg_by_Gage_Skidmore.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Amandla_Stenberg",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
