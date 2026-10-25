@@ -1,71 +1,71 @@
 {
-  "datum": "24.10.2026",
-  "generiert": "2026-10-24T05:10:31Z",
+  "datum": "25.10.2026",
+  "generiert": "2026-10-25T05:26:49Z",
   "geburtstage": [
     {
-      "name": "İlkay Gündoğan",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/20180602_FIFA_Friendly_Match_Austria_vs._Germany_%C4%B0lkay_G%C3%BCndo%C4%9Fan_850_0728.jpg/330px-20180602_FIFA_Friendly_Match_Austria_vs._Germany_%C4%B0lkay_G%C3%BCndo%C4%9Fan_850_0728.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/%C4%B0lkay_G%C3%BCndo%C4%9Fan",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ann Christin von Allwörden",
-      "alter": 48,
-      "geburtsjahr": 1978,
-      "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Ann_Christin_von_Allw%C3%B6rden.jpg/330px-Ann_Christin_von_Allw%C3%B6rden.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ann_Christin_von_Allw%C3%B6rden",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Joachim Winkelhock",
-      "alter": 66,
-      "geburtsjahr": 1960,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Joachim_Winkelhock_at_the_2013_Essen_Motor_Show.jpg/330px-Joachim_Winkelhock_at_the_2013_Essen_Motor_Show.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Joachim_Winkelhock",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ado",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Sänger/in",
+      "name": "Guido Grünheid",
+      "alter": 44,
+      "geburtsjahr": 1982,
+      "beruf": "Basketballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ado_(singer)",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "wikidata": "https://en.wikipedia.org/wiki/Guido_Gr%C3%BCnheid",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Birgit Prinz",
+      "alter": 49,
+      "geburtsjahr": 1977,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Birgit_Prinz_20180519_%28cropped%29.jpg/330px-Birgit_Prinz_20180519_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Birgit_Prinz",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Rainer Strecker",
+      "alter": 61,
+      "geburtsjahr": 1965,
+      "beruf": "Schauspieler/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Rainer_Strecker",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kornelia Ender",
+      "alter": 68,
+      "geburtsjahr": 1958,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Kornelia_Ender_1973.jpg/330px-Kornelia_Ender_1973.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kornelia_Ender",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
