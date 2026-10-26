@@ -1,48 +1,14 @@
 {
-  "datum": "25.10.2026",
-  "generiert": "2026-10-25T05:26:49Z",
+  "datum": "26.10.2026",
+  "generiert": "2026-10-26T05:31:25Z",
   "geburtstage": [
     {
-      "name": "Guido Grünheid",
-      "alter": 44,
-      "geburtsjahr": 1982,
-      "beruf": "Basketballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Guido_Gr%C3%BCnheid",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Birgit Prinz",
-      "alter": 49,
-      "geburtsjahr": 1977,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Birgit_Prinz_20180519_%28cropped%29.jpg/330px-Birgit_Prinz_20180519_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Birgit_Prinz",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Rainer Strecker",
-      "alter": 61,
-      "geburtsjahr": 1965,
+      "name": "Florence Kasumba",
+      "alter": 50,
+      "geburtsjahr": 1976,
       "beruf": "Schauspieler/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Rainer_Strecker",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/MKr348324_Florence_Kasumba_%28Bayern-Empfang%2C_Berlinale_2024%29.jpg/330px-MKr348324_Florence_Kasumba_%28Bayern-Empfang%2C_Berlinale_2024%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Florence_Kasumba",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -54,18 +20,57 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kornelia Ender",
-      "alter": 68,
-      "geburtsjahr": 1958,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Kornelia_Ender_1973.jpg/330px-Kornelia_Ender_1973.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kornelia_Ender",
+      "name": "Ian Ashley",
+      "alter": 79,
+      "geburtsjahr": 1947,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Ian_Ashley.jpg/330px-Ian_Ashley.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ian_Ashley",
+      "nationalitaet": "🇩🇪🇬🇧 Deutsch/Britisch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        },
+        {
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Hans-Joachim Roedelius",
+      "alter": 92,
+      "geburtsjahr": 1934,
+      "beruf": "Musiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Hans_Joachim_Roedelius_2015_%28cropped%29.jpg/330px-Hans_Joachim_Roedelius_2015_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hans-Joachim_Roedelius",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
           "code": "DE",
           "flagge": "🇩🇪",
           "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Patrick Dorgu",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Patrick_Dorgu_Como-Lecce_30_Dec_2024.jpg/330px-Patrick_Dorgu_Como-Lecce_30_Dec_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Dorgu",
+      "nationalitaet": "🇩🇰 Dänisch",
+      "nationalitaeten": [
+        {
+          "code": "DK",
+          "flagge": "🇩🇰",
+          "name": "Dänisch"
         }
       ],
       "quelle": "Wikipedia"
