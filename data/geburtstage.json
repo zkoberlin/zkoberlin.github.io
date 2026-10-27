@@ -1,76 +1,71 @@
 {
-  "datum": "26.10.2026",
-  "generiert": "2026-10-26T05:31:25Z",
+  "datum": "27.10.2026",
+  "generiert": "2026-10-27T05:46:23Z",
   "geburtstage": [
     {
-      "name": "Florence Kasumba",
-      "alter": 50,
-      "geburtsjahr": 1976,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/MKr348324_Florence_Kasumba_%28Bayern-Empfang%2C_Berlinale_2024%29.jpg/330px-MKr348324_Florence_Kasumba_%28Bayern-Empfang%2C_Berlinale_2024%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Florence_Kasumba",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ian Ashley",
-      "alter": 79,
-      "geburtsjahr": 1947,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Ian_Ashley.jpg/330px-Ian_Ashley.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ian_Ashley",
-      "nationalitaet": "🇩🇪🇬🇧 Deutsch/Britisch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        },
-        {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Hans-Joachim Roedelius",
-      "alter": 92,
-      "geburtsjahr": 1934,
-      "beruf": "Musiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Hans_Joachim_Roedelius_2015_%28cropped%29.jpg/330px-Hans_Joachim_Roedelius_2015_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hans-Joachim_Roedelius",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Patrick Dorgu",
-      "alter": 22,
-      "geburtsjahr": 2004,
+      "name": "Michael Tarnat",
+      "alter": 57,
+      "geburtsjahr": 1969,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Patrick_Dorgu_Como-Lecce_30_Dec_2024.jpg/330px-Patrick_Dorgu_Como-Lecce_30_Dec_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Dorgu",
-      "nationalitaet": "🇩🇰 Dänisch",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Michael_Tarnat",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "DK",
-          "flagge": "🇩🇰",
-          "name": "Dänisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Haruka Kudō",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/161006_AMN_%EB%B9%85_%EC%BD%98%EC%84%9C%ED%8A%B8_-_%EB%A7%88%ED%82%A4%EB%85%B8_%EB%A7%88%EB%A6%AC%EC%95%84_%EB%AA%A8%EB%8B%9D%EA%B5%AC%EB%AC%B4%EC%8A%A4%EB%A9%94_%EB%A9%94%EB%93%A4%EB%A6%AC_%EC%A7%81%EC%BA%A0_%28Haruka_Kudo%29_by_DaftTaengk_48s.jpg/330px-161006_AMN_%EB%B9%85_%EC%BD%98%EC%84%9C%ED%8A%B8_-_%EB%A7%88%ED%82%A4%EB%85%B8_%EB%A7%88%EB%A6%AC%EC%95%84_%EB%AA%A8%EB%8B%9D%EA%B5%AC%EB%AC%B4%EC%8A%A4%EB%A9%94_%EB%A9%94%EB%93%A4%EB%A6%AC_%EC%A7%81%EC%BA%A0_%28Haruka_Kudo%29_by_DaftTaengk_48s.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Haruka_Kud%C5%8D_(singer)",
+      "nationalitaet": "🇯🇵 Japanisch",
+      "nationalitaeten": [
+        {
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lonzo Ball",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Lonzo_Ball_%2849487881388%29_%28cropped%29.jpg/330px-Lonzo_Ball_%2849487881388%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lonzo_Ball",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Mariah the Scientist",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Mariah_the_Scientist_%282024%29_%28cropped%29.png/330px-Mariah_the_Scientist_%282024%29_%28cropped%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mariah_the_Scientist",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
