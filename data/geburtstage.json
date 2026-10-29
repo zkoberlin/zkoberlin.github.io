@@ -1,48 +1,48 @@
 {
-  "datum": "28.10.2026",
-  "generiert": "2026-10-28T06:24:41Z",
+  "datum": "29.10.2026",
+  "generiert": "2026-10-29T06:35:08Z",
   "geburtstage": [
     {
-      "name": "Yoon Do-young",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/240710_FC_%EC%84%9C%EC%9A%B8_vs_%EB%8C%80%EC%A0%84_%28%EC%9C%A4%EB%8F%84%EC%98%81%29.jpg/330px-240710_FC_%EC%84%9C%EC%9A%B8_vs_%EB%8C%80%EC%A0%84_%28%EC%9C%A4%EB%8F%84%EC%98%81%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Yoon_Do-young",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Sonay Kartal",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Kartal_RGQ23.jpg/330px-Kartal_RGQ23.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sonay_Kartal",
-      "nationalitaet": "🇬🇧 Britisch",
-      "nationalitaeten": [
-        {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Nolan Gould",
+      "name": "Lance Stroll",
       "alter": 28,
       "geburtsjahr": 1998,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/2025_Japan_GP_-_Aston_Martin_-_Lance_Stroll_-_Fanzone_Stage_%28cropped%29.jpg/330px-2025_Japan_GP_-_Aston_Martin_-_Lance_Stroll_-_Fanzone_Stage_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lance_Stroll",
+      "nationalitaet": "🇨🇦 Kanadisch",
+      "nationalitaeten": [
+        {
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Astrid S",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Astrid_S._02_25_2019_-6_%2832317466737%29.jpg/330px-Astrid_S._02_25_2019_-6_%2832317466737%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Astrid_S",
+      "nationalitaet": "🇳🇴 Norwegisch",
+      "nationalitaeten": [
+        {
+          "code": "NO",
+          "flagge": "🇳🇴",
+          "name": "Norwegisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "India Eisley",
+      "alter": 33,
+      "geburtsjahr": 1993,
       "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Nolan_Gould_Cinequest_2026_01.jpg/330px-Nolan_Gould_Cinequest_2026_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nolan_Gould",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/India_Eisley_%28cropped%29.jpg/330px-India_Eisley_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/India_Eisley",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Taylor Fritz",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Taylor_Fritz_-_Delray_Beach_Open_Final_Round_%28cropped%29.jpg/330px-Taylor_Fritz_-_Delray_Beach_Open_Final_Round_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Taylor_Fritz",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Evan Fournier",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Evan_Fournier_94_Olympiacos_BC_Euroleague_20260106_%285%29_%28cropped%29.jpg/330px-Evan_Fournier_94_Olympiacos_BC_Euroleague_20260106_%285%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Evan_Fournier",
+      "nationalitaet": "🇫🇷 Französisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
         }
       ],
       "quelle": "Wikipedia"
