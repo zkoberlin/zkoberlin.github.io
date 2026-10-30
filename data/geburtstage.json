@@ -1,48 +1,48 @@
 {
-  "datum": "29.10.2026",
-  "generiert": "2026-10-29T06:35:08Z",
+  "datum": "30.10.2026",
+  "generiert": "2026-10-30T06:34:38Z",
   "geburtstage": [
     {
-      "name": "Lance Stroll",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/2025_Japan_GP_-_Aston_Martin_-_Lance_Stroll_-_Fanzone_Stage_%28cropped%29.jpg/330px-2025_Japan_GP_-_Aston_Martin_-_Lance_Stroll_-_Fanzone_Stage_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lance_Stroll",
-      "nationalitaet": "🇨🇦 Kanadisch",
+      "name": "Stefan Kuntz",
+      "alter": 64,
+      "geburtsjahr": 1962,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Stefan_Kuntz_PK_U21-GER-vs-ISR_%28cropped%29.jpg/330px-Stefan_Kuntz_PK_U21-GER-vs-ISR_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Kuntz",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Astrid S",
+      "name": "Giselle",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Giselle_at_Incheon_Airport_on_March_4%2C_2026.jpg/330px-Giselle_at_Incheon_Airport_on_March_4%2C_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Giselle_(singer)",
+      "nationalitaet": "🇯🇵 Japanisch",
+      "nationalitaeten": [
+        {
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Devin Booker",
       "alter": 30,
       "geburtsjahr": 1996,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Astrid_S._02_25_2019_-6_%2832317466737%29.jpg/330px-Astrid_S._02_25_2019_-6_%2832317466737%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Astrid_S",
-      "nationalitaet": "🇳🇴 Norwegisch",
-      "nationalitaeten": [
-        {
-          "code": "NO",
-          "flagge": "🇳🇴",
-          "name": "Norwegisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "India Eisley",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/India_Eisley_%28cropped%29.jpg/330px-India_Eisley_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/India_Eisley",
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Devin_Booker%2C_Olympic_Games_2024_%28cropped%29.jpg/330px-Devin_Booker%2C_Olympic_Games_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Devin_Booker",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Evan Fournier",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Evan_Fournier_94_Olympiacos_BC_Euroleague_20260106_%285%29_%28cropped%29.jpg/330px-Evan_Fournier_94_Olympiacos_BC_Euroleague_20260106_%285%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Evan_Fournier",
-      "nationalitaet": "🇫🇷 Französisch",
+      "name": "Kim Ji-sung",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Schauspieler/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Kim_Ji-sung_(actress)",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
