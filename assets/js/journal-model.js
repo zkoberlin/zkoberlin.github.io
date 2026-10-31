@@ -1,0 +1,61 @@
+/* Shared journal presentation rules; records remain private in LifeAPI. */
+window.JournalModel = (() => {
+ const prompts=[['highlight','Was war heute am schönsten?','Ein Moment, den du dir merken möchtest …'],['wentWell','Was lief gut?','Was hat geklappt oder dir gutgetan?'],['lessWell','Was lief weniger gut?','Was war schwierig oder hätte anders laufen dürfen?'],['gratitude','Wofür bin ich dankbar?','Eine Person, eine Kleinigkeit, ein guter Augenblick …'],['tomorrow','Was wünsche ich mir für morgen?','Ein kleiner Wunsch oder nächster Schritt …']];
+ const moods=[['','Ohne Bewertung','○','neutral'],['gut','Gut','☀','green'],['zufrieden','Zufrieden','☺','green'],['dankbar','Dankbar','♡','green'],['stolz','Stolz','✦','green'],['energiegeladen','Voller Energie','ϟ','yellow'],['ruhig','Ruhig','☁','blue'],['gemischt','Gemischt','◐','yellow'],['nachdenklich','Nachdenklich','◷','purple'],['müde','Müde','☾','purple'],['gestresst','Gestresst','≈','orange'],['traurig','Traurig','☂','blue'],['frustriert','Frustriert','↯','rose'],['schwierig','Schwieriger Tag','☔','rose']];
+ const greetings=[
+ 'Hallo Paul, schön, dass du dir Zeit für dich nimmst.',
+ 'Willkommen, Paul. Was möchtest du heute festhalten?',
+ 'Hey Paul, hier ist Platz für deinen Tag.',
+ 'Paul, ein kleiner Moment zum Innehalten.',
+ 'Schön, dich zu sehen, Paul. Wie geht es dir heute?',
+ 'Hallo Paul, dein Alltag darf hier eine Stimme haben.',
+ 'Paul, was ist dir heute im Kopf geblieben?',
+ 'Hey Paul, lass deinen Tag in Ruhe ankommen.',
+ 'Willkommen zurück, Paul. Ein paar Zeilen reichen.',
+ 'Paul, heute muss hier nichts perfekt sein.',
+ 'Hallo Paul, welche kleine Geschichte bringt dein Tag mit?',
+ 'Paul, nimm dir einen Augenblick nur für dich.',
+ 'Hey Paul, was möchtest du später noch wissen?',
+ 'Schön, dass du da bist, Paul. Schreib, wie es war.',
+ 'Paul, auch unscheinbare Tage verdienen ein paar Worte.',
+ 'Hallo Paul, was hat deinen Tag besonders gemacht?',
+ 'Paul, dein Journal hört zu.',
+ 'Hey Paul, ein neuer Tag, ein neuer Gedanke.',
+ 'Willkommen, Paul. Du gibst hier das Tempo vor.',
+ 'Paul, lass uns kurz auf deinen Tag schauen.',
+ 'Hallo Paul, was hat dich heute bewegt?',
+ 'Paul, für Schönes und Schwieriges ist hier Platz.',
+ 'Hey Paul, welche Gedanken möchtest du ablegen?',
+ 'Schön, dass du vorbeischaust, Paul. Wie war dein Tag?',
+ 'Paul, gönn dir eine kleine Schreibpause.',
+ 'Hallo Paul, welchen Moment möchtest du mitnehmen?',
+ 'Paul, ein Satz kann schon ein Anfang sein.',
+ 'Hey Paul, was möchtest du heute loswerden?',
+ 'Willkommen zurück, Paul. Hier darfst du ehrlich sein.',
+ 'Paul, auch kleine Fortschritte zählen zu deiner Geschichte.',
+ 'Hallo Paul, was hat dir heute gutgetan?',
+ 'Paul, schau mit etwas Freundlichkeit auf deinen Tag.',
+ 'Hey Paul, halte fest, was dir wichtig ist.',
+ 'Schön, dich hier zu haben, Paul. Was gibt es Neues?',
+ 'Paul, ein bisschen Raum für deine Gedanken.',
+ 'Hallo Paul, woran möchtest du dich erinnern?',
+ 'Paul, dein Tag darf viele Farben haben.',
+ 'Hey Paul, was war heute anders als erwartet?',
+ 'Willkommen, Paul. Hier beginnt dein kleiner Rückblick.',
+ 'Paul, manchmal hilft es, Gedanken aufzuschreiben.',
+ 'Hallo Paul, was möchtest du für heute bewahren?',
+ 'Paul, schreib so viel oder so wenig, wie es passt.',
+ 'Hey Paul, Zeit für einen Blick nach innen.',
+ 'Schön, dass du dir diesen Moment nimmst, Paul.',
+ 'Paul, was hat dich heute zum Lächeln gebracht?',
+ 'Hallo Paul, dein Journal wartet auf deine Perspektive.',
+ 'Paul, jeder Eintrag ist ein Stück deiner Geschichte.',
+ 'Hey Paul, welche Begegnung klingt heute noch nach?',
+ 'Willkommen zurück, Paul. Dein Tag gehört dir.',
+ 'Paul, atme kurz durch. Was möchtest du erzählen?'
+ ];
+ function tags(value){return [...new Set(String(value||'').normalize('NFC').split(/[,;#\s]+/u).map(t=>t.replace(/[^\p{L}\p{N}_-]/gu,'').toLocaleLowerCase('de')).filter(Boolean))].slice(0,20);}
+ function stats(records,today){const dates=[...new Set(records.map(r=>r.data.date).filter(d=>d<=today))].sort();const first=dates[0];return {entries:records.length,days:dates.length,first,elapsed:first?Math.floor((Date.parse(today+'T12:00:00Z')-Date.parse(first+'T12:00:00Z'))/86400000)+1:0};}
+ function greetingIndex(today){return [...today].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,0)%greetings.length;}
+ return {prompts,moods,greetings,tags,stats,greetingIndex};
+})();
