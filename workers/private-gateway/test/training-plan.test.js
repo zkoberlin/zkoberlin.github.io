@@ -18,3 +18,11 @@ test('A/B/C sessions rotate and main sets progress without automatic weight incr
 test('editing the same cycle does not reset training progress',()=>{const p={...plan,revision:3,data:{...data,cycleId:'same-cycle'}};const w={...workout('2026-11-02',35,2),data:{...workout('2026-11-02',35,2).data,planCycle:'same-cycle'}};assert.equal(TrainingPlan.next(p,[w],'2026-11-04').done,1);});
 test('completed A always leads to B in the A/B/C rotation',()=>{const p={...plan,data:{...data,cycleId:'cycle',sessions:['A','B','C'].map(id=>({id,name:id,exercises:data.exercises}))}};const first=workout('2026-10-31');first.data.sessionId='A';first.data.planCycle='cycle';assert.equal(TrainingPlan.next(p,[first],'2026-10-31').sessionId,'B');});
 test('actual per-set performance is validated without breaking old workouts',()=>{const e={name:'Rudern',sets:2,reps:'12',weight:40,setDetails:[{weight:40,reps:'12',done:true},{weight:35,reps:'15',done:true}]};assert.equal(Boolean(validRecord('workout',{date:'2026-10-31',notes:'',exercises:[e]})),true);assert.equal(Boolean(validRecord('workout',{date:'2026-10-31',notes:'',exercises:[{...e,setDetails:[{weight:-1,reps:'12',done:true}]}]})),false);});
+
+test('additional activities validate duration and optional tracker data',()=>{
+ const activity={date:'2026-10-31',type:'Radfahren',durationMinutes:35,distanceKm:8.2,activeKcal:null,notes:'Arbeitsweg'};
+ assert.equal(Boolean(validRecord('activity',activity)),true);
+ for(const patch of [{durationMinutes:0},{durationMinutes:Infinity},{distanceKm:-2},{activeKcal:-1},{type:'unknown'},{date:'2026-02-30'}])assert.equal(Boolean(validRecord('activity',{...activity,...patch})),false);
+ assert.equal(Boolean(validRecord('activity',{...activity,distanceKm:null,activeKcal:250})),true);
+ assert.equal(Boolean(validRecord('workout',activity)),false);
+});

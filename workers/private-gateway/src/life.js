@@ -1,11 +1,12 @@
 // All records and image keys are scoped to the authenticated account.
-const KINDS = new Set(['journal', 'profile', 'workout', 'measurement', 'favorite', 'plan', 'shopping', 'recipe']);
+const KINDS = new Set(['journal', 'profile', 'workout', 'measurement', 'favorite', 'plan', 'shopping', 'recipe', 'activity']);
 const ID = /^[a-zA-Z0-9_-]{1,80}$/;
 const dateOK = d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d)) && new Date(d).toISOString().slice(0,10) === d;
 const text = (s, max) => typeof s === 'string' && s.length <= max;
 const num = (n, min, max) => Number.isFinite(n) && n >= min && n <= max;
 export function validRecord(kind, p) {
   if (!p || typeof p !== 'object' || Array.isArray(p)) return false;
+  if (kind === 'activity') return dateOK(p.date) && ['Radfahren','E-Bike','Spazieren','Laufen','Schwimmen','Sonstiges'].includes(p.type) && num(p.durationMinutes,1,1440) && (p.distanceKm===null || num(p.distanceKm,0,2000)) && (p.activeKcal===null || num(p.activeKcal,0,20000)) && text(p.notes,2000);
   if (kind === 'journal') return dateOK(p.date) && text(p.title, 160) && text(p.body, 20000) && (p.title.trim() || p.body.trim() || p.photos?.length) && ['','gut','gemischt','schwierig'].includes(p.mood) && text(p.tags, 300) && Array.isArray(p.photos) && p.photos.length <= 6 && p.photos.every(id => ID.test(id));
   if (kind === 'recipe') return ID.test(p.id) && text(p.name,160) && p.name.trim() && text(p.method,16000) && (p.image==='' || typeof p.image==='string' && /^https:\/\/(?:www\.themealdb\.com\/images\/media\/meals\/|(?:upload|thumb)\.wikimedia\.org\/)/.test(p.image)) && text(p.source,300) && (p.source.startsWith('https://www.themealdb.com/meal/') || p.source.startsWith('https://de.wikibooks.org/wiki/')) && Array.isArray(p.ingredients) && p.ingredients.length<=30 && p.ingredients.every(i=>Array.isArray(i)&&i.length===2&&num(i[0],0,100000)&&text(i[1],200)) && Array.isArray(p.unscaled) && p.unscaled.length<=30 && p.unscaled.every(i=>text(i,250)) && Number.isInteger(p.baseServings) && num(p.baseServings,1,12);
   if (kind === 'shopping') return Array.isArray(p.selected) && p.selected.length<=100 && p.selected.every(id=>typeof id==='string'&&ID.test(id)) && (p.portions===undefined || Number.isInteger(p.portions) && num(p.portions,1,12)) && (p.portionsByRecipe===undefined || p.portionsByRecipe && typeof p.portionsByRecipe==='object' && !Array.isArray(p.portionsByRecipe) && Object.keys(p.portionsByRecipe).length<=100 && Object.entries(p.portionsByRecipe).every(([id,n])=>ID.test(id)&&Number.isInteger(n)&&num(n,1,12))) && Array.isArray(p.checked) && p.checked.length<=150 && p.checked.every(key=>text(key,250));
