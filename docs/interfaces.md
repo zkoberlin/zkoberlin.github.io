@@ -109,3 +109,14 @@ Am 26.08.2026 wurde die veröffentlichte GitHub-Pages-Version gemeinsam im Brows
 - Private Gateway-Pfade antworten ohne Bearer-Token mit `401 Unauthorized`.
 - Öffentliche Pfade für Horoskop und Marktdaten antworten über `paul-gateway-v2` erfolgreich.
 - Der alte öffentliche Direktzugang zu `kalender-proxy` antwortet mit `404`.
+
+
+## Private Rezept und Übungssuche
+
+Ab v6.39.0 sind `/life/discover-recipes?q=...` und `/life/discover-exercises?q=...` authentifiziert. Der Gateway fragt ausschließlich öffentliche Suchbegriffe bei TheMealDB beziehungsweise wger ab. Hub-Sitzung, Profil, Messwerte und Trainingshistorie werden nicht an diese Anbieter weitergegeben. Suchbegriffe auf 60 Zeichen begrenzt, feste Anbieteradressen und zwölf Sekunden Zeitlimit. Suchergebnisse werden vorübergehend gecacht; Zufallsrezepte nicht. Rezeptbilder stammen ausschließlich vom geprüften TheMealDB-Bildpfad und werden ohne Referrer geladen.
+
+TheMealDB wird für dieses private persönliche Projekt mit dem dokumentierten Zugang für persönliche Projekte verwendet; bei öffentlicher oder kommerzieller Erweiterung vorab einen eigenen Anbieterzugang und aktuelle Bedingungen prüfen. Quellen: [API](https://www.themealdb.com/docs_api_guide.php), [Nutzungsbedingungen](https://www.themealdb.com/terms_of_use.php). Externe Rezepte sind meist englisch und liefern keine verlässlichen Nährwerte oder Portionsangaben. Beim Übernehmen legt der Nutzer die Aufteilung der Originalmenge fest. Nicht eindeutig skalierbare Zutaten werden mit Originalangaben gekennzeichnet und nicht in erfundene Grammwerte umgerechnet.
+
+wger liefert die deutschen Übungsnamen zur freiwilligen Ergänzung im Planeditor, keine automatisch individualisierten Trainingspläne. Quellen: [wger API](https://wger.de/api/v2/), [Projektdokumentation und Lizenzen](https://wger.readthedocs.io/en/latest/). Es werden keine Übungsbeschreibungen oder Bilder übernommen.
+
+Private Favoriten bleiben `life_records.kind = favorite`. Übernommene externe Rezepte werden mit Quelle als `recipe` gespeichert. Portionszahlen pro Rezept und Einkaufsstatus liegen kontobezogen unter `shopping`; alte gemeinsame Portionszahlen werden beim Laden übernommen. Kein neues Datenbankschema erforderlich.

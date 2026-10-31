@@ -41,3 +41,13 @@ Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases 
 - 20 automatisierte Tests erfolgreich, einschließlich Terminplanung, Planwechsel, Kontotrennung und Mengenaddition. DOM-Interaktionstest mit synthetischen Daten erfolgreich: Bereichswechsel, Training vorausfüllen, Einkaufsliste skalieren/speichern/abhaken, Journal öffnen/speichern/bearbeiten. Keine echten Nutzerdaten für diese Tests verwendet.
 - Visuelle Browserprüfung aktuell eingeschränkt: In-App-Tab nicht erreichbar; native Chrome-Erfassung scheitert mit ScreenCaptureKit-Fehler -3811. Keine bestätigte visuelle Mobile-Prüfung dieses Layouts. DOM-Prüfungen ersetzen keine Sichtprüfung.
 - Gateway veröffentlicht mit Version 287e46c0-9ec3-43c6-b745-07fbc2d5cd8c. Pages-Release `323ab21` über Lauf `41226490866` erfolgreich. Hub, Journal, FitPaul und Versionsdatei liefern `200` mit den neuen Inhalten und v6.38.0; private Plan-, Einkaufslisten- und Exportrouten liefern ohne Anmeldung `401`.
+
+
+## 31.10.2026 Journal und FitPaul v6.39.0
+
+- Einheitliche Karten- und Formularabstände auf beiden Seiten, doppelten Innenabstand entfernt, Messwertformular ohne leere zweite Spalte. Lokale Chrome-Sichtprüfung im dunklen Desktopdesign für FitPaul-Training, Rezeptkarten und geöffneten Journaleditor mit synthetischen Daten durchgeführt. Mobile Geräteprüfung noch offen.
+- Portionszahlen werden pro Rezept gespeichert; bestehende Favoriten bleiben unverändert in der privaten D1-Datenbank. Legacy-Portionszahl wird beim Laden auf einzelne Rezepte übertragen. Einkaufsliste rechnet mit den jeweils gespeicherten Rezeptportionen.
+- Neue private Suchschnittstellen für TheMealDB und deutsche wger-Übungsnamen. Externe Rezepte können mit Quellennachweis privat übernommen werden. Fehlende Nährwerte werden nicht ergänzt; mehrdeutige Zutaten bleiben als Originalangabe markiert.
+- JSON-Import aus der Oberfläche entfernt. Normaler Planeditor mit Trainingstagen, A/B/C-Einheitenauswahl und Übungssuche. Vollständiger vom Nutzer übermittelter Vierwochenplan auf die aktuell gewünschten maximal 60 Minuten angepasst; Wochenentwicklung ohne automatische Gewichtserhöhung. Optionale Reha-Übungen bleiben außerhalb des aktiven Plans.
+- 25 Tests bestanden, darunter neue Mengenrechnung pro Rezept, Import mit Bruchangaben, A/B/C-Wechsel und Ausschluss weitergereichter Anmeldedaten. DOM-Bedienprüfung mit synthetischen Daten bestanden: Portionszahlen speichern, Einkauf abhaken, Plan über Formular speichern, externes Rezept übernehmen, Journal bearbeiten. HTML-Struktur geprüft.
+- Neue Datenschnittstellen und Planübernahme werden vor dem Pages-Release bereitgestellt. Live-Ergebnisse werden nach Veröffentlichung ergänzt.

@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {discover} from '../src/life-discovery.js';
+import worker from '../src/index.js';
+test('discovery is private and never forwards credentials to providers',async()=>{for(const path of ['/life/discover-recipes','/life/discover-exercises'])assert.equal((await worker.fetch(new Request('https://test'+path),{})).status,401);const old=globalThis.fetch;let called=false;globalThis.fetch=async(url,init)=>{called=true;assert.ok(url.startsWith('https://www.themealdb.com/'));assert.equal(init.headers.Authorization,undefined);return Response.json({meals:[{idMeal:'1',strMeal:'Demo',strMealThumb:'javascript:alert(1)',strIngredient1:'Rice',strMeasure1:'100 g'}]});};try{const response=await discover(new Request('https://test/life/discover-recipes?q=Rice'),(d,s)=>Response.json(d,{status:s}));assert.equal(response.status,200);const p=await response.json();assert.equal(p.recipes[0].image,'');assert.equal(p.recipes[0].ingredients[0].measure,'100 g');assert.equal(called,true);}finally{globalThis.fetch=old;}});

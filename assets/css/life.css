@@ -21,3 +21,43 @@
 .life-main #workoutEditor{border-color:var(--blue-b)}.life-main .life-status:empty{display:none}
 @media(max-width:620px){.life-tabs{gap:2px}.life-tabs button{font-size:11px;padding:10px 8px}.life-exercise-preview{grid-template-columns:1fr auto;gap:7px}.life-exercise-preview .life-muted{grid-column:1;grid-row:2}.life-exercise-weight{grid-column:2;grid-row:1/3}.life-toolbar{align-items:flex-start}.life-toolbar .life-muted{padding-top:10px}}
 .life-shopping{padding:18px;margin-top:18px;background:var(--green-l);border:1px solid var(--green-b);border-radius:14px}.life-shopping .life-stack{gap:0;margin-top:10px}.life-main label.life-shopping-item,.life-main label.life-check{display:flex;align-items:center;gap:10px;font-weight:500;font-size:13px}.life-main .life-shopping-item input,.life-main .life-check input{width:18px;height:18px;flex-shrink:0;accent-color:var(--green)}.life-shopping-item{padding:10px 0;border-bottom:1px solid var(--border)}.life-shopping-item .checked{text-decoration:line-through;color:var(--t2)}.life-main .life-check{white-space:nowrap}.life-recipe details{margin-top:12px}
+/* One rhythm for cards, forms and nested sections on both pages. */
+.life-main{--life-gap:20px;gap:var(--life-gap)}
+.life-main .life-stack{gap:var(--life-gap);min-width:0}
+.life-main .life-grid{gap:16px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.life-main .life-grid-single{grid-template-columns:1fr}
+.life-main .life-panel:not(details){display:grid;gap:16px;align-content:start}
+.life-main .life-panel>h2,.life-main .life-panel>h3,.life-main .life-panel>.life-actions,.life-main .life-panel>.life-notice,.life-main .life-panel>#plan{margin:0}
+.life-main details[open]>summary{margin-bottom:14px}
+.life-main .life-panel details>p+p{margin-top:12px}
+.life-main .life-panel details>form{margin-top:16px}
+.life-main .life-toolbar h2,.life-main .life-toolbar h3{margin:0}
+.life-main #feed{margin-top:20px}
+.life-main #history article{display:grid;gap:8px;min-width:0}
+.life-main #history article>.life-actions{margin-top:4px}
+.life-main #history article+article{padding-top:20px}
+.life-main #measurements>div{display:grid;gap:10px;justify-items:start}
+.life-recipe-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.life-main .life-recipe{margin:0;padding:18px;display:grid;gap:14px;min-width:0;overflow:hidden}
+.life-recipe-image{width:calc(100% + 36px);max-width:none;height:180px;object-fit:cover;margin:-18px -18px 0}
+.life-recipe-controls{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.life-recipe-controls>label:first-child{max-width:100px}
+.life-main .life-recipe details{margin:0}
+.life-main .life-recipe>button{justify-self:start}
+.life-main .life-shopping{margin:0;padding:18px;display:grid;gap:12px}
+.life-main .life-shopping #shoppingList{margin:0;gap:0}
+.life-main .life-shopping-item span{overflow-wrap:anywhere;min-width:0}
+.life-main .life-discover{border-top:1px solid var(--border);padding-top:20px}
+.life-search-row{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:16px 0}
+.life-search-row label{flex:1;min-width:180px}
+.life-main #discoveryResults{margin-top:16px}
+.life-days{border:1px solid var(--border);padding:12px;border-radius:10px}
+.life-days legend{font-size:12px;padding:0 5px}
+.life-main .life-plan-row{display:grid;grid-template-columns:minmax(140px,2fr) repeat(3,minmax(70px,1fr));gap:10px;padding:16px;border:1px solid var(--border);border-radius:12px}
+.life-plan-row>button{grid-column:1/-1;justify-self:start}
+.life-main #planExercises{gap:12px}
+@media(max-width:620px){.life-main .life-grid,.life-recipe-grid{grid-template-columns:1fr}.life-main{--life-gap:16px}.life-main .life-panel:not(details){gap:14px}.life-main .life-plan-row{grid-template-columns:repeat(3,minmax(0,1fr))}.life-plan-row>label:first-child{grid-column:1/-1}.life-recipe-image{height:170px}.life-main .life-shopping .life-toolbar{flex-wrap:wrap}}
+.life-main .life-panel .life-exercise-list{margin:0}
+.life-main .life-next>details{margin-top:0}
+.life-exercise-hint{grid-column:1/-1;font-size:12px;color:var(--t2);line-height:1.5}
+.life-main #plan:empty{display:none}
