@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+async function hub(signed=true){const nodes={journalPreview:{},fitnessPreview:{}},exercise={name:'Rudern',sets:2,reps:'12',weight:40},records={journal:[],measurement:[],plan:[{id:'active',revision:1,data:{name:'Testplan',startDate:'2026-10-31',weeks:4,days:[1,3,5],notes:'',cycleId:'test',exercises:[exercise],sessions:['A','B','C'].map(id=>({id,name:id,exercises:[exercise]}))}}],workout:[{updatedAt:'2026-10-31',data:{date:'2026-10-31',sessionId:'A',planCycle:'test',exercises:[exercise]}}]};let reads=0;const context={Intl,Date,document:{getElementById:id=>nodes[id]},window:{addEventListener(){}},HubAuth:{isSignedIn:()=>signed},LifeAPI:{list:async k=>{reads++;return records[k];},date:d=>d,today:()=> '2026-10-31'}};vm.createContext(context);vm.runInContext(fs.readFileSync(new URL('../../../assets/js/training-plan.js',import.meta.url),'utf8'),context);vm.runInContext(fs.readFileSync(new URL('../../../assets/js/hub-life.js',import.meta.url),'utf8'),context);await new Promise(resolve=>setImmediate(resolve));return {nodes,reads};}
+test('Hub shows weekday date and next B using the shared schedule',async()=>{const {nodes}=await hub();assert.match(nodes.fitnessPreview.textContent,/Montag, 02\.11\.2026 · B/);});
+test('Hub does not request or show private training data when signed out',async()=>{const {nodes,reads}=await hub(false);assert.equal(reads,0);assert.equal(nodes.fitnessPreview.textContent,'Nach Anmeldung verfügbar');});

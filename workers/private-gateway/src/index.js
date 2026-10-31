@@ -315,7 +315,7 @@ export default {
       const user = await verifyUser(request, env);
       if (!user) return json({ error: "Unauthorized" }, 401, origin);
       try {
-        if (["/life/discover-recipes", "/life/discover-exercises", "/life/exercise-media"].includes(url.pathname)) return await discover(request, (data,status)=>json(data,status,origin));
+        if (["/life/discover-exercises", "/life/exercise-media"].includes(url.pathname)) return await discover(request, (data,status)=>json(data,status,origin));
         return await lifeResponse(request, env, user, (data,status) => json(data,status,origin));
       }
       catch { return json({ error: "Speicherung vorübergehend nicht verfügbar" }, 503, origin); }
