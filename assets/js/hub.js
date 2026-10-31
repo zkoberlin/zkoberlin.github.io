@@ -51,29 +51,7 @@ function diff(a,b){return Math.round((b-a)/86400000);}
 function st(d){const n=new Date(d);n.setHours(0,0,0,0);return n;}
 function getKW(d){const dt=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=dt.getUTCDay()||7;dt.setUTCDate(dt.getUTCDate()+4-day);const y0=new Date(Date.UTC(dt.getUTCFullYear(),0,1));return Math.ceil((((dt-y0)/86400000)+1)/7);}
 
-// ── THEME (3-state: light → dark → auto) ──
-const THEME_KEY='hub_theme';
-const THEME_ICONS={light:'☀️',dark:'🌙',auto:'🌓'};
-function applyTheme(t){
-  const stored=t||localStorage.getItem(THEME_KEY)||'auto';
-  const isDark=stored==='dark'||(stored==='auto'&&window.matchMedia('(prefers-color-scheme:dark)').matches);
-  document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
-  document.getElementById('themeBtn').textContent=THEME_ICONS[stored]||'🌓';
-  const themeLabel=stored==='light'?'Hell – wechseln zu Dunkel':stored==='dark'?'Dunkel – wechseln zu Automatik':'Automatik – wechseln zu Hell';
-  document.getElementById('themeBtn').title=themeLabel;
-  document.getElementById('themeBtn').setAttribute('aria-label',themeLabel);
-  if(stored!=='auto')localStorage.setItem(THEME_KEY,stored);
-  else localStorage.removeItem(THEME_KEY);
-}
-function toggleTheme(){
-  const cur=localStorage.getItem(THEME_KEY)||'auto';
-  const next=cur==='light'?'dark':cur==='dark'?'auto':'light';
-  applyTheme(next);
-}
-applyTheme(localStorage.getItem(THEME_KEY)||'auto');
-window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',()=>{
-  if(!localStorage.getItem(THEME_KEY))applyTheme('auto');
-});
+// Appearance is initialized by the shared theme.js before the page is painted.
 
 // ── CLOCK & GREETING ──
 const now=new Date();
