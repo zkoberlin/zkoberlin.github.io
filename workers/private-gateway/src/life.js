@@ -1,3 +1,4 @@
+import { normalizePhoto } from './photo-format.js';
 // All records and image keys are scoped to the authenticated account.
 const KINDS = new Set(['journal', 'profile', 'workout', 'measurement', 'favorite', 'plan', 'shopping', 'recipe', 'activity', 'nutrition']);
 const ID = /^[a-zA-Z0-9_-]{1,80}$/;
@@ -26,12 +27,14 @@ export async function lifeResponse(request, env, user, respond) {
   if (root === 'life-photo') {
     if (!env.LIFE_PHOTOS) return respond({error:'Bildspeicher nicht verfügbar'},503);
     if (request.method === 'POST' && parts.length === 1) {
-      if (request.headers.get('Content-Type') !== 'image/webp') return respond({error:'Nur WebP-Bilder erlaubt'},400);
+      const contentType=request.headers.get('Content-Type');
+      if (!['image/webp','image/png'].includes(contentType)) return respond({error:'Bitte ein aufbereitetes WebP- oder PNG-Bild wählen'},400);
       const bytes = await limitedBody(request, 2000000);
       if (!bytes) return respond({error:'Bild zu groß (max. 2 MB)'},413);
-      if (!safeWebp(bytes)) return respond({error:'Ungültiges Bild oder enthaltene Metadaten'},400);
+      const cleaned=normalizePhoto(bytes,contentType);
+      if (!cleaned) return respond({error:'Das Bild konnte nicht gelesen werden. Bitte als JPEG oder PNG erneut auswählen.'},400);
       const photoId = crypto.randomUUID(), key = `${await ownerHash(owner)}/${photoId}`;
-      await env.LIFE_PHOTOS.put(key, bytes, {httpMetadata:{contentType:'image/webp'}});
+      await env.LIFE_PHOTOS.put(key, cleaned, {httpMetadata:{contentType}});
       try { await db.prepare('INSERT INTO life_photos (owner, id, object_key) VALUES (?, ?, ?)').bind(owner,photoId,key).run(); }
       catch (e) { await env.LIFE_PHOTOS.delete(key); throw e; }
       return respond({id:photoId},201);
@@ -42,7 +45,7 @@ export async function lifeResponse(request, env, user, respond) {
     if (request.method === 'GET') {
       const object = await env.LIFE_PHOTOS.get(row.object_key);
       if (!object) return respond({error:'Bild nicht gefunden'},404);
-      const h = new Headers(respond({},200).headers); h.set('Content-Type','image/webp');
+      const h = new Headers(respond({},200).headers); h.set('Content-Type',object.httpMetadata?.contentType==='image/png'?'image/png':'image/webp');
       return new Response(object.body,{headers:h});
     }
     if (request.method === 'DELETE') {
