@@ -120,3 +120,12 @@ TheMealDB wird für dieses private persönliche Projekt mit dem dokumentierten Z
 wger liefert die deutschen Übungsnamen zur freiwilligen Ergänzung im Planeditor, keine automatisch individualisierten Trainingspläne. Quellen: [wger API](https://wger.de/api/v2/), [Projektdokumentation und Lizenzen](https://wger.readthedocs.io/en/latest/). Es werden keine Übungsbeschreibungen oder Bilder übernommen.
 
 Private Favoriten bleiben `life_records.kind = favorite`. Übernommene externe Rezepte werden mit Quelle als `recipe` gespeichert. Portionszahlen pro Rezept und Einkaufsstatus liegen kontobezogen unter `shopping`; alte gemeinsame Portionszahlen werden beim Laden übernommen. Kein neues Datenbankschema erforderlich.
+
+
+## FitPaul deutsche Rezepte und Übungsmedien ab v6.40.0
+
+Die aktive Rezeptsuche verwendet das deutschsprachige Wikibooks-Kochbuch über die offizielle MediaWiki-API. TheMealDB ist nicht mehr die Suchquelle; bereits gespeicherte Rezepte bleiben erhalten. Mengen, Zubereitung, Quelle und Lizenz werden übernommen; wenn keine eindeutige Portionszahl vorliegt, wird sie beim Übernehmen vom Nutzer festgelegt. Vorschaubilder werden nur mit freier Lizenz und Quellenangabe übernommen. Keine Nährwerte ergänzen, die in der Quelle fehlen.
+
+`/life/exercise-media?q=...` ist privat und liefert passende Übungsbilder aus wger. Für Latzug, sitzendes Rudern und Seitstütz ergänzen ausdrücklich zugeordnete Wikimedia-Commons-Dateien die fehlenden wger-Bilder. Autor, Quelle und Lizenz stehen an der Abbildung. KI-generierte wger-Bilder werden nicht ausgewählt. Bilder dienen als Beispiel; Geräte und Varianten können abweichen. Fehlt ein passender frei nutzbarer Eintrag, bleibt ein verständlicher Platzhalter. Alle ausgehenden Suchen betreffen öffentliche Bewegungs- oder Rezeptnamen; Anmeldedaten, Messwerte und Profile werden nicht weitergegeben. Gleichzeitige identische Abrufe werden zusammengefasst und zwischengespeichert.
+
+Eine direkte OpenAI-Anbindung ist derzeit nicht konfiguriert: Nutzer hat noch keinen API-Zugang. Es gibt keine OpenAI-Anfragen und keine Schlüssel im Browser. Der bestehende Plan funktioniert unabhängig davon. Spätere Integration nur serverseitig und mit überprüfbaren Vorschlägen vor der Übernahme. Grundlage: [OpenAI API Authentifizierung](https://developers.openai.com/api/reference/overview), [strukturierte Ausgaben](https://developers.openai.com/api/docs/guides/structured-outputs).

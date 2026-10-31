@@ -14,7 +14,8 @@
     let date=[today,p.startDate,latest?addDays(latest.data.date,2):p.startDate].sort().at(-1);
     for(let i=0;i<14&&!p.days.includes(new Date(date+'T12:00:00Z').getUTCDay());i++)date=addDays(date,1);
     const recent=[...workouts].filter(r=>r.data.date<=today).sort((a,b)=>b.data.date.localeCompare(a.data.date)||b.updatedAt.localeCompare(a.updatedAt));
-    const session=p.sessions?.[done%p.sessions.length];
+    const previousIndex=p.sessions?.findIndex(s=>s.id===latest?.data.sessionId)??-1;
+    const session=p.sessions?.[previousIndex>=0?(previousIndex+1)%p.sessions.length:done%p.sessions.length];
     const week=Math.min(p.weeks,Math.floor(done/p.days.length)+1);
     const exercises=(session?.exercises||p.exercises).map(e=>{const previous=recent.flatMap(r=>r.data.exercises).find(x=>x.name===e.name);const main=['Beinpresse','Brustpresse','Latzug','Rudern','Rudermaschine'].includes(e.name);return {...e,sets:p.progressionEnabled&&week>=2&&main?3:e.sets,weight:previous?.weight??e.weight};});
     return {date,done,total,finished:done>=total,week,sessionId:session?.id||null,sessionName:session?.name||'Ganzkörper',exercises};
@@ -42,7 +43,7 @@
       if(unit==='kg'){unit='g';n*=1000;}if(unit==='l'){unit='ml';n*=1000;}
       ingredients.push([n/baseServings,(unit?unit+' ':'')+item.name]);
     }
-    return {id:recipe.id,name:recipe.name,image:recipe.image,source:recipe.source,method:recipe.method,baseServings,ingredients,unscaled,pantry:[],minutes:null,kcal:null,protein:null,veggie:recipe.category==='Vegetarian'||recipe.category==='Vegan',storage:'Aufbewahrung für dieses externe Rezept nicht geprüft.'};
+    return {id:recipe.id,name:recipe.name,image:recipe.image,imageAttribution:recipe.imageAttribution||'',imageLicense:recipe.imageLicense||'',source:recipe.source,attribution:recipe.attribution||'',license:recipe.license||'',language:recipe.language||'en',method:recipe.method,baseServings,ingredients,unscaled,pantry:[],minutes:null,kcal:null,protein:null,veggie:recipe.category==='Vegetarian'||recipe.category==='Vegan',storage:'Aufbewahrung für dieses externe Rezept nicht geprüft.'};
   }
   globalThis.TrainingPlan=Object.freeze({valid,next,addDays,shopping,fromMeal});
 })();
