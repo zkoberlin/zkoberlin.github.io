@@ -1,14 +1,14 @@
 {
-  "datum": "30.10.2026",
-  "generiert": "2026-10-30T06:34:38Z",
+  "datum": "31.10.2026",
+  "generiert": "2026-10-31T06:24:28Z",
   "geburtstage": [
     {
-      "name": "Stefan Kuntz",
-      "alter": 64,
-      "geburtsjahr": 1962,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Stefan_Kuntz_PK_U21-GER-vs-ISR_%28cropped%29.jpg/330px-Stefan_Kuntz_PK_U21-GER-vs-ISR_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Kuntz",
+      "name": "Inka Grings",
+      "alter": 48,
+      "geburtsjahr": 1978,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Inka_Grings%2C_octobre_2024.jpg/330px-Inka_Grings%2C_octobre_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Inka_Grings",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,29 +20,29 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Giselle",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Giselle_at_Incheon_Airport_on_March_4%2C_2026.jpg/330px-Giselle_at_Incheon_Airport_on_March_4%2C_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Giselle_(singer)",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "name": "Ansu Fati",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%BF%D0%B0%D0%B4%D0%B0_2021_%D1%80%D0%BE%D0%BA%D1%83_%E2%80%94_1289339_%28cropped%29.jpg/330px-%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%BF%D0%B0%D0%B4%D0%B0_2021_%D1%80%D0%BE%D0%BA%D1%83_%E2%80%94_1289339_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ansu_Fati",
+      "nationalitaet": "🇪🇸 Spanisch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Devin Booker",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Devin_Booker%2C_Olympic_Games_2024_%28cropped%29.jpg/330px-Devin_Booker%2C_Olympic_Games_2024_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Devin_Booker",
+      "name": "Willow Smith",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Musiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Willow_Smith_October_2024.png/330px-Willow_Smith_October_2024.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Willow_Smith",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kim Ji-sung",
-      "alter": 30,
-      "geburtsjahr": 1996,
+      "name": "Danielle Rose Russell",
+      "alter": 27,
+      "geburtsjahr": 1999,
       "beruf": "Schauspieler/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Kim_Ji-sung_(actress)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "wikidata": "https://en.wikipedia.org/wiki/Danielle_Rose_Russell",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
