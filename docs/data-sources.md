@@ -23,3 +23,11 @@ Secrets gehören ausschließlich in die GitHub-Repository-Secrets oder in lokale
 Private Kalender-Feed-Adressen werden als verschlüsselte Secrets des Workers `kalender-proxy` verwaltet. Das Frontend verwendet ausschließlich benannte Worker-Endpunkte und enthält nach abgeschlossener Migration keine privaten Feed-URLs mehr.
 
 Alle Browser-, Worker- und Automationsschnittstellen einschließlich ihrer Sicherheitsbewertung sind in [`interfaces.md`](interfaces.md) erfasst.
+
+### FitPaul: lokale Nährwerte und Energieübersicht (v6.42.0)
+
+- `data/nutrition/bls-4.json`: Basisindex mit 7.140 Lebensmitteln, BLS 4.0, Max Rubner-Institut (2025), DOI `10.25826/Data20251217-134202-0`, CC BY 4.0; JSON-Aufbereitung durch [FoodIndex](https://food-index.de/developers), heruntergeladen am 31.10.2026. Wrapper mit Quellen- und Lizenzangaben ergänzt; Nährwerte unverändert übernommen. Numerische Zeichenketten werden bei der Berechnung konvertiert, fehlende Werte nicht als null Kalorien interpretiert.
+- Berechnung im Browser anhand von Gramm pro Portion und expliziten BLS-Codes; keine persönlichen Rezepte an FoodIndex übertragen. Zwölf eigene Rezeptideen mit offengelegten Annahmen. Vorratsgewürze und nicht bezifferte Zugaben sind ausgeschlossen. Externe Rezepte ohne vollständige Zuordnung zeigen keine vermeintlich vollständigen Makros.
+- Persönliche Zuordnungen in `life_records`, Kind `nutrition`, kontogebunden mit Versionsprüfung und im privaten Gesamtexport enthalten. Änderungen betreffen die Nährwertbasis; die Einkaufsliste verwendet weiterhin die Originalzutatenmengen und gespeicherten Portionen. Dieser Unterschied wird im Editor erklärt.
+- Energie: vereinfachte Mifflin–St-Jeor-Formel ([Originalstudie](https://pubmed.ncbi.nlm.nih.gov/2305711/)) mit auswählbarer Formel oder expliziter Spanne, multipliziert mit Alltagsfaktor 1,4 / 1,6 / 1,8 in Anlehnung an [DGE](https://www.dge.de/wissenschaft/referenzwerte/energie/). Letzter nicht zukünftiger Gewichtsmesswert ist die Berechnungsbasis. Kalorien aus Aktivitäten nur als separat erfasste Trackerwerte; keine automatischen Verbräuche ohne entsprechende Daten und keine fingierte Ernährungserfassung.
+- Gestaltungsreferenz: [Sportnahrung Engel Rezeptübersicht](https://www.sportnahrung-engel.de/fitness-rezepte). Keine Texte oder proprietären Rezeptbilder übernommen.
