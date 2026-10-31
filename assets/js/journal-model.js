@@ -56,6 +56,5 @@ window.JournalModel = (() => {
  ];
  function tags(value){return [...new Set(String(value||'').normalize('NFC').split(/[,;#\s]+/u).map(t=>t.replace(/[^\p{L}\p{N}_-]/gu,'').toLocaleLowerCase('de')).filter(Boolean))].slice(0,20);}
  function stats(records,today){const dates=[...new Set(records.map(r=>r.data.date).filter(d=>d<=today))].sort();const first=dates[0];return {entries:records.length,days:dates.length,first,elapsed:first?Math.floor((Date.parse(today+'T12:00:00Z')-Date.parse(first+'T12:00:00Z'))/86400000)+1:0};}
- function greetingIndex(today){return [...today].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,0)%greetings.length;}
- return {prompts,moods,greetings,tags,stats,greetingIndex};
+ return {prompts,moods,greetings,tags,stats};
 })();

@@ -1,9 +1,8 @@
 (() => {
-const M=JournalModel,A=LifeAPI,$=id=>document.getElementById(id),form=$('journalForm');let records=[],editing=null,photos=[],pending=[],urls=[],epoch=0,busy=false,dirty=false,uploadedFiles=new WeakMap(),period='all',activeTag='',greeting=M.greetingIndex(A.today());
+const M=JournalModel,A=LifeAPI,$=id=>document.getElementById(id),form=$('journalForm');let records=[],editing=null,photos=[],pending=[],urls=[],epoch=0,busy=false,dirty=false,uploadedFiles=new WeakMap(),period='all',activeTag='',greeting=Math.floor(Math.random()*M.greetings.length);
 function setup(){
  const mobileLabel=A.el('label','Stimmung auswählen','journal-mobile-mood');mobileLabel.id='mobileMood';const moodSelect=A.el('select');moodSelect.name='mood';moodSelect.id='moodSelect';moodSelect.onchange=syncMood;for(const [value,label,icon] of M.moods){const option=A.el('option',icon+' '+label);option.value=value;moodSelect.append(option);}mobileLabel.append(moodSelect);$('moodChoices').before(mobileLabel);const choices=$('moodChoices');for(const [value,label,icon,color] of M.moods){const wrap=A.el('label',undefined,'journal-mood');wrap.dataset.color=color;const input=A.el('input');input.type='radio';input.name='moodChoice';input.onchange=()=>{form.elements.mood.value=value;syncMood();};input.value=value;input.defaultChecked=!value;input.checked=!value;wrap.append(input,A.el('span',icon+' '+label));choices.append(wrap);}
  for(const [key,label,placeholder] of M.prompts){const wrap=A.el('label',label),input=A.el('textarea');input.name=key;input.maxLength=2000;input.placeholder=placeholder;input.rows=3;wrap.append(input);$('journalPrompts').append(wrap);}
- $('nextGreeting').onclick=()=>{greeting=(greeting+1)%M.greetings.length;renderWelcome();};
  form.elements.tags.onblur=()=>{form.elements.tags.value=M.tags(form.elements.tags.value).map(t=>'#'+t).join(' ');};renderWelcome();
 }
 function syncMood(){const value=form.elements.mood.value;const mood=M.moods.find(m=>m[0]===value)||M.moods[0];$('mobileMood').dataset.color=mood[3];for(const input of $('moodChoices').querySelectorAll('input'))input.checked=input.value===value;}

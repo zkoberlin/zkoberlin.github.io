@@ -160,11 +160,6 @@ const DAILY_IMPULSES={
     'Fast Wochenende – bitte den Tag trotzdem vollständig abspeichern.',
   ],
 };
-let quoteDateKey='';
-let quoteOffset=0;
-function localDateKey(date){
-  return`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
-}
 function quotePool(date){
   const day=date.getDay();
   if(day===0||day===6)return DAILY_IMPULSES.weekend;
@@ -173,18 +168,8 @@ function quotePool(date){
   const hour=date.getHours();
   return hour<11?DAILY_IMPULSES.morning:hour<18?DAILY_IMPULSES.daytime:DAILY_IMPULSES.evening;
 }
-function renderDailyImpulse(forceNext=false){
-  const date=new Date();
-  const dateKey=localDateKey(date);
-  if(dateKey!==quoteDateKey){quoteDateKey=dateKey;quoteOffset=0;}
-  if(forceNext)quoteOffset++;
-  const pool=quotePool(date);
-  const ordinal=Math.floor(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())/86400000);
-  document.getElementById('quote').textContent=pool[(ordinal+quoteOffset)%pool.length];
-}
-document.getElementById('quoteNext').addEventListener('click',()=>renderDailyImpulse(true));
-renderDailyImpulse();
-setInterval(()=>renderDailyImpulse(false),30000);
+const impulsePool=quotePool(new Date());
+document.getElementById('quote').textContent=impulsePool[Math.floor(Math.random()*impulsePool.length)];
 
 // ── TAG-INFO (Feiertage, Geburtstage, Skurrile Tage) ──
 function dynamicSpecialDay(current){
