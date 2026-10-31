@@ -59,3 +59,9 @@ Speicherstatus sichtbar machen: Entwurf, wird gespeichert, gespeichert oder Fehl
 Prüfungen pro Abschnitt: mobile Bedienung, helle und dunkle Darstellung, Anmeldeablauf, geräteübergreifendes Speichern, Berechtigungsfehler, Eingabevalidierung, Bearbeiten und Löschen. Fotoabschnitt zusätzlich mit echter Datei, abgebrochenem Upload und unberechtigtem Bildabruf prüfen. Nach Veröffentlichung Live-Version und nicht angemeldete Zugriffe prüfen sowie angemeldete Nutzung verifizieren. Ergebnisse und verbleibende Grenzen in `docs/operations/` dokumentieren.
 
 Implementierung: Hub-Karten, Journal mit Fotoanhängen, FitPaul mit Trainingsplan, Protokoll, Messwertverlauf, Profil und vier skalierbaren Rezepten. Der Liveprüfstand wird im Betriebsprotokoll dokumentiert.
+
+## Weiterentwicklung der Bedienung
+
+Ab v6.38.0 öffnet sich der Journal-Editor erst auf Wunsch. FitPaul führt mit einer nächsten Einheit aus einem privat gespeicherten Trainingsplan; Training, Fortschritt, Rezepte und Einstellungen sind getrennt. Der erste Plan wurde im gemeinsamen Chat erstellt. Eine automatische KI-Anbindung ist noch nicht konfiguriert. Spätere Pläne können anhand einer vorbereiteten Anfrage erstellt und als validiertes JSON übernommen werden.
+
+Die Rezeptauswahl erzeugt aus gewählten Gerichten und gemeinsamer Portionszahl eine Einkaufsliste. Gleiche Zutaten mit gleicher Einheit werden addiert. Auswahl, Portionen und Häkchen werden privat gespeichert.

@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import '../../../assets/js/training-plan.js';
+import {validRecord} from '../src/life.js';
+const data={name:'Start',startDate:'2026-10-31',weeks:4,days:[1,3,5],notes:'',exercises:[{name:'Rudern',sets:2,reps:'12–15',weight:20}]};
+const plan={data,revision:1};
+const workout=(date,weight=30,revision)=>({data:{date,exercises:[{name:'Rudern',sets:2,reps:'12',weight}],...(revision?{planRevision:revision}:{})},updatedAt:date});
+test('first session follows selected weekdays',()=>{assert.equal(TrainingPlan.next(plan,[],'2026-10-31').date,'2026-11-02');});
+test('rest day and last weights are respected',()=>{const n=TrainingPlan.next(plan,[workout('2026-10-31',40)],'2026-11-01');assert.equal(n.date,'2026-11-02');assert.equal(n.exercises[0].weight,40);assert.equal(n.done,1);assert.equal(n.total,12);});
+test('missed days do not accumulate catch-up workouts',()=>{assert.equal(TrainingPlan.next(plan,[workout('2026-10-31')],'2026-11-10').date,'2026-11-11');});
+test('new plan excludes old plan completions but retains weight reference',()=>{const n=TrainingPlan.next({...plan,revision:2},[workout('2026-11-02',45,1)],'2026-11-04');assert.equal(n.done,0);assert.equal(n.exercises[0].weight,45);});
+test('plan completes after planned sessions',()=>{const n=TrainingPlan.next({...plan,data:{...data,weeks:1,days:[1,3]}},[workout('2026-11-02'),workout('2026-11-04')],'2026-11-05');assert.equal(n.finished,true);});
+test('frontend and server reject malformed plans',()=>{for(const p of [{...data,days:[1,1]},{...data,startDate:'2026-02-30'},{...data,exercises:[]},{...data,weeks:0}]){assert.equal(Boolean(TrainingPlan.valid(p)),false);assert.equal(Boolean(validRecord('plan',p)),false);}assert.equal(Boolean(validRecord('plan',data)),true);});
+test('shopping list scales and combines identical ingredients',()=>{const recipes=[{id:'a',ingredients:[[100,'g Tomaten'],[5,'g Öl']]},{id:'b',ingredients:[[50,'g Tomaten'],[10,'ml Sojasauce']]}];const list=TrainingPlan.shopping(recipes,['a','b'],3);assert.equal(list.find(i=>i.name==='Tomaten').amount,450);assert.equal(list.find(i=>i.name==='Öl').amount,15);assert.equal(list.find(i=>i.name==='Sojasauce').amount,30);assert.equal(TrainingPlan.shopping(recipes,[],3).length,0);});

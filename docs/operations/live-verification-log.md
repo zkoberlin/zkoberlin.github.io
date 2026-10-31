@@ -30,3 +30,14 @@ Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases 
 - Lokale abgemeldete Journalansicht in Chrome geladen. Nutzer meldete Google `400 origin_mismatch`; lokaler Ursprung ist nicht als funktionierend verifiziert. Es wurde keine Google-OAuth-Freigabe geändert.
 - Live-Seiten und gemeinsame Version per HTTP geprüft; private Journal-, Trainings-, Export- und Bildrouten ohne Anmeldung gesperrt. Öffentlicher Standortpfad weiterhin erreichbar.
 - Noch offen: angemeldete Live-Nutzung beider Seiten, echter Foto-Upload samt Löschen und Export, geräteübergreifender Abgleich sowie mobile Geräteprüfung. Die produktive Anmeldung ist nach dieser Erweiterung noch nicht im Browser bestätigt.
+
+
+## 31.10.2026 Journal und FitPaul v6.38.0
+
+- Nutzer bestätigt grundsätzliche Funktionalität von v6.37.0; einzelne Fotoabläufe sind damit nicht separat verifiziert.
+- Journal: Editor standardmäßig geschlossen, Öffnen über Button, Bearbeiten öffnet den Editor. Hub-Karten mit pinkem beziehungsweise grünem Rahmen.
+- Fitness: getrennte Bereiche Training, Fortschritt, Rezepte und Plan/Profil. Privater Startplan mit vier Trainingswochen; nächste Einheit anhand ausgewählter Wochentage und Erholungstag. Letzte Gewichte werden vorausgefüllt, nicht automatisch erhöht. Kein automatischer ChatGPT-API-Aufruf; Anfrage kopieren und validierter Planimport sind vorhanden.
+- Einkauf: Rezepte wählen, gemeinsame Portionszahl, automatisch summierte gleiche Zutaten, Abhaken und privates Speichern. Änderungen an Auswahl oder Portionen setzen Häkchen zurück. Kopieren mit Textdatei als Alternative.
+- 20 automatisierte Tests erfolgreich, einschließlich Terminplanung, Planwechsel, Kontotrennung und Mengenaddition. DOM-Interaktionstest mit synthetischen Daten erfolgreich: Bereichswechsel, Training vorausfüllen, Einkaufsliste skalieren/speichern/abhaken, Journal öffnen/speichern/bearbeiten. Keine echten Nutzerdaten für diese Tests verwendet.
+- Visuelle Browserprüfung aktuell eingeschränkt: In-App-Tab nicht erreichbar; native Chrome-Erfassung scheitert mit ScreenCaptureKit-Fehler -3811. Keine bestätigte visuelle Mobile-Prüfung dieses Layouts. DOM-Prüfungen ersetzen keine Sichtprüfung.
+- Gateway veröffentlicht mit Version 287e46c0-9ec3-43c6-b745-07fbc2d5cd8c. Live-HTTP-Prüfung erfolgt nach Pages-Veröffentlichung.

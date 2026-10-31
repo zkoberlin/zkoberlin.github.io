@@ -1,5 +1,5 @@
 // All records and image keys are scoped to the authenticated account.
-const KINDS = new Set(['journal', 'profile', 'workout', 'measurement', 'favorite']);
+const KINDS = new Set(['journal', 'profile', 'workout', 'measurement', 'favorite', 'plan', 'shopping']);
 const ID = /^[a-zA-Z0-9_-]{1,80}$/;
 const dateOK = d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d)) && new Date(d).toISOString().slice(0,10) === d;
 const text = (s, max) => typeof s === 'string' && s.length <= max;
@@ -7,10 +7,12 @@ const num = (n, min, max) => Number.isFinite(n) && n >= min && n <= max;
 export function validRecord(kind, p) {
   if (!p || typeof p !== 'object' || Array.isArray(p)) return false;
   if (kind === 'journal') return dateOK(p.date) && text(p.title, 160) && text(p.body, 20000) && (p.title.trim() || p.body.trim() || p.photos?.length) && ['','gut','gemischt','schwierig'].includes(p.mood) && text(p.tags, 300) && Array.isArray(p.photos) && p.photos.length <= 6 && p.photos.every(id => ID.test(id));
+  if (kind === 'shopping') return Array.isArray(p.selected) && p.selected.length<=20 && p.selected.every(id=>typeof id==='string'&&ID.test(id)) && Number.isInteger(p.portions) && num(p.portions,1,8) && Array.isArray(p.checked) && p.checked.length<=150 && p.checked.every(key=>text(key,200));
+  if (kind === 'plan') return text(p.name,160) && p.name.trim() && dateOK(p.startDate) && Number.isInteger(p.weeks) && num(p.weeks,1,12) && Array.isArray(p.days) && num(p.days.length,2,4) && new Set(p.days).size===p.days.length && p.days.every(d=>Number.isInteger(d)&&num(d,0,6)) && text(p.notes,2000) && Array.isArray(p.exercises) && num(p.exercises.length,1,12) && p.exercises.every(e=>text(e.name,100)&&e.name.trim()&&Number.isInteger(e.sets)&&num(e.sets,1,6)&&text(e.reps,30)&&e.reps.length>0&&(e.weight===null||num(e.weight,0,1000)));
   if (kind === 'profile') return num(p.height,100,250) && num(p.target,35,350) && num(p.sessions,2,4) && text(p.notes,2000);
   if (kind === 'measurement') return dateOK(p.date) && num(p.weight,35,350) && (p.waist === null || num(p.waist,30,250));
   if (kind === 'favorite') return ID.test(p.recipeId);
-  if (kind === 'workout') return dateOK(p.date) && text(p.notes,2000) && Array.isArray(p.exercises) && p.exercises.length > 0 && p.exercises.length <= 20 && p.exercises.every(e => text(e.name,100) && e.name.trim() && num(e.sets,1,20) && text(e.reps,30) && (e.weight === null || num(e.weight,0,1000)));
+  if (kind === 'workout') return (p.planRevision === undefined || Number.isInteger(p.planRevision) && p.planRevision > 0) && dateOK(p.date) && text(p.notes,2000) && Array.isArray(p.exercises) && p.exercises.length > 0 && p.exercises.length <= 20 && p.exercises.every(e => text(e.name,100) && e.name.trim() && num(e.sets,1,20) && text(e.reps,30) && (e.weight === null || num(e.weight,0,1000)));
   return false;
 }
 export async function lifeResponse(request, env, user, respond) {
