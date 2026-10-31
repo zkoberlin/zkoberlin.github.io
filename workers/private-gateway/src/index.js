@@ -1,3 +1,4 @@
+import { lifeResponse } from "./life.js";
 const ALLOWED_ORIGINS = new Set([
   "https://zkoberlin.github.io",
   "http://localhost:8000",
@@ -307,6 +308,13 @@ export default {
       return user
         ? json({ authenticated: true, user }, 200, origin)
         : json({ error: "Unauthorized" }, 401, origin);
+    }
+
+    if (url.pathname === "/life" || url.pathname.startsWith("/life/") || url.pathname === "/life-photo" || url.pathname.startsWith("/life-photo/")) {
+      const user = await verifyUser(request, env);
+      if (!user) return json({ error: "Unauthorized" }, 401, origin);
+      try { return await lifeResponse(request, env, user, (data,status) => json(data,status,origin)); }
+      catch { return json({ error: "Speicherung vorübergehend nicht verfügbar" }, 503, origin); }
     }
 
     if (PRIVATE_PATHS.has(url.pathname)) {

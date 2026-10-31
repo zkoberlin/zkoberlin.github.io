@@ -21,6 +21,7 @@
       "database_id": "5d95f9d2-f677-4804-8c99-f730c69b36b6"
     }
   ],
+  "r2_buckets": [{ "binding": "LIFE_PHOTOS", "bucket_name": "paul-hub-life-photos" }],
   "secrets": {
     "required": ["ALLOWED_GOOGLE_EMAIL", "HUB_PREVIEW_SECRET", "INTERNAL_GATEWAY_SECRET"]
   },

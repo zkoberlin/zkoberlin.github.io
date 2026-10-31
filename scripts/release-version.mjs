@@ -9,6 +9,8 @@ if (!/^\d+\.\d+\.\d+$/.test(nextVersion || '')) {
 
 const files = [
   'assets/js/version.js',
+  'journalpaul/index.html',
+  'fitpaul/index.html',
   'index.html',
   'kalenderpaul/index.html',
   'kalenderpaul/assets/js/app.js',

@@ -9,6 +9,8 @@ Das Projekt ist eine statische GitHub-Pages-Website ohne Build-Schritt. Jede Sei
 | Pfad | Aufgabe |
 | --- | --- |
 | `/` | Persönlicher Hub und zentrale Übersicht |
+| `/journalpaul/` | Privater Journalfeed mit Bildern |
+| `/fitpaul/` | Trainingsplan, Protokoll, Messwerte und Rezepte |
 | `/finanzenpaul/` | Persönliche Finanzübersicht |
 | `/kalenderpaul/` | Kalenderübersicht |
 
@@ -48,3 +50,9 @@ Der Kalender ist ebenfalls aufgeteilt:
 - `kalenderpaul/assets/js/app.js` enthält die Kalender- und Datenquellenlogik.
 
 Der öffentliche Gateway akzeptiert neben der GitHub-Pages-Domain auch die dokumentierten lokalen Entwicklungs-Origins. Das Frontend verwendet für private Pfade eine gültige, serverseitig gespeicherte Hub-Sitzung des freigegebenen Kontos. Direkte Google-OAuth-Tokens bleiben während der Migration kompatibel und dienen insbesondere zum Erstellen einer Sitzung. Der Gateway authentifiziert das ausschließlich per Service Binding erreichbare Backend zusätzlich mit einem gemeinsamen internen Secret; Browser-Authorization-Header werden nicht weitergereicht. Die persönlichen Datenflüsse werden lokal und zusätzlich nach jedem Deployment auf der GitHub-Pages-Domain geprüft.
+
+## Journal und Fitness
+
+Die Routen `/life/:kind`, `/life/:kind/:id`, `/life/export` und `/life-photo/:id` sind privat. `life_records` und `life_photos` ordnen jeden Datensatz der serverseitig ermittelten Kontoidentität zu. Schreib- und Löschzugriffe auf Einträge prüfen eine Revisionsnummer und melden konkurrierende Änderungen mit `409`. Fotos liegen im privaten R2-Bucket `paul-hub-life-photos`; es gibt keine öffentlichen Bild-URLs. Der Browser erzeugt vor dem Hochladen WebP-Bilder ohne Originalmetadaten; der Server begrenzt die Größe und akzeptiert ausschließlich die vorgesehenen WebP-Chunks.
+
+Persönliche Startwerte werden ausschließlich privat importiert; statische Seiten enthalten keine persönlichen Messwerte oder Trainingsgewichte. Der Export enthält die Einträge beider Bereiche sowie zugehörige Bilder als Daten-URLs.

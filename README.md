@@ -1,7 +1,9 @@
 # Pauls persönlicher Web-Hub
 
-Dieses Repository enthält den statischen Web-Hub unter `zkoberlin.github.io` und seine beiden Unterseiten:
+Dieses Repository enthält den statischen Web-Hub unter `zkoberlin.github.io` und seine Unterseiten:
 
+- `journalpaul/` – privates Journal mit Fotos
+- `fitpaul/` – Training, Fortschritt und Rezepte
 - `finanzenpaul/` – persönliche Finanzübersicht
 - `kalenderpaul/` – Kalenderübersicht
 
