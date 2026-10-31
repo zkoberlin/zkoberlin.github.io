@@ -7,7 +7,7 @@ function setup(){
  form.elements.tags.onblur=()=>{form.elements.tags.value=M.tags(form.elements.tags.value).map(t=>'#'+t).join(' ');};renderWelcome();
 }
 function renderWelcome(){
- $('journalGreeting').textContent=M.greetings[greeting];$('journalDate').textContent=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'2-digit',month:'long',year:'numeric',timeZone:'Europe/Berlin'}).format(new Date(A.today()+'T12:00:00Z'));
+ $('journalGreeting').textContent=M.greetings[greeting];const date=new Date(A.today()+'T12:00:00Z');$('journalDate').replaceChildren(A.el('span',new Intl.DateTimeFormat('de-DE',{weekday:'long',timeZone:'Europe/Berlin'}).format(date),'journal-weekday'),A.el('strong',new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'long',year:'numeric',timeZone:'Europe/Berlin'}).format(date)));
  const s=M.stats(records,A.today());$('journalCounter').textContent=HubAuth.isSignedIn()?(s.first?'Seit deinem ersten Eintrag am '+A.date(s.first)+' · '+s.elapsed+' '+(s.elapsed===1?'Tag':'Tage')+' Journal · '+s.days+' '+(s.days===1?'Schreibtag':'Schreibtage')+' · '+s.entries+' '+(s.entries===1?'Eintrag':'Einträge'):'Dein erster Eintrag ist der Anfang.'):'';
 }
 function selectTag(tag){activeTag=tag;period='all';$('search').value='';render();}
