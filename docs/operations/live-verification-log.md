@@ -133,4 +133,11 @@ Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases 
 - Mobile Stimmungsauswahl als natives Dropdown mit farbigem Rand. Desktop behält die bisherigen farbigen Radiokacheln. Ein kanonischer mood-Wert; Auswahl bleibt beim Wechsel der Bildschirmbreite sowie beim Bearbeiten/Zurücksetzen synchron. Alte gespeicherte Werte bleiben kompatibel. Keine Änderungen am Backend oder an privaten Daten.
 - 62 bestehende automatisierte Tests bestanden. DOM-Bedienprüfung um Radio→Dropdown, Dropdown→Radio und Farbsynchronisation ergänzt; Journal-Bearbeiten, Diktierübernahme und bestehende FitPaul-Abläufe weiterhin erfolgreich.
 - Responsive Browservorschau mit klar markierten synthetischen Daten bei 320/390/430 px geprüft: Inhaltsbreite entspricht jeweils Ansichtsbreite, kein horizontales Scrollen; Formular und Dropdown visuell geprüft und Stimmung geändert. Wechsel zu 850 px zeigt Radiokacheln mit erhaltener Auswahl. Prüfung im isolierten In-App-Browser, da parallel ein echter ungespeicherter Journalentwurf in Chrome geöffnet war. Dieser Entwurf wurde nicht verändert oder verlassen. Keine physische Smartphone-/Safari-Prüfung.
-- Veröffentlichung und öffentliche Liveprüfung folgen. Backend unverändert.
+- Pages-Lauf 41239292253 für 26fecda erfolgreich. Backend unverändert; ergänzende Anordnungskorrekturen in v6.48.1 folgen.
+
+## 31.10.2026 JournalPaul v6.48.1
+
+- Nach Screenshot-Rückmeldung: Desktop-Zeitraumfilter deutlich flacher, Icon neben Titel/Anzahl. Feedüberschrift nur einmal; Suche und Schreiben-Aktion direkt darunter in einer linksbündigen, kompakten Reihe. Mobil untereinander; keine doppelte verstreute Toolbar.
+- Einsprechen-Knöpfe einheitlich in der Kopfzeile jedes Feldes statt unter dem Textfeld. Explizit verknüpfte Feldlabels bleiben erhalten. Identische Feld-/Zeilenabstände und Ausrichtung im Rückblickraster. Mobil beschriftetes Mikrofon über zugänglichen Namen, visuell kompakter Icon-Knopf mit 44-px-Antippfläche.
+- Alle 62 Tests und DOM-Bedienprüfung erneut erfolgreich, einschließlich Dictation-Übernahme und Bearbeitung. Desktop-Browservorschau mit Testdaten: flache Filter, linksbündige Suche/Schreiben, ausgerichtete Rückblicküberschriften und Sprachknöpfe visuell geprüft. Mobile Hauptänderungen aus 6.48.0 bleiben erhalten. Keine privaten Inhalte verändert.
+- Veröffentlichung und öffentliche Livekontrolle folgen.
