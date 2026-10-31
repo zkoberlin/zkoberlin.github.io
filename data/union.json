@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-10-30T02:25:54Z",
+  "generatedAt": "2026-10-31T02:05:06Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -240,6 +240,19 @@
     },
     {
       "rank": 5,
+      "teamId": 198,
+      "name": "SV 07 Elversberg",
+      "shortName": "Elversberg",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
+      "played": 8,
+      "goalsFor": 16,
+      "goalsAgainst": 16,
+      "goalDifference": 0,
+      "points": 13,
+      "isUnion": false
+    },
+    {
+      "rank": 6,
       "teamId": 1635,
       "name": "RB Leipzig",
       "shortName": "Leipzig",
@@ -252,7 +265,7 @@
       "isUnion": false
     },
     {
-      "rank": 6,
+      "rank": 7,
       "teamId": 134,
       "name": "SV Werder Bremen",
       "shortName": "Bremen",
@@ -265,28 +278,15 @@
       "isUnion": false
     },
     {
-      "rank": 7,
+      "rank": 8,
       "teamId": 81,
       "name": "1. FSV Mainz 05",
       "shortName": "Mainz",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg",
-      "played": 7,
-      "goalsFor": 16,
-      "goalsAgainst": 13,
-      "goalDifference": 3,
-      "points": 10,
-      "isUnion": false
-    },
-    {
-      "rank": 8,
-      "teamId": 198,
-      "name": "SV 07 Elversberg",
-      "shortName": "Elversberg",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
-      "played": 7,
-      "goalsFor": 12,
-      "goalsAgainst": 15,
-      "goalDifference": -3,
+      "played": 8,
+      "goalsFor": 17,
+      "goalsAgainst": 17,
+      "goalDifference": 0,
       "points": 10,
       "isUnion": false
     },
