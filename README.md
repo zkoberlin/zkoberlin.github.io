@@ -41,3 +41,7 @@ Weiterführende Dokumentation:
 - [Architektur](docs/architecture.md)
 - [Datenquellen](docs/data-sources.md)
 - [Deployment](docs/deployment.md)
+
+## Dokumentation zu JournalPaul und FitPaul
+
+Die aktuelle [Dokumentationsübersicht](docs/README.md) verlinkt Bedienung, Funktionen, Hub-Anbindung, Betrieb und die Release-/Prüfhistorie.
