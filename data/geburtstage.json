@@ -1,73 +1,61 @@
 {
-  "datum": "31.10.2026",
-  "generiert": "2026-10-31T06:24:28Z",
+  "datum": "01.11.2026",
+  "generiert": "2026-11-01T06:57:39Z",
   "geburtstage": [
     {
-      "name": "Inka Grings",
-      "alter": 48,
-      "geburtsjahr": 1978,
+      "name": "Ernest Nuamah",
+      "alter": 23,
+      "geburtsjahr": 2003,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Inka_Grings%2C_octobre_2024.jpg/330px-Inka_Grings%2C_octobre_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Inka_Grings",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Ernest_Nuamah_England_v_Ghana_23_June_2026-113.jpg/330px-Ernest_Nuamah_England_v_Ghana_23_June_2026-113.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ernest_Nuamah",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lautaro Rivero",
+      "alter": 23,
+      "geburtsjahr": 2003,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Lautaro_Rivero",
+      "nationalitaet": "🇦🇷 Argentinisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "AR",
+          "flagge": "🇦🇷",
+          "name": "Argentinisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Ansu Fati",
+      "name": "NLE Choppa",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%BF%D0%B0%D0%B4%D0%B0_2021_%D1%80%D0%BE%D0%BA%D1%83_%E2%80%94_1289339_%28cropped%29.jpg/330px-%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%BF%D0%B0%D0%B4%D0%B0_2021_%D1%80%D0%BE%D0%BA%D1%83_%E2%80%94_1289339_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ansu_Fati",
-      "nationalitaet": "🇪🇸 Spanisch",
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/NLE_Choppa_2025.png/330px-NLE_Choppa_2025.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/NLE_Choppa",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "ES",
-          "flagge": "🇪🇸",
-          "name": "Spanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Willow Smith",
+      "name": "Gonzalo Plata",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Musiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Willow_Smith_October_2024.png/330px-Willow_Smith_October_2024.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Willow_Smith",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Danielle Rose Russell",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Schauspieler/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Danielle_Rose_Russell",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Gonzalo_Plata_Cote_D%27Ivoire_v_Ecuador_14_June_2026-12_%28cropped%29.jpg/330px-Gonzalo_Plata_Cote_D%27Ivoire_v_Ecuador_14_June_2026-12_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Gonzalo_Plata",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
