@@ -122,7 +122,8 @@ function filteredRecipes(){const filter=$('recipeFilter').value,fold=t=>String(t
 $('recipeSearch').oninput=()=>{recipeLimit=12;renderRecipes();};$('moreRecipes').onclick=()=>{recipeLimit+=12;renderRecipes();};
 document.querySelectorAll('[data-meal]').forEach(b=>{const count=b.dataset.meal==='all'?starterRecipes.length:starterRecipes.filter(r=>r.meal===b.dataset.meal).length;b.textContent=mealNames[b.dataset.meal]+' · '+count;b.onclick=()=>{recipeMeal=b.dataset.meal;recipeLimit=12;document.querySelectorAll('[data-meal]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderRecipes();};});
 
-function renderWelcome(){$('greeting').textContent=FitInsights.greeting(profile?.data.displayName||accountName||'Paul');$('dailyQuote').textContent=FitInsights.quotes[quoteIndex];}
+const greetingChoice=Math.random();
+function renderWelcome(){$('greeting').textContent=FitInsights.greeting(profile?.data.displayName||accountName||'Paul',new Date(),greetingChoice);$('dailyQuote').textContent=FitInsights.quotes[quoteIndex];}
 setInterval(renderWelcome,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderWelcome();});
 $('energySettings').onclick=()=>{showView('settings');$('profileForm').scrollIntoView({behavior:'smooth'});};

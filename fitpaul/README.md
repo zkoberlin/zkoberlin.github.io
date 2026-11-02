@@ -61,3 +61,5 @@ Rezeptkarte: schmale Kategorie-/Dauerzeile, Titel/Merkmale, vier Nährwerte, gem
 Private Record-Arten: `profile`, `plan`, `workout`, `measurement`, `favorite`, `shopping`, `recipe`, `activity`, `nutrition`. Profil-ID `main`, aktive Plan-/Einkaufs-ID `active`. Zugriff, Besitzerprüfung und Versionskonflikte: [Betriebshandbuch](../docs/operations/journal-fitness-betrieb.md).
 
 Die Anrede folgt der Uhrzeit in Europe/Berlin: 05–10 Uhr „Guten Morgen“, 11–17 Uhr „Guten Tag“, 18–23 Uhr „Guten Abend“, 00–04 Uhr „Gute Nacht“. Sie aktualisiert sich auch bei offener Seite jede Minute und bei der Rückkehr zum Tab. Der zufällige Motivationsspruch bleibt dabei erhalten.
+
+Seit v6.50.2 stehen 40 motivierende Anreden bereit, je zehn für Morgen, Tag, Abend und Nacht. Pro Öffnen oder Neuladen wird zufällig gewählt; innerhalb derselben Tageszeit bleibt die Anrede bei Datenänderungen stabil. Beim Tageszeitwechsel wird der passende Textpool verwendet (Europe/Berlin).

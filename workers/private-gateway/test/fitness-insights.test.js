@@ -11,7 +11,10 @@ test('all new recipe mappings use real BLS foods and calculate four nutrients',(
 test('nutrition and energy profile payloads are validated; legacy profiles work',()=>{const p={height:180,target:75,sessions:3,notes:''};assert.equal(Boolean(validRecord('profile',p)),true);assert.equal(Boolean(validRecord('profile',{...p,energyTarget:2500})),true);assert.equal(Boolean(validRecord('profile',{...p,energyTarget:500})),false);assert.equal(Boolean(validRecord('profile',{...p,age:40,formula:'range',pal:1.4})),true);for(const patch of [{age:3},{formula:'assume'},{pal:10}])assert.equal(Boolean(validRecord('profile',{...p,...patch})),false);const n={recipeId:'one',rows:[{label:'Reis',foodId:'C352000',grams:50}]};assert.equal(Boolean(validRecord('nutrition',n)),true);assert.equal(Boolean(validRecord('nutrition',{...n,rows:[{...n.rows[0],grams:-1}]})),false);});
 test('daily macros balance the calorie target and follow profile and weight',()=>{const p={height:180,age:40,pal:1.6,formula:'male',target:75};const n=FitInsights.targets(p,80);assert.deepEqual(n.kcal,[2450]);assert.equal(n.protein,130);assert.deepEqual(n.fat,[80]);assert.deepEqual(n.carbs,[305]);assert.ok(Math.abs(n.protein*4+n.fat[0]*9+n.carbs[0]*4-n.kcal[0])<=15);const custom=FitInsights.targets({...p,energyTarget:2500},80);assert.deepEqual(custom.kcal,[2500]);assert.equal(custom.manual,true);assert.equal(FitInsights.targets({},80),null);const range=FitInsights.targets({...p,formula:'range'},80);assert.equal(range.kcal.length,2);assert.ok(range.carbs[0]<range.carbs[1]);});
 
-test('greeting follows Berlin time, including daylight saving and day boundaries',()=>{
- for(const [time,expected] of [['2026-11-02T03:59:00Z','Gute Nacht'],['2026-11-02T04:00:00Z','Guten Morgen'],['2026-11-02T10:00:00Z','Guten Tag'],['2026-11-02T17:00:00Z','Guten Abend'],['2026-07-02T03:00:00Z','Guten Morgen']])assert.equal(FitInsights.greeting('Paul Bendzko',new Date(time)),expected+', Paul.');
- assert.equal(FitInsights.greeting('',new Date('2026-11-02T12:00:00Z')),'Guten Tag.');
+test('greetings vary within the correct Berlin time period and retain the name',()=>{
+ for(const [time,period] of [['2026-11-02T03:59:00Z','night'],['2026-11-02T04:00:00Z','morning'],['2026-11-02T10:00:00Z','day'],['2026-11-02T17:00:00Z','evening'],['2026-07-02T03:00:00Z','morning']]){
+ const pool=FitInsights.greetings[period];assert.equal(pool.length,10);
+ for(let i=0;i<10;i++)assert.equal(FitInsights.greeting('Paul Bendzko',new Date(time),i/10),pool[i].replace('{name}','Paul'));
+ }
+ assert.equal(new Set(Object.values(FitInsights.greetings).flat()).size,40);
 });
