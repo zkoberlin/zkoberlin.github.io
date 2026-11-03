@@ -1,65 +1,71 @@
 {
-  "datum": "02.11.2026",
-  "generiert": "2026-11-02T06:57:09Z",
+  "datum": "03.11.2026",
+  "generiert": "2026-11-03T07:20:05Z",
   "geburtstage": [
     {
-      "name": "Tibor Pleiß",
-      "alter": 37,
-      "geburtsjahr": 1989,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/2026-05-17_ALBA_Berlin_gegen_SC_Rasta_Vechta_%28Basketball-Bundesliga_2025-26%29_by_Sandro_Halank%E2%80%93060.jpg/330px-2026-05-17_ALBA_Berlin_gegen_SC_Rasta_Vechta_%28Basketball-Bundesliga_2025-26%29_by_Sandro_Halank%E2%80%93060.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tibor_Plei%C3%9F",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Lara Raj",
+      "alter": 21,
+      "geburtsjahr": 2005,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Katseye_Lara_in_Seattle_%28cropped%29.jpg/330px-Katseye_Lara_in_Seattle_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lara_Raj",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Julia Görges",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Goerges_WM19_%2816%29_%2848521992462%29.jpg/330px-Goerges_WM19_%2816%29_%2848521992462%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Julia_G%C3%B6rges",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Moisés Caicedo",
+      "name": "Hailey Baptiste",
       "alter": 25,
       "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Moises_Caicedo_Ecuador_v_Germany_25_June_2026-051_%28cropped%29.jpg/330px-Moises_Caicedo_Ecuador_v_Germany_25_June_2026-051_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mois%C3%A9s_Caicedo",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Hailey_Baptiste_%282025_DC_Open%29_02_%28cropped%29.jpg/330px-Hailey_Baptiste_%282025_DC_Open%29_02_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hailey_Baptiste",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Park Woo-jin",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/190522_%EB%B0%95%EC%9A%B0%EC%A7%84_%282%29.jpg/330px-190522_%EB%B0%95%EC%9A%B0%EC%A7%84_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Park_Woo-jin",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "name": "Jake LaRavia",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Jake_LaRavia_%28cropped%29.jpg/330px-Jake_LaRavia_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jake_LaRavia",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Maddison Elliott",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/XXXX15_-_Maddison_Elliott_-_3b_-_2016_Team_processing.jpg/330px-XXXX15_-_Maddison_Elliott_-_3b_-_2016_Team_processing.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Maddison_Elliott",
+      "nationalitaet": "🇦🇺 Australisch",
+      "nationalitaeten": [
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
