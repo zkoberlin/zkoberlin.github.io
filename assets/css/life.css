@@ -166,3 +166,20 @@
 .fit-app .fit-recipe-detail-body .fit-recipe-steps{display:grid;gap:10px;margin:0;padding-left:20px}.fit-recipe-steps li{padding-left:3px;font-size:12px;line-height:1.75}.fit-app .fit-nutrition-editor>summary{color:var(--t2)}
 @media(max-width:650px){.fit-recipe-steps li{font-size:13px}}
 @media(max-width:650px){.fit-app .fit-energy-card strong{white-space:normal;overflow-wrap:anywhere}}
+
+/* Completed weeks and interactive weight history */
+.life-main .fit-week-tile[data-complete=true]{background:#146b4a!important;border-color:#146b4a!important;color:#fff;box-shadow:0 3px 12px #146b4a20}
+.life-main .fit-week-tile[data-complete=true][aria-pressed=true]{outline-color:var(--t)}
+.fit-weight-stage{position:relative;margin-top:22px;color:var(--blue)}
+.fit-weight-svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.fit-weight-grid{stroke:var(--border);stroke-dasharray:4 5}
+.fit-weight-axis{fill:var(--t2);font-size:12px}
+.fit-weight-dot{fill:var(--card);stroke:var(--blue);stroke-width:2;cursor:crosshair}
+.fit-weight-dot:focus{outline:none;stroke-width:4}
+.fit-weight-cursor{stroke:var(--blue);stroke-dasharray:3 5;opacity:.5;pointer-events:none}
+.fit-weight-tooltip{position:absolute;top:0;transform:translate(-50%,-85%);background:var(--t);color:var(--card);border-radius:9px;padding:7px 10px;font-size:12px;white-space:nowrap;pointer-events:none;box-shadow:var(--sh)}
+.fit-weight-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+.fit-weight-summary>div{display:grid;gap:5px;padding:12px;border:1px solid var(--blue-b);border-radius:12px;background:var(--blue-l)}
+.fit-weight-summary span,.fit-weight-summary small{font-size:11px;color:var(--t2)}
+.fit-weight-summary strong{font-size:18px;color:var(--t)}
+@media(max-width:620px){.fit-weight-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.fit-weight-tooltip{font-size:11px}.fit-weight-axis{font-size:14px}}

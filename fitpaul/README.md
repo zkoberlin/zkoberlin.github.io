@@ -63,3 +63,9 @@ Private Record-Arten: `profile`, `plan`, `workout`, `measurement`, `favorite`, `
 Die Anrede folgt der Uhrzeit in Europe/Berlin: 05–10 Uhr „Guten Morgen“, 11–17 Uhr „Guten Tag“, 18–23 Uhr „Guten Abend“, 00–04 Uhr „Gute Nacht“. Sie aktualisiert sich auch bei offener Seite jede Minute und bei der Rückkehr zum Tab. Der zufällige Motivationsspruch bleibt dabei erhalten.
 
 Seit v6.50.2 stehen 40 motivierende Anreden bereit, je zehn für Morgen, Tag, Abend und Nacht. Pro Öffnen oder Neuladen wird zufällig gewählt; innerhalb derselben Tageszeit bleibt die Anrede bei Datenänderungen stabil. Beim Tageszeitwechsel wird der passende Textpool verwendet (Europe/Berlin).
+
+## Fortschrittsanzeige ab v6.51.0
+
+Vollständig erledigte Trainingswochen tragen ein sattes Dunkelgrün und „✓ Abgeschlossen“; offene Wochen bleiben hellgrün. Die Kennzeichnung funktioniert unabhängig von der geplanten Zahl der Einheiten.
+
+Im Gewichtsverlauf zeigt die Maus den jeweils nächsten gespeicherten Messpunkt mit Datum und Gewicht. Messpunkte sind auch per Berührung und Tabulatortaste auswählbar. Start, letzter Wert, Höchst- und Tiefstwert stehen mit Datum direkt unter dem Diagramm; die Extremwerte erscheinen zusätzlich als Hilfslinien im Graphen. Bei gleichen Extremwerten wird das erste Vorkommen genannt. Bereits ein einzelner Messwert wird angezeigt.

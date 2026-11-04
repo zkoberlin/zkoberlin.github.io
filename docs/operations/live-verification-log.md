@@ -176,3 +176,7 @@ Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases 
 ## 02.11.2026 – FitPaul v6.50.2: abwechslungsreiche Anreden
 
 40 persönliche, motivierende Anreden in vier Tageszeitgruppen; Auswahl zufällig pro Seitenaufruf, Aktualisierung bei Tageszeitwechsel nach Europe/Berlin. TrailYX-Anreden als stilistische Referenz geprüft. 67 Node-Tests sowie synthetische DOM-Prüfung erfolgreich. Keine erneute angemeldete Browser- oder Geräteprüfung; keine Änderung privater Daten oder des Backends.
+
+## 04.11.2026 – FitPaul v6.51.0: Wochenstatus und Gewichtsdiagramm
+
+Abgeschlossene Wochen visuell und textlich unterschieden. Gewichtsgraph mit auswählbaren Messpunkten, Datum/Gewicht und vier Eckwerten samt Datum ergänzt. 67 Node-Tests, bestehende DOM-Prüfung und ergänzende DOM-Prüfung für Wochenstatus, Eckwerte und Fokus-Tooltip erfolgreich. Desktop-Vorschau im Browser mit ausschließlich synthetischen Daten geprüft; keine Speicherung und kein angemeldeter Live-Test. Screenshots lokal unter `.codex/visualizations/2026/11/04/fitpaul-progress/`. Kein Backend geändert.
