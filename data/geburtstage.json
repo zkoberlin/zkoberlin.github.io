@@ -1,71 +1,71 @@
 {
-  "datum": "03.11.2026",
-  "generiert": "2026-11-03T07:20:05Z",
+  "datum": "04.11.2026",
+  "generiert": "2026-11-04T07:02:59Z",
   "geburtstage": [
     {
-      "name": "Lara Raj",
-      "alter": 21,
-      "geburtsjahr": 2005,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Katseye_Lara_in_Seattle_%28cropped%29.jpg/330px-Katseye_Lara_in_Seattle_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lara_Raj",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Julian Wießmeier",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/SC_Wiener_Neustadt_vs._SV_Ried_2018-04-13_%28058%29.jpg/330px-SC_Wiener_Neustadt_vs._SV_Ried_2018-04-13_%28058%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Julian_Wie%C3%9Fmeier",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Hailey Baptiste",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Hailey_Baptiste_%282025_DC_Open%29_02_%28cropped%29.jpg/330px-Hailey_Baptiste_%282025_DC_Open%29_02_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hailey_Baptiste",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Marcell Jansen",
+      "alter": 41,
+      "geburtsjahr": 1985,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Marcell_Jansen_2016.jpg/330px-Marcell_Jansen_2016.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Marcell_Jansen",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Jake LaRavia",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Daniel Bahr",
+      "alter": 50,
+      "geburtsjahr": 1976,
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Daniel_Bahr_%282012%29.jpg/330px-Daniel_Bahr_%282012%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Daniel_Bahr",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Tyrese Maxey",
+      "alter": 26,
+      "geburtsjahr": 2000,
       "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Jake_LaRavia_%28cropped%29.jpg/330px-Jake_LaRavia_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jake_LaRavia",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/1_tyrese_maxey_2026.jpg/330px-1_tyrese_maxey_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tyrese_Maxey",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Maddison Elliott",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/XXXX15_-_Maddison_Elliott_-_3b_-_2016_Team_processing.jpg/330px-XXXX15_-_Maddison_Elliott_-_3b_-_2016_Team_processing.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Maddison_Elliott",
-      "nationalitaet": "🇦🇺 Australisch",
-      "nationalitaeten": [
-        {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
