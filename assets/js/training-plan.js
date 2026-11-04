@@ -3,8 +3,38 @@
   const dateOK = d => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d)) && new Date(d).toISOString().slice(0,10) === d;
   const addDays = (d,n) => {const x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10);};
   const exercisesOK=list=>Array.isArray(list)&&list.length>=1&&list.length<=12&&list.every(e=>e&&typeof e.name==='string'&&e.name.trim()&&e.name.length<=100&&Number.isInteger(e.sets)&&e.sets>=1&&e.sets<=6&&typeof e.reps==='string'&&e.reps.length>0&&e.reps.length<=30&&(e.weight===null||Number.isFinite(e.weight)&&e.weight>=0&&e.weight<=1000));
+  // Imported URLs are only assigned to image/link elements after validation.
+  // Never accept executable, embedded, credential-bearing or protocol-relative URLs.
+  const mediaText = (value,max) => value===undefined || typeof value==='string' && value.length<=max;
+  function mediaURL(value) {
+    if(typeof value!=='string'||value.length>1200||/[\\\s]/.test(value))return false;
+    if(/^\/assets\/images\/exercises\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp|avif)$/i.test(value))return true;
+    try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password;} catch {return false;}
+  }
+  const sourceURL = value => typeof value==='string' && value.startsWith('https://') && mediaURL(value);
+  function photoEntryOK(data) {
+    return !!data && typeof data==='object' && !Array.isArray(data) && Array.isArray(data.images) && data.images.length>=1 && data.images.length<=4 && data.images.every(image=>image && mediaURL(image.src) && mediaText(image.caption,180)) && mediaText(data.author,180) && mediaText(data.license,180) && mediaText(data.licenseName,180) && mediaText(data.note,500) && (data.source===undefined || sourceURL(data.source));
+  }
+  function photoData(exercise,plan) {
+    if(exercise?.photos!==undefined)return exercise.photos;
+    const id=exercise?.photoId;
+    return typeof id==='string' && Object.hasOwn(plan?.photoCatalog||{},id)?plan.photoCatalog[id]:null;
+  }
+  function photosOK(plan) {
+    const catalog=plan.photoCatalog;
+    if(catalog!==undefined && (!catalog || typeof catalog!=='object' || Array.isArray(catalog) || Object.keys(catalog).length>40 || !Object.entries(catalog).every(([id,data])=>/^[a-zA-Z0-9_-]{1,100}$/.test(id)&&photoEntryOK(data))))return false;
+    const exercises=[...(Array.isArray(plan.exercises)?plan.exercises:[]),...(Array.isArray(plan.sessions)?plan.sessions.flatMap(s=>Array.isArray(s?.exercises)?s.exercises:[]):[])];
+    return exercises.every(e=>e && (e.photoId===undefined || typeof e.photoId==='string' && /^[a-zA-Z0-9_-]{1,100}$/.test(e.photoId) && !!photoData(e,plan)) && (e.photos===undefined || photoEntryOK(e.photos)));
+  }
+  function photosFor(exercise,plan) {
+    const data=photoData(exercise,plan);
+    if(!photoEntryOK(data))return null;
+    const license=data.license||'';
+    const licenseLink=sourceURL(license)?license:(license==='Unlicense'?'https://unlicense.org/':license==='CC BY-SA 3.0'?'https://creativecommons.org/licenses/by-sa/3.0/':'');
+    return {images:data.images.map((image,index)=>({src:image.src,caption:image.caption||(['Startposition','Endposition'][index]||'Position '+(index+1))})),author:data.author||'Importierter Trainingsplan',source:data.source||'',license:licenseLink,licenseName:data.licenseName||license,note:[exercise.hint||'',data.note||''].filter(x=>typeof x==='string'&&x.trim()).join(' · ').slice(0,500)};
+  }
   function valid(p) {
-    return !!p && (p.sessions===undefined || Array.isArray(p.sessions)&&p.sessions.length>=1&&p.sessions.length<=7&&p.sessions.every(s=>typeof s.id==='string'&&s.id.length<=20&&typeof s.name==='string'&&s.name.length<=160&&exercisesOK(s.exercises))) && typeof p.name==='string' && p.name.trim().length>0 && p.name.length<=160 && dateOK(p.startDate) && Number.isInteger(p.weeks) && p.weeks>=1 && p.weeks<=12 && Array.isArray(p.days) && p.days.length>=2 && p.days.length<=4 && new Set(p.days).size===p.days.length && p.days.every(d=>Number.isInteger(d)&&d>=0&&d<=6) && typeof p.notes==='string' && p.notes.length<=2000 && Array.isArray(p.exercises) && p.exercises.length>=1 && p.exercises.length<=12 && p.exercises.every(e=>e && typeof e.name==='string'&&e.name.trim()&&e.name.length<=100&&Number.isInteger(e.sets)&&e.sets>=1&&e.sets<=6&&typeof e.reps==='string'&&e.reps.length>0&&e.reps.length<=30&&(e.weight===null||Number.isFinite(e.weight)&&e.weight>=0&&e.weight<=1000));
+    return !!p && photosOK(p) && (p.sessions===undefined || Array.isArray(p.sessions)&&p.sessions.length>=1&&p.sessions.length<=7&&p.sessions.every(s=>typeof s.id==='string'&&s.id.length<=20&&typeof s.name==='string'&&s.name.length<=160&&exercisesOK(s.exercises))) && typeof p.name==='string' && p.name.trim().length>0 && p.name.length<=160 && dateOK(p.startDate) && Number.isInteger(p.weeks) && p.weeks>=1 && p.weeks<=12 && Array.isArray(p.days) && p.days.length>=2 && p.days.length<=4 && new Set(p.days).size===p.days.length && p.days.every(d=>Number.isInteger(d)&&d>=0&&d<=6) && typeof p.notes==='string' && p.notes.length<=2000 && Array.isArray(p.exercises) && p.exercises.length>=1 && p.exercises.length<=12 && p.exercises.every(e=>e && typeof e.name==='string'&&e.name.trim()&&e.name.length<=100&&Number.isInteger(e.sets)&&e.sets>=1&&e.sets<=6&&typeof e.reps==='string'&&e.reps.length>0&&e.reps.length<=30&&(e.weight===null||Number.isFinite(e.weight)&&e.weight>=0&&e.weight<=1000));
   }
   function next(plan,workouts,today) {
     if(!valid(plan?.data)||!dateOK(today))return null;
@@ -40,6 +70,7 @@
       if(p.progression?.length)result.notes+=(result.notes?'\n':'')+'Wochenhinweise: '+p.progression.map(w=>'Woche '+w.week+': '+[w.focus,w.note].filter(Boolean).join(' · ')).join('; ')+'. Satz- und Gewichtsänderungen bitte als aktualisierte JSON übernehmen.';
     }else throw Error('Unbekanntes Format. Bitte die JSON-Vorlage verwenden oder deinen bisherigen Plan mit „workouts“ hochladen.');
     if(cycleId)result.cycleId=cycleId;
+    if(!photosOK(result))throw Error('Bitte Übungsfotos prüfen: gültige HTTPS-Bildadressen, höchstens vier Fotos je Übung und vorhandene photoId-Zuordnung verwenden.');
     if(!valid(result))throw Error('Bitte Planname, Startdatum, 2–4 verschiedene Trainingstage, 1–12 Übungen pro Einheit sowie Sätze, Wiederholungen und Gewichte prüfen.');
     if(result.sessions?.some(s=>!s.id.trim()))throw Error('Jede Einheit braucht eine ID, zum Beispiel A oder B.');
     if(result.sessions&&new Set(result.sessions.map(s=>s.id)).size!==result.sessions.length)throw Error('Die Einheiten müssen unterschiedliche IDs haben.');
@@ -72,5 +103,5 @@
     }
     return {id:recipe.id,name:recipe.name,image:recipe.image,imageAttribution:recipe.imageAttribution||'',imageLicense:recipe.imageLicense||'',source:recipe.source,attribution:recipe.attribution||'',license:recipe.license||'',language:recipe.language||'en',method:recipe.method,baseServings,ingredients,unscaled,pantry:[],minutes:null,kcal:null,protein:null,veggie:recipe.category==='Vegetarian'||recipe.category==='Vegan',storage:'Aufbewahrung für dieses externe Rezept nicht geprüft.'};
   }
-  globalThis.TrainingPlan=Object.freeze({valid,next,addDays,shopping,fromMeal,fromJSON});
+  globalThis.TrainingPlan=Object.freeze({valid,next,addDays,shopping,fromMeal,fromJSON,photosFor});
 })();

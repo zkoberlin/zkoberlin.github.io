@@ -180,3 +180,11 @@ Dieses Protokoll hält gemeinsam durchgeführte Prüfungen produktiver Releases 
 ## 04.11.2026 – FitPaul v6.51.0: Wochenstatus und Gewichtsdiagramm
 
 Abgeschlossene Wochen visuell und textlich unterschieden. Gewichtsgraph mit auswählbaren Messpunkten, Datum/Gewicht und vier Eckwerten samt Datum ergänzt. 67 Node-Tests, bestehende DOM-Prüfung und ergänzende DOM-Prüfung für Wochenstatus, Eckwerte und Fokus-Tooltip erfolgreich. Desktop-Vorschau im Browser mit ausschließlich synthetischen Daten geprüft; keine Speicherung und kein angemeldeter Live-Test. Screenshots lokal unter `.codex/visualizations/2026/11/04/fitpaul-progress/`. Kein Backend geändert.
+
+## 04.11.2026 – FitPaul v6.52.0: Fotos aus Trainingsplan-JSON
+
+- Importiert `photoCatalog`/`photoId` sowie direkte `photos`-Einträge. Beschriftete Start-/End-/Haltepositionen direkt in nächster Einheit, laufendem Training und Wochenvorschau; vergrößerbar mit Quellen/Lizenzen. Importbilder haben Vorrang vor kuratierten Namensbildern; Fallback für alte Pläne bleibt. Nur geprüfte HTTPS-/lokale Rasterbildadressen; keine Ausführung eingebetteter/executabler URLs; keine Referrer bei externen Bildern. Externe Anbieter erhalten technisch Bildanfragen, keine Trainingswerte.
+- Editor und Einheitswechsel erhalten Katalog/Zuordnungen und bestehende Metadaten. Neue abgeschlossene Trainings bewahren Fotos als Snapshot. Alte private Records unverändert; keine Datenmigration und kein Backenddeploy nötig.
+- 72 Node-Tests erfolgreich. Bestehende synthetische DOM-Prüfung sowie Foto-DOM-Prüfung: Importvorrang, zwei beschriftete Fotos, Dialog, Training/Weekview, Workout-Snapshot, Bearbeiten/Einheitswechsel/Speichern ohne Metadatenverlust und Bildfehler-Platzhalter erfolgreich. Persönliche JSON außerhalb des Repositorys mit Originalimport geprüft, Inhalte nicht veröffentlicht.
+- Lokale Browserprüfung mit ausschließlich synthetischen Daten: Fotos geladen, Desktopdialog und 390-px-Ansicht mit beschrifteten Positionen geprüft. Keine echten Kontodaten geschrieben. Kein physisches Smartphone und kein angemeldeter Live-Speicherzyklus geprüft.
+- Veröffentlichung und öffentliche Datei-/Versionsprüfung: noch ausstehend.

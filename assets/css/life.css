@@ -183,3 +183,14 @@
 .fit-weight-summary span,.fit-weight-summary small{font-size:11px;color:var(--t2)}
 .fit-weight-summary strong{font-size:18px;color:var(--t)}
 @media(max-width:620px){.fit-weight-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.fit-weight-tooltip{font-size:11px}.fit-weight-axis{font-size:14px}}
+
+/* Imported photo pairs stay visible, with labels, in all three exercise views. */
+.fit-exercise-media.fit-imported-media{display:block;grid-column:1/-1;padding:10px;min-width:0}
+.fit-imported-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+.fit-imported-photos figure{margin:0;min-width:0}
+.fit-imported-photos figcaption{font-size:12px;line-height:1.4;padding-top:6px;overflow-wrap:anywhere}
+.fit-app .fit-imported-photos .fit-photo-button img{height:150px;object-fit:contain}
+.fit-imported-note{font-size:11px;line-height:1.5;color:var(--t2);margin-top:10px;overflow-wrap:anywhere}
+.fit-live-header:has(.fit-imported-media){grid-template-columns:minmax(0,1fr)}
+.fit-exercise-card:has(>.fit-imported-media),.fit-week-exercise:has(>.fit-imported-media){grid-template-columns:minmax(0,1fr)}
+@media(max-width:400px){.fit-app .fit-imported-photos .fit-photo-button img{height:110px}}

@@ -69,3 +69,30 @@ Seit v6.50.2 stehen 40 motivierende Anreden bereit, je zehn für Morgen, Tag, Ab
 Vollständig erledigte Trainingswochen tragen ein sattes Dunkelgrün und „✓ Abgeschlossen“; offene Wochen bleiben hellgrün. Die Kennzeichnung funktioniert unabhängig von der geplanten Zahl der Einheiten.
 
 Im Gewichtsverlauf zeigt die Maus den jeweils nächsten gespeicherten Messpunkt mit Datum und Gewicht. Messpunkte sind auch per Berührung und Tabulatortaste auswählbar. Start, letzter Wert, Höchst- und Tiefstwert stehen mit Datum direkt unter dem Diagramm; die Extremwerte erscheinen zusätzlich als Hilfslinien im Graphen. Bei gleichen Extremwerten wird das erste Vorkommen genannt. Bereits ein einzelner Messwert wird angezeigt.
+
+## Importierte Übungsfotos ab v6.52.0
+
+Eine FitPaul-JSON kann einen `photoCatalog` und pro Übung eine `photoId` enthalten. Jeder Katalogeintrag hat `images` (ein bis vier Objekte mit `src` und optionaler `caption`), optional `author`, `source`, `license`, `licenseName` und `note`. Bildreihenfolge und Beschriftungen werden aus der Datei übernommen; eine statische Haltung benötigt kein erfundenes zweites Bild. Alternativ darf eine Übung denselben Fotoeintrag direkt unter `photos` enthalten.
+
+Importierte Fotos haben Vorrang vor der Namenszuordnung. Alle Positionen erscheinen mit Beschriftung direkt in nächster Einheit, geöffnetem Training und Wochenvorschau, mit vergrößerter Ansicht per Klick. Ohne importierte Fotos bleibt die bisherige Zuordnung samt dynamischem Fallback erhalten. Externe Fotos werden erst im Browser geladen, ohne Referrer; HTTPS-Bildadressen und lokale `/assets/images/exercises/`-Rasterbilder sind erlaubt. Ausführbare/eingebettete URLs, Anmeldedaten in URLs und ungültige Quellenlinks werden abgewiesen. Nicht erreichbare Fotos bekommen einen Platzhalter. Externe Bildanbieter sehen technisch die Bildanfrage; Trainingswerte werden nicht an sie gesendet.
+
+Katalog, Fotozuordnung und andere bestehende Planfelder bleiben beim Bearbeiten/Speichern und beim Wechsel der Einheit erhalten. Neue Trainings speichern einen validierten Fotosnapshot für spätere Bearbeitung; bestehende Trainings werden nicht umgeschrieben. `historie` in einer Importdatei bleibt ein erhaltenes Zusatzfeld und erzeugt keine erfundenen absolvierten App-Trainings. Beim Import „Aktualisieren“ wählen, um den bestehenden Zyklus zu behalten. Die 45.000-Zeichen-Grenze bleibt bestehen; Bilder als URLs referenzieren, nicht als Base64 einbetten.
+
+Beispielstruktur (gekürzt):
+
+```json
+{
+  "photoCatalog": {
+    "demo": {
+      "images": [
+        {"src": "https://example.org/start.jpg", "caption": "Startposition"},
+        {"src": "https://example.org/end.jpg", "caption": "Endposition"}
+      ],
+      "author": "Bildquelle", "source": "https://example.org/uebung", "license": "Unlicense"
+    }
+  },
+  "exercises": [{"name": "Beispiel", "sets": 2, "reps": "10", "weight": null, "photoId": "demo"}]
+}
+```
+
+Das Beispiel zeigt nur die zusätzlichen Felder; vollständige Pläne benötigen weiterhin Name, Startdatum, Wochen, Trainingstage und Hinweise gemäß Importvorlage. Persönliche Pläne bleiben außerhalb des öffentlichen Repositorys.
