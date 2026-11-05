@@ -1,71 +1,76 @@
 {
-  "datum": "04.11.2026",
-  "generiert": "2026-11-04T07:02:59Z",
+  "datum": "05.11.2026",
+  "generiert": "2026-11-05T07:29:03Z",
   "geburtstage": [
     {
-      "name": "Julian Wießmeier",
-      "alter": 34,
-      "geburtsjahr": 1992,
+      "name": "Takehiro Tomiyasu",
+      "alter": 28,
+      "geburtsjahr": 1998,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/SC_Wiener_Neustadt_vs._SV_Ried_2018-04-13_%28058%29.jpg/330px-SC_Wiener_Neustadt_vs._SV_Ried_2018-04-13_%28058%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Julian_Wie%C3%9Fmeier",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Takehiro_Tomiyasu%2C_2019_AFC_Asian_Cup_1.jpg/330px-Takehiro_Tomiyasu%2C_2019_AFC_Asian_Cup_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Takehiro_Tomiyasu",
+      "nationalitaet": "🇯🇵 Japanisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Marcell Jansen",
-      "alter": 41,
-      "geburtsjahr": 1985,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Marcell_Jansen_2016.jpg/330px-Marcell_Jansen_2016.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Marcell_Jansen",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Daniel Bahr",
-      "alter": 50,
-      "geburtsjahr": 1976,
-      "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Daniel_Bahr_%282012%29.jpg/330px-Daniel_Bahr_%282012%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Daniel_Bahr",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Tyrese Maxey",
-      "alter": 26,
-      "geburtsjahr": 2000,
+      "name": "Trey Lyles",
+      "alter": 31,
+      "geburtsjahr": 1995,
       "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/1_tyrese_maxey_2026.jpg/330px-1_tyrese_maxey_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tyrese_Maxey",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Trey_Lyles_0_Real_Madrid_Baloncesto_Euroleague_20260409_%284%29.jpg/330px-Trey_Lyles_0_Real_Madrid_Baloncesto_Euroleague_20260409_%284%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Trey_Lyles",
+      "nationalitaet": "🇺🇸🇨🇦 US-amerikanisch/Kanadisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
+        },
+        {
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Astou Ndour-Fall",
+      "alter": 32,
+      "geburtsjahr": 1994,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Astou_Ndour_%28cropped%29.jpg/330px-Astou_Ndour_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Astou_Ndour-Fall",
+      "nationalitaet": "🇪🇸 Spanisch",
+      "nationalitaeten": [
+        {
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Marco Verratti",
+      "alter": 34,
+      "geburtsjahr": 1992,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Verratti-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93126.jpg/330px-Verratti-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93126.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Marco_Verratti",
+      "nationalitaet": "🇮🇹 Italienisch",
+      "nationalitaeten": [
+        {
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
         }
       ],
       "quelle": "Wikipedia"
