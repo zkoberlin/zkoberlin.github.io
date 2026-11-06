@@ -1,76 +1,71 @@
 {
-  "datum": "05.11.2026",
-  "generiert": "2026-11-05T07:29:03Z",
+  "datum": "06.11.2026",
+  "generiert": "2026-11-06T07:28:25Z",
   "geburtstage": [
     {
-      "name": "Takehiro Tomiyasu",
-      "alter": 28,
-      "geburtsjahr": 1998,
+      "name": "Stefan Ortega",
+      "alter": 34,
+      "geburtsjahr": 1992,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Takehiro_Tomiyasu%2C_2019_AFC_Asian_Cup_1.jpg/330px-Takehiro_Tomiyasu%2C_2019_AFC_Asian_Cup_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Takehiro_Tomiyasu",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/ManCity20240722-051_%28Ortega%29.jpg/330px-ManCity20240722-051_%28Ortega%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Ortega",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Trey Lyles",
-      "alter": 31,
-      "geburtsjahr": 1995,
+      "name": "André Schürrle",
+      "alter": 36,
+      "geburtsjahr": 1990,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Sch%C3%BCrrle_2019.jpg/330px-Sch%C3%BCrrle_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andr%C3%A9_Sch%C3%BCrrle",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Sebastian Schachten",
+      "alter": 42,
+      "geburtsjahr": 1984,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Schachten%2C_Sebastian_StP_12-13_WP.JPG/330px-Schachten%2C_Sebastian_StP_12-13_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Schachten",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Day'Ron Sharpe",
+      "alter": 25,
+      "geburtsjahr": 2001,
       "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Trey_Lyles_0_Real_Madrid_Baloncesto_Euroleague_20260409_%284%29.jpg/330px-Trey_Lyles_0_Real_Madrid_Baloncesto_Euroleague_20260409_%284%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Trey_Lyles",
-      "nationalitaet": "🇺🇸🇨🇦 US-amerikanisch/Kanadisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Dayron_Sharpe_%2851833854120%29_%28cropped%29.jpg/330px-Dayron_Sharpe_%2851833854120%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Day'Ron_Sharpe",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        },
-        {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Astou Ndour-Fall",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Astou_Ndour_%28cropped%29.jpg/330px-Astou_Ndour_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Astou_Ndour-Fall",
-      "nationalitaet": "🇪🇸 Spanisch",
-      "nationalitaeten": [
-        {
-          "code": "ES",
-          "flagge": "🇪🇸",
-          "name": "Spanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Marco Verratti",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Verratti-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93126.jpg/330px-Verratti-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93126.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Marco_Verratti",
-      "nationalitaet": "🇮🇹 Italienisch",
-      "nationalitaeten": [
-        {
-          "code": "IT",
-          "flagge": "🇮🇹",
-          "name": "Italienisch"
         }
       ],
       "quelle": "Wikipedia"
