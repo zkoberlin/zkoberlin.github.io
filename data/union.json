@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-11-06T03:15:42Z",
+  "generatedAt": "2026-11-07T02:34:31Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -310,6 +310,19 @@
     },
     {
       "rank": 8,
+      "teamId": 100,
+      "name": "Hamburger SV",
+      "shortName": "HSV",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg",
+      "played": 9,
+      "goalsFor": 10,
+      "goalsAgainst": 20,
+      "goalDifference": -10,
+      "points": 12,
+      "isUnion": false
+    },
+    {
+      "rank": 9,
       "teamId": 91,
       "name": "Eintracht Frankfurt",
       "shortName": "Frankfurt",
@@ -322,7 +335,7 @@
       "isUnion": false
     },
     {
-      "rank": 9,
+      "rank": 10,
       "teamId": 81,
       "name": "1. FSV Mainz 05",
       "shortName": "Mainz",
@@ -335,7 +348,7 @@
       "isUnion": false
     },
     {
-      "rank": 10,
+      "rank": 11,
       "teamId": 95,
       "name": "FC Augsburg",
       "shortName": "Augsburg",
@@ -348,7 +361,7 @@
       "isUnion": false
     },
     {
-      "rank": 11,
+      "rank": 12,
       "teamId": 16,
       "name": "VfB Stuttgart",
       "shortName": "Stuttgart",
@@ -361,7 +374,7 @@
       "isUnion": false
     },
     {
-      "rank": 12,
+      "rank": 13,
       "teamId": 175,
       "name": "TSG Hoffenheim",
       "shortName": "Hoffenheim",
@@ -374,7 +387,7 @@
       "isUnion": false
     },
     {
-      "rank": 13,
+      "rank": 14,
       "teamId": 65,
       "name": "1. FC Köln",
       "shortName": "Köln",
@@ -387,7 +400,7 @@
       "isUnion": false
     },
     {
-      "rank": 14,
+      "rank": 15,
       "teamId": 31,
       "name": "SC Paderborn 07",
       "shortName": "Paderborn",
@@ -396,19 +409,6 @@
       "goalsFor": 6,
       "goalsAgainst": 9,
       "goalDifference": -3,
-      "points": 9,
-      "isUnion": false
-    },
-    {
-      "rank": 15,
-      "teamId": 100,
-      "name": "Hamburger SV",
-      "shortName": "HSV",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Hamburger_SV_logo.svg",
-      "played": 8,
-      "goalsFor": 7,
-      "goalsAgainst": 19,
-      "goalDifference": -12,
       "points": 9,
       "isUnion": false
     },
@@ -444,10 +444,10 @@
       "name": "Borussia Mönchengladbach",
       "shortName": "Gladbach",
       "logo": "https://i.imgur.com/KSIk0Eu.png",
-      "played": 8,
-      "goalsFor": 11,
-      "goalsAgainst": 22,
-      "goalDifference": -11,
+      "played": 9,
+      "goalsFor": 12,
+      "goalsAgainst": 25,
+      "goalDifference": -13,
       "points": 4,
       "isUnion": false
     }
