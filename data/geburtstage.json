@@ -1,71 +1,76 @@
 {
-  "datum": "06.11.2026",
-  "generiert": "2026-11-06T07:28:25Z",
+  "datum": "07.11.2026",
+  "generiert": "2026-11-07T06:40:43Z",
   "geburtstage": [
     {
-      "name": "Stefan Ortega",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/ManCity20240722-051_%28Ortega%29.jpg/330px-ManCity20240722-051_%28Ortega%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Stefan_Ortega",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "André Schürrle",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Sch%C3%BCrrle_2019.jpg/330px-Sch%C3%BCrrle_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Andr%C3%A9_Sch%C3%BCrrle",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Sebastian Schachten",
-      "alter": 42,
-      "geburtsjahr": 1984,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Schachten%2C_Sebastian_StP_12-13_WP.JPG/330px-Schachten%2C_Sebastian_StP_12-13_WP.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sebastian_Schachten",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Day'Ron Sharpe",
+      "name": "Amybeth McNulty",
       "alter": 25,
       "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Dayron_Sharpe_%2851833854120%29_%28cropped%29.jpg/330px-Dayron_Sharpe_%2851833854120%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Day'Ron_Sharpe",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Amybeth_McNulty_in_Anne_with_an_E_Publicity_Photo_2022_%28cropped-J1%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Amybeth_McNulty",
+      "nationalitaet": "🇨🇦🇮🇪 Kanadisch/Irisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        },
+        {
+          "code": "IE",
+          "flagge": "🇮🇪",
+          "name": "Irisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Callum Hudson-Odoi",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Callum_Hudson-Odoi_for_Nottingham_Forest_vs_AS_Monaco_by_Sebastian_Alston_%28cropped%29.jpg/330px-Callum_Hudson-Odoi_for_Nottingham_Forest_vs_AS_Monaco_by_Sebastian_Alston_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Callum_Hudson-Odoi",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Hongjoong",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Rapper/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Hongjoong_in_2024_%283%29_04.jpg/330px-Hongjoong_in_2024_%283%29_04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hongjoong",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Nana Okada",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Nana_Okada_in_Japan_Malaysia_Expo_2019_%28cropped%29.jpg/330px-Nana_Okada_in_Japan_Malaysia_Expo_2019_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nana_Okada",
+      "nationalitaet": "🇯🇵 Japanisch",
+      "nationalitaeten": [
+        {
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
         }
       ],
       "quelle": "Wikipedia"
