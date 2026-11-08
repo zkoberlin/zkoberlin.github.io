@@ -1,36 +1,48 @@
 {
-  "datum": "07.11.2026",
-  "generiert": "2026-11-07T06:40:43Z",
+  "datum": "08.11.2026",
+  "generiert": "2026-11-08T06:47:05Z",
   "geburtstage": [
     {
-      "name": "Amybeth McNulty",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Amybeth_McNulty_in_Anne_with_an_E_Publicity_Photo_2022_%28cropped-J1%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Amybeth_McNulty",
-      "nationalitaet": "🇨🇦🇮🇪 Kanadisch/Irisch",
+      "name": "Ilyas Ansah",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Ilyas_Ansah",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        },
-        {
-          "code": "IE",
-          "flagge": "🇮🇪",
-          "name": "Irisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Callum Hudson-Odoi",
+      "name": "Isaac Bonga",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Isaac_Bonga_17_KK_Partizan_Euroleague_20260225_%283%29_%28cropped%29.jpg/330px-Isaac_Bonga_17_KK_Partizan_Euroleague_20260225_%283%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Isaac_Bonga",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jasmine Thompson",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Callum_Hudson-Odoi_for_Nottingham_Forest_vs_AS_Monaco_by_Sebastian_Alston_%28cropped%29.jpg/330px-Callum_Hudson-Odoi_for_Nottingham_Forest_vs_AS_Monaco_by_Sebastian_Alston_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Callum_Hudson-Odoi",
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Jasmine_Thompson_%2818170507733%29_%28cropped%29.jpg/330px-Jasmine_Thompson_%2818170507733%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jasmine_Thompson",
       "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
@@ -42,37 +54,14 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Hongjoong",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Hongjoong_in_2024_%283%29_04.jpg/330px-Hongjoong_in_2024_%283%29_04.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hongjoong",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Nana Okada",
+      "name": "Akram Tawfik",
       "alter": 29,
       "geburtsjahr": 1997,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Nana_Okada_in_Japan_Malaysia_Expo_2019_%28cropped%29.jpg/330px-Nana_Okada_in_Japan_Malaysia_Expo_2019_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nana_Okada",
-      "nationalitaet": "🇯🇵 Japanisch",
-      "nationalitaeten": [
-        {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
-        }
-      ],
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Akram_Tawfik_2024.jpg/330px-Akram_Tawfik_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Akram_Tawfik",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
