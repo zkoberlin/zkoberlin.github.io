@@ -1,48 +1,31 @@
 {
-  "datum": "08.11.2026",
-  "generiert": "2026-11-08T06:47:05Z",
+  "datum": "09.11.2026",
+  "generiert": "2026-11-09T07:20:56Z",
   "geburtstage": [
     {
-      "name": "Ilyas Ansah",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Ilyas_Ansah",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Isaac Bonga",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Isaac_Bonga_17_KK_Partizan_Euroleague_20260225_%283%29_%28cropped%29.jpg/330px-Isaac_Bonga_17_KK_Partizan_Euroleague_20260225_%283%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Isaac_Bonga",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Jasmine Thompson",
-      "alter": 26,
-      "geburtsjahr": 2000,
+      "name": "Momo",
+      "alter": 30,
+      "geburtsjahr": 1996,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Jasmine_Thompson_%2818170507733%29_%28cropped%29.jpg/330px-Jasmine_Thompson_%2818170507733%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jasmine_Thompson",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/TWICE_MOMO_April_2024.jpg/330px-TWICE_MOMO_April_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Momo_(singer)",
+      "nationalitaet": "🇯🇵 Japanisch",
+      "nationalitaeten": [
+        {
+          "code": "JP",
+          "flagge": "🇯🇵",
+          "name": "Japanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Finn Cole",
+      "alter": 31,
+      "geburtsjahr": 1995,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Finn_Cole_01.jpg/330px-Finn_Cole_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Finn_Cole",
       "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
@@ -54,14 +37,37 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Akram Tawfik",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Akram_Tawfik_2024.jpg/330px-Akram_Tawfik_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Akram_Tawfik",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "name": "Nikki Blonsky",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Nikki_Blonsky_LF.JPG/330px-Nikki_Blonsky_LF.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nikki_Blonsky",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Lio Tipton",
+      "alter": 38,
+      "geburtsjahr": 1988,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/LioTiptonTIFFSept2011.jpg/330px-LioTiptonTIFFSept2011.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lio_Tipton",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
