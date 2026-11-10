@@ -1,71 +1,76 @@
 {
-  "datum": "09.11.2026",
-  "generiert": "2026-11-09T07:20:56Z",
+  "datum": "10.11.2026",
+  "generiert": "2026-11-10T07:51:12Z",
   "geburtstage": [
     {
-      "name": "Momo",
-      "alter": 30,
-      "geburtsjahr": 1996,
+      "name": "Jens Lehmann",
+      "alter": 57,
+      "geburtsjahr": 1969,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Jens_Lehmann_-_2019202184453_2019-07-21_Champions_for_Charity_-_3017_-_B70I3052_%28cropped%29.jpg/330px-Jens_Lehmann_-_2019202184453_2019-07-21_Champions_for_Charity_-_3017_-_B70I3052_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jens_Lehmann",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Roland Emmerich",
+      "alter": 71,
+      "geburtsjahr": 1955,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Roland_Emmerich_%286973286762%29.jpg/330px-Roland_Emmerich_%286973286762%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Roland_Emmerich",
+      "nationalitaet": "🇺🇸🇩🇪 US-amerikanisch/Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        },
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Christian Convery",
+      "alter": 17,
+      "geburtsjahr": 2009,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Christian_Convery_at_Toronto_International_Film_Festival_2025_after_party_September_8.jpg/330px-Christian_Convery_at_Toronto_International_Film_Festival_2025_after_party_September_8.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christian_Convery",
+      "nationalitaet": "🇨🇦 Kanadisch",
+      "nationalitaeten": [
+        {
+          "code": "CA",
+          "flagge": "🇨🇦",
+          "name": "Kanadisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Hong Eunchae",
+      "alter": 20,
+      "geburtsjahr": 2006,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/TWICE_MOMO_April_2024.jpg/330px-TWICE_MOMO_April_2024.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Momo_(singer)",
-      "nationalitaet": "🇯🇵 Japanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Hong_Eunchae_2026.jpg/330px-Hong_Eunchae_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Hong_Eunchae",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "JP",
-          "flagge": "🇯🇵",
-          "name": "Japanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Finn Cole",
-      "alter": 31,
-      "geburtsjahr": 1995,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Finn_Cole_01.jpg/330px-Finn_Cole_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Finn_Cole",
-      "nationalitaet": "🏴 Englisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Nikki Blonsky",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Nikki_Blonsky_LF.JPG/330px-Nikki_Blonsky_LF.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nikki_Blonsky",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Lio Tipton",
-      "alter": 38,
-      "geburtsjahr": 1988,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/LioTiptonTIFFSept2011.jpg/330px-LioTiptonTIFFSept2011.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lio_Tipton",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
