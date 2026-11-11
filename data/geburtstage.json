@@ -1,14 +1,14 @@
 {
-  "datum": "10.11.2026",
-  "generiert": "2026-11-10T07:51:12Z",
+  "datum": "11.11.2026",
+  "generiert": "2026-11-11T07:18:52Z",
   "geburtstage": [
     {
-      "name": "Jens Lehmann",
-      "alter": 57,
-      "geburtsjahr": 1969,
+      "name": "Philipp Lahm",
+      "alter": 43,
+      "geburtsjahr": 1983,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Jens_Lehmann_-_2019202184453_2019-07-21_Champions_for_Charity_-_3017_-_B70I3052_%28cropped%29.jpg/330px-Jens_Lehmann_-_2019202184453_2019-07-21_Champions_for_Charity_-_3017_-_B70I3052_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Jens_Lehmann",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Philipp_Lahm_auf_der_Berlinale_2024%2C_Ausschnitt.jpg/330px-Philipp_Lahm_auf_der_Berlinale_2024%2C_Ausschnitt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Lahm",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,57 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Roland Emmerich",
-      "alter": 71,
-      "geburtsjahr": 1955,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Roland_Emmerich_%286973286762%29.jpg/330px-Roland_Emmerich_%286973286762%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Roland_Emmerich",
-      "nationalitaet": "🇺🇸🇩🇪 US-amerikanisch/Deutsch",
+      "name": "Ben Gannon-Doak",
+      "alter": 21,
+      "geburtsjahr": 2005,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Ben_Gannon-Doak_Scotland_v_Bolivia_6_June_2026-68_%28cropped%29.jpg/330px-Ben_Gannon-Doak_Scotland_v_Bolivia_6_June_2026-68_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ben_Gannon-Doak",
+      "nationalitaet": "🏴 Schottisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-SCT",
+          "flagge": "🏴",
+          "name": "Schottisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Liudmila Samsonova",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Liudmila_Samsonova_%282023_DC_Open%29_01.jpg/330px-Liudmila_Samsonova_%282023_DC_Open%29_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Liudmila_Samsonova",
+      "nationalitaet": "🇷🇺 Russisch",
+      "nationalitaeten": [
+        {
+          "code": "RU",
+          "flagge": "🇷🇺",
+          "name": "Russisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Tye Sheridan",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Tye_Sheridan-67829.jpg/330px-Tye_Sheridan-67829.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tye_Sheridan",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        },
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Christian Convery",
-      "alter": 17,
-      "geburtsjahr": 2009,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Christian_Convery_at_Toronto_International_Film_Festival_2025_after_party_September_8.jpg/330px-Christian_Convery_at_Toronto_International_Film_Festival_2025_after_party_September_8.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Christian_Convery",
-      "nationalitaet": "🇨🇦 Kanadisch",
-      "nationalitaeten": [
-        {
-          "code": "CA",
-          "flagge": "🇨🇦",
-          "name": "Kanadisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Hong Eunchae",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Hong_Eunchae_2026.jpg/330px-Hong_Eunchae_2026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Hong_Eunchae",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
         }
       ],
       "quelle": "Wikipedia"
