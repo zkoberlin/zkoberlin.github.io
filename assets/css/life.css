@@ -194,3 +194,7 @@
 .fit-live-header:has(.fit-imported-media){grid-template-columns:minmax(0,1fr)}
 .fit-exercise-card:has(>.fit-imported-media),.fit-week-exercise:has(>.fit-imported-media){grid-template-columns:minmax(0,1fr)}
 @media(max-width:400px){.fit-app .fit-imported-photos .fit-photo-button img{height:110px}}
+
+#nextDateEditor{margin-top:14px;max-width:360px}
+#nextDateEditor>summary{cursor:pointer;font-weight:600}
+#nextDateForm{margin-top:10px}

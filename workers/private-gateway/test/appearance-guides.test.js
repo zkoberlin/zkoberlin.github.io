@@ -9,3 +9,11 @@ test('automatic appearance follows the OS and cross-tab changes, explicit appear
 test('appearance still works when storage is blocked or contains an unknown mode',()=>{const x=appearance({blocked:true});assert.doesNotThrow(()=>x.click());assert.equal(x.theme.getMode(),'light');assert.equal(appearance({saved:'invalid'}).theme.getMode(),'auto');});
 test('all current A B C exercises have specific instructions and do and dont cues',()=>{for(const name of ['Beinpresse','Brustpresse','Latzug','Rudern','Glute Bridge','Wadenheben','Plank','Beinbeuger-Maschine','Seitstütz','Step-ups','Schrägbank-Brustpresse','Rudermaschine','Glute Bridge einbeinig','Einbeinstand','Dead Bug']){const g=ExerciseGuides.get(name);assert.equal(g.known,true,name);assert.ok(g.setup.length>40,name);assert.ok(g.move.length>40,name);assert.equal(g.yes.length,2);assert.equal(g.no.length,2);assert.match(g.source,/^https:\/\//);}});
 test('guides distinguish one-leg bridges and do not invent instructions for an unknown exercise',()=>{assert.notEqual(ExerciseGuides.get('Glute Bridge').setup,ExerciseGuides.get({name:'Glute Bridge',reps:'10 je Bein'}).setup);assert.equal(ExerciseGuides.get('Rudern Kurzhantel').known,false);assert.match(ExerciseGuides.get('Unbekannt').setup,/keine geprüfte/);assert.equal(ExerciseGuides.get('Waden-Dipps').known,true);});
+
+test('the additional plan movements have specific setup and execution instructions',()=>{
+ for(const name of ['Seitheben am Gerät oder mit Kurzhanteln','Adduktorenmaschine','Latzug ergänzend','Pallof Press je Seite','Schräg-Brustpresse oder Brustpresse']){
+  const guide=ExerciseGuides.get(name);assert.equal(guide.known,true,name);
+  assert.ok(guide.setup.length>40,name);assert.ok(guide.move.length>40,name);
+  assert.equal(guide.yes.length,2);assert.equal(guide.no.length,2);
+ }
+});

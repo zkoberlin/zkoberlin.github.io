@@ -32,3 +32,25 @@ test('JSON import supports canonical and original chat schemas without invented 
  for(const input of [null,[],{plan:{name:'Broken',workouts:[]}}, {...data,days:[1,1]}, {...data,sessions:[{id:'',name:'Empty ID',exercises:data.exercises}] }])assert.throws(()=>TrainingPlan.fromJSON(input,{startDate:'2026-11-02'}));
 });
 test('new JSON cycle excludes old untagged records; updating retains the current cycle',()=>{const p={...plan,data:{...data,strictCycle:true,cycleId:'new'}};assert.equal(TrainingPlan.next(p,[workout('2026-10-31')],'2026-10-31').done,0);const old={...workout('2026-10-31'),data:{...workout('2026-10-31').data,planCycle:'keep',sessionId:'A'}};const imported=TrainingPlan.fromJSON({...data,cycleId:'keep',sessions:['A','B','C'].map(id=>({id,name:id,exercises:data.exercises}))},{cycleId:'keep',startDate:'2026-10-31'});assert.equal(TrainingPlan.next({data:imported,revision:2},[old],'2026-10-31').sessionId,'B');});
+
+test('one-off date can move outside regular days without advancing the workout',()=>{
+ const p={...plan,data:{...data,cycleId:'cycle'}};
+ const done={...workout('2026-11-02'),id:'last'};done.data.planCycle='cycle';
+ const rescheduled=TrainingPlan.withNextDate(p,[done],'2026-11-03','2026-11-06');
+ const next=TrainingPlan.next({data:rescheduled,revision:2},[done],'2026-11-03');
+ assert.equal(next.date,'2026-11-06');assert.equal(next.done,1);assert.equal(next.dateOverridden,true);
+ assert.ok(validRecord('plan',rescheduled));
+ assert.throws(()=>TrainingPlan.withNextDate(p,[done],'2026-11-03','2026-11-03'),/04\.11\.2026/);
+ const later={...workout('2026-11-04'),id:'later'};later.data.planCycle='cycle';
+ assert.equal(TrainingPlan.next({data:rescheduled,revision:2},[done,later],'2026-11-04').dateOverridden,false);
+ assert.equal(TrainingPlan.next({data:rescheduled,revision:2},[done],'2026-11-07').dateOverridden,false);
+});
+test('saving and resetting a date retains progress of plans predating cycle IDs',()=>{
+ const log=[{...workout('2026-11-02',30,1),id:'legacy'}];
+ const data=TrainingPlan.withNextDate(plan,log,'2026-11-03','2026-11-07');
+ const updated={data,revision:2};
+ assert.equal(TrainingPlan.next(updated,log,'2026-11-03').done,1);
+ const reset=TrainingPlan.withNextDate(updated,log,'2026-11-03',null);
+ assert.equal(TrainingPlan.next({data:reset,revision:3},log,'2026-11-03').done,1);
+ assert.equal(TrainingPlan.next({data:reset,revision:3},log,'2026-11-03').date,'2026-11-04');
+});

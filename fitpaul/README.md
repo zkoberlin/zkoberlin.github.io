@@ -96,3 +96,9 @@ Beispielstruktur (gekürzt):
 ```
 
 Das Beispiel zeigt nur die zusätzlichen Felder; vollständige Pläne benötigen weiterhin Name, Startdatum, Wochen, Trainingstage und Hinweise gemäß Importvorlage. Persönliche Pläne bleiben außerhalb des öffentlichen Repositorys.
+
+## Trainingsdatum und Satzpausen ab v6.53.0
+
+„Nächsten Termin ändern“ speichert einmalig ein anderes Datum für die nächste Einheit, auch außerhalb der üblichen Wochentage. Der früheste auswählbare Tag berücksichtigt den bisherigen Erholungsabstand. Die A/B/C-Reihenfolge und der Trainingsfortschritt ändern sich erst durch das Speichern eines absolvierten Trainings. „Automatisch planen“ entfernt die Ausnahme; nach der nächsten gespeicherten Einheit oder einem verstrichenen Termin greift die Automatik ebenfalls wieder. Beim Protokollieren ist das tatsächliche Trainingsdatum separat änderbar.
+
+Die Laufansicht zeigt importierte Satzpausen, die Übungsanleitungen wiederholen sie. Für Seitheben, Adduktorenmaschine, ergänzenden Latzug, Pallof Press und die Brustpressen-Auswahl sind konkrete Hinweise hinterlegt. Gewichte werden weiterhin anhand bisheriger Einträge vorausgefüllt und nicht automatisch erhöht.

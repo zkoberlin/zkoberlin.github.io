@@ -39,16 +39,30 @@
   function next(plan,workouts,today) {
     if(!valid(plan?.data)||!dateOK(today))return null;
     const p=plan.data;
-    const history=workouts.filter(r=>r.data.date>=p.startDate&&r.data.date<=today&&(p.cycleId?(p.strictCycle?r.data.planCycle===p.cycleId:(!r.data.planCycle||r.data.planCycle===p.cycleId)):(!r.data.planRevision||r.data.planRevision===plan.revision))).sort((a,b)=>a.data.date.localeCompare(b.data.date)||a.updatedAt.localeCompare(b.updatedAt));
+    const history=workouts.filter(r=>r.data.date>=p.startDate&&r.data.date<=today&&(p.cycleId?(p.strictCycle?r.data.planCycle===p.cycleId:(!r.data.planCycle||r.data.planCycle===p.cycleId)):(!r.data.planRevision||r.data.planRevision===(p.progressRevision??plan.revision)))).sort((a,b)=>a.data.date.localeCompare(b.data.date)||a.updatedAt.localeCompare(b.updatedAt));
     const latest=history.at(-1),total=p.weeks*p.days.length,done=history.length;
-    let date=[today,p.startDate,latest?addDays(latest.data.date,2):p.startDate].sort().at(-1);
+    const earliestDate=[today,p.startDate,latest?addDays(latest.data.date,2):p.startDate].sort().at(-1);
+    let date=earliestDate;
     for(let i=0;i<14&&!p.days.includes(new Date(date+'T12:00:00Z').getUTCDay());i++)date=addDays(date,1);
+    const override=p.nextDateOverride,lastWorkoutId=latest?.id??null;
+    const dateOverridden=done<total&&override?.done===done&&override.lastWorkoutId===lastWorkoutId&&dateOK(override.date)&&override.date>=earliestDate;
+    if(dateOverridden)date=override.date;
     const recent=[...workouts].filter(r=>r.data.date<=today).sort((a,b)=>b.data.date.localeCompare(a.data.date)||b.updatedAt.localeCompare(a.updatedAt));
     const previousIndex=p.sessions?.findIndex(s=>s.id===latest?.data.sessionId)??-1;
     const session=p.sessions?.[previousIndex>=0?(previousIndex+1)%p.sessions.length:done%p.sessions.length];
     const week=Math.min(p.weeks,Math.floor(done/p.days.length)+1);
     const exercises=(session?.exercises||p.exercises).map(e=>{const previous=recent.flatMap(r=>r.data.exercises).find(x=>x.name===e.name);const main=['Beinpresse','Brustpresse','Latzug','Rudern','Rudermaschine'].includes(e.name);return {...e,sets:p.progressionEnabled&&week>=2&&main?3:e.sets,weight:previous?.weight??e.weight};});
-    return {date,done,total,finished:done>=total,week,sessionId:session?.id||null,sessionName:session?.name||'Ganzkörper',exercises};
+    return {date,earliestDate,dateOverridden,lastWorkoutId,done,total,finished:done>=total,week,sessionId:session?.id||null,sessionName:session?.name||'Ganzkörper',exercises};
+  }
+  function withNextDate(plan,workouts,today,date) {
+    const upcoming=next(plan,workouts,today);
+    if(!upcoming||upcoming.finished)throw Error('Es gibt keine offene Einheit.');
+    if(date!==null&&(!dateOK(date)||date<upcoming.earliestDate))throw Error('Bitte ein Datum ab '+upcoming.earliestDate.split('-').reverse().join('.')+' wählen.');
+    const data={...plan.data};
+    if(!data.cycleId)data.progressRevision=data.progressRevision??plan.revision;
+    if(date===null)delete data.nextDateOverride;
+    else data.nextDateOverride={date,done:upcoming.done,lastWorkoutId:upcoming.lastWorkoutId};
+    return data;
   }
   function fromJSON(input,{startDate,cycleId}={}) {
     const p=input?.plan||input;
@@ -103,5 +117,5 @@
     }
     return {id:recipe.id,name:recipe.name,image:recipe.image,imageAttribution:recipe.imageAttribution||'',imageLicense:recipe.imageLicense||'',source:recipe.source,attribution:recipe.attribution||'',license:recipe.license||'',language:recipe.language||'en',method:recipe.method,baseServings,ingredients,unscaled,pantry:[],minutes:null,kcal:null,protein:null,veggie:recipe.category==='Vegetarian'||recipe.category==='Vegan',storage:'Aufbewahrung für dieses externe Rezept nicht geprüft.'};
   }
-  globalThis.TrainingPlan=Object.freeze({valid,next,addDays,shopping,fromMeal,fromJSON,photosFor});
+  globalThis.TrainingPlan=Object.freeze({valid,next,addDays,shopping,fromMeal,fromJSON,photosFor,withNextDate});
 })();
