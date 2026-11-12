@@ -1,14 +1,14 @@
 {
-  "datum": "11.11.2026",
-  "generiert": "2026-11-11T07:18:52Z",
+  "datum": "12.11.2026",
+  "generiert": "2026-11-12T07:49:32Z",
   "geburtstage": [
     {
-      "name": "Philipp Lahm",
-      "alter": 43,
-      "geburtsjahr": 1983,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Philipp_Lahm_auf_der_Berlinale_2024%2C_Ausschnitt.jpg/330px-Philipp_Lahm_auf_der_Berlinale_2024%2C_Ausschnitt.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Philipp_Lahm",
+      "name": "Jürgen Todenhöfer",
+      "alter": 86,
+      "geburtsjahr": 1940,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Frankfurter_Buchmesse_2015_-_J%C3%BCrgen_Todenh%C3%B6fer_1.JPG/330px-Frankfurter_Buchmesse_2015_-_J%C3%BCrgen_Todenh%C3%B6fer_1.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Todenh%C3%B6fer",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,57 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Ben Gannon-Doak",
-      "alter": 21,
-      "geburtsjahr": 2005,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Ben_Gannon-Doak_Scotland_v_Bolivia_6_June_2026-68_%28cropped%29.jpg/330px-Ben_Gannon-Doak_Scotland_v_Bolivia_6_June_2026-68_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ben_Gannon-Doak",
-      "nationalitaet": "🏴 Schottisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-SCT",
-          "flagge": "🏴",
-          "name": "Schottisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Liudmila Samsonova",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Liudmila_Samsonova_%282023_DC_Open%29_01.jpg/330px-Liudmila_Samsonova_%282023_DC_Open%29_01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Liudmila_Samsonova",
-      "nationalitaet": "🇷🇺 Russisch",
-      "nationalitaeten": [
-        {
-          "code": "RU",
-          "flagge": "🇷🇺",
-          "name": "Russisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Tye Sheridan",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Tye_Sheridan-67829.jpg/330px-Tye_Sheridan-67829.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tye_Sheridan",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Paolo Banchero",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Paolo_Banchero.png/330px-Paolo_Banchero.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Paolo_Banchero",
+      "nationalitaet": "🇺🇸🇮🇹 US-amerikanisch/Italienisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
+        },
+        {
+          "code": "IT",
+          "flagge": "🇮🇹",
+          "name": "Italienisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Tino Livramento",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Manchester_United_v_Southampton%2C_12_February_2022_%2823%29_%28Tino_Livramento_cropped%29.jpg/330px-Manchester_United_v_Southampton%2C_12_February_2022_%2823%29_%28Tino_Livramento_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tino_Livramento",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Raffey Cassidy",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Schauspieler/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Raffey_Cassidy_on_the_Tomorrowland_panel_at_MCM_London_Comic_Con_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Raffey_Cassidy",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
