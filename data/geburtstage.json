@@ -1,76 +1,71 @@
 {
-  "datum": "12.11.2026",
-  "generiert": "2026-11-12T07:49:32Z",
+  "datum": "13.11.2026",
+  "generiert": "2026-11-13T07:26:37Z",
   "geburtstage": [
     {
-      "name": "Jürgen Todenhöfer",
-      "alter": 86,
-      "geburtsjahr": 1940,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Frankfurter_Buchmesse_2015_-_J%C3%BCrgen_Todenh%C3%B6fer_1.JPG/330px-Frankfurter_Buchmesse_2015_-_J%C3%BCrgen_Todenh%C3%B6fer_1.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/J%C3%BCrgen_Todenh%C3%B6fer",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "name": "Emma Raducanu",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Transylvania_Open_2026_-_Emma_Raducanu_vs_Greet_Minnen_6-0%2C_6-4_-_01.02.2026_%2855076013277%29_%28cropped%29.jpg/330px-Transylvania_Open_2026_-_Emma_Raducanu_vs_Greet_Minnen_6-0%2C_6-4_-_01.02.2026_%2855076013277%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Emma_Raducanu",
+      "nationalitaet": "🇬🇧 Britisch",
       "nationalitaeten": [
         {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Paolo Banchero",
+      "name": "Gio Reyna",
       "alter": 24,
       "geburtsjahr": 2002,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Paolo_Banchero.png/330px-Paolo_Banchero.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Paolo_Banchero",
-      "nationalitaet": "🇺🇸🇮🇹 US-amerikanisch/Italienisch",
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Gio_Reyna_Australia_v_USA_19_June_2026-71.jpg/330px-Gio_Reyna_Australia_v_USA_19_June_2026-71.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Gio_Reyna",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        },
-        {
-          "code": "IT",
-          "flagge": "🇮🇹",
-          "name": "Italienisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Tino Livramento",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Manchester_United_v_Southampton%2C_12_February_2022_%2823%29_%28Tino_Livramento_cropped%29.jpg/330px-Manchester_United_v_Southampton%2C_12_February_2022_%2823%29_%28Tino_Livramento_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tino_Livramento",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Sydney Agudong",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Sydney_Agudong_Portrait_2.png/330px-Sydney_Agudong_Portrait_2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sydney_Agudong",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Raffey Cassidy",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Raffey_Cassidy_on_the_Tomorrowland_panel_at_MCM_London_Comic_Con_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Raffey_Cassidy",
-      "nationalitaet": "🏴 Englisch",
+      "name": "Lando Norris",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3968_by_Stepro_%28cropped2%29.jpg/330px-2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3968_by_Stepro_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lando_Norris",
+      "nationalitaet": "🇬🇧 Britisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
         }
       ],
       "quelle": "Wikipedia"
