@@ -1,48 +1,53 @@
 {
-  "datum": "13.11.2026",
-  "generiert": "2026-11-13T07:26:37Z",
+  "datum": "14.11.2026",
+  "generiert": "2026-11-14T07:07:12Z",
   "geburtstage": [
     {
-      "name": "Emma Raducanu",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Transylvania_Open_2026_-_Emma_Raducanu_vs_Greet_Minnen_6-0%2C_6-4_-_01.02.2026_%2855076013277%29_%28cropped%29.jpg/330px-Transylvania_Open_2026_-_Emma_Raducanu_vs_Greet_Minnen_6-0%2C_6-4_-_01.02.2026_%2855076013277%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Emma_Raducanu",
-      "nationalitaet": "🇬🇧 Britisch",
+      "name": "Mavie Hörbiger",
+      "alter": 47,
+      "geburtsjahr": 1979,
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/MJK_332221_Mavie_H%C3%B6rbiger_%28Der_Boden_unter_den_F%C3%BC%C3%9Fen%2C_Berlinale_2019%29.jpg/330px-MJK_332221_Mavie_H%C3%B6rbiger_%28Der_Boden_unter_den_F%C3%BC%C3%9Fen%2C_Berlinale_2019%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mavie_H%C3%B6rbiger",
+      "nationalitaet": "🇩🇪🇦🇹 Deutsch/Österreichisch",
       "nationalitaeten": [
         {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        },
+        {
+          "code": "AT",
+          "flagge": "🇦🇹",
+          "name": "Österreichisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Gio Reyna",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Gio_Reyna_Australia_v_USA_19_June_2026-71.jpg/330px-Gio_Reyna_Australia_v_USA_19_June_2026-71.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Gio_Reyna",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Sydney Agudong",
+      "name": "Xiyeon",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Sydney_Agudong_Portrait_2.png/330px-Sydney_Agudong_Portrait_2.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sydney_Agudong",
+      "beruf": "Schauspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/170325_%ED%94%84%EB%A6%AC%EC%8A%A4%ED%8B%B4_%EC%97%AC%EC%9D%98%EB%8F%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C_12.jpg/330px-170325_%ED%94%84%EB%A6%AC%EC%8A%A4%ED%8B%B4_%EC%97%AC%EC%9D%98%EB%8F%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C_12.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Xiyeon",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "nationalitaeten": [
+        {
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Sofia Kenin",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Sofia_Kenin_%282025_DC_Open%29_05_%28edited_and_cropped%29.jpg/330px-Sofia_Kenin_%282025_DC_Open%29_05_%28edited_and_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Sofia_Kenin",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,20 +59,14 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Lando Norris",
-      "alter": 27,
-      "geburtsjahr": 1999,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3968_by_Stepro_%28cropped2%29.jpg/330px-2024-08-25_Motorsport%2C_Formel_1%2C_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3968_by_Stepro_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Lando_Norris",
-      "nationalitaet": "🇬🇧 Britisch",
-      "nationalitaeten": [
-        {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
-        }
-      ],
+      "name": "Noussair Mazraoui",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_%28cropped%29.jpg/330px-Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Noussair_Mazraoui",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
