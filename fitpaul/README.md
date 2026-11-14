@@ -30,7 +30,7 @@ Karten besitzen dezente farbige Rahmen sowie Hover- und Tastaturfokus-Effekte. A
 
 - Gewichtsmessungen mit Datum, optional Bauchumfang, Gewichtsverlauf ab zwei Werten und Mittel der letzten sieben Tage.
 - Trainingsanzahl/-verlauf und tatsächliche protokollierte Sätze/Gewichte/Wiederholungen; keine behauptete automatische Körperfettmessung.
-- Zusätzliche Aktivitäten: Radfahren, E-Bike, Spazieren, Laufen, Schwimmen und Sonstiges; Dauer, optionale Strecke, Datum und Notizen. Diese ersetzen keine Krafttrainings und drehen den A/B/C-Plan nicht weiter.
+- Früher gespeicherte Aktivitäten sind in der Trainingshistorie und im Export verfügbar. Die Eingabe neuer Aktivitäten wurde entfernt.
 - Profil: Größe, Alter, Formelwahl, Aktivitätsfaktor, Zielgewicht, mögliche Trainingstage, Notizen, Anzeigename und optional eigenes Kalorienziel.
 - Kompakte Energieübersicht: Ruhebedarf, geschätzter Alltagsbedarf, Kalorienziel, Eiweiß, Kohlenhydrate, Fett. Herleitung aufklappbar. Daten aus privatem Profil/Messwerten; keine heimliche Überschreibung bestehender Einstellungen.
 - Der frühere Tracker-/Aktivkalorien-Teil ist aus Oberfläche und Berechnung entfernt. Kein Ernährungstagebuch, kein automatisches Kalorienverbrauchs- oder Intake-Tracking. Schätzwerte sind keine gemessenen Verbräuche.
