@@ -1,53 +1,48 @@
 {
-  "datum": "14.11.2026",
-  "generiert": "2026-11-14T07:07:12Z",
+  "datum": "15.11.2026",
+  "generiert": "2026-11-15T07:18:30Z",
   "geburtstage": [
     {
-      "name": "Mavie Hörbiger",
-      "alter": 47,
-      "geburtsjahr": 1979,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/MJK_332221_Mavie_H%C3%B6rbiger_%28Der_Boden_unter_den_F%C3%BC%C3%9Fen%2C_Berlinale_2019%29.jpg/330px-MJK_332221_Mavie_H%C3%B6rbiger_%28Der_Boden_unter_den_F%C3%BC%C3%9Fen%2C_Berlinale_2019%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mavie_H%C3%B6rbiger",
-      "nationalitaet": "🇩🇪🇦🇹 Deutsch/Österreichisch",
+      "name": "Martin Pieckenhagen",
+      "alter": 55,
+      "geburtsjahr": 1971,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Martin_Pieckenhagen",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
           "code": "DE",
           "flagge": "🇩🇪",
           "name": "Deutsch"
-        },
-        {
-          "code": "AT",
-          "flagge": "🇦🇹",
-          "name": "Österreichisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Xiyeon",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Schauspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/170325_%ED%94%84%EB%A6%AC%EC%8A%A4%ED%8B%B4_%EC%97%AC%EC%9D%98%EB%8F%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C_12.jpg/330px-170325_%ED%94%84%EB%A6%AC%EC%8A%A4%ED%8B%B4_%EC%97%AC%EC%9D%98%EB%8F%84_%ED%8C%AC%EC%8B%B8%EC%9D%B8%ED%9A%8C_12.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Xiyeon",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "name": "Wolf Biermann",
+      "alter": 90,
+      "geburtsjahr": 1936,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Wolf_Biermann_at_the_Frankfurt_Book_Fair_2026-4737.jpg/330px-Wolf_Biermann_at_the_Frankfurt_Book_Fair_2026-4737.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Wolf_Biermann",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Sofia Kenin",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Sofia_Kenin_%282025_DC_Open%29_05_%28edited_and_cropped%29.jpg/330px-Sofia_Kenin_%282025_DC_Open%29_05_%28edited_and_cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Sofia_Kenin",
+      "name": "TyTy Washington Jr.",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/TyTy_Washington_%28cropped%29.jpg/330px-TyTy_Washington_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/TyTy_Washington_Jr.",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -59,14 +54,20 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Noussair Mazraoui",
+      "name": "Paula Badosa",
       "alter": 29,
       "geburtsjahr": 1997,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_%28cropped%29.jpg/330px-Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Noussair_Mazraoui",
-      "nationalitaet": null,
-      "nationalitaeten": [],
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Badosa_RG21_%2814%29_%2851376409698%29_%28cropped%29.jpg/330px-Badosa_RG21_%2814%29_%2851376409698%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Paula_Badosa",
+      "nationalitaet": "🇪🇸 Spanisch",
+      "nationalitaeten": [
+        {
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
+        }
+      ],
       "quelle": "Wikipedia"
     }
   ]
