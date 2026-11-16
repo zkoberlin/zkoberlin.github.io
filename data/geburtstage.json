@@ -1,14 +1,14 @@
 {
-  "datum": "15.11.2026",
-  "generiert": "2026-11-15T07:18:30Z",
+  "datum": "16.11.2026",
+  "generiert": "2026-11-16T07:26:11Z",
   "geburtstage": [
     {
-      "name": "Martin Pieckenhagen",
-      "alter": 55,
-      "geburtsjahr": 1971,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Martin_Pieckenhagen",
+      "name": "Britta Steffen",
+      "alter": 43,
+      "geburtsjahr": 1983,
+      "beruf": "Persönlichkeit",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Britta_Steffen_medal.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/Britta_Steffen",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Wolf Biermann",
-      "alter": 90,
-      "geburtsjahr": 1936,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Wolf_Biermann_at_the_Frankfurt_Book_Fair_2026-4737.jpg/330px-Wolf_Biermann_at_the_Frankfurt_Book_Fair_2026-4737.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Wolf_Biermann",
+      "name": "Christian Lorenz",
+      "alter": 60,
+      "geburtsjahr": 1966,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/RammsteinFlake.jpg/330px-RammsteinFlake.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christian_Lorenz",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,12 +37,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "TyTy Washington Jr.",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/TyTy_Washington_%28cropped%29.jpg/330px-TyTy_Washington_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/TyTy_Washington_Jr.",
+      "name": "Mason Ramsey",
+      "alter": 20,
+      "geburtsjahr": 2006,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Mason_Ramsey_at_Grammercy_Theater_%28cropped2%29.jpg/330px-Mason_Ramsey_at_Grammercy_Theater_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mason_Ramsey",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +54,23 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Paula Badosa",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Badosa_RG21_%2814%29_%2851376409698%29_%28cropped%29.jpg/330px-Badosa_RG21_%2814%29_%2851376409698%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Paula_Badosa",
-      "nationalitaet": "🇪🇸 Spanisch",
+      "name": "Josh Green",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Josh_Green_2021_%28cropped%29.jpg/330px-Josh_Green_2021_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Josh_Green_(basketball)",
+      "nationalitaet": "🇺🇸🇦🇺 US-amerikanisch/Australisch",
       "nationalitaeten": [
         {
-          "code": "ES",
-          "flagge": "🇪🇸",
-          "name": "Spanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        },
+        {
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
