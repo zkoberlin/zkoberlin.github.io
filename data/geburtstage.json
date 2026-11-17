@@ -1,14 +1,14 @@
 {
-  "datum": "16.11.2026",
-  "generiert": "2026-11-16T07:26:11Z",
+  "datum": "17.11.2026",
+  "generiert": "2026-11-17T08:38:06Z",
   "geburtstage": [
     {
-      "name": "Britta Steffen",
-      "alter": 43,
-      "geburtsjahr": 1983,
-      "beruf": "Persönlichkeit",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Britta_Steffen_medal.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/Britta_Steffen",
+      "name": "Bernd Schneider",
+      "alter": 53,
+      "geburtsjahr": 1973,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Bernd_Schneider.JPG/330px-Bernd_Schneider.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Bernd_Schneider_(footballer)",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Christian Lorenz",
-      "alter": 60,
-      "geburtsjahr": 1966,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/RammsteinFlake.jpg/330px-RammsteinFlake.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Christian_Lorenz",
+      "name": "Werner Hoyer",
+      "alter": 75,
+      "geburtsjahr": 1951,
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Werner_Hoyer_EP_2017.jpg/330px-Werner_Hoyer_EP_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Werner_Hoyer",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,40 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Mason Ramsey",
-      "alter": 20,
-      "geburtsjahr": 2006,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Mason_Ramsey_at_Grammercy_Theater_%28cropped2%29.jpg/330px-Mason_Ramsey_at_Grammercy_Theater_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Mason_Ramsey",
+      "name": "Linda Nosková",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Linda_Noskov%C3%A1_%282023_US_Open%29_01_%28cropped2%29.jpg/330px-Linda_Noskov%C3%A1_%282023_US_Open%29_01_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Linda_Noskov%C3%A1",
+      "nationalitaet": "🇨🇿 Tschechisch",
+      "nationalitaeten": [
+        {
+          "code": "CZ",
+          "flagge": "🇨🇿",
+          "name": "Tschechisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kate Douglass",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Persönlichkeit",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Kate_Douglass",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Josh Green",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Josh_Green_2021_%28cropped%29.jpg/330px-Josh_Green_2021_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Josh_Green_(basketball)",
-      "nationalitaet": "🇺🇸🇦🇺 US-amerikanisch/Australisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        },
-        {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
