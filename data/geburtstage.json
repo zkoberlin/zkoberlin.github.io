@@ -1,14 +1,14 @@
 {
-  "datum": "17.11.2026",
-  "generiert": "2026-11-17T08:38:06Z",
+  "datum": "18.11.2026",
+  "generiert": "2026-11-18T08:00:55Z",
   "geburtstage": [
     {
-      "name": "Bernd Schneider",
-      "alter": 53,
-      "geburtsjahr": 1973,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Bernd_Schneider.JPG/330px-Bernd_Schneider.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Bernd_Schneider_(footballer)",
+      "name": "Herman Rarebell",
+      "alter": 77,
+      "geburtsjahr": 1949,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Herman_Rarebell.png/330px-Herman_Rarebell.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Herman_Rarebell",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Werner Hoyer",
-      "alter": 75,
-      "geburtsjahr": 1951,
-      "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Werner_Hoyer_EP_2017.jpg/330px-Werner_Hoyer_EP_2017.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Werner_Hoyer",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Linda Nosková",
+      "name": "Luka Romero",
       "alter": 22,
       "geburtsjahr": 2004,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Linda_Noskov%C3%A1_%282023_US_Open%29_01_%28cropped2%29.jpg/330px-Linda_Noskov%C3%A1_%282023_US_Open%29_01_%28cropped2%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Linda_Noskov%C3%A1",
-      "nationalitaet": "🇨🇿 Tschechisch",
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Luka_Romero_%28cropped%29.jpg/330px-Luka_Romero_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Luka_Romero",
+      "nationalitaet": "🇦🇷 Argentinisch",
       "nationalitaeten": [
         {
-          "code": "CZ",
-          "flagge": "🇨🇿",
-          "name": "Tschechisch"
+          "code": "AR",
+          "flagge": "🇦🇷",
+          "name": "Argentinisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Kate Douglass",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Persönlichkeit",
+      "name": "Patrick Baldwin Jr.",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Basketballer/in",
       "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Kate_Douglass",
+      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Baldwin_Jr.",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
           "code": "US",
           "flagge": "🇺🇸",
           "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Robert Sánchez",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg/330px-Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Robert_S%C3%A1nchez",
+      "nationalitaet": "🇪🇸 Spanisch",
+      "nationalitaeten": [
+        {
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
         }
       ],
       "quelle": "Wikipedia"
