@@ -1,14 +1,14 @@
 {
-  "datum": "18.11.2026",
-  "generiert": "2026-11-18T08:00:55Z",
+  "datum": "19.11.2026",
+  "generiert": "2026-11-19T08:05:57Z",
   "geburtstage": [
     {
-      "name": "Herman Rarebell",
-      "alter": 77,
-      "geburtsjahr": 1949,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Herman_Rarebell.png/330px-Herman_Rarebell.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Herman_Rarebell",
+      "name": "André Lotterer",
+      "alter": 45,
+      "geburtsjahr": 1981,
+      "beruf": "Rennfahrer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Andre_Lotterer_2024_WEC_Fuji_2.jpg/330px-Andre_Lotterer_2024_WEC_Fuji_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Andr%C3%A9_Lotterer",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,29 +20,23 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Luka Romero",
-      "alter": 22,
-      "geburtsjahr": 2004,
+      "name": "Nahuel Ferraresi",
+      "alter": 28,
+      "geburtsjahr": 1998,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Luka_Romero_%28cropped%29.jpg/330px-Luka_Romero_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Luka_Romero",
-      "nationalitaet": "🇦🇷 Argentinisch",
-      "nationalitaeten": [
-        {
-          "code": "AR",
-          "flagge": "🇦🇷",
-          "name": "Argentinisch"
-        }
-      ],
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Nahuel_Ferraresi",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Patrick Baldwin Jr.",
-      "alter": 24,
-      "geburtsjahr": 2002,
+      "name": "Zach Collins",
+      "alter": 29,
+      "geburtsjahr": 1997,
       "beruf": "Basketballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Patrick_Baldwin_Jr.",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Zach_Collins_crop.jpg/330px-Zach_Collins_crop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Zach_Collins",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -54,18 +48,18 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Robert Sánchez",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg/330px-Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Robert_S%C3%A1nchez",
-      "nationalitaet": "🇪🇸 Spanisch",
+      "name": "RiceGum",
+      "alter": 30,
+      "geburtsjahr": 1996,
+      "beruf": "Rapper/in",
+      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/52/RiceGum_-_Tanner_Fox.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "wikidata": "https://en.wikipedia.org/wiki/RiceGum",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
-          "code": "ES",
-          "flagge": "🇪🇸",
-          "name": "Spanisch"
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
         }
       ],
       "quelle": "Wikipedia"
