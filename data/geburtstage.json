@@ -1,14 +1,14 @@
 {
-  "datum": "19.11.2026",
-  "generiert": "2026-11-19T08:05:57Z",
+  "datum": "20.11.2026",
+  "generiert": "2026-11-20T07:51:45Z",
   "geburtstage": [
     {
-      "name": "André Lotterer",
-      "alter": 45,
-      "geburtsjahr": 1981,
-      "beruf": "Rennfahrer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Andre_Lotterer_2024_WEC_Fuji_2.jpg/330px-Andre_Lotterer_2024_WEC_Fuji_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Andr%C3%A9_Lotterer",
+      "name": "Pascal Roller",
+      "alter": 50,
+      "geburtsjahr": 1976,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Pascal_Roller_2016-05-20_DOSB_Sportliche_Darbietung_%28cropped%29.jpg/330px-Pascal_Roller_2016-05-20_DOSB_Sportliche_Darbietung_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Pascal_Roller",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,23 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Nahuel Ferraresi",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Nahuel_Ferraresi",
-      "nationalitaet": null,
-      "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Zach Collins",
-      "alter": 29,
-      "geburtsjahr": 1997,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Zach_Collins_crop.jpg/330px-Zach_Collins_crop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Zach_Collins",
+      "name": "Caty McNally",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/McNally_RGQ22_%2813%29_%2852128520717%29.jpg/330px-McNally_RGQ22_%2813%29_%2852128520717%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Caty_McNally",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -48,18 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "RiceGum",
-      "alter": 30,
-      "geburtsjahr": 1996,
-      "beruf": "Rapper/in",
-      "foto": "https://upload.wikimedia.org/wikipedia/commons/5/52/RiceGum_-_Tanner_Fox.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
-      "wikidata": "https://en.wikipedia.org/wiki/RiceGum",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Adrien Truffert",
+      "alter": 25,
+      "geburtsjahr": 2001,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Adrien_Truffert.jpg/330px-Adrien_Truffert.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Adrien_Truffert",
+      "nationalitaet": "🇫🇷 Französisch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Connie Talbot",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Connie2025.jpg/330px-Connie2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Connie_Talbot",
+      "nationalitaet": "🇬🇧 Britisch",
+      "nationalitaeten": [
+        {
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
         }
       ],
       "quelle": "Wikipedia"
