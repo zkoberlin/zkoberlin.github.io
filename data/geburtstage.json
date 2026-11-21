@@ -1,14 +1,14 @@
 {
-  "datum": "20.11.2026",
-  "generiert": "2026-11-20T07:51:45Z",
+  "datum": "21.11.2026",
+  "generiert": "2026-11-21T07:47:53Z",
   "geburtstage": [
     {
-      "name": "Pascal Roller",
+      "name": "Martin Meichelbeck",
       "alter": 50,
       "geburtsjahr": 1976,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Pascal_Roller_2016-05-20_DOSB_Sportliche_Darbietung_%28cropped%29.jpg/330px-Pascal_Roller_2016-05-20_DOSB_Sportliche_Darbietung_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Pascal_Roller",
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Martin_Meichelbeck",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Caty McNally",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/McNally_RGQ22_%2813%29_%2852128520717%29.jpg/330px-McNally_RGQ22_%2813%29_%2852128520717%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Caty_McNally",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "name": "Heidemarie Wieczorek-Zeul",
+      "alter": 84,
+      "geburtsjahr": 1942,
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Heidemarie_Wieczorek-Zeul_%282009%29.jpg/330px-Heidemarie_Wieczorek-Zeul_%282009%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Heidemarie_Wieczorek-Zeul",
+      "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Adrien Truffert",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Adrien_Truffert.jpg/330px-Adrien_Truffert.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Adrien_Truffert",
-      "nationalitaet": "🇫🇷 Französisch",
-      "nationalitaeten": [
-        {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Connie Talbot",
-      "alter": 26,
-      "geburtsjahr": 2000,
+      "name": "Liz",
+      "alter": 22,
+      "geburtsjahr": 2004,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Connie2025.jpg/330px-Connie2025.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Connie_Talbot",
-      "nationalitaet": "🇬🇧 Britisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Liz_of_Ive%2C_July_19%2C_2026_%281%29.png/330px-Liz_of_Ive%2C_July_19%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Liz_(South_Korean_singer)",
+      "nationalitaet": "🇰🇷 Südkoreanisch",
       "nationalitaeten": [
         {
-          "code": "GB",
-          "flagge": "🇬🇧",
-          "name": "Britisch"
+          "code": "KR",
+          "flagge": "🇰🇷",
+          "name": "Südkoreanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Rico Lewis",
+      "alter": 22,
+      "geburtsjahr": 2004,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/ManCity20240722-027.jpg/330px-ManCity20240722-027.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Rico_Lewis",
+      "nationalitaet": "🏴 Englisch",
+      "nationalitaeten": [
+        {
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
         }
       ],
       "quelle": "Wikipedia"
