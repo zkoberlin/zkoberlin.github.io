@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-11-21T03:48:50Z",
+  "generatedAt": "2026-11-22T02:51:56Z",
   "source": {
     "name": "OpenLigaDB",
     "url": "https://openligadb.de/",
@@ -16,23 +16,8 @@
     "name": "1. FC Union Berlin",
     "shortName": "Union Berlin",
     "logo": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg",
-    "form": "WDDDL",
+    "form": "DDDLL",
     "lastMatches": [
-      {
-        "id": 83215,
-        "date": "2026-10-24T13:30:00Z",
-        "competition": "Bundesliga",
-        "isHome": false,
-        "opponent": {
-          "id": 95,
-          "name": "FC Augsburg",
-          "shortName": "Augsburg",
-          "logo": "https://i.imgur.com/sdE62e2.png"
-        },
-        "goalsFor": 1,
-        "goalsAgainst": 1,
-        "result": "D"
-      },
       {
         "id": 83223,
         "date": "2026-11-01T14:30:00Z",
@@ -62,45 +47,38 @@
         "goalsFor": 0,
         "goalsAgainst": 2,
         "result": "L"
+      },
+      {
+        "id": 83241,
+        "date": "2026-11-21T14:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": true,
+        "opponent": {
+          "id": 1635,
+          "name": "RB Leipzig",
+          "shortName": "Leipzig",
+          "logo": "https://i.imgur.com/Rpwsjz1.png"
+        },
+        "goalsFor": 1,
+        "goalsAgainst": 5,
+        "result": "L"
       }
     ]
   },
   "status": "active",
   "standing": {
-    "rank": 16,
-    "played": 9,
+    "rank": 17,
+    "played": 10,
     "won": 1,
     "drawn": 4,
-    "lost": 4,
-    "goalsFor": 7,
-    "goalsAgainst": 21,
-    "goalDifference": -14,
+    "lost": 5,
+    "goalsFor": 8,
+    "goalsAgainst": 26,
+    "goalDifference": -18,
     "points": 7,
-    "form": "WDDDL"
+    "form": "DDDLL"
   },
   "lastMatch": {
-    "id": 83232,
-    "matchday": 9,
-    "date": "2026-11-08T16:30:00Z",
-    "home": {
-      "id": 112,
-      "name": "SC Freiburg",
-      "shortName": "Freiburg",
-      "logo": "https://i.imgur.com/r3mvi0h.png"
-    },
-    "away": {
-      "id": 80,
-      "name": "1. FC Union Berlin",
-      "shortName": "Union Berlin",
-      "logo": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg"
-    },
-    "score": {
-      "home": 2,
-      "away": 0
-    },
-    "unionResult": "L"
-  },
-  "nextMatch": {
     "id": 83241,
     "matchday": 10,
     "date": "2026-11-21T14:30:00Z",
@@ -115,110 +93,145 @@
       "name": "RB Leipzig",
       "shortName": "Leipzig",
       "logo": "https://i.imgur.com/Rpwsjz1.png"
+    },
+    "score": {
+      "home": 1,
+      "away": 5
+    },
+    "unionResult": "L"
+  },
+  "nextMatch": {
+    "id": 83250,
+    "matchday": 11,
+    "date": "2026-11-28T14:30:00Z",
+    "home": {
+      "id": 81,
+      "name": "1. FSV Mainz 05",
+      "shortName": "Mainz",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg"
+    },
+    "away": {
+      "id": 80,
+      "name": "1. FC Union Berlin",
+      "shortName": "Union Berlin",
+      "logo": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg"
     }
   },
   "nextOpponent": {
-    "id": 1635,
-    "name": "RB Leipzig",
-    "shortName": "Leipzig",
-    "logo": "https://i.imgur.com/Rpwsjz1.png",
+    "id": 81,
+    "name": "1. FSV Mainz 05",
+    "shortName": "Mainz",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg",
     "standing": {
-      "rank": 4,
-      "teamId": 1635,
-      "name": "RB Leipzig",
-      "shortName": "Leipzig",
-      "logo": "https://i.imgur.com/Rpwsjz1.png",
+      "rank": 12,
+      "teamId": 81,
+      "name": "1. FSV Mainz 05",
+      "shortName": "Mainz",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg",
       "played": 9,
-      "goalsFor": 27,
-      "goalsAgainst": 13,
-      "goalDifference": 14,
-      "points": 18,
+      "goalsFor": 18,
+      "goalsAgainst": 19,
+      "goalDifference": -1,
+      "points": 10,
       "isUnion": false
     },
     "headToHead": [
       {
-        "id": 72232,
-        "date": "2024-09-14T13:30:00Z",
+        "id": 72221,
+        "date": "2024-08-24T13:30:00Z",
         "competition": "Bundesliga",
         "isHome": false,
         "opponent": {
-          "id": 1635,
-          "name": "RB Leipzig",
-          "shortName": "Leipzig",
-          "logo": "https://i.imgur.com/Rpwsjz1.png"
+          "id": 81,
+          "name": "1. FSV Mainz 05",
+          "shortName": "Mainz",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg"
         },
-        "goalsFor": 0,
-        "goalsAgainst": 0,
+        "goalsFor": 1,
+        "goalsAgainst": 1,
         "result": "D"
       },
       {
-        "id": 72391,
-        "date": "2025-02-01T17:30:00Z",
+        "id": 72373,
+        "date": "2025-01-19T14:30:00Z",
         "competition": "Bundesliga",
         "isHome": true,
         "opponent": {
-          "id": 1635,
-          "name": "RB Leipzig",
-          "shortName": "Leipzig",
-          "logo": "https://i.imgur.com/Rpwsjz1.png"
+          "id": 81,
+          "name": "1. FSV Mainz 05",
+          "shortName": "Mainz",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Logo_Mainz_05.svg"
         },
-        "goalsFor": 0,
-        "goalsAgainst": 0,
-        "result": "D"
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "result": "W"
       }
     ],
-    "form": "WLWWW",
+    "form": "LWLLL",
     "lastMatches": [
       {
-        "id": 83211,
+        "id": 83216,
         "date": "2026-10-24T13:30:00Z",
         "competition": "Bundesliga",
         "isHome": true,
+        "opponent": {
+          "id": 134,
+          "name": "SV Werder Bremen",
+          "shortName": "Bremen",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/b/be/SV-Werder-Bremen-Logo.svg"
+        },
+        "goalsFor": 2,
+        "goalsAgainst": 3,
+        "result": "L"
+      },
+      {
+        "id": 83227,
+        "date": "2026-10-30T19:30:00Z",
+        "competition": "Bundesliga",
+        "isHome": false,
         "opponent": {
           "id": 198,
           "name": "SV 07 Elversberg",
           "shortName": "Elversberg",
           "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png"
         },
-        "goalsFor": 4,
-        "goalsAgainst": 0,
-        "result": "W"
+        "goalsFor": 1,
+        "goalsAgainst": 4,
+        "result": "L"
       },
       {
-        "id": 83226,
-        "date": "2026-10-31T14:30:00Z",
-        "competition": "Bundesliga",
-        "isHome": false,
-        "opponent": {
-          "id": 9,
-          "name": "FC Schalke 04",
-          "shortName": "S04",
-          "logo": "https://upload.wikimedia.org/wikipedia/commons/9/97/FC_Schalke_04_Logo.png"
-        },
-        "goalsFor": 2,
-        "goalsAgainst": 0,
-        "result": "W"
-      },
-      {
-        "id": 83229,
+        "id": 83233,
         "date": "2026-11-07T14:30:00Z",
         "competition": "Bundesliga",
         "isHome": true,
         "opponent": {
-          "id": 95,
-          "name": "FC Augsburg",
-          "shortName": "Augsburg",
-          "logo": "https://i.imgur.com/sdE62e2.png"
+          "id": 40,
+          "name": "FC Bayern München",
+          "shortName": "Bayern",
+          "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Logo_FC_Bayern_M%C3%BCnchen_%282002%E2%80%932017%29.svg"
         },
-        "goalsFor": 5,
+        "goalsFor": 1,
         "goalsAgainst": 2,
-        "result": "W"
+        "result": "L"
       }
     ]
   },
   "table": [
     {
       "rank": 1,
+      "teamId": 7,
+      "name": "Borussia Dortmund",
+      "shortName": "Dortmund",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png",
+      "played": 10,
+      "goalsFor": 17,
+      "goalsAgainst": 7,
+      "goalDifference": 10,
+      "points": 24,
+      "isUnion": false
+    },
+    {
+      "rank": 2,
       "teamId": 40,
       "name": "FC Bayern München",
       "shortName": "Bayern",
@@ -231,29 +244,16 @@
       "isUnion": false
     },
     {
-      "rank": 2,
-      "teamId": 7,
-      "name": "Borussia Dortmund",
-      "shortName": "Dortmund",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Borussia_Dortmund_logo.svg/960px-Borussia_Dortmund_logo.svg.png",
-      "played": 9,
-      "goalsFor": 16,
-      "goalsAgainst": 7,
-      "goalDifference": 9,
-      "points": 21,
-      "isUnion": false
-    },
-    {
       "rank": 3,
       "teamId": 112,
       "name": "SC Freiburg",
       "shortName": "Freiburg",
       "logo": "https://i.imgur.com/r3mvi0h.png",
-      "played": 9,
-      "goalsFor": 20,
+      "played": 10,
+      "goalsFor": 21,
       "goalsAgainst": 10,
-      "goalDifference": 10,
-      "points": 19,
+      "goalDifference": 11,
+      "points": 22,
       "isUnion": false
     },
     {
@@ -262,11 +262,11 @@
       "name": "RB Leipzig",
       "shortName": "Leipzig",
       "logo": "https://i.imgur.com/Rpwsjz1.png",
-      "played": 9,
-      "goalsFor": 27,
-      "goalsAgainst": 13,
-      "goalDifference": 14,
-      "points": 18,
+      "played": 10,
+      "goalsFor": 32,
+      "goalsAgainst": 14,
+      "goalDifference": 18,
+      "points": 21,
       "isUnion": false
     },
     {
@@ -275,11 +275,11 @@
       "name": "Bayer 04 Leverkusen",
       "shortName": "Leverkusen",
       "logo": "https://upload.wikimedia.org/wikipedia/de/f/f7/Bayer_Leverkusen_Logo.svg",
-      "played": 9,
-      "goalsFor": 20,
+      "played": 10,
+      "goalsFor": 24,
       "goalsAgainst": 17,
-      "goalDifference": 3,
-      "points": 16,
+      "goalDifference": 7,
+      "points": 19,
       "isUnion": false
     },
     {
@@ -297,15 +297,15 @@
     },
     {
       "rank": 7,
-      "teamId": 198,
-      "name": "SV 07 Elversberg",
-      "shortName": "Elversberg",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
-      "played": 9,
-      "goalsFor": 17,
-      "goalsAgainst": 18,
-      "goalDifference": -1,
-      "points": 13,
+      "teamId": 91,
+      "name": "Eintracht Frankfurt",
+      "shortName": "Frankfurt",
+      "logo": "https://i.imgur.com/X8NFkOb.png",
+      "played": 10,
+      "goalsFor": 16,
+      "goalsAgainst": 20,
+      "goalDifference": -4,
+      "points": 15,
       "isUnion": false
     },
     {
@@ -314,36 +314,36 @@
       "name": "VfB Stuttgart",
       "shortName": "Stuttgart",
       "logo": "https://i.imgur.com/v0tkpNx.png",
-      "played": 9,
+      "played": 10,
       "goalsFor": 15,
       "goalsAgainst": 15,
       "goalDifference": 0,
-      "points": 12,
+      "points": 13,
       "isUnion": false
     },
     {
       "rank": 9,
-      "teamId": 175,
-      "name": "TSG Hoffenheim",
-      "shortName": "Hoffenheim",
-      "logo": "https://i.imgur.com/gF0PfEl.png",
-      "played": 9,
-      "goalsFor": 16,
-      "goalsAgainst": 17,
-      "goalDifference": -1,
-      "points": 12,
+      "teamId": 198,
+      "name": "SV 07 Elversberg",
+      "shortName": "Elversberg",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/SV_Elversberg_Logo.svg/500px-SV_Elversberg_Logo.svg.png",
+      "played": 10,
+      "goalsFor": 17,
+      "goalsAgainst": 19,
+      "goalDifference": -2,
+      "points": 13,
       "isUnion": false
     },
     {
       "rank": 10,
-      "teamId": 91,
-      "name": "Eintracht Frankfurt",
-      "shortName": "Frankfurt",
-      "logo": "https://i.imgur.com/X8NFkOb.png",
-      "played": 9,
-      "goalsFor": 15,
-      "goalsAgainst": 20,
-      "goalDifference": -5,
+      "teamId": 175,
+      "name": "TSG Hoffenheim",
+      "shortName": "Hoffenheim",
+      "logo": "https://i.imgur.com/gF0PfEl.png",
+      "played": 10,
+      "goalsFor": 16,
+      "goalsAgainst": 18,
+      "goalDifference": -2,
       "points": 12,
       "isUnion": false
     },
@@ -375,19 +375,6 @@
     },
     {
       "rank": 13,
-      "teamId": 31,
-      "name": "SC Paderborn 07",
-      "shortName": "Paderborn",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/SC_Paderborn_07_Logo.svg",
-      "played": 9,
-      "goalsFor": 8,
-      "goalsAgainst": 11,
-      "goalDifference": -3,
-      "points": 10,
-      "isUnion": false
-    },
-    {
-      "rank": 14,
       "teamId": 65,
       "name": "1. FC Köln",
       "shortName": "Köln",
@@ -396,6 +383,19 @@
       "goalsFor": 11,
       "goalsAgainst": 15,
       "goalDifference": -4,
+      "points": 10,
+      "isUnion": false
+    },
+    {
+      "rank": 14,
+      "teamId": 31,
+      "name": "SC Paderborn 07",
+      "shortName": "Paderborn",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e3/SC_Paderborn_07_Logo.svg",
+      "played": 10,
+      "goalsFor": 8,
+      "goalsAgainst": 15,
+      "goalDifference": -7,
       "points": 10,
       "isUnion": false
     },
@@ -414,29 +414,29 @@
     },
     {
       "rank": 16,
-      "teamId": 80,
-      "name": "1. FC Union Berlin",
-      "shortName": "Union Berlin",
-      "logo": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg",
-      "played": 9,
-      "goalsFor": 7,
-      "goalsAgainst": 21,
-      "goalDifference": -14,
-      "points": 7,
-      "isUnion": true
-    },
-    {
-      "rank": 17,
       "teamId": 9,
       "name": "FC Schalke 04",
       "shortName": "S04",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/9/97/FC_Schalke_04_Logo.png",
-      "played": 9,
+      "played": 10,
       "goalsFor": 5,
       "goalsAgainst": 11,
       "goalDifference": -6,
-      "points": 6,
+      "points": 7,
       "isUnion": false
+    },
+    {
+      "rank": 17,
+      "teamId": 80,
+      "name": "1. FC Union Berlin",
+      "shortName": "Union Berlin",
+      "logo": "https://assets.dfb.de/uploads/000/018/232/small_union-Berlin.jpg",
+      "played": 10,
+      "goalsFor": 8,
+      "goalsAgainst": 26,
+      "goalDifference": -18,
+      "points": 7,
+      "isUnion": true
     },
     {
       "rank": 18,
@@ -444,10 +444,10 @@
       "name": "Borussia Mönchengladbach",
       "shortName": "Gladbach",
       "logo": "https://i.imgur.com/KSIk0Eu.png",
-      "played": 9,
+      "played": 10,
       "goalsFor": 12,
-      "goalsAgainst": 25,
-      "goalDifference": -13,
+      "goalsAgainst": 26,
+      "goalDifference": -14,
       "points": 4,
       "isUnion": false
     }
