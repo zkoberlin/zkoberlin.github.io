@@ -1,14 +1,14 @@
 {
-  "datum": "21.11.2026",
-  "generiert": "2026-11-21T07:47:53Z",
+  "datum": "22.11.2026",
+  "generiert": "2026-11-22T07:35:42Z",
   "geburtstage": [
     {
-      "name": "Martin Meichelbeck",
+      "name": "Torsten Frings",
       "alter": 50,
       "geburtsjahr": 1976,
       "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Martin_Meichelbeck",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Audi_quattro-Cup_37.JPG/330px-Audi_quattro-Cup_37.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Torsten_Frings",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,12 +20,12 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Heidemarie Wieczorek-Zeul",
-      "alter": 84,
-      "geburtsjahr": 1942,
-      "beruf": "Politiker/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Heidemarie_Wieczorek-Zeul_%282009%29.jpg/330px-Heidemarie_Wieczorek-Zeul_%282009%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Heidemarie_Wieczorek-Zeul",
+      "name": "Boris Becker",
+      "alter": 59,
+      "geburtsjahr": 1967,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Boris_Becker_-_240422_174721_%28cropped%29.jpg/330px-Boris_Becker_-_240422_174721_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Boris_Becker",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -37,35 +37,35 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Liz",
-      "alter": 22,
-      "geburtsjahr": 2004,
+      "name": "Brandon Miller",
+      "alter": 24,
+      "geburtsjahr": 2002,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Brandon_Miller_Alabama_%28cropped%29.jpg/330px-Brandon_Miller_Alabama_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Brandon_Miller_(basketball%2C_born_2002)",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Chenle",
+      "alter": 25,
+      "geburtsjahr": 2001,
       "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Liz_of_Ive%2C_July_19%2C_2026_%281%29.png/330px-Liz_of_Ive%2C_July_19%2C_2026_%281%29.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Liz_(South_Korean_singer)",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/ZhongChenle-2023MelonMusicAwards.jpg/330px-ZhongChenle-2023MelonMusicAwards.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Chenle",
+      "nationalitaet": "🇨🇳 Chinesisch",
       "nationalitaeten": [
         {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Rico Lewis",
-      "alter": 22,
-      "geburtsjahr": 2004,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/ManCity20240722-027.jpg/330px-ManCity20240722-027.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Rico_Lewis",
-      "nationalitaet": "🏴 Englisch",
-      "nationalitaeten": [
-        {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
         }
       ],
       "quelle": "Wikipedia"
