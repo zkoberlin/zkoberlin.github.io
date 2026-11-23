@@ -1,14 +1,14 @@
 {
-  "datum": "22.11.2026",
-  "generiert": "2026-11-22T07:35:42Z",
+  "datum": "23.11.2026",
+  "generiert": "2026-11-23T08:22:29Z",
   "geburtstage": [
     {
-      "name": "Torsten Frings",
-      "alter": 50,
-      "geburtsjahr": 1976,
+      "name": "Christopher Quiring",
+      "alter": 36,
+      "geburtsjahr": 1990,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Audi_quattro-Cup_37.JPG/330px-Audi_quattro-Cup_37.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Torsten_Frings",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/1.FC_Union_Berlin_-_1.FC_Kaiserslautern_0-0_%2816606727147%29.jpg/330px-1.FC_Union_Berlin_-_1.FC_Kaiserslautern_0-0_%2816606727147%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Christopher_Quiring",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,52 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Boris Becker",
-      "alter": 59,
-      "geburtsjahr": 1967,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Boris_Becker_-_240422_174721_%28cropped%29.jpg/330px-Boris_Becker_-_240422_174721_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Boris_Becker",
-      "nationalitaet": "🇩🇪 Deutsch",
-      "nationalitaeten": [
-        {
-          "code": "DE",
-          "flagge": "🇩🇪",
-          "name": "Deutsch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Brandon Miller",
-      "alter": 24,
-      "geburtsjahr": 2002,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Brandon_Miller_Alabama_%28cropped%29.jpg/330px-Brandon_Miller_Alabama_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Brandon_Miller_(basketball%2C_born_2002)",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Chenle",
+      "name": "Tino Anjorin",
       "alter": 25,
       "geburtsjahr": 2001,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/ZhongChenle-2023MelonMusicAwards.jpg/330px-ZhongChenle-2023MelonMusicAwards.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Chenle",
-      "nationalitaet": "🇨🇳 Chinesisch",
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Tino_Anjorin_2021.jpg/330px-Tino_Anjorin_2021.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Tino_Anjorin",
+      "nationalitaet": "🏴 Englisch",
       "nationalitaeten": [
         {
-          "code": "CN",
-          "flagge": "🇨🇳",
-          "name": "Chinesisch"
+          "code": "GB-ENG",
+          "flagge": "🏴",
+          "name": "Englisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Boubacar Kamara",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Lens_-_Marseille_%2822-01-2022%29_17.jpg/330px-Lens_-_Marseille_%2822-01-2022%29_17.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Boubacar_Kamara",
+      "nationalitaet": "🇫🇷 Französisch",
+      "nationalitaeten": [
+        {
+          "code": "FR",
+          "flagge": "🇫🇷",
+          "name": "Französisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Caoimhín Kelleher",
+      "alter": 28,
+      "geburtsjahr": 1998,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Caoimh%C3%ADn_Kelleher.jpg/330px-Caoimh%C3%ADn_Kelleher.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Caoimh%C3%ADn_Kelleher",
+      "nationalitaet": "🇮🇪 Irisch",
+      "nationalitaeten": [
+        {
+          "code": "IE",
+          "flagge": "🇮🇪",
+          "name": "Irisch"
         }
       ],
       "quelle": "Wikipedia"
