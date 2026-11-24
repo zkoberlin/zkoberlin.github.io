@@ -1,14 +1,14 @@
 {
-  "datum": "23.11.2026",
-  "generiert": "2026-11-23T08:22:29Z",
+  "datum": "24.11.2026",
+  "generiert": "2026-11-24T10:30:58Z",
   "geburtstage": [
     {
-      "name": "Christopher Quiring",
-      "alter": 36,
-      "geburtsjahr": 1990,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/1.FC_Union_Berlin_-_1.FC_Kaiserslautern_0-0_%2816606727147%29.jpg/330px-1.FC_Union_Berlin_-_1.FC_Kaiserslautern_0-0_%2816606727147%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Christopher_Quiring",
+      "name": "Norbert Haug",
+      "alter": 74,
+      "geburtsjahr": 1952,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Norbert_Haug_-_2019102182714_2019-04-12_Radio_Regenbogen_Award_2019_-_Sven_-_1D_X_MK_II_-_0012_-_AK8I9181_%28cropped%29.jpg/330px-Norbert_Haug_-_2019102182714_2019-04-12_Radio_Regenbogen_Award_2019_-_Sven_-_1D_X_MK_II_-_0012_-_AK8I9181_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Norbert_Haug",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,52 +20,46 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Tino Anjorin",
-      "alter": 25,
-      "geburtsjahr": 2001,
+      "name": "Marcus Bontempelli",
+      "alter": 31,
+      "geburtsjahr": 1995,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Tino_Anjorin_2021.jpg/330px-Tino_Anjorin_2021.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Tino_Anjorin",
-      "nationalitaet": "🏴 Englisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Marcus_Bontempelli_2018.3.jpg/330px-Marcus_Bontempelli_2018.3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Marcus_Bontempelli",
+      "nationalitaet": "🇦🇺 Australisch",
       "nationalitaeten": [
         {
-          "code": "GB-ENG",
-          "flagge": "🏴",
-          "name": "Englisch"
+          "code": "AU",
+          "flagge": "🇦🇺",
+          "name": "Australisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Boubacar Kamara",
-      "alter": 27,
-      "geburtsjahr": 1999,
+      "name": "Nabil Bentaleb",
+      "alter": 32,
+      "geburtsjahr": 1994,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Lens_-_Marseille_%2822-01-2022%29_17.jpg/330px-Lens_-_Marseille_%2822-01-2022%29_17.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Boubacar_Kamara",
-      "nationalitaet": "🇫🇷 Französisch",
-      "nationalitaeten": [
-        {
-          "code": "FR",
-          "flagge": "🇫🇷",
-          "name": "Französisch"
-        }
-      ],
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/RC_Lens_-_Lille_OSC_%2808-10-2023%29_19_%28cropped%29.jpg/330px-RC_Lens_-_Lille_OSC_%2808-10-2023%29_19_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Nabil_Bentaleb",
+      "nationalitaet": null,
+      "nationalitaeten": [],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Caoimhín Kelleher",
-      "alter": 28,
-      "geburtsjahr": 1998,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/Caoimh%C3%ADn_Kelleher.jpg/330px-Caoimh%C3%ADn_Kelleher.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Caoimh%C3%ADn_Kelleher",
-      "nationalitaet": "🇮🇪 Irisch",
+      "name": "Ivi Adamou",
+      "alter": 33,
+      "geburtsjahr": 1993,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Ivi_Adamou5crop.jpg/330px-Ivi_Adamou5crop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Ivi_Adamou",
+      "nationalitaet": "🇬🇷 Griechisch",
       "nationalitaeten": [
         {
-          "code": "IE",
-          "flagge": "🇮🇪",
-          "name": "Irisch"
+          "code": "GR",
+          "flagge": "🇬🇷",
+          "name": "Griechisch"
         }
       ],
       "quelle": "Wikipedia"
