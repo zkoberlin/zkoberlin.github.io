@@ -1,14 +1,14 @@
 {
-  "datum": "24.11.2026",
-  "generiert": "2026-11-24T10:30:58Z",
+  "datum": "25.11.2026",
+  "generiert": "2026-11-25T09:19:44Z",
   "geburtstage": [
     {
-      "name": "Norbert Haug",
-      "alter": 74,
-      "geburtsjahr": 1952,
-      "beruf": "Persönlichkeit",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Norbert_Haug_-_2019102182714_2019-04-12_Radio_Regenbogen_Award_2019_-_Sven_-_1D_X_MK_II_-_0012_-_AK8I9181_%28cropped%29.jpg/330px-Norbert_Haug_-_2019102182714_2019-04-12_Radio_Regenbogen_Award_2019_-_Sven_-_1D_X_MK_II_-_0012_-_AK8I9181_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Norbert_Haug",
+      "name": "Kurt Niedermayer",
+      "alter": 71,
+      "geburtsjahr": 1955,
+      "beruf": "Fußballer/in",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Kurt_Niedermayer",
       "nationalitaet": "🇩🇪 Deutsch",
       "nationalitaeten": [
         {
@@ -20,48 +20,48 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Marcus Bontempelli",
-      "alter": 31,
-      "geburtsjahr": 1995,
+      "name": "Pedri",
+      "alter": 24,
+      "geburtsjahr": 2002,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Marcus_Bontempelli_2018.3.jpg/330px-Marcus_Bontempelli_2018.3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Marcus_Bontempelli",
-      "nationalitaet": "🇦🇺 Australisch",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Pedri_France_v_Spain_7.24.26-026.jpg/330px-Pedri_France_v_Spain_7.24.26-026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Pedri",
+      "nationalitaet": "🇪🇸 Spanisch",
       "nationalitaeten": [
         {
-          "code": "AU",
-          "flagge": "🇦🇺",
-          "name": "Australisch"
+          "code": "ES",
+          "flagge": "🇪🇸",
+          "name": "Spanisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Nabil Bentaleb",
-      "alter": 32,
-      "geburtsjahr": 1994,
-      "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/RC_Lens_-_Lille_OSC_%2808-10-2023%29_19_%28cropped%29.jpg/330px-RC_Lens_-_Lille_OSC_%2808-10-2023%29_19_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Nabil_Bentaleb",
+      "name": "Talen Horton-Tucker",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Talen_Horton-Tucker_8_Fenerbah%C3%A7e_Basketbol_TBPC_20260922_%281%29_%28cropped%29.JPG/330px-Talen_Horton-Tucker_8_Fenerbah%C3%A7e_Basketbol_TBPC_20260922_%281%29_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Talen_Horton-Tucker",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Kaja Juvan",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Tennisspieler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Kaja_Juvan_%282023_US_Open%29_24_%28cropped%29.jpg/330px-Kaja_Juvan_%282023_US_Open%29_24_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Kaja_Juvan",
       "nationalitaet": null,
       "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Ivi Adamou",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Ivi_Adamou5crop.jpg/330px-Ivi_Adamou5crop.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ivi_Adamou",
-      "nationalitaet": "🇬🇷 Griechisch",
-      "nationalitaeten": [
-        {
-          "code": "GR",
-          "flagge": "🇬🇷",
-          "name": "Griechisch"
-        }
-      ],
       "quelle": "Wikipedia"
     }
   ]
