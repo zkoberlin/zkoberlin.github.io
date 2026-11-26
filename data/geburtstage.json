@@ -1,31 +1,36 @@
 {
-  "datum": "25.11.2026",
-  "generiert": "2026-11-25T09:19:44Z",
+  "datum": "26.11.2026",
+  "generiert": "2026-11-26T08:58:55Z",
   "geburtstage": [
     {
-      "name": "Kurt Niedermayer",
+      "name": "Gisela Stuart",
       "alter": 71,
       "geburtsjahr": 1955,
-      "beruf": "Fußballer/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Kurt_Niedermayer",
-      "nationalitaet": "🇩🇪 Deutsch",
+      "beruf": "Politiker/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Official_portrait_of_Baroness_Stuart_of_Edgbaston_crop_2.jpg/330px-Official_portrait_of_Baroness_Stuart_of_Edgbaston_crop_2.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Gisela_Stuart",
+      "nationalitaet": "🇩🇪🇬🇧 Deutsch/Britisch",
       "nationalitaeten": [
         {
           "code": "DE",
           "flagge": "🇩🇪",
           "name": "Deutsch"
+        },
+        {
+          "code": "GB",
+          "flagge": "🇬🇧",
+          "name": "Britisch"
         }
       ],
       "quelle": "Wikipedia"
     },
     {
-      "name": "Pedri",
-      "alter": 24,
-      "geburtsjahr": 2002,
+      "name": "Pau Víctor",
+      "alter": 25,
+      "geburtsjahr": 2001,
       "beruf": "Fußballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Pedri_France_v_Spain_7.24.26-026.jpg/330px-Pedri_France_v_Spain_7.24.26-026.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Pedri",
+      "foto": null,
+      "wikidata": "https://en.wikipedia.org/wiki/Pau_V%C3%ADctor",
       "nationalitaet": "🇪🇸 Spanisch",
       "nationalitaeten": [
         {
@@ -37,12 +42,23 @@
       "quelle": "Wikipedia"
     },
     {
-      "name": "Talen Horton-Tucker",
+      "name": "Lamecha Girma",
       "alter": 26,
       "geburtsjahr": 2000,
-      "beruf": "Basketballer/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/Talen_Horton-Tucker_8_Fenerbah%C3%A7e_Basketbol_TBPC_20260922_%281%29_%28cropped%29.JPG/330px-Talen_Horton-Tucker_8_Fenerbah%C3%A7e_Basketbol_TBPC_20260922_%281%29_%28cropped%29.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Talen_Horton-Tucker",
+      "beruf": "Sportler/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/DOH80097_3000mSt_men_final_%2848910430618%29_%28cropped%29.jpg/330px-DOH80097_3000mSt_men_final_%2848910430618%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lamecha_Girma",
+      "nationalitaet": null,
+      "nationalitaeten": [],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Olivia O'Brien",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Singer-Songwriter/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Olivia_O%27Brien_%40_Mack_Sennett_Studios_09_26_2019_%2849311330527%29_%28cropped%29.jpg/330px-Olivia_O%27Brien_%40_Mack_Sennett_Studios_09_26_2019_%2849311330527%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Olivia_O'Brien",
       "nationalitaet": "🇺🇸 US-amerikanisch",
       "nationalitaeten": [
         {
@@ -51,17 +67,6 @@
           "name": "US-amerikanisch"
         }
       ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Kaja Juvan",
-      "alter": 26,
-      "geburtsjahr": 2000,
-      "beruf": "Tennisspieler/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Kaja_Juvan_%282023_US_Open%29_24_%28cropped%29.jpg/330px-Kaja_Juvan_%282023_US_Open%29_24_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Kaja_Juvan",
-      "nationalitaet": null,
-      "nationalitaeten": [],
       "quelle": "Wikipedia"
     }
   ]
