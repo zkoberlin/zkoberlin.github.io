@@ -1,67 +1,67 @@
 {
-  "datum": "27.11.2026",
-  "generiert": "2026-11-27T09:11:47Z",
+  "datum": "28.11.2026",
+  "generiert": "2026-11-28T08:32:18Z",
   "geburtstage": [
     {
-      "name": "Adéla",
-      "alter": 23,
-      "geburtsjahr": 2003,
-      "beruf": "Singer-Songwriter/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/ADELAINNYC.jpg/330px-ADELAINNYC.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Ad%C3%A9la",
+      "name": "Lisa Middelhauve",
+      "alter": 46,
+      "geburtsjahr": 1980,
+      "beruf": "Persönlichkeit",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Lisa_Middelhauve_salzburg_3.jpg/330px-Lisa_Middelhauve_salzburg_3.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Lisa_Middelhauve",
+      "nationalitaet": "🇩🇪 Deutsch",
+      "nationalitaeten": [
+        {
+          "code": "DE",
+          "flagge": "🇩🇪",
+          "name": "Deutsch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Jackson Yee",
+      "alter": 26,
+      "geburtsjahr": 2000,
+      "beruf": "Sänger/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/2024_Jackson_Yee.jpg/330px-2024_Jackson_Yee.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Jackson_Yee",
+      "nationalitaet": "🇨🇳 Chinesisch",
+      "nationalitaeten": [
+        {
+          "code": "CN",
+          "flagge": "🇨🇳",
+          "name": "Chinesisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Trey Jemison",
+      "alter": 27,
+      "geburtsjahr": 1999,
+      "beruf": "Basketballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Trey_Jemison_%28cropped%29.jpg/330px-Trey_Jemison_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Trey_Jemison",
+      "nationalitaet": "🇺🇸 US-amerikanisch",
+      "nationalitaeten": [
+        {
+          "code": "US",
+          "flagge": "🇺🇸",
+          "name": "US-amerikanisch"
+        }
+      ],
+      "quelle": "Wikipedia"
+    },
+    {
+      "name": "Mostafa Mohamed",
+      "alter": 29,
+      "geburtsjahr": 1997,
+      "beruf": "Fußballer/in",
+      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Mostafa_Mohamed.jpg/330px-Mostafa_Mohamed.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "wikidata": "https://en.wikipedia.org/wiki/Mostafa_Mohamed_(footballer)",
       "nationalitaet": null,
       "nationalitaeten": [],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Zoe Colletti",
-      "alter": 25,
-      "geburtsjahr": 2001,
-      "beruf": "Schauspieler/in",
-      "foto": null,
-      "wikidata": "https://en.wikipedia.org/wiki/Zoe_Colletti",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Aubrey Peeples",
-      "alter": 33,
-      "geburtsjahr": 1993,
-      "beruf": "Sänger/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Aubrey_Shea_Peeples.jpg/330px-Aubrey_Shea_Peeples.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Aubrey_Peeples",
-      "nationalitaet": "🇺🇸 US-amerikanisch",
-      "nationalitaeten": [
-        {
-          "code": "US",
-          "flagge": "🇺🇸",
-          "name": "US-amerikanisch"
-        }
-      ],
-      "quelle": "Wikipedia"
-    },
-    {
-      "name": "Chanyeol",
-      "alter": 34,
-      "geburtsjahr": 1992,
-      "beruf": "Rapper/in",
-      "foto": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Chanyeol_during_the_Exo_Planet_5_%E2%80%93_Exploration_concert_on_December_2019.jpg/330px-Chanyeol_during_the_Exo_Planet_5_%E2%80%93_Exploration_concert_on_December_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-      "wikidata": "https://en.wikipedia.org/wiki/Chanyeol",
-      "nationalitaet": "🇰🇷 Südkoreanisch",
-      "nationalitaeten": [
-        {
-          "code": "KR",
-          "flagge": "🇰🇷",
-          "name": "Südkoreanisch"
-        }
-      ],
       "quelle": "Wikipedia"
     }
   ]
